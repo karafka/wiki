@@ -1,5 +1,3 @@
-## Usage
-
 ### Karafka CLI
 
 Karafka has a simple CLI built in. It provides following commands:
