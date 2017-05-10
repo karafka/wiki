@@ -9,6 +9,11 @@
       - [Responder](#responder)
       - [Inline mode flag](#inline-mode-flag)
       - [Batch mode flag](#batch-mode-flag)
+  - [Receiving messages](#receiving-messages)
+      - [Processing messages directly (without Sidekiq)](#processing-messages-directly-without-sidekiq)
+  - [Sending messages from Karafka](#sending-messages-from-karafka)
+      - [Using responders (recommended)](#using-responders-recommended)
+      - [Using WaterDrop directly](#using-waterdrop-directly)
 
 ### Karafka CLI
 
