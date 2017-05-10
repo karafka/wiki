@@ -1,3 +1,9 @@
+  - [Application](#application)
+  - [Configurators](#configurators)
+  - [Environment variables settings](#environment-variables-settings)
+  - [Kafka brokers auto-discovery](#kafka-brokers-auto-discovery)
+  - [Topic mappers](#topic-mappers)
+
 ### Application
 Karafka has following configuration options:
 
