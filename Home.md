@@ -1,3 +1,5 @@
+![karafka logo](http://mensfeld.github.io/karafka-framework-introduction/img/karafka-04.png)
+
 Framework used to simplify Apache Kafka based Ruby applications development.
 
 It allows programmers to use approach similar to "the Rails way" when working with asynchronous Kafka messages.
