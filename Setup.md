@@ -1,5 +1,3 @@
-## Setup
-
 ### Application
 Karafka has following configuration options:
 
