@@ -1,3 +1,9 @@
+Apart from the internal implementation, Karafka is combined from the following components  programmers mostly will work with:
+
+  - Controllers - objects that are responsible for processing incoming messages (similar to Rails controllers)
+  - Responders - objects that are responsible for sending responses based on the processed data
+  - Workers - objects that execute data processing using Sidekiq backend
+
 ### Table of Contents
 
   - [Controllers](#controllers)
@@ -8,12 +14,6 @@
       - [Responding on topics](#responding-on-topics)
       - [Response validation](#response-validation)
       - [Response partitioning](#response-partitioning)
-
-Apart from the internal implementation, Karafka is combined from the following components  programmers mostly will work with:
-
-  - Controllers - objects that are responsible for processing incoming messages (similar to Rails controllers)
-  - Responders - objects that are responsible for sending responses based on the processed data
-  - Workers - objects that execute data processing using Sidekiq backend
 
 ### Controllers
 
