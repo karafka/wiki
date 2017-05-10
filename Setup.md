@@ -1,3 +1,4 @@
+### Table of Contents
   - [Application](#application)
   - [Configurators](#configurators)
   - [Environment variables settings](#environment-variables-settings)
