@@ -1,3 +1,15 @@
+### Table of Contents
+  - [Karafka CLI](#karafka-cli)
+  - [Routing](#routing)
+      - [Topic](#topic)
+      - [Group](#group)
+      - [Worker](#worker)
+      - [Parser](#parser)
+      - [Interchanger](#interchanger)
+      - [Responder](#responder)
+      - [Inline mode flag](#inline-mode-flag)
+      - [Batch mode flag](#batch-mode-flag)
+
 ### Karafka CLI
 
 Karafka has a simple CLI built in. It provides following commands:
