@@ -21,8 +21,6 @@ CMD bundle exec karafka server
 
 ### Heroku
 
-### Heroku
-
 Karafka may be deployed on [Heroku](https://www.heroku.com/), and works with
 [Heroku Kafka](https://www.heroku.com/kafka) and [Heroku Redis](https://www.heroku.com/redis).
 
