@@ -19,3 +19,8 @@
 * [Karafka example application](https://github.com/karafka/karafka-example-app)
 * [Karafka Travis CI](https://travis-ci.org/karafka/karafka)
 * [Karafka Code Climate](https://codeclimate.com/github/karafka/karafka)
+
+### Videos
+
+* [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
+* [Karafka - Getting beyond HTTP](Karafka - Getting beyond HTTP by Maciej Mensfeld )
