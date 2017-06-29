@@ -23,4 +23,4 @@
 ### Videos
 
 * [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
-* [Karafka - Getting beyond HTTP](Karafka - Getting beyond HTTP by Maciej Mensfeld )
+* [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)
