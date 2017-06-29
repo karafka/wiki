@@ -9,6 +9,7 @@
       - [Responder](#responder)
       - [Inline mode flag](#inline-mode-flag)
       - [Batch mode flag](#batch-mode-flag)
+      - [Start from beginning flag](#start-from-beginning)
   - [Receiving messages](#receiving-messages)
       - [Processing messages directly (without Sidekiq)](#processing-messages-directly-without-sidekiq)
   - [Sending messages from Karafka](#sending-messages-from-karafka)
@@ -65,6 +66,7 @@ There are also several other methods available (optional):
   - *responder* - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
   - *inline_mode* - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
   - *batch_mode* - Boolean - Handle the incoming messages in batch, or one at a time - overwrites global app setting
+  - *start_from_beginning* - Boolean - Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic.
 
 ```ruby
 App.routes.draw do
@@ -77,6 +79,7 @@ App.routes.draw do
     responder BinaryVideoProcessingResponder
     inline_mode true
     batch_mode true
+    start_from_beginning false
   end
 
   topic :new_videos do
@@ -243,6 +246,12 @@ Note: Keep in mind, that by using this, you can significantly slow down Karafka.
 Batch mode allows you to increase the overall throughput of your kafka consumer by handling incoming messages in batches, instead of one at a time.
 
 Note: The downside of increasing throughput is a slight increase in latency. Also keep in mind, that the client commits the offset of the batch's messages only **after** the entire batch has been scheduled into Sidekiq (or processed in case of inline mode).
+
+##### Start from beginning flag
+
+Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. 
+
+Note: Once the consumer group has checkpointed its progress in the topic's partitions, the consumers will always start from the checkpointed offsets, regardless of start_from_beginning. As such, this setting only applies when the consumer initially starts consuming from a topic.
 
 ### Receiving messages
 
