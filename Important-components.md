@@ -57,12 +57,6 @@ Presented example controller will accept incoming messages from a Kafka topic na
       Service.new.add_to_queue(params[:message])
     end
 
-    # Define this method if you want to use Sidekiq reentrancy.
-    # Logic to do if Sidekiq worker fails (because of exception, timeout, etc)
-    def after_failure
-      Service.new.remove_from_queue(params[:message])
-    end
-
     private
 
    # We will not enqueue to sidekiq those messages, which were sent
