@@ -1,8 +1,8 @@
 Apart from the internal implementation, Karafka is combined from the following components  programmers mostly will work with:
 
-  - Controllers - objects that are responsible for processing incoming messages (similar to Rails controllers)
+  - Controllers - objects that are responsible for processing incoming messages (either one by one or in batches)
   - Responders - objects that are responsible for sending responses based on the processed data
-  - Workers - objects that execute data processing using Sidekiq backend
+  - Workers - objects that execute data processing using Sidekiq backend (optional - you can process everything in the main Karafka server process, without using Sidekiq at all)
 
 ### Table of Contents
 
@@ -17,11 +17,11 @@ Apart from the internal implementation, Karafka is combined from the following c
 
 ### Controllers
 
-Controllers should inherit from **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a **#perform** method that will execute your business logic code in background.
+Controllers should inherit from **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a **#perform** method that will execute your business logic code.
 
 ```ruby
 class UsersController < ApplicationController
-  # Method execution will be enqueued in Sidekiq
+  # If you don't use inline_processing mode, execution will be enqueued in Sidekiq. In that case,
   # Karafka will schedule automatically a proper job and execute this logic in the background
   def perform
     User.create(params[:user])
@@ -32,13 +32,13 @@ end
 #### Controllers callbacks
 
 You can add any number of *before_enqueue* callbacks. It can be a method or a block.
-before_enqueue acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to params inside. Based on them you can define which data you want to receive and which you do not.
+before_enqueue acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to ```params_batch``` and ```params``` inside of it. Based on them you can define which data you want to process and which you do not.
 
-**Warning**: keep in mind, that all *before_enqueue* blocks/methods are executed after messages are received. This is not executed in Sidekiq, but right after receiving the incoming message. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly.
+**Warning**: keep in mind, that all *before_enqueue* blocks/methods are executed after messages are received. This is executed right after receiving the incoming messages. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly, especially if you use the ```inline_processing``` mode.
 
-If any of callbacks throws :abort - *perform* method will be not enqueued to the worker (the execution chain will stop).
+If any of callbacks throws :abort - *perform* method will be executed (the execution chain will stop).
 
-Once you run a consumer - messages from Kafka server will be send to a proper controller (based on topic name).
+Once you run a consumer - messages from Kafka server will be send to a proper controller (based on its topic id).
 
 Presented example controller will accept incoming messages from a Kafka topic named :karafka_topic
 
@@ -52,14 +52,13 @@ Presented example controller will accept incoming messages from a Kafka topic na
 
     before_enqueue :validate_params
 
-    # Method execution will be enqueued in Sidekiq.
     def perform
       Service.new.add_to_queue(params[:message])
     end
 
     private
 
-   # We will not enqueue to sidekiq those messages, which were sent
+   # We will not enqueue to Sidekiq those messages, which were sent
    # from sum method and return too high message for our purpose.
    def validate_params
      throw(:abort) unless params['message'].to_i > 50 && params['method'] != 'sum'
@@ -69,11 +68,11 @@ end
 
 #### Dynamic worker selection
 
-When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning worker in the *#before_enqueue* block:
+When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning topics worker in the *#before_enqueue* block:
 
 ```ruby
 before_enqueue do
-  self.worker = (params[:important] ? FastWorker : SlowWorker)
+  self.topic.worker = (params[:important] ? FastWorker : SlowWorker)
 end
 ```
 
