@@ -46,7 +46,7 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | monitor           | false    | Object       | Monitor instance (defaults to Karafka::Monitor)                                                       |
 | logger            | false    | Object       | Logger instance (defaults to Karafka::Logger)                                                         |
 
-### Connection pool configuration option
+### Connection pool configuration options
 
 | Option                  | Required | Value type | Description                                                   |
 |-------------------------|----------|------------|---------------------------------------------------------------|
