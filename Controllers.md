@@ -33,7 +33,7 @@ class UsersController < ApplicationController
 end
 ```
 
-Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you cannot directly flush it into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
 
 ```ruby
 class UsersController < ApplicationController
@@ -52,6 +52,8 @@ class UsersController < ApplicationController
   end
 end
 ```
+
+This was implemented that way, because there are cases, in which based on some external parameters you may want to drop processing of a given batch. If so, then why would you even want to parse them in the first place? :)
 
 ### Single message processing
 
