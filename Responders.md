@@ -1,10 +1,10 @@
-### Table of Contents
+## Table of Contents
   - [Registering topics](#registering-topics)
   - [Responding on topics](#responding-on-topics)
   - [Response validation](#response-validation)
   - [Response partitioning](#response-partitioning)
 
-### Responders
+## Responders
 
 Responders are used to design and control response flow that comes from a single controller action. You might be familiar with a ```#respond_with``` Rails controller method. In Karafka it is an entrypoint to a responder ```#respond```.
 
@@ -26,7 +26,7 @@ When passing data back to Kafka, responder uses parser ```#generate``` method to
 
 Note: You can use responders outside of controllers scope, however it is not recommended because then, they won't be listed when executing ```karafka flow``` CLI command.
 
-#### Registering topics
+### Registering topics
 
 In order to maintain order in topics organization, before you can send data to a given topic, you need to register it. To do that, just execute ```#topic``` method with a topic name and optional settings during responder initialization:
 
@@ -73,7 +73,7 @@ class ExampleResponder < ApplicationResponder
 end
 ```
 
-#### Response validation
+### Response validation
 
 In order to ensure the dataflow is as intended, responder will validate what and where was sent, making sure that:
 
@@ -83,7 +83,7 @@ In order to ensure the dataflow is as intended, responder will validate what and
 
 This is an automatic process and does not require any triggers.
 
-#### Response partitioning
+### Response partitioning
 
 Kafka topics are partitioned, which means that  you can assing messages to partitions based on your business logic. To do so from responders, you can pass one of the following keyword arguments as a last option of a **#respond_to** method:
 
