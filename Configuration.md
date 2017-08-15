@@ -1,9 +1,9 @@
-  - [Karafka configuration options](#karafka-configuration-options)
-  - [Connection pool configuration options](#connection-pool-configuration-options)
-  - [Ruby-Kafka driver configuration options](#ruby-kafka-driver-configuration-options)
-  - [External components configurators](#external-components-configurators)
-  - [Environment variables settings](#environment-variables-settings)
-  - [Kafka brokers auto-discovery](#kafka-brokers-auto-discovery)
+- [Karafka configuration options](#karafka-configuration-options)
+- [Connection pool configuration options](#connection-pool-configuration-options)
+- [Ruby-Kafka driver configuration options](#ruby-kafka-driver-configuration-options)
+- [External components configurators](#external-components-configurators)
+- [Environment variables settings](#environment-variables-settings)
+- [Kafka brokers auto-discovery](#kafka-brokers-auto-discovery)
 
 Karafka is a complex tool, that contains multiple configuration options. To keep everything organized, all the configuration options were divided into three groups:
 
