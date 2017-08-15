@@ -1,11 +1,13 @@
 It's quite common when using Kafka, to treat applications as parts of a bigger pipeline (similarly to Bash pipeline) and forward processing results to other applications. Karafka provides two ways of dealing with that:
 
-  - Using responders
+  - Using [Responders](https://github.com/karafka/karafka/wiki/Responders)
   - Using WaterDrop directly
 
 Each of them has it's own advantages and disadvantages and it strongly depends on your application business logic which one will be better. The recommended (and way more elegant) way is to use responders for that.
 
 #### Using responders (recommended)
+
+Note: If you want more details on how responders work, there's a dedicated [Wiki section](https://github.com/karafka/karafka/wiki/Responders) for that.
 
 One of the main differences when you respond to a Kafka message instead of a HTTP response, is that the response can be sent to many topics (instead of one HTTP response per one request) and that the data that is being sent can be different for different topics. That's why a simple **respond_to** would not be enough.
 
