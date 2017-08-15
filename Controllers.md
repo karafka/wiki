@@ -1,14 +1,9 @@
-Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a ```#perform``` method that will execute your business logic code.
+Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). You need to define a ```#perform``` method that will execute your business logic code.
 
 ```ruby
 class UsersController < ApplicationController
-  # If you don't use inline_processing mode, execution will be enqueued in
-  # Sidekiq. In that case, Karafka will schedule automatically a proper job
-  # and execute its logic in the background
-  # @note This is an example where we process each message separately.
-  #   Karafka supports batch processing as well
   def perform
-    User.create(params[:user])
+    # business logic goes here
   end
 end
 ```
