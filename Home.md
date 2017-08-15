@@ -1,7 +1,3 @@
-Framework used to simplify Apache Kafka based Ruby applications development.
-
-It allows programmers to use approach similar to standard HTTP conventions (```#params``` and ```#params_batch```) when working with asynchronous Kafka messages.
-
 ## Basics
 
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
