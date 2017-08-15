@@ -1,20 +1,27 @@
 ![karafka logo](http://mensfeld.github.io/karafka-framework-introduction/img/karafka-04.png)
 
 [![Build Status](https://travis-ci.org/karafka/karafka.png)](https://travis-ci.org/karafka/karafka)
-[![Code Climate](https://codeclimate.com/github/karafka/karafka/badges/gpa.svg)](https://codeclimate.com/github/karafka/karafka)
-[![Join the chat at https://gitter.im/karafka/karafka](https://badges.gitter.im/karafka/karafka.svg)](https://gitter.im/karafka/karafka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Backers on Open Collective](https://opencollective.com/karafka/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/karafka/sponsors/badge.svg)](#sponsors) [![Join the chat at https://gitter.im/karafka/karafka](https://badges.gitter.im/karafka/karafka.svg)](https://gitter.im/karafka/karafka?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Framework used to simplify Apache Kafka based Ruby applications development.
 
-It allows programmers to use approach similar to "the Rails way" when working with asynchronous Kafka messages.
+It allows programmers to use approach similar to standard HTTP conventions (```params``` and ```params_batch```) when working with asynchronous Kafka messages.
 
 Karafka not only handles incoming messages but also provides tools for building complex data-flow applications that receive and send messages.
 
 ## How does it work
 
-Karafka provides a higher-level abstraction than raw Kafka Ruby drivers, such as Kafka-Ruby and Poseidon. Instead of focusing on  single topic consumption, it provides developers with a set of tools that are dedicated for building multi-topic applications similarly to how Rails applications are being built.
+Karafka provides a higher-level abstraction that allows you to focus on your business logic development, instead of focusing on  implementing lower level abstration layers. It provides developers with a set of tools that are dedicated for building multi-topic applications similarly to how Rails applications are being built.
+
+Karafka based applications can be easily deployed to any type of infrastructure, including those based on:
+
+* Heroku
+* Capistrano
+* Docker
 
 ## Support
+
+**Warning**: We're currently in the middle of upgrading our [Wiki pages](https://github.com/karafka/karafka/wiki), to match our newest 0.6 release and it's API. If you use the 0.5 version, you might encounter some incompatibilities. We're really sorry for the inconvenience.
 
 Karafka has a [Wiki pages](https://github.com/karafka/karafka/wiki) for almost everything. It covers the whole installation, setup and deployment along with other useful details on how to run Karafka.
 
@@ -27,34 +34,3 @@ Karafka dev team also provides commercial support in following matters:
 - Trainings on how to design and develop systems based on Apache Kafka and Karafka framework
 
 If you are interested in our commercial services, please contact [Maciej Mensfeld (maciej@coditsu.io)](mailto:maciej@coditsu.io) directly.
-
-## Sponsorship
-
-We are looking for sustainable sponsorship. If your company is relying on Karafka framework or simply want to see Karafka evolve faster to meet your requirements, please consider backing the project. Please contact Maciej Mensfeld (maciej@coditsu.io) directly for more details.
-
-## Notice
-
-Karafka framework and Karafka team are __not__ related to Kafka streaming service called CloudKarafka in any matter. We don't recommend nor discourage usage of their platform.
-
-## Requirements
-
-In order to use Karafka framework, you need to have:
-
-  - Zookeeper (required by Kafka)
-  - Kafka (at least 0.9.0)
-  - Ruby (at least 2.3.0)
-
-## Note on Patches/Pull Requests
-
-Fork the project.
-Make your feature addition or bug fix.
-Add tests for it. This is important so I don't break it in a future version unintentionally.
-Commit, do not mess with Rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull). Send me a pull request. Bonus points for topic branches.
-
-Each pull request must pass our quality requirements. To check if everything is as it should be, we use [PolishGeeks Dev Tools](https://github.com/polishgeeks/polishgeeks-dev-tools) that combine multiple linters and code analyzers. Please run:
-
-```bash
-bundle exec rake
-```
-
-to check if everything is in order. After that you can submit a pull request.
