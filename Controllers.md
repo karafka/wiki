@@ -17,14 +17,14 @@ end
 
 Depending on your application and/or consumer group settings, Karafka's controller can process messages in two modes:
 
-* Batch processing - allows you to use ```#params_batch``` method that will contain an array of messages
+* Batch messages processing - allows you to use ```#params_batch``` method that will contain an array of messages
 * Single message processing - allows you to use ```#params``` method that will always contain a single message
 
 Which mode you decide to use strongly depends on your business logic.
 
 **Note**: please don't mix ```batch_processing``` and ```batch_consuming```, they are two different things. Please visit the [config](https://github.com/karafka/karafka/wiki/Setup) section of this Wiki for an explanation.
 
-### Batch processing
+### Batch messages processing
 
 WIP
 
