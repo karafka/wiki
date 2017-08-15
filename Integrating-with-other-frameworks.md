@@ -1,6 +1,6 @@
 Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
 
-### Integrating with Ruby on Rails
+## Integrating with Ruby on Rails
 
 Add Karafka to your Ruby on Rails application Gemfile:
 
@@ -31,7 +31,7 @@ Rails.application.eager_load!
 
 and you are ready to go!
 
-### Integrating with Sinatra
+## Integrating with Sinatra
 
 Sinatra applications differ from one another. There are single file applications and apps with similar to Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow in order to integrate it with Sinatra based application:
 
