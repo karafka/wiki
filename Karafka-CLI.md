@@ -1,5 +1,3 @@
-### Karafka CLI
-
 Karafka has a simple CLI built in. It provides following commands:
 
 | Command        | Description                                                               |
@@ -9,7 +7,6 @@ Karafka has a simple CLI built in. It provides following commands:
 | flow           | Print application data flow (incoming => outgoing)                        |
 | info           | Print configuration details and other options of your application         |
 | install        | Installs all required things for Karafka application in current directory |
-| routes         | Print out all defined routes in alphabetical order                        |
 | server         | Start the Karafka server (short-cut alias: "s")                           |
 | worker         | Start the Karafka Sidekiq worker (short-cut alias: "w")                   |
 
