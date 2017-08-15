@@ -34,10 +34,10 @@ Configure Karafka to use the Kafka and Redis configuration provided by Heroku:
 # app_root/app.rb
 class App < Karafka::App
   setup do |config|
-    config.kafka.hosts = ENV['KAFKA_URL'].split(',') # Convert CSV list of broker urls to an array
-    config.kafka.ssl.ca_cert = ENV['KAFKA_TRUSTED_CERT'] if ENV['KAFKA_TRUSTED_CERT']
-    config.kafka.ssl.client_cert = ENV['KAFKA_CLIENT_CERT'] if ENV['KAFKA_CLIENT_CERT']
-    config.kafka.ssl.client_cert_key = ENV['KAFKA_CLIENT_CERT_KEY'] if ENV['KAFKA_CLIENT_CERT_KEY']
+    config.kafka.seed_brokers = ENV['KAFKA_URL'].split(',') # Convert CSV list of broker urls to an array
+    config.kafka.ssl_ca_cert = ENV['KAFKA_TRUSTED_CERT'] if ENV['KAFKA_TRUSTED_CERT']
+    config.kafka.ssl_client_cert = ENV['KAFKA_CLIENT_CERT'] if ENV['KAFKA_CLIENT_CERT']
+    config.kafka.ssl_client_cert_key = ENV['KAFKA_CLIENT_CERT_KEY'] if ENV['KAFKA_CLIENT_CERT_KEY']
     config.redis = { url: ENV['REDIS_URL'] }
     # ...other configuration options...
   end
