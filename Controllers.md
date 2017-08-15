@@ -26,7 +26,17 @@ Which mode you decide to use strongly depends on your business logic.
 
 ### Batch messages processing
 
-WIP
+When the batch processing mode is enabled, a single ```#perform``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
+
+```ruby
+class UsersController < ApplicationController
+  def perform
+    params_batch.each do |message|
+      User.create!(message[:user])
+    end
+  end
+end
+```
 
 ### Single message processing
 
@@ -35,7 +45,7 @@ In this mode, Karafka's controller will process messages separately, one after a
 ```ruby
 class UsersController < ApplicationController
   def perform
-    User.create(params[:user])
+    User.create!(params[:user])
   end
 end
 ```
