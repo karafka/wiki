@@ -13,6 +13,15 @@ class UsersController < ApplicationController
 end
 ```
 
+## Controller operation modes
+
+Depending on your application and/or consumer group settings, Karafka's controller can process messages in two modees:
+
+* Batch processing - allows to use ```#params_batch``` method that will contain an array of messages
+* Single message processing - allows to use ```#params``` method that will always contain a single message
+
+Which mode you decide to use strongly depends on your business logic. 
+
 ## Controllers callbacks
 
 You can add any number of ```before_enqueue``` callbacks. It can be a method or a block.
