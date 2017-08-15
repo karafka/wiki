@@ -1,4 +1,3 @@
-### Table of Contents
   - [Configuration](#configuration)
     - [Karafka configuration options](#karafka-configuration-options)
     - [Connection pool configuration options](#connection-pool-configuration-options)
@@ -6,8 +5,6 @@
   - [External components configurators](#external-components-configurators)
   - [Environment variables settings](#environment-variables-settings)
   - [Kafka brokers auto-discovery](#kafka-brokers-auto-discovery)
-
-### Configuration
 
 Karafka is a complex tool, that contains multiple configuration options. To keep everything organized, all the configuration options were divided into three groups:
 
@@ -32,7 +29,7 @@ end
 
 Note: Karafka allows you to redefine most of the settings per each consumer group, which means that you can have specific custom configuration, that might differ from the default one configured on the app level. This allows you for example, to connect to multiple Kafka clusters.
 
-### Karafka configuration options
+## Karafka configuration options
 
 | Option            | Required | Value type   | Description                                                                                           |
 |-------------------|----------|--------------|-------------------------------------------------------------------------------------------------------|
@@ -45,7 +42,7 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | monitor           | false    | Object       | Monitor instance (defaults to Karafka::Monitor)                                                       |
 | logger            | false    | Object       | Logger instance (defaults to Karafka::Logger)                                                         |
 
-### Connection pool configuration options
+## Connection pool configuration options
 
 | Option                  | Required | Value type | Description                                                   |
 |-------------------------|----------|------------|---------------------------------------------------------------|
@@ -67,7 +64,7 @@ We've listed here only **the most important** configuration options. If you're i
 | kafka.ssl_client_cert         | false    | String        | SSL client certificate                                                                            |
 | kafka.ssl_client_cert_key     | false    | String        | SSL client certificate password                                                                   |
 
-### External components configurators
+## External components configurators
 
 For additional setup and/or configuration tasks you can create custom configurators. Similar to Rails these are added to a `config/initializers` directory and run after app initialization.
 
@@ -84,7 +81,7 @@ class ExampleConfigurator < Karafka::Setup::Configurators::Base
 end
 ```
 
-### Environment variables settings
+## Environment variables settings
 
 There are several env settings you can use:
 
@@ -93,6 +90,6 @@ There are several env settings you can use:
 | KARAFKA_ENV       | development     | In what mode this application should boot (production/development/test/etc)   |
 | KARAFKA_BOOT_FILE | app_root/app.rb | Path to a file that contains Karafka app configuration and booting procedures |
 
-### Kafka brokers auto-discovery
+## Kafka brokers auto-discovery
 
 Karafka supports Kafka brokers auto-discovery during startup and on failures. You need to provide at least one Kafka broker, from which the entire Kafka cluster will be discovered. Karafka will refresh list of available brokers if something goes wrong. This allows it to be aware of changes that happen in the infrastructure (adding and removing nodes).
