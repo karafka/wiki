@@ -1,4 +1,4 @@
-**Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience.
+**Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
 
 ### Table of Contents
   - [Routing](#routing)
