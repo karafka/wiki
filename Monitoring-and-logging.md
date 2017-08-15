@@ -14,7 +14,7 @@ end
 
 Keep in mind, that if you replace monitor with a custom one, you will have to implement logging as well. It is because monitoring is used for both monitoring and logging and a default monitor handles logging as well.
 
-### Example monitor with Errbit/Airbrake support
+## Example monitor with Errbit/Airbrake support
 
 Here's a simple example of monitor that is used to handle errors logging into Airbrake/Errbit.
 
@@ -27,7 +27,7 @@ class AppMonitor < Karafka::Monitor
 end
 ```
 
-### Example monitor with NewRelic support
+## Example monitor with NewRelic support
 
 Here's a simple example of monitor that is used to handle events and errors logging into NewRelic. It will send metrics with information about amount of processed messages per topic and how many of them were scheduled to be performed async.
 
