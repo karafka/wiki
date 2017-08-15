@@ -1,4 +1,4 @@
-Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a ````#perform``` method that will execute your business logic code.
+Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a ```#perform``` method that will execute your business logic code.
 
 ```ruby
 class UsersController < ApplicationController
