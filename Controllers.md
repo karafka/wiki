@@ -62,6 +62,7 @@ In this mode, Karafka's controller will process messages separately, one after a
 ```ruby
 class UsersController < ApplicationController
   def perform
+    puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
     User.create!(params[:user])
   end
 end
