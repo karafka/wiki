@@ -4,7 +4,7 @@ It allows programmers to use approach similar to standard HTTP conventions (```#
 
 ## Basics
 
-* [Setup](https://github.com/karafka/karafka/wiki/Setup)
+* [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
 * [Usage](https://github.com/karafka/karafka/wiki/Usage)
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
