@@ -15,12 +15,28 @@ end
 
 ## Controller operation modes
 
-Depending on your application and/or consumer group settings, Karafka's controller can process messages in two modees:
+Depending on your application and/or consumer group settings, Karafka's controller can process messages in two modes:
 
-* Batch processing - allows to use ```#params_batch``` method that will contain an array of messages
-* Single message processing - allows to use ```#params``` method that will always contain a single message
+* Batch processing - allows you to use ```#params_batch``` method that will contain an array of messages
+* Single message processing - allows you to use ```#params``` method that will always contain a single message
 
-Which mode you decide to use strongly depends on your business logic. 
+Which mode you decide to use strongly depends on your business logic.
+
+**Note**: please don't mix ```batch_processing``` and ```batch_consuming```, they are two different things. Please visit the [config](https://github.com/karafka/karafka/wiki/Setup) section of this Wiki for an explanation.
+
+### Batch processing
+
+### Single message processing
+
+In this mode, Karafka's controller will process messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing controller. Inside of your ```#perform``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
+
+```ruby
+class UsersController < ApplicationController
+  def perform
+    User.create(params[:user])
+  end
+end
+```
 
 ## Controllers callbacks
 
