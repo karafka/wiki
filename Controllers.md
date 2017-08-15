@@ -26,6 +26,8 @@ Which mode you decide to use strongly depends on your business logic.
 
 ### Batch processing
 
+WIP
+
 ### Single message processing
 
 In this mode, Karafka's controller will process messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing controller. Inside of your ```#perform``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
