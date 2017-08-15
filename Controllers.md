@@ -17,7 +17,7 @@ Depending on your application and/or consumer group settings, Karafka's controll
 
 Which mode you decide to use strongly depends on your business logic.
 
-**Note**: please don't mix ```batch_processing``` and ```batch_consuming```, they are two different things. Please visit the [config](https://github.com/karafka/karafka/wiki/Setup) section of this Wiki for an explanation.
+**Note**: ```batch_processing``` and ```batch_consuming``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Setup) section of this Wiki for an explanation.
 
 ### Batch messages processing
 
@@ -29,6 +29,26 @@ class UsersController < ApplicationController
     params_batch.each do |message|
       User.create!(message[:user])
     end
+  end
+end
+```
+
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you cannot directly flush it into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
+
+```ruby
+class UsersController < ApplicationController
+  def perform
+    EventStore.store(params_batch.parsed)
+  end
+end
+```
+
+Parsing will be automatically performed as well, if you decide to map parameters (or use any Enumerable module method):
+
+```ruby
+class UsersController < ApplicationController
+  def perform
+    EventStore.store(params_batch.map { |param| param[:user] })
   end
 end
 ```
