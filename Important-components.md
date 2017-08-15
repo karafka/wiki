@@ -21,8 +21,9 @@ Controllers should inherit from **ApplicationController** (or any other controll
 
 ```ruby
 class UsersController < ApplicationController
-  # If you don't use inline_processing mode, execution will be enqueued in Sidekiq. In that case,
-  # Karafka will schedule automatically a proper job and execute this logic in the background
+  # If you don't use inline_processing mode, execution will be enqueued in
+  # Sidekiq. In that case, Karafka will schedule automatically a proper job
+  # and execute this logic in the background
   def perform
     User.create(params[:user])
   end
