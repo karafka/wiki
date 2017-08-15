@@ -6,11 +6,11 @@ Karafka is currently being used in production with following deployment methods:
 
 Since the only thing that is long-running is Karafka server, it should't be hard to make it work with other deployment and CD tools.
 
-### Capistrano
+## Capistrano
 
 For details about integration with Capistrano, please go to [capistrano-karafka](https://github.com/karafka/capistrano-karafka) gem page.
 
-### Docker
+## Docker
 
 Karafka can be dockerized as any other Ruby/Rails app. To execute ```karafka server``` command in your Docker container, just put this into your Dockerfile:
 
@@ -19,7 +19,7 @@ ENV KARAFKA_ENV production
 CMD bundle exec karafka server
 ```
 
-### Heroku
+## Heroku
 
 Karafka may be deployed on [Heroku](https://www.heroku.com/), and works with
 [Heroku Kafka](https://www.heroku.com/kafka) and [Heroku Redis](https://www.heroku.com/redis).
