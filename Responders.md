@@ -75,14 +75,14 @@ end
 In order to ensure the dataflow is as intended, responder will validate what and where was sent, making sure that:
 
   - Only topics that were registered were used (no typos, etc.)
-  - Only a single message was sent to a topic that was registered without a **multiple_usage** flag
-  - Any topic that was registered with **required** flag (default behavior) has been used
+  - Only a single message was sent to a topic that was registered without a ```multiple_usage``` flag
+  - Any topic that was registered with ```required``` flag (default behavior) has been used
 
 This is an automatic process and does not require any triggers.
 
 ## Response partitioning
 
-Kafka topics are partitioned, which means that  you can assing messages to partitions based on your business logic. To do so from responders, you can pass one of the following keyword arguments as a last option of a **#respond_to** method:
+Kafka topics are partitioned, which means that  you can assing messages to partitions based on your business logic. To do so from responders, you can pass one of the following keyword arguments as a last option of a ```#respond_to``` method:
 
 * partition - use it when you want to send a given message to a certain partition
 * partition_key - use it when you want to ensure that a certain group of messages is delivered to the same partition, but you don't which partition it will be.
