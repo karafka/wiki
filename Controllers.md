@@ -1,5 +1,3 @@
-## Controllers
-
 Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). If you don't want to use custom workers (and except some particular cases you don't need to), you need to define a ````#perform``` method that will execute your business logic code.
 
 ```ruby
@@ -15,7 +13,7 @@ class UsersController < ApplicationController
 end
 ```
 
-### Controllers callbacks
+## Controllers callbacks
 
 You can add any number of *before_enqueue* callbacks. It can be a method or a block.
 before_enqueue acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to ```#params_batch``` and ```#params``` inside of it. Based on them you can define which data you want to process and which you do not.
@@ -52,7 +50,7 @@ Presented example controller will accept incoming messages from a Kafka topic na
 end
 ```
 
-### Dynamic worker selection
+## Dynamic worker selection
 
 When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning topics worker in the *#before_enqueue* block:
 
