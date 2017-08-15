@@ -17,8 +17,8 @@ By default, if you name a responder with the same name as a controller, it will 
 module Users
   class CreateController < ApplicationController
     def perform
-      # You can provide as many objects as you want to respond_with as long as a responders
-      # #respond method accepts the same amount
+      # You can provide as many objects as you want to respond_with as long as
+      # a responders #respond method accepts the same amount
       respond_with User.create(params[:user])
     end
   end
