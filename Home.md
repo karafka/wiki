@@ -1,5 +1,6 @@
 ## Basics
 
+* [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
 * [Usage](https://github.com/karafka/karafka/wiki/Usage)
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
