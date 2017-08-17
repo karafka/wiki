@@ -1,5 +1,3 @@
-### Receiving messages
-
 Karafka framework has a long running server process that is responsible for receiving messages.
 
 To start Karafka server process, use the following CLI command:
@@ -14,7 +12,7 @@ Karafka server can be daemonized with the **--daemon** flag:
 bundle exec karafka server --daemon
 ```
 
-#### Processing messages directly (without Sidekiq)
+## Processing messages directly (without Sidekiq)
 
 If you don't want to use Sidekiq for processing and you would rather process messages directly in the main Karafka server process, you can do that by setting the *inline* flag either on an app level:
 
