@@ -1,16 +1,15 @@
 # **Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
 
 ### Table of Contents
-  - [Routing](#routing)
-      - [Topic](#topic)
-      - [Group](#group)
-      - [Worker](#worker)
-      - [Parser](#parser)
-      - [Interchanger](#interchanger)
-      - [Responder](#responder)
-      - [Inline mode flag](#inline-mode-flag)
-      - [Batch mode flag](#batch-mode-flag)
-      - [Start from beginning flag](#start-from-beginning-flag)
+    - [Topic](#topic)
+    - [Group](#group)
+    - [Worker](#worker)
+    - [Parser](#parser)
+    - [Interchanger](#interchanger)
+    - [Responder](#responder)
+    - [Inline mode flag](#inline-mode-flag)
+    - [Batch mode flag](#batch-mode-flag)
+    - [Start from beginning flag](#start-from-beginning-flag)
 
 ### Routing
 
