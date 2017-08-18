@@ -2,8 +2,8 @@
 
 Karafka supports two consuming modes:
 
-* ```batch_consuming true``` - in that mode, Karafka will consume one message after another from Kafka.
-* ```batch_consuming false```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages consumed in a single batch, my using the ```max_bytes_per_partition``` configuration option.
+* ```batch_consuming false``` - in that mode, Karafka will consume one message after another from Kafka.
+* ```batch_consuming true```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages consumed in a single batch, my using the ```max_bytes_per_partition``` configuration option.
 
 Below you can see the difference in between those two:
 
