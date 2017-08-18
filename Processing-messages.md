@@ -1,4 +1,4 @@
-# WIP
+# Warning: this page is still a work in progress and might not be 100% accurate
 
 ## Processing modes
 
