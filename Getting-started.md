@@ -37,5 +37,7 @@ bundle install
 ```
 Use karafka CLI:
 ```
-karafka install
+bundle exec karafka install
 ```
+
+If you need more details about each of the CLI commands, go to [CLI section](https://github.com/karafka/karafka/wiki/CLI)
