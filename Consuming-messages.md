@@ -14,6 +14,8 @@ bundle exec karafka server --daemon
 
 **Note**: Keep in mind, that consuming modes are not the same thing as processing modes. Consuming modes describe the way data is being pulled out of Kafka, while processing modes describe how you will be able to interact with this data.
 
+## Consuming modes
+
 Karafka supports two consuming modes:
 
 * ```batch_consuming false``` - in that mode, Karafka will consume one message after another from Kafka.
