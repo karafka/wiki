@@ -19,4 +19,23 @@ and follow the instructions from the [example app Wiki](https://github.com/karaf
 
 ## Starting with a clean installation
 
-WIP
+Create a directory for your project:
+
+```
+mkdir app_dir
+cd app_dir
+```
+
+Create a Gemfile with Karafka:
+```
+echo "source 'https://rubygems.org'" > Gemfile
+echo "gem 'karafka'" >> Gemfile
+```
+Bundle afterwards
+```
+bundle install
+```
+Use karafka CLI:
+```
+karafka:install
+```
