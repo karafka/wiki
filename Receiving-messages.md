@@ -21,7 +21,7 @@ bundle exec karafka server --daemon
 Karafka supports two consuming modes:
 
 * ```batch_consuming true``` - in that mode, Karafka will consume one message after another from Kafka.
-* ```batch_consuming fase```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages received in a single batch, my using the ```max_bytes_per_partition``` configuration option.
+* ```batch_consuming false```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages received in a single batch, my using the ```max_bytes_per_partition``` configuration option.
 
 Below you can see the difference in between those two:
 
@@ -33,7 +33,10 @@ Each of the modes has it's own advantages and disadvantages. If you need help on
 
 ## Processing modes
 
-Karafka supports two processing modes. When combined with receiving m
+Karafka supports two processing modes:
+
+* ```batch_processing true``` - in that mode, Karafka will process messages in batches. You will have access to the ```#params_batch``` method, that will give you all the messages altogether.
+* ```batch_processing false```- in that mode, Karafka will process messages one after another. Yo access your message details, you can use ```#params``` method. You can think of this mode, as an equivalent to a standard HTTP way of doing things.
 
 ## Processing messages directly (without Sidekiq)
 
