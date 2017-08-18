@@ -37,5 +37,5 @@ bundle install
 ```
 Use karafka CLI:
 ```
-karafka:install
+karafka install
 ```
