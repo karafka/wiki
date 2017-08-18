@@ -24,7 +24,7 @@ end
 Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
 
 ```ruby
-class UsersController < ApplicationController
+class EventsController < ApplicationController
   def perform
     EventStore.store(params_batch.parsed)
   end
@@ -34,7 +34,7 @@ end
 Parsing will be automatically performed as well, if you decide to map parameters (or use any Enumerable module method):
 
 ```ruby
-class UsersController < ApplicationController
+class EventsController < ApplicationController
   def perform
     EventStore.store(params_batch.map { |param| param[:user] })
   end
