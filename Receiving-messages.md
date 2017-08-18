@@ -16,24 +16,24 @@ bundle exec karafka server --daemon
 
 ## Processing messages directly (without Sidekiq)
 
-If you don't want to use Sidekiq for processing and you would rather process messages directly in the main Karafka server process, you can do that by setting the *inline* flag either on an app level:
+If you don't want to use Sidekiq for processing and you would rather process messages directly in the main Karafka server process (right after they are sent), you can do that by setting the *inline_processing* flag to false either on an app level:
 
 ```ruby
 class App < Karafka::App
   setup do |config|
-    config.inline_mode = true
+    config.inline_processing = true
     # Rest of the config
   end
 end
 ```
 
-or per route (when you want to treat some routes in a different way):
+or per topic (when you want to treat some topics in a different way way than other):
 
 ```ruby
 App.routes.draw do
   topic :binary_video_details do
     controller Videos::DetailsController
-    inline_mode true
+    inline_processing true
   end
 end
 ```
