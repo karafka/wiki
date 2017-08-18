@@ -69,4 +69,4 @@ App.routes.draw do
 end
 ```
 
-Note: it can slow Karafka down significantly if you do heavy stuff that way.
+**Note**: it can slow Karafka down significantly if you do heavy stuff that way.
