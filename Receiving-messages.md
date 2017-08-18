@@ -1,5 +1,3 @@
-# **Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
-
 Karafka framework has a long running server process that is responsible for receiving messages.
 
 To start Karafka server process, use the following CLI command:
