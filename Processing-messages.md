@@ -1,8 +1,4 @@
-# Warning: this page is still a work in progress and might not be 100% accurate
-
-## Processing modes
-
-Karafka supports two processing modes:
+Karafka supports two ways of processing messages:
 
 * ```batch_processing true``` - in that mode, Karafka will process messages in batches. You will have access to the ```#params_batch``` method, that will give you all the messages altogether.
 * ```batch_processing false```- in that mode, Karafka will process messages one after another. To access your message details, you can use ```#params``` method. You can think of this mode, as an equivalent to a standard HTTP way of doing things.
