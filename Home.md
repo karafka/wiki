@@ -3,7 +3,7 @@
 * [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
 * [Routing](https://github.com/karafka/karafka/wiki/Routing)
-* [Receiving messages](https://github.com/karafka/karafka/wiki/Receiving-messages)
+* [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages)
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
