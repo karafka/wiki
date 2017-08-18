@@ -1,3 +1,17 @@
+Karafka framework has a long running server process that is responsible for consuming messages.
+
+To start Karafka server process, use the following CLI command:
+
+```bash
+bundle exec karafka server
+```
+
+Karafka server can be daemonized with the --daemon flag:
+
+```bash
+bundle exec karafka server --daemon
+```
+
 **Note**: Keep in mind, that consuming modes are not the same thing as processing modes. Consuming modes describe the way data is being pulled out of Kafka, while processing modes describe how you will be able to interact with this data.
 
 Karafka supports two consuming modes:
