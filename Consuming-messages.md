@@ -1,4 +1,4 @@
-Karafka framework has a long running server process that is responsible for receiving messages.
+Karafka framework has a long running server process that is responsible for consuming messages.
 
 To start Karafka server process, use the following CLI command:
 
@@ -19,7 +19,7 @@ bundle exec karafka server --daemon
 Karafka supports two consuming modes:
 
 * ```batch_consuming true``` - in that mode, Karafka will consume one message after another from Kafka.
-* ```batch_consuming false```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages received in a single batch, my using the ```max_bytes_per_partition``` configuration option.
+* ```batch_consuming false```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages consumed in a single batch, my using the ```max_bytes_per_partition``` configuration option.
 
 Below you can see the difference in between those two:
 
