@@ -30,12 +30,18 @@ heroku config:set KARAFKA_ENV=production
 ```
 
 Configure Karafka to use the Kafka and Redis configuration provided by Heroku:
+* Due to [Heroku CA Cert rotation](https://devcenter.heroku.com/articles/ca-cert-rotation-kafka) it is required to load the Heroku Kafka CA certs from a file to ensure proper handling of multiple certs by ruby-kafka
 ```ruby
 # app_root/app.rb
 class App < Karafka::App
   setup do |config|
     config.kafka.seed_brokers = ENV['KAFKA_URL'].split(',') # Convert CSV list of broker urls to an array
-    config.kafka.ssl_ca_cert = ENV['KAFKA_TRUSTED_CERT'] if ENV['KAFKA_TRUSTED_CERT']
+    if ENV['KAFKA_TRUSTED_CERT']
+      tmp_ca_file = Tempfile.new('kafka_ca_certs')
+      tmp_ca_file.write(ENV.fetch("KAFKA_TRUSTED_CERT"))
+      tmp_ca_file.close
+      config.kafka.ssl_ca_cert_file_path = tmp_ca_file.path
+    end
     config.kafka.ssl_client_cert = ENV['KAFKA_CLIENT_CERT'] if ENV['KAFKA_CLIENT_CERT']
     config.kafka.ssl_client_cert_key = ENV['KAFKA_CLIENT_CERT_KEY'] if ENV['KAFKA_CLIENT_CERT_KEY']
     config.redis = { url: ENV['REDIS_URL'] }
