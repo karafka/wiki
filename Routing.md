@@ -1,7 +1,5 @@
 # **Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
 
-### Table of Contents
-
 - [Topic](#topic)
 - [Group](#group)
 - [Worker](#worker)
@@ -12,12 +10,21 @@
 - [Batch mode flag](#batch-mode-flag)
 - [Start from beginning flag](#start-from-beginning-flag)
 
-### Routing
+Routing engine provides an interface to describe how messages from all the topics should be received and processed.
 
-Routing engine provides an interface to describe how messages from all the topics should be handled. To start using it, just use the *draw* method on routes:
+Due to the dynamic nature of Kafka, there are multiple configuration options you can use, however only few are required.
+
+## Routing DSL organization
+
+Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it to as many topics as you want). In order to replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
+
+* consumer group level - options that are related to Kafka client and a given consumer group
+* topic level - options that need to be set on a per topic level
+
+**Note**: most of the settings (apart from the ```controller```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
 
 ```ruby
-App.routes.draw do
+App.consumer_groups.draw do
   topic :example do
     controller ExampleController
   end
