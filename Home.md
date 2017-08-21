@@ -10,7 +10,7 @@
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
 * [Integrating with other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-other-frameworks)
 
-## Components and details
+## Components and other details
 
 * [Concurrency](https://github.com/karafka/karafka/wiki/Concurrency)
 * [Controllers](https://github.com/karafka/karafka/wiki/Controllers)
