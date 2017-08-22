@@ -55,13 +55,15 @@ end
 
 Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch processing only for a single topic).
 
-If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [attributes_map.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/attributes_map.rb) file, that contains those mapping.
+If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb ConsumerGroupTopic](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definition, that contains all the validation rules against all the settings applicable on a topic level.
 
 On the other hand, you can also just try to override a given setting and if you get an exception, it means that it's not that level (or that you cannot override it at all).
 
 ## Consumer group level options
 
-WIP
+If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb ConsumerGroup](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definition, that contains all the validation rules against all the settings applicable on a topic level.
+
+Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details, 
 
 ## Topic level options
 
