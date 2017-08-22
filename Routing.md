@@ -59,14 +59,15 @@ Almost all the default settings that are configured can be changed on either ```
 
 ## Consumer group level options
 
-Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff. Here are the most important once:
+Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff. Here are the most important settings:
 
 WIP
+
+**Note**: If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definitions, that contains all the validation rules for both levels.
 
 ## Topic level options
 
 There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional. Here are the most important once:
-
 
 | Option               | Value type   | Description                                                                                                       |
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
@@ -75,8 +76,8 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
 | [worker](https://github.com/karafka/karafka/wiki/Workers)               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
 | [parser](https://github.com/karafka/karafka/wiki/Parsers)               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
-| [interchanger](https://github.com/karafka/karafka/wiki/Interchangers)         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
 | [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
+
 
 ```ruby
 App.routes.draw do
