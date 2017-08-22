@@ -13,7 +13,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
-## Karafka 0.6+ consumer group namespaced style (recommended)
+### Karafka 0.6+ consumer group namespaced style (recommended)
 
 In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
 
@@ -31,7 +31,7 @@ App.consumer_groups.draw do
 end
 ```
 
-## Karafka 0.5 compatible consumer group per topic style
+### Karafka 0.5 compatible consumer group per topic style
 
 This used to be the mode Karafka 0.5 was using. It hides the fact, that for each topic a new consumer group is created. In this case, consumer group name is equal to the topic name.
 
@@ -51,28 +51,16 @@ App.consumer_groups.draw do
 end
 ```
 
-# **Warning:** Everything below this line describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
+## Topic level options
 
-- [Topic](#topic)
-- [Worker](#worker)
-- [Parser](#parser)
-- [Interchanger](#interchanger)
-- [Responder](#responder)
-- [Inline mode flag](#inline-mode-flag)
-- [Batch mode flag](#batch-mode-flag)
-- [Start from beginning flag](#start-from-beginning-flag)
-
-
-
-There are also several other methods available (optional):
+There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional:
 
   - *worker* - Class name - name of a worker class that we want to use to schedule perform code
   - *parser* - Class name - name of a parser class that we want to use to parse incoming data
   - *interchanger* - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from *#perform_async*
   - *responder* - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
-  - *inline_mode* - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
-  - *batch_mode* - Boolean - Handle the incoming messages in batch, or one at a time - overwrites global app setting
-  - *start_from_beginning* - Boolean - Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic.
+  - *inline_processing* - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
+  - *batch_processing* - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
 
 ```ruby
 App.routes.draw do
@@ -82,9 +70,8 @@ App.routes.draw do
     parser Parsers::BinaryToJson
     interchanger Interchangers::Binary
     responder BinaryVideoProcessingResponder
-    inline_mode true
-    batch_mode true
-    start_from_beginning false
+    inline_processing false
+    batch_processing true
   end
 
   topic :new_videos do
