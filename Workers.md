@@ -1,3 +1,5 @@
+**Note**: You can use Karafka __without__ Sidekiq as well. In cases like that, you don't need workers at all.
+
 Karafka by default will build a worker that will correspond to each of your controllers (so you will have a pair - controller and a worker). All of them will inherit from **ApplicationWorker** and will share all its settings.
 
 To run Sidekiq you should have sidekiq.yml file in *config* folder. The example of ```sidekiq.yml``` file will be generated to config/sidekiq.yml.example once you run ```bundle exec karafka install```.
