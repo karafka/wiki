@@ -54,7 +54,6 @@ end
 # **Warning:** Everything below this line describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
 
 - [Topic](#topic)
-- [Group](#group)
 - [Worker](#worker)
 - [Parser](#parser)
 - [Interchanger](#interchanger)
@@ -67,7 +66,6 @@ end
 
 There are also several other methods available (optional):
 
-  - *group* - symbol/string with a group name. Groups are used to cluster applications
   - *worker* - Class name - name of a worker class that we want to use to schedule perform code
   - *parser* - Class name - name of a parser class that we want to use to parse incoming data
   - *interchanger* - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from *#perform_async*
@@ -79,7 +77,6 @@ There are also several other methods available (optional):
 ```ruby
 App.routes.draw do
   topic :binary_video_details do
-    group :composed_application
     controller Videos::DetailsController
     worker Workers::DetailsWorker
     parser Parsers::BinaryToJson
@@ -113,21 +110,6 @@ Topic is the root point of each route. Keep in mind that:
   - All topic names must be unique in a single Karafka application
   - Topics names are being validated because Kafka does not accept some characters
   - If you don't specify a group, it will be built based on the topic and application name
-
-##### Group
-
- - *group* - symbol/string with a group name. Groups are used to cluster applications
-
-Optionally you can use **group** method to define group for this topic. Use it if you want to build many applications that will share the same Kafka group. Otherwise it will just build it based on the **topic** and application name. If you're not planning to build applications that will load-balance messages between many different applications (but between one applications many processes), you may want not to define it and allow the framework to define it for you.
-
-```ruby
-topic :incoming_messages do
-  group :load_balanced_group
-  controller MessagesController
-end
-```
-
-Note that a single group can be used only in a single topic.
 
 ##### Worker
 
@@ -238,9 +220,9 @@ end
 
 For more details about responders, please go to the [using responders](#using-responders) section.
 
-##### Inline mode flag
+##### Inline processing flag
 
-Inline mode flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
+Inline processing flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
 
 This flag be useful when you want to:
 
@@ -249,9 +231,9 @@ This flag be useful when you want to:
 
 Note: Keep in mind, that by using this, you can significantly slow down Karafka. You also loose all the advantages of Sidekiq processing (reentrancy, retries, etc).
 
-##### Batch mode flag
+##### Batch consuming flag
 
-Batch mode allows you to increase the overall throughput of your kafka consumer by handling incoming messages in batches, instead of one at a time.
+Batch consuming allows you to increase the overall throughput of your kafka consumer by handling incoming messages in batches, instead of one at a time.
 
 Note: The downside of increasing throughput is a slight increase in latency. Also keep in mind, that the client commits the offset of the batch's messages only **after** the entire batch has been scheduled into Sidekiq (or processed in case of inline mode).
 
