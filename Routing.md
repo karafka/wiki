@@ -59,9 +59,9 @@ Almost all the default settings that are configured can be changed on either ```
 
 ## Consumer group level options
 
-Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff. Here are the most important settings:
+Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff.
 
-WIP
+This level settings override is used primary to change the way consumer group is handling connection and incoming data.
 
 **Note**: If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definitions, that contains all the validation rules for both levels.
 
