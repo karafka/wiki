@@ -68,18 +68,20 @@ There are several options you can set inside of the ```topic``` block. All of th
 
 ```ruby
 App.routes.draw do
-  topic :binary_video_details do
-    controller Videos::DetailsController
-    worker Workers::DetailsWorker
-    parser Parsers::BinaryToJson
-    interchanger Interchangers::Binary
-    responder BinaryVideoProcessingResponder
-    inline_processing false
-    batch_processing true
-  end
+  consumer_group :videos_consumer do
+    topic :binary_video_details do
+      controller Videos::DetailsController
+      worker Workers::DetailsWorker
+      parser Parsers::BinaryToJson
+      interchanger Interchangers::Binary
+      responder BinaryVideoProcessingResponder
+      inline_processing false
+      batch_processing true
+    end
 
-  topic :new_videos do
-    controller Videos::NewVideosController
+    topic :new_videos do
+      controller Videos::NewVideosController
+    end
   end
 end
 ```
@@ -169,10 +171,10 @@ class Base64Interchanger
   end
 end
 
-  topic :binary_video_details do
-    controller Videos::DetailsController
-    interchanger Base64Interchanger
-  end
+topic :binary_video_details do
+  controller Videos::DetailsController
+  interchanger Base64Interchanger
+end
 ```
 
 ### Responder
