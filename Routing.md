@@ -201,9 +201,3 @@ topic :binary_video_details do
   interchanger Base64Interchanger
 end
 ```
-
-### Start from beginning flag
-
-Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. 
-
-Note: Once the consumer group has checkpointed its progress in the topic partitions, the consumers will always start from the checkpointed offsets, regardless of start_from_beginning. As such, this setting only applies when the consumer initially starts consuming from a topic.
