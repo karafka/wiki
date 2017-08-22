@@ -75,7 +75,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | worker               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
 | parser               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
 | interchanger         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
-| responder            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
+| [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
 
 ```ruby
@@ -201,26 +201,6 @@ topic :binary_video_details do
   interchanger Base64Interchanger
 end
 ```
-
-### Responder
-
-  - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data.
-
-Responders are used to design the response that should be generated and sent to proper Kafka topics, once processing is done. It allows programmers to build not only data-consuming apps, but to build apps that consume data and, then, based on the business logic output send this processed data onwards (similarly to how Bash pipelines work).
-
-```ruby
-class Responder < ApplicationResponder
-  topic :users_created
-  topic :profiles_created
-
-  def respond(user, profile)
-    respond_to :users_created, user
-    respond_to :profiles_created, profile
-  end
-end
-```
-
-For more details about responders, please go to the [using responders](#using-responders) section.
 
 ### Start from beginning flag
 
