@@ -73,7 +73,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | inline_processing    | Boolean      | Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting |
 | [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
 | worker               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
-| parser               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
+| [parser](https://github.com/karafka/karafka/wiki/Parsers)               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
 | [interchanger](https://github.com/karafka/karafka/wiki/Interchangers)         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
 | [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
@@ -134,39 +134,3 @@ Custom workers need to provide a ```#perform_async``` method. It needs to accept
  - ```params``` - all the params that came from Kafka + additional metadata. This data format might be changed if you use custom interchangers. Otherwise it will be an instance of Karafka::Params::Params.
 
 Keep in mind, that params might be in two states: parsed or unparsed when passed to #perform_async. This means, that if you use custom interchangers and/or custom workers, you might want to look into Karafka's sources to see exactly how it works.
-
-### Parser
-
- - ```parser``` - Class name - name of a parser class that we want to use to serialize and deserialize incoming and outgoing data.
-
-Karafka by default will parse messages with a Json parser. If you want to change this behaviour you need to set a custom parser for each route. Parser needs to have a following class methods:
-
-  - ```#parse``` - method used to parse incoming string into an object/hash
-  - ```#generate``` - method used in responders in order to convert objects into strings that have desired format
-
-and raise an error that is a ::Karafka::Errors::ParserError descendant when problem appears during the parsing process.
-
-```ruby
-class XmlParser
-  class ParserError < ::Karafka::Errors::ParserError; end
-
-  def self.parse(message)
-    Hash.from_xml(message)
-  rescue REXML::ParseException
-    raise ParserError
-  end
-
-  def self.generate(object)
-    object.to_xml
-  end
-end
-
-App.routes.draw do
-  topic :binary_video_details do
-    controller Videos::DetailsController
-    parser XmlParser
-  end
-end
-```
-
-Note that parsing failure won't stop the application flow. Instead, Karafka will assign the raw message inside the :message key of params. That way you can handle raw message inside the Sidekiq worker (you can implement error detection, etc. - any "heavy" parsing logic can and should be implemented there).
