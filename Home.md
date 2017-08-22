@@ -16,6 +16,7 @@
 * [Controllers](https://github.com/karafka/karafka/wiki/Controllers)
 * [Interchangers](https://github.com/karafka/karafka/wiki/Interchangers)
 * [Monitoring and logging](https://github.com/karafka/karafka/wiki/Monitoring-and-logging)
+* [Parsers](https://github.com/karafka/karafka/wiki/Parsers)
 * [Responders](https://github.com/karafka/karafka/wiki/Responders)
 * [Topic mappers](https://github.com/karafka/karafka/wiki/Topic-mappers)
 * [Articles and other references](https://github.com/karafka/karafka/wiki/Articles-and-other-references)
