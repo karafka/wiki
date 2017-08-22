@@ -74,7 +74,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
 | worker               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
 | parser               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
-| interchanger         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
+| [interchanger](https://github.com/karafka/karafka/wiki/Interchangers)         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
 | [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
 
@@ -170,30 +170,3 @@ end
 ```
 
 Note that parsing failure won't stop the application flow. Instead, Karafka will assign the raw message inside the :message key of params. That way you can handle raw message inside the Sidekiq worker (you can implement error detection, etc. - any "heavy" parsing logic can and should be implemented there).
-
-### Interchanger
-
- - ```interchanger``` - Class name - name of an interchanger class that we want to use to format data that we put/fetch into/from #perform_async.
-
-Custom interchangers target issues with non-standard (binary, etc.) data that we want to store when we do #perform_async. This data might be corrupted when fetched in a worker (see [this](https://github.com/karafka/karafka/issues/30) issue). With custom interchangers, you can encode/compress data before it is being passed to scheduling and decode/decompress it when it gets into the worker.
-
-**Warning**: if you decide to use slow interchangers, they might significantly slow down Karafka.
-
-```ruby
-class Base64Interchanger
-  class << self
-    def load(params)
-      Base64.encode64(Marshal.dump(params))
-    end
-
-    def parse(params)
-      Marshal.load(Base64.decode64(params))
-    end
-  end
-end
-
-topic :binary_video_details do
-  controller Videos::DetailsController
-  interchanger Base64Interchanger
-end
-```
