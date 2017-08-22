@@ -13,14 +13,6 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
-### Overriding defaults
-
-Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch processing only for a single topic).
-
-If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [attributes_map.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/attributes_map.rb) file, that contains those mapping.
-
-On the other hand, you can also just try to override a given setting and if you get an exception, it means that it's not that level (or that you cannot override it at all).
-
 ### Karafka 0.6+ consumer group namespaced style (recommended)
 
 In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
@@ -58,6 +50,14 @@ App.consumer_groups.draw do
   end
 end
 ```
+
+## Overriding defaults
+
+Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch processing only for a single topic).
+
+If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [attributes_map.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/attributes_map.rb) file, that contains those mapping.
+
+On the other hand, you can also just try to override a given setting and if you get an exception, it means that it's not that level (or that you cannot override it at all).
 
 ## Consumer group level options
 
