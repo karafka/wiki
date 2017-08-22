@@ -53,7 +53,7 @@ end
 
 ## Consumer group level options
 
-WIP
+There are several options
 
 ## Topic level options
 
@@ -209,3 +209,9 @@ end
 ```
 
 For more details about responders, please go to the [using responders](#using-responders) section.
+
+### Start from beginning flag
+
+Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. 
+
+Note: Once the consumer group has checkpointed its progress in the topic partitions, the consumers will always start from the checkpointed offsets, regardless of start_from_beginning. As such, this setting only applies when the consumer initially starts consuming from a topic.
