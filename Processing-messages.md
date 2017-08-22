@@ -55,3 +55,31 @@ class UsersController < ApplicationController
   end
 end
 ```
+
+## Processing without Sidekiq (direct processing)
+
+Karafka is suitable to run without Sidekiq. To do so, you can just set the ```inline_processing``` setting in your config file (to make it a default) or you can set it per topic in your routing.
+
+```ruby
+# Per app
+class App < Karafka::App
+  setup do |config|
+    config.inline_processing = true
+  end
+end
+
+# Per topic
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic :example do
+      controller ExampleController
+      inline_processing true
+    end
+
+    topic :example2 do
+      controller Example2Controller
+      inline_processing false
+    end
+  end
+end
+```
