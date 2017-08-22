@@ -8,7 +8,7 @@ Add Karafka to your Ruby on Rails application Gemfile:
 gem 'karafka'
 ```
 
-Copy the ```app.rb``` file from your Karafka application into your Rails app (if you don't have this file, just create an empty Karafka app and copy it). This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file. To do so, replace:
+Copy the ```karafka.rb``` file from your Karafka application into your Rails app (if you don't have this file, just create an empty Karafka app and copy it). This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file. To do so, replace:
 
 ```ruby
 ENV['RACK_ENV'] ||= 'development'
