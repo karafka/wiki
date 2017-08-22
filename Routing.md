@@ -71,7 +71,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | Option               | Value type   | Description                                                                                                       |
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
 | inline_processing    | Boolean      | Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting |
-| batch_processing     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
+| [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
 | worker               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
 | parser               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
 | interchanger         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
@@ -108,10 +108,6 @@ This flag can be useful when you want to:
 
   - process messages one by one in a single flow
   - process messages as soon as possible (without Sidekiq delay)
-
-### Batch processing flag
-
-Batch processing allows you to process messages in batches, thanks you ```#params_batch``` controller method. You can read more about that in the [Processing messages](https://github.com/karafka/karafka/wiki/Processing-messages) section of this Wiki.
 
 ### Worker
 
