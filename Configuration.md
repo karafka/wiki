@@ -11,7 +11,7 @@ Karafka is a complex tool, that contains multiple configuration options. To keep
 * Connection pool options - options related to messages producers connection pool
 * Ruby-Kafka driver options - options related to [Ruby-Kafka](https://github.com/zendesk/ruby-kafka)
 
-To apply all those configuration options, you need to use the ```#setup``` method from the Karafka::App class (app.rb):
+To apply all those configuration options, you need to use the ```#setup``` method from the Karafka::App class (karafka.rb):
 
 ```ruby
 class App < Karafka::App
@@ -87,7 +87,7 @@ There are several env settings you can use:
 | ENV name          | Default | Description                                                                           |
 |-------------------|-----------------|-------------------------------------------------------------------------------|
 | KARAFKA_ENV       | development     | In what mode this application should boot (production/development/test/etc)   |
-| KARAFKA_BOOT_FILE | app_root/app.rb | Path to a file that contains Karafka app configuration and booting procedures |
+| KARAFKA_BOOT_FILE | app_root/karafka.rb | Path to a file that contains Karafka app configuration and booting procedures |
 
 ## Kafka brokers auto-discovery
 
