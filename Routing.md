@@ -35,7 +35,7 @@ end
 
 ## Karafka 0.6+ consumer group namespaced style (recommended)
 
-In this mode, you can define consumer groups that will be subscribed to multiple topics. This can allow you to group topics based on their usage and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
+In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
 
 ```ruby
 App.consumer_groups.draw do
