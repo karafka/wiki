@@ -59,12 +59,12 @@ WIP
 
 There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional:
 
-  - *worker* - Class name - name of a worker class that we want to use to schedule perform code
-  - *parser* - Class name - name of a parser class that we want to use to parse incoming data
-  - *interchanger* - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from *#perform_async*
-  - *responder* - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
-  - *inline_processing* - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
-  - *batch_processing* - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
+  - ```worker``` - Class name - name of a worker class that we want to use to schedule perform code
+  - ```parser``` - Class name - name of a parser class that we want to use to parse incoming data
+  - ```interchanger``` - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```
+  - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
+  - ```inline_processing``` - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
+  - ```batch_processing``` - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
 
 ```ruby
 App.routes.draw do
@@ -88,11 +88,11 @@ See description below for more details on each of them.
 
 ### Worker
 
- - *worker* - Class name - name of a worker class that we want to use to schedule perform code
+ - ```worker``` - Class name - name of a worker class that we want to use to schedule perform code
 
 Karafka by default will build a worker that will correspond to each of your controllers (so you will have a pair - controller and a worker). All of them will inherit from **ApplicationWorker** and will share all its settings.
 
-To run Sidekiq you should have sidekiq.yml file in *config* folder. The example of sidekiq.yml file will be generated to config/sidekiq.yml.example once you run **bundle exec karafka install**.
+To run Sidekiq you should have sidekiq.yml file in *config* folder. The example of ```sidekiq.yml``` file will be generated to config/sidekiq.yml.example once you run ```bundle exec karafka install```.
 
 However, if you want to use a raw Sidekiq worker (without any Karafka additional magic), or you want to use SidekiqPro (or any other queuing engine that has the same API as Sidekiq), you can assign your own custom worker:
 
@@ -105,21 +105,21 @@ end
 
 Note that even then, you need to specify a controller that will schedule a background task.
 
-Custom workers need to provide a **#perform_async** method. It needs to accept two arguments:
+Custom workers need to provide a ```#perform_async``` method. It needs to accept two arguments:
 
- - *topic* - first argument is a current topic from which a given message comes
- - *params* - all the params that came from Kafka + additional metadata. This data format might be changed if you use custom interchangers. Otherwise it will be an instance of Karafka::Params::Params.
+ - ```topic``` - first argument is a current topic from which a given message comes
+ - ```params``` - all the params that came from Kafka + additional metadata. This data format might be changed if you use custom interchangers. Otherwise it will be an instance of Karafka::Params::Params.
 
 Keep in mind, that params might be in two states: parsed or unparsed when passed to #perform_async. This means, that if you use custom interchangers and/or custom workers, you might want to look into Karafka's sources to see exactly how it works.
 
 ### Parser
 
- - *parser* - Class name - name of a parser class that we want to use to serialize and deserialize incoming and outgoing data.
+ - ```parser``` - Class name - name of a parser class that we want to use to serialize and deserialize incoming and outgoing data.
 
 Karafka by default will parse messages with a Json parser. If you want to change this behaviour you need to set a custom parser for each route. Parser needs to have a following class methods:
 
-  - *parse* - method used to parse incoming string into an object/hash
-  - *generate* - method used in responders in order to convert objects into strings that have desired format
+  - ```#parse``` - method used to parse incoming string into an object/hash
+  - ```#generate``` - method used in responders in order to convert objects into strings that have desired format
 
 and raise an error that is a ::Karafka::Errors::ParserError descendant when problem appears during the parsing process.
 
@@ -150,7 +150,7 @@ Note that parsing failure won't stop the application flow. Instead, Karafka will
 
 ### Interchanger
 
- - *interchanger* - Class name - name of an interchanger class that we want to use to format data that we put/fetch into/from #perform_async.
+ - ```interchanger``` - Class name - name of an interchanger class that we want to use to format data that we put/fetch into/from #perform_async.
 
 Custom interchangers target issues with non-standard (binary, etc.) data that we want to store when we do #perform_async. This data might be corrupted when fetched in a worker (see [this](https://github.com/karafka/karafka/issues/30) issue). With custom interchangers, you can encode/compress data before it is being passed to scheduling and decode/decompress it when it gets into the worker.
 
@@ -177,7 +177,7 @@ end
 
 ### Responder
 
-  - *responder* - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data.
+  - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data.
 
 Responders are used to design the response that should be generated and sent to proper Kafka topics, once processing is done. It allows programmers to build not only data-consuming apps, but to build apps that consume data and, then, based on the business logic output send this processed data onwards (similarly to how Bash pipelines work).
 
