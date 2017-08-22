@@ -51,6 +51,10 @@ App.consumer_groups.draw do
 end
 ```
 
+## Consumer group level options
+
+WIP
+
 ## Topic level options
 
 There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional:
@@ -82,23 +86,7 @@ end
 
 See description below for more details on each of them.
 
-##### Topic
-
- - *topic* - symbol/string with a topic that we want to route
-
-```ruby
-topic :incoming_messages do
-  # Details about how to handle this topic should go here
-end
-```
-
-Topic is the root point of each route. Keep in mind that:
-
-  - All topic names must be unique in a single Karafka application
-  - Topics names are being validated because Kafka does not accept some characters
-  - If you don't specify a group, it will be built based on the topic and application name
-
-##### Worker
+### Worker
 
  - *worker* - Class name - name of a worker class that we want to use to schedule perform code
 
@@ -124,7 +112,7 @@ Custom workers need to provide a **#perform_async** method. It needs to accept t
 
 Keep in mind, that params might be in two states: parsed or unparsed when passed to #perform_async. This means, that if you use custom interchangers and/or custom workers, you might want to look into Karafka's sources to see exactly how it works.
 
-##### Parser
+### Parser
 
  - *parser* - Class name - name of a parser class that we want to use to serialize and deserialize incoming and outgoing data.
 
@@ -160,7 +148,7 @@ end
 
 Note that parsing failure won't stop the application flow. Instead, Karafka will assign the raw message inside the :message key of params. That way you can handle raw message inside the Sidekiq worker (you can implement error detection, etc. - any "heavy" parsing logic can and should be implemented there).
 
-##### Interchanger
+### Interchanger
 
  - *interchanger* - Class name - name of an interchanger class that we want to use to format data that we put/fetch into/from #perform_async.
 
@@ -187,7 +175,7 @@ end
   end
 ```
 
-##### Responder
+### Responder
 
   - *responder* - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data.
 
@@ -207,7 +195,7 @@ end
 
 For more details about responders, please go to the [using responders](#using-responders) section.
 
-##### Inline processing flag
+### Inline processing flag
 
 Inline processing flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
 
@@ -216,16 +204,6 @@ This flag be useful when you want to:
   - process messages one by one in a single flow
   - process messages as soon as possible (without Sidekiq delay)
 
-Note: Keep in mind, that by using this, you can significantly slow down Karafka. You also loose all the advantages of Sidekiq processing (reentrancy, retries, etc).
+### Batch processing flag
 
-##### Batch consuming flag
-
-Batch consuming allows you to increase the overall throughput of your kafka consumer by handling incoming messages in batches, instead of one at a time.
-
-Note: The downside of increasing throughput is a slight increase in latency. Also keep in mind, that the client commits the offset of the batch's messages only **after** the entire batch has been scheduled into Sidekiq (or processed in case of inline mode).
-
-##### Start from beginning flag
-
-Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. 
-
-Note: Once the consumer group has checkpointed its progress in the topic's partitions, the consumers will always start from the checkpointed offsets, regardless of start_from_beginning. As such, this setting only applies when the consumer initially starts consuming from a topic.
+WIP
