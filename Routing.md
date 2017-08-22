@@ -55,27 +55,28 @@ end
 
 Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch processing only for a single topic).
 
-If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb ConsumerGroupTopic](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definition, that contains all the validation rules against all the settings applicable on a topic level.
-
-On the other hand, you can also just try to override a given setting and if you get an exception, it means that it's not that level (or that you cannot override it at all).
+**Note**: If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definitions, that contains all the validation rules for both levels.
 
 ## Consumer group level options
 
-If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb ConsumerGroup](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definition, that contains all the validation rules against all the settings applicable on a topic level.
+Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff. Here are the most important once:
 
-Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details, 
+WIP
 
 ## Topic level options
 
 There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional. Here are the most important once:
 
-  - ```inline_processing``` - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
-  - ```batch_processing``` - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
-  - ```worker``` - Class name - name of a worker class that we want to use to schedule perform code
-  - ```parser``` - Class name - name of a parser class that we want to use to parse incoming data
-  - ```interchanger``` - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```
-  - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
-  - ```start_from_beginning``` - Boolean - Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic.
+
+| Option               | Value type   | Description                                                                                                       |
+|----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
+| inline_processing    | Boolean      | Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting |
+| batch_processing     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
+| worker               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
+| parser               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
+| interchanger         | Class        | Name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```  |
+| responder            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
+| start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
 
 ```ruby
 App.routes.draw do
