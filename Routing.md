@@ -13,6 +13,24 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
+## Karafka 0.6+ consumer group namespaced style (recommended)
+
+In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
+
+```ruby
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic :example do
+      controller ExampleController
+    end
+
+    topic :example2 do
+      controller Example2Controller
+    end
+  end
+end
+```
+
 ## Karafka 0.5 compatible consumer group per topic style
 
 This used to be the mode Karafka 0.5 was using. It hides the fact, that for each topic a new consumer group is created. In this case, consumer group name is equal to the topic name.
@@ -29,24 +47,6 @@ App.consumer_groups.draw do
 
   topic :example2 do
     controller Example2Controller
-  end
-end
-```
-
-## Karafka 0.6+ consumer group namespaced style (recommended)
-
-In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
-
-```ruby
-App.consumer_groups.draw do
-  consumer_group :group_name do
-    topic :example do
-      controller ExampleController
-    end
-
-    topic :example2 do
-      controller Example2Controller
-    end
   end
 end
 ```
