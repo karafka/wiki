@@ -65,6 +65,7 @@ There are several options you can set inside of the ```topic``` block. All of th
   - ```parser``` - Class name - name of a parser class that we want to use to parse incoming data
   - ```interchanger``` - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```
   - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
+  - ```start_from_beginning``` - Boolean - Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic.
 
 ```ruby
 App.routes.draw do
