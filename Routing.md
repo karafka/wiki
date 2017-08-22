@@ -92,14 +92,14 @@ See description below for more details on each of them.
 
 Inline processing flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
 
-This flag be useful when you want to:
+This flag can be useful when you want to:
 
   - process messages one by one in a single flow
   - process messages as soon as possible (without Sidekiq delay)
 
 ### Batch processing flag
 
-WIP
+Batch processing allows you to process messages in batches, thanks you ```#params_batch``` controller method. You can read more about that in the [Processing messages](https://github.com/karafka/karafka/wiki/Processing-messages) section of this Wiki.
 
 ### Worker
 
