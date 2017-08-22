@@ -8,7 +8,6 @@ Karafka has a simple CLI built in. It provides following commands:
 | info           | Print configuration details and other options of your application         |
 | install        | Installs all required things for Karafka application in current directory |
 | server         | Start the Karafka server (short-cut alias: "s")                           |
-| worker         | Start the Karafka Sidekiq worker (short-cut alias: "w")                   |
 
 All the commands are executed the same way:
 
