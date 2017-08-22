@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 end
 ```
 
-## Processing without Sidekiq (direct processing)
+## Inline processing (without Sidekiq)
 
 Karafka is suitable to run without Sidekiq. To do so, you can just set the ```inline_processing``` setting in your config file (to make it a default) or you can set it per topic in your routing.
 
