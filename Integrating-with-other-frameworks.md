@@ -13,6 +13,7 @@ Copy the ```karafka.rb``` file from your Karafka application into your Rails app
 ```ruby
 ENV['RACK_ENV'] ||= 'development'
 ENV['KARAFKA_ENV'] = ENV['RACK_ENV']
+
 Bundler.require(:default, ENV['KARAFKA_ENV'])
 Karafka::Loader.new.load(Karafka::App.root)
 ```
@@ -22,6 +23,7 @@ with
 ```ruby
 ENV['RAILS_ENV'] ||= 'development'
 ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
+
 require ::File.expand_path('../config/environment', __FILE__)
 Rails.application.eager_load!
 ```
