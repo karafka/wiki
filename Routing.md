@@ -59,12 +59,12 @@ WIP
 
 There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional:
 
+  - ```inline_processing``` - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
+  - ```batch_processing``` - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
   - ```worker``` - Class name - name of a worker class that we want to use to schedule perform code
   - ```parser``` - Class name - name of a parser class that we want to use to parse incoming data
   - ```interchanger``` - Class name - name of a interchanger class that we want to use to format data that we put/fetch into/from ```#perform_async```
   - ```responder``` - Class name - name of a responder that we want to use to generate responses to other Kafka topics based on our processed data
-  - ```inline_processing``` - Boolean - Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) - overwrites global app setting
-  - ```batch_processing``` - Boolean - Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params```
 
 ```ruby
 App.routes.draw do
@@ -87,6 +87,19 @@ end
 ```
 
 See description below for more details on each of them.
+
+### Inline processing flag
+
+Inline processing flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
+
+This flag be useful when you want to:
+
+  - process messages one by one in a single flow
+  - process messages as soon as possible (without Sidekiq delay)
+
+### Batch processing flag
+
+WIP
 
 ### Worker
 
@@ -196,16 +209,3 @@ end
 ```
 
 For more details about responders, please go to the [using responders](#using-responders) section.
-
-### Inline processing flag
-
-Inline processing flag allows you to disable Sidekiq usage by performing your #perform method business logic in the main Karafka server process.
-
-This flag be useful when you want to:
-
-  - process messages one by one in a single flow
-  - process messages as soon as possible (without Sidekiq delay)
-
-### Batch processing flag
-
-WIP
