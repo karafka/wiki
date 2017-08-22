@@ -1,15 +1,3 @@
-# **Warning:** This WIKI page describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
-
-- [Topic](#topic)
-- [Group](#group)
-- [Worker](#worker)
-- [Parser](#parser)
-- [Interchanger](#interchanger)
-- [Responder](#responder)
-- [Inline mode flag](#inline-mode-flag)
-- [Batch mode flag](#batch-mode-flag)
-- [Start from beginning flag](#start-from-beginning-flag)
-
 Routing engine provides an interface to describe how messages from all the topics should be received and processed.
 
 Due to the dynamic nature of Kafka, there are multiple configuration options you can use, however only few are required.
@@ -62,6 +50,18 @@ App.consumer_groups.draw do
   end
 end
 ```
+
+# **Warning:** Everything below this line describes the 0.5 version. Sorry for the inconvenience. We're working hard to update all the wiki pages.
+
+- [Topic](#topic)
+- [Group](#group)
+- [Worker](#worker)
+- [Parser](#parser)
+- [Interchanger](#interchanger)
+- [Responder](#responder)
+- [Inline mode flag](#inline-mode-flag)
+- [Batch mode flag](#batch-mode-flag)
+- [Start from beginning flag](#start-from-beginning-flag)
 
 
 
