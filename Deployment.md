@@ -32,7 +32,7 @@ heroku config:set KARAFKA_ENV=production
 Configure Karafka to use the Kafka and Redis configuration provided by Heroku:
 * Due to [Heroku CA Cert rotation](https://devcenter.heroku.com/articles/ca-cert-rotation-kafka) it is required to load the Heroku Kafka CA certs from a file to ensure proper handling of multiple certs by ruby-kafka
 ```ruby
-# app_root/app.rb
+# app_root/karafka.rb
 class App < Karafka::App
   setup do |config|
     config.kafka.seed_brokers = ENV['KAFKA_URL'].split(',') # Convert CSV list of broker urls to an array
