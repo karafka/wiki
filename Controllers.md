@@ -13,7 +13,7 @@ end
 You can add any number of ```before_enqueue``` callbacks. It can be a method or a block.
 before_enqueue acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to ```#params_batch``` and ```#params``` inside of it. Based on them you can define which data you want to process and which you do not.
 
-**Warning**: keep in mind, that all *before_enqueue* blocks/methods are executed after messages are received. This is executed right after receiving the incoming messages. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly, especially if you use the ```:inline``` ```processing adapter```.
+**Warning**: keep in mind, that all *before_enqueue* blocks/methods are executed after messages are received. This is executed right after receiving the incoming messages. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly, especially if you use the ```:inline``` ```processing backend```.
 
 If any of callbacks throws :abort - ```#perform``` method will be executed (the execution chain will stop).
 
@@ -69,7 +69,7 @@ If you're interested in all the details that are stored in the topic, you can ex
 ```ruby
 class UsersController < ApplicationController
   def perform
-    puts topic.to_h #=> { processing_adapter: :inline, name: 'x', worker: nil, ... }
+    puts topic.to_h #=> { processing_backend: :inline, name: 'x', worker: nil, ... }
   end
 end
 ```
