@@ -53,5 +53,6 @@ end
 Create your Procfile:
 ```text
 karafka_server: bundle exec karafka server
+# the worker needs to run only if you use the :sidekiq processing adapter
 karafka_worker: bundle exec karafka worker
 ```
