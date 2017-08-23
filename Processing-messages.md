@@ -56,9 +56,9 @@ class UsersController < ApplicationController
 end
 ```
 
-## Processing adapters
+## Processing backends
 
-Due to different scenarios and cases when working with Kafka messages, Karafka supports using adapters that allow you to choose, where you want to process your data:
+Due to different scenarios and cases when working with Kafka messages, Karafka supports using backends that allow you to choose, where you want to process your data:
 
 * ```:inline``` - default mode that will process messages right after they were received by Karafka
 * ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to process given message or messages in a background worker.
@@ -69,7 +69,7 @@ You can just set the ```inline_processing``` setting in your config file (to mak
 # Per app
 class App < Karafka::App
   setup do |config|
-    config.processing_adapter = :inline
+    config.processing_backend = :inline
   end
 end
 
