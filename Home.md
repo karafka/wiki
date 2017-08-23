@@ -8,7 +8,7 @@
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
-* [Integrating with other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-other-frameworks)
+* [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks)
 
 ## Components and other details
 
