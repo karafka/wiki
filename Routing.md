@@ -71,7 +71,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 
 | Option               | Value type   | Description                                                                                                       |
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
-| [inline_processing](https://github.com/karafka/karafka/wiki/Processing-messages#inline-processing-without-sidekiq)    | Boolean      | Do we want to perform logic without enqueuing it with Sidekiq (directly and asap) |
+| [processing_adapter](https://github.com/karafka/karafka/wiki/Processing-messages#processing-adapters)    | Symbol      | :inline or :sidekiq depending on where and how you want to process your messages |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
 | [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
 | [worker](https://github.com/karafka/karafka/wiki/Workers)               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
@@ -88,7 +88,7 @@ App.routes.draw do
       parser Parsers::BinaryToJson
       interchanger Interchangers::Binary
       responder BinaryVideoProcessingResponder
-      inline_processing false
+      processing_adapter :inline
       batch_processing true
     end
 
