@@ -56,15 +56,20 @@ class UsersController < ApplicationController
 end
 ```
 
-## Inline processing (without Sidekiq)
+## Processing adapters
 
-Karafka is suitable to run without Sidekiq. To do so, you can just set the ```inline_processing``` setting in your config file (to make it a default) or you can set it per topic in your routing.
+Due to different scenarios and cases when working with Kafka messages, Karafka supports using adapters that allow you to choose, where you want to process your data:
+
+* ```:inline``` - default mode that will process messages right after they were received by Karafka
+* ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to process given message or messages in a background worker.
+
+You can just set the ```inline_processing``` setting in your config file (to make it a default) or you can set it per topic in your routing.
 
 ```ruby
 # Per app
 class App < Karafka::App
   setup do |config|
-    config.inline_processing = true
+    config.processing_adapter = :inline
   end
 end
 
