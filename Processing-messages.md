@@ -56,20 +56,20 @@ class UsersController < ApplicationController
 end
 ```
 
-## Processing backends
+## Backends
 
 Due to different scenarios and cases when working with Kafka messages, Karafka supports using backends that allow you to choose, where you want to process your data:
 
 * ```:inline``` - default mode that will process messages right after they were received by Karafka
 * ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to process given message or messages in a background worker.
 
-You can just set the ```inline_processing``` setting in your config file (to make it a default) or you can set it per topic in your routing.
+You can just set the ```backend``` setting in your config file (to make it a default) or you can set it per topic in your routing.
 
 ```ruby
 # Per app
 class App < Karafka::App
   setup do |config|
-    config.processing_backend = :inline
+    config.backend = :inline
   end
 end
 
@@ -78,12 +78,12 @@ App.consumer_groups.draw do
   consumer_group :group_name do
     topic :example do
       controller ExampleController
-      inline_processing true
+      backend :sidekiq
     end
 
     topic :example2 do
       controller Example2Controller
-      inline_processing false
+      backend :inline
     end
   end
 end
