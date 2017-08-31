@@ -10,10 +10,10 @@ end
 
 ## Controllers callbacks
 
-You can add any number of ```before_enqueue``` callbacks. It can be a method or a block.
-before_enqueue acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to ```#params_batch``` and ```#params``` inside of it. Based on them you can define which data you want to process and which you do not.
+You can add any number of ```after_received``` callbacks. It can be a method or a block.
+after_received acts in a similar way to Rails before_action so it should perform "lightweight" operations. You have access to ```#params_batch``` and ```#params``` inside of it. Based on them you can define which data you want to process and which you do not.
 
-**Warning**: keep in mind, that all *before_enqueue* blocks/methods are executed after messages are received. This is executed right after receiving the incoming messages. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly, especially if you use the ```:inline``` ```processing backend```.
+**Warning**: keep in mind, that all *after_received* blocks/methods are executed after messages are received. This is executed right after receiving the incoming messages. This means, that if you perform "heavy duty" operations there, Karafka might slow down significantly, especially if you use the ```:inline``` ```processing backend```.
 
 If any of callbacks throws :abort - ```#perform``` method will be executed (the execution chain will stop).
 
@@ -23,13 +23,13 @@ Presented example controller will accept incoming messages from a Kafka topic na
 
 ```ruby
   class TestController < ApplicationController
-    # before_enqueue has access to received params.
+    # after_received has access to received params.
     # You can modify them before enqueuing it to sidekiq.
-    before_enqueue {
+    after_received {
       params.merge!(received_time: Time.now.to_s)
     }
 
-    before_enqueue :validate_params
+    after_received :validate_params
 
     def perform
       Service.new.add_to_queue(params[:message])
@@ -76,10 +76,10 @@ end
 
 ## Dynamic worker selection
 
-When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning topics worker in the *#before_enqueue* block:
+When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning topics worker in the *#after_received* block:
 
 ```ruby
-before_enqueue do
+after_received do
   self.topic.worker = (params[:important] ? FastWorker : SlowWorker)
 end
 ```
