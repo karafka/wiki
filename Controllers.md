@@ -73,13 +73,3 @@ class UsersController < ApplicationController
   end
 end
 ```
-
-## Dynamic worker selection
-
-When you work with Karafka, you may want to schedule part of the jobs to a different worker based on the incoming params. This can be achieved by reassigning topics worker in the *#after_received* block:
-
-```ruby
-after_received do
-  self.topic.worker = (params[:important] ? FastWorker : SlowWorker)
-end
-```
