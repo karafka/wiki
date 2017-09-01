@@ -69,7 +69,7 @@ If you're interested in all the details that are stored in the topic, you can ex
 ```ruby
 class UsersController < ApplicationController
   def perform
-    puts topic.to_h #=> { backend: :inline, name: 'x', worker: nil, ... }
+    puts topic.to_h #=> { backend: :inline, name: 'x', ... }
   end
 end
 ```
