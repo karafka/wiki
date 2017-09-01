@@ -61,7 +61,7 @@ end
 Due to different scenarios and cases when working with Kafka messages, Karafka supports using backends that allow you to choose, where you want to process your data:
 
 * ```:inline``` - default mode that will process messages right after they were received by Karafka
-* ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to process given message or messages in a background worker.
+* ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to process given message or messages in a background worker. To use Sidekiq, please follow the instructions in the README of [Karafka Sidekiq Backend](https://github.com/karafka/karafka-sidekiq-backend) repository.
 
 You can just set the ```backend``` setting in your config file (to make it a default) or you can set it per topic in your routing.
 
