@@ -20,7 +20,6 @@ class App < Karafka::App
     config.backend = :inline
     config.batch_consuming = true
     config.batch_processing = true
-    config.redis = { url: 'redis://redis.example.com:7372/1' }
     config.kafka.seed_brokers = %w( 127.0.0.1:9092 )
   end
 end
@@ -34,7 +33,6 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 |-------------------|----------|--------------|-------------------------------------------------------------------------------------------------------|
 | client_id         | true     | String       | Application name that will be used as a client_id for Kafka cluster                                   |
 | topic_mapper      | false    | Class/Module | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
-| redis             | false    | Hash         | Hash with Redis configuration options. It is required if ```backend``` mode is set to :sidekiq.         |
 | batch_consuming   | false    | Boolean      | Should the incoming messages be consumed in batches, or one at a time                                 |
 | batch_processing  | false    | Boolean      | Should the incoming messages be processed in batches, or one at a time                                |
 | backend | false    | Symbol      | Backend for processing that we want to use (currently :inline or :sidekiq)|
@@ -75,7 +73,6 @@ Example configuration class:
 class ExampleConfigurator < Karafka::Setup::Configurators::Base
   def setup
     ExampleClass.logger = Karafka.logger
-    ExampleClass.redis = config.redis
   end
 end
 ```
