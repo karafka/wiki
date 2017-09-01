@@ -75,7 +75,6 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [backend](https://github.com/karafka/karafka/wiki/Processing-messages#backends)    | Symbol      | :inline or :sidekiq depending on where and how you want to process your messages |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
 | [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
-| [worker](https://github.com/karafka/karafka/wiki/Workers)               | Class        | Name of a worker class that we want to use to schedule perform code                                               |
 | [parser](https://github.com/karafka/karafka/wiki/Parsers)               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
 | [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
 
@@ -85,11 +84,9 @@ App.routes.draw do
   consumer_group :videos_consumer do
     topic :binary_video_details do
       controller Videos::DetailsController
-      worker Workers::DetailsWorker
       parser Parsers::BinaryToJson
-      interchanger Interchangers::Binary
       responder BinaryVideoProcessingResponder
-      processing_adapter :inline
+      backend :inline
       batch_processing true
     end
 
