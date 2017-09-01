@@ -44,7 +44,6 @@ class App < Karafka::App
     end
     config.kafka.ssl_client_cert = ENV['KAFKA_CLIENT_CERT'] if ENV['KAFKA_CLIENT_CERT']
     config.kafka.ssl_client_cert_key = ENV['KAFKA_CLIENT_CERT_KEY'] if ENV['KAFKA_CLIENT_CERT_KEY']
-    config.redis = { url: ENV['REDIS_URL'] }
     # ...other configuration options...
   end
 end
