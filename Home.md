@@ -14,11 +14,9 @@
 
 * [Concurrency](https://github.com/karafka/karafka/wiki/Concurrency)
 * [Controllers](https://github.com/karafka/karafka/wiki/Controllers)
-* [Interchangers](https://github.com/karafka/karafka/wiki/Interchangers)
 * [Monitoring and logging](https://github.com/karafka/karafka/wiki/Monitoring-and-logging)
 * [Parsers](https://github.com/karafka/karafka/wiki/Parsers)
 * [Responders](https://github.com/karafka/karafka/wiki/Responders)
 * [Topic mappers](https://github.com/karafka/karafka/wiki/Topic-mappers)
-* [Workers](https://github.com/karafka/karafka/wiki/Workers)
 * [Articles and other references](https://github.com/karafka/karafka/wiki/Articles-and-other-references)
 * [Note on Patches and Pull Requests](https://github.com/karafka/karafka/wiki/Note-on-Patches-and-Pull-Requests)
