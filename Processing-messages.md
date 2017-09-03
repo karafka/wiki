@@ -5,7 +5,7 @@ Depending on your application and/or consumer group settings, Karafka's controll
 
 Which mode you decide to use strongly depends on your business logic.
 
-**Note**: ```batch_processing``` and ```batch_consuming``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Setup) section of this Wiki for an explanation.
+**Note**: ```batch_processing``` and ```batch_consuming``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Configuration) section of this Wiki for an explanation.
 
 ### Batch messages processing
 
