@@ -12,6 +12,14 @@ Karafka server can be daemonized with the --daemon flag:
 bundle exec karafka server --daemon
 ```
 
+Karafka server can be also started with a limited set of consumer groups to work with. This is useful when you want to have a multi-process environment:
+
+```bash
+# This karafka server will be consuming only with listed consumer groups
+# If you don't provide consumer groups, Karafka will connect using all of them
+bundle exec karafka server --consumer-groups=events users
+```
+
 **Note**: Keep in mind, that consuming modes are not the same thing as processing modes. Consuming modes describe the way data is being pulled out of Kafka, while processing modes describe how you will be able to interact with this data.
 
 ## Consuming modes
