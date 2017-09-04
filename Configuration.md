@@ -29,37 +29,38 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 
 ## Karafka configuration options
 
-| Option            | Required | Value type   | Description                                                                                           |
-|-------------------|----------|--------------|-------------------------------------------------------------------------------------------------------|
-| client_id         | true     | String       | Application name that will be used as a client_id for Kafka cluster                                   |
-| topic_mapper      | false    | Class/Module | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
-| batch_consuming   | false    | Boolean      | Should the incoming messages be consumed in batches, or one at a time                                 |
-| batch_processing  | false    | Boolean      | Should the incoming messages be processed in batches, or one at a time                                |
-| backend | false    | Symbol      | Backend for processing that we want to use (currently :inline or :sidekiq)|
-| monitor           | false    | Object       | Monitor instance (defaults to Karafka::Monitor)                                                       |
-| logger            | false    | Object       | Logger instance (defaults to Karafka::Logger)                                                         |
+
+| Option            | Required | Value type   | Default                   | Description                                                                                           |
+|-------------------|----------|--------------|---------------------------|-------------------------------------------------------------------------------------------------------|
+| client_id         | true     | String       | -                         | Application name that will be used as a client_id for Kafka cluster                                   |
+| topic_mapper      | false    | Class/Module | Karafka::Routing::Mapper  | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
+| batch_consuming   | false    | Boolean      | true                      | Should the incoming messages be consumed in batches, or one at a time                                 |
+| batch_processing  | false    | Boolean      | false                     | Should the incoming messages be processed in batches, or one at a time                                |
+| backend           | false    | Symbol       | :inline                   | Backend for processing that we want to use (currently :inline or :sidekiq)                            |
+| monitor           | false    | Object       | Karafka::Monitor          | Monitor instance                                                                                      |
+| logger            | false    | Object       | Karafka::Logger           | Logger instance                                                                                       |
 
 ## Connection pool configuration options
 
-| Option                  | Required | Value type | Description                                                   |
-|-------------------------|----------|------------|---------------------------------------------------------------|
-| connection_pool.size    | false    | Integer    | Connection pool size for message producers connection pool    |
-| connection_pool.timeout | false    | Integer    | Connection pool timeout for message producers connection pool |
+| Option                  | Required | Value type | Default                     | Description                                                  |
+|-------------------------|----------|------------|-----------------------------|--------------------------------------------------------------|
+| connection_pool.size    | false    | Integer    | Active consumer group count |Connection pool size for message producers connection pool    |
+| connection_pool.timeout | false    | Integer    | 5                           |Connection pool timeout for message producers connection pool |
 
 ### Ruby-Kafka driver configuration options
 
 We've listed here only **the most important** configuration options. If you're interested in all the options, please go to the [config.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb) file for more details.
 
-| Option                        | Required | Value type    | Description                                                                                       |
-|-------------------------------|----------|---------------|---------------------------------------------------------------------------------------------------|
-| kafka.seed_brokers            | true     | Array<String> | Kafka server hosts. Karafka will discover whole cluster structure automatically                   |
-| kafka.start_from_beginning    | false    | Boolean       | Consume messages starting at the beginning or consume new messages that are produced at first run |
-| kafka.offset_commit_interval  | false    | Integer       | The interval between offset commits in seconds                                                    |
-| kafka.offset_commit_threshold | false    | Integer       | The number of messages that can be processed before their offsets are committed                   |
-| kafka.heartbeat_interval      | false    | Integer       | The interval between heartbeats                                                                   |
-| kafka.ssl_ca_cert             | false    | String        | SSL CA certificate                                                                                |
-| kafka.ssl_client_cert         | false    | String        | SSL client certificate                                                                            |
-| kafka.ssl_client_cert_key     | false    | String        | SSL client certificate password                                                                   |
+| Option                        | Required | Value type    | Default | Description                                                                                      |
+|-------------------------------|----------|---------------|---------|--------------------------------------------------------------------------------------------------|
+| kafka.seed_brokers            | true     | Array<String> | -       |Kafka server hosts. Karafka will discover whole cluster structure automatically                   |
+| kafka.start_from_beginning    | false    | Boolean       | true    |Consume messages starting at the beginning or consume new messages that are produced at first run |
+| kafka.offset_commit_interval  | false    | Integer       | 10      |The interval between offset commits in seconds                                                    |
+| kafka.offset_commit_threshold | false    | Integer       | 0       |The number of messages that can be processed before their offsets are committed                   |
+| kafka.heartbeat_interval      | false    | Integer       | 10      |The interval between heartbeats                                                                   |
+| kafka.ssl_ca_cert             | false    | String        | nil     |SSL CA certificate                                                                                |
+| kafka.ssl_client_cert         | false    | String        | nil     |SSL client certificate                                                                            |
+| kafka.ssl_client_cert_key     | false    | String        | nil     |SSL client certificate password                                                                   |
 
 ## External components configurators
 
