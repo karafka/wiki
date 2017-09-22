@@ -4,7 +4,7 @@ WIP
 
 ## Topic mappers
 
-Some Kafka cloud providers require topics to be namespaced with user name. This approach is understandable, but at the same time, makes your applications less provider agnostic. To target that issue, you can create your own topic mapper that will sanitize incoming/outgoing topic names, so your logic won't be binded to those specific versions of topic names.
+Some Kafka cloud providers require topics to be namespaced with a user name. This approach is understandable, but at the same time, makes your applications less provider agnostic. To target that issue, you can create your own topic mapper that will sanitize incoming/outgoing topic names, so your logic won't be binded to those specific versions of topic names.
 
 Mapper needs to implement two following methods:
 
