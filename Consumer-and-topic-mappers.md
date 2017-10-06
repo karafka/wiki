@@ -10,7 +10,7 @@ For example, if you want to skip the ```client_id``` all you need to do, is to c
 
 ```ruby
 module MyCustomConsumerMapper
-  # @param raw_consumer_group_name [String, Symbol] string or symbolized consumer group name
+  # @param raw_consumer_group_name [String, Symbol] raw consumer group name
   # @return [String] remapped final consumer group name
   def self.call(raw_consumer_group_name)
     raw_consumer_group_name
