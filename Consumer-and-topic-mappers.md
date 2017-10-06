@@ -4,7 +4,7 @@ Karafka has a default strategy for consumer ids. Each consumer id is a combinati
 
 Mapper needs to implement following method:
 
-- ```call``` - accepts raw consumer group name, should return remapped id.
+- ```#call``` - accepts raw consumer group name, should return remapped id.
 
 For example, if you want to skip the ```client_id``` all you need to do, is to create a mapper like the one below:
 
