@@ -24,6 +24,7 @@ In order to use it, assign it as your default ```consumer_mapper```:
 class App < Karafka::App
   setup do |config|
     config.consumer_mapper = MyCustomConsumerMapper
+    # Other config options
   end
 end
 ```
