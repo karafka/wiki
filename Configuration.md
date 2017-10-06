@@ -33,7 +33,7 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | Option            | Required | Value type   | Default                   | Description                                                                                           |
 |-------------------|----------|--------------|---------------------------|-------------------------------------------------------------------------------------------------------|
 | client_id         | true     | String       | -                         | Application name that will be used as a client_id for Kafka cluster                                   |
-| topic_mapper      | false    | Class/Module | Karafka::Routing::Mapper  | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
+| topic_mapper      | false    | Class/Module | Karafka::Routing::TopicMapper | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
 | batch_consuming   | false    | Boolean      | true                      | Should the incoming messages be consumed in batches, or one at a time                                 |
 | batch_processing  | false    | Boolean      | false                     | Should the incoming messages be processed in batches, or one at a time                                |
 | backend           | false    | Symbol       | :inline                   | Backend for processing that we want to use (currently :inline or :sidekiq)                            |
