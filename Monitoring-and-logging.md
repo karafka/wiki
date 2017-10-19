@@ -14,6 +14,10 @@ end
 
 Keep in mind, that if you replace monitor with a custom one, you will have to implement logging as well. It is because monitoring is used for both monitoring and logging and a default monitor handles logging as well.
 
+## Ruby-Kafka driver monitoring layer
+
+Under the hook Karafka uses [ruby-kafka](https://github.com/zendesk/ruby-kafka) to handle low level aspects of working with Apache Kafka. You can use [all the instrumentation made available by that library](https://github.com/zendesk/ruby-kafka#instrumentation). You can also use the existing monitoring solutions that integrate with various [monitoring services](https://github.com/zendesk/ruby-kafka#monitoring).
+
 ## Example monitor with Errbit/Airbrake support
 
 Here's a simple example of monitor that is used to handle errors logging into Airbrake/Errbit.
