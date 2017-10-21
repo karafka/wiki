@@ -14,6 +14,7 @@
 
 * [Concurrency](https://github.com/karafka/karafka/wiki/Concurrency)
 * [Controllers](https://github.com/karafka/karafka/wiki/Controllers)
+* [Callbacks](https://github.com/karafka/karafka/wiki/Callbacks)
 * [Monitoring and logging](https://github.com/karafka/karafka/wiki/Monitoring-and-logging)
 * [Parsers](https://github.com/karafka/karafka/wiki/Parsers)
 * [Responders](https://github.com/karafka/karafka/wiki/Responders)
