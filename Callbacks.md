@@ -59,6 +59,7 @@ class ExampleController < Karafka::BaseController
     # If throw(:abort) is returned, won't schedule a perform action
   end
 end
+```
 
 ## before_poll
 
