@@ -20,7 +20,7 @@ class App < Karafka::App
     config.backend = :inline
     config.batch_consuming = true
     config.batch_processing = true
-    config.kafka.seed_brokers = %w[127.0.0.1:9092]
+    config.kafka.seed_brokers = %w[kafka://127.0.0.1:9092]
   end
 end
 ```
