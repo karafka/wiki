@@ -64,11 +64,35 @@ end
 
 ## before_stop
 
-WIP
+Callback that will be executed **before** the Karafka process stops. It can be used to mark message as consumed for manual offset management or to perform any cleaning or maintenance there might be. This can be really useful if we normalize data streams and import in batches and we want to import also the last, incomplete batch upon shutdown.
+
+```ruby
+# @example Create a controller with a block before_stop
+class ExampleController < Karafka::BaseController
+  FLUSH_THRESHOLD = 1000
+
+  before_stop do
+    # Buffer might not be complete after each messages fetch but we still may
+    # want to commit this data before we stop the process
+    return if @buffer.empty?
+    EventStore.import @buffer
+  end
+
+  def consume
+    @buffer ||= []
+    @buffer += params_batch.parsed
+
+    if @buffer.size >= FLUSH_THRESHOLD
+      EventStore.import @buffer
+      @buffer = []
+    end
+  end
+end
+```
 
 ## before_poll
 
-Callbacak that will be executed **before** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there are messages in the poll or not. It can be used to perform additional logic for resource availability checking or anything else that would have an impact on the messages consumption.
+Callbacak that will be executed **before** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there are messages in Kafka. It can be used to perform additional logic for resource availability checking or anything else that would have an impact on the messages consumption.
 
 ```ruby
 # @example Create a controller with a block before_poll
@@ -81,7 +105,7 @@ class ExampleController < Karafka::BaseController
   private
 
   def consume
-    Karafka.logger.debug "Trying to poll for the #{@attempts} time"
+    Karafka.logger.debug "This is consumption after the #{@attempts} poll"
   end
 end
 
@@ -101,4 +125,4 @@ end
 
 ## after_poll
 
-WIP
+Callbacak that will be executed **after** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there were messages in Kafka. It acts exactly the same way as the ```before_poll``` but after the fetch and the messages consumption.
