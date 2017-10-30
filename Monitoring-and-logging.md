@@ -33,7 +33,7 @@ end
 
 ## Example monitor with NewRelic support
 
-Here's a simple example of monitor that is used to handle events and errors logging into NewRelic. It will send metrics with information about amount of processed messages per topic and how many of them were scheduled to be performed async.
+Here's a simple example of monitor that is used to handle events and errors logging into NewRelic. It will send metrics with information about amount of consumed (processed) messages per topic and how many of them were scheduled to be performed async.
 
 ```ruby
 # NewRelic example monitor for Karafka
@@ -76,7 +76,7 @@ class AppMonitor < Karafka::Monitor
   end
 
   # @param topic [String] topic name
-  # @param action [String] action that we want to log (consume/perform_async/perform)
+  # @param action [String] action that we want to log (consume)
   # @return [String] a proper metric key for NewRelic
   # @example
   #   metric_key('videos', 'perform_async') #=> 'Custom/videos/perform_async'

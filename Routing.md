@@ -1,4 +1,4 @@
-Routing engine provides an interface to describe how messages from all the topics should be received and processed.
+Routing engine provides an interface to describe how messages from all the topics should be received and consumed/processed.
 
 Due to the dynamic nature of Kafka, there are multiple configuration options you can use, however only few are required.
 
@@ -13,7 +13,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
-### Karafka 0.6+ consumer group namespaced style (recommended)
+### Karafka 1.0+ consumer group namespaced style (recommended)
 
 In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
 
@@ -53,7 +53,7 @@ end
 
 ## Overriding defaults
 
-Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch processing only for a single topic).
+Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch consuming only for a single topic).
 
 **Note**: If you're not sure whether you should override a given setting on a ```consumer_group``` or ```topic``` level, you can look into the [schemas/consumer_group.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/schemas/consumer_group.rb) definitions, that contains all the validation rules for both levels.
 
@@ -71,12 +71,12 @@ There are several options you can set inside of the ```topic``` block. All of th
 
 | Option               | Value type   | Description                                                                                                       |
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
-| [controller](https://github.com/karafka/karafka/wiki/Controllers)    | Class      | Name of a controller class that we want to use to process messages from a given topic |
-| [backend](https://github.com/karafka/karafka/wiki/Processing-messages#backends)    | Symbol      | :inline or :sidekiq depending on where and how you want to process your messages |
-| start_from_beginning | Boolean      | Flag used to tell to decide whether to consume messages starting at the beginning of the topic or to just consume new messages that are produced to the topic. |
-| [batch_processing](https://github.com/karafka/karafka/wiki/Processing-messages)     | Boolean      | Set to ```true``` when you want to process all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to process messages similar to standard HTTP requests, using ```#params``` |
+| [controller](https://github.com/karafka/karafka/wiki/Controllers)    | Class      | Name of a controller class that we want to use to consume messages from a given topic |
+| [backend](https://github.com/karafka/karafka/wiki/Consuming-messages#backends)    | Symbol      | :inline or :sidekiq depending on where and how you want to consume your messages |
+| start_from_beginning | Boolean      | Flag used to tell to decide whether to fetch messages starting at the beginning of the topic or to just fetch and consume new messages that are produced to the topic. |
+| [batch_consuming](https://github.com/karafka/karafka/wiki/Consuming-messages)     | Boolean      | Set to ```true``` when you want to consume all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to consume messages similar to standard HTTP requests, using ```#params``` |
 | [parser](https://github.com/karafka/karafka/wiki/Parsers)               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
-| [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our processed data   |
+| [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our consumed data   |
 
 
 ```ruby
@@ -87,7 +87,7 @@ App.routes.draw do
       parser Parsers::BinaryToJson
       responder BinaryVideoProcessingResponder
       backend :inline
-      batch_processing true
+      batch_consuming true
     end
 
     topic :new_videos do

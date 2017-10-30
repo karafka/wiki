@@ -1,4 +1,4 @@
-Karafka uses [Celluloid](https://celluloid.io/) actors to handle consumer groups management.
+Karafka uses native Ruby threads to handle consumer groups management.
 
 Since each consumer group requires a separate connection and a thread we do this concurrently.
 

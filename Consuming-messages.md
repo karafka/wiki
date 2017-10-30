@@ -1,46 +1,90 @@
-Karafka framework has a long running server process that is responsible for consuming messages.
+Depending on your application and/or consumer group settings, Karafka's controller can consume messages in two modes:
 
-To start Karafka server process, use the following CLI command:
+* Batch messages consuming - allows you to use ```#params_batch``` method that will contain an array of messages
+* Single message consuming - allows you to use ```#params``` method that will always contain a single message. You can think of this mode, as an equivalent to a standard HTTP way of doing things.
 
-```bash
-bundle exec karafka server
+Which mode you decide to use strongly depends on your business logic.
+
+**Note**: ```batch_consuming``` and ```batch_fetching``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Configuration) section of this Wiki for an explanation.
+
+### Batch messages consuming
+
+When the batch consuming mode is enabled, a single ```#consume``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
+
+```ruby
+class UsersController < ApplicationController
+  def consume
+    params_batch.each do |message|
+      User.create!(message[:user])
+    end
+  end
+end
 ```
 
-Karafka server can be daemonized with the --daemon flag:
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
 
-```bash
-bundle exec karafka server --daemon
+```ruby
+class EventsController < ApplicationController
+  def consume
+    EventStore.store(params_batch.parsed)
+  end
+end
 ```
 
-Karafka server can be also started with a limited set of consumer groups to work with. This is useful when you want to have a multi-process environment:
+Parsing will be automatically performed as well, if you decide to map parameters (or use any Enumerable module method):
 
-```bash
-# This karafka server will be consuming only with listed consumer groups
-# If you don't provide consumer groups, Karafka will connect using all of them
-bundle exec karafka server --consumer-groups=events users
+```ruby
+class EventsController < ApplicationController
+  def consume
+    EventStore.store(params_batch.map { |param| param[:user] })
+  end
+end
 ```
 
-**Note**: Keep in mind, that consuming modes are not the same thing as processing modes. Consuming modes describe the way data is being pulled out of Kafka, while processing modes describe how you will be able to interact with this data.
+This was implemented that way, because there are cases, in which based on some external parameters you may want to drop consuming of a given batch. If so, then why would you even want to parse them in the first place? :)
 
-## Consuming modes
+### Single message consuming
 
-Karafka supports two consuming modes:
+In this mode, Karafka's controller will consume messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing controller. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
 
-* ```batch_consuming false``` - in that mode, Karafka will consume one message after another from Kafka.
-* ```batch_consuming true```- in that mode, Karafka will consume multiple messages in batches. You can limit number of messages consumed in a single batch, my using the ```max_bytes_per_partition``` configuration option.
+```ruby
+class UsersController < ApplicationController
+  def consume
+    puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
+    User.create!(params[:user])
+  end
+end
+```
 
-Below you can see the difference in between those two:
+## Backends
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/consuming_modes.png" alt="Karafka consuming modes" />
-</p>
+Due to different scenarios and cases when working with Kafka messages, Karafka supports using backends that allow you to choose, where you want to consume your data:
 
-Each of the modes has it's own advantages and disadvantages. If you need help on deciding which road you should go, please visit our [Gitter](https://gitter.im/karafka/karafka) channel and ask for help.
+* ```:inline``` - default mode that will consume messages right after they were received by Karafka
+* ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to consume given message or messages in a background worker. To use Sidekiq backend, please follow the instructions in the README of [Karafka Sidekiq Backend](https://github.com/karafka/karafka-sidekiq-backend) repository.
 
-## Starting particular consumer groups per process
+You can just set the ```backend``` setting in your config file (to make it a default) or you can set it per topic in your routing.
 
-Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
+```ruby
+# Per app
+class App < Karafka::App
+  setup do |config|
+    config.backend = :inline
+  end
+end
 
-```bash
-bundle exec karafka server --consumer_groups group_name1 group_name3
+# Per topic
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic :example do
+      controller ExampleController
+      backend :sidekiq
+    end
+
+    topic :example2 do
+      controller Example2Controller
+      backend :inline
+    end
+  end
+end
 ```
