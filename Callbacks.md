@@ -36,6 +36,8 @@ Here are some of the examples on how to use the ```after_fetched``` callback:
 ```ruby
 # @example Create a controller with a block after_fetched
 class ExampleController < Karafka::BaseController
+  include Karafka::Controllers::Callbacks
+
   after_fetched do
     # Here we should have some checking logic
     # If throw(:abort) is returned, won't schedule a consume action
@@ -48,7 +50,10 @@ end
 
 # @example Create a controller with a method after_fetched
 class ExampleController < Karafka::BaseController
+  include Karafka::Controllers::Callbacks
+
   after_fetched :after_fetched_method
+
   def consume
     # some logic here
   end
@@ -69,6 +74,8 @@ Callback that will be executed **before** the Karafka process stops. It can be u
 ```ruby
 # @example Create a controller with a block before_stop
 class ExampleController < Karafka::BaseController
+  include Karafka::Controllers::Callbacks
+
   FLUSH_THRESHOLD = 1000
 
   before_stop do
@@ -97,6 +104,8 @@ Callbacak that will be executed **before** each attempt to fetch messages from K
 ```ruby
 # @example Create a controller with a block before_poll
 class ExampleController < Karafka::BaseController
+  include Karafka::Controllers::Callbacks
+
   before_poll do
     @attempts ||= 0
     @atempts += 1
@@ -111,6 +120,8 @@ end
 
 # @example Create a controller with a method before_poll
 class ExampleController < Karafka::BaseController
+  include Karafka::Controllers::Callbacks
+
   before_poll :before_poll_method
 
   def consume

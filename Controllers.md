@@ -1,12 +1,17 @@
 Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). You need to define a ```#consume``` method that will execute your business logic code.
 
 ```ruby
+# You can name it whatever you want instead of ApplicationController
+ApplicationController = Class.new(Karafka::BaseController)
+
 class UsersController < ApplicationController
   def consume
     # business logic goes here
   end
 end
 ```
+
+**Note**: You can name the main application controller with any name. You can even call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application controller inherits from **Karafka::BaseController**.
 
 ## Controller topic method
 
