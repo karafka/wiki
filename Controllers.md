@@ -1,6 +1,9 @@
 Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). You need to define a ```#perform``` method that will execute your business logic code.
 
 ```ruby
+# You can name it whatever you want instead of ApplicationController
+ApplicationController = Class.new(Karafka::BaseController)
+
 class UsersController < ApplicationController
   def perform
     # business logic goes here
