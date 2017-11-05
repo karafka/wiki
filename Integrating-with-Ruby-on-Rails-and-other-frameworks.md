@@ -1,5 +1,7 @@
 Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
 
+**Note**: If you're integrating Karafka with a HTTP based application that already uses the **\*Controller** naming convention, you may want to look into the [Controllers](https://github.com/karafka/karafka/wiki/Controllers) Wiki section for more details on how to main your controllers to avoid naming conflicts with already existing HTTP based controllers.
+
 ## Integrating with Ruby on Rails
 
 Add Karafka to your Ruby on Rails application Gemfile:

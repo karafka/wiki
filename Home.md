@@ -9,6 +9,7 @@
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
 * [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks)
+* [FAQ](https://github.com/karafka/karafka/wiki/FAQ)
 
 ## Components and other details
 

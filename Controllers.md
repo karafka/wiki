@@ -11,7 +11,24 @@ class UsersController < ApplicationController
 end
 ```
 
-**Note**: You can name the main application controller with any name. You can even call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application controller inherits from **Karafka::BaseController**.
+## Controllers naming convention
+
+You can name the main application controller with any name. You can call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application controller inherits from the **Karafka::BaseController**.
+
+This approach can be really useful when you integrate Karafka with an already existing system that has controllers for HTTP processing and you want to distinguish between data sources.
+
+```ruby
+# You can put it inside app/consumers for example
+# application_consumer.rb
+ApplicationConsumer = Class.new(Karafka::BaseController)
+
+# users_consumer.rb
+class UsersConsumer < ApplicationConsumer
+  def consume
+    # business logic goes here
+  end
+end
+```
 
 ## Controller topic method
 
