@@ -1,7 +1,5 @@
 Controllers should inherit from the **ApplicationController** (or any other controller that inherits from **Karafka::BaseController**). You need to define a ```#perform``` method that will execute your business logic code.
 
-**Note**: You can name the main application controller with any name. You can even call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application controller inherits from **Karafka::BaseController**.
-
 ```ruby
 class UsersController < ApplicationController
   def perform
@@ -9,6 +7,8 @@ class UsersController < ApplicationController
   end
 end
 ```
+
+**Note**: You can name the main application controller with any name. You can even call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application controller inherits from **Karafka::BaseController**.
 
 ## Controllers callbacks
 
