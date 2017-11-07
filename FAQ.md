@@ -1,5 +1,3 @@
-# FAQ
-
 ## Does Karafka require Ruby on Rails?
 
 **No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby based application, including those written with Ruby on Rails. For more details, please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
@@ -27,3 +25,7 @@ Just name one of them differently. Karafka controllers are way more flexible in 
 ## Does Karafka require a separate process running?
 
 **Yes**. Karafka  requires a separate process to be running (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of the Wiki.
+
+## I get ```NoMethodError: undefined method 'to_hash'``` when receiving JSON that contains an array.
+
+It is not a bug. Default Karafka parser assumes, that you send atomic JSON hash/struct/dict data. Please review [this](https://github.com/karafka/karafka/issues/223) issue and see [Parsers](https://github.com/karafka/karafka/wiki/Parsers) Wiki page on how to implement your own parser.
