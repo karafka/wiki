@@ -19,7 +19,7 @@ end
 Currently following callbacks are available:
 
 - after_fetched - executed right after we fetch messages from Kafka but before the main logic kicks in
-- before_shutdown - executed before the shutdown process kicks in. Really useful if you use manual offset management
+- before_stop - executed before the shutdown process kicks in. Really useful if you use manual offset management
 - after_poll - executed after **each** attempt to fetch messages from Kafka (even when there is no data)
 - before_poll - executed before **each** attempt to fetch messages from Kafka (even when there is no data)
 
