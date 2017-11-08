@@ -1,4 +1,4 @@
-Callbacks can be used to trigger some actions on certain moments of Karafka messages receiving flow. You can use if for additional actions that need to take place at certain moments. They are not included by default, as we don't want to provide functionalities that are not required by users by default.
+Callbacks can be used to trigger some actions on certain moments of Karafka messages receiving flow. You can use them for additional actions that need to take place at certain moments. They are not available by default, as we don't want to provide functionalities that are not required by users by default.
 
 In order to be able to use them, you need to include ```Karafka::Controllers::Callbacks``` module into your controller class:
 
