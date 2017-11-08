@@ -97,7 +97,7 @@ class EventsController < ApplicationController
 end
 ```
 
-# Mixing manual and automatic offset management
+## Mixing manual and automatic offset management
 
 Even when using the automatic offset management, you can still take advantage of this API. For example, you may want to commit the offset manually after a certain number of messages consumed from a batch:
 
