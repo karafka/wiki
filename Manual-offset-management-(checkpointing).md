@@ -1,10 +1,10 @@
 **Note:** This is an advanced API that you should only use if you know what you're doing.
 
-By default Karafka handles offset commit management for you. Offset is committed:
+By default, Karafka handles offset commit management for you. The offset is committed:
 -  for ```batch_fetching true``` - after you're done consuming all messages from a batch
 -  for ```batch_fetching false``` - after you've consumed each message
 
-This approach is great for most of the cases, however there are some situations in which you might need a better control over the offset management.
+This approach is great for most of the cases, however, there are some situations in which you might need a better control over the offset management.
 
 There are several cases in which this API can be helpful:
 
@@ -42,7 +42,7 @@ end
 ```
 ## Marking messages as consumed
 
-To mark a certain message as consumed (so in case of crash or restart it won't be consumed again), you need to use the internal consumer API ```#mark_as_consumed``` method:
+To mark a certain message as consumed (so in case of a crash or restart it won't be consumed again), you need to use the internal consumer API ```#mark_as_consumed``` method:
 
 ```ruby
 def consume
@@ -56,9 +56,9 @@ end
 
 ## Example buffer implementation with ```before_stop``` DB flush
 
-When manually controlling the moment of marking message as consumed, it is also worth taking into consideration graceful application termination process.
+When manually controlling the moment of marking the message as consumed, it is also worth taking into consideration graceful application termination process.
 
-For some cases it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` method from all the Karafka callbacks (as long as you received at least one message):
+For some cases, it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` method from all the Karafka callbacks (as long as you received at least one message):
 
 ```ruby
 class EventsController < ApplicationController
@@ -67,7 +67,7 @@ class EventsController < ApplicationController
   # Flush to DB only in 1k batches
   FLUSH_SIZE = 1000
 
-  # Before we stop, if there is anything in the buffer, lets import it despite
+  # Before we stop, if there is anything in the buffer, let's import it despite
   # the fact, that it didn't reach the FLUSH_SIZE
   before_stop do
     unless buffer.empty?
