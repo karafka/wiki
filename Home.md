@@ -20,6 +20,7 @@
 * [Parsers](https://github.com/karafka/karafka/wiki/Parsers)
 * [Responders](https://github.com/karafka/karafka/wiki/Responders)
 * [Consumer and topic mappers](https://github.com/karafka/karafka/wiki/Consumer-and-topic-mappers)
+* [Manual offset management (checkpointing)](https://github.com/karafka/karafka/wiki/Manual-offset-management-(checkpointing))
 * [Optional Sidekiq backend](https://github.com/karafka/karafka-sidekiq-backend/blob/master/README.md)
 * [Articles and other references](https://github.com/karafka/karafka/wiki/Articles-and-other-references)
 * [Note on Patches and Pull Requests](https://github.com/karafka/karafka/wiki/Note-on-Patches-and-Pull-Requests)
