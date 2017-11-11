@@ -32,6 +32,7 @@ class ExampleResponder < ApplicationResponder
   topic :regular_topic
   topic :optional_topic, required: false
   topic :multiple_use_topic, multiple_usage: true
+  topic :topic_with_async_delivery, async: true
 end
 ```
 
@@ -41,6 +42,7 @@ end
 |----------------|---------|---------|------------------------------------------------------------------------------------------------------------|
 | required       | Boolean | true    | Should we raise an error when a topic was not used (if required)                                           |
 | multiple_usage | Boolean | false   | Should we raise an error when during a single response flow we sent more than one message to a given topic |
+| async          | Boolean | false   | Should we send messages using asynchronous producer or as soon as possible                                 |
 
 ## Responding on topics
 
@@ -72,7 +74,7 @@ end
 
 ## Response validation
 
-In order to ensure the dataflow is as intended, responder will validate what and where was sent, making sure that:
+In order to ensure that dataflow is as intended, responder will validate what and where was sent, making sure that:
 
   - Only topics that were registered were used (no typos, etc.)
   - Only a single message was sent to a topic that was registered without a ```multiple_usage``` flag
