@@ -82,10 +82,11 @@ In order to ensure that dataflow is as intended, responder will validate what an
 
 This is an automatic process and does not require any triggers.
 
-## Response partitioning
+## Response additional options and partitioning
 
-Kafka topics are partitioned, which means that  you can assing messages to partitions based on your business logic. To do so from responders, you can pass one of the following keyword arguments as a last option of a ```#respond_to``` method:
+Kafka topics are partitioned, which means that  you can assign messages to partitions based on your business logic. To do so from responders, you can pass following keyword arguments as a last option of a ```#respond_to``` method:
 
+* key* - The key that should be set on the Kafka message
 * partition - use it when you want to send a given message to a certain partition
 * partition_key - use it when you want to ensure that a certain group of messages is delivered to the same partition, but you don't which partition it will be.
 
