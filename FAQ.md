@@ -1,3 +1,12 @@
+1. [Does Karafka require Ruby on Rails?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-ruby-on-rails)
+2. [Are Karafka controllers HTTP controllers?](https://github.com/karafka/karafka/wiki/FAQ#are-karafka-controllers-http-controllers)
+3. [Why there is an ApplicationController mentioned in the Wiki?](https://github.com/karafka/karafka/wiki/FAQ#why-there-is-an-applicationcontroller-mentioned-in-the-wiki)
+4. [Does Karafka require Redis and/or Sidekiq to work?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-redis-andor-sidekiq-to-work)
+5. [Could an HTTP controller also process a consumed message through the Karafka router?](https://github.com/karafka/karafka/wiki/FAQ#could-an-http-controller-also-process-a-consumed-message-through-the-karafka-router)
+6. [What if I would have a conflicting HTTP and Karafka controllers?](https://github.com/karafka/karafka/wiki/FAQ#what-if-i-would-have-a-conflicting-http-and-karafka-controllers)
+7. [Does Karafka require a separate process running?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-a-separate-process-running)
+8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
+
 ### Does Karafka require Ruby on Rails?
 
 **No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby based application, including those written with Ruby on Rails. For more details, please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
