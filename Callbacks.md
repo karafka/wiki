@@ -136,4 +136,4 @@ end
 
 ## after_poll
 
-Callbacak that will be executed **after** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there were messages in Kafka. It acts exactly the same way as the ```before_poll``` but after the fetch and the messages consumption.
+Callback that will be executed **after** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there were messages in Kafka. It acts exactly the same way as the ```before_poll``` but after the fetch and the messages consumption.
