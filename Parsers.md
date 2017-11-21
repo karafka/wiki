@@ -38,3 +38,14 @@ App.routes.draw do
   end
 end
 ```
+
+If you want to change general Karafka parsing behavior, you can do that by assigning parser during the framework configuration:
+
+```ruby
+class App < Karafka::App
+  setup do |config|
+    # Other options
+    config.kafka.parser = MyCustomParser
+  end
+end
+```
