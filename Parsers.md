@@ -44,8 +44,8 @@ If you want to change general Karafka parsing behavior, you can do that by assig
 ```ruby
 class App < Karafka::App
   setup do |config|
-    # Other options
-    config.kafka.parser = MyCustomParser
+    # Other options here...
+    config.parser = MyCustomParser
   end
 end
 ```
