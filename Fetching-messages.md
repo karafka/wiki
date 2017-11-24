@@ -20,7 +20,7 @@ Karafka server can be also started with a limited set of consumer groups to work
 bundle exec karafka server --consumer-groups=events users
 ```
 
-**Note**: Keep in mind, that fetching modes are not the same thing as consuming modes. Fetchnig modes describe the way data is being pulled out of Kafka, while consuming modes describe how you will be able to interact with this data.
+**Note**: Keep in mind, that fetching modes are not the same thing as consuming modes. Fetching modes describe the way data is being pulled out of Kafka, while consuming modes describe how you will be able to interact with this data.
 
 ## Fetching modes
 
