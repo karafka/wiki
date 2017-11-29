@@ -42,13 +42,6 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | monitor           | false    | Object      | Monitor                 | Monitor instance                                                                                      |
 | logger            | false    | Object      | Logger                  | Logger instance                                                                                       |
 
-## Connection pool configuration options
-
-| Option                  | Required | Value type | Default                     | Description                                                  |
-|-------------------------|----------|------------|-----------------------------|--------------------------------------------------------------|
-| connection_pool.size    | false    | Integer    | Active consumer group count |Connection pool size for message producers connection pool    |
-| connection_pool.timeout | false    | Integer    | 5                           |Connection pool timeout for message producers connection pool |
-
 ### Ruby-Kafka driver configuration options
 
 We've listed here only **the most important** configuration options. If you're interested in all the options, please go to the [config.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb) file for more details.
