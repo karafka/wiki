@@ -50,7 +50,7 @@ def consume
   EventStore.store(params_batch.parsed)
   # And now mark last message as consumed,
   # so we won't consume any of already processed messages again
-  consumer.mark_as_consumed params_batch.to_a.last
+  mark_as_consumed params_batch.to_a.last
 end
 ```
 
@@ -73,7 +73,7 @@ class EventsController < ApplicationController
     unless buffer.empty?
       p "importing: #{buffer.count}"
       # Mark last message as consumed, as they are all in the DB
-      consumer.mark_as_consumed(buffer.last)
+      mark_as_consumed(buffer.last)
     end
   end
 
@@ -87,7 +87,7 @@ class EventsController < ApplicationController
       p "importing: #{data.count}"
       # Once importing is done, we can mark last message from the imported set
       # as consumed
-      consumer.mark_as_consumed(data.last)
+      mark_as_consumed(data.last)
     end
   end
 
@@ -107,7 +107,7 @@ class CountersController < ApplicationController
     params_batch.each_with_index do |params, index|
       # Some business logic here
       # Commit every 10 messages processed
-      consumer.mark_as_consumed(params) if index % 10 == 0
+      mark_as_consumed(params) if index % 10 == 0
     end
   end
 end
