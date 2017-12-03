@@ -1,6 +1,6 @@
 **Note:** This is an advanced API that you should only use if you know what you're doing.
 
-**Note:** For older Karafka versions, you need to use ```consumer.mark_as_consumed``` instead of invoking the ```mark_as_consumed``` directly on a controller level.
+**Note:** For older Karafka versions, you need to use ```consumer#mark_as_consumed``` instead of invoking the ```#mark_as_consumed``` directly on a controller level.
 
 By default, Karafka handles offset commit management for you. The offset is committed:
 -  for ```batch_fetching true``` - after you're done consuming all messages from a batch
