@@ -1,7 +1,7 @@
 - [Registering topics](#registering-topics)
 - [Responding on topics](#responding-on-topics)
 - [Response usage validation](#response-usage-validation)
-- [Response partitioning](#response-partitioning)
+- [Response additional options and partitioning](#response-additional-options-and-partitioning)
 
 Responders are used to design and control response flow that comes from a single controller action. You might be familiar with a ```#respond_with``` Rails controller method. In Karafka it is an entrypoint to a responder ```#respond```.
 
