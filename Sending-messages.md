@@ -1,6 +1,6 @@
 It's quite common when using Kafka, to treat applications as parts of a bigger pipeline (similarly to Bash pipeline) and forward processing results to other applications. Karafka provides two ways of dealing with that:
 
-  - Using [Responders](https://github.com/karafka/karafka/wiki/Responders)
+  - Using [Responders](https://github.com/karafka/karafka/wiki/Responders) - recommended
   - Using [WaterDrop](https://github.com/karafka/waterdrop) directly
 
 Each of them has it's own advantages and disadvantages and it strongly depends on your application business logic which one will be better. The recommended (and way more elegant) way is to use responders for that.
