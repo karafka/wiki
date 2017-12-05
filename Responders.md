@@ -89,7 +89,7 @@ Kafka topics are partitioned, which means that  you can assign messages to parti
 * ```key``` - The key that should be set on the Kafka message
 * ```partition``` - use it when you want to send a given message to a certain partition
 * ```partition_key``` - use it when you want to ensure that a certain group of messages is delivered to the same partition, but you don't which partition it will be.
-* ```creaate_time``` - The timestamp that should be set on the message.
+* ```create_time``` - The timestamp that should be set on the message.
 
 ```ruby
 class ExampleResponder < ApplicationResponder
