@@ -1,6 +1,6 @@
 - [Registering topics](#registering-topics)
 - [Responding on topics](#responding-on-topics)
-- [Response validation](#response-validation)
+- [Response usage validation](#response-usage-validation)
 - [Response partitioning](#response-partitioning)
 
 Responders are used to design and control response flow that comes from a single controller action. You might be familiar with a ```#respond_with``` Rails controller method. In Karafka it is an entrypoint to a responder ```#respond```.
@@ -72,7 +72,7 @@ class ExampleResponder < ApplicationResponder
 end
 ```
 
-## Response validation
+## Response usage validation
 
 In order to ensure that dataflow is as intended, responder will validate what and where was sent, making sure that:
 
