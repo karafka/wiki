@@ -6,7 +6,7 @@
 6. [What if I would have a conflicting HTTP and Karafka controllers?](https://github.com/karafka/karafka/wiki/FAQ#what-if-i-would-have-a-conflicting-http-and-karafka-controllers)
 7. [Does Karafka require a separate process running?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-a-separate-process-running)
 8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
-9. Can I start Karafka process with only particular consumer groups running for given topics?
+9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 
 ### Does Karafka require Ruby on Rails?
 
