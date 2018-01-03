@@ -32,7 +32,7 @@ Karafka supports two fetching modes:
 Below you can see the difference in between those two:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/fetching_modes.png" alt="Karafka consuming modes" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/consuming_modes.png" alt="Karafka consuming modes" />
 </p>
 
 Each of the modes has it's own advantages and disadvantages. If you need help on deciding which road you should go, please visit our [Gitter](https://gitter.im/karafka/karafka) channel and ask for help.
