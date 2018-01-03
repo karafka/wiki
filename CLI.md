@@ -22,7 +22,9 @@ If you need more details about each of the CLI commands, you can execute followi
 ```
 
 
-## Starting particular consumer groups per process
+## Karafka server
+
+### Starting particular consumer groups per process
 
 Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
 
