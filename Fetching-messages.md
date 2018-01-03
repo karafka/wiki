@@ -36,11 +36,3 @@ Below you can see the difference in between those two:
 </p>
 
 Each of the modes has it's own advantages and disadvantages. If you need help on deciding which road you should go, please visit our [Gitter](https://gitter.im/karafka/karafka) channel and ask for help.
-
-## Starting particular consumer groups per process
-
-Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
-
-```bash
-bundle exec karafka server --consumer_groups group_name1 group_name3
-```
