@@ -9,7 +9,7 @@
 
 ## Articles and references
 
-**Note**: some of those might be updated - keep that in mind.
+**Note**: some of those might be outdated - keep that in mind.
 
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 2 - Getting started with Ruby and Kafka](https://medium.com/@maciejmensfeld/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka-44535c6edb26)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://medium.com/@maciejmensfeld/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages-88e80e221ac3)
