@@ -15,7 +15,32 @@ Karafka provides two ways of defining topics on which you want to listen:
 
 ### Karafka 1.0+ consumer group namespaced style (recommended)
 
-In this mode, you can define consumer groups that will be subscribed to multiple topics. This will allow you to group topics based on your usecases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
+In this mode, you can define consumer groups that will be subscribed to a single topic or to multiple topics. This will allow you to group topics based on your use-cases and other factors. It allows you also to overwrite most of the default settings, in case you need to create a per consumer group specific setup (for example to receive data from multiple Kafka clusters).
+
+#### Single topic Karafka 1.0+ consumer group namespace style example
+
+```ruby
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic :example do
+      controller ExampleController
+    end
+  end
+end
+```
+
+or a shorter version
+
+```ruby
+## Or a shorter version
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic(:example) { controller ExampleController }
+  end
+end
+```
+
+#### Multiple topics Karafka 1.0+ consumer group namespace style example
 
 ```ruby
 App.consumer_groups.draw do
