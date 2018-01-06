@@ -29,10 +29,9 @@ App.consumer_groups.draw do
 end
 ```
 
-or a shorter version
+or a shorter version (same logic):
 
 ```ruby
-## Or a shorter version
 App.consumer_groups.draw do
   consumer_group :group_name do
     topic(:example) { controller ExampleController }
@@ -52,6 +51,17 @@ App.consumer_groups.draw do
     topic :example2 do
       controller Example2Controller
     end
+  end
+end
+```
+
+or a shorter version (same logic):
+
+```ruby
+App.consumer_groups.draw do
+  consumer_group :group_name do
+    topic(:example) { controller ExampleController }
+    topic(:example2) { controller Example2Controller } 
   end
 end
 ```
