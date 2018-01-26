@@ -25,6 +25,8 @@ Currently following callbacks are available:
 
 **Warning**: Keep in mind, that despite the backend consuming engine you will use, the callbacks will always be triggered inside of the Karafka server process.
 
+**Warning**: Note, that callbacks will only be triggered for topics that received at least a single message. This applies to all the callbacks, including the ```before_poll``` and ```after_poll```.
+
 ## after_fetched
 
 Callback that will be executed **after** we fetch messages from Kafka, but before they are consumed.
