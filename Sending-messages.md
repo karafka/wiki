@@ -13,11 +13,13 @@ One of the main differences when you respond to a Kafka message instead of a HTT
 
 In order to go beyond this limitation, Karafka uses responder objects that are responsible for sending data to other Kafka topics.
 
+### Using responders from within Karafka controllers
+
 By default, if you name a responder with the same name as a Karafka controller, it will be detected automatically:
 
 ```ruby
 module Users
-  class CreateController < ApplicationController
+  class CreateController < Karafka::BaseController
     def consume
       # You can provide as many objects as you want to respond_with as long as
       # a responders #respond method accepts the same amount
@@ -38,6 +40,8 @@ end
 The appropriate responder will be used automatically when you invoke the ```#respond_with``` controller method.
 
 Why did we separate the response layer from the controller layer? Because sometimes when you respond to multiple topics conditionally, that logic can be really complex and it is way better to manage and test it in isolation.
+
+### Using responders directly from any place in the codebase
 
 You can also use responders outside of Karafka controllers (for example directly from Ruby on Rails controllers) by using the responder ```#call``` method:
 
