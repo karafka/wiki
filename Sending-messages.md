@@ -5,7 +5,7 @@ It's quite common when using Kafka, to treat applications as parts of a bigger p
 
 Each of them has it's own advantages and disadvantages and it strongly depends on your application business logic which one will be better. The recommended (and way more elegant) way is to use responders for that.
 
-#### Using responders (recommended)
+## Using responders (recommended)
 
 **Note**: If you want more details on how responders work, there's a dedicated [Wiki section](https://github.com/karafka/karafka/wiki/Responders) for that.
 
@@ -56,7 +56,7 @@ ExampleResponder.call(User.last)
 
 For more details about responders DSL, please visit the responders Wiki page.
 
-#### Using WaterDrop directly
+## Using WaterDrop directly
 
 It is not recommended (as it breaks responders validations and makes it harder to track data flow), but if you want to send messages outside of Karafka responders, you can to use the **WaterDrop** gem directly.
 
