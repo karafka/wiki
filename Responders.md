@@ -3,7 +3,7 @@
 - [Response usage validation](#response-usage-validation)
 - [Response additional options and partitioning](#response-additional-options-and-partitioning)
 
-Responders are used to design and control response flow that comes from a single controller action. You might be familiar with a ```#respond_with``` Rails controller method. In Karafka it is an entrypoint to a responder ```#respond```.
+Responders are used to design and control response flow that comes from a single consumer action. You might be familiar with a ```#respond_with``` Rails consumer method. In Karafka it is an entrypoint to a responder ```#respond```.
 
 Having a responders layer helps you prevent bugs when you design a receive-respond applications that handle multiple incoming and outgoing topics. Responders also provide a security layer that allows you to control that the flow is as you intended. It will raise an exception if you didn't respond to all the topics that you wanted to respond to.
 
@@ -21,7 +21,7 @@ end
 
 When passing data back to Kafka, responder uses parser ```#generate``` method to convert message object to a string. It will use parser of a route for which a current message was directed. By default it uses Karafka::Parsers::Json parser.
 
-Note: You can use responders outside of controllers scope, however it is not recommended because then, they won't be listed when executing ```karafka flow``` CLI command.
+Note: You can use responders outside of consumers scope, however it is not recommended because then, they won't be listed when executing ```karafka flow``` CLI command.
 
 ## Registering topics
 

@@ -41,7 +41,7 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | parser            | false    | Module       | Karafka::Parsers::Json  | Default parser that will be used to parse and serialize both incoming and outgoing data               |
 | batch_fetching    | false    | Boolean      | true                    | Should the incoming messages be fetched in batches, or one at a time                                  |
 | batch_consuming   | false    | Boolean      | false                   | Should the incoming messages be consumed/processed in batches, or one at a time                       |
-| persistent        | false    | Boolean      | true                    | Should we operate in a single controller instance across batches or create instance per batch         |
+| persistent        | false    | Boolean      | true                    | Should we operate in a single consumer instance across batches or create instance per batch         |
 | shutdown_timeout  | false    | Integer, nil | 60                      | The number of seconds after which Karafka longer waits for the consumers to stop gracefully           |
 
 ### Ruby-Kafka driver configuration options

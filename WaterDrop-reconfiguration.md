@@ -11,14 +11,14 @@ class App < Karafka::App
     config.kafka.offset_commit_threshold = 30
     config.client_id = ::Settings.name
   end
- 
+
   consumer_groups.draw do
     # consumer groups definitions go here
   end
 end
- 
+
 App.boot!
- 
+
 # Overwrite default delivery setting and don't send in the test env
 WaterDrop.setup do |water_config|
   water_config.deliver = !Karafka.env.test?

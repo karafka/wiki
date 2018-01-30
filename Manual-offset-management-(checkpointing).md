@@ -1,6 +1,6 @@
 **Note:** This is an advanced API that you should only use if you know what you're doing.
 
-**Note:** For older Karafka versions, you need to use ```consumer#mark_as_consumed``` instead of invoking the ```#mark_as_consumed``` directly on a controller level.
+**Note:** For older Karafka versions, you need to use ```consumer#mark_as_consumed``` instead of invoking the ```#mark_as_consumed``` directly on a consumer level.
 
 By default, Karafka handles offset commit management for you. The offset is committed:
 -  for ```batch_fetching true``` - after you're done consuming all messages from a batch
@@ -36,7 +36,7 @@ class App < Karafka::App
       automatically_mark_as_consumed false
 
       topic :user_events do
-        controller EventsController
+        consumer EventsConsumer
       end
     end
   end
@@ -63,8 +63,8 @@ When manually controlling the moment of marking the message as consumed, it is a
 For some cases, it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` method from all the Karafka callbacks (as long as you received at least one message):
 
 ```ruby
-class EventsController < ApplicationController
-  include Karafka::Controllers::Callbacks
+class EventsConsumer < ApplicationConsumer
+  include Karafka::Consumers::Callbacks
 
   # Flush to DB only in 1k batches
   FLUSH_SIZE = 1000
@@ -104,7 +104,7 @@ end
 Even when using the automatic offset management, you can still take advantage of this API. For example, you may want to commit the offset manually after a certain number of messages consumed from a batch:
 
 ```ruby
-class CountersController < ApplicationController
+class CountersConsumer < ApplicationConsumer
   def consume
     params_batch.each_with_index do |params, index|
       # Some business logic here

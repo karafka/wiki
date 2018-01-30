@@ -1,4 +1,4 @@
-Depending on your application and/or consumer group settings, Karafka's controller can consume messages in two modes:
+Depending on your application and/or consumer group settings, Karafka's consumer can consume messages in two modes:
 
 * Batch messages consuming - allows you to use ```#params_batch``` method that will contain an array of messages
 * Single message consuming - allows you to use ```#params``` method that will always contain a single message. You can think of this mode, as an equivalent to a standard HTTP way of doing things.
@@ -12,7 +12,7 @@ Which mode you decide to use strongly depends on your business logic.
 When the batch consuming mode is enabled, a single ```#consume``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
 
 ```ruby
-class UsersController < ApplicationController
+class UsersConsumer < ApplicationConsumer
   def consume
     params_batch.each do |message|
       User.create!(message[:user])
@@ -24,7 +24,7 @@ end
 Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
 
 ```ruby
-class EventsController < ApplicationController
+class EventsConsumer < ApplicationConsumer
   def consume
     EventStore.store(params_batch.parsed)
   end
@@ -34,7 +34,7 @@ end
 Parsing will be automatically performed as well, if you decide to map parameters (or use any Enumerable module method):
 
 ```ruby
-class EventsController < ApplicationController
+class EventsConsumer < ApplicationConsumer
   def consume
     EventStore.store(params_batch.map { |param| param[:user] })
   end
@@ -45,10 +45,10 @@ This was implemented that way, because there are cases, in which based on some e
 
 ### Single message consuming
 
-In this mode, Karafka's controller will consume messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing controller. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
+In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
 
 ```ruby
-class UsersController < ApplicationController
+class UsersConsumer < ApplicationConsumer
   def consume
     puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
     User.create!(params[:user])
@@ -77,12 +77,12 @@ end
 App.consumer_groups.draw do
   consumer_group :group_name do
     topic :example do
-      controller ExampleController
+      consumer ExampleConsumer
       backend :sidekiq
     end
 
     topic :example2 do
-      controller Example2Controller
+      consumer Example2Consumer
       backend :inline
     end
   end

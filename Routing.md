@@ -9,7 +9,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 * consumer group level - options that are related to Kafka client and a given consumer group
 * topic level - options that need to be set on a per topic level
 
-**Note**: most of the settings (apart from the ```controller```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
+**Note**: most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
 
 Karafka provides two ways of defining topics on which you want to listen:
 
@@ -23,7 +23,7 @@ In this mode, you can define consumer groups that will be subscribed to a single
 App.consumer_groups.draw do
   consumer_group :group_name do
     topic :example do
-      controller ExampleController
+      consumer ExampleConsumer
     end
   end
 end
@@ -34,7 +34,7 @@ or a shorter version (same logic):
 ```ruby
 App.consumer_groups.draw do
   consumer_group :group_name do
-    topic(:example) { controller ExampleController }
+    topic(:example) { consumer ExampleConsumer }
   end
 end
 ```
@@ -45,11 +45,11 @@ end
 App.consumer_groups.draw do
   consumer_group :group_name do
     topic :example do
-      controller ExampleController
+      consumer ExampleConsumer
     end
 
     topic :example2 do
-      controller Example2Controller
+      consumer Example2Consumer
     end
   end
 end
@@ -60,8 +60,8 @@ or a shorter version (same logic):
 ```ruby
 App.consumer_groups.draw do
   consumer_group :group_name do
-    topic(:example) { controller ExampleController }
-    topic(:example2) { controller Example2Controller } 
+    topic(:example) { consumer ExampleConsumer }
+    topic(:example2) { consumer Example2Consumer }
   end
 end
 ```
@@ -70,18 +70,18 @@ end
 
 This used to be the mode Karafka 0.5 was using. It hides the fact, that for each topic a new consumer group is created. In this case, consumer group name is equal to the topic name.
 
-The basic route description requires providing ```controller``` that should handle it (Karafka will create a separate controller instance for each ```params``` and/or ```params_batch``` received).
+The basic route description requires providing ```consumer``` that should handle it (Karafka will create a separate consumer instance for each ```params``` and/or ```params_batch``` received).
 
 **Note**: In this mode, you cannot use ```consumer_group``` defaults overriding feature.
 
 ```ruby
 App.consumer_groups.draw do
   topic :example do
-    controller ExampleController
+    consumer ExampleConsumer
   end
 
   topic :example2 do
-    controller Example2Controller
+    consumer Example2Consumer
   end
 end
 ```
@@ -102,11 +102,11 @@ This level settings override is used primary to change the way consumer group is
 
 ## Topic level options
 
-There are several options you can set inside of the ```topic``` block. All of them except ```controller``` are optional. Here are the most important once:
+There are several options you can set inside of the ```topic``` block. All of them except ```consumer``` are optional. Here are the most important once:
 
 | Option               | Value type   | Description                                                                                                       |
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
-| [controller](https://github.com/karafka/karafka/wiki/Controllers)    | Class      | Name of a controller class that we want to use to consume messages from a given topic |
+| [consumer](https://github.com/karafka/karafka/wiki/Consumers)    | Class      | Name of a consumer class that we want to use to consume messages from a given topic |
 | [backend](https://github.com/karafka/karafka/wiki/Consuming-messages#backends)    | Symbol      | :inline or :sidekiq depending on where and how you want to consume your messages |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to fetch messages starting at the beginning of the topic or to just fetch and consume new messages that are produced to the topic. |
 | [batch_consuming](https://github.com/karafka/karafka/wiki/Consuming-messages)     | Boolean      | Set to ```true``` when you want to consume all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to consume messages similar to standard HTTP requests, using ```#params``` |
@@ -118,7 +118,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 App.routes.draw do
   consumer_group :videos_consumer do
     topic :binary_video_details do
-      controller Videos::DetailsController
+      consumer Videos::DetailsConsumer
       parser Parsers::BinaryToJson
       responder BinaryVideoProcessingResponder
       backend :inline
@@ -126,7 +126,7 @@ App.routes.draw do
     end
 
     topic :new_videos do
-      controller Videos::NewVideosController
+      consumer Videos::NewVideosConsumer
     end
   end
 end

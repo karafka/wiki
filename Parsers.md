@@ -33,7 +33,7 @@ end
 
 App.routes.draw do
   topic :binary_video_details do
-    controller Videos::DetailsController
+    consumer Videos::DetailsConsumer
     parser XmlParser
   end
 end
