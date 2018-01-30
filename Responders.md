@@ -7,7 +7,7 @@ Responders are used to design and control response flow that comes from a single
 
 Having a responders layer helps you prevent bugs when you design a receive-respond applications that handle multiple incoming and outgoing topics. Responders also provide a security layer that allows you to control that the flow is as you intended. It will raise an exception if you didn't respond to all the topics that you wanted to respond to.
 
-Here's a simple responder example and its users:
+Here's a simple responder example and its usage (outside of a controller scope):
 
 ```ruby
 class ExampleResponder < ApplicationResponder
