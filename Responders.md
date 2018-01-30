@@ -7,7 +7,7 @@ Responders are used to design and control response flow that comes from a single
 
 Having a responders layer helps you prevent bugs when you design a receive-respond applications that handle multiple incoming and outgoing topics. Responders also provide a security layer that allows you to control that the flow is as you intended. It will raise an exception if you didn't respond to all the topics that you wanted to respond to.
 
-Here's a simple responder example:
+Here's a simple responder example and its usage (outside of a controller scope):
 
 ```ruby
 class ExampleResponder < ApplicationResponder
@@ -17,6 +17,8 @@ class ExampleResponder < ApplicationResponder
     respond_to :users_notified, user
   end
 end
+
+ExampleResponder.call(User.last)
 ```
 
 When passing data back to Kafka, responder uses parser ```#generate``` method to convert message object to a string. It will use parser of a route for which a current message was directed. By default it uses Karafka::Parsers::Json parser.
