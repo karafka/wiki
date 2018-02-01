@@ -7,6 +7,7 @@
 7. [Does Karafka require a separate process running?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-a-separate-process-running)
 8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
 9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
+10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -47,3 +48,7 @@ Yes. Karafka allows you to listen with a single consumer group on multiple topic
 ```bash
 bundle exec karafka server --consumer_groups group_name1 group_name3
 ```
+
+### Can I use ```#seek``` to start processing topics partition from a certain point?
+
+Karafka provices a ```#seek``` client method that can be used to do that. Due to the fact, that Karafka is a long-running process, this option needs to be set up as a callback executed before fetching starts per each consumer group. Please refer to the [#before_fetch_loop](https://github.com/karafka/karafka/wiki/Callbacks#before_fetch_loop) Wiki section for more details.

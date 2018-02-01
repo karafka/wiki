@@ -27,6 +27,7 @@ module Users
     end
   end
 
+  # Consumer and responder don't need to be in the same file. It is just an example
   class CreateResponder < ApplicationResponder
     topic :user_created
 
@@ -41,6 +42,7 @@ The appropriate responder will be used automatically when you invoke the ```#res
 
 Why did we separate the response layer from the consumer layer? Because sometimes when you respond to multiple topics conditionally, that logic can be really complex and it is way better to manage and test it in isolation.
 
+
 ### Using responders directly from any place in the codebase
 
 You can also use responders outside of Karafka consumers (for example directly from Ruby on Rails controllers) by using the responder ```#call``` method:
@@ -50,7 +52,7 @@ class ExampleResponder < ApplicationResponder
   topic :users_notified
 
   def respond(user)
-    respond_to :users_notified, user
+    respond_to :users_notified, user, key: user.id
   end
 end
 
