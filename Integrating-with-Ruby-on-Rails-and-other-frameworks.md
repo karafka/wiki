@@ -1,6 +1,6 @@
 Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
 
-**Note**: If you're integrating Karafka with a HTTP based application that already uses the **\*Consumer** naming convention, you may want to look into the [Consumers](https://github.com/karafka/karafka/wiki/Consumers) Wiki section for more details on how to main your consumers to avoid naming conflicts with already existing HTTP based consumers.
+**Note**: If you're integrating Karafka with a HTTP based application that already uses the **\*Consumer** naming convention, you may want to look into the [Consumers](https://github.com/karafka/karafka/wiki/Consumers) Wiki section for more details on how to name your consumers to avoid naming conflicts with already existing classes.
 
 ## Integrating with Ruby on Rails
 
@@ -10,7 +10,7 @@ Add Karafka to your Ruby on Rails application Gemfile:
 gem 'karafka'
 ```
 
-Copy the ```karafka.rb``` file from your Karafka application into your Rails app (if you don't have this file, just create an empty Karafka app and copy it). This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file.
+Copy the ```karafka.rb``` file from your Karafka application into your Rails app. If you don't have this file, you can copy the [example](https://github.com/karafka/karafka/blob/master/lib/karafka/templates/karafka.rb.example) one. This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file.
 
 ### karafka.rb changes
 
@@ -43,6 +43,21 @@ require Rails.root.join(Karafka.boot_file)
 ```
 
 and you are ready to go!
+
+### Using Karafka with HashWithIndifferentAccess
+
+**Note**: There is a performance penalty for using ```HashWithIndifferentAccess```. You have been warned.
+
+If you are integrating Karafka with Ruby on Rails applications, there's a high probability, that your codebase already relies on ```HashWithIndifferentAccess```. Karafka framework by default uses standard Ruby ```Hash``` class with some extra flavour because of performance reasons. However, if you want, you can replace it with ```HashWithIndifferentAccess``` by setting up the ```params_base_class``` config value as followed:
+
+```ruby
+class App < Karafka::App
+  setup do |config|
+    # Other config details...
+    config.params_base_class = HashWithIndifferentAccess
+  end
+end
+```
 
 ## Integrating with Sinatra
 

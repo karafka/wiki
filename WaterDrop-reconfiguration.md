@@ -1,6 +1,6 @@
 [WaterDrop](https://github.com/karafka/waterdrop) is a standalone messages producer that is integrated with Karafka out of the box.
 
-Karafka 1.1 comes with full WaterDrop 1.0 support, including both synchronous and asynchronous producers. It also integrates automatically with it, populating all the options related to Kafka that were set during the Karafka framework configuration.
+Karafka 1.2 comes with full WaterDrop 1.0 support, including both synchronous and asynchronous producers. It also integrates automatically with it, populating all the options related to Kafka that were set during the Karafka framework configuration.
 
 In case you want to change WaterDrop configuration settings, you can do this after you setup and boot Karafka framework in the karafka.rb file:
 
