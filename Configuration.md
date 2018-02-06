@@ -49,16 +49,17 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 
 We've listed here only **the most important** configuration options. If you're interested in all the options, please go to the [config.rb](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb) file for more details.
 
-| Option                        | Required | Value type    | Default | Description                                                                                      |
-|-------------------------------|----------|---------------|---------|--------------------------------------------------------------------------------------------------|
-| kafka.seed_brokers            | true     | Array<String> | -       |Kafka server hosts. Karafka will discover whole cluster structure automatically                   |
-| kafka.start_from_beginning    | false    | Boolean       | true    |Consume messages starting at the beginning or consume new messages that are produced at first run |
-| kafka.offset_commit_interval  | false    | Integer       | 10      |The interval between offset commits in seconds                                                    |
-| kafka.offset_commit_threshold | false    | Integer       | 0       |The number of messages that can be consume before their offsets are committed                     |
-| kafka.heartbeat_interval      | false    | Integer       | 10      |The interval between heartbeats                                                                   |
-| kafka.ssl_ca_cert             | false    | String        | nil     |SSL CA certificate                                                                                |
-| kafka.ssl_client_cert         | false    | String        | nil     |SSL client certificate                                                                            |
-| kafka.ssl_client_cert_key     | false    | String        | nil     |SSL client certificate password                                                                   |
+| Option                         | Required | Value type    | Default | Description                                                                                       |
+|--------------------------------|----------|---------------|---------|---------------------------------------------------------------------------------------------------|
+| kafka.seed_brokers             | true     | Array<String> | -       | Kafka server hosts. Karafka will discover whole cluster structure automatically                   |
+| kafka.start_from_beginning     | false    | Boolean       | true    | Consume messages starting at the beginning or consume new messages that are produced at first run |
+| kafka.offset_commit_interval   | false    | Integer       | 10      | The interval between offset commits in seconds                                                    |
+| kafka.offset_commit_threshold  | false    | Integer       | 0       | The number of messages that can be consume before their offsets are committed                     |
+| kafka.heartbeat_interval       | false    | Integer       | 10      | The interval between heartbeats                                                                   |
+| kafka.ssl_ca_cert              | false    | String        | nil     | SSL CA certificate                                                                                |
+| kafka.ssl_client_cert          | false    | String        | nil     | SSL client certificate                                                                            |
+| kafka.ssl_client_cert_key      | false    | String        | nil     | SSL client certificate password                                                                   |
+| kafka.ssl_ca_certs_from_system | false    | Boolean       | false   | Use the CA certs from your system's default                                                       |
 
 ## External components configurators
 
