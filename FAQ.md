@@ -8,6 +8,7 @@
 8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
 9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
+11. [Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-controllers-so-all-the-callbacks-can-be-executed-in-their-context)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -52,3 +53,7 @@ bundle exec karafka server --consumer_groups group_name1 group_name3
 ### Can I use ```#seek``` to start processing topics partition from a certain point?
 
 Karafka provices a ```#seek``` client method that can be used to do that. Due to the fact, that Karafka is a long-running process, this option needs to be set up as a callback executed before fetching starts per each consumer group. Please refer to the [#before_fetch_loop](https://github.com/karafka/karafka/wiki/Callbacks#before_fetch_loop) Wiki section for more details.
+=======
+### Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?
+
+Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
