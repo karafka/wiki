@@ -7,6 +7,7 @@
 7. [Does Karafka require a separate process running?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-a-separate-process-running)
 8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
 9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
+10. [Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?]
 
 ### Does Karafka require Ruby on Rails?
 
@@ -47,3 +48,7 @@ Yes. Karafka allows you to listen with a single consumer group on multiple topic
 ```bash
 bundle exec karafka server --consumer_groups group_name1 group_name3
 ```
+
+### Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?
+
+Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
