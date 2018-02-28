@@ -23,7 +23,7 @@ class App < Karafka::App
   # Setup and other things...
 
   # Once everything is loaded and done, assign Karafka app logger as a Sidekiq logger
-  # @note This example does not user config details, but you can use all the config values
+  # @note This example does not use config details, but you can use all the config values
   #   to setup your external components
   after_init do |_config|
     Sidekiq::Logging.logger = Karafka::App.logger

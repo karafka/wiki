@@ -63,16 +63,17 @@ We've listed here only **the most important** configuration options. If you're i
 
 ## External components configurators
 
-For additional setup and/or configuration tasks you can create custom configurators. Similar to Rails these are added to a `config/initializers` directory and run after app initialization.
-
-Your new configurator class must inherit from `Karafka::Setup::Configurators::Base` and implement a `setup` method.
-
-Example configuration class:
+For additional setup and/or configuration tasks you can use the ```#after_init``` callback hooks. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that can be based on Karafka internal settings.
 
 ```ruby
-class ExampleConfigurator < Karafka::Setup::Configurators::Base
-  def setup
-    ExampleClass.logger = Karafka.logger
+class App < Karafka::App
+  # Setup and other things...
+
+  # Once everything is loaded and done, assign Karafka app logger as a Sidekiq logger
+  # @note This example does not use config details, but you can use all the config values
+  #   to setup your external components
+  after_init do |_config|
+    Sidekiq::Logging.logger = Karafka::App.logger
   end
 end
 ```
