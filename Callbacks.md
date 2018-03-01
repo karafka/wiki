@@ -131,7 +131,7 @@ class ExampleController < Karafka::BaseController
 
   private
 
-  def after_fetchedbefore_poll_method
+  def before_poll_method
   end
 end
 ```
