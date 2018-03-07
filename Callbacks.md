@@ -190,7 +190,7 @@ class ExampleConsumer < Karafka::BaseConsumer
 
   private
 
-  def after_fetchbefore_poll_method
+  def before_poll_method
   end
 end
 ```
