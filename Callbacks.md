@@ -90,8 +90,6 @@ Currently following consumer callbacks are available:
 
 Callback that will be executed **after** we fetch messages from Kafka, but before they are consumed.
 
-Note that if ```after_fetch``` throws abort, the chain will be stopped and the consuming of a given message / messages batch won't continue. It means that for backend based engines it can be used as a way to control what goes and what goes not into the backend queue.
-
 Here are some of the examples on how to use the ```after_fetch``` callback:
 
 ```ruby
@@ -100,8 +98,9 @@ class ExampleConsumer < Karafka::BaseConsumer
   include Karafka::Consumers::Callbacks
 
   after_fetch do
-    # Here we should have some checking logic
-    # If throw(:abort) is returned, won't schedule a consume action
+    params_batch.each do |params|
+      params[:wednesday] = Date.today.wednesday?
+    end
   end
 
   def consume
@@ -122,8 +121,9 @@ class ExampleConsumer < Karafka::BaseConsumer
   private
 
   def after_fetch_method
-    # Here we should have some checking logic
-    # If throw(:abort) is returned, won't schedule a consume action
+    params_batch.each do |params|
+      params[:wednesday] = Date.today.wednesday?
+    end
   end
 end
 ```

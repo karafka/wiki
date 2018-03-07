@@ -6,6 +6,7 @@
 * [Fetching messages](https://github.com/karafka/karafka/wiki/Fetching-messages)
 * [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages)
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
+* [Testing](https://github.com/karafka/karafka/wiki/Testing)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
 * [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks)
