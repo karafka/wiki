@@ -2,7 +2,7 @@ Karafka components work in isolation and are pretty simple. While testing, there
 
 - [Consumers](#consumers)
 - [Responders](#responders)
-- Consumer groups and topics structure
+- [Consumer groups and topics structure](#consumer-groups-and-topics-structure)
 
 The only thing you need to remember about testing (if you don't use Ruby on Rails integration or integration with any other framework) is to require the ```karafka.rb``` file in your test/spec helper:
 
