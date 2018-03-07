@@ -131,7 +131,11 @@ Sometimes you may need to spec out your consumer groups and topics structure. To
 ```ruby
 RSpec.describe Karafka::App.consumer_groups do
   describe 'batched group' do
-    let(:group) { Karafka::App.consumer_groups.find { |cg| cg.name == 'batched_group' } }
+    let(:group) do
+      Karafka::App.consumer_groups.find do |cg|
+        cg.name == 'batched_group'
+      end
+    end
 
     describe 'xml_data topic' do
       let(:topic) { group.topics.find { |ts| ts.name == 'xml_data' } }
