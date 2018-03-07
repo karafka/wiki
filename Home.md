@@ -1,3 +1,5 @@
+**Warning**: WIKI and all the docs refer to the 1.2.0.beta2. Sorry for the inconvenience. We will release the stable 1.2.0 version soon.
+
 ## Basics
 
 * [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
