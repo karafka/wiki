@@ -23,7 +23,7 @@ module Users
     def consume
       # You can provide as many objects as you want to respond_with as long as
       # a responders #respond method accepts the same amount
-      respond_with User.create(params[:user])
+      respond_with User.create(params['user'])
     end
   end
 

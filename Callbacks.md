@@ -99,7 +99,7 @@ class ExampleConsumer < Karafka::BaseConsumer
 
   after_fetch do
     params_batch.each do |params|
-      params[:wednesday] = Date.today.wednesday?
+      params['wednesday'] = Date.today.wednesday?
     end
   end
 
@@ -122,7 +122,7 @@ class ExampleConsumer < Karafka::BaseConsumer
 
   def after_fetch_method
     params_batch.each do |params|
-      params[:wednesday] = Date.today.wednesday?
+      params['wednesday'] = Date.today.wednesday?
     end
   end
 end
