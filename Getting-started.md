@@ -3,7 +3,7 @@
 If you want to get started with Kafka and Karafka as fast as possible, then the best idea is to just clone our example repository:
 
 ```bash
-git clone https://github.com/karafka/karafka-example-app ./example_app
+git clone https://github.com/karafka/example-app ./example_app
 ```
 
 then, just bundle install all the dependencies:
