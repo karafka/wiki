@@ -40,8 +40,8 @@ module AirbrakeListener
   ].freeze
 
   class << self
-    # All the events in which something went wrong trigger the *_error method, so we can
-    #   catch all of them and notify Airbrake about that.
+    # All the events in which something went wrong trigger the *_error
+    # method, so we can catch all of them and notify Airbrake about that.
     #
     # @param method_name [Symbol] name of a method we want to run
     # @param args [Array] arguments of this method
@@ -61,7 +61,8 @@ module AirbrakeListener
     private
 
     # @param method_name [Symbol] name of invoked method
-    # @return [Boolean] true if we are supposed to do something with a given method execution
+    # @return [Boolean] true if we are supposed to do something with
+    #   a given method execution
     def eligible?(method_name)
       PROBLEM_POSTFIXES.any? do |postfix|
         method_name.to_s.end_with?(postfix)
