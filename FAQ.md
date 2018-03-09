@@ -9,6 +9,7 @@
 9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 11. [Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-controllers-so-all-the-callbacks-can-be-executed-in-their-context)
+12. Racecar breaks Rails loading including Karafka when trying to migrate from one to another
 
 ### Does Karafka require Ruby on Rails?
 
@@ -57,3 +58,22 @@ Karafka provices a ```#seek``` client method that can be used to do that. Due to
 ### Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?
 
 Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
+
+### Racecar breaks Rails loading including Karafka when trying to migrate from one to another
+
+This issue has been described [here](https://github.com/karafka/karafka/issues/295).
+
+Racecar under the hood detects that you want Rails by... trying to load Rails. If it is able to, will run the whole app before other things are loaded. In most cases this won't cause any trouble but from time to time... well it does.
+
+To fix that (as long as you want to use both at the same time), please add the ```return unless Rails.application``` in your ```karafka.rb``` accordingly:
+
+```ruby
+# Ruby on Rails setup
+ENV['RAILS_ENV'] ||= 'development'
+ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
+require ::File.expand_path('../config/environment', __FILE__)
+
+return unless Rails.application
+
+Rails.application.eager_load!
+```
