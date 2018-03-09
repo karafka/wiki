@@ -9,7 +9,7 @@
 9. [Can I start Karafka process with only particular consumer groups running for given topics?](https://github.com/karafka/karafka/wiki/FAQ#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 11. [Why Karafka does not pre-initialize controllers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-controllers-so-all-the-callbacks-can-be-executed-in-their-context)
-12. Racecar breaks Rails loading including Karafka when trying to migrate from one to another
+12. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
 
 ### Does Karafka require Ruby on Rails?
 
