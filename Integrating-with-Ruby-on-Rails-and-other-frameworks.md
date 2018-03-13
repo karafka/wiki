@@ -1,7 +1,5 @@
 Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
 
-**Note**: If you're integrating Karafka with a HTTP based application that already uses the **\*Consumer** naming convention, you may want to look into the [Consumers](https://github.com/karafka/karafka/wiki/Consumers) Wiki section for more details on how to name your consumers to avoid naming conflicts with already existing classes.
-
 ## Integrating with Ruby on Rails
 
 Add Karafka to your Ruby on Rails application Gemfile:
@@ -33,6 +31,19 @@ ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
 require ::File.expand_path('../config/environment', __FILE__)
 Rails.application.eager_load!
 ```
+
+and replace default Karafka logger with Rails logger:
+
+
+```ruby
+class App < Karafka::App
+  setup do |config|
+    # Other config details...
+    config.logger = Rails.logger
+  end
+end
+```
+**Note**: ```Rails.logger``` when loaded outside of the ```rails console``` and ```rails server``` commands does not print to the stdout but instead into a log file appropriate to the environment in which it runs. This affects also Karafka. If you don't see any output, please check your log file.
 
 ### config/environment.rb changes
 
