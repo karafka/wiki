@@ -81,3 +81,5 @@ gem 'karafka'
 ```
 
 After that make sure that whole your application is loaded before setting up and booting Karafka (see Ruby on Rails integration for more details about that).
+
+**Note**: If by any chance you're integrating Karafka with any other framework, we will appreciate your contribution in form of an update to this Wiki page.
