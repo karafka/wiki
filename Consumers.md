@@ -14,7 +14,6 @@ end
 ## Consumers naming convention
 
 You can name the main application consumer with any name. You can call it **ApplicationConsumer** or anything else you want. Karafka will sort that out, as long as your root application consumer inherits from the **Karafka::BaseConsumer**.
-```
 
 ## Consumer topic method
 
