@@ -22,7 +22,7 @@ In order to use this API, you need to switch the ```automatically_mark_as_consum
 class App < Karafka::App
   setup do |config|
     # Other settings
-    config.automatically_mark_as_consumed = false
+    config.kafka.automatically_mark_as_consumed = false
   end
 end
 ```
