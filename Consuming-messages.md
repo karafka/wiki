@@ -21,7 +21,7 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -31,7 +31,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-Parsing will be automatically performed as well, if you decide to map parameters (or use any Enumerable module method):
+Parsing will be automatically performed as well if you decide to map parameters (or use any Enumerable module method):
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -41,11 +41,11 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-This was implemented that way, because there are cases, in which based on some external parameters you may want to drop consuming of a given batch. If so, then why would you even want to parse them in the first place? :)
+This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch. If so, then why would you even want to parse them in the first place? :)
 
 ### Single message consuming
 
-In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as a equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
+In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as an equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
