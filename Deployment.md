@@ -4,7 +4,7 @@ Karafka is currently being used in production with following deployment methods:
   - Docker
   - Heroku
 
-Since the only thing that is long-running is Karafka server, it should't be hard to make it work with other deployment and CD tools.
+Since the only thing that is long-running is Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
 ## Capistrano
 
@@ -21,7 +21,7 @@ CMD bundle exec karafka server
 
 ## Heroku
 
-Karafka may be deployed on [Heroku](https://www.heroku.com/), and works with
+Karafka may be deployed on [Heroku](https://www.heroku.com/) and works with
 [Heroku Kafka](https://www.heroku.com/kafka) and [Heroku Redis](https://www.heroku.com/redis).
 
 Set `KARAFKA_ENV`:
