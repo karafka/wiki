@@ -3,7 +3,7 @@
 - [Response usage validation](#response-usage-validation)
 - [Response additional options and partitioning](#response-additional-options-and-partitioning)
 
-Responders are used to design and control response flow that comes from a single consumer action. You might be familiar with a ```#respond_with``` Rails consumer method. In Karafka it is an entrypoint to a responder ```#respond```.
+Responders are used to design and control response flow that comes from a single consumer action. You might be familiar with a ```#respond_with``` Rails consumer method. In Karafka it is an entry point to a responder ```#respond```.
 
 Having a responders layer helps you prevent bugs when you design a receive-respond applications that handle multiple incoming and outgoing topics. Responders also provide a security layer that allows you to control that the flow is as you intended. It will raise an exception if you didn't respond to all the topics that you wanted to respond to.
 
