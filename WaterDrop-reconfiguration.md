@@ -2,7 +2,7 @@
 
 Karafka 1.2 comes with full WaterDrop 1.0 support, including both synchronous and asynchronous producers. It also integrates automatically with it, populating all the options related to Kafka that were set during the Karafka framework configuration.
 
-In case you want to change WaterDrop configuration settings, you can do this after you setup and boot Karafka framework in the karafka.rb file:
+In case you want to change WaterDrop configuration settings, you can do this after you set up and boot Karafka framework in the karafka.rb file:
 
 ```ruby
 class App < Karafka::App
