@@ -86,7 +86,7 @@ App.consumer_groups.draw do
 end
 ```
 
-## Overriding defaults
+## Overriding Defaults
 
 Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch consuming only for a single topic).
 
