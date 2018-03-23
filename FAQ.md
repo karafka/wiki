@@ -13,7 +13,7 @@
 
 ### Does Karafka require Ruby on Rails?
 
-**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby based application, including those written with Ruby on Rails. For more details, please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
+**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. For more details, please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
 
 ### Are Karafka consumers HTTP consumers?
 
@@ -29,7 +29,7 @@ You can name the main application consumer with any name. You can even call it `
 
 ### Could a HTTP consumer also process a consumed message through the Karafka router?
 
-**No**. Kafka messages can be consumed only using Karafka consumers. You cannot use your Ruby on Rails HTTP consumers to consume Kafka messages, as Karafka is **not** a HTTP Kafka proxy. Karafka uses Kafka API for messages consumption.
+**No**. Kafka messages can be consumed only using Karafka consumers. You cannot use your Ruby on Rails HTTP consumers to consume Kafka messages, as Karafka is **not** an HTTP Kafka proxy. Karafka uses Kafka API for messages consumption.
 
 ### What if I would have a conflicting HTTP and Karafka consumers?
 
@@ -45,7 +45,7 @@ It is not a bug. Default Karafka parser assumes, that you send atomic JSON hash/
 
 ### Can I start Karafka process with only particular consumer groups running for given topics?
 
-Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
+Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
 
 ```bash
 bundle exec karafka server --consumer_groups group_name1 group_name3
@@ -63,7 +63,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 This issue has been described [here](https://github.com/karafka/karafka/issues/295).
 
-Racecar under the hood detects that you want Rails by... trying to load Rails. If it is able to, will run the whole app before other things are loaded. In most cases this won't cause any trouble but from time to time... well it does.
+Racecar under the hood detects that you want Rails by... trying to load Rails. If it is able to, will run the whole app before other things are loaded. In most cases, this won't cause any trouble but from time to time... well it does.
 
 To fix that (as long as you want to use both at the same time), please add the ```return unless Rails.application``` in your ```karafka.rb``` accordingly:
 
