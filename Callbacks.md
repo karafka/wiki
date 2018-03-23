@@ -7,7 +7,7 @@ Due to the fact, that some of the things happen in Karafka outside of consumers 
 
 ### Lifecycle callbacks
 
-Lifecycle callbacks can be used in various situations, for example to configure external software or run additional one-time commands before messages receiving flow starts.
+Lifecycle callbacks can be used in various situations, for example, to configure external software or run additional one-time commands before messages receiving flow starts.
 
 Currently following consumer callbacks are available:
 
@@ -84,13 +84,13 @@ Currently following consumer callbacks are available:
 
 **Warning**: Keep in mind, that despite the backend consuming engine you will use, the callbacks will always be triggered inside of the Karafka server process.
 
-**Warning**: Note, that callbacks will only be triggered for topics that received at least a single message. This applies to all the callbacks, including the ```before_poll``` and ```after_poll```.
+**Warning**: Note, that callbacks will only be triggered by topics that received at least a single message. This applies to all the callbacks, including the ```before_poll``` and ```after_poll```.
 
 #### after_fetch
 
 Callback that will be executed **after** we fetch messages from Kafka, but before they are consumed.
 
-Here are some of the examples on how to use the ```after_fetch``` callback:
+Here are some of the examples of how to use the ```after_fetch``` callback:
 
 ```ruby
 # @example Create a consumer with a block after_fetch
@@ -160,7 +160,7 @@ end
 
 #### before_poll
 
-Callbacak that will be executed **before** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there are messages in Kafka. It can be used to perform additional logic for resource availability checking or anything else that would have an impact on the messages consumption.
+Callback that will be executed **before** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there are messages in Kafka. It can be used to perform additional logic for resource availability checking or anything else that would have an impact on the messages consumption.
 
 ```ruby
 # @example Create a consumer with a block before_poll
@@ -197,4 +197,4 @@ end
 
 #### after_poll
 
-Callback that will be executed **after** each attempt to fetch messages from Kafka. Note, that it will be performed regardless whether there were messages in Kafka. It acts exactly the same way as the ```before_poll``` but after the fetch and the messages consumption.
+Callback that will be executed **after** each attempt to fetch messages from Kafka. Note, that it will be performed regardless of whether there were messages in Kafka. It acts exactly the same way as the ```before_poll``` but after the fetch and the messages consumption.
