@@ -4,7 +4,7 @@ By default, the only thing that is hooked up to this monitoring is Karafka logge
 
 If you are looking for some examples on how to implement your own listeners, [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/listener.rb) you can take a look at the default Karafka logger listener implementation.
 
-The only thing you need to be aware when developing your own listeners, is that the internals of the payload may differ depending on the place that is instrumented.
+The only thing you need to be aware when developing your own listeners is that the internals of the payload may differ depending on the place that is instrumented.
 
 ## Subscribing to the instrumentation events
 
@@ -26,7 +26,7 @@ end
 
 ## Example listener with Errbit/Airbrake support
 
-Here's a simple example of a listener that is used to handle errors logging into Airbrake/Errbit. Keep in mind, that is uses ```#method_missing```, so if you are looking for something really fast, you may want to subscribe to given events, instead of dynamic matching.
+Here's a simple example of a listener that is used to handle errors logging into Airbrake/Errbit. Keep in mind, that it uses ```#method_missing```, so if you are looking for something really fast, you may want to subscribe to given events, instead of dynamic matching.
 
 ```ruby
 # frozen_string_literal: true
@@ -136,8 +136,8 @@ class App < Karafka::App
 end
 ```
 
-**Warning**: Keep in mind, that if you replace Dry-Monitor with something else, you will have to implement your own logger listener as well as the defaut one is designed to work with Dry-Monitor.
+**Warning**: Keep in mind, that if you replace Dry-Monitor with something else, you will have to implement your own logger listener as well as the default one is designed to work with Dry-Monitor.
 
 ## Ruby-Kafka driver monitoring layer
 
-Under the hook Karafka uses [ruby-kafka](https://github.com/zendesk/ruby-kafka) to handle low level aspects of working with Apache Kafka. You can use [all the instrumentation made available by that library](https://github.com/zendesk/ruby-kafka#instrumentation). You can also use the existing monitoring solutions that integrate with various [monitoring services](https://github.com/zendesk/ruby-kafka#monitoring).
+Under the hook, Karafka uses [ruby-kafka](https://github.com/zendesk/ruby-kafka) to handle low-level aspects of working with Apache Kafka. You can use [all the instrumentation made available by that library](https://github.com/zendesk/ruby-kafka#instrumentation). You can also use the existing monitoring solutions that integrate with various [monitoring services](https://github.com/zendesk/ruby-kafka#monitoring).
