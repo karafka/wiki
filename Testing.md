@@ -48,7 +48,7 @@ end
 
 ## Responders
 
-[WaterDrop](https://github.com/karafka/waterdrop) - library that works under the hood of responders provides a test mode. When this mode is enabled, messages will not be sent to Kafka but everything else will work exactly the same way. To enable this mode, add this to your ```spec/spec_helper``` file:
+[WaterDrop](https://github.com/karafka/waterdrop) - the library that works under the hood of responders provides a test mode. When this mode is enabled, messages will not be sent to Kafka but everything else will work exactly the same way. To enable this mode, add this to your ```spec/spec_helper``` file:
 
 ```ruby
 require './karafka.rb'
@@ -72,7 +72,7 @@ class App < Karafka::App
 end
 ```
 
-Here's an example responder and an example rspec spec to it:
+Here's an example responder and an example RSpec spec to it:
 
 ```ruby
 module Pong
@@ -114,7 +114,7 @@ RSpec.describe Pong::PingResponder do
       expect(responder.messages_buffer['pong']).to eq accumulated_data
     end
 
-    context 'when we try to use same responder more than once' do
+    context 'when we try to use the same responder more than once' do
       let(:error) { Karafka::Errors::InvalidResponderUsage }
 
       it 'expects to raise an error since its not a multiple usage responder' do
@@ -127,7 +127,7 @@ end
 
 ## Consumer groups and topics structure
 
-Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.consumer_groups``` array and check everything you need. Here's an example of an Rspec spec that ensures a custom ```XmlParser``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.consumer_groups``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlParser``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.consumer_groups do
