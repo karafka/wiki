@@ -59,7 +59,7 @@ and you are ready to go!
 
 **Note**: There is a performance penalty for using ```HashWithIndifferentAccess```. You have been warned.
 
-If you are integrating Karafka with Ruby on Rails applications, there's a high probability, that your codebase already relies on ```HashWithIndifferentAccess```. Karafka framework by default uses standard Ruby ```Hash``` class with some extra flavour because of performance reasons. However, if you want, you can replace it with ```HashWithIndifferentAccess``` by setting up the ```params_base_class``` config value as followed:
+If you are integrating Karafka with Ruby on Rails applications, there's a high probability, that your codebase already relies on ```HashWithIndifferentAccess```. Karafka framework by default uses standard Ruby ```Hash``` class with some extra flavor because of performance reasons. However, if you want, you can replace it with ```HashWithIndifferentAccess``` by setting up the ```params_base_class``` config value as following:
 
 ```ruby
 class App < Karafka::App
@@ -80,6 +80,6 @@ Add Karafka to your Sinatra application Gemfile:
 gem 'karafka'
 ```
 
-After that make sure that whole your application is loaded before setting up and booting Karafka (see Ruby on Rails integration for more details about that).
+After that make sure that while your application is loaded before setting up and booting Karafka (see Ruby on Rails integration for more details about that).
 
 **Note**: If by any chance you're integrating Karafka with any other framework, we will appreciate your contribution in form of an update to this Wiki page.
