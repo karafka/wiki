@@ -2,6 +2,7 @@
 
 * [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
+* [Setting up Kafka locally with Docker](https://github.com/karafka/karafka/wiki/Setting-up-Kafka-locally-with-Docker)
 * [Routing](https://github.com/karafka/karafka/wiki/Routing)
 * [Fetching messages](https://github.com/karafka/karafka/wiki/Fetching-messages)
 * [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages)
