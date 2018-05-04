@@ -41,6 +41,10 @@ When processing messages from a Kafka topic, your code may raise any exception. 
 
 If not caught and handled within your application code, your exception will propagate to the framework. Karafka will stop processing messages from this topic partition, back off and wait for a given period of time defined by the `pause_timeout` [config](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb#L77) setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure to not drop the original message. After that period of time, it will **retry** processing same message again. Single Kafka topic partition messages must be processed in order, that's why Karafka will **never** skip any messages.
 
+### Exponential back off
+
+If needed, you can also use exponential back off. If `pause_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. In order not to double the time indefinitely you can, please set `pause_max_timeout` to whatever you consider max pause.
+
 Regardless of the error nature, you can always use the [Monitoring and logging](https://github.com/karafka/karafka/wiki/Monitoring-and-logging) to track any problems that occur during the work time.
 
 It is highly recommended to have a monitoring and logging layer in place, so you get notified about errors that occur while processing Kafka messages.
