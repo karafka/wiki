@@ -30,6 +30,15 @@ ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
 
 require ::File.expand_path('../config/environment', __FILE__)
 Rails.application.eager_load!
+
+# This lines will make Karafka print to stdout like puma or unicorn
+if Rails.env.development?
+  Rails.logger.extend(
+    ActiveSupport::Logger.broadcast(
+      ActiveSupport::Logger.new($stdout)
+    )
+  )
+end
 ```
 
 and replace default Karafka logger with Rails logger:
