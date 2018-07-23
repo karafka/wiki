@@ -10,7 +10,7 @@
 10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 11. [Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-consumers-so-all-the-callbacks-can-be-executed-in-their-context)
 12. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
-13. [Why Karafka does not restart dead PG connections?]()
+13. [Why Karafka does not restart dead PG connections?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-restart-dead-pg-connections)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -81,4 +81,6 @@ Rails.application.eager_load!
 
 ### Why Karafka does not restart dead PG connections?
 
-This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers. Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections) troubleshooting page for a more extensive explanation of this behavior.
+This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers. 
+
+Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections) troubleshooting page for a more extensive explanation of this behavior.
