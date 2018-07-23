@@ -2,7 +2,7 @@
 2. [Are Karafka consumers HTTP consumers?](https://github.com/karafka/karafka/wiki/FAQ#are-karafka-consumers-http-consumers)
 3. [Why there is an ApplicationConsumer mentioned in the Wiki?](https://github.com/karafka/karafka/wiki/FAQ#why-there-is-an-applicationconsumer-mentioned-in-the-wiki)
 4. [Does Karafka require Redis and/or Sidekiq to work?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-redis-andor-sidekiq-to-work)
-5. [Could a HTTP consumer also process a consumed message through the Karafka router?](https://github.com/karafka/karafka/wiki/FAQ#could-a-http-consumer-also-process-a-consumed-message-through-the-karafka-router)
+5. [Could an HTTP consumer also process a consumed message through the Karafka router?](https://github.com/karafka/karafka/wiki/FAQ#could-an-http-consumer-also-process-a-consumed-message-through-the-karafka-router)
 6. [What if I would have a conflicting HTTP and Karafka consumers?](https://github.com/karafka/karafka/wiki/FAQ#what-if-i-would-have-a-conflicting-http-and-karafka-consumers)
 7. [Does Karafka require a separate process running?](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-a-separate-process-running)
 8. [I get NoMethodError: undefined method 'to_hash' when receiving JSON that contains an array.](https://github.com/karafka/karafka/wiki/FAQ#i-get-nomethoderror-undefined-method-to_hash-when-receiving-json-that-contains-an-array)
@@ -10,6 +10,7 @@
 10. [Can I use ```#seek``` to start processing topics partition from a certain point?](https://github.com/karafka/karafka/wiki/FAQ#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 11. [Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-consumers-so-all-the-callbacks-can-be-executed-in-their-context)
 12. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
+13. [Why Karafka does not restart dead PG connections?]()
 
 ### Does Karafka require Ruby on Rails?
 
@@ -77,3 +78,7 @@ return unless Rails.application
 
 Rails.application.eager_load!
 ```
+
+### Why Karafka does not restart dead PG connections?
+
+This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers. Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections) troubleshooting page for a more extensive explanation of this behavior.
