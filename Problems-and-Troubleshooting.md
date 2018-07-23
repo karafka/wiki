@@ -9,11 +9,10 @@ You **should not** email any Karafka committer privately. Please respect our tim
 
 ## Table of content
 
-- [Help!](#help-)
-  * [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections-)
-    + [Short answer](#short-answer)
-    + [Long answer](#long-answer)
-    + [How can I make Karafka restart dead PG connections?](#how-can-i-make-karafka-restart-dead-pg-connections-)
+- [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections-)
+  + [Short answer](#short-answer)
+  + [Long answer](#long-answer)
+  + [How can I make Karafka restart dead PG connections?](#how-can-i-make-karafka-restart-dead-pg-connections-)
 
 ## Why Karafka does not restart dead PG connections?
 
