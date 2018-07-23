@@ -12,6 +12,7 @@
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
 * [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks)
 * [FAQ](https://github.com/karafka/karafka/wiki/FAQ)
+* [Problems and Troubleshooting](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting)
 
 ## Components and other details
 
