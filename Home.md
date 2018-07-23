@@ -32,4 +32,4 @@
 
 ## Problems and Troubleshooting
 
-* [Why Karafka does not restart dead PG connections?](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting)
+* [Why Karafka does not restart dead PG connections?](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections)
