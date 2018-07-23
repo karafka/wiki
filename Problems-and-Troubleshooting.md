@@ -16,7 +16,7 @@ You **should not** email any Karafka committer privately. Please respect our tim
 
 ## Why Karafka does not restart dead PG connections?
 
-unning `karafka server` with a Rails application that uses ActiveRecord, if the database connection is terminated, the Rails HTTP server is able to reconnect with the database, however, Karafka server is unable to do so. Any subsequent calls to database fail with the following error:
+When running `karafka server` with a Rails application that uses ActiveRecord, if the database connection is terminated, the Rails HTTP server is able to reconnect with the database, however, Karafka server is unable to do so. Any subsequent calls to database fail with the following error:
 
 ```
 PG::ConnectionBad: PQsocket() can't get socket descriptor
