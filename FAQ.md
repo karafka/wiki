@@ -11,6 +11,7 @@
 11. [Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-pre-initialize-consumers-so-all-the-callbacks-can-be-executed-in-their-context)
 12. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
 13. [Why Karafka does not restart dead PG connections?](https://github.com/karafka/karafka/wiki/FAQ#why-karafka-does-not-restart-dead-pg-connections)
+14. [What is the difference between `batch_fetching` and `batch_consuming` configuration options?](https://github.com/karafka/karafka/wiki/FAQ#what-is-the-difference-between-batch_fetching-and-batch_consuming-configuration-options)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -84,3 +85,11 @@ Rails.application.eager_load!
 This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers. 
 
 Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections) troubleshooting page for a more extensive explanation of this behavior.
+
+### What is the difference between `batch_fetching` and `batch_consuming` configuration options?
+
+[Fetching modes](https://github.com/karafka/karafka/wiki/Fetching-messages) are not the same thing as consuming modes. 
+
+Fetching modes describe the way data is being pulled out of Kafka while consuming modes describe how you will be able to interact with this data.
+
+To make the transition from the "Rails" world easier and not to have to worry about batches, you can disable the `batch_consuming`. When it is disabled, it allows you to move your sync `typical` code, into the Kafka world without actually changing anything as you will gain access to a `#params` object. Please see the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of this Wiki for more details.
