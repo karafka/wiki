@@ -3,35 +3,15 @@
 Kafka requires Zookeeper and to be honest, a local setup can be a bit tricky. The easiest way to do that is by running a Docker container for that. Here’s an example script that should be enough for the basic local work. It will spin up a single node cluster of Kafka that you can use out of the box:
 
 ```bash
-KAFKA_ADVERTISED_HOST_NAME=127.0.0.1
-
-docker stop zookeeper
-docker stop kafka
-docker rm zookeeper
-docker rm kafka
-
-# You can disable those two once initially pulled
-docker pull jplock/zookeeper
-docker pull ches/kafka
-
-docker run \
-  -d \
-  --name zookeeper \
-  jplock/zookeeper:3.4.6
-
-docker run \
-  -d \
-  --name kafka \
-  -e KAFKA_ADVERTISED_HOST_NAME=$KAFKA_ADVERTISED_HOST_NAME \
-  --link zookeeper:zookeeper \
-  -p $KAFKA_ADVERTISED_HOST_NAME:9092:9092 \
-  ches/kafka
-
-ZK_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' zookeeper)
-KAFKA_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' kafka)
-
-echo "Zookeeper: $ZK_IP"
-echo "Kafka: $KAFKA_IP"
+git clone https://github.com/wurstmeister/kafka-docker.git
+cd kafka-docker
+git checkout 1.0.1
+vim docker-compose-single-broker.yml
+# Replace as followed:
+# KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
+# set to:
+# KAFKA_ADVERTISED_HOST_NAME: 127.0.0.01
+docker-compose -f docker-compose-single-broker.yml up
 ```
 
 To check that it works, you can just telnet to it:
