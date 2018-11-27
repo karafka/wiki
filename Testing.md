@@ -17,7 +17,7 @@ Testing consumers is really easy. The only thing you need to do is the assignmen
 ```ruby
 class InlineBatchConsumer < ApplicationConsumer
   def consume
-    sum = params_batch.map { |param| param.fetch('number') }.sum
+    sum = params_batch.map { |param| param.value.fetch('number') }.sum
     Karafka.logger.info "Sum of #{params_batch.count} elements equals to: #{sum}"
   end
 end
@@ -98,7 +98,6 @@ RSpec.describe Pong::PingResponder do
 
       it { expect(topic.name).to eq 'pong' }
       it { expect(topic.required?).to be true }
-      it { expect(topic.multiple_usage?).to be false }
     end
   end
 

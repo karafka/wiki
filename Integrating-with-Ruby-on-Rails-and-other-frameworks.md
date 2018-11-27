@@ -64,21 +64,6 @@ require Rails.root.join(Karafka.boot_file)
 
 and you are ready to go!
 
-### Using Karafka with HashWithIndifferentAccess
-
-**Note**: There is a performance penalty for using ```HashWithIndifferentAccess```. You have been warned.
-
-If you are integrating Karafka with Ruby on Rails applications, there's a high probability, that your codebase already relies on ```HashWithIndifferentAccess```. Karafka framework by default uses standard Ruby ```Hash``` class with some extra flavor because of performance reasons. However, if you want, you can replace it with ```HashWithIndifferentAccess``` by setting up the ```params_base_class``` config value as following:
-
-```ruby
-class App < Karafka::App
-  setup do |config|
-    # Other config details...
-    config.params_base_class = HashWithIndifferentAccess
-  end
-end
-```
-
 ## Integrating with Sinatra
 
 Sinatra applications differ from one another. There are single file applications and apps with similar to Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow in order to integrate it with Sinatra based application:

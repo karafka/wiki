@@ -1,6 +1,7 @@
 ## Libraries and components
 
 * [Karafka framework](https://github.com/karafka/karafka)
+* [Karafka Sidekiq Backend](https://github.com/karafka/sidekiq-backend)
 * [Capistrano Karafka](https://github.com/karafka/capistrano-karafka)
 * [Waterdrop](https://github.com/karafka/waterdrop)
 * [Envlogic](https://github.com/karafka/envlogic)

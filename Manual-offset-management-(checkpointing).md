@@ -1,7 +1,5 @@
 **Note:** This is an advanced API that you should only use if you know what you're doing.
 
-**Note:** For older Karafka versions, you need to use ```consumer#mark_as_consumed``` instead of invoking the ```#mark_as_consumed``` directly on a consumer level.
-
 By default, Karafka handles offset commit management for you. The offset is committed:
 -  for ```batch_fetching true``` - after you're done consuming all messages from a batch
 -  for ```batch_fetching false``` - after you've consumed each message
@@ -44,15 +42,18 @@ end
 ```
 ## Marking messages as consumed
 
-To mark a certain message as consumed (so in case of a crash or restart it won't be consumed again), you need to use the internal consumer API ```#mark_as_consumed``` method:
+To mark a certain message as consumed (so in case of a crash or restart it won't be consumed again), you can use one of two marking methods:
+
+- ```#mark_as_consumed``` - for a non-blocking eventual offset commitment.
+- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure, that the offset has been stored.
 
 ```ruby
 def consume
   # Do something with messages
-  EventStore.store(params_batch.parsed)
+  EventStore.store(params_batch.parse!)
   # And now mark last message as consumed,
   # so we won't consume any of already processed messages again
-  mark_as_consumed params_batch.to_a.last
+  mark_as_consumed! params_batch.last
 end
 ```
 
@@ -75,13 +76,13 @@ class EventsConsumer < ApplicationConsumer
     unless buffer.empty?
       p "importing: #{buffer.count}"
       # Mark last message as consumed, as they are all in the DB
-      mark_as_consumed(buffer.last)
+      mark_as_consumed!(buffer.last)
     end
   end
 
   def consume
     # Unparse and add to buffer
-    params_batch.parsed.each { |params| buffer << params }
+    params_batch.each { |params| buffer << params }
 
     # If buffer exceeds the FLUSH_SIZE, it's time to put data into the DB
     if buffer.size >= FLUSH_SIZE
@@ -89,7 +90,7 @@ class EventsConsumer < ApplicationConsumer
       p "importing: #{data.count}"
       # Once importing is done, we can mark last message from the imported set
       # as consumed
-      mark_as_consumed(data.last)
+      mark_as_consumed!(data.last)
     end
   end
 

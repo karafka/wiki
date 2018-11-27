@@ -1,63 +1,4 @@
-## Callback types
-
-Due to the fact, that some of the things happen in Karafka outside of consumers scope, there are two types of callbacks available:
-
-- [Lifecycle callbacks](#lifecycle-callbacks) - callbacks that are triggered during various moments in the Karafka framework lifecycle. They can be used to configure additional software dependent on Karafka settings or to do one-time stuff that needs to happen before consumers are created.
-- [Consumer callbacks](#consumer-callbacks) - callbacks that are triggered during various stages of messages flow
-
-### Lifecycle callbacks
-
-Lifecycle callbacks can be used in various situations, for example, to configure external software or run additional one-time commands before messages receiving flow starts.
-
-Currently following consumer callbacks are available:
-
-- [after_init](#after_init) - executed after the framework and all it's internal parts have been configured and after all dynamically built classes are already in-memory
-- [before_fetch_loop](#before_fetch_loop) - executed before we start fetching messages in each of the consumers groups
-
-#### after_init
-
-Callback that will be executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that can be based on Karafka internal settings.
-
-```ruby
-class App < Karafka::App
-  # Setup and other things...
-
-  # Once everything is loaded and done, assign Karafka app logger as a Sidekiq logger
-  # @note This example does not use config details, but you can use all the config values
-  #   to setup your external components
-  after_init do |_config|
-    Sidekiq::Logging.logger = Karafka::App.logger
-  end
-```
-
-#### before_fetch_loop
-
-Callback that will be executed **once** per each consumer group per process, before we start receiving messages. This is a great place if you need to use seek Kafka functionality to reprocess already fetched messages again.
-
-**Note**: Keep in mind, that this is a per process configuration (not per consumer) so you need to check if a provided consumer_group (if you use multiple) is the one you want to seek against.
-
-```ruby
-class App < Karafka::App
-  # Setup and other things...
-
-  # Moves the offset back to 100 message, so we can reprocess messages again
-  # @note If you use multiple consumers group, make sure you execute ```#seek``` on a client of
-  #   a proper consumer group not on all of them
-  before_fetch_loop do |consumer_group, client|
-    topic = 'my_topic'
-    partition = 0
-    offset = 100
-
-    if consumer_group.topics.map(&:name).include?(topic)
-      client.seek(topic, partition, offset)
-    end
-  end
-end
-```
-
-### Consumer callbacks
-
-Consumer callbacks can be used to trigger some actions on certain moments of Karafka messages receiving flow. You can use them for additional actions that need to take place at certain moments. They are not available by default, as we don't want to provide functionalities that are not required by users by default.
+Consumer callbacks (that are just events under the hood) can be used to trigger some actions on certain moments of Karafka messages receiving flow. You can use them for additional actions that need to take place at certain moments. They are not available by default, as we don't want to provide functionalities that are not required by users by default.
 
 In order to be able to use them, you need to include ```Karafka::Consumers::Callbacks``` module into your consumer class:
 
@@ -148,7 +89,7 @@ class ExampleConsumer < Karafka::BaseConsumer
 
   def consume
     @buffer ||= []
-    @buffer += params_batch.parsed
+    @buffer += params_batch.parse!
 
     if @buffer.size >= FLUSH_THRESHOLD
       EventStore.import @buffer

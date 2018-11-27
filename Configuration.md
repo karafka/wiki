@@ -41,9 +41,7 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | parser            | false    | Module       | Karafka::Parsers::Json  | Default parser that will be used to parse and serialize both incoming and outgoing data               |
 | batch_fetching    | false    | Boolean      | true                    | Should the incoming messages be fetched in batches, or one at a time                                  |
 | batch_consuming   | false    | Boolean      | false                   | Should the incoming messages be consumed/processed in batches, or one at a time                       |
-| persistent        | false    | Boolean      | true                    | Should we operate in a single consumer instance across batches or create instance per batch           |
 | shutdown_timeout  | false    | Integer, nil | 60                      | The number of seconds after which Karafka longer waits for the consumers to stop gracefully           |
-| params_base_class | false    | Class        | Hash                    | Base class for the dynamically built Karafka::Params::Params class. See Wiki for more details         |
 
 ### Ruby-Kafka driver configuration options
 
@@ -63,7 +61,7 @@ We've listed here only **the most important** configuration options. If you're i
 
 ## External components configurators
 
-For additional setup and/or configuration tasks you can use the ```#after_init``` callback hooks. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that can be based on Karafka internal settings.
+For additional setup and/or configuration tasks you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that need to be based on Karafka internal settings.
 
 ```ruby
 class App < Karafka::App
@@ -72,9 +70,15 @@ class App < Karafka::App
   # Once everything is loaded and done, assign Karafka app logger as a Sidekiq logger
   # @note This example does not use config details, but you can use all the config values
   #   to setup your external components
-  after_init do |_config|
+  monitor.subscribe('app.initialized') do
     Sidekiq::Logging.logger = Karafka::App.logger
   end
+end
+
+# Or if you prefer, you can do it from the outside of the app
+
+Karafka.monitor.subscribe('app.initialized') do
+  Sidekiq::Logging.logger = Karafka::App.logger
 end
 ```
 
