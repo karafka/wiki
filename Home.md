@@ -1,6 +1,6 @@
 ## Basics
 
-* [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
+* [Getting started](/Getting-started)
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
 * [Setting up Kafka locally with Docker](https://github.com/karafka/karafka/wiki/Setting-up-Kafka-locally-with-Docker)
 * [Routing](https://github.com/karafka/karafka/wiki/Routing)
