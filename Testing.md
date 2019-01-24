@@ -17,7 +17,7 @@ Testing consumers is really easy. The only thing you need to do is the assignmen
 ```ruby
 class InlineBatchConsumer < ApplicationConsumer
   def consume
-    sum = params_batch.map { |param| param.value.fetch('number') }.sum
+    sum = params_batch.map { |param| param.payload.fetch('number') }.sum
     Karafka.logger.info "Sum of #{params_batch.count} elements equals to: #{sum}"
   end
 end
@@ -27,14 +27,14 @@ end
 RSpec.describe InlineBatchConsumer do
   subject(:consumer) { described_class.new }
 
-  let(:nr1_value) { rand }
-  let(:nr2_value) { rand }
-  let(:nr1) { { 'number' => nr1_value }.to_json }
-  let(:nr2) { { 'number' => nr2_value }.to_json }
-  let(:sum) { nr1_value + nr2_value }
+  let(:nr1_payload) { rand }
+  let(:nr2_payload) { rand }
+  let(:nr1) { { 'number' => nr1_payload }.to_json }
+  let(:nr2) { { 'number' => nr2_payload }.to_json }
+  let(:sum) { nr1_payload + nr2_payload }
 
   before do
-    consumer.params_batch = [{ 'value' => nr1 }, { 'value' => nr2 }]
+    consumer.params_batch = [{ 'payload' => nr1 }, { 'payload' => nr2 }]
     allow(Karafka.logger).to receive(:info)
   end
 

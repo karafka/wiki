@@ -11,13 +11,13 @@ Which mode you decide to use strongly depends on your business logic.
 
 Each Karafka message, whether it is accesed from the ```#params_batch``` or directly via the ```#params``` method includes additional metadata information that comes either from the Karafka framework or from the Kafka cluster.
 
-In order to access the Kafka message payload you need to use the `#value` method. It will parse and return the message value.
+In order to access the Kafka message payload you need to use the `#payload` method. It will parse and return the message payload.
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
   def consume
     params_batch.each do |message|
-      puts "Message value: #{message.value}"
+      puts "Message payload: #{message.payload}"
     end
   end
 end
@@ -31,7 +31,7 @@ When the batch consuming mode is enabled, a single ```#consume``` method will re
 class UsersConsumer < ApplicationConsumer
   def consume
     params_batch.each do |message|
-      User.create!(message.value['user'])
+      User.create!(message.payload['user'])
     end
   end
 end
@@ -52,19 +52,19 @@ Parsing will be automatically performed as well if you decide to map parameters 
 ```ruby
 class EventsConsumer < ApplicationConsumer
   def consume
-    EventStore.store params_batch.map { |message| message.value['user'] }
+    EventStore.store params_batch.map { |message| message.payload['user'] }
   end
 end
 ```
 
 This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch or some particular messages. If so, then why would you even want to parse them in the first place? :)
 
-If you are not interested in the additional `#params` metadata, you can use the `#values` method to access only the Kafka messages payload:
+If you are not interested in the additional `#params` metadata, you can use the `#payloads` method to access only the Kafka messages payload:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
   def consume
-    EventStore.store params_batch.values
+    EventStore.store params_batch.payloads
   end
 end
 ```
@@ -77,7 +77,7 @@ In this mode, Karafka's consumer will consume messages separately, one after ano
 class UsersConsumer < ApplicationConsumer
   def consume
     puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
-    User.create!(params.value['user'])
+    User.create!(params.payload['user'])
   end
 end
 ```
