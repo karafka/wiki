@@ -126,7 +126,7 @@ end
 
 ## Consumer groups and topics structure
 
-Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.consumer_groups``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlParser``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.consumer_groups``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.consumer_groups do
@@ -140,7 +140,7 @@ RSpec.describe Karafka::App.consumer_groups do
     describe 'xml_data topic' do
       let(:topic) { group.topics.find { |ts| ts.name == 'xml_data' } }
 
-      it { expect(topic.parser).to eq XmlParser }
+      it { expect(topic.deserializer).to eq XmlDeserializer }
     end
   end
 end

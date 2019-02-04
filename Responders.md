@@ -21,7 +21,7 @@ end
 ExampleResponder.call(User.last)
 ```
 
-When passing data back to Kafka, responder uses parser ```#generate``` method to convert message object to a string. It will use parser of a route for which a current message was directed. By default it uses ```Karafka::Parsers::Json Parsers```.
+When passing data back to Kafka, responder uses a serializer to convert message object to a string. It will use default serializer you set in the settings or one that you've provided using the `topic` DSL.
 
 Note: You can use responders outside of consumers scope, however it is not recommended because then, they won't be listed when executing ```karafka flow``` CLI command.
 
@@ -39,10 +39,11 @@ end
 
 ```#topic``` method accepts following settings:
 
-| Option         | Type    | Default | Description                                                                                                |
-|----------------|---------|---------|------------------------------------------------------------------------------------------------------------|
-| required       | Boolean | true    | Should we raise an error when a topic was not used (if required)                                           |
-| async          | Boolean | false   | Should we send messages using asynchronous producer or as soon as possible                                 |
+| Option         | Type    | Default                                  | Description                                                                |
+|----------------|---------|------------------------------------------|----------------------------------------------------------------------------|
+| required       | Boolean | true                                     | Should we raise an error when a topic was not used (if required)           |
+| async          | Boolean | false                                    | Should we send messages using asynchronous producer or as soon as possible |
+| serializer     | Object  | Karafka::Serialization::Json::Serializer | Serializer that will convert provided message into the exchange format     |
 
 ## Responding on topics
 
@@ -61,9 +62,11 @@ In order to send a message to a given topic, you have to use ```#respond_to``` m
 class ExampleResponder < ApplicationResponder
   topic :regular_topic
   topic :optional_topic, required: false
+  topic :xml_required_topic, serializer: XmlSerializer.new
 
   def respond(user, profile)
     respond_to :regular_topic, user
+    respond_to :xml_required_topic, user
 
     if user.registered?
       respond_to :optional_topic, profile

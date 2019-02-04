@@ -29,7 +29,6 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 
 ## Karafka configuration options
 
-
 | Option            | Required | Value type   | Default                 | Description                                                                                           |
 |-------------------|----------|--------------|-------------------------|-------------------------------------------------------------------------------------------------------|
 | client_id         | true     | String       | -                       | Application name that will be used as a client_id for Kafka cluster                                   |
@@ -38,10 +37,11 @@ Note: Karafka allows you to redefine most of the settings per each consumer grou
 | monitor           | false    | Object       | Monitor                 | Monitor instance                                                                                      |
 | consumer_mapper   | false    | Module       | Routing::ConsumerMapper | Mapper for building consumer ids                                                                      |
 | topic_mapper      | false    | Module       | Routing::TopicMapper    | Mapper for hiding Kafka provider specific topic prefixes/postfixes, so internaly we use "pure" topics |
-| parser            | false    | Module       | Karafka::Parsers::Json  | Default parser that will be used to parse and serialize both incoming and outgoing data               |
 | batch_fetching    | false    | Boolean      | true                    | Should the incoming messages be fetched in batches, or one at a time                                  |
 | batch_consuming   | false    | Boolean      | false                   | Should the incoming messages be consumed/processed in batches, or one at a time                       |
 | shutdown_timeout  | false    | Integer, nil | 60                      | The number of seconds after which Karafka longer waits for the consumers to stop gracefully           |
+| deserializer      | false    | Object       | Karafka::Serialization::Json::Deserializer | Default deserializer that will be used to deserialize incoming data                |
+| serializer        | false    | Object       | Karafka::Serialization::Json::Serializer   | Default serializer that will be used to serialize outgoing data                    |
 
 ### Ruby-Kafka driver configuration options
 
