@@ -89,7 +89,7 @@ class ExampleConsumer < Karafka::BaseConsumer
 
   def consume
     @buffer ||= []
-    @buffer += params_batch.parse!
+    @buffer += params_batch.deserialize!
 
     if @buffer.size >= FLUSH_THRESHOLD
       EventStore.import @buffer

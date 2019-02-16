@@ -11,7 +11,7 @@ Which mode you decide to use strongly depends on your business logic.
 
 Each Karafka message, whether it is accesed from the ```#params_batch``` or directly via the ```#params``` method includes additional metadata information that comes either from the Karafka framework or from the Kafka cluster.
 
-In order to access the Kafka message payload you need to use the `#payload` method. It will parse and return the message payload.
+In order to access the Kafka message payload you need to use the `#payload` method. It will deserialize and return the message payload.
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -37,12 +37,12 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```parse!``` params batch method to parse all the messages:
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** deserialized upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```deserialize!``` params batch method to deserialize all the messages:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
   def consume
-    EventStore.store(params_batch.parse!)
+    EventStore.store(params_batch.deserialize!)
   end
 end
 ```
@@ -76,7 +76,7 @@ In this mode, Karafka's consumer will consume messages separately, one after ano
 ```ruby
 class UsersConsumer < ApplicationConsumer
   def consume
-    puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
+    puts params #=> { 'deserialized' =>true, 'topic' => 'example', 'partition' => 0, ... }
     User.create!(params.payload['user'])
   end
 end

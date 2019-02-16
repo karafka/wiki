@@ -50,7 +50,7 @@ To mark a certain message as consumed (so in case of a crash or restart it won't
 ```ruby
 def consume
   # Do something with messages
-  EventStore.store(params_batch.parse!)
+  EventStore.store(params_batch.deserialize!)
   # And now mark last message as consumed,
   # so we won't consume any of already processed messages again
   mark_as_consumed! params_batch.last
