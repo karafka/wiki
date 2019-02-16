@@ -112,54 +112,6 @@ module AirbrakeListener
 end
 ```
 
-## Example monitor with NewRelic support
-
-Here's a simple example of a listener that is used to handle events and errors logging into NewRelic. It will send metrics with information about amount of consumed (processed) messages per topic.
-
-```ruby
-# frozen_string_literal: true
-
-# NewRelic example monitor for Karafka
-class NewRelicListener
-  class << self
-    # This method is triggered when fetched messages are being delegated to proper
-    # consumer instance
-    # This method will record metrics for a custom key that is combined of the topic
-    # name and consumer class. For example: Custom/user_created/UsersConsumer
-    def on_connection_delegator_call(event)
-      consumer = event[:consumer]
-      topic = consumer.topic.name
-      count = event[:kafka_messages].count
-      key = "Custom/#{topic}/#{consumer.class}"
-      NewRelic::Agent.record_metric(key, count: count)
-    end
-
-    # All the events in which something went wrong trigger the *_error method,
-    #   so we can catch all of them and notify Airbrake about that.
-    #
-    # @param method_name [Symbol] name of a method we want to run
-    # @param args [Array] arguments of this method
-    # @param block [Proc] additional block of this method
-    def method_missing(method_name, *args, &block)
-      return super unless method_name.to_s.end_with?('_error')
-      NewRelic::Agent.notice_error(args.last[:error])
-    end
-
-    # @param method_name [Symbol] name of a method we want to run
-    # @return [Boolean] true if we respond to this missing method
-    def respond_to_missing?(method_name, include_private = false)
-      method_name.to_s.end_with?('_error') || super
-    end
-  end
-end
-```
-
-Don't forget to subscribe your listener to the instrumentation:
-
-```ruby
-Karafka.monitor.subscribe NewRelicListener
-```
-
 ## Replacing Dry-Monitor with ActiveSupport::Notifications
 
 Dry-Monitor has a similar API to ```ActiveSupport::Notifications```, so in case you are already using ```ActiveSupport::Notifications```, you can easily replace one with the other.
