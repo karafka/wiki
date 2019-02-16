@@ -7,7 +7,7 @@ Which mode you decide to use strongly depends on your business logic.
 
 **Note**: ```batch_consuming``` and ```batch_fetching``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Configuration) section of this Wiki for an explanation.
 
-### Accessing the message payload
+## Accessing the message payload
 
 Each Karafka message, whether it is accesed from the ```#params_batch``` or directly via the ```#params``` method includes additional metadata information that comes either from the Karafka framework or from the Kafka cluster.
 
@@ -23,7 +23,7 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-### Batch messages consuming
+## Batch messages consuming
 
 When the batch consuming mode is enabled, a single ```#consume``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
 
@@ -59,7 +59,7 @@ end
 
 This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch or some particular messages. If so, then why would you even want to parse them in the first place? :)
 
-If you are not interested in the additional `#params` metadata, you can use the `#payloads` method to access only the Kafka messages payload:
+If you are not interested in the additional `#params` metadata, you can use the `#payloads` method to access only the Kafka messages deserialized payload:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -69,7 +69,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-### Single message consuming
+## Single message consuming
 
 In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as an equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
 
