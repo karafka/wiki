@@ -44,3 +44,15 @@ class UsersConsumer < ApplicationConsumer
   end
 end
 ```
+
+## Consumer metadata method
+
+When in `batch_fetching` mode, while fetching data from the Kafka cluster, additional information is being received. This details are available using the `#metadata` consumer method.
+
+```ruby
+class UsersConsumer < ApplicationConsumer
+  def consume
+    puts metadata #=> { batch_size: 200, topic: 'events', partition: 2 }
+  end
+end
+```

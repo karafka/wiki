@@ -12,7 +12,7 @@ For example, if you want to skip the ```client_id``` all you need to do, is to c
 module MyCustomConsumerMapper
   # @param raw_consumer_group_name [String, Symbol] raw consumer group name
   # @return [String] remapped final consumer group name
-  def self.call(raw_consumer_group_name)
+  def call(raw_consumer_group_name)
     raw_consumer_group_name
   end
 end
@@ -23,7 +23,7 @@ In order to use it, assign it as your default ```consumer_mapper```:
 ```ruby
 class App < Karafka::App
   setup do |config|
-    config.consumer_mapper = MyCustomConsumerMapper
+    config.consumer_mapper = MyCustomConsumerMapper.new
     # Other config options
   end
 end

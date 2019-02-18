@@ -1,6 +1,6 @@
-**Source**: [Kafka on Rails: Using Kafka with Ruby on Rails — Part 2 — Getting started with Ruby and Kafka](https://medium.com/@maciejmensfeld/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka-44535c6edb26)
+**Source**: [Kafka on Rails: Using Kafka with Ruby on Rails — Part 2 — Getting started with Ruby and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
 
-Kafka requires Zookeeper and to be honest, a local setup can be a bit tricky. The easiest way to do that is by running a Docker container for that. Here’s an example script that should be enough for the basic local work. It will spin up a single node cluster of Kafka that you can use out of the box:
+Kafka requires Zookeeper and to be honest, a local setup can be a bit tricky. The easiest way to do that is by running a docker container for that. Here’s an example script that should be enough for the basic local work. It will spin up a single node cluster of Kafka that you can use out of the box:
 
 ```bash
 git clone https://github.com/wurstmeister/kafka-docker.git

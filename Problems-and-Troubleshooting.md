@@ -44,9 +44,9 @@ But you may ask: **why Puma is restarting the connections?** Truth be told it is
 You can easily catch the ```ActiveRecord::StatementInvalid``` error and decide on your own how to handle a dead connection. If you do atomic (per received batch) operations, you can just catch this and run the `::ActiveRecord::Base.clear_active_connections!` method:
 
 ```ruby
-# We work with an assumption that you process messages one by one here
+# We work with an assumption that you process messages one by one here and that you have a root key namespace for your JSON data
 def consume
- Example.create!(params['example'])
+ Example.create!(params.payload['example'])
 rescue ActiveRecord::StatementInvalid
   ::ActiveRecord::Base.clear_active_connections!
   retry
@@ -102,7 +102,7 @@ Now you can just use it for anything you need like so:
 ```ruby
 def consume
   ApplicationRecord.with_disconnection_retry do
-    Example.create!(params['example'])
+    Example.create!(params.payload['example'])
   end
 end
 ```

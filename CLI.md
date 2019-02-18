@@ -18,7 +18,7 @@ bundle exec karafka [COMMAND]
 If you need more details about each of the CLI commands, you can execute the following command:
 
 ```
-  bundle exec karafka help [COMMAND]
+bundle exec karafka help [COMMAND]
 ```
 
 

@@ -23,7 +23,7 @@ module Users
     def consume
       # You can provide as many objects as you want to respond_with as long as
       # a responders #respond method accepts the same amount
-      respond_with User.create(params['user'])
+      respond_with User.create(params.payload['user'])
     end
   end
 
@@ -71,6 +71,9 @@ Example usage:
 ```ruby
 WaterDrop::SyncProducer.call('message', topic: 'topic')
 WaterDrop::SyncProducer.call({ user_id: 1 }.to_json, topic: 'topic')
+# Or using the async producer
+WaterDrop::AsyncProducer.call('message', topic: 'topic')
+WaterDrop::AsyncProducer.call({ user_id: 1 }.to_json, topic: 'topic')
 ```
 
 Please follow [WaterDrop README](https://github.com/karafka/waterdrop/blob/master/README.md) for more details on how to use it.
