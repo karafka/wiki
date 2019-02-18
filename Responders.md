@@ -21,7 +21,7 @@ end
 ExampleResponder.call(User.last)
 ```
 
-When passing data back to Kafka, responder uses parser ```#generate``` method to convert message object to a string. It will use parser of a route for which a current message was directed. By default it uses Karafka::Parsers::Json parser.
+When passing data back to Kafka, responder uses a serializer to convert message object to a string. It will use default serializer you set in the settings or one that you've provided using the `topic` DSL.
 
 Note: You can use responders outside of consumers scope, however it is not recommended because then, they won't be listed when executing ```karafka flow``` CLI command.
 
@@ -33,18 +33,17 @@ In order to maintain order in topics organization, before you can send data to a
 class ExampleResponder < ApplicationResponder
   topic :regular_topic
   topic :optional_topic, required: false
-  topic :multiple_use_topic, multiple_usage: true
   topic :topic_with_async_delivery, async: true
 end
 ```
 
 ```#topic``` method accepts following settings:
 
-| Option         | Type    | Default | Description                                                                                                |
-|----------------|---------|---------|------------------------------------------------------------------------------------------------------------|
-| required       | Boolean | true    | Should we raise an error when a topic was not used (if required)                                           |
-| multiple_usage | Boolean | false   | Should we raise an error when during a single response flow we sent more than one message to a given topic |
-| async          | Boolean | false   | Should we send messages using asynchronous producer or as soon as possible                                 |
+| Option         | Type    | Default                                  | Description                                                                |
+|----------------|---------|------------------------------------------|----------------------------------------------------------------------------|
+| required       | Boolean | true                                     | Should we raise an error when a topic was not used (if required)           |
+| async          | Boolean | false                                    | Should we send messages using asynchronous producer or as soon as possible |
+| serializer     | Object  | Karafka::Serialization::Json::Serializer | Serializer that will convert provided message into the exchange format     |
 
 ## Responding on topics
 
@@ -55,7 +54,7 @@ To handle responding, you need to define ```#respond``` instance method. This me
 In order to send a message to a given topic, you have to use ```#respond_to``` method that accepts two arguments:
 
   - topic name (Symbol)
-  - data you want to send (if data is not string, responder will try to run #to_json method on the incoming data)
+  - data you want to send (if data is not a string, responder will try to run the ```#to_json``` method on the incoming data)
 
 ```ruby
 # respond_with user, profile
@@ -63,9 +62,11 @@ In order to send a message to a given topic, you have to use ```#respond_to``` m
 class ExampleResponder < ApplicationResponder
   topic :regular_topic
   topic :optional_topic, required: false
+  topic :xml_required_topic, serializer: XmlSerializer.new
 
   def respond(user, profile)
     respond_to :regular_topic, user
+    respond_to :xml_required_topic, user
 
     if user.registered?
       respond_to :optional_topic, profile
@@ -79,7 +80,6 @@ end
 In order to ensure that dataflow is as intended, responder will validate what and where was sent, making sure that:
 
   - Only topics that were registered were used (no typos, etc.)
-  - Only a single message was sent to a topic that was registered without a ```multiple_usage``` flag
   - Any topic that was registered with ```required``` flag (default behavior) has been used
 
 This is an automatic process and does not require any triggers.

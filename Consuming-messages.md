@@ -7,7 +7,23 @@ Which mode you decide to use strongly depends on your business logic.
 
 **Note**: ```batch_consuming``` and ```batch_fetching``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Configuration) section of this Wiki for an explanation.
 
-### Batch messages consuming
+## Accessing the message payload
+
+Each Karafka message, whether it is accesed from the ```#params_batch``` or directly via the ```#params``` method includes additional metadata information that comes either from the Karafka framework or from the Kafka cluster.
+
+In order to access the Kafka message payload you need to use the `#payload` method. It will deserialize and return the message payload.
+
+```ruby
+class UsersConsumer < ApplicationConsumer
+  def consume
+    params_batch.each do |message|
+      puts "Message payload: #{message.payload}"
+    end
+  end
+end
+```
+
+## Batch messages consuming
 
 When the batch consuming mode is enabled, a single ```#consume``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
 
@@ -15,18 +31,18 @@ When the batch consuming mode is enabled, a single ```#consume``` method will re
 class UsersConsumer < ApplicationConsumer
   def consume
     params_batch.each do |message|
-      User.create!(message[:user])
+      User.create!(message.payload['user'])
     end
   end
 end
 ```
 
-Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** parsed upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```#parsed``` params batch method to parse all the messages:
+Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** deserialized upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```deserialize!``` params batch method to deserialize all the messages:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
   def consume
-    EventStore.store(params_batch.parsed)
+    EventStore.store(params_batch.deserialize!)
   end
 end
 ```
@@ -36,22 +52,32 @@ Parsing will be automatically performed as well if you decide to map parameters 
 ```ruby
 class EventsConsumer < ApplicationConsumer
   def consume
-    EventStore.store(params_batch.map { |param| param[:user] })
+    EventStore.store params_batch.map { |message| message.payload['user'] }
   end
 end
 ```
 
-This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch. If so, then why would you even want to parse them in the first place? :)
+This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch or some particular messages. If so, then why would you even want to parse them in the first place? :)
 
-### Single message consuming
+If you are not interested in the additional `#params` metadata, you can use the `#payloads` method to access only the Kafka messages deserialized payload:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    EventStore.store params_batch.payloads
+  end
+end
+```
+
+## Single message consuming
 
 In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as an equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
   def consume
-    puts params #=> { 'parsed' =>true, 'topic' => 'example', 'partition' => 0, ... }
-    User.create!(params[:user])
+    puts params #=> { 'deserialized' =>true, 'topic' => 'example', 'partition' => 0, ... }
+    User.create!(params.payload['user'])
   end
 end
 ```

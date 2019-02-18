@@ -11,15 +11,14 @@
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
 * [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks)
-* [FAQ](https://github.com/karafka/karafka/wiki/FAQ)
 
 ## Components and other details
 
 * [Concurrency](https://github.com/karafka/karafka/wiki/Concurrency)
 * [Consumers](https://github.com/karafka/karafka/wiki/Consumers)
-* [Callbacks](https://github.com/karafka/karafka/wiki/Callbacks)
-* [Monitoring and logging](https://github.com/karafka/karafka/wiki/Monitoring-and-logging)
-* [Parsers](https://github.com/karafka/karafka/wiki/Parsers)
+* [Consumer callbacks](https://github.com/karafka/karafka/wiki/Consumer-callbacks)
+* [Events, monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging)
+* [Serialization](https://github.com/karafka/karafka/wiki/Serialization)
 * [Responders](https://github.com/karafka/karafka/wiki/Responders)
 * [Error handling and back off policy](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy)
 * [Consumer and topic mappers](https://github.com/karafka/karafka/wiki/Consumer-and-topic-mappers)
@@ -32,4 +31,5 @@
 
 ## Problems and Troubleshooting
 
+* [FAQ](https://github.com/karafka/karafka/wiki/FAQ)
 * [Why Karafka does not restart dead PG connections?](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections)

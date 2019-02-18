@@ -110,7 +110,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [backend](https://github.com/karafka/karafka/wiki/Consuming-messages#backends)    | Symbol      | :inline or :sidekiq depending on where and how you want to consume your messages |
 | start_from_beginning | Boolean      | Flag used to tell to decide whether to fetch messages starting at the beginning of the topic or to just fetch and consume new messages that are produced to the topic. |
 | [batch_consuming](https://github.com/karafka/karafka/wiki/Consuming-messages)     | Boolean      | Set to ```true``` when you want to consume all the messages at the same time using ```#params_batch```. When ```false```, it will allow you to consume messages similar to standard HTTP requests, using ```#params``` |
-| [parser](https://github.com/karafka/karafka/wiki/Parsers)               | Class        | Name of a parser class that we want to use to parse incoming data                                                 |
+| [deserializer](https://github.com/karafka/karafka/wiki/Serialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
 | [responder](https://github.com/karafka/karafka/wiki/Responders)            | Class        | Name of a responder that we want to use to generate responses to other Kafka topics based on our consumed data   |
 
 
@@ -119,7 +119,7 @@ App.routes.draw do
   consumer_group :videos_consumer do
     topic :binary_video_details do
       consumer Videos::DetailsConsumer
-      parser Parsers::BinaryToJson
+      deserializer Serialization::Binary::Deserializer.new
       responder BinaryVideoProcessingResponder
       backend :inline
       batch_consuming true
