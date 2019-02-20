@@ -27,7 +27,7 @@ bundle exec karafka server --consumer-groups=events users
 Karafka supports two fetching modes:
 
 * ```batch_fetching false``` - in that mode, Karafka will fetch one message after another from Kafka.
-* ```batch_fetching true```- in that mode, Karafka will fetch multiple messages in batches. You can limit the number of messages fetched in a single batch, my using the ```max_bytes_per_partition``` configuration option.
+* ```batch_fetching true```- in that mode, Karafka will fetch multiple messages in batches. You can limit the number of messages fetched in a single batch, by using the ```max_bytes_per_partition``` configuration option.
 
 Below you can see the difference in between those two:
 
