@@ -9,6 +9,7 @@
 9. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
 10. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
 11. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
+12. [How does one scale karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?](#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group-can-it-be-achieved-by-running-multiple-processes-of-karafka)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -74,3 +75,7 @@ Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troublesh
 ### Does Karafka require gems to be thread-safe?
 
 For most of the time *no*. The only case for which any library that you use should be thread-safe, is a case where you run multiple consumer groups from withing a single Karafka process. As long as you don't do that, neither your libraries nor code needs to be thread-safe.
+
+### How does one scale karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?
+
+Yes. Longer explanation can be found [here](https://github.com/karafka/karafka/wiki/Concurrency#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group).
