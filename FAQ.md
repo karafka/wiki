@@ -9,7 +9,7 @@
 9. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
 10. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
 11. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
-12. [How does one scale karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?](#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group-can-it-be-achieved-by-running-multiple-processes-of-karafka)
+12. [How does one scale Karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?](#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group-can-it-be-achieved-by-running-multiple-processes-of-karafka)
 
 ### Does Karafka require Ruby on Rails?
 
