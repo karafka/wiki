@@ -65,7 +65,27 @@ end
 
 ## Responders
 
-[WaterDrop](https://github.com/karafka/waterdrop) - the library that works under the hood of responders provides a test mode. When this mode is enabled, messages will not be sent to Kafka but everything else will work exactly the same way. To enable this mode, add this to your ```spec/spec_helper``` file:
+[WaterDrop](https://github.com/karafka/waterdrop) - the library that works under the hood of responders provides a test mode. When this mode is enabled, messages will not be sent to Kafka but everything else will work exactly the same way.
+
+If you **use** Ruby on Rails integration add this to your ```spec/rails_helper``` file:
+
+```ruby
+# Top of the file
+ENV['RAILS_ENV'] ||= 'test'
+ENV['KARAFKA_ENV'] ||= 'test'
+require 'spec_helper'
+
+# all the other things here...
+
+# And at the end
+App.boot!
+
+WaterDrop.setup do |config|
+  config.deliver = false
+end
+```
+
+If you **don't** use Ruby on Rails integration, add this to your ```spec/spec_helper``` file:
 
 ```ruby
 require './karafka.rb'
@@ -76,15 +96,14 @@ WaterDrop.setup do |config|
 end
 ```
 
-You can also do that in the ```#after_init``` based on your application environment:
+You can also do that while setting up your application:
 
 ```ruby
 class App < Karafka::App
-  after_init do
-    # Don't send messages in the test env
-    WaterDrop.setup do |config|
-      config.deliver = !Karafka.env.test?
-    end
+  # Other things here...
+
+  monitor.subscribe('app.initialized') do
+    WaterDrop.setup { |config| config.deliver = !Karafka.env.test? }
   end
 end
 ```
