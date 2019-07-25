@@ -4,14 +4,14 @@ This means, that if you receive for example an XML payload, deserialization will
 
 ## Deserializers
 
-Deserializers are used to convert raw Kafka messages payload into a workable format. They are used when working with **incoming** data.
+Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with **incoming** data and takes full kafka message.
 
 You can set a default deserializer that will be used for all the topics, or you can specify a deserializer per topic in the routing.
 
 ```ruby
 class XmlDeserializer
   def call(message)
-    Hash.from_xml(message)
+    Hash.from_xml(message.payload)
   end
 end
 
@@ -24,6 +24,29 @@ end
 ```
 
 The default deserializer is `Karafka::Serialization::Json::Deserializer`.
+
+Also, deserializes can use headers and topic values from the message for decode specific formats, for example, Avro:
+
+```ruby
+class AvroDeserializer
+  attr_reader :avro
+
+  def initialize(avro: avro)
+    @avro = avro
+  end
+
+  def call(message)
+    avro.decode(message.payload, subject: message.headers['message_type'])
+  end
+end
+
+App.routes.draw do
+  topic :binary_video_details do
+    consumer Videos::DetailsConsumer
+    deserializer AvroDeserializer.new(avro: AvroTurf.new)
+  end
+end
+```
 
 ## Serializers
 
