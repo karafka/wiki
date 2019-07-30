@@ -1,4 +1,4 @@
-Karafka `1.3` and never support auto-reload of code changes for both Rails and vanilla integrations.
+Karafka `1.3` and newer support auto-reload of code changes for both Rails and vanilla integrations.
 
 All you need to do is enabling this part of the code before the `App.boot` in your `karafka.rb` file:
 
