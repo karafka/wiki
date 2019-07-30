@@ -7,6 +7,7 @@
 * [Fetching messages](https://github.com/karafka/karafka/wiki/Fetching-messages)
 * [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages)
 * [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
+* [Auto reload of code changes in development](https://github.com/karafka/karafka/wiki/Auto-reload-of-code-changes-in-development)
 * [Testing](https://github.com/karafka/karafka/wiki/Testing)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
 * [CLI](https://github.com/karafka/karafka/wiki/CLI)
