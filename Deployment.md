@@ -1,4 +1,4 @@
-Karafka is currently being used in production with following deployment methods:
+Karafka is currently being used in production with the following deployment methods:
 
   - Capistrano
   - systemd (+ Capistrano)
@@ -26,7 +26,7 @@ After=syslog.target network.target
 [Service]
 Type=simple
 
-WorkingDirectory=/opt//current
+WorkingDirectory=/opt/current
 ExecStart=/bin/bash -lc 'bundle exec karafka server'
 User=deploy
 Group=deploy
@@ -46,7 +46,7 @@ SyslogIdentifier=karafka
 WantedBy=multi-user.target
 ```
 
-In case you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead you can use this simple Capistrano `.cap` file:
+In case you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
 
 ```ruby
 # frozen_string_literal: true
