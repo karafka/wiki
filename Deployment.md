@@ -1,6 +1,7 @@
 Karafka is currently being used in production with following deployment methods:
 
   - Capistrano
+  - systemd (+ Capistrano)
   - Docker
   - Heroku
 
@@ -9,6 +10,77 @@ Since the only thing that is long-running is Karafka server, it shouldn't be har
 ## Capistrano
 
 For details about integration with Capistrano, please go to [capistrano-karafka](https://github.com/karafka/capistrano-karafka) gem page.
+
+## systemd (+ Capistrano)
+
+You can easily manage Karafka applications with `systemd`. Here's an example `.service` file that you can use.
+
+```bash
+# Move to /lib/systemd/system/karafka.service
+# Run: systemctl enable karafka
+
+[Unit]
+Description=karafka
+After=syslog.target network.target
+
+[Service]
+Type=simple
+
+WorkingDirectory=/opt//current
+ExecStart=/bin/bash -lc 'bundle exec karafka server'
+User=deploy
+Group=deploy
+UMask=0002
+
+RestartSec=1
+Restart=on-failure
+
+# output goes to /var/log/syslog
+StandardOutput=syslog
+StandardError=syslog
+
+# This will default to "bundler" if we don't specify it
+SyslogIdentifier=karafka
+
+[Install]
+WantedBy=multi-user.target
+```
+
+In case you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead you can use this simple Capistrano `.cap` file:
+
+```ruby
+# frozen_string_literal: true
+
+after 'deploy:starting', 'karafka:stop'
+after 'deploy:published', 'karafka:start'
+after 'deploy:failed', 'karafka:restart'
+
+namespace :karafka do
+  task :start do
+    on roles(:app) do
+      execute :sudo, :systemctl, :start, "#{fetch(:application)}-karafka"
+    end
+  end
+
+  task :stop do
+    on roles(:app) do
+      execute :sudo, :systemctl, :stop, "#{fetch(:application)}-karafka"
+    end
+  end
+
+  task :restart do
+    on roles(:app) do
+      execute :sudo, :systemctl, :restart, "#{fetch(:application)}-karafka"
+    end
+  end
+
+  task :status do
+    on roles(:app) do
+      execute :sudo, :systemctl, :status, "#{fetch(:application)}-karafka"
+    end
+  end
+end
+```
 
 ## Docker
 
