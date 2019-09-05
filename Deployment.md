@@ -82,6 +82,8 @@ namespace :karafka do
 end
 ```
 
+If you need to run several processes of a given type, please refer to `template unit files`.
+
 ## Docker
 
 Karafka can be dockerized as any other Ruby/Rails app. To execute ```karafka server``` command in your Docker container, just put this into your Dockerfile:
