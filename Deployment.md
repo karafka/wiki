@@ -58,25 +58,25 @@ after 'deploy:failed', 'karafka:restart'
 namespace :karafka do
   task :start do
     on roles(:app) do
-      execute :sudo, :systemctl, :start, "#{fetch(:application)}-karafka"
+      execute :sudo, :systemctl, :start, 'karafka'
     end
   end
 
   task :stop do
     on roles(:app) do
-      execute :sudo, :systemctl, :stop, "#{fetch(:application)}-karafka"
+      execute :sudo, :systemctl, :stop, 'karafka'
     end
   end
 
   task :restart do
     on roles(:app) do
-      execute :sudo, :systemctl, :restart, "#{fetch(:application)}-karafka"
+      execute :sudo, :systemctl, :restart, 'karafka'
     end
   end
 
   task :status do
     on roles(:app) do
-      execute :sudo, :systemctl, :status, "#{fetch(:application)}-karafka"
+      execute :sudo, :systemctl, :status, 'karafka'
     end
   end
 end
