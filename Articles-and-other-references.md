@@ -12,6 +12,7 @@
 
 **Note**: some of those might be outdated - keep that in mind.
 
+* [Karafka (Ruby + Kafka) framework 1.3.0 Release Notes](https://mensfeld.pl/2019/09/karafka-framework-1-3-0-release-notes-ruby-kafka/)
 * [Karafka (Ruby + Kafka) framework 1.2.0 Release Notes](https://mensfeld.pl/2018/03/karafka-framework-1-2-0-release-notes-ruby-kafka)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 2 - Getting started with Ruby and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://mensfeld.pl/2017/11/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages/)
