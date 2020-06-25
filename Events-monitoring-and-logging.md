@@ -12,6 +12,8 @@ The only thing you need to be aware when developing your own listeners is that t
 
 The best place to hook up your listener is in the ```karafka.rb``` file, right after the ```App.boot!```. This will guarantee, that your custom listener will be already loaded into memory and visible for Karafka framework.
 
+**Note**: The reason why you should set up listeners **after** booting the app, is the fact, that Karafka sets up external components and components from optional plugins. That way, we can be sure everything is loaded and initialized correctly.
+
 ### Subscribing with a listener class/module
 
 ```ruby
