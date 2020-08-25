@@ -12,7 +12,7 @@ require './karafka.rb'
 
 ## Consumers
 
-Since Karafka `1.3` we have a dedicated helper library for testing consumers. Please look at the [karafka-testing README](https://github.com/karafka/testing) for more details.
+Since Karafka `1.4` we have a dedicated helper library for testing consumers. Please look at the [karafka-testing README](https://github.com/karafka/testing) for more details.
 
 Testing consumers is really easy.
 

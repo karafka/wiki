@@ -39,9 +39,7 @@ class ExampleConsumer < Karafka::BaseConsumer
   include Karafka::Consumers::Callbacks
 
   after_fetch do
-    params_batch.each do |params|
-      params['wednesday'] = Date.today.wednesday?
-    end
+    @wednesday = Date.today.wednesday?
   end
 
   def consume
@@ -62,9 +60,7 @@ class ExampleConsumer < Karafka::BaseConsumer
   private
 
   def after_fetch_method
-    params_batch.each do |params|
-      params['wednesday'] = Date.today.wednesday?
-    end
+    @wednesday = Date.today.wednesday?
   end
 end
 ```
