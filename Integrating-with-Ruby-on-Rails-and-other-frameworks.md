@@ -1,4 +1,4 @@
-Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
+Want to use Karafka with Ruby on Rails or Sinatra? It can be done easily!
 
 ## Integrating with Ruby on Rails
 
