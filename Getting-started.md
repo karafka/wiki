@@ -3,19 +3,19 @@
 If you want to get started with Kafka and Karafka as fast as possible, then the best idea is to just clone our example repository:
 
 ```bash
-git clone https://github.com/karafka/example-app ./example_app
+git clone https://github.com/karafka/example-apps ./example_apps
 ```
 
-then, just bundle install all the dependencies:
+We highly recommend you using Karafka `2.0` or higher but in case you would need, the example repository also includes code for Karafka `1.4`.
+
+Select the example you are interested in and then, just bundle install all the dependencies:
 
 ```bash
-cd ./example_app
+cd ./example_apps/v2.0-rails
 bundle install
 ```
 
-and follow the instructions from the [example app Wiki](https://github.com/karafka/karafka-example-app/blob/master/README.md).
-
-**Note**: you need to ensure, that you have Kafka up and running and you need to configure Kafka seed_brokers in the ```karafka.rb``` file.
+and follow the instructions from the [example app Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
 
 ## Starting with a clean installation
 
