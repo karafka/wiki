@@ -2,7 +2,7 @@ Karafka by default assumes, you are receiving and sending JSON information.
 
 This means, that if you receive for example an XML payload, deserialization will fail.
 
-Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with **incoming** data and takes full params object.
+Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with **incoming** data and takes full `message` object.
 
 You can set a default deserializer that will be used for all the topics, or you can specify a deserializer per topic in the routing.
 
