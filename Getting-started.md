@@ -6,7 +6,7 @@ If you want to get started with Kafka and Karafka as fast as possible, then the 
 git clone https://github.com/karafka/example-apps ./example_apps
 ```
 
-We highly recommend you using Karafka `2.0` or higher but in case you would need, the example repository also includes code for Karafka `1.4`.
+**Note**: We highly recommend you using Karafka `2.0` or higher but in case you would need, the example repository also includes code for Karafka `1.4`.
 
 Select the example you are interested in and then, just bundle install all the dependencies:
 
