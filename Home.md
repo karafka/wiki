@@ -19,7 +19,7 @@
 * [Consumers](https://github.com/karafka/karafka/wiki/Consumers)
 * [Consumer callbacks](https://github.com/karafka/karafka/wiki/Consumer-callbacks)
 * [Events, monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging)
-* [Serialization](https://github.com/karafka/karafka/wiki/Serialization)
+* [Deserialization](https://github.com/karafka/karafka/wiki/Deserialization)
 * [Error handling and back off policy](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy)
 * [Consumer mappers](https://github.com/karafka/karafka/wiki/Consumer-mappers)
 * [Manual offset management (checkpointing)](https://github.com/karafka/karafka/wiki/Manual-offset-management-(checkpointing))
