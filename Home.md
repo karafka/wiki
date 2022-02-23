@@ -21,7 +21,7 @@
 * [Events, monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging)
 * [Serialization](https://github.com/karafka/karafka/wiki/Serialization)
 * [Error handling and back off policy](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy)
-* [Consumer and topic mappers](https://github.com/karafka/karafka/wiki/Consumer-and-topic-mappers)
+* [Consumer mappers](https://github.com/karafka/karafka/wiki/Consumer-mappers)
 * [Manual offset management (checkpointing)](https://github.com/karafka/karafka/wiki/Manual-offset-management-(checkpointing))
 * [WaterDrop reconfiguration](https://github.com/karafka/karafka/wiki/WaterDrop-reconfiguration)
 * [Exit codes](https://github.com/karafka/karafka/wiki/Exit-codes)
