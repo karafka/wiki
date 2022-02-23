@@ -1,3 +1,5 @@
+All of those docs refer to Karafka `1.4`.
+
 ## Basics
 
 * [Getting started](https://github.com/karafka/karafka/wiki/Getting-started)
