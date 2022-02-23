@@ -1,4 +1,4 @@
-Want to use Karafka with Ruby on Rails or Sinatra? It can be done!
+Want to use Karafka with Ruby on Rails or Sinatra? It can be done easily!
 
 ## Integrating with Ruby on Rails
 
@@ -8,7 +8,7 @@ Add Karafka to your Ruby on Rails application Gemfile:
 gem 'karafka'
 ```
 
-Copy the ```karafka.rb``` file from your Karafka application into your Rails app. If you don't have this file, you can copy the [example](https://github.com/karafka/karafka/blob/master/lib/karafka/templates/karafka.rb.example) one. This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file.
+Copy the ```karafka.rb``` file from your Karafka application into your Rails app. If you don't have this file, you can use this [template](https://github.com/karafka/karafka/blob/master/lib/karafka/templates/karafka.rb.erb) as an example. This file is responsible for booting up Karafka framework. To make it work with Ruby on Rails, you need to load whole Rails application in this file.
 
 ### karafka.rb changes
 

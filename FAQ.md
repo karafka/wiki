@@ -41,7 +41,7 @@ bundle exec karafka server --consumer_groups group_name1 group_name3
 
 ### Can I use ```#seek``` to start processing topics partition from a certain point?
 
-Karafka provices a ```#seek``` client method that can be used to do that. Due to the fact, that Karafka is a long-running process, this option needs to be set up as a callback executed before fetching starts per each consumer group. Please refer to the [#before_fetch_loop](https://github.com/karafka/karafka/wiki/Controller-callbacks#before_fetch_loop) Wiki section for more details.
+Karafka provices a ```#seek``` client method that can be used to do that. Due to the fact, that Karafka is a long-running process, this option needs to be set up as a callback executed before fetching starts per each consumer group.
 
 ### Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?
 
