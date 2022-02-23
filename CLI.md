@@ -24,8 +24,10 @@ bundle exec karafka help [COMMAND]
 
 ### Starting particular consumer groups per process
 
-Karafka allows you to run multiple consumer groups within a single process. You can run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
+Karafka supports having multiple consumer groups within a single application. You can run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
 
 ```bash
 bundle exec karafka server --consumer_groups group_name1 group_name3
 ```
+
+If you specify none, by default all will run.
