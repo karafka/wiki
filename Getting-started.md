@@ -8,7 +8,7 @@ git clone https://github.com/karafka/example-apps ./example_apps
 
 **Note**: We highly recommend you using Karafka `2.0` or higher but in case you would need, the example repository also includes code for Karafka `1.4`.
 
-Select the example you are interested in and then, just bundle install all the dependencies:
+Select the example app you are interested in and bundle install all the dependencies:
 
 ```bash
 cd ./example_apps/v2.0-rails
