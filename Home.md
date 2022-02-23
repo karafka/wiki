@@ -15,7 +15,7 @@
 
 ## Components and other details
 
-* [Concurrency](https://github.com/karafka/karafka/wiki/Concurrency)
+* [Concurrency and multithreading](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading.md)
 * [Consumers](https://github.com/karafka/karafka/wiki/Consumers)
 * [Consumer callbacks](https://github.com/karafka/karafka/wiki/Consumer-callbacks)
 * [Events, monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging)
