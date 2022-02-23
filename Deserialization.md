@@ -8,8 +8,8 @@ You can set a default deserializer that will be used for all the topics, or you 
 
 ```ruby
 class XmlDeserializer
-  def call(params)
-    Hash.from_xml(params.raw_payload)
+  def call(message)
+    Hash.from_xml(message.raw_payload)
   end
 end
 
@@ -33,8 +33,8 @@ class AvroDeserializer
     @avro = avro
   end
 
-  def call(params)
-    avro.decode(params.raw_payload, subject: params.headers['message_type'])
+  def call(message)
+    avro.decode(message.raw_payload, subject: message.headers['message_type'])
   end
 end
 
