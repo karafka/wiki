@@ -21,7 +21,7 @@ You can name the main application consumer with any name. You can even call it `
 
 ### Does Karafka require Redis and/or Sidekiq to work?
 
-**No**. Karafka is a standalone framework, with an additional process that will be used to consume Kafka messages. You can however use [Karafka Sidekiq Backend](https://github.com/karafka/karafka-sidekiq-backend) if you would like to outsource your Kafka messages processing to Sidekiq workers.
+**No**. Karafka is a standalone framework, with an additional process that will be used to consume Kafka messages.
 
 ### Could an HTTP controller also consume a fetched message through the Karafka router?
 

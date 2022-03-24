@@ -45,3 +45,31 @@ App.routes.draw do
   end
 end
 ```
+
+## Lazy deserialization
+
+All of the payload data will not be deserialized unless needed. This makes things like metadata based filtering or raw string based filtering extremely fast because no data parsing is involved.
+
+Whenever you invoke the `Karafka::Messages::Message#payload` method, the deserialization will happen and the result of it will be stored. This means that consecutive `#payload` invocation on the same message won't deserialize it over and over again.
+
+In case you would want to access raw payload data, you can use the `Karafka::Messages::Message#raw_payload` method.
+
+Below you can find an example of elevation of this feature. Any time you expect occurences of certain characters in a JSON structure, you can quickly pre-filter raw data and only deserialize those that potentially may include what you are looking for.
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    messages
+      # Limit data amount using raw payload string based scanning
+      .select { _1.raw_payload.include?('signature') }
+      # Deserialize
+      .map(&:payload)
+      # Look for data with particular key
+      .select { _1.keys.include?('signature') }
+      # extract what you were looking for
+      .map { _1.fetch('signature') }
+      # Print only those
+      .each { puts _1 }
+  end
+end
+```

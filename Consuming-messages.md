@@ -1,11 +1,133 @@
-Depending on your application and/or consumer group settings, Karafka's consumer can consume messages in two modes:
+Consumers should inherit from the **ApplicationConsumer** (or any other consumer that inherits from **Karafka::BaseConsumer**). You need to define a ```#consume``` method that will execute your business logic code against a batch of messages.
 
-* Batch messages consuming - allows you to use ```#params_batch``` method that will contain an array of messages
-* Single message consuming - allows you to use ```#params``` method that will always contain a single message. You can think of this mode, as an equivalent to a standard HTTP way of doing things.
+Karafka fetches and consumes messages in batches by default.
 
-Which mode you decide to use strongly depends on your business logic.
+## Consuming messages
 
-**Note**: ```batch_consuming``` and ```batch_fetching``` aren't the same. Please visit the [config](https://github.com/karafka/karafka/wiki/Configuration) section of this Wiki for an explanation.
+Karafka framework has a long-running server process that is responsible for fetching and consuming messages.
+
+To start Karafka server process, use the following CLI command:
+
+```bash
+bundle exec karafka server
+```
+
+Karafka server can be also started with a limited set of consumer groups to work with. This is useful when you want to have a multi-process environment:
+
+```bash
+# This karafka server will be consuming only with listed consumer groups
+# If you don't provide consumer groups, Karafka will connect using all of them
+bundle exec karafka server --consumer-groups=events users
+```
+
+### In batches
+
+Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable that contains received data as well as additional information that can be useful during the processing.
+
+In order to access the payload of your messages, you can use the `#payload` method available for each received message:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    # Print all the payloads one after another
+    messages.each do |message|
+      puts message.payload
+    end
+  end
+end
+```
+
+You can also access all the payloads together to elevate things like batch DB operations available for some of the ORMs:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    # Insert all the events at once with a single query
+    Event.insert_all messages.payloads
+  end
+end
+```
+
+### One at a time
+
+While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may end up wanting to process messages one at a time.
+
+You can achieve this by defining a base consumer with such a capability:
+
+```ruby
+class SingleMessageBaseConsumer < Karafka::BaseConsumer
+  attr_reader :message
+
+  def consume
+    messages.each do |message|
+      @message = message
+      consume_one
+    end
+
+    # This could be moved into the loop but would slow down the processing, it's a trade-off
+    # between retrying the batch and processing performance
+    mark_as_consumed(messages.last)
+  end
+end
+
+class Consumer < SingleMessageBaseConsumer
+  def consume_one
+    puts "I received following message: #{message.payload}"
+  end
+end
+```
+
+### Topic details
+
+If for any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it for example, in case you want to perform a different logic within a single consumer, based on the topic from which your messages come:
+
+```ruby
+class UsersConsumer < ApplicationConsumer
+  def consume
+    send(:"topic_#{topic.name}")
+  end
+
+  def topic_a
+    # do something
+  end
+
+  def topic_b
+    # do something else if it's a "b" topic
+  end
+end
+```
+
+If you're interested in all the details that are stored in the topic, you can extract all of them at once, by using the ```#to_h``` method:
+
+```ruby
+class UsersConsumer < ApplicationConsumer
+  def consume
+    puts topic.to_h #=> { name: 'x', ... }
+  end
+end
+```
+
+### Batch metadata
+
+### Starting from earliest or latest offset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Accessing the message payload
 
@@ -78,39 +200,6 @@ class UsersConsumer < ApplicationConsumer
   def consume
     puts params #=> { 'deserialized' =>true, 'topic' => 'example', 'partition' => 0, ... }
     User.create!(params.payload['user'])
-  end
-end
-```
-
-## Backends
-
-Due to different scenarios and cases when working with Kafka messages, Karafka supports using backends that allow you to choose, where you want to consume your data:
-
-* ```:inline``` - default mode that will consume messages right after they were received by Karafka
-* ```:sidekiq``` - mode in which Karafka will schedule a background Sidekiq job to consume given message or messages in a background worker. To use Sidekiq backend, please follow the instructions in the README of [Karafka Sidekiq Backend](https://github.com/karafka/karafka-sidekiq-backend) repository.
-
-You can just set the ```backend``` setting in your config file (to make it a default) or you can set it per topic in your routing.
-
-```ruby
-# Per app
-class App < Karafka::App
-  setup do |config|
-    config.backend = :inline
-  end
-end
-
-# Per topic
-App.consumer_groups.draw do
-  consumer_group :group_name do
-    topic :example do
-      consumer ExampleConsumer
-      backend :sidekiq
-    end
-
-    topic :example2 do
-      consumer Example2Consumer
-      backend :inline
-    end
   end
 end
 ```

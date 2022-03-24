@@ -29,7 +29,7 @@ or on a per consumer group level:
 
 ```ruby
 class App < Karafka::App
-  consumer_groups.draw do
+  routes.draw do
     consumer_group :events do
       automatically_mark_as_consumed false
 

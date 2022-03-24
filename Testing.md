@@ -1,70 +1,10 @@
 Karafka components work in isolation and are pretty simple. While testing, there are 3 crucial parts you should focus on:
 
-- [Consumers](#consumers)
-- [Producers](#producers)
-- [Consumer groups and topics structure](#consumer-groups-and-topics-structure)
+## Consumers and producers
 
-The only thing you need to remember about testing (if you don't use Ruby on Rails integration or integration with any other framework) is to require the ```karafka.rb``` file in your test/spec helper:
+We have a dedicated helper library for testing consumers and producers.
 
-```ruby
-require './karafka.rb'
-```
-
-## Consumers
-
-Since Karafka `1.4` we have a dedicated helper library for testing consumers. Please look at the [karafka-testing README](https://github.com/karafka/testing) for more details.
-
-Testing consumers is really easy.
-
-Add this gem to your Gemfile in the test group:
-
-```ruby
-group :test do
-  gem 'karafka-testing'
-  gem 'rspec'
-end
-```
-
-then in your `spec_helper.rb` file:
-
-```ruby
-require 'karafka/testing/rspec/helpers'
-
-RSpec.configure do |config|
-  config.include Karafka::Testing::RSpec::Helpers
-end
-```
-
-and you are ready to go with your specs:
-
-
-```ruby
-RSpec.describe InlineBatchConsumer do
-  # This will create a consumer instance with all the settings defined for the given topic
-  subject(:consumer) { karafka_consumer_for(:inline_batch_data) }
-
-  let(:nr1_value) { rand }
-  let(:nr2_value) { rand }
-  let(:sum) { nr1_value + nr2_value }
-
-  before do
-    # Sends first message to Karafka consumer
-    publish_for_karafka({ 'number' => nr1_value }.to_json)
-    # Sends second message to Karafka consumer
-    publish_for_karafka({ 'number' => nr2_value }.to_json)
-    allow(Karafka.logger).to receive(:info)
-  end
-
-  it 'expects to log a proper message' do
-    expect(Karafka.logger).to receive(:info).with("Sum of 2 elements equals to: #{sum}")
-    consumer.consume
-  end
-end
-```
-
-## Producers
-
-WIP
+Please look at the [karafka-testing README](https://github.com/karafka/testing) for details and examples.
 
 ## Consumer groups and topics structure
 
