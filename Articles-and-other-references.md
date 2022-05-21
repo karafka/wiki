@@ -14,7 +14,7 @@
 
 ## Articles and references
 
-**Note**: some of those might be outdated - keep that in mind.
+**Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
 * [Karafka example applications](https://github.com/karafka/karafka-example-apps)
 * [Karafka (Ruby + Kafka) framework 1.4.0 Release Notes](https://mensfeld.pl/2020/09/karafka-framework-1-4-0-release-notes-ruby-kafka/)
