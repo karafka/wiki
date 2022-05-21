@@ -39,7 +39,7 @@ When processing messages from a Kafka topic, your code may raise any exception t
 - The message being processed is somehow malformed or is in an invalid format.
 - You're using some external resources such as a database or a network API that are temporarily unavailable.
 
-If not caught and handled within your application code, your exception will propagate to the framework. Karafka will stop processing messages from this topic partition, back off and wait for a given period of time defined by the `pause_timeout` [config](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb#L70) setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure to not drop the original message. After that period of time, it will **retry** processing same message again. Single Kafka topic partition messages must be processed in order, that's why Karafka will **never** skip any messages.
+If not caught and handled within your application code, your exception will propagate to the framework. Karafka will stop processing messages from this topic partition, back off and wait for a given period of time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure to not drop the original message. After that period of time, it will **retry** processing same message again. Single Kafka topic partition messages must be processed in order, that's why Karafka will **never** skip any messages.
 
 ### Exponential back off
 

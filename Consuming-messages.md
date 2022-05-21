@@ -1,4 +1,4 @@
-Consumers should inherit from the **ApplicationConsumer** (or any other consumer that inherits from **Karafka::BaseConsumer**). You need to define a ```#consume``` method that will execute your business logic code against a batch of messages.
+Consumers should inherit from the **ApplicationConsumer**. You need to define a ```#consume``` method that will execute your business logic code against a batch of messages.
 
 Karafka fetches and consumes messages in batches by default.
 
@@ -10,14 +10,6 @@ To start Karafka server process, use the following CLI command:
 
 ```bash
 bundle exec karafka server
-```
-
-Karafka server can be also started with a limited set of consumer groups to work with. This is useful when you want to have a multi-process environment:
-
-```bash
-# This karafka server will be consuming only with listed consumer groups
-# If you don't provide consumer groups, Karafka will connect using all of them
-bundle exec karafka server --consumer-groups=events users
 ```
 
 ### In batches
@@ -77,7 +69,7 @@ class Consumer < SingleMessageBaseConsumer
 end
 ```
 
-### Topic details
+### Accessing topic details
 
 If for any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it for example, in case you want to perform a different logic within a single consumer, based on the topic from which your messages come:
 
@@ -107,99 +99,96 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-### Batch metadata
+## Consuming from earliest or latest offset
 
-### Starting from earliest or latest offset
+Karafka by default will start consuming messages from the earliest it can reach. You can however configure it to start consuming from the latest message by setting the `initial_offset` value:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Accessing the message payload
-
-Each Karafka message, whether it is accesed from the ```#params_batch``` or directly via the ```#params``` method includes additional metadata information that comes either from the Karafka framework or from the Kafka cluster.
-
-In order to access the Kafka message payload you need to use the `#payload` method. It will deserialize and return the message payload.
 
 ```ruby
-class UsersConsumer < ApplicationConsumer
+# This will start from the earliest (default)
+class App < Karafka::App
+  setup do |config|
+    config.initial_offset = 'earliest'
+  end
+end
+
+# This will make Karafka start consuming from the latest message on a given topic
+class App < Karafka::App
+  setup do |config|
+    config.initial_offset = 'latest'
+  end
+end
+```
+
+**Note**: This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
+
+
+## Consumers persistence
+
+Karafka consumer instances are persistent by default. This means, that a single consumer instance will "live" as long as a given process instance is consuming a given topic partition. This means, you can elevate in-memory processing and buffering to achieve better performance.
+
+Karafka consumer instance for a given topic partition will be re-created in case a given partition was lost and regained.
+
+**Note**: if you decide to utilize such technics, you may be better with manual offset management.
+
+
+```ruby
+# A consumer that will buffer messages in-memory until it reaches 1000 of them. Then it will flush
+# and commit the offset.
+class EventsConsumer < ApplicationConsumer
+  # Flush every 1000 messages
+  MAX_BUFFER_SIZE = 1_000
+
+  def initialize
+    @buffer = []
+  end
+
   def consume
-    params_batch.each do |message|
-      puts "Message payload: #{message.payload}"
+    # Print all the payloads one after another
+    @buffer += messages.payloads
+
+    return if @buffer.size < MAX_BUFFER_SIZE
+
+    flush
+  end
+
+  private
+
+  def flush
+    Event.insert_all @buffer
+
+    mark_as_consumed @buffer.last
+
+    @buffer.clear!
+  end
+end
+```
+
+## Shutdown and partition revoke
+
+Karafka consumer aside from the `#consume` method, allows you to define two additiona methods that you can use to free any resources that you may be using upon certain events. Those are:
+
+- `#revoked` - will be executed when there is a rebalance resulting in given partition being revoked from the current process.
+- `#shutdown` - will be executed when Karafka process is being shutdown.
+
+```ruby
+class LogsConsumer < ApplicationConsumer
+  def initialize
+    @log = File.open('log.txt', 'a')
+  end
+
+  def consume
+    messages.each do |message|
+      @log << message.raw_payload
     end
   end
-end
-```
 
-## Batch messages consuming
-
-When the batch consuming mode is enabled, a single ```#consume``` method will receive a batch of messages from Kafka (although they will always be from a single partition of a single topic). You can access them using the ```#params_batch``` method as presented:
-
-```ruby
-class UsersConsumer < ApplicationConsumer
-  def consume
-    params_batch.each do |message|
-      User.create!(message.payload['user'])
-    end
+  def shutdown
+    @log.close
   end
-end
-```
 
-Keep in mind, that ```params_batch``` is not just a simple array. The messages inside are **lazy** deserialized upon the first usage, so you shouldn't directly flush them into DB. To do so, please use the ```deserialize!``` params batch method to deserialize all the messages:
-
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    EventStore.store(params_batch.deserialize!)
-  end
-end
-```
-
-Parsing will be automatically performed as well if you decide to map parameters (or use any Enumerable module method):
-
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    EventStore.store params_batch.map { |message| message.payload['user'] }
-  end
-end
-```
-
-This was implemented that way because there are cases, in which based on some external parameters you may want to drop consuming of a given batch or some particular messages. If so, then why would you even want to parse them in the first place? :)
-
-If you are not interested in the additional `#params` metadata, you can use the `#payloads` method to access only the Kafka messages deserialized payload:
-
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    EventStore.store params_batch.payloads
-  end
-end
-```
-
-## Single message consuming
-
-In this mode, Karafka's consumer will consume messages separately, one after another. You can think of it as an equivalent of a typical HTTP request processing consumer. Inside of your ```#consume``` method, you will be able to use the ```#params``` method and it will contain a single Kafka message in it.
-
-```ruby
-class UsersConsumer < ApplicationConsumer
-  def consume
-    puts params #=> { 'deserialized' =>true, 'topic' => 'example', 'partition' => 0, ... }
-    User.create!(params.payload['user'])
+  def revoked
+    @log.close
   end
 end
 ```

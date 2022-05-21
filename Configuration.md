@@ -20,7 +20,7 @@ end
 
 **Note**: Karafka allows you to redefine some of the settings per each topic, which means that you can have specific custom configuration, that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
 
-## karafka configuration options
+## Karafka configuration options
 
 List of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/2.0/lib/karafka/setup/config.rb).
 
