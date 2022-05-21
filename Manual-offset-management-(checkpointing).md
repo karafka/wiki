@@ -1,8 +1,6 @@
 **Note:** This is an advanced API that you should only use if you know what you're doing.
 
-By default, Karafka handles offset commit management for you. The offset is committed:
--  for ```batch_fetching true``` - after you're done consuming all messages from a batch
--  for ```batch_fetching false``` - after you've consumed each message
+By default, Karafka handles offset commit management for you. The offset is committed after you're done consuming all the messages from a batch.
 
 This approach is great for most of the cases, however, there are some situations in which you might need a better control over the offset management.
 
@@ -14,13 +12,13 @@ There are several cases in which this API can be helpful:
 
 ## Configuring Karafka not to automatically mark messages as consumed
 
-In order to use this API, you need to switch the ```automatically_mark_as_consumed``` setting to false, either globally for the whole app:
+In order to use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
 
 ```ruby
 class App < Karafka::App
   setup do |config|
     # Other settings
-    config.kafka.automatically_mark_as_consumed = false
+    config.kafka.manual_offset_management = true
   end
 end
 ```
@@ -31,7 +29,7 @@ or on a per consumer group level:
 class App < Karafka::App
   routes.draw do
     consumer_group :events do
-      automatically_mark_as_consumed false
+      manual_offset_management false
 
       topic :user_events do
         consumer EventsConsumer
@@ -50,23 +48,21 @@ To mark a certain message as consumed (so in case of a crash or restart it won't
 ```ruby
 def consume
   # Do something with messages
-  EventStore.store(params_batch.deserialize!)
+  EventStore.store(messages.payloads)
   # And now mark last message as consumed,
   # so we won't consume any of already processed messages again
-  mark_as_consumed! params_batch.last
+  mark_as_consumed! messages.last
 end
 ```
 
-## Example buffer implementation with ```before_stop``` DB flush
+## Example buffer implementation with ```shutdown``` DB flush
 
 When manually controlling the moment of marking the message as consumed, it is also worth taking into consideration graceful application termination process.
 
-For some cases, it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` method from all the Karafka callbacks (as long as you received at least one message):
+For some cases, it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` also from the `#shutdown` method:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
-  include Karafka::Consumers::Callbacks
-
   # Flush to DB only in 1k batches
   FLUSH_SIZE = 1000
 
@@ -82,7 +78,7 @@ class EventsConsumer < ApplicationConsumer
 
   def consume
     # Unparse and add to buffer
-    params_batch.each { |params| buffer << params }
+    messages.each { |message| buffer << message }
 
     # If buffer exceeds the FLUSH_SIZE, it's time to put data into the DB
     if buffer.size >= FLUSH_SIZE
@@ -107,10 +103,10 @@ Even when using the automatic offset management, you can still take advantage of
 ```ruby
 class CountersConsumer < ApplicationConsumer
   def consume
-    params_batch.each_with_index do |params, index|
+    messages.each_with_index do |message, index|
       # Some business logic here
       # Commit every 10 messages processed
-      mark_as_consumed(params) if index % 10 == 0
+      mark_as_consumed(message) if index % 10 == 0
     end
   end
 end

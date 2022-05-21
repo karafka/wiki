@@ -41,30 +41,11 @@ bundle exec karafka server --consumer_groups group_name1 group_name3
 
 ### Can I use ```#seek``` to start processing topics partition from a certain point?
 
-Karafka provices a ```#seek``` client method that can be used to do that. Due to the fact, that Karafka is a long-running process, this option needs to be set up as a callback executed before fetching starts per each consumer group.
+Karafka provices a ```#seek``` consumer method that can be used to do that.
 
-### Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?
+### Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?
 
 Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
-
-### Racecar breaks Rails loading including Karafka when trying to migrate from one to another
-
-This issue has been described [here](https://github.com/karafka/karafka/issues/295).
-
-Racecar under the hood detects that you want Rails by... trying to load Rails. If it is able to, will run the whole app before other things are loaded. In most cases, this won't cause any trouble but from time to time... well it does.
-
-To fix that (as long as you want to use both at the same time), please add the ```return unless Rails.application``` in your ```karafka.rb``` accordingly:
-
-```ruby
-# Ruby on Rails setup
-ENV['RAILS_ENV'] ||= 'development'
-ENV['KARAFKA_ENV'] = ENV['RAILS_ENV']
-require ::File.expand_path('../config/environment', __FILE__)
-
-return unless Rails.application
-
-Rails.application.eager_load!
-```
 
 ### Why Karafka does not restart dead PG connections?
 
@@ -75,7 +56,3 @@ Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troublesh
 ### Does Karafka require gems to be thread-safe?
 
 For most of the time *no*. The only case for which any library that you use should be thread-safe, is a case where you run multiple consumer groups from withing a single Karafka process. As long as you don't do that, neither your libraries nor code needs to be thread-safe.
-
-### How does one scale karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?
-
-Yes. Longer explanation can be found [here](https://github.com/karafka/karafka/wiki/Concurrency#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group).
