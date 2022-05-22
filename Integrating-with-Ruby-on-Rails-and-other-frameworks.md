@@ -1,4 +1,4 @@
-Want to use Karafka with Ruby on Rails or Sinatra? It can be done easily!
+Want to use Karafka with Ruby on Rails or any other framework? It can be done easily!
 
 ## Integrating with Ruby on Rails
 
@@ -18,6 +18,8 @@ bundle exec karafka install
 
 It will create all the needed directories and files as well as the `karafka.rb` configuration file. After that you should be good to go.
 
+We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.0-rails) that illustrated integration with this framework.
+
 ## Integrating with Sinatra and other frameworks
 
 Non-Rails applications differ from one another. There are single file applications and apps with similar to Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow in order to integrate it with Sinatra based application:
@@ -35,5 +37,3 @@ bundle exec karafka install
 ```
 
 After that make sure that while your application is loaded before setting up and booting Karafka.
-
-**Note**: If by any chance you're integrating Karafka with any other framework, we will appreciate your contribution in form of an update to this Wiki page.
