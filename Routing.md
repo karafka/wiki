@@ -17,6 +17,8 @@ Karafka provides two ways of defining topics on which you want to listen:
 
 In this mode, Karafka will create a single consumer group, to which all the topics will belong to.
 
+It is recommended for most of the use-cases and can be changed later on.
+
 ```ruby
 App.routes.draw do
   topic :example do
