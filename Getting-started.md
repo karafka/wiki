@@ -1,4 +1,4 @@
-**Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka-locally-with-Docker).
+**Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka.md).
 
 Add this line to your application's `Gemfile`:
 
