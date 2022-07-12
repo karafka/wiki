@@ -20,13 +20,19 @@ In this mode, Karafka will create a single consumer group, to which all the topi
 It is recommended for most of the use-cases and can be changed later on.
 
 ```ruby
-App.routes.draw do
-  topic :example do
-    consumer ExampleConsumer
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
   end
 
-  topic :example2 do
-    consumer Example2Consumer
+  routes.draw do
+    topic :example do
+      consumer ExampleConsumer
+    end
+
+    topic :example2 do
+      consumer Example2Consumer
+    end
   end
 end
 ```
@@ -36,20 +42,26 @@ end
 In this mode, Karafka will use a single consumer group per each of the topics defined within a single `#consumer_group` block.
 
 ```ruby
-App.routes.draw do
-  consumer_group :group_name do
-    topic :example do
-      consumer ExampleConsumer
-    end
-
-    topic :example2 do
-      consumer ExampleConsumer2
-    end
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
   end
 
-  consumer_group :group_name2 do
-    topic :example3 do
-      consumer Example2Consumer3
+  routes.draw do
+    consumer_group :group_name do
+      topic :example do
+        consumer ExampleConsumer
+      end
+
+      topic :example2 do
+        consumer ExampleConsumer2
+      end
+    end
+
+    consumer_group :group_name2 do
+      topic :example3 do
+        consumer Example2Consumer3
+      end
     end
   end
 end
@@ -77,15 +89,21 @@ There are several options you can set inside of the ```topic``` block. All of th
 
 
 ```ruby
-App.routes.draw do
-  consumer_group :videos_consumer do
-    topic :binary_video_details do
-      consumer Videos::DetailsConsumer
-      deserializer Serialization::Binary::Deserializer.new
-    end
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
 
-    topic :new_videos do
-      consumer Videos::NewVideosConsumer
+  routes.draw do
+    consumer_group :videos_consumer do
+      topic :binary_video_details do
+        consumer Videos::DetailsConsumer
+        deserializer Serialization::Binary::Deserializer.new
+      end
+
+      topic :new_videos do
+        consumer Videos::NewVideosConsumer
+      end
     end
   end
 end

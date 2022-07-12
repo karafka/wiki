@@ -127,7 +127,7 @@ end
 
 Karafka consumer instances are persistent by default. This means, that a single consumer instance will "live" as long as a given process instance is consuming a given topic partition. This means, you can elevate in-memory processing and buffering to achieve better performance.
 
-Karafka consumer instance for a given topic partition will be re-created in case a given partition was lost and regained.
+Karafka consumer instance for a given topic partition will be re-created in case a given partition was lost and re-assigned.
 
 **Note**: if you decide to utilize such technics, you may be better with manual offset management.
 

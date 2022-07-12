@@ -41,7 +41,7 @@ bundle exec karafka server --consumer_groups group_name1 group_name3
 
 ### Can I use ```#seek``` to start processing topics partition from a certain point?
 
-Karafka provices a ```#seek``` consumer method that can be used to do that.
+Karafka has a ```#seek``` consumer method that can be used to do that.
 
 ### Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?
 
@@ -55,4 +55,4 @@ Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troublesh
 
 ### Does Karafka require gems to be thread-safe?
 
-For most of the time *no*. The only case for which any library that you use should be thread-safe, is a case where you run multiple consumer groups from withing a single Karafka process. As long as you don't do that, neither your libraries nor code needs to be thread-safe.
+Yes. Karafka uses mutliple threads to process data similar to how Puma or Sidekiq does it. Same rules apply.

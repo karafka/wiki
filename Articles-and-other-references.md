@@ -1,8 +1,7 @@
 ## Libraries and components
 
-* [Karafka framework](https://github.com/karafka/karafka)
+* [Karafka](https://github.com/karafka/karafka)
 * [WaterDrop](https://github.com/karafka/waterdrop)
-* [Envlogic](https://github.com/karafka/envlogic)
 * [Apache Kafka](http://kafka.apache.org/)
 * [librdkafka](https://github.com/edenhill/librdkafka)
 

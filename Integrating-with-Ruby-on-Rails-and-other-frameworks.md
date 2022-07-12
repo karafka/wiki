@@ -2,7 +2,7 @@ Want to use Karafka with Ruby on Rails or any other framework? It can be done ea
 
 ## Integrating with Ruby on Rails
 
-Karafka `2.0` can detect Ruby on Rails by itself, so no extra changes are required aside from running the standard installation process.
+Karafka can detect Ruby on Rails by itself, so no extra changes are required aside from running the standard installation process.
 
 Add Karafka to your Gemfile:
 

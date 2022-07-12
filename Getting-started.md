@@ -30,4 +30,4 @@ and follow the instructions from the [example apps Wiki](https://github.com/kara
 
 ## Use-cases, edge-cases and usage examples
 
-Karafka `2.0` ships with a full integration test suite that illustrates various use-cases and edge-cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/2.0/spec/integrations) of the Karafka repository to see them.
+Karafka ships with a full integration test suite that illustrates various use-cases and edge-cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/2.0/spec/integrations) of the Karafka repository to see them.
