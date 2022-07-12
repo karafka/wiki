@@ -6,10 +6,9 @@
 6. [Can I start Karafka process with only particular consumer groups running for given topics?](#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 7. [Can I use ```#seek``` to start processing topics partition from a certain point?](#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
 8. [Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?](#why-karafka-does-not-pre-initialize-consumers-so-all-the-callbacks-can-be-executed-in-their-context)
-9. [Racecar breaks Rails loading including Karafka when trying to migrate from one to another](#racecar-breaks-rails-loading-including-karafka-when-trying-to-migrate-from-one-to-another)
-10. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
-11. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
-12. [How does one scale Karafka to multiple threads per consumer group? Can it be achieved by running multiple processes of Karafka?](#how-does-one-scale-karafka-to-multiple-threads-per-consumer-group-can-it-be-achieved-by-running-multiple-processes-of-karafka)
+9. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
+10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
+11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -56,3 +55,7 @@ Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troublesh
 ### Does Karafka require gems to be thread-safe?
 
 Yes. Karafka uses mutliple threads to process data similar to how Puma or Sidekiq does it. Same rules apply.
+
+### When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
+
+Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be required [before](https://github.com/simplecov-ruby/simplecov#getting-started=) any code is loaded.

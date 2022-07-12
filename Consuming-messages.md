@@ -123,7 +123,31 @@ end
 **Note**: This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
 
-## Consumers persistence
+## Detecting revocation midway
+
+Karafka will invoke a consumer method called `#revoked` (if defined) each time a partition is revoked. It may happen though, that the revocation occurs during the processing.
+
+Both `#mark_as_consumed` and `#mark_as_consumed!` return boolean result that indicates whether given topic partition is still owned by the consumer and set its revocation state. You can use this result to early terminate processing midway.
+
+Once you mark message as consumed, you can also use the `#revoked?` to check the revocation state.
+
+```ruby
+def consume
+  messages.each do |message|
+    Message.create!(message)
+
+    mark_as_consumed(message)
+
+    return if revoked?
+  end
+end
+```
+
+**Note**: You need to mark message as consumed in order for the `#revoked?` method result to change.
+
+**Note**: When using the **Long Running Jobs** feature, `#revoked?` result changes independently from marking messages.
+
+## Consumer persistence
 
 Karafka consumer instances are persistent by default. This means, that a single consumer instance will "live" as long as a given process instance is consuming a given topic partition. This means, you can elevate in-memory processing and buffering to achieve better performance.
 
@@ -164,7 +188,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-## Shutdown and partition revoke
+## Shutdown and partition revocation hooks
 
 Karafka consumer aside from the `#consume` method, allows you to define two additiona methods that you can use to free any resources that you may be using upon certain events. Those are:
 

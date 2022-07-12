@@ -4,9 +4,8 @@
 * [Configuration](https://github.com/karafka/karafka/wiki/Configuration)
 * [Setting up Kafka locally with Docker](https://github.com/karafka/karafka/wiki/Setting-up-Kafka-locally-with-Docker)
 * [Routing](https://github.com/karafka/karafka/wiki/Routing)
-* [Fetching messages](https://github.com/karafka/karafka/wiki/Fetching-messages)
 * [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages)
-* [Sending messages](https://github.com/karafka/karafka/wiki/Sending-messages)
+* [Producing messages](https://github.com/karafka/karafka/wiki/Producing-messages)
 * [Auto reload of code changes in development](https://github.com/karafka/karafka/wiki/Auto-reload-of-code-changes-in-development)
 * [Testing](https://github.com/karafka/karafka/wiki/Testing)
 * [Deployment](https://github.com/karafka/karafka/wiki/Deployment)
@@ -16,8 +15,6 @@
 ## Components and other details
 
 * [Concurrency and multithreading](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading.md)
-* [Consumers](https://github.com/karafka/karafka/wiki/Consumers)
-* [Consumer callbacks](https://github.com/karafka/karafka/wiki/Consumer-callbacks)
 * [Events, monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging)
 * [Deserialization](https://github.com/karafka/karafka/wiki/Deserialization)
 * [Error handling and back off policy](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy)
