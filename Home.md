@@ -1,4 +1,4 @@
-* [[Getting started]]
+* [Getting started](Getting-Started)
 * [[Configuration]]
 * [[Setting up Kafka locally with Docker]]
 * [[Routing]]
