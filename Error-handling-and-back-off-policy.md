@@ -11,7 +11,7 @@ Depending on the state Karafka behaves differently upon encountering exceptions.
 Any error that occurs during the `initialization` phase of the `karafka server` will crash it immediately. This includes also critical configuration errors:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     # Client id must always be present
     config.client_id = nil

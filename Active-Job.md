@@ -1,4 +1,4 @@
-Active Job is a standard interface for interacting with job runners. Active Job can be configured to work with Karafka.
+Active Job is a standard interface for interacting with job runners in Ruby on Rails. Active Job can be configured to work with Karafka.
 
 ## Active Job Setup
 

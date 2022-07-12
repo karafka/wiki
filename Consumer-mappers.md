@@ -19,7 +19,7 @@ end
 In order to use it, assign it as your default ```consumer_mapper```:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     config.consumer_mapper = MyCustomConsumerMapper.new
     # Other config options

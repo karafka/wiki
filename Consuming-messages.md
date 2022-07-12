@@ -106,14 +106,14 @@ Karafka by default will start consuming messages from the earliest it can reach.
 
 ```ruby
 # This will start from the earliest (default)
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     config.initial_offset = 'earliest'
   end
 end
 
 # This will make Karafka start consuming from the latest message on a given topic
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     config.initial_offset = 'latest'
   end

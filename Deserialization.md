@@ -48,7 +48,7 @@ end
 
 ## Lazy deserialization
 
-All of the payload data will not be deserialized unless needed. This makes things like metadata based filtering or raw string based filtering extremely fast because no data parsing is involved.
+Payload will not be deserialized unless needed. This makes things like metadata based filtering or raw string based filtering extremely fast because no data parsing is involved.
 
 Whenever you invoke the `Karafka::Messages::Message#payload` method, the deserialization will happen and the result of it will be stored. This means that consecutive `#payload` invocation on the same message won't deserialize it over and over again.
 

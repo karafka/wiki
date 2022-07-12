@@ -1,4 +1,4 @@
-Karafka is a complex tool, that contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
+Karafka contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
 
 * `karafka` options - options directly related to Karafka framework and it's components.
 
@@ -7,7 +7,7 @@ Karafka is a complex tool, that contains multiple configuration options. To keep
 To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     config.client_id = 'my_application'
     # librdkafka configuration options need to be set as symbol values
@@ -22,7 +22,7 @@ end
 
 ## Karafka configuration options
 
-List of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/2.0/lib/karafka/setup/config.rb).
+List of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).
 
 ## librdkafka driver configuration options
 
@@ -33,7 +33,7 @@ List of all the configuration options related to `librdkafka` with their details
 For additional setup and/or configuration tasks you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that need to be based on Karafka internal settings.
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   # Setup and other things...
 
   # Once everything is loaded and done, assign Karafka app logger as a MyComponent logger

@@ -8,13 +8,13 @@ Please look at the [karafka-testing README](https://github.com/karafka/testing) 
 
 ## Consumer groups and topics structure
 
-Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.consumer_groups``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.routes``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
-RSpec.describe Karafka::App.consumer_groups do
+RSpec.describe Karafka::App.routes do
   describe 'batched group' do
     let(:group) do
-      Karafka::App.consumer_groups.find do |cg|
+      Karafka::App.routes.find do |cg|
         cg.name == 'batched_group'
       end
     end

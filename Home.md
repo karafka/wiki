@@ -26,7 +26,6 @@
 * [WaterDrop reconfiguration](https://github.com/karafka/karafka/wiki/WaterDrop-reconfiguration)
 * [Exit codes](https://github.com/karafka/karafka/wiki/Exit-codes)
 * [Articles and other references](https://github.com/karafka/karafka/wiki/Articles-and-other-references)
-* [Note on Patches and Pull Requests](https://github.com/karafka/karafka/wiki/Note-on-Patches-and-Pull-Requests)
 
 ## Problems and Troubleshooting
 

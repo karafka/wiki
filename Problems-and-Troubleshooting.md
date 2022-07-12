@@ -2,7 +2,7 @@
 
 Read below for tips.  If you still need help, you can:
 
-* Ask your question in [The Karafka official Gitter channel](https://gitter.im/karafka/karafka)
+* Ask your question in [The Karafka official Slack channel](https://slack.karafka.io)
 * [Open a GitHub issue](../issues/new).  (Don't be afraid to open an issue, even if it's not a Karafka bug.  An issue is just a conversation, not an accusation!)
 
 You **should not** email any Karafka committer privately. Please respect our time and efforts by sticking to one of the two above.

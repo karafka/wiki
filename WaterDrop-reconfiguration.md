@@ -5,7 +5,7 @@ Karafka comes with full WaterDrop support. It also integrates automatically with
 In case you want to change WaterDrop configuration settings, you can do this by overwriting the default `producer` while configuring Karafka application:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     # Karafka config...
     config.client_id = ::Settings.name

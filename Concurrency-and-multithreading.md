@@ -6,7 +6,7 @@ Karafka uses native Ruby threads to achieve concurrent processing in three scena
 
 ## Parallel messages processing
 
-After messages are fetched from Kafka, Karafka will split incoming messages into separate jobs based on the topics and partitions. Those jobs will be then put on a queue from which a poll of workers can consume. All the ordering warranties will be preserved.
+After messages are fetched from Kafka, Karafka will split incoming messages into separate jobs. Those jobs will be then put on a queue from which a poll of workers can consume. All the ordering warranties will be preserved.
 
 You can control number of workers you want to start by using the `concurrency` setting:
 

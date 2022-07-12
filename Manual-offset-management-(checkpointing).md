@@ -15,7 +15,7 @@ There are several cases in which this API can be helpful:
 In order to use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   setup do |config|
     # Other settings
     config.kafka.manual_offset_management = true
@@ -26,7 +26,7 @@ end
 or on a per consumer group level:
 
 ```ruby
-class App < Karafka::App
+class KarafkaApp < Karafka::App
   routes.draw do
     consumer_group :events do
       manual_offset_management false
