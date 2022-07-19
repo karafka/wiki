@@ -25,14 +25,14 @@
 
 ## Karafka Pro and Commercial Aspects
 
-* [Purchase Karafka Pro](TBA)
-* [Commercial FAQ](Pro/FAQ)
-* [Commercial Support](Pro/Support)
+* [Purchase Karafka Pro](TBA) - To be added
+* [Commercial FAQ](Pro/FAQ) - To be added
+* [Commercial Support](Pro/Support) - To be added
 
 ### Features and enhancements
 
-* [Long Running Jobs](Pro/Long-Running-Jobs)
-* [Virtual Partitions](Pro/Virtual-Partitions)
-* [Enhanced Active Job](Pro/Enhanced-Active-Job)
-* [Enhanced Scheduler](Pro/Enhanced-Scheduler)
-* [Messages Encryption](Pro/Messages-Encryption)
+* [Long Running Jobs](Pro/Long-Running-Jobs) - To be added
+* [Virtual Partitions](Pro/Virtual-Partitions) - To be added
+* [Enhanced Active Job](Pro/Enhanced-Active-Job) - To be added
+* [Enhanced Scheduler](Pro/Enhanced-Scheduler) - To be added
+* [Messages Encryption](Pro/Messages-Encryption) - To be added
