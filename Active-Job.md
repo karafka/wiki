@@ -2,7 +2,7 @@ Active Job is a standard interface for interacting with job runners in Ruby on R
 
 ## Active Job Setup
 
-The Active Job adapter must be set to `:karafka` or else it will use the default value provided by Rails, which is `:async`. This can be done in the `config/application.rb`:
+The Active Job adapter must be set to `:karafka` or it will use the default value provided by Rails, which is `:async`. This can be done in the `config/application.rb`:
 
 ```ruby
 class Application < Rails::Application
@@ -30,7 +30,7 @@ class ExampleJob < ActiveJob::Base
 end
 ```
 
-In order for Karafka server to understand which of the topics contain Active Job data, you need to indicate this in your `karafka.rb` routing section using the `#active_job_topic`:
+For Karafka server to understand which of the topics contain Active Job data, you need to indicate this in your `karafka.rb` routing section using the `#active_job_topic`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -61,7 +61,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: ActiveJob adapter supports both `Long Running Jobs` as well as `Virtual Partitions` Pro features.
+**Note**: ActiveJob adapter supports both `Long-Running Jobs` and `Virtual Partitions` Pro features.
 
 ## Usage
 
