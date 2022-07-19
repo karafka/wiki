@@ -46,8 +46,6 @@ Karafka allows you to parallelize further processing of data from a single parti
 
 Virtual partitions allow you to further divide messages from a single partition based on your own criteria. Each such chunk will then be processed separately.
 
-There is a dedicated section about Virtual Partitions [here](link).
-
 ## Consumer group multi-threading
 
 Since each consumer group requires a separate connection and a thread, we do this concurrently.
