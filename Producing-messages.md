@@ -1,6 +1,6 @@
-It's quite common when using Kafka, to treat applications as parts of a bigger pipeline (similarly to Bash pipeline) and forward processing results to other applications. Karafka provides a way of dealing with that by allowing you to use the [WaterDrop](https://github.com/karafka/waterdrop) messages producer from any place within your application.
+It's quite common when using Kafka to treat applications as parts of a bigger pipeline (similarly to Bash pipeline) and forward processing results to other applications. Karafka provides a way of dealing with that by allowing you to use the [WaterDrop](https://github.com/karafka/waterdrop) messages producer from any place within your application.
 
-You can access pre-initialized WaterDrop producer instance using the `Karafka.producer` method from any place within your codebase.
+You can access the pre-initialized WaterDrop producer instance using the `Karafka.producer` method from any place within your codebase.
 
 ```ruby
 Karafka.producer.produce_async(
