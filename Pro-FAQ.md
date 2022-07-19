@@ -16,6 +16,10 @@ See [COMM-LICENSE](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) 
 
 Every organization running Karafka Pro on its own servers must purchase a subscription. There's no limit to the number of servers or environments used by that organization. Your subscription will automatically renew every year.
 
+## Do I require to change source of the package?
+
+**No**. All Karafka Pro code is stored in the same package and only included and used with a valid license key. You do not have to make any changes to your `Gemfile` setup to use Karafka Pro.
+
 ## What happens if my subscription lapses?
 
 If we cannot charge your card, we will email you and try three more times over a week. If it still fails, your subscription will be canceled.
