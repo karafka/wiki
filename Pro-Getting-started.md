@@ -1,6 +1,6 @@
-To activate your Karafka Pro subscription you need to do two things:
+To activate your Karafka Pro subscription, you need to do two things:
 
-1. First add your license token in your `karafka.rb` file:
+1. First, add your license token in your `karafka.rb` file:
 
 ```ruby
 class KarafkaApp < Karafka::App
