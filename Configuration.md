@@ -1,6 +1,6 @@
 Karafka contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
 
-* `karafka` options - options directly related to Karafka framework and it's components.
+* `karafka` options - options directly related to the Karafka framework and its components.
 
 * `librdkafka` options - options related to [librdkafka](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)
 
@@ -18,19 +18,19 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: Karafka allows you to redefine some of the settings per each topic, which means that you can have specific custom configuration, that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
+**Note**: Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
 
 ## Karafka configuration options
 
-List of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).
+A list of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).
 
 ## librdkafka driver configuration options
 
-List of all the configuration options related to `librdkafka` with their details and defaults can be found [here](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md).
+A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md).
 
 ## External components configurators
 
-For additional setup and/or configuration tasks you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used for example to configure some external components that need to be based on Karafka internal settings.
+For additional setup and/or configuration tasks, you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used, for example, to configure some external components that need to be based on Karafka internal settings.
 
 ```ruby
 class KarafkaApp < Karafka::App
