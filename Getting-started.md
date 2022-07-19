@@ -3,7 +3,7 @@
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem 'karafka'
+gem 'karafka', '2.0.0.rc2'
 ```
 
 and then execute:
