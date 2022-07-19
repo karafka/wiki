@@ -1,4 +1,4 @@
-**Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka.md).
+**Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka).
 
 Add this line to your application's `Gemfile`:
 
@@ -49,7 +49,7 @@ bundle exec karafka server
 
 ## Example applications
 
-If you have any problems settings things up or want a ready application to play around, then the best idea is to just clone our examples repository:
+If you have any problems settings things up or want a ready application to play around with, then the best idea is just to clone our examples repository:
 
 ```bash
 git clone https://github.com/karafka/example-apps ./example_apps
@@ -57,6 +57,6 @@ git clone https://github.com/karafka/example-apps ./example_apps
 
 and follow the instructions from the [example apps Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
 
-## Use-cases, edge-cases and usage examples
+## Use-cases, edge-cases, and usage examples
 
 Karafka ships with a full integration test suite that illustrates various use-cases and edge-cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository to see them.
