@@ -26,6 +26,7 @@
 ## Karafka Pro and Commercial Aspects
 
 * [Purchase Karafka Pro](TBA) - To be added
+* [Getting started](Pro-Getting-started)
 * [Commercial FAQ](Pro-FAQ)
 * [Commercial Support](Pro-Support) - To be added
 
