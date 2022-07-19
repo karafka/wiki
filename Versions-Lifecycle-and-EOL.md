@@ -16,3 +16,25 @@ Karafka versions or release series are categorized below into the following phas
 | 1.2     | EOL         | 2020-08-01 |
 | 1.1     | EOL         | 2019-03-01 |
 | 1.0     | EOL         | 2018-11-07 |
+
+## Ruby versions support
+
+We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
+
+| Version | Status      | EOL date   |
+|---------|-------------|------------|
+| 3.1     | Active      | N/A        |
+| 3.0     | Active      | N/A        |
+| 2.7     | Active      | N/A        |
+| 2.6     | EOL         | 2022-04-12 |
+
+## Ruby on Rails versions support
+
+Karafka will support two major versions of Ruby on Rails. Any previous versions may or may not be supported depending on the effort and ability to provide features.
+
+| Version | Status      | EOL date   |
+|---------|-------------|------------|
+| 7.0     | Active      | N/A        |
+| 6.1     | Active      | N/A        |
+| 5.2     | Maintenance | N/A        |
+| 4.2     | EOL         | 2021-05-01 |
