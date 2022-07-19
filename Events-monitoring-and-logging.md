@@ -6,7 +6,7 @@ If you are looking for examples of how to implement your own listeners, [here](h
 
 The only thing you need to be aware of when developing your own listeners is that the internals of the payload may differ depending on the instrumentation place.
 
-*Full* list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
+Full list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
 
 ## Subscribing to the instrumentation events
 
