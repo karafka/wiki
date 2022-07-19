@@ -4,9 +4,9 @@ Karafka fetches and consumes messages in batches by default.
 
 ## Consuming messages
 
-Karafka framework has a long-running server process that is responsible for fetching and consuming messages.
+Karafka framework has a long-running server process responsible for fetching and consuming messages.
 
-To start Karafka server process, use the following CLI command:
+To start the Karafka server process, use the following CLI command:
 
 ```bash
 bundle exec karafka server
@@ -14,9 +14,9 @@ bundle exec karafka server
 
 ### In batches
 
-Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable that contains received data as well as additional information that can be useful during the processing.
+Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable containing received data and additional information that can be useful during the processing.
 
-In order to access the payload of your messages, you can use the `#payload` method available for each received message:
+To access the payload of your messages, you can use the `#payload` method available for each received message:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -42,7 +42,7 @@ end
 
 ### One at a time
 
-While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may end up wanting to process messages one at a time.
+While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may want to process messages one at a time.
 
 You can achieve this by defining a base consumer with such a capability:
 
@@ -56,7 +56,7 @@ class SingleMessageBaseConsumer < Karafka::BaseConsumer
       consume_one
     end
 
-    # This could be moved into the loop but would slow down the processing, it's a trade-off
+    # This could be moved into the loop but would slow down the processing, it is a trade-off
     # between retrying the batch and processing performance
     mark_as_consumed(messages.last)
   end
@@ -71,7 +71,7 @@ end
 
 ### Accessing topic details
 
-If for any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it for example, in case you want to perform a different logic within a single consumer, based on the topic from which your messages come:
+If, in any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it, for example, in case you want to perform a different logic within a single consumer based on the topic from which your messages come:
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -101,7 +101,7 @@ end
 
 ## Consuming from earliest or latest offset
 
-Karafka by default will start consuming messages from the earliest it can reach. You can however configure it to start consuming from the latest message by setting the `initial_offset` value:
+Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value:
 
 
 ```ruby
@@ -125,11 +125,11 @@ end
 
 ## Detecting revocation midway
 
-Karafka will invoke a consumer method called `#revoked` (if defined) each time a partition is revoked. It may happen though, that the revocation occurs during the processing.
+Karafka will invoke a consumer method called `#revoked` (if defined) each time a partition is revoked. It may happen, though, that the revocation occurs during the processing.
 
-Both `#mark_as_consumed` and `#mark_as_consumed!` return boolean result that indicates whether given topic partition is still owned by the consumer and set its revocation state. You can use this result to early terminate processing midway.
+Both `#mark_as_consumed` and `#mark_as_consumed!` return a boolean result that indicates whether the given topic partition is still owned by the consumer and set its revocation state. You can use this result to terminate processing early midway.
 
-Once you mark message as consumed, you can also use the `#revoked?` to check the revocation state.
+Once you mark the message as consumed, you can also use the `#revoked?` to check the revocation state.
 
 ```ruby
 def consume
@@ -143,21 +143,21 @@ def consume
 end
 ```
 
-**Note**: You need to mark message as consumed in order for the `#revoked?` method result to change.
+**Note**: You need to mark the message as consumed for the `#revoked?` method result to change.
 
 **Note**: When using the **Long Running Jobs** feature, `#revoked?` result changes independently from marking messages.
 
 ## Consumer persistence
 
-Karafka consumer instances are persistent by default. This means, that a single consumer instance will "live" as long as a given process instance is consuming a given topic partition. This means, you can elevate in-memory processing and buffering to achieve better performance.
+Karafka consumer instances are persistent by default. This means that a single consumer instance will "live" as long as a given process instance consumes a given topic partition. This means you can elevate in-memory processing and buffering to achieve better performance.
 
-Karafka consumer instance for a given topic partition will be re-created in case a given partition was lost and re-assigned.
+Karafka consumer instance for a given topic partition will be re-created in case a given partition is lost and re-assigned.
 
 **Note**: if you decide to utilize such technics, you may be better with manual offset management.
 
 
 ```ruby
-# A consumer that will buffer messages in-memory until it reaches 1000 of them. Then it will flush
+# A consumer that will buffer messages in memory until it reaches 1000 of them. Then it will flush
 # and commit the offset.
 class EventsConsumer < ApplicationConsumer
   # Flush every 1000 messages
@@ -190,10 +190,10 @@ end
 
 ## Shutdown and partition revocation hooks
 
-Karafka consumer aside from the `#consume` method, allows you to define two additiona methods that you can use to free any resources that you may be using upon certain events. Those are:
+Karafka consumer, aside from the `#consume` method, allows you to define two additional methods that you can use to free any resources that you may be using upon certain events. Those are:
 
-- `#revoked` - will be executed when there is a rebalance resulting in given partition being revoked from the current process.
-- `#shutdown` - will be executed when Karafka process is being shutdown.
+- `#revoked` - will be executed when there is a rebalance resulting in the given partition being revoked from the current process.
+- `#shutdown` - will be executed when the Karafka process is being shutdown.
 
 ```ruby
 class LogsConsumer < ApplicationConsumer
