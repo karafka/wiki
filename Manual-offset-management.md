@@ -1,14 +1,14 @@
 By default, Karafka handles offset commit management for you. The offset is committed after you're done consuming all the messages from a batch.
 
-This approach is great for most of the cases, however, there are some situations in which you might need a better control over the offset management.
+This approach is excellent for most cases. However, there are some situations where you might need better control over offset management.
 
 There are several cases in which this API can be helpful:
 
-- In memory DDD sagas realization,
+- In memory of DDD sagas realization,
 - Buffering,
 - Simulating transactions.
 
-## Configuring Karafka not to automatically mark messages as consumed
+## Configuring Karafka not to mark messages as consumed automatically
 
 In order to use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
 
@@ -39,22 +39,22 @@ end
 ```
 ## Marking messages as consumed
 
-To mark a certain message as consumed (so in case of a crash or restart it won't be consumed again), you can use one of two marking methods:
+To mark a certain message as consumed (so in case of a crash or restart, it won't be consumed again), you can use one of two marking methods:
 
 - ```#mark_as_consumed``` - for a non-blocking eventual offset commitment.
-- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure, that the offset has been stored.
+- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure that the offset has been stored.
 
 ```ruby
 def consume
   # Do something with messages
   EventStore.store(messages.payloads)
-  # And now mark last message as consumed,
+  # And now mark the last message as consumed,
   # so we won't consume any of already processed messages again
   mark_as_consumed! messages.last
 end
 ```
 
-Both `#mark_as_consumed` and `#mark_as_consumed!` return boolean value indicating, whether your consumer instance still owns given topic partition. In case there was a rebalance and the partition is no longer owned by a consumer, the value returned will be `false`. You can use this result to early stop processing:
+Both `#mark_as_consumed` and `#mark_as_consumed!` return a boolean value indicating whether your consumer instance still owns the given topic partition. If there was a rebalance and the partition is no longer owned by a consumer, the value returned will be `false`. You can use this result to early stop processing:
 
 ```ruby
 def consume
@@ -71,7 +71,7 @@ end
 
 When manually controlling the moment of marking the message as consumed, it is also worth taking into consideration graceful application termination process.
 
-For some cases, it might be a moment in which for example you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` also from the `#shutdown` method:
+For some cases, it might be a moment in which, for example, you want to flush the buffer regardless of it not reaching the desired threshold. You can use the ```#mark_as_consumed``` also from the `#shutdown` method:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -110,7 +110,7 @@ end
 
 ## Mixing manual and automatic offset management
 
-Even when using the automatic offset management, you can still take advantage of this API. For example, you may want to commit the offset manually after a certain number of messages consumed from a batch:
+Even when using automatic offset management, you can still take advantage of this API. For example, you may want to commit the offset manually after a certain number of messages are consumed from a batch:
 
 ```ruby
 class CountersConsumer < ApplicationConsumer
