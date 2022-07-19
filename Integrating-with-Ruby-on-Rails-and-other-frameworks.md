@@ -2,7 +2,7 @@ Want to use Karafka with Ruby on Rails or any other framework? It can be done ea
 
 ## Integrating with Ruby on Rails
 
-Karafka can detect Ruby on Rails by itself, so no extra changes are required aside from running the standard installation process.
+Karafka detects Ruby on Rails by itself, so no extra changes are required besides running the standard installation process.
 
 Add Karafka to your Gemfile:
 
@@ -16,13 +16,13 @@ and run the installation command:
 bundle exec karafka install
 ```
 
-It will create all the needed directories and files as well as the `karafka.rb` configuration file. After that you should be good to go.
+It will create all the needed directories and files and the `karafka.rb` configuration file. After that, you should be good to go.
 
-We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.0-rails) that illustrated integration with this framework.
+We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.0-rails) that illustrates integration with this framework.
 
 ## Integrating with Sinatra and other frameworks
 
-Non-Rails applications differ from one another. There are single file applications and apps with similar to Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow in order to integrate it with Sinatra based application:
+Non-Rails applications differ from one another. There are single-file applications and apps similar to the Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow to integrate it with Sinatra based application:
 
 Add Karafka to your application Gemfile:
 
@@ -36,4 +36,4 @@ run the installation process:
 bundle exec karafka install
 ```
 
-After that make sure that while your application is loaded before setting up and booting Karafka.
+After that, ensure that your application is loaded before setting up and booting Karafka.
