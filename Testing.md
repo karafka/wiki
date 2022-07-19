@@ -1,4 +1,4 @@
-Karafka components work in isolation and are pretty simple. While testing, there are 3 crucial parts you should focus on:
+Karafka components work in isolation and are pretty simple. While testing, there are three crucial parts you should focus on:
 
 ## Consumers and producers
 
