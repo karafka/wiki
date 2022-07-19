@@ -1,8 +1,8 @@
-Karafka by default assumes, you are receiving and sending JSON information.
+Karafka, by default, assumes you are receiving and sending JSON information.
 
-This means, that if you receive for example an XML payload, deserialization will fail.
+This means that if you receive, for example, an XML payload, deserialization will fail.
 
-Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with incoming messages and accept full `message` object as an argument.
+Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with incoming messages and accept the full `message` object as an argument.
 
 You can set a default deserializer that will be used for all the topics, or you can specify a deserializer per topic in the routing.
 
@@ -23,7 +23,7 @@ end
 
 The default deserializer is `Karafka::Serialization::Json::Deserializer`.
 
-Also, deserializes can use headers and topic values from the message for decode specific formats, for example, Avro:
+Also, deserializes can use headers and topic values from the message to decode specific formats, for example, Avro:
 
 ```ruby
 class AvroDeserializer
@@ -48,13 +48,13 @@ end
 
 ## Lazy deserialization
 
-Payload will not be deserialized unless needed. This makes things like metadata based filtering or raw string based filtering extremely fast because no data parsing is involved.
+The payload will not be deserialized unless needed. This makes things like metadata-based filtering or raw string-based filtering extremely fast because no data parsing is involved.
 
-Whenever you invoke the `Karafka::Messages::Message#payload` method, the deserialization will happen and the result of it will be stored. This means that consecutive `#payload` invocation on the same message won't deserialize it over and over again.
+Whenever you invoke the `Karafka::Messages::Message#payload` method, the deserialization will happen, and the result will be stored. This means that consecutive `#payload` invocation on the same message won't deserialize it repeatedly.
 
-In case you would want to access raw payload data, you can use the `Karafka::Messages::Message#raw_payload` method.
+If you want to access raw payload data, you can use the `Karafka::Messages::Message#raw_payload` method.
 
-Below you can find an example of elevation of this feature. Any time you expect occurences of certain characters in a JSON structure, you can quickly pre-filter raw data and only deserialize those that potentially may include what you are looking for.
+Below you can find an example of the elevation of this feature. Any time you expect occurrences of certain characters in a JSON structure, you can quickly pre-filter raw data and only deserialize those that potentially may include what you are looking for.
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
