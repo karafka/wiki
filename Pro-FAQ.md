@@ -52,6 +52,10 @@ In general, yes. A license key is required to get access to all the Pro features
 
 **No**. We offer a monthly trial during which you can check out Karafka Pro capabilities.
 
+## Can I accidentally use Pro because it is in the same repository?
+
+**No**. The Pro code is **never** loaded unless a valid license key is present.
+
 ## Ethics, Privacy, and Information Usage
 
 We only collect enough customer information to fill out a standard invoice for billing purposes. Customer information is never shared or sold to anyone.
