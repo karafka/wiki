@@ -2,7 +2,7 @@ Karafka is a framework for producing and consuming messages using Kafka. It requ
 
 ## Producer
 
-Producer can run in any Ruby process and allows you to produce messages to Kafka.
+The producer can run in any Ruby process and allows you to produce messages to Kafka.
 
 ```ruby
 # Fast, non-blocking, recommended
@@ -14,7 +14,7 @@ Karafka.producer.produce_sync(topic: 'events', payload: Events.last.to_json)
 Karafka.producer.class #=> WaterDrop::Producer
 ```
 
-Karafka uses [WaterDrop](https://github.com/karafka/waterdrop) to produce messages. It is a standalone Karafka framework component that can be used also in applications that only produce messages.
+Karafka uses [WaterDrop](https://github.com/karafka/waterdrop) to produce messages. It is a standalone Karafka framework component that can also be used in applications that only produce messages.
 
 Please refer to [WaterDrop README](https://github.com/karafka/waterdrop#usage=) for more details.
 
@@ -38,4 +38,4 @@ end
 
 Apache Kafka acts as a storage backbone for Karafka.
 
-See [Setting up Kafka](Setting-up-Kafka.md) for info about Kafka configuration.
+See [Setting up Kafka](Setting-up-Kafka) for info about Kafka configuration.
