@@ -4,7 +4,7 @@ Karafka is currently being used in production with the following deployment meth
   - Docker
   - Heroku
 
-Since the only thing that is long-running is Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
+Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
 ## systemd (+ Capistrano)
 
@@ -41,7 +41,7 @@ SyslogIdentifier=karafka
 WantedBy=multi-user.target
 ```
 
-In case you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
+If you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
 
 ```ruby
 # frozen_string_literal: true
