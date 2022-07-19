@@ -1,10 +1,10 @@
-Routing engine provides an interface to describe how messages from all the topics should be received and consumed.
+The routing engine provides an interface to describe how messages from all the topics should be received and consumed.
 
-Due to the dynamic nature of Kafka, there are multiple configuration options you can use, however only few are required.
+Due to the dynamic nature of Kafka, you can use multiple configuration options; however, only a few are required.
 
 ## Routing DSL organization
 
-Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it to as many topics as you want). In order to replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
+Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it too as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
 
 * consumer group level - options that are related to Kafka client and a given consumer group
 * topic level - options that need to be set on a per topic level
@@ -15,9 +15,9 @@ Karafka provides two ways of defining topics on which you want to listen:
 
 ### Single consumer group with multiple topics style
 
-In this mode, Karafka will create a single consumer group, to which all the topics will belong to.
+In this mode, Karafka will create a single consumer group to which all the topics will belong.
 
-It is recommended for most of the use-cases and can be changed later on.
+It is recommended for most of the use-cases and can be changed later.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -69,13 +69,13 @@ end
 
 ## Overriding Defaults
 
-Almost all the default settings that are configured can be changed on either ```consumer_group``` or ```topic``` level. This means, that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example you need batch consuming only for a single topic).
+Almost all the default settings configured can be changed on either ```consumer_group``` or ```topic``` level. This means that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
 
 ## Consumer group level options
 
-Consumer group options allow you to change, the way a particular consumer group behaves. You can override most of the ```config.kafka``` settings there, set up different encryption details and do other crazy stuff.
+Consumer group options allow you to change how a particular consumer group behaves. You can override most of the ```config.kafka``` settings, set up different encryption details, and do other crazy stuff.
 
-This level settings override is used primary to change the way consumer group is handling connection and incoming data.
+This level settings override is used primarily to change how the consumer group handles connection and incoming data.
 
 ## Topic level options
 
