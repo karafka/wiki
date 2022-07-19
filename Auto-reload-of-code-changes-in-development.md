@@ -15,11 +15,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Your code changes will be applied after processing of current messages batch .
+Your code changes will be applied after processing of current messages batch.
 
 Keep in mind, though, that there are a couple of limitations to it:
 
 * Changes in the routing are **not** reflected. This would require reconnections and would drastically complicate reloading.
-* Any background work that you run outside of the Karafka framework but still within the process, might not be caught in the reloading.
-* If you use in-memory consumer data buffering that spans across multiple batches, it **won't** work as code reload means re-initializing consumers instances. In cases like that, you will be better not using the reload mode at all.
+* Any background work you run outside the Karafka framework but still within the process might not be caught in the reloading.
+* If you use in-memory consumer data buffering that spans across multiple batches, it **won't** work as code reload means re-initializing consumers instances. In cases like that, you will be better off not using the reload mode at all.
 * Code reload may be slow for some edge cases. It is a bug in Ruby on Rails reported [here](https://github.com/rails/rails/issues/44183).
