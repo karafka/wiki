@@ -2,9 +2,9 @@ This page lists the current maintenance status of the various Karafka versions.
 
 Karafka versions or release series are categorized below into the following phases:
 
-- **Active**: Branch receives general bug fixes, security fixes and improvements.
-- **Maintenance**: Only security fixes and critical bug fixes are backported to this branch.
-- **EOL** (end-of-life): Branch is not supported any longer and does not receive any fixes. No further patch release will be released.
+- **Active**: Branch receives general bug fixes, security fixes, and improvements.
+- **Maintenance**: Only security and critical bug fixes are backported to this branch.
+- **EOL** (end-of-life): Branch is no longer supported and receives no fixes. No further patch release will be released.
 - **Preview**: Only previews or release candidates have been released for this branch so far.
 
 | Version | Status      | EOL date   |
