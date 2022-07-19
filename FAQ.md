@@ -32,7 +32,7 @@ You can name the main application consumer with any name. You can even call it `
 
 ### Can I start Karafka process with only particular consumer groups running for given topics?
 
-Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means, that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as followed:
+Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as follows:
 
 ```bash
 bundle exec karafka server --consumer_groups group_name1 group_name3
@@ -48,13 +48,13 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ### Why Karafka does not restart dead PG connections?
 
-This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers.
+This is expected behavior because Karafka is meant to be a transaction supporting system for long-living consumers.
 
 Please see [this](https://github.com/karafka/karafka/wiki/Problems-and-Troubleshooting#why-karafka-does-not-restart-dead-pg-connections) troubleshooting page for a more extensive explanation of this behavior.
 
 ### Does Karafka require gems to be thread-safe?
 
-Yes. Karafka uses mutliple threads to process data similar to how Puma or Sidekiq does it. Same rules apply.
+Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidekiq does it. The same rules apply.
 
 ### When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
 
