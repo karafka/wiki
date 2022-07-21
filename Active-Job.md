@@ -61,7 +61,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: ActiveJob adapter supports both `Long-Running Jobs` and `Virtual Partitions` Pro features.
+**Note**: Pro ActiveJob adapter supports both `Long-Running Jobs` and `Virtual Partitions` Pro features.
 
 ## Usage
 
