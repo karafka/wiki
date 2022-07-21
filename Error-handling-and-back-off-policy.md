@@ -45,7 +45,7 @@ If not caught and handled within your application code, your exception will prop
 
 If needed, you can also use exponential backoff. If `pause_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.
 
-Regardless of the error nature, you can always use the [Monitoring and logging](https://github.com/karafka/karafka/wiki/Events-monitoring-and-logging) to track any problems during the work time.
+Regardless of the error nature, you can always use the [Monitoring and logging](Monitoring-and-logging) to track any problems during the work time.
 
 It is highly recommended to have a monitoring and logging layer in place so you get notified about errors that occur while processing Kafka messages.
 

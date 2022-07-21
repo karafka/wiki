@@ -1,6 +1,6 @@
 Karafka uses [Dry-Monitor](https://github.com/dry-rb/dry-monitor) as an instrumentation layer to which you can easily hook up with your own listeners. You can use it to develop your own monitoring and logging systems (using, for example, NewRelic) or to perform some additional operations during certain phases of the Karafka framework lifecycle.
 
-By default, the only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](http://ruby-doc.org/stdlib-2.2.3/libdoc/logger/rdoc/Logger.html).
+By default, the only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](http://ruby-doc.org/stdlib-2.2.3/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails.
 
 If you are looking for examples of how to implement your own listeners, [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/logger_listener.rb), you can take a look at the default Karafka logger listener implementation.
 
@@ -45,6 +45,41 @@ Karafka.monitor.subscribe('app.initialized') do |_event|
   Sidekiq::Logging.logger = Karafka::App.logger
 end
 ```
+
+## Datadog and StatsD integration
+
+Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
+
+```ruby
+# require datadog/statsd and the listener as it is not loaded by default
+require 'datadog/statsd'
+require 'karafka/instrumentation/vendors/datadog/listener'
+
+# initialize Karafka with statistics.interval.ms enabled so the librdkafka metrics are published
+# as well (without this, you will get only part of the metrics)
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': 'localhost:9092',
+      'statistics.interval.ms': 1_000
+    }
+  end
+end
+
+# initialize the listener with statsd client
+dd_listener = ::Karafka::Instrumentation::Vendors::Datadog::Listener.new do |config|
+  config.client = Datadog::Statsd.new('localhost', 8125)
+  # Publish host as a tag alongside the rest of tags
+  config.default_tags = ["host:#{Socket.gethostname}"]
+end
+
+# Subscribe with your listener to Karafka and you should be ready to go!
+Karafka.monitor.subscribe(dd_listener)
+```
+
+You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready to import DataDog dashboard configuration file that you can use to monitor your consumers.
+
+![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
 ## Example listener with Errbit/Airbrake support
 
