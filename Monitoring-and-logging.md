@@ -39,8 +39,8 @@ Lifecycle events can be used in various situations, for example, to configure ex
 
 ```ruby
 # Once everything is loaded and done, assign the Karafka app logger as a Sidekiq logger
-# @note This example does not use config details, but you can use all the config values via Karafka::App.config method.
-#   to setup your external components
+# @note This example does not use config details, but you can use all the config values
+#   via Karafka::App.config method to setup your external components
 Karafka.monitor.subscribe('app.initialized') do |_event|
   Sidekiq::Logging.logger = Karafka::App.logger
 end
