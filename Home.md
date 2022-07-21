@@ -25,7 +25,7 @@
 
 ## Karafka Pro and Commercial Aspects
 
-* [Build vs. Buy](Build-vs-Buy)
+* [Build vs. Buy](Build-vs.-Buy)
 * [Purchase Karafka Pro](https://karafka.io) - To be added
 * [Getting started](Pro-Getting-started)
 * [Commercial FAQ](Pro-FAQ)
