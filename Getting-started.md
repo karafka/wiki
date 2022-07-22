@@ -39,6 +39,7 @@ bundle exec karafka server
 [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example started
 {"ping"=>"pong"}
 {"ping"=>"pong"}
+[dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
 ```
 
 ## Example applications
