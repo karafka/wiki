@@ -37,4 +37,4 @@
 * [Virtual Partitions](Pro-Virtual-Partitions) - To be added
 * [Enhanced Active Job](Pro-Enhanced-Active-Job) - To be added
 * [Enhanced Scheduling](Pro-Enhanced-Scheduling) - To be added
-* [Messages at rest Encryption](Pro-Messages-at-rest-encryption.md) - To be added
+* [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - To be added
