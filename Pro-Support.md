@@ -16,6 +16,6 @@ Please email using the same domain as the original license email or explain your
 
 ## Onboarding
 
-Pro customers may request a one-hour video chat session with Maciej Mensfeld to discuss their application(s), requirements, and how best to leverage the various Karafka features. Contact us at contact@karafka.io to set up your session.
+Pro customers may request a two-hour video chat session with Maciej Mensfeld to discuss their application(s), requirements, and how best to leverage the various Karafka features. Contact us at contact@karafka.io to set up your session.
 
 Please email using the same domain as the original license email or explain your connection to the licensed company.
