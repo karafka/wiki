@@ -1,4 +1,7 @@
-# General optimizations
+## General optimizations
 
-# Virtual Partitions optimizations
+TBA
 
+## Virtual Partitions optimizations
+
+TBA
