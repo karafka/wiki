@@ -26,8 +26,7 @@ the above command will create all the necessary files and directories to get you
 Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
 
-and you can run the karafka server to start consuming messages:
-
+4. Run the karafka server to start consuming messages:
 
 ```
 bundle exec karafka server
