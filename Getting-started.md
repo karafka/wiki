@@ -1,37 +1,32 @@
 **Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka).
 
-Add this line to your application's `Gemfile`:
+1. Add Karafka to your Gemfile:
 
 ```ruby
-gem 'karafka', '2.0.0.rc2'
+bundle add karafka -v 2.0.0.rc2
 ```
 
-and then execute:
-
-```bash
-bundle install
-```
-
-Install Karafka (works for both Rails and standalone applications) by running:
+2. Install Karafka (works for both Rails and standalone applications) by running:
 
 ```bash
 bundle exec karafka install
 ```
 
-above command will create all the necessary files and directories to get you started:
+the above command will create all the necessary files and directories to get you started:
 
 - `karafka.rb` - main file where you configure Karafka and where you define which consumers should consume what topics.
 - `app/consumers/example_consumer.rb` - example consumer.
 - `app/consumers/application_consumer.rb` - base consumer from which all consumers should inherit.
 
-After that, you can run a development console to produce messages to this example topic:
+3. After that, you can run a development console to produce messages to this example topic:
 
 ```ruby
-# Works from any place in your code and is thread safe
-KarafkaApp.producer.produce_async(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
+# Works from any place in your code and is thread-safe
+# You usually want to produce async but here it may raise exception if Kafka is not available, etc
+Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
 
-and you can run karafka server to start consuming messages:
+and you can run the karafka server to start consuming messages:
 
 
 ```
