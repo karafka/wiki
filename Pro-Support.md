@@ -1,6 +1,6 @@
 Karafka offers community support via [Github issues](https://github.com/karafka/karafka/issues) and a [Slack channel](http://karafka.slack.com/).
 
-Karafka Pro offers priority support via a dedicated per-organization private Slack channel as well as via email.
+Karafka Pro offers priority support via a dedicated per-organization private Slack channel and via email.
 
 ## Version Support
 
@@ -10,12 +10,12 @@ Please check out the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) fo
 
 Thinking about introducing Kafka to your Ruby and Rails stack?
 
-With Karafka you can get a priority support with a max response time of 2 working days. For support, email contact@karafka.io.
+With Karafka, you can get priority support with a max response time of 2 working days. For support, email contact@karafka.io.
 
 Please email using the same domain as the original license email or explain your connection to the licensed company.
 
 ## Onboarding
 
-Pro customers may request a one hour video chat session with Maciej Mensfeld to discuss their application(s), requirements and how best to leverage the various Karafka features. Contact us at contact@karafka.io to set up your session.
+Pro customers may request a one-hour video chat session with Maciej Mensfeld to discuss their application(s), requirements, and how best to leverage the various Karafka features. Contact us at contact@karafka.io to set up your session.
 
 Please email using the same domain as the original license email or explain your connection to the licensed company.
