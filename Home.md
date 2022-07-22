@@ -23,18 +23,18 @@
 * [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 
-## Karafka Pro and Commercial Aspects
+## Karafka Pro and Pro Aspects
 
 * [Build vs. Buy](Build-vs.-Buy)
 * [Purchase Karafka Pro](https://karafka.io) - To be added
 * [Getting started](Pro-Getting-started)
-* [Commercial FAQ](Pro-FAQ)
-* [Commercial Support](Pro-Support)
+* [Pro FAQ](Pro-FAQ)
+* [Pro Support](Pro-Support)
 
 ### Features and enhancements
 
 * [Long Running Jobs](Pro-Long-Running-Jobs) - To be added
 * [Virtual Partitions](Pro-Virtual-Partitions) - To be added
 * [Enhanced Active Job](Pro-Enhanced-Active-Job) - To be added
-* [Enhanced Scheduler](Pro-Enhanced-Scheduler) - To be added
+* [Enhanced Scheduling](Pro-Enhanced-Scheduling) - To be added
 * [Messages Encryption](Pro-Messages-Encryption) - To be added
