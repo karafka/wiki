@@ -22,6 +22,7 @@
 * [Articles and other references](Articles-and-other-references)
 * [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
+* [Debugging](Debugging) - To be added
 
 ## Karafka Pro and Pro Aspects
 
