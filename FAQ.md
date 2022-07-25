@@ -9,6 +9,7 @@
 9. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
+12. [Can I use Thread.current to store data in between batches?](#tba)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -147,3 +148,7 @@ Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidek
 ### When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
 
 Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be required [before](https://github.com/simplecov-ruby/simplecov#getting-started=) any code is loaded.
+
+12. Can I use Thread.current to store data between batches?
+
+**No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
