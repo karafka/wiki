@@ -8,7 +8,7 @@ Virtual Partitions solve this problem by providing you with the means to further
   <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_performance.png" />
 </p>
 <p align="center">
-  <small>*This example illustrates the performance difference for IO intense work where IO cost of a single message is 1ms.
+  <small>*This example illustrates the throughput difference for IO intense work, where the IO cost of processing a single message is 1ms.
   </small>
 </p>
 
