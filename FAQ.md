@@ -149,6 +149,6 @@ Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidek
 
 Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be required [before](https://github.com/simplecov-ruby/simplecov#getting-started=) any code is loaded.
 
-12. Can I use Thread.current to store data between batches?
+### Can I use Thread.current to store data between batches?
 
 **No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
