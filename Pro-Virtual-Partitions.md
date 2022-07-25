@@ -107,7 +107,7 @@ Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integ
 For a single partition-based Virtual Partitions, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the first offset received from the regular partition.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_error_handling.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_error_handling.png" />
 </p>
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
