@@ -49,7 +49,7 @@ The virtual partitioner requires to respond to a `#call` method, and it accepts 
 
 The return value of the virtual partitioner needs to classify messages that should be grouped together uniquely. We recommend using simple types like strings or integers.
 
-### Partitioning based on the messages keys
+### Partitioning based on the message key
 
 If you already use message keys to direct messages to partitions automatically, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
 
@@ -64,7 +64,7 @@ routes.draw do
 end
 ```
 
-### Partitioning based on the payload
+### Partitioning based on the message payload
 
 Since the virtual partitioner accepts the message as the argument, you can use both `#raw_payload` as well as `#payload` to compute your uniqueness key:
 
@@ -81,6 +81,22 @@ end
 ```
 
 **Note**: Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
+
+### Partitioning randomly
+
+If your messages are independent, you can distribute them randomly by running `rand(Karafka::App.config.concurrency)` for even work distribution:
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    # Distribute work to virtual partitions based on the user id ensuring,
+    # that per user everything is in order
+    virtual_partitioner ->(_) { rand(Karafka::App.config.concurrency) }
+  end
+end
+```
 
 ## Monitoring
 
@@ -99,5 +115,9 @@ TBA
 TBA
 
 ## Usage with Long-Running Jobs
+
+TBA
+
+## Usage with Enhanced Active Job
 
 TBA
