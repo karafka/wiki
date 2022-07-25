@@ -42,7 +42,7 @@ Example of work distribution amongst two workers:
 
 ### Parallel processing of a single topic partition (Virtual Partitions)
 
-Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called **Virtual Partitions**.
+Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called [**Virtual Partitions**](Pro-Virtual-Partitions).
 
 Virtual partitions allow you to further divide messages from a single partition based on your own criteria. Each such chunk will then be processed separately.
 
