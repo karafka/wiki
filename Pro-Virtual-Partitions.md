@@ -12,7 +12,7 @@ Virtual Partitions solve this problem by providing you with the means to further
   </small>
 </p>
 
-## Parallel processing
+## Work distribution
 
 TBA
 
