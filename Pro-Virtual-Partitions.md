@@ -91,8 +91,8 @@ routes.draw do
   topic :orders_states do
     consumer OrdersStatesConsumer
 
-    # Distribute work to virtual partitions based on the user id ensuring,
-    # that per user everything is in order
+    # Distribute work to virtual partitions based on the user id, ensuring,
+    # that per user, everything is in order
     virtual_partitioner ->(_) { rand(Karafka::App.config.concurrency) }
   end
 end
@@ -104,7 +104,7 @@ Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integ
 
 ## Behaviour on errors
 
-TBA
+For Virtual Partitions based on one partition, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the first offset received from the regular partition.
 
 ## Ordering warranties
 
