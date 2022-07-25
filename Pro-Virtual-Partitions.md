@@ -24,11 +24,41 @@ Below is a diagram illustrating an example partitioning flow of a single partiti
 
 ## Using virtual partitions
 
-TBA
+The only thing you need to add to your setup is the `virtual_partitioner` definition for topics for which you want to enable it:
 
-### Partitioning based on the partition key
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
 
-TBA
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      # Distribute work to virtual partitions per order
+      virtual_partitioner ->(message) { message.payload.fetch('id') }
+    end
+  end
+end
+```
+
+No other changes are needed.
+
+### Partitioning based on the message key
+
+If you already use message keys to direct messages to partitions automatically, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    # Distribute work to virtual partitions per order
+    virtual_partitioner ->(message) { message.key }
+  end
+end
+```
 
 ### Partitioning based on the payload
 
