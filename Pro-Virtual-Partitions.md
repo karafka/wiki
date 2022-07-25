@@ -45,7 +45,7 @@ end
 
 No other changes are needed.
 
-### Partitioning based on the message key
+### Partitioning based on the messages keys
 
 If you already use message keys to direct messages to partitions automatically, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
 
