@@ -36,14 +36,18 @@ class KarafkaApp < Karafka::App
     topic :orders_states do
       consumer OrdersStatesConsumer
 
-      # Distribute work to virtual partitions per order
-      virtual_partitioner ->(message) { message.payload.fetch('id') }
+      # Distribute work to virtual partitions per order id
+      virtual_partitioner ->(message) { message.headers['order_id'] }
     end
   end
 end
 ```
 
 No other changes are needed.
+
+The virtual partitioner requires to respond to a `#call` method, and it accepts a single Karafka message as an argument.
+
+The return value of the virtual partitioner needs to classify messages that should be grouped together uniquely. We recommend using simple types like strings or integers.
 
 ### Partitioning based on the messages keys
 
@@ -62,11 +66,25 @@ end
 
 ### Partitioning based on the payload
 
-TBA
+Since the virtual partitioner accepts the message as the argument, you can use both `#raw_payload` as well as `#payload` to compute your uniqueness key:
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    # Distribute work to virtual partitions based on the user id ensuring,
+    # that per user everything is in order
+    virtual_partitioner ->(message) { message.payload.fetch('user_id') }
+  end
+end
+```
+
+**Note**: Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
 ## Monitoring
 
-TBA
+Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
 ## Behaviour on errors
 
