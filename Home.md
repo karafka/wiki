@@ -34,8 +34,8 @@
 
 ### Features and enhancements
 
-* [Long Running Jobs](Pro-Long-Running-Jobs) - To be added
 * [Virtual Partitions](Pro-Virtual-Partitions) - To be added
+* [Long Running Jobs](Pro-Long-Running-Jobs) - To be added
 * [Enhanced Active Job](Pro-Enhanced-Active-Job) - To be added
 * [Enhanced Scheduling](Pro-Enhanced-Scheduling) - To be added
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
