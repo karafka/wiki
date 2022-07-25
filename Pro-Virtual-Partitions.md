@@ -54,7 +54,7 @@ routes.draw do
   topic :orders_states do
     consumer OrdersStatesConsumer
 
-    # Distribute work to virtual partitions per order
+    # Distribute work to virtual partitions based on the message key
     virtual_partitioner ->(message) { message.key }
   end
 end
