@@ -9,7 +9,7 @@
 9. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
-12. [Can I use Thread.current to store data in between batches?](#tba)
+12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
 
 ### Does Karafka require Ruby on Rails?
 
