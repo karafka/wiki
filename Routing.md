@@ -13,7 +13,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
-### Single consumer group with multiple topics style
+### Single consumer group with multiple topics mode
 
 In this mode, Karafka will create a single consumer group to which all the topics will belong.
 
@@ -37,7 +37,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-#### Multiple consumer groups style
+#### Multiple consumer groups mode
 
 In this mode, Karafka will use a single consumer group per each of the topics defined within a single `#consumer_group` block.
 
