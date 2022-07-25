@@ -118,8 +118,16 @@ If processing in all virtual partitions ends up successfully, Karafka will mark 
 
 Virtual Partitions provide two types of warranties in regards to order:
 
-- Standard warranties per virtual partitions group - that is, from the "outside" of virtual partitions group Kafka ordering warranties are preserved.
-- Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4, 5), but lower offsets will always precede larger (1, 5, 6, 7, 9). This is dependant on the `virtual_partitioner` used for partitioning of a given topic.
+- Standard warranties per virtual partitions group - that is, from the "outside" of the virtual partitions group Kafka ordering warranties are preserved.
+- Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4, 5), but lower offsets will always precede larger (1, 5, 6, 7, 9). This depends on the `virtual_partitioner` used for partitioning a given topic.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.png" />
+</p>
+<p align="center">
+  <small>*Example distribution of messages in between two virtual partitions.
+  </small>
+</p>
 
 ## Manual offset management
 
