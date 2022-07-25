@@ -32,7 +32,7 @@ Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to
 bundle exec karafka server
 
 # example outcome
-[7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 10001ms
+[7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 1000ms
 [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example started
 {"ping"=>"pong"}
 {"ping"=>"pong"}
