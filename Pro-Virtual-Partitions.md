@@ -164,9 +164,21 @@ Virtual Partitions **can** be used with Active Job without any limitations. The 
 The recommended approach is to use the Enhanced Active Job headers support to add a key that can be used for partitioning.
 
 ```ruby
-routes.draw do
-  actove_job_topic :orders_states do
-    virtual_partitioner ->(job) { job.key }
+class Job < ActiveJob::Base
+  queue_as :jobs
+
+  karafka_options(
+    dispatch_method: :produce_async,
+    partitioner: ->(job) { job.arguments.first[0] },
+    partition_key_type: :key
+  )
+end
+
+class KarafkaApp < Karafka::App
+  routes.draw do
+    actove_job_topic :jobs do
+      virtual_partitioner ->(job) { job.key }
+    end
   end
 end
 ```
