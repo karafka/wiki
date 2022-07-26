@@ -188,7 +188,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-## Shutdown and partition revocation hooks
+## Shutdown and partition revocation handlers
 
 Karafka consumer, aside from the `#consume` method, allows you to define two additional methods that you can use to free any resources that you may be using upon certain events. Those are:
 
