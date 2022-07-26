@@ -42,9 +42,19 @@ Example of work distribution amongst two workers:
 
 ### Parallel processing of a single topic partition (Virtual Partitions)
 
-Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called [**Virtual Partitions**](Pro-Virtual-Partitions).
+Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called [Virtual Partitions](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
 
-Virtual partitions allow you to further divide messages from a single partition based on your own criteria. Each such chunk will then be processed separately.
+Virtual Partitions allow you to parallelize the processing of data from a single partition. This can drastically increase throughput when IO operations are involved.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_performance.png" />
+</p>
+<p align="center">
+  <small>*This example illustrates the throughput difference for IO intense work, where the IO cost of processing a single message is 1ms.
+  </small>
+</p>
+
+You can read more about this feature [here](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
 
 ## Consumer group multi-threading
 
