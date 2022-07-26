@@ -169,14 +169,13 @@ class Job < ActiveJob::Base
 
   karafka_options(
     dispatch_method: :produce_async,
-    partitioner: ->(job) { job.arguments.first[0] },
-    partition_key_type: :key
+    partitioner: ->(job) { job.arguments.first[0] }
   )
 end
 
 class KarafkaApp < Karafka::App
   routes.draw do
-    actove_job_topic :jobs do
+    active_job_topic :jobs do
       virtual_partitioner ->(job) { job.key }
     end
   end
