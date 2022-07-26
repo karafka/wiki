@@ -135,7 +135,7 @@ Manual offset management as well as checkpointing during virtual partitions exec
 
 ## Shutdown and revocation handlers
 
-TBA
+Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Consuming-messages#shutdown-and-partition-revocation-handlers).
 
 ## Usage with Long-Running Jobs
 
