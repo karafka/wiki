@@ -161,7 +161,7 @@ end
 
 Virtual Partitions **can** be used with Active Job without any limitations. The only thing worth keeping in mind is that the message payload for Active Job contains serialized job details and should not be deserialized in the partitioner.
 
-The recommended approach is to use the Enhanced Active Job headers support to add a key that can be used for partitioning.
+The recommended approach is to use the Enhanced Active Job headers support to add a key that can be used for partitioning:
 
 ```ruby
 class Job < ActiveJob::Base
