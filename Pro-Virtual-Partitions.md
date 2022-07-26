@@ -47,11 +47,11 @@ No other changes are needed.
 
 The virtual partitioner requires to respond to a `#call` method, and it accepts a single Karafka message as an argument.
 
-The return value of the virtual partitioner needs to classify messages that should be grouped together uniquely. We recommend using simple types like strings or integers.
+The return value of the virtual partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
 ### Partitioning based on the message key
 
-If you already use message keys to direct messages to partitions automatically, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
+Suppose you already use message keys to direct messages to partitions automatically. In that case, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
 
 ```ruby
 routes.draw do
@@ -73,8 +73,8 @@ routes.draw do
   topic :orders_states do
     consumer OrdersStatesConsumer
 
-    # Distribute work to virtual partitions based on the user id ensuring,
-    # that per user everything is in order
+    # Distribute work to virtual partitions based on the user id, ensuring,
+    # that per user, everything is in order
     virtual_partitioner ->(message) { message.payload.fetch('user_id') }
   end
 end
@@ -130,6 +130,10 @@ Virtual Partitions provide two types of warranties in regards to order:
 </p>
 
 ## Manual offset management
+
+Manual offset management as well as checkpointing during virtual partitions execution is **not** recommended. Virtual Partitions group order is not deterministic, which means that if you mark the message as processed from a virtual batch, it may not mean that messages with earlier offset from a different virtual partition were processed.
+
+## Shutdown and revocation handlers
 
 TBA
 
