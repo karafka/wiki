@@ -139,6 +139,10 @@ Both `#shutdown` and `#revoked` handlers work the same as within [regular consum
 
 For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_shutdown.png" />
+</p>
+
 ## Usage with Long-Running Jobs
 
 TBA
