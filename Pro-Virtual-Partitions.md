@@ -145,7 +145,17 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Usage with Long-Running Jobs
 
-TBA
+Virtual Partitions **can** be used with Long-Running Jobs. There are no special procedures.
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+    long_running_job true
+    virtual_partitioner ->(message) { message.headers['order_id'] }
+  end
+end
+```
 
 ## Usage with Enhanced Active Job
 
