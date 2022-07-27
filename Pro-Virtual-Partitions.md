@@ -16,7 +16,7 @@ Virtual Partitions solve this problem by providing you with the means to further
 
 Message distribution is based on the outcome of the `virtual_partitioner` outcome. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting.
 
-Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrency when IO is involved).
+Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.png" />
@@ -66,7 +66,7 @@ end
 
 ### Partitioning based on the message payload
 
-Since the virtual partitioner accepts the message as the argument, you can use both `#raw_payload` as well as `#payload` to compute your uniqueness key:
+Since the virtual partitioner accepts the message as the argument, you can use both `#raw_payload` as well as `#payload` to compute your distribution key:
 
 ```ruby
 routes.draw do
