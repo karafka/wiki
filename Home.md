@@ -23,7 +23,7 @@
 * [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Debugging](Debugging)
-* [Problems and Troubleshooting](Problems-and-Troubleshooting)
+* [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
 
 ## Karafka Pro and Pro Aspects
 
