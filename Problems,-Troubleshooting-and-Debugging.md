@@ -12,11 +12,15 @@ Please respect our time and efforts by sticking to one of the options above.
 
 Please consider buying the Pro subscription for additional priority Pro support and extra features.
 
+## Reporting problems
+
 When you encounter issues with Karafka, there are several things you can do:
 
 - Feel free to open a [Github issue](https://github.com/karafka/karafka/issues)
 - Feel free to ask on our [Slack channel](https://slack.karafka.io)
 - Use our [integration specs](https://github.com/karafka/karafka/tree/master/spec/integrations) and [example apps](https://github.com/karafka/example-apps) to create a reproduction code that you can then share with us.
+
+## Debugging
 
 Remember that Karafka uses the `info` log level by default. If you assign it a logger with `debug,` debug will be used.
 
