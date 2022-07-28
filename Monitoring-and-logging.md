@@ -93,21 +93,3 @@ module AirbrakeListener
   end
 end
 ```
-
-## Replacing Dry-Monitor with ActiveSupport::Notifications
-
-Dry-Monitor has a similar API to ```ActiveSupport::Notifications```, so in case you are already using ```ActiveSupport::Notifications```, you can easily replace one with the other.
-
-To change monitor or a logger, assign new logger/monitor during the setup process:
-
-```ruby
-class App < Karafka::App
-  setup do |config|
-    # Other setup stuff...
-    config.logger = MyCustomLogger.new
-    config.monitor = ActiveSupport::Notifications
-  end
-end
-```
-
-**Warning**: Keep in mind that if you replace Dry-Monitor with something else, you will have to implement your own logger listener as well, as the default one is designed to work with Dry-Monitor.
