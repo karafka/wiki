@@ -1,4 +1,4 @@
-Karafka uses [Dry-Monitor](https://github.com/dry-rb/dry-monitor) as an instrumentation layer to which you can easily hook up with your own listeners. You can use it to develop your own monitoring and logging systems (using, for example, NewRelic) or to perform some additional operations during certain phases of the Karafka framework lifecycle.
+Karafka uses a simple monitor with `dry-monitor` and `ActiveSupport::Notifications` compatible API as an instrumentation layer to which you can easily hook up with your own listeners. You can use it to develop your own monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
 
 By default, the only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](http://ruby-doc.org/stdlib-2.2.3/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails.
 
@@ -6,13 +6,13 @@ If you are looking for examples of how to implement your own listeners, [here](h
 
 The only thing you need to be aware of when developing your own listeners is that the internals of the payload may differ depending on the instrumentation place.
 
-Full list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
+A full list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
 
 ## Subscribing to the instrumentation events
 
-The best place to hook up your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
+The best place to hook your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
 
-**Note**: The reason you should set up listeners **after** configuring the app is that Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
+**Note**: You should set up listeners **after** configuring the app because Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
 
 ### Subscribing with a listener class/module
 
