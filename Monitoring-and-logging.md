@@ -1,12 +1,12 @@
-Karafka uses a simple monitor with `dry-monitor` and `ActiveSupport::Notifications` compatible API as an instrumentation layer to which you can easily hook up with your own listeners. You can use it to develop your own monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
+Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
 
-By default, the only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](http://ruby-doc.org/stdlib-2.2.3/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails.
+The only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](http://ruby-doc.org/stdlib-2.2.3/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails.
 
-If you are looking for examples of how to implement your own listeners, [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/logger_listener.rb), you can take a look at the default Karafka logger listener implementation.
+If you are looking for examples of implementing your listeners, [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/logger_listener.rb), you can take a look at the default Karafka logger listener implementation.
 
-The only thing you need to be aware of when developing your own listeners is that the internals of the payload may differ depending on the instrumentation place.
+The only thing you need to be aware of when developing your listeners is that the internals of the payload may differ depending on the instrumentation place.
 
-A full list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
+A complete list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/monitor.rb).
 
 ## Subscribing to the instrumentation events
 
@@ -77,7 +77,7 @@ end
 Karafka.monitor.subscribe(dd_listener)
 ```
 
-You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready to import DataDog dashboard configuration file that you can use to monitor your consumers.
+You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import DataDog dashboard configuration file that you can use to monitor your consumers.
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
