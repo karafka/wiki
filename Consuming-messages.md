@@ -145,7 +145,7 @@ end
 
 **Note**: You need to mark the message as consumed for the `#revoked?` method result to change.
 
-**Note**: When using the **Long Running Jobs** feature, `#revoked?` result changes independently from marking messages.
+**Note**: When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result changes independently from marking messages.
 
 ## Consumer persistence
 
