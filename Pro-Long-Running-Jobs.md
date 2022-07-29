@@ -2,7 +2,7 @@ When working with Kafka, there is a setting called [`max.poll.interval.ms`](http
 
 It is the maximum delay between invocations of `poll()` commands. This places an upper bound on the time the consumer can be idle before fetching more records.
 
-After exceeding this time, an error will be raised, process will be removed from the group and you may notice the following message:
+After exceeding this time, an error will be raised, the process will be removed from the group, and you may notice the following message:
 
 ```
 Maximum poll interval (300000ms) exceeded by 255ms 
