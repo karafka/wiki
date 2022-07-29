@@ -3,7 +3,7 @@
 1. Add Karafka to your Gemfile:
 
 ```ruby
-bundle add karafka -v 2.0.0.rc3
+bundle add karafka -v 2.0.0.rc4
 ```
 
 2. Install Karafka (works for both Rails and standalone applications) by running:
