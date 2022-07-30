@@ -22,7 +22,7 @@ The strategy you want to go with heavily depends on your data and processing pat
 
 Long-Running Jobs feature follows the [Confluent recommended strategy](https://www.confluent.io/blog/kafka-consumer-multi-threaded-messaging/) of pausing a given partition for the time of the processing and resuming processing of the partition once the work is done.
 
-That way, as long as no rebalances occur during the processing, polling can happen within the boundaries of `max.poll.interval.ms`.
+That way, as long as no rebalances occur during the processing that would cause the partition to be revoked from the given process, polling can happen within the boundaries of `max.poll.interval.ms`.
 
 ## Periodic revocation checks
 
