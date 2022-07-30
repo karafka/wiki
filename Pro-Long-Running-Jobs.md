@@ -55,7 +55,7 @@ In the case of scenario `1`, there is nothing you need to do. Karafka will conti
 
 ### Revocation without re-assignment
 
-In partition becomes assigned to a different process, this process will pick up the same messages that you are currently working with. To mitigate this, Karafka has a `#revoked?` method you can periodically check to ensure that a given process still owns the partition you are working with.
+If partition becomes assigned to a different process, this process will pick up the same messages that you are currently working with. To mitigate this, Karafka has a `#revoked?` method you can periodically check to ensure that a given process still owns the partition you are working with.
 
 This method, in the case of the Long-Running Jobs feature, does **not** require marking messages as consumed or taking any other actions. Group state is updated asynchronously alongside the work being done.
 
