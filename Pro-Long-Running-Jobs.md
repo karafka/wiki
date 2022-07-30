@@ -93,7 +93,9 @@ end
 
 ## Usage with Virtual Partitions
 
-Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). There is only one thing you need to keep in mind:
+Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions will respond to `#revoked?` if the partition is lost.
+
+There is only one thing you need to keep in mind:
 
 It is **not** recommended to use manual offset management with Virtual Partitions. Hence you need to set `shutdown_timeout` to a value that 
 will compensate for that.
