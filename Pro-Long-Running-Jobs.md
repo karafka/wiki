@@ -72,7 +72,24 @@ end
 
 ## Processing during shutdown
 
-TBA
+Karafka will wait for your Long-Running Jobs to finish within the limits of `shutdown_timeout`. Either set it to a value big enough for the jobs to finish or implement periodic shutdown checks and enable [manual offset management](Manual-offset-management). Otherwise, Karafka may forcefully stop workers in the middle of processing after the `shutdown_timeout` is exceeded.
+
+During the shutdown, polling occurs, so there is **no** risk of exceeding the `max.poll.interval.ms`.
+
+```ruby
+# Note that for this to work, you need to manage offsets yourself
+# Otherwise, automatic offset management will commit offset of the last message
+def consume
+  messages.each do |message|
+    # Stop sending messages if the app is stopping
+    return if Karafka::App.stopping?
+
+    ExternalSystemDispatcher.new.call(message)
+
+    mark_message_as_consumed(message)
+  end
+end
+```
 
 ## Usage with Virtual Partitions
 
