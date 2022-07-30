@@ -11,6 +11,14 @@ Maximum poll interval (300000ms) exceeded by 255ms
 
 This value is effectively the **maximum** time you can spend processing messages fetched in a single `poll` even if they come from different partitions. Once this is exceeded, the given process will be removed from the group. This can cause the group to become unstable due to frequent rebalances.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/long-running-job-standard.png" />
+</p>
+<p align="center">
+  <small>*Standard processing flow requires all the data to be processed after polling another batch of messages.
+  </small>
+</p>
+
 To mitigate this, you can do a few things:
 
 1. Extend the `max.poll.interval.ms`.
@@ -25,10 +33,10 @@ Long-Running Jobs feature follows the [Confluent recommended strategy](https://w
 That way, as long as no rebalances occur during the processing that would cause the partition to be revoked from the given process, polling can happen within the boundaries of `max.poll.interval.ms`.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/long-running-job-standard.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/long-running-job-flow.png" />
 </p>
 <p align="center">
-  <small>Standard processing flow requires all the data to be processed after polling another batch of messages.
+  <small>*With Long-Running Job enabled, the given partition is paused for the processing time, and polling happens independently from processing.
   </small>
 </p>
 
