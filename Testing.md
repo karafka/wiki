@@ -4,7 +4,7 @@ Karafka components work in isolation and are pretty simple. While testing, there
 
 We have a dedicated helper library for testing consumers and producers.
 
-Please look at the [karafka-testing README](https://github.com/karafka/testing) for details and examples.
+Please look at the [karafka-testing README](https://github.com/karafka/karafka-testing) for details and examples.
 
 ## Consumer groups and topics structure
 
