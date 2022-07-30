@@ -40,6 +40,8 @@ That way, as long as no rebalances occur during the processing that would cause 
   </small>
 </p>
 
+This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
+
 ## Periodic revocation checks
 
 TBA
