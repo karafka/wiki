@@ -42,13 +42,32 @@ That way, as long as no rebalances occur during the processing that would cause 
 
 This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
 
-## Periodic revocation checks
-
-TBA
-
 ## Processing during revocation
 
-TBA
+Upon a group rebalance, there are two scenarios affecting the paused partition you are processing:
+
+1. Partition is revoked and re-assigned to the same process.
+2. Partition is revoked and assigned to a different process.
+
+### Revocation and re-assignment
+
+In the case of scenario `1`, there is nothing you need to do. Karafka will continue processing your messages and resume partition after it is done with the work.
+
+### Revocation without re-assignment
+
+In partition becomes assigned to a different process, this process will pick up the same messages that you are currently working with. To mitigate this, Karafka has a `#revoked?` method you can periodically check to ensure that a given process still owns the partition you are working with.
+
+This method, in the case of the Long-Running Jobs feature, does **not** require marking messages as consumed or taking any other actions. Group state is updated asynchronously alongside the work being done.
+
+```ruby
+def consume
+  messages.each do |message|
+    # Stop sending messages to the external service if we no longer own the partition
+    return if revoked?
+    ExternalSystemDispatcher.new.call(message)
+  end
+end
+```
 
 ## Processing during shutdown
 
