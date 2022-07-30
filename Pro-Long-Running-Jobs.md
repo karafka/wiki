@@ -64,6 +64,7 @@ def consume
   messages.each do |message|
     # Stop sending messages to the external service if we no longer own the partition
     return if revoked?
+
     ExternalSystemDispatcher.new.call(message)
   end
 end
