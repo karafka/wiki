@@ -24,6 +24,14 @@ Long-Running Jobs feature follows the [Confluent recommended strategy](https://w
 
 That way, as long as no rebalances occur during the processing that would cause the partition to be revoked from the given process, polling can happen within the boundaries of `max.poll.interval.ms`.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/long-running-job-standard.png" />
+</p>
+<p align="center">
+  <small>Standard processing flow requires all the data to be processed after polling another batch of messages.
+  </small>
+</p>
+
 ## Periodic revocation checks
 
 TBA
