@@ -145,7 +145,7 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Usage with Long-Running Jobs
 
-Virtual Partitions **can** be used with Long-Running Jobs. There are no special procedures.
+Virtual Partitions **can** be used with [Long-Running Jobs](Pro-Long-Running-Jobs). There are no special procedures.
 
 ```ruby
 routes.draw do
