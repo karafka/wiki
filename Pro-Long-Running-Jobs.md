@@ -15,7 +15,7 @@ This value is effectively the **maximum** time you can spend processing messages
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/long-running-job-standard.png" />
 </p>
 <p align="center">
-  <small>*Standard processing flow requires all the data to be processed after polling another batch of messages.
+  <small>*Standard processing flow requires all the data to be processed before polling another batch of messages.
   </small>
 </p>
 
