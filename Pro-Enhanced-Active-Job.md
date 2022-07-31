@@ -14,10 +14,10 @@ TBA
 
 TBA
 
-## Using with Long-Running Jobs
+## Usage with Long-Running Jobs
 
 TBA
 
-## Using with Virtual Partitions
+## Usage with Virtual Partitions
 
 TBA
