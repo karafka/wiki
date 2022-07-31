@@ -6,7 +6,7 @@ TBA
 
 TBA
 
-# Behaviour on errors
+## Behaviour on errors
 
 TBA
 
