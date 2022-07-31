@@ -10,6 +10,7 @@
 * [Routing](Routing)
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [Deployment](Deployment)
+* [Signals](Signals)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
 * [Concurrency and multithreading](Concurrency-and-multithreading)
