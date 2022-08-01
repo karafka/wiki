@@ -8,12 +8,12 @@ No action needs to be taken. Please follow the [Active Job setup](Active-Job#act
 
 ## Ordered Jobs
 
-You can tell Karafka which of the partitions send given jobs based on your job arguments. For it to work, Karafka provides two `karafka_options` options you can set:
+You can tell Karafka to which partition send a given job based on the job arguments. For it to work, Karafka provides two `karafka_options` options you can set:
 
 - `partitioner` - a callable that accepts the job as the argument
 - `partition_key_type` - either `:key` (default) or `:partition_key`
 
-Jobs sent to the same partition will always be processed in the order. This can be useful when you process data of objects for which you need to apply your logic sequentially without risking any concurrency problems.
+Jobs sent to the same partition will always be processed in the order. This can be useful when you process data of objects for which you need to apply your logic sequentially without risking any concurrency problems. For example for applying updates in a consistent order.
 
 ```ruby
 # An example job that updates user attributes in the background job
@@ -31,6 +31,8 @@ class Job < ActiveJob::Base
   end
 end
 ```
+
+The above code will make sure that jobs related to the same user will always be dispatched to the same consumer.
 
 We recommend using the `:key` as then it can be used for processing ordering.
 
