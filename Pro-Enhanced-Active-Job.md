@@ -44,10 +44,10 @@ TBA
 
 TBA
 
-## Usage with Long-Running Jobs
+## Usage with Virtual Partitions
 
 TBA
 
-## Usage with Virtual Partitions
+## Usage with Long-Running Jobs
 
 TBA
