@@ -2,11 +2,11 @@ Karafka Pro is an enhanced version of the Karafka framework, which adds more fun
 
 ## Is there a trial version?
 
-Yes. You can obtain the license key from our [website](https://karafka.io) for free.
+Yes. You can obtain a temporary credentials from our [website](https://karafka.io) for free.
 
-This license key is valid for a month for every environment.
+Those credentials will be valid for a month for every environment.
 
-The trial license key does **not** grant you our Pro commercial support.
+The trial license does **not** grant you our Pro commercial support.
 
 ## What is the license?
 
@@ -24,9 +24,9 @@ Every organization running Karafka Pro on its own servers must purchase a subscr
 
 If we cannot charge your card, we will email you and try three more times over a week. If it still fails, your subscription will be canceled.
 
-Without a new valid license key, you'll lose access to the priority support, and Karafka Pro won't work anymore.
+You'll lose access to the gem server, priority support, and Karafka Pro won't work anymore.
 
-## Do I need to replace the license key for my running processes?
+## Do I need to replace the license for my running processes?
 
 No. The production environment that is already started will not be affected (until the next deployment).
 
@@ -44,9 +44,9 @@ The standard license is only appropriate for SaaS usage as it does **not** allow
 
 Licenses are **not** transferrable to another company. It is strongly recommended that you buy the license using a group email address so the license is not attached to any one employee's email address.
 
-## Do I have to share the license key with all of my developers?
+## Do I have to share the credentials with all of my developers?
 
-In general, yes. A license key is required to get access to all the Pro features. You can use dotenv to load the unencrypted license key in .env into each process, or you can use blackbox or chamber to manage encrypted license key. But the result should always be the same: set an environment variable for Karafka to use when it needs to check the license.
+In general, **yes**. The credentials are required to download the gems and your developers will need the gems to use the commercial features.
 
 ## Can I get a refund?
 
@@ -54,7 +54,7 @@ In general, yes. A license key is required to get access to all the Pro features
 
 ## Can I accidentally use Pro because it is in the same repository?
 
-**No**. The Pro code is **never** loaded unless a valid license key is present.
+**No**. The Pro code is **never** loaded unless a valid `karafka-license` is detected.
 
 ## Ethics, Privacy, and Information Usage
 
