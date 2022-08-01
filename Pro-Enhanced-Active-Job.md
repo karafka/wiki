@@ -6,9 +6,11 @@ Enhanced Active Job adapter provides extra capabilities to regular Active Job to
 
 No action needs to be taken. Please follow the [Active Job setup](Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
 
-## Ordered Jobs
-
 ## Partitioned Jobs
+
+TBA
+
+## Ordered Jobs
 
 TBA
 
