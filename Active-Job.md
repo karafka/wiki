@@ -71,7 +71,28 @@ Jobs can be added to the job queue from anywhere. You can add a job to the queue
 ExampleJob.perform_later args
 ```
 
-At this point, Karafka will run the job for us. If the job for some reason fails, Karafka will retry the job as normal.
+At this point, Karafka will run the job for us. If the job fails, Karafka will retry the job as normal.
+
+### Enqueuing modes
+
+When you enqueue a job using `#perform_later`, Karafka, by default, will produce a message to Kafka in an async fashion. A job will be added to a background process queue and dispatched without blocking the processing flow.
+
+You may want to alter this behavior for critical jobs and use synchronous enqueuing. To use it, just call the `karafka_options` method within your job class definition and set the `dispatch_method` to `:produce_sync` as followed:
+
+```ruby
+class Job < ActiveJob::Base
+  queue_as :my_kafka_jobs
+
+  karafka_options(
+    dispatch_method: :produce_sync
+  )
+
+  def perform(value1, value2)
+    puts "value1: #{value1}"
+    puts "value2: #{value2}"
+  end
+end
+```
 
 ## Queue Prefixes
 
