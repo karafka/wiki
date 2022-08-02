@@ -94,15 +94,16 @@ class Job < ActiveJob::Base
 end
 ```
 
-## Queue Prefixes
-
-Active Job allows you to configure a queue prefix. Karafka does not support prefixes at the moment.
-
-
 ## Behaviour on errors
 
 Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Error-handling-and-back-off-policy#runtime) strategy. Upon error, there will be a backoff, and Karafka will attempt to retry the job.
 
 Please keep in mind that **until** the error persists, **no** other jobs from a given partition will be processed.
 
-## Runtime execution warranties
+## Execution warranties
+
+Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka.
+
+## Queue Prefixes
+
+Active Job allows you to configure a queue prefix. Karafka does not support prefixes at the moment.
