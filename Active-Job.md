@@ -94,6 +94,10 @@ class Job < ActiveJob::Base
 end
 ```
 
+## Execution warranties
+
+Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka happens.
+
 ## Behaviour on errors
 
 Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Error-handling-and-back-off-policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
@@ -104,9 +108,18 @@ Please keep in mind that **until** the error persists, **no** other jobs from a 
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.png" />
 </p>
 
-## Execution warranties
+## Behaviour on shutdown
 
-Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka happens.
+After the shutdown is issued, Karafka will finish processing the current job. After it is processed, will mark it as consumed and will close. Other jobs that may be buffered will not be processed and picked up after the process is started again.
+
+## Behaviour on revocation
+
+Revocation awareness is not part of the standard Active Job adapter. We recommend you either:
+
+1. Have short-running jobs.
+2. Build your jobs to work in an at-least-once fashion.
+3. Set `max_messages` to a small value, so fewer jobs are fetched.
+4. Use [Pro Enhanced Active Job](Pro-Enhanced-Active-Job) with revocation awareness and other Pro features.
 
 ## Queue Prefixes
 
