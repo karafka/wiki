@@ -8,6 +8,8 @@ No action needs to be taken. Please follow the [Active Job setup](Active-Job#act
 
 ## Ordered Jobs
 
+With the Karafka Enhanced Active Job adapter, you can ensure jobs processing order. This means that with proper `partitioner` usage, you can ensure that for a given resource, only one job runs at a time and that jobs will run in the order in which they were enqueued.
+
 You can tell Karafka to which partition send a given job based on the job arguments. For it to work, Karafka provides two `karafka_options` options you can set:
 
 - `partitioner` - a callable that accepts the job as the argument
