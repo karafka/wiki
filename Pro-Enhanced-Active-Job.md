@@ -32,9 +32,17 @@ class Job < ActiveJob::Base
 end
 ```
 
-The above code will make sure that jobs related to the same user will always be dispatched to the same consumer.
+The above code will ensure that jobs related to the same user will always be dispatched to the same consumer.
 
-We recommend using the `:key` as then it can be used for processing ordering.
+We recommend using the `:key` as then it can be used for combining Enhanced Active Job with [Virtual Partitions](Pro-Virtual-Partitions).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/enhanced_aj_ordering.png" />
+</p>
+<p align="center">
+  <small>*This example illustrates the end distribution of jobs based on the user id.
+  </small>
+</p>
 
 ## Execution warranties
 
