@@ -64,7 +64,7 @@ TBA
 
 ## Usage with Long-Running Jobs
 
-There is nothing special needed except indication in your `karafka.rb`:
+For the Enhanced Active Job adapter to work with Long Running Jobs, you need to update your `karafka.rb` and use the `long_running_job` setting in the Active Job topic section:
 
 ```ruby
 class KarafkaApp < Karafka::App
