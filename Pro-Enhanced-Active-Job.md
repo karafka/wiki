@@ -83,6 +83,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+Please keep in mind that with Virtual Partitions, the offset will be committed after all the Virtual Partitions work is done. There is **no** "per job" marking as processed.
+
 ## Usage with Long-Running Jobs
 
 For the Enhanced Active Job adapter to work with Long-Running Jobs, you need to update your `karafka.rb` and use the `long_running_job` setting in the Active Job topic section:
