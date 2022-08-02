@@ -58,7 +58,7 @@ Same error behaviors apply as for standard [Active Job adapter](Active-Job#behav
 
 ## Behaviour on revocation
 
-Enhanced Active Job adapter has revocation awareness. That means that Karafka, upon discovering that a given partition has been revoked, will stop processing further pre-buffered jobs. In a scenario of a longer job where the revocation happened during the job execution, only at most one job per partition will be processed twice. You can mitigate this scenario with static group memberships.
+Enhanced Active Job adapter has revocation awareness. That means that Karafka will stop processing other pre-buffered jobs upon discovering that a given partition has been revoked. In a scenario of a longer job where the revocation happened during the job execution, only at most one job per partition will be processed twice. You can mitigate this scenario with static group memberships.
 
 ## Behaviour on shutdown
 
@@ -66,11 +66,26 @@ TBA
 
 ## Usage with Virtual Partitions
 
-TBA
+
+For the Enhanced Active Job adapter to work with Virtual Partitions, you need to update your `karafka.rb` and use the `virtual_partitioner` setting in the Active Job topic section:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    active_job_topic :default do
+      virtual_partitioner ->(job) { job.key }
+    end
+  end
+end
+```
 
 ## Usage with Long-Running Jobs
 
-For the Enhanced Active Job adapter to work with Long Running Jobs, you need to update your `karafka.rb` and use the `long_running_job` setting in the Active Job topic section:
+For the Enhanced Active Job adapter to work with Long-Running Jobs, you need to update your `karafka.rb` and use the `long_running_job` setting in the Active Job topic section:
 
 ```ruby
 class KarafkaApp < Karafka::App
