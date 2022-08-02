@@ -38,5 +38,5 @@
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
-* [Enhanced Scheduling](Pro-Enhanced-Scheduling)
+* [Enhanced Scheduler](Pro-Enhanced-Scheduler)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
