@@ -54,6 +54,10 @@ TBA
 
 TBA
 
+## Behaviour on revocation
+
+TBA
+
 ## Behaviour on shutdown
 
 TBA
