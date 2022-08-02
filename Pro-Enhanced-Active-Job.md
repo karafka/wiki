@@ -62,10 +62,9 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 
 ## Behaviour on shutdown
 
-TBA
+The same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).
 
 ## Usage with Virtual Partitions
-
 
 For the Enhanced Active Job adapter to work with Virtual Partitions, you need to update your `karafka.rb` and use the `virtual_partitioner` setting in the Active Job topic section:
 
