@@ -58,7 +58,7 @@ Same error behaviors apply as for standard [Active Job adapter](Active-Job#behav
 
 ## Behaviour on revocation
 
-TBA
+Enhanced Active Job adapter has revocation awareness. That means that Karafka, upon discovering that a given partition has been revoked, will stop processing further pre-buffered jobs. In a scenario of a longer job where the revocation happened during the job execution, only at most one job per partition will be processed twice. You can mitigate this scenario with static group memberships.
 
 ## Behaviour on shutdown
 
