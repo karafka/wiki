@@ -48,11 +48,13 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
 
 ## Execution warranties
 
-TBA
+Same execution warranties apply as for standard [Active Job adapter](Active-Job#execution-warranties).
 
 ## Behaviour on errors
 
-TBA
+Same error behaviors apply as for standard [Active Job adapter](Active-Job#behaviour-on-errors).
+
+**Note**: Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
 ## Behaviour on revocation
 
