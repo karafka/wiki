@@ -1,4 +1,4 @@
-Karafka Pro comes shipped with an enhanced scheduler.
+Karafka Pro comes shipped with an Enhanced Scheduler.
 
 The default scheduler schedules work in a FIFO (First-In, First-Out) order.
 
