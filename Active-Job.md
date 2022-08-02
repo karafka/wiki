@@ -100,9 +100,13 @@ Active Job Karafka adapter will follow the Karafka general [runtime errors handl
 
 Please keep in mind that **until** the error persists, **no** other jobs from a given partition will be processed.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.png" />
+</p>
+
 ## Execution warranties
 
-Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka.
+Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka happens.
 
 ## Queue Prefixes
 
