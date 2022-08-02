@@ -54,10 +54,28 @@ TBA
 
 TBA
 
+## Behaviour on shutdown
+
+TBA
+
 ## Usage with Virtual Partitions
 
 TBA
 
 ## Usage with Long-Running Jobs
 
-TBA
+There is nothing special needed except indication in your `karafka.rb`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    active_job_topic :default do
+      long_running_job true
+    end
+  end
+end
+```
