@@ -10,7 +10,7 @@
 * [Routing](Routing)
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [Deployment](Deployment)
-* [Development vs. Production](Development-vs-Production)
+* [Development vs. Production](Development-vs.-Production)
 * [Signals](Signals)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
