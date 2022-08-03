@@ -3,6 +3,8 @@ There are unavoidable differences when working in dev (`development` and `test` 
 1. Karafka `reload` mode should **not** be used in production.
 2. You **should** create all the topics you need upfront in your production Kafka cluster.
 3. You should **not** use `allow.auto.create.topics` set to `true` in production.
-4. Once you stabilize your topics list, you should also consider locking it in the development. It is a **common** thing to make typos and forget about them.
+4. Once you stabilize your topics list, you should consider locking it in the development. It is a **common** thing to make typos and forget about them.
 5. Please consider that the topics created using `allow.auto.create.topics` always have only one partition. This is ok for development, but you should create more partitions upfront for the production environment.
 6. Remember that rolling deployment of `N` processes will create `N` rebalances. This may affect performance and stability.
+7. It is generally recommended to create the topic manually or by sending the first message and then starting a consumer. Karafka refreshes cluster metadata information, but it may take a long time to notice a new topic.
+
