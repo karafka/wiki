@@ -141,7 +141,7 @@ If you can connect, your settings are correct, and your cluster is visible from 
 
 Provide the following details to the `kafka` section:
 
-```json
+```ruby
 config.kafka = {
   'bootstrap.servers': 'yourcluster-broker1.amazonaws.com:9096, yourcluster-broker2.amazonaws.com:9096',
   'security.protocol': 'SASL_SSL',
