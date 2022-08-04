@@ -10,11 +10,11 @@
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
-13. [Why Karafka process does not pick up a newly created topic until restarted?](ref)
+13. [Why Karafka process does not pick up a newly created topic until restarted?](#why-karafka-process-does-not-pick-up-a-newly-created-topic-until-restarted)
 
 ### Does Karafka require Ruby on Rails?
 
-**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. For more details, please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
+**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
 
 ### Why there used to be an ApplicationController mentioned in the Wiki and some articles?
 
@@ -50,7 +50,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ### Why Karafka does not restart dead PG connections?
 
-When running `karafka server` with a Rails application that uses ActiveRecord, if the database connection is terminated, the Rails HTTP server is able to reconnect with the database, however, Karafka server is unable to do so. Any subsequent calls to database fail with the following error:
+When running `karafka server` with a Rails application that uses ActiveRecord, if the database connection is terminated, the Rails HTTP server is able to reconnect with the database. However, the Karafka server is unable to do so. Any subsequent calls to the database fail with the following error:
 
 ```
 PG::ConnectionBad: PQsocket() can't get socket descriptor
@@ -63,7 +63,7 @@ Related sub-questions:
 
 #### Short answer
 
-This is an expected behavior because Karafka is meant to be transaction supporting system with long living consumers.
+This is expected behavior because Karafka is meant to be a transaction supporting system for long-living consumers.
 
 #### Long answer
 
@@ -91,7 +91,7 @@ end
 Depending on your approach towards building robust applications and providing reusable code, you may:
 
 - **a)** separate this from your business logic and leave it with a retry on the abstract Karafka layer as long as you understand what you are doing;
-- **b)** make it part of your business logic (wouldn't recommend).
+- **b)** make it part of your business logic (wouldn't recommend it).
 
 For the solution **a)** you can easily extend Karafkas ``ApplicationConsumer#call`` method as followed:
 
