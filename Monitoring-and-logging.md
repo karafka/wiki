@@ -48,6 +48,8 @@ end
 
 ## Datadog and StatsD integration
 
+**Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
+
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
 ```ruby
