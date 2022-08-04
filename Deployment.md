@@ -88,3 +88,48 @@ Karafka can be dockerized as any other Ruby/Rails app. To execute ```karafka ser
 ENV KARAFKA_ENV production
 CMD bundle exec karafka server
 ```
+
+## AWS + MSK
+
+First of all, it is worth pointing out that Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
+
+Karafka **does**, however, support standard SASL + SSL mechanisms. Please follow the below instructions for both cluster initialization and Karafka configuration.
+
+### AWS MSK cluster setup
+
+1. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc) but this can be useful for debugging.
+2. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
+3. **Disable** `IAM role-based authentication`.
+4. **Enable** `SASL/SCRAM authentication`
+5. Provision your cluster
+6. Make sure your cluster is accessible from your machines. You can test it by using the AWS VPC Reachability Analyzer.
+7. Visit your cluster `Properties` page and copy the `Endpoints` addresses.
+8. Log in to any of your machines and run a `telnet` session to any of the brokers:
+```bash
+telnet your-broker.kafka.us-east-1.amazonaws.com 9096
+
+Trying 172.31.22.230...
+Connected to your-broker.kafka.us-east-1.amazonaws.com.
+Escape character is '^]'.
+^CConnection closed by foreign host.
+```
+
+If you can connect, it means your settings are correct and your cluster is visible from your instance.
+
+9. Go to the AWS Secret Manager and create a key starting with `AmazonMSK_` prefix. Select `Other type of secret` and `Plaintext` and provide following value inside of the text field:
+```json
+{
+  "username":"username",
+  "password": "password"
+}
+```
+10. In the `Encryption key` section press on the `Add new key` and create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
+11. Select your key in the `Encryption key` section and press `Next`.
+12. Provide secret name and description and press `Next` until you get to the `Store` button.
+13. Store your secret.
+14. Go back to the AWS MSK and select your cluster.
+15. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
+16. Press the `Choose secrets` and select the previously created secret.
+17. Press `Associate secrets`. It will take AWS a while to do it.
+18. Congratulations you just configured all that is needed to make it work with Karafka.
+
