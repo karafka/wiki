@@ -105,7 +105,7 @@ Karafka **does**, however, support standard SASL + SSL mechanisms. Please follow
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/privisioned.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/provisioned2.png" />
 </p>
 
 3. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
