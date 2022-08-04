@@ -198,7 +198,7 @@ After that, you should be good to go.
 
 ### Troubleshooting AWS MSK
 
-If you see following error:
+#### Local: Authentication failure
 
 ```
 ERROR -- : rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
@@ -214,10 +214,12 @@ It may mean two things:
 - Your credentials are wrong
 - AWS MSK did not yet refresh its allowed keys, and you need to wait. Despite AWS reporting cluster as `Active` with no pending changes, it may take a few minutes for the credentials to start working.
 
+#### Connection setup timed out in state CONNECT
+
 ```
 rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
 sasl_ssl://broker1.us-east-1.amazonaws.com:9092/bootstrap:
 Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
 ```
 
-This means Kafka is unreachable. Check your brokers' addresses and ensure you use a proper port: `9096` with SSL or `9092` when plaintext.
+This means Kafka is unreachable. Check your brokers' addresses and ensure you use a proper port: `9096` with SSL or `9092` when plaintext. Also, make sure your instance can access AWS MSK at all.
