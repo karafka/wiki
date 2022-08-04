@@ -151,7 +151,13 @@ If you can connect, your settings are correct, and your cluster is visible from 
 </p>
 
 13. In the `Encryption key` section, press the `Add new key` and create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/add_new_key.png" />
+</p>
+
 14. Select your key in the `Encryption key` section and press `Next`.
+
 15. Provide a secret name and description and press `Next` until you reach the `Store` button.
 16. Store your secret.
 17. Go back to the AWS MSK and select your cluster.
