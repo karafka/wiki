@@ -10,6 +10,7 @@
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
+13. [Why Karafka process does not pick up a newly created topic until restarted?](ref)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -17,7 +18,7 @@
 
 ### Why there used to be an ApplicationController mentioned in the Wiki and some articles?
 
-You can name the main application consumer with any name. You can even call it ```ApplicationController``` or anything else you want. Karafka will sort that out, as long as your root application consumer inherits from the ```Karafka::BaseConsumer```. It's not related to Ruby on Rails controllers. Karafka framework used to use the ```*Controller``` naming convention up until Karafka 1.2 where it was changed because many people had problems with name colisions.
+You can name the main application consumer with any name. You can even call it ```ApplicationController``` or anything else you want. Karafka will sort that out, as long as your root application consumer inherits from the ```Karafka::BaseConsumer```. It's not related to Ruby on Rails controllers. Karafka framework used to use the ```*Controller``` naming convention up until Karafka 1.2 where it was changed because many people had problems with name collisions.
 
 ### Does Karafka require Redis and/or Sidekiq to work?
 
@@ -152,3 +153,11 @@ Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be requi
 ### Can I use Thread.current to store data between batches?
 
 **No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
+
+
+### Why Karafka process does not pick up a newly created topic until restarted?
+
+- Karafka in the `development` mode will refresh cluster metadata every 5 seconds. It means, that it will detect topic changes fairly fast.
+- Karafka in `production` will refresh cluster metadata every 5 minutes. It is recommended to create production topics prior to running consumers.
+
+The frequency of cluster metadata refreshes can be changed via `topic.metadata.refresh.interval.ms` in the `kafka` config section.
