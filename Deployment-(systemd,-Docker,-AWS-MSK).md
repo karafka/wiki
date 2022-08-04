@@ -105,10 +105,20 @@ Karafka **does**, however, support standard SASL + SSL mechanisms. Please follow
 </p>
 
 1. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/broker-settings.png" />
+</p>
+
 1. Setup your VPC and networking details.
 1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
 1. **Disable** `IAM role-based authentication`.
 1. **Enable** `SASL/SCRAM authentication`
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/access-methods.png" />
+</p>
+
 1. Provision your cluster.
 1. Make sure your cluster is accessible from your machines. You can test it by using the AWS VPC Reachability Analyzer.
 1. Visit your cluster `Properties` page and copy the `Endpoints` addresses.
