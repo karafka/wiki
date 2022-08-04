@@ -228,3 +228,7 @@ Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
 ```
 
 This means Kafka is unreachable. Check your brokers' addresses and ensure you use a proper port: `9096` with SSL or `9092` when plaintext. Also, make sure your instance can access AWS MSK at all.
+
+### Connection failures and timeouts
+
+Please make sure that your instances can reach Kafka. Keep in mind that security group updates can have a certain lag in propagation.
