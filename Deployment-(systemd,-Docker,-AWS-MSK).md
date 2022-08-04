@@ -195,3 +195,29 @@ config.kafka = {
 ```
 
 After that, you should be good to go.
+
+### Troubleshooting AWS MSK
+
+If you see following error:
+
+```
+ERROR -- : rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
+sasl_ssl://broker1.us-east-1.amazonaws.com:9096/bootstrap: SASL authentication error:
+Authentication failed during authentication due to invalid credentials with SASL mechanism SCRAM-SHA-512
+(after 312ms in state AUTH_REQ, 1 identical error(s) suppressed)
+
+ERROR -- : librdkafka internal error occurred: Local: Authentication failure (authentication)
+
+```
+
+It may mean two things:
+- Your credentials are wrong
+- AWS MSK did not yet refresh its allowed keys, and you need to wait. Despite AWS reporting cluster as `Active` with no pending changes, it may take a few minutes for the credentials to start working.
+
+```
+rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
+sasl_ssl://broker1.us-east-1.amazonaws.com:9092/bootstrap:
+Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
+```
+
+This means Kafka is unreachable. Check your brokers' addresses and ensure you use a proper port: `9096` with SSL or `9092` when plaintext.
