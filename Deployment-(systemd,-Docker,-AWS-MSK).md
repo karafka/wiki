@@ -232,3 +232,11 @@ This means Kafka is unreachable. Check your brokers' addresses and ensure you us
 ### Connection failures and timeouts
 
 Please make sure that your instances can reach Kafka. Keep in mind that security group updates can have a certain lag in propagation.
+
+### Rdkafka::RdkafkaError (Broker: Invalid replication factor (invalid_replication_factor))
+
+Please make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/brokers_count.png" />
+</p>
