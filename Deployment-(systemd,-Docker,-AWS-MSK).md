@@ -154,31 +154,36 @@ If you can connect, your settings are correct, and your cluster is visible from 
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/secret_type2.png" />
 </p>
 
-13. In the `Encryption key` section, press the `Add new key` and create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
+13. In the `Encryption key` section, press the `Add new key`.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/add_new_key.png" />
 </p>
 
-14. Select your key in the `Encryption key` section and press `Next`.
+14. Create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
 
-15. Provide a secret name and description and press `Next` until you reach the `Store` button.
-16. Store your secret.
-17. Go back to the AWS MSK and select your cluster.
-18. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/keys.png" />
+</p>
+
+15. Select your key in the `Encryption key` section and press `Next`.
+16. Provide a secret name and description and press `Next` until you reach the `Store` button.
+17. Store your secret.
+18. Go back to the AWS MSK and select your cluster.
+19. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/associate_secrets.png" />
 </p>
 
-19. Press the `Choose secrets` and select the previously created secret.
+20. Press the `Choose secrets` and select the previously created secret.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/associate_secrets2.png" />
 </p>
 
-20. Press `Associate secrets`. It will take AWS a while to do it.
-21. Congratulations, you just configured everything needed to make it work with Karafka.
+21. Press `Associate secrets`. It will take AWS a while to do it.
+22. Congratulations, you just configured everything needed to make it work with Karafka.
 
 ### Karafka configuration for AWS MSK SASL + SSL
 
