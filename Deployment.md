@@ -99,6 +99,11 @@ Karafka **does**, however, support standard SASL + SSL mechanisms. Please follow
 
 1. Navigate to the AWS MSK page and press the `Create cluster` button.
 1. Select `Custom create` and `Provisioned` settings.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/creation_method.png" />
+</p>
+
 1. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
 1. Setup your VPC and networking details.
 1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
