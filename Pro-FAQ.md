@@ -18,13 +18,13 @@ Every organization running Karafka Pro on its servers must purchase a subscripti
 
 ## Do I require to change source of the package?
 
-**No**. All Karafka Pro code is stored in the same package and only included and used with a valid license key. You do not have to make any changes to your `Gemfile` setup to use Karafka Pro.
+**No**. All Karafka Pro code is stored in the same package and only included and used when a valid license gem is present.
 
 ## What happens if my subscription lapses?
 
 If we cannot charge your card, we will email you and try three more times over a week. If it still fails, your subscription will be canceled.
 
-You'll lose access to the gem server, priority support, and Karafka Pro won't work anymore.
+You'll lose access to the gem server and priority support, and Karafka Pro won't work anymore.
 
 ## Do I need to replace the license for my running processes?
 
@@ -32,7 +32,7 @@ No. The production environment that is already started will not be affected (unt
 
 ## How do I buy Karafka Pro?
 
-Just go to our [website](https://karafka.io) and follow the instructions.
+Follow the instructions on our [website](https://karafka.io/#become-pro).
 
 ## Can I distribute Karafka Pro to my customers?
 
