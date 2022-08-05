@@ -38,4 +38,4 @@ Upgrades months or years from now are as simple as `bundle up karafka.` The upgr
 
 Help me build and maintain a high-quality Kafka ecosystem for Ruby and Ruby on Rails.
 
-Buy [Karafka Pro](https://karafka.io/).
+Buy [Karafka Pro](https://karafka.io/#become-pro).
