@@ -1,8 +1,8 @@
-Karafka Pro is an enhanced version of the Karafka framework, which adds more functionalities and provides additional support options for customers.
+Karafka Pro is an enhanced version of the Karafka framework, adding more functionalities and providing additional customer support options.
 
 ## Is there a trial version?
 
-Yes. You can obtain a temporary credentials from our [website](https://karafka.io) for free.
+Yes. For free, you can obtain temporary credentials from our [website](https://karafka.io/#become-pro).
 
 Those credentials will be valid for a month for every environment.
 
@@ -14,7 +14,7 @@ See [COMM-LICENSE](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) 
 
 ## How does Pro licensing work?
 
-Every organization running Karafka Pro on its own servers must purchase a subscription. There's no limit to the number of servers or environments used by that organization. Your subscription will automatically renew every year.
+Every organization running Karafka Pro on its servers must purchase a subscription. There's no limit to the number of servers or environments used by that organization. Your subscription will automatically renew every year.
 
 ## Do I require to change source of the package?
 
