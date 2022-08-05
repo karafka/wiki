@@ -1,3 +1,5 @@
+**Note**: All of the documentation here refers to Karafka `2.0.0` or higher. If you are looking for the documentation for Karafka `1.4`, please click [here](https://github.com/karafka/wiki/tree/1.4).
+
 * [Getting started](Getting-Started)
 * [The Basics](The-Basics)
 * [Configuration](Configuration)
