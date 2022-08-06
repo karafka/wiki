@@ -11,7 +11,7 @@
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
 13. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
-14. [Why Karafka is not doing work in parallel when I started two processes?](#tba)
+14. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -163,6 +163,6 @@ Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be requi
 
 The frequency of cluster metadata refreshes can be changed via `topic.metadata.refresh.interval.ms` in the `kafka` config section.
 
-### Why Karafka is not doing work in parallel when I started two processes?
+### Why is Karafka not doing work in parallel when I started two processes?
 
 Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
