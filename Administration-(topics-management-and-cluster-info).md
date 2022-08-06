@@ -12,13 +12,19 @@ replication_factor = 1 # 1 for dev, for prod you want more
 Karafka::Admin.create_topic(topic_name, partitions_count, replication_factor)
 ```
 
-## Deleting topic
+## Deleting a topic
 
 ```ruby
 topic_name = 'my_cool_topic'
-Karafka::Admin.create_topic(topic_name
+
+Karafka::Admin.delete_topic(topic_name)
 ```
 
-## Getting cluster info
+## Getting cluster-info
 
-TBA
+```ruby
+# Get cluster info and list all the topics
+info = Karafka::Admin.cluster_info
+
+puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
+```
