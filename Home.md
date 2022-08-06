@@ -20,6 +20,7 @@
 * [Deserialization](Deserialization)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Manual offset management (checkpointing)](Manual-offset-management)
+* [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
