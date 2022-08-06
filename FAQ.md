@@ -10,7 +10,8 @@
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
-13. [Why Karafka process does not pick up a newly created topics until restarted?](#why-karafka-process-does-not-pick-up-a-newly-created-topics-until-restarted)
+13. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
+14. [Why Karafka is not doing work in parallel when I started two processes?](#tba)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -155,9 +156,13 @@ Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be requi
 **No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
 
 
-### Why Karafka process does not pick up a newly created topics until restarted?
+### Why Karafka process does not pick up newly created topics until restarted?
 
-- Karafka in the `development` mode will refresh cluster metadata every 5 seconds. It means, that it will detect topic changes fairly fast.
-- Karafka in `production` will refresh cluster metadata every 5 minutes. It is recommended to create production topics prior to running consumers.
+- Karafka in the `development` mode will refresh cluster metadata every 5 seconds. It means that it will detect topic changes fairly fast.
+- Karafka in `production` will refresh cluster metadata every 5 minutes. It is recommended to create production topics before running consumers.
 
 The frequency of cluster metadata refreshes can be changed via `topic.metadata.refresh.interval.ms` in the `kafka` config section.
+
+### Why Karafka is not doing work in parallel when I started two processes?
+
+Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
