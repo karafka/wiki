@@ -1,4 +1,4 @@
-Karafka supports auto-reload of code changes for Ruby on Rails out of the box, similar to how Puma or Sidekiq does it.
+Karafka supports auto-reload of code changes for Ruby on Rails, similar to Puma or Sidekiq.
 
 Due to consumers persistence in Karafka (long-living consumer instances), in order to make it work, you need to turn it on yourself by setting a `consumer_persistence` configuration option in the `karafka.rb` file to `false` in the development mode:
 
@@ -20,6 +20,5 @@ Your code changes will be applied after processing of current messages batch.
 Keep in mind, though, that there are a couple of limitations to it:
 
 * Changes in the routing are **not** reflected. This would require reconnections and would drastically complicate reloading.
-* Any background work you run outside the Karafka framework but still within the process might not be caught in the reloading.
-* If you use in-memory consumer data buffering that spans across multiple batches, it **won't** work as code reload means re-initializing consumers instances. In cases like that, you will be better off not using the reload mode at all.
-* Code reload may be slow for some edge cases. It is a bug in Ruby on Rails reported [here](https://github.com/rails/rails/issues/44183).
+* Any background work you run outside the Karafka framework but within the process might not be caught in the reloading.
+* If you use in-memory consumer data buffering that spans multiple batches, it **won't** work as code reload means re-initializing consumer instances. In cases like that, you will be better off not using the reload mode.
