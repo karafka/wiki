@@ -29,7 +29,7 @@ Using multiple threads for IO intense work can bring great performance improveme
 <p align="center">
   <img src="images/workers-performance.png" />
 </p>
-<p>
+<p align="center">
   <small>*This example illustrates performace difference for IO intense jobs.</small>
 </p>
 
