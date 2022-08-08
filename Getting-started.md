@@ -39,6 +39,10 @@ bundle exec karafka server
 [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
 ```
 
+Here's the demo of the installation process:
+
+[![asciicast](https://asciinema.org/a/qXzQmDyH7Rzk5hF8OwXKO92Sh.svg)](https://asciinema.org/a/qXzQmDyH7Rzk5hF8OwXKO92Sh)
+
 ## Example applications
 
 If you have any problems settings things up or want a ready application to play around with, then the best idea is just to clone our examples repository:
