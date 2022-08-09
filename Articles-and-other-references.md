@@ -15,6 +15,7 @@
 
 **Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://mensfeld.pl/2017/11/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 2 - Getting started with Rails and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
 * [Karafka example applications](https://github.com/karafka/karafka-example-apps)
