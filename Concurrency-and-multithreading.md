@@ -27,7 +27,7 @@ Karafka uses multiple threads to process messages coming from different topics a
 Using multiple threads for IO intense work can bring great performance improvements to your system "for free."
 
 <p align="center">
-  <img src="images/workers-performance.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/workers-performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates performace difference for IO intense jobs.</small>
