@@ -33,7 +33,7 @@
 
 * [Build vs. Buy](Build-vs-Buy)
 * [Purchase Karafka Pro](https://karafka.io/#become-pro)
-* [Getting started](Pro-Getting-started)
+* [Getting Started](Pro-Getting-Started)
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
 
