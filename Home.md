@@ -1,5 +1,8 @@
 **Note**: All of the documentation here refers to Karafka `2.0.0` or higher. If you are looking for the documentation for Karafka `1.4`, please click [here](https://github.com/karafka/wiki/tree/1.4).
 
+
+## Basics
+
 * [Getting Started](Getting-Started)
 * [The Basics](The-Basics)
 * [Configuration](Configuration)
@@ -7,20 +10,26 @@
 * [Producing messages](Producing-messages)
 * [Consuming messages](Consuming-messages)
 * [Testing](Testing)
-* [Monitoring and logging](Monitoring-and-logging)
-* [Active Job](Active-Job)
-* [Routing](Routing)
-* [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
-* [Deployment (systemd, Docker, AWS MSK)](Deployment-(systemd,-Docker,-AWS-MSK))
+
+## Production usage
+
 * [Development vs Production](Development-vs-Production)
 * [Signals](Signals)
+* [Deployment (systemd, Docker, AWS MSK)](Deployment-(systemd,-Docker,-AWS-MSK))
+* [Monitoring and logging](Monitoring-and-logging)
+* [Error handling and back off policy](Error-handling-and-back-off-policy)
+* [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
+
+## Advanced
+
+* [Routing](Routing)
+* [Active Job](Active-Job)
+* [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
 * [Concurrency and multithreading](Concurrency-and-multithreading)
 * [Deserialization](Deserialization)
-* [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Manual offset management (checkpointing)](Manual-offset-management)
-* [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
