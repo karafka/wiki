@@ -27,7 +27,7 @@ Karafka uses multiple threads to process messages coming from different topics a
 Using multiple threads for IO intense work can bring great performance improvements to your system "for free."
 
 <p align="center">
-  <img src="images/workers-performance.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/workers-performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates performace difference for IO intense jobs.</small>
@@ -36,7 +36,7 @@ Using multiple threads for IO intense work can bring great performance improveme
 Example of work distribution amongst two workers:
 
 <p align="center">
-  <img src="images/processing-workers.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/processing-workers.svg" />
 </p>
 
 **Note**: Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
