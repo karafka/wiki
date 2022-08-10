@@ -41,7 +41,7 @@
 ## Karafka Pro and Pro Aspects
 
 * [Build vs. Buy](Build-vs-Buy)
-* [Purchase Karafka Pro](https://karafka.io/#become-pro)
+* [Purchase Karafka Pro](Purchase-Karafka-Pro)
 * [Getting Started](Pro-Getting-Started)
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
