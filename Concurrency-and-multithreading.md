@@ -36,7 +36,7 @@ Using multiple threads for IO intense work can bring great performance improveme
 Example of work distribution amongst two workers:
 
 <p align="center">
-  <img src="images/processing-workers.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/processing-workers.svg" />
 </p>
 
 **Note**: Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
