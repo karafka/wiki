@@ -12,6 +12,7 @@
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
 13. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
 14. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
+15. [Can I remove a topic while the Karafka server is running?](#tba)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -166,3 +167,17 @@ The frequency of cluster metadata refreshes can be changed via `topic.metadata.r
 ### Why is Karafka not doing work in parallel when I started two processes?
 
 Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
+
+
+### Can I remove a topic while the Karafka server is running?
+
+**Not recommended**. You may encounter the following errors if you decide to do so:
+
+```
+ERROR -- : librdkafka internal error occurred: Local: Unknown partition (unknown_partition)
+ERROR -- : 
+INFO -- : rdkafka: [thrd:main]: Topic extractor partition count changed from 1 to 0
+ERROR -- : librdkafka internal error occurred: Broker: Unknown topic or partition (unknown_topic_or_part)
+```
+
+It is recommended to stop Karafka server instances and then remove and recreate the topic.
