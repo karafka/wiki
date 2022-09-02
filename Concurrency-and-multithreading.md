@@ -49,7 +49,7 @@ This grouping strategy has certain downsides, as with one connection, in case of
 
 If you expect scenarios like this to occur, you may want to manually control the number of background connections from Karafka to Kafka. You can define a `subscription_group_id` value on a topic level, and topics with the same `subscription_group_id` will be grouped and will share a separate connection to the cluster. By default, all the topics are grouped within a single subscription group.
 
-Each subscription group connection operates independently in a separate background thread. They do, however, share the workers for data consumption.
+Each subscription group connection operates independently in a separate background thread. They do, however, share the workers poll for processing.
 
 Below you can find an example of how this example routing translates into Kafka connections:
 
