@@ -80,7 +80,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [consumer](https://github.com/karafka/karafka/wiki/Consumers)    | Class      | Name of a consumer class that we want to use to consume messages from a given topic |
 | [deserializer](https://github.com/karafka/karafka/wiki/Deserialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
 | [manual_offset_management](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
-| [subscription_group_id](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | String        | Identifier to make Karafka create a separate subscription group for a given topic |
+| [subscription_group](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading/#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)               | String        | Identifier to make Karafka create a separate subscription group for a given topic |
 
 
 ```ruby
