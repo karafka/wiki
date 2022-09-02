@@ -69,13 +69,7 @@ end
 
 ## Overriding Defaults
 
-Almost all the default settings configured can be changed on either ```consumer_group``` or ```topic``` level. This means that you can provide each consumer group or topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
-
-## Consumer group level options
-
-Consumer group options allow you to change how a particular consumer group behaves. You can override most of the ```config.kafka``` settings, set up different encryption details, and do other crazy stuff.
-
-This level settings override is used primarily to change how the consumer group handles connection and incoming data.
+Almost all the default settings configured can be changed on either on the ```topic``` level. This means that you can provide each topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
 
 ## Topic level options
 
@@ -86,6 +80,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [consumer](https://github.com/karafka/karafka/wiki/Consumers)    | Class      | Name of a consumer class that we want to use to consume messages from a given topic |
 | [deserializer](https://github.com/karafka/karafka/wiki/Deserialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
 | [manual_offset_management](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
+| [subscription_group_id](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | String        | Identifier to make Karafka create a separate subscription group for a given topic |
 
 
 ```ruby
