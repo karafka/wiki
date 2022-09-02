@@ -41,6 +41,62 @@ Example of work distribution amongst two workers:
 
 **Note**: Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
+### Parallel Kafka connections within a single consumer group (subscription groups)
+
+Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
+
+This grouping strategy has certain downsides, as with one connection, in case of a lag, you may get messages from a single topic partition for an extended time. This may prevent you from utilizing multiple threads to achieve better performance.
+
+If you expect scenarios like this to occur, you may want to manually control the number of background connections from Karafka to Kafka. You can define a `subscription_group_id` value on a topic level, and topics with the same `subscription_group_id` will be grouped and will share a separate connection to the cluster. By default, all the topics are grouped within a single subscription group.
+
+Each subscription group connection operates independently in a separate background thread. They do, however, share the workers for data consumption.
+
+Below you can find an example of how this example routing translates into Kafka connections:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :A do
+      consumer ConsumerA
+      subscription_group_id 'a'
+    end
+
+    topic :B do
+      consumer ConsumerB
+      subscription_group_id 'a'
+    end
+
+    topic :C do
+      consumer ConsumerC
+      subscription_group_id 'b'
+    end
+
+    topic :D do
+      consumer ConsumerD
+      subscription_group_id 'a'
+    end
+  end
+end
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/subscription_group_routing.png" />
+</p>
+<p align="center">
+  <small>*This example illustrates how Karafka routing translates into subscription groups and their underlying connections to Kafka.
+  </small>
+</p>
+
+**Note**: This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that have different `subscription_group_id`.
+
+**Note**: Subscription groups are a different concept than consumer groups. It is an internal Karafka concept; you can have many subscription groups in one consumer group.
+
+If you are interested in how `librdkafka` fetches messages please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
+
 ### Parallel processing of a single topic partition (Virtual Partitions)
 
 Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called [Virtual Partitions](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
