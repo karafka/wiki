@@ -6,8 +6,8 @@ Due to the dynamic nature of Kafka, you can use multiple configuration options; 
 
 Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it too as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
 
-* consumer group level - options that are related to Kafka client and a given consumer group
-* topic level - options that need to be set on a per topic level
+* settings level - root settings that will be used everywhere
+* topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
 **Note**: most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
 
