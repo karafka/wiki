@@ -51,7 +51,7 @@ If you expect scenarios like this to occur, you may want to manually control the
 
 Each subscription group connection operates independently in a separate background thread. They do, however, share the workers poll for processing.
 
-Below you can find an example of how this example routing translates into Kafka connections:
+Below you can find an example of how routing translates into subscription groups and Kafka connections:
 
 ```ruby
 class KarafkaApp < Karafka::App
