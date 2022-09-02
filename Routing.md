@@ -37,7 +37,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-#### Multiple consumer groups mode
+### Multiple consumer groups mode
 
 In this mode, Karafka will use a single consumer group per each of the topics defined within a single `#consumer_group` block.
 
