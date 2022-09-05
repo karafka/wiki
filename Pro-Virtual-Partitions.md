@@ -14,7 +14,7 @@ Virtual Partitions solve this problem by providing you with the means to further
 
 ## Messages distribution
 
-Message distribution is based on the outcome of the `virtual_partitioner`. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting.
+Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `concurrency` setting defined within the `virtual_partitions` method.
 
 Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
@@ -24,7 +24,7 @@ Below is a diagram illustrating an example partitioning flow of a single partiti
 
 ## Using virtual partitions
 
-The only thing you need to add to your setup is the `virtual_partitioner` definition for topics for which you want to enable it:
+The only thing you need to add to your setup is the `virtual_partitions` definition for topics for which you want to enable it:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -37,7 +37,13 @@ class KarafkaApp < Karafka::App
       consumer OrdersStatesConsumer
 
       # Distribute work to virtual partitions per order id
-      virtual_partitioner ->(message) { message.headers['order_id'] }
+      virtual_partitions(
+        partitioner: ->(message) { message.headers['order_id'] },
+        # Defines how many concurrent virtual partitions will be created for this
+        # topic partition. When not specified, Karafka global concurrency setting
+        # will be used to make sure to accommodate as many worker threads as possible.
+        concurrency: 5
+      )
     end
   end
 end
@@ -45,9 +51,9 @@ end
 
 No other changes are needed.
 
-The virtual partitioner requires to respond to a `#call` method, and it accepts a single Karafka message as an argument.
+The virtual `partitioner` requires to respond to a `#call` method, and it accepts a single Karafka message as an argument.
 
-The return value of the virtual partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
+The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
 ### Partitioning based on the message key
 
@@ -59,7 +65,9 @@ routes.draw do
     consumer OrdersStatesConsumer
 
     # Distribute work to virtual partitions based on the message key
-    virtual_partitioner ->(message) { message.key }
+    virtual_partitions(
+      partitioner: ->(message) { message.key }
+    )
   end
 end
 ```
@@ -75,7 +83,9 @@ routes.draw do
 
     # Distribute work to virtual partitions based on the user id, ensuring,
     # that per user, everything is in order
-    virtual_partitioner ->(message) { message.payload.fetch('user_id') }
+    virtual_partitions(
+      partitioner: ->(message) { message.payload.fetch('user_id') }
+    )
   end
 end
 ```
@@ -93,10 +103,66 @@ routes.draw do
 
     # Distribute work to virtual partitions based on the user id, ensuring,
     # that per user, everything is in order
-    virtual_partitioner ->(_) { rand(Karafka::App.config.concurrency) }
+    virtual_partitions(
+      partitioner: ->(_) { rand(Karafka::App.config.concurrency) }
+    )
   end
 end
 ```
+
+## Managing number of Virtual Partitions
+
+By default, Karafka will create at most `Karafka::App.config.concurrency` concurrent Virtual Partitions. This approach allows Karafka to occupy all the threads under optimal conditions.
+
+### Limiting number of Virtual Partitions
+
+However, it also means that other topics may not get their fair share of resources. To mitigate this, you may dedicate only 80% of the available threads to Virtual Partitions.
+
+```ruby
+setup do |config|
+  config.concurrency = 10
+end
+
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    virtual_partitions(
+      partitioner: ->(message) { message.payload.fetch('user_id') },
+      # Leave two threads for other work of other topics partitions
+      # (non VP or VP of other partitions)
+      concurrency: 8
+    )
+  end
+end
+```
+
+**Note**: Virtual Partitions `concurrency` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
+
+### Increasing number of Virtual Partitions
+
+There are specific scenarios where you may be interested in having more Virtual Partitions than threads. One example would be to create one Virtual Partition for the data of each user. If you set the `concurrency` to match the `max_messages`, Karafka will create each Virtual Partition based on your grouping without reducing it to match number of worker threads.
+
+```ruby
+setup do |config|
+  config.concurrency = 10
+  config.max_messages = 200
+end
+
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    virtual_partitions(
+      partitioner: ->(message) { message.payload.fetch('user_id') },
+      # Make sure, that each virtual partition always contains data of only a single user
+      concurrency: 200
+    )
+  end
+end
+```
+
+**Note**: Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
 ## Monitoring
 
@@ -119,7 +185,7 @@ If processing in all virtual partitions ends up successfully, Karafka will mark 
 Virtual Partitions provide two types of warranties in regards to order:
 
 - Standard warranties per virtual partitions group - that is, from the "outside" of the virtual partitions group Kafka ordering warranties are preserved.
-- Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4), but lower offsets will always precede larger (1, 2, 4, 9). This depends on the `virtual_partitioner` used for partitioning a given topic.
+- Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4), but lower offsets will always precede larger (1, 2, 4, 9). This depends on the `virtual_partitions` `partitioner` used for partitioning a given topic.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.png" />
@@ -152,7 +218,9 @@ routes.draw do
   topic :orders_states do
     consumer OrdersStatesConsumer
     long_running_job true
-    virtual_partitioner ->(message) { message.headers['order_id'] }
+    virtual_partitions(
+      partitioner: ->(message) { message.headers['order_id'] }
+    )
   end
 end
 ```
@@ -176,7 +244,9 @@ end
 class KarafkaApp < Karafka::App
   routes.draw do
     active_job_topic :jobs do
-      virtual_partitioner ->(job) { job.key }
+      virtual_partitions(
+        partitioner: ->(job) { job.key }
+      )
     end
   end
 end
