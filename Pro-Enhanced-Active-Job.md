@@ -66,7 +66,7 @@ The same shutdown behavior applies as for standard [Active Job adapter](Active-J
 
 ## Usage with Virtual Partitions
 
-For the Enhanced Active Job adapter to work with Virtual Partitions, you need to update your `karafka.rb` and use the `virtual_partitioner` setting in the Active Job topic section:
+For the Enhanced Active Job adapter to work with Virtual Partitions, you need to update your `karafka.rb` and use the `virtual_partitions` settings in the Active Job topic section:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -76,7 +76,9 @@ class KarafkaApp < Karafka::App
 
   routes.draw do
     active_job_topic :default do
-      virtual_partitioner ->(job) { job.key }
+      virtual_partitions(
+        partitioner: ->(job) { job.key }
+      )
     end
   end
 end
