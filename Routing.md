@@ -67,6 +67,47 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+
+### Multiple subscription groups mode
+
+Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
+
+Each subscription group connection operates independently in a separate background thread. They do, however, share the workers poll for processing.
+
+All the subscription groups define within a single consumer group will operate within the same consumer group.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :A do
+      consumer ConsumerA
+      subscription_group 'a'
+    end
+
+    topic :B do
+      consumer ConsumerB
+      subscription_group 'a'
+    end
+
+    topic :C do
+      consumer ConsumerC
+      subscription_group 'b'
+    end
+
+    topic :D do
+      consumer ConsumerD
+      subscription_group 'a'
+    end
+  end
+end
+```
+
+You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
+
 ## Overriding Defaults
 
 Almost all the default settings configured can be changed on either on the ```topic``` level. This means that you can provide each topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
@@ -81,6 +122,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [deserializer](https://github.com/karafka/karafka/wiki/Deserialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
 | [manual_offset_management](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
 | [subscription_group](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading/#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)               | String        | Identifier to make Karafka create a separate subscription group for a given topic |
+| [long_running_job](https://github.com/karafka/karafka/wiki/Pro-Long-Running-Jobs)               | Boolean        | Converts this topic consumer into a Long Running Job that can run longer than `max.poll.interval.ms` |
 
 
 ```ruby

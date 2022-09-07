@@ -42,6 +42,26 @@ That way, as long as no rebalances occur during the processing that would cause 
 
 This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
 
+## Using Long Running Jobs
+
+The only thing you need to add to your setup is the `long_running_job` option in your routing section:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      long_running_job true
+    end
+  end
+end
+```
+
 ## Processing during revocation
 
 Upon a group rebalance, there are two scenarios affecting the paused partition you are processing:
@@ -99,3 +119,36 @@ There is only one thing you need to keep in mind:
 
 It is **not** recommended to use manual offset management with Virtual Partitions. Hence you need to set `shutdown_timeout` to a value that 
 will compensate for that.
+
+## Mixing Long Running Jobs with regular jobs in a single consumer/subscription group
+
+By default, Long Running Jobs defined alongside regular jobs will be grouped together in a single subscription group. This means, that they will share underling connection to Kafka and will be a subject to the same blocking polling limitations.
+
+In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke not only the regular jobs but also the defined Long Running Jobs.
+
+If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, it is worth separating them into different subscription groups. This will ensure, that Long Running Jobs stability is not influenced by any external factors.
+
+```ruby
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      long_running_job true
+
+      # By providing this, all the long running jobs will get a separate Kafka connection that
+      # won't be affected by other topics consumption in any way
+      subscription_group 'long_running_jobs'
+    end
+
+    topic :deliveries_states do
+      consumer DeliviersStatesConsumer
+    end
+  end
+end
+```
