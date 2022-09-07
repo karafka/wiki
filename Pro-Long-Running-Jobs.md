@@ -120,13 +120,13 @@ There is only one thing you need to keep in mind:
 It is **not** recommended to use manual offset management with Virtual Partitions. Hence you need to set `shutdown_timeout` to a value that 
 will compensate for that.
 
-## Mixing Long Running Jobs with regular jobs in a single consumer/subscription group
+## Using Long Running Jobs with regular jobs 
 
-By default, Long Running Jobs defined alongside regular jobs will be grouped together in a single subscription group. This means, that they will share underling connection to Kafka and will be a subject to the same blocking polling limitations.
+By default, Long Running Jobs defined alongside regular jobs will be grouped in a single subscription group. This means they will share an underlying connection to Kafka and be subject to the same blocking polling limitations.
 
-In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke not only the regular jobs but also the defined Long Running Jobs.
+In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke the regular jobs and the defined Long Running Jobs.
 
-If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, it is worth separating them into different subscription groups. This will ensure, that Long Running Jobs stability is not influenced by any external factors.
+If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth separating. This will ensure that external factors do not influence Long Running Jobs's stability.
 
 ```ruby
 
