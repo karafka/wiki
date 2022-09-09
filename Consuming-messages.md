@@ -153,7 +153,7 @@ Karafka consumer instances are persistent by default. This means that a single c
 
 Karafka consumer instance for a given topic partition will be re-created in case a given partition is lost and re-assigned.
 
-**Note**: if you decide to utilize such technics, you may be better with manual offset management.
+**Note**: if you decide to utilize such techniques, you may be better with manual offset management.
 
 
 ```ruby
