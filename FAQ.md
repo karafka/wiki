@@ -13,7 +13,7 @@
 13. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
 14. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
 15. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
-16. [What is a forceful Karafka stop?](#tba)
+16. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
 
 ### Does Karafka require Ruby on Rails?
 
