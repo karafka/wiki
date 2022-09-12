@@ -13,6 +13,7 @@
 13. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
 14. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
 15. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
+16. [What is a forceful Karafka stop?](#tba)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -181,3 +182,20 @@ ERROR -- : librdkafka internal error occurred: Broker: Unknown topic or partitio
 ```
 
 It is recommended to stop Karafka server instances and then remove and recreate the topic.
+
+### What is a forceful Karafka stop?
+
+When you attempt to stop Karafka, you may notice the following information in your logs:
+
+```bash
+Received SIGINT system signal
+Stopping Karafka server
+Forceful Karafka server stop
+```
+
+When you ask Karafka to stop, it will wait for all the currently running jobs to finish. The `shutdown_timeout` configuration setting limits the time it waits. After this time passes and any work in listeners or workers are still being performed, Karafka will attempt to forcefully close itself, stopping all the work in the middle. If you see it happen, it means you need to either:
+
+- extend the `shutdown_timeout` value to match your processing patterns
+- debug your code to check what is causing the extensive processing beyond the `shutdown_timeout`
+
+In any case, it is **not** recommended to ignore this if it happens frequently.
