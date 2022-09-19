@@ -83,24 +83,24 @@ class KarafkaApp < Karafka::App
   end
 
   routes.draw do
-    topic :A do
-      consumer ConsumerA
-      subscription_group 'a'
+    subscription_group 'a' do
+      topic :A do
+        consumer ConsumerA
+      end
+
+      topic :B do
+        consumer ConsumerB
+      end
+
+      topic :D do
+        consumer ConsumerD
+      end
     end
 
-    topic :B do
-      consumer ConsumerB
-      subscription_group 'a'
-    end
-
-    topic :C do
-      consumer ConsumerC
-      subscription_group 'b'
-    end
-
-    topic :D do
-      consumer ConsumerD
-      subscription_group 'a'
+    subscription_group 'b' do
+      topic :C do
+        consumer ConsumerC
+      end
     end
   end
 end
@@ -121,7 +121,6 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [consumer](https://github.com/karafka/karafka/wiki/Consumers)    | Class      | Name of a consumer class that we want to use to consume messages from a given topic |
 | [deserializer](https://github.com/karafka/karafka/wiki/Deserialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
 | [manual_offset_management](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
-| [subscription_group](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading/#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)               | String        | Identifier to make Karafka create a separate subscription group for a given topic |
 | [long_running_job](https://github.com/karafka/karafka/wiki/Pro-Long-Running-Jobs)               | Boolean        | Converts this topic consumer into a Long Running Job that can run longer than `max.poll.interval.ms` |
 
 
