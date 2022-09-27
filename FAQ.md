@@ -205,4 +205,4 @@ In any case, it is **not** recommended to ignore this if it happens frequently.
 
 No. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
 
-Karafka supports however the standard SASL + SSL mechanisms available for MSK. You can read more about it [here](Deployment-(systemd,-Docker,-AWS-MSK)/#aws-msk-cluster-setup).
+Karafka supports the standard SASL + SSL mechanisms available for MSK. You can read more about it [here](Deployment-(systemd,-Docker,-AWS-MSK)/#aws-msk-cluster-setup).
