@@ -14,6 +14,7 @@
 14. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
 15. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
 16. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
+17. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -199,3 +200,9 @@ When you ask Karafka to stop, it will wait for all the currently running jobs to
 - debug your code to check what is causing the extensive processing beyond the `shutdown_timeout`
 
 In any case, it is **not** recommended to ignore this if it happens frequently.
+
+### Can I use AWS MSK Serverless with IAM authentication?
+
+No. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
+
+Karafka supports however the standard SASL + SSL mechanisms available for MSK. You can read more about it [here](Deployment-(systemd,-Docker,-AWS-MSK)/#aws-msk-cluster-setup).
