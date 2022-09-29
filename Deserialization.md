@@ -9,6 +9,9 @@ You can set a default deserializer that will be used for all the topics, or you 
 ```ruby
 class XmlDeserializer
   def call(message)
+    # nil case is for tombstone messages
+    return nil if message.raw_payload.nil?
+
     Hash.from_xml(message.raw_payload)
   end
 end
@@ -70,6 +73,23 @@ class EventsConsumer < ApplicationConsumer
       .map { _1.fetch('signature') }
       # Print only those
       .each { puts _1 }
+  end
+end
+```
+
+## Handling of tombstone messages
+
+Tombstone messages are messages that contain a valid key, but its value is null. Those messages are used with Kafka topics compaction to eliminate obsolete records.
+
+Whether or not you do plan to use tombstone messages, we highly recommend you supporting them in your custom deserializers:
+
+```ruby
+class XmlDeserializer
+  def call(message)
+    # nil case is for tombstone messages
+    return nil if message.raw_payload.nil?
+
+    Hash.from_xml(message.raw_payload)
   end
 end
 ```
