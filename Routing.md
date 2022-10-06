@@ -120,7 +120,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 |----------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
 | [consumer](https://github.com/karafka/karafka/wiki/Consumers)    | Class      | Name of a consumer class that we want to use to consume messages from a given topic |
 | [deserializer](https://github.com/karafka/karafka/wiki/Deserialization)               | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
-| [manual_offset_management](https://github.com/karafka/karafka/wiki/Manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
+| [manual_offset_management](https://github.com/karafka/karafka/wiki/Offset-management#manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
 | [long_running_job](https://github.com/karafka/karafka/wiki/Pro-Long-Running-Jobs)               | Boolean        | Converts this topic consumer into a Long Running Job that can run longer than `max.poll.interval.ms` |
 
 

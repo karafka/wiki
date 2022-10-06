@@ -92,7 +92,7 @@ end
 
 ## Processing during shutdown
 
-Karafka will wait for your Long-Running Jobs to finish within the limits of `shutdown_timeout`. Either set it to a value big enough for the jobs to finish or implement periodic shutdown checks and enable [manual offset management](Manual-offset-management). Otherwise, Karafka may forcefully stop workers in the middle of processing after the `shutdown_timeout` is exceeded.
+Karafka will wait for your Long-Running Jobs to finish within the limits of `shutdown_timeout`. Either set it to a value big enough for the jobs to finish or implement periodic shutdown checks and enable [manual offset management](Offset-management#manual-offset-management). Otherwise, Karafka may forcefully stop workers in the middle of processing after the `shutdown_timeout` is exceeded.
 
 During the shutdown, polling occurs, so there is **no** risk of exceeding the `max.poll.interval.ms`.
 
