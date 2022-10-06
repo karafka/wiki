@@ -1,16 +1,22 @@
-By default, Karafka handles offset commit management for you. The offset is committed after you're done consuming all the messages from a batch.
+By default, Karafka handles offset commit management for you. The offset is automatically committed:
 
-This approach is excellent for most cases. However, there are some situations where you might need better control over offset management.
+- frequently (defaults to once every 5 seconds) - defined by the `auto.commit.interval.ms` setting on the `kafka` level.
+- during the shutdown after all processing is done.
+- during the rebalance after all the blocking processing is done.
+
+This approach is excellent for most cases and should provide minimum cases where reprocessing would happen during normal operations. However, there are some situations where you might need better control over offset management.
+
+## Manual offset management
 
 There are several cases in which this API can be helpful:
 
-- In memory of DDD sagas realization,
+- In memory of the DDD sagas realization,
 - Buffering,
 - Simulating transactions.
 
-## Configuring Karafka not to mark messages as consumed automatically
+### Configuring Karafka not to mark messages as consumed automatically
 
-In order to use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
+To use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -21,7 +27,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-or on a per consumer group or topic level:
+or on a per-consumer group or topic level:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -37,37 +43,37 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
-## Marking messages as consumed
+### Marking messages as consumed
 
 To mark a certain message as consumed (so in case of a crash or restart, it won't be consumed again), you can use one of two marking methods:
 
 - ```#mark_as_consumed``` - for a non-blocking eventual offset commitment.
-- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure that the offset has been stored.
+- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure that the offset has been stored. This is not recommended for most scenarios, as Karafka will automatically commit the most recent offsets upon rebalance and shutdown.
 
 ```ruby
 def consume
   # Do something with messages
   EventStore.store(messages.payloads)
   # And now mark the last message as consumed,
-  # so we won't consume any of already processed messages again
+  # so we won't consume any of the already processed messages again
   mark_as_consumed! messages.last
 end
 ```
 
-Both `#mark_as_consumed` and `#mark_as_consumed!` return a boolean value indicating whether your consumer instance still owns the given topic partition. If there was a rebalance and the partition is no longer owned by a consumer, the value returned will be `false`. You can use this result to early stop processing:
+Both `#mark_as_consumed` and `#mark_as_consumed!` return a boolean value indicating whether your consumer instance still owns the given topic partition. If there was a rebalance and the partition is no longer owned by a consumer, the value returned will be `false`. You can use this result to stop processing early:
 
 ```ruby
 def consume
   messages.each do |message|
     puts "Processing #{message.topic}/#{message.partition} #{message.offset}"
 
-    # Do not process further if partition is no longer owned by us
+    # Do not process further if we no longer own partition
     return unless mark_as_consumed(message)
   end
 end
 ```
 
-## Example buffer implementation with ```shutdown``` DB flush
+### Example buffer implementation with ```shutdown``` DB flush
 
 When manually controlling the moment of marking the message as consumed, it is also worth taking into consideration graceful application termination process.
 
@@ -110,7 +116,7 @@ end
 
 ## Mixing manual and automatic offset management
 
-Even when using automatic offset management, you can still take advantage of this API. For example, you may want to commit the offset manually after a certain number of messages are consumed from a batch:
+You can still take advantage of this API even when using automatic offset management. For example, you may want to commit the offset manually after a certain number of messages are consumed from a batch:
 
 ```ruby
 class CountersConsumer < ApplicationConsumer
