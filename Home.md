@@ -29,7 +29,7 @@
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
 * [Concurrency and multithreading](Concurrency-and-multithreading)
 * [Deserialization](Deserialization)
-* [Manual offset management (checkpointing)](Manual-offset-management)
+* [Offset management (checkpointing)](Offset-management)
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
