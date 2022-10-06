@@ -4,7 +4,7 @@ By default, Karafka handles offset commit management for you. The offset is auto
 - during the shutdown after all processing is done.
 - during the rebalance after all the blocking processing and before the new assignment distribution.
 
-This approach is excellent for most cases and should provide minimum cases where reprocessing would happen during normal operations. However, there are some situations where you might need better control over offset management.
+This approach is excellent for most cases and should provide a minimum number of scenarios where reprocessing would happen during normal operations. However, there are some situations where you might need better control over offset management.
 
 ## Manual offset management
 
