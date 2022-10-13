@@ -8,3 +8,4 @@ There are unavoidable differences when working in dev (`development` and `test` 
 6. Remember that rolling deployment of `N` processes will create `N` rebalances. This may affect performance and stability.
 7. Creating the topic manually or by sending the first message and then starting a consumer is recommended. Karafka refreshes cluster metadata information, but it may take over five minutes to notice a new topic.
 8. In the development the `topic.metadata.refresh.interval.ms` is set by default to 5 seconds. This means that a topic that did not exist the moment you started Karafka will be discovered fast. It is **not** recommended in production, and the default is 5 minutes.
+9. It is recommended to use `cooperative-sticky` rebalance strategy via kafka `partition.assignment.strategy` for production.
