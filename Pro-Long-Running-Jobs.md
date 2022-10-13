@@ -126,24 +126,23 @@ By default, Long Running Jobs defined alongside regular jobs will be grouped in 
 
 In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke the regular jobs and the defined Long Running Jobs.
 
-If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth separating. This will ensure that external factors do not influence Long Running Jobs's stability.
+If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth doing. This will ensure that external factors do not influence Long Running Jobs's stability.
 
 ```ruby
-
 class KarafkaApp < Karafka::App
   setup do |config|
     # ...
   end
 
   routes.draw do
-    topic :orders_states do
-      consumer OrdersStatesConsumer
+    # By providing this, all the long running jobs will get a separate Kafka connection that
+    # won't be affected by other topics consumption in any way
+    subscription_group 'long_running_jobs' do
+      topic :orders_states do
+        consumer OrdersStatesConsumer
 
-      long_running_job true
-
-      # By providing this, all the long running jobs will get a separate Kafka connection that
-      # won't be affected by other topics consumption in any way
-      subscription_group 'long_running_jobs'
+        long_running_job true
+      end
     end
 
     topic :deliveries_states do
