@@ -63,7 +63,7 @@ There are several env settings you can use:
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-Karafka producer [WaterDrop](https://github.com/karafka/waterdrop) supports following compression types:
+Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports following compression types:
 
 - `gzip`
 - `zstd`
