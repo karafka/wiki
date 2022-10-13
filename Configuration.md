@@ -58,3 +58,32 @@ There are several env settings you can use:
 |-------------------|-----------------|-------------------------------------------------------------------------------|
 | KARAFKA_ENV       | development     | In what mode this application should boot (production/development/test/etc)   |
 | KARAFKA_BOOT_FILE | app_root/karafka.rb | Path to a file that contains Karafka app configuration and booting procedures |
+
+## Messages compression
+
+Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
+
+Karafka producer [WaterDrop](https://github.com/karafka/waterdrop) supports following compression types:
+
+- `gzip`
+- `zstd`
+- `lz4`
+- `snappy`
+
+You can enable the compression by using the `compression.codec` and `compression.level` settings:
+
+```ruby
+setup_karafka do |config|
+  config.kafka = {
+    # Other kafka settings...
+    'compression.codec': 'gzip',
+    'compression.levle': '12'
+  }
+end
+```
+
+*Note*: In order to use `zstd`, you need to install `libzstd-dev`:
+
+```bash
+apt-get install -y libzstd-dev
+```
