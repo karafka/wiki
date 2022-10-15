@@ -32,6 +32,7 @@
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
+* [Embedding](Embedding)
 * [Articles and other references](Articles-and-other-references)
 * [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
