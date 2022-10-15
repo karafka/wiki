@@ -1,5 +1,3 @@
-## Exit statuses
-
 Karafka supports three exit statuses:
 
 - ```0``` - in case shutdown was smooth and everything was as expected (all the work was done, consumers stopped, etc.).
