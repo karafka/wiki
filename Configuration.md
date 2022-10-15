@@ -77,7 +77,7 @@ setup_karafka do |config|
   config.kafka = {
     # Other kafka settings...
     'compression.codec': 'gzip',
-    'compression.levle': '12'
+    'compression.level': '12'
   }
 end
 ```
