@@ -104,7 +104,7 @@ end
 Karafka.monitor.subscribe(ActiveRecordConnectionsCleaner.new)
 ```
 
-That way, you don't have to worry about the retries within your business logic, but please be aware of the fact, that you will have to design your software to support **reentrancy** especially if you're batch processing within a `#consume` operation.
+That way, you don't have to worry about the retries within your business logic. Karafka will back off and retry after some time. Please be aware that you will have to design your software to support **reentrancy** especially if you're batch processing within a `#consume` operation.
 
 If you decide to go with the solution **b)**, here's how you can implement it:
 
