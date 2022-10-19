@@ -15,7 +15,7 @@
 15. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
 16. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
 17. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
-18. [Why can't I connect to Kafka from another Docker container?](#tba)
+18. [Why can't I connect to Kafka from another Docker container?](#why-cant-i-connect-to-kafka-from-another-docker-container)
 
 ### Does Karafka require Ruby on Rails?
 
