@@ -80,40 +80,28 @@ But you may ask: **why Puma is restarting the connections?** Truth be told it is
 
 #### How can I make Karafka restart dead PG connections?
 
-You can easily catch the ```ActiveRecord::StatementInvalid``` error and decide on your own how to handle a dead connection. If you do atomic (per received batch) operations, you can just catch this and run the `::ActiveRecord::Base.clear_active_connections!` method:
-
-```ruby
-# We work with an assumption that you process messages one by one here and that
-# you have a root key namespace for your JSON data
-def consume
- Example.create!(params.payload['example'])
-rescue ActiveRecord::StatementInvalid
-  ::ActiveRecord::Base.clear_active_connections!
-  retry
-end
-```
+You can easily catch the ```ActiveRecord::StatementInvalid``` error and decide on your own how to handle a dead connection. If you do atomic (per received batch) operations, you can just catch this and run the `::ActiveRecord::Base.clear_active_connections!` method.
 
 Depending on your approach towards building robust applications and providing reusable code, you may:
 
-- **a)** separate this from your business logic and leave it with a retry on the abstract Karafka layer as long as you understand what you are doing;
+- **a)** separate this from your business logic and leave the retry to Karafka layer;
 - **b)** make it part of your business logic (wouldn't recommend it).
 
-For the solution **a)** you can easily extend Karafkas ``ApplicationConsumer#call`` method as followed:
+For the solution **a)** you can clear the connections upon an error by defining a proper instrumentation handle:
 
 ```ruby
-# frozen_string_literal: true
+# This instrumentation will kick in on each error but will only clear connections
+# when expected type of error is detected
+class ActiveRecordConnectionsCleaner
+  def on_error_occurred(event)
+    return unless event[:error].is_a?(ActiveRecord::StatementInvalid)
 
-class ApplicationConsumer < Karafka::BaseConsumer
-  def call
-    super
-  rescue ActiveRecord::StatementInvalid => e
-    BugTracker.notify(e)
     ::ActiveRecord::Base.clear_active_connections!
-    # You probably want to implement a counter and a custom error not to
-    # end up with an endless loop
-    retry
   end
 end
+
+# Subscribe with this cleaner to the message bus
+Karafka.monitor.subscribe(ActiveRecordConnectionsCleaner.new)
 ```
 
 That way, you don't have to worry about the retries within your business logic, but please be aware of the fact, that you will have to design your software to support **reentrancy** especially if you're batch processing within a `#consume` operation.
@@ -141,8 +129,10 @@ Now you can just use it for anything you need like so:
 
 ```ruby
 def consume
-  ApplicationRecord.with_disconnection_retry do
-    Example.create!(params.payload['example'])
+  messages.each do |message|
+    ApplicationRecord.with_disconnection_retry do
+      Example.create!(message.payload['example'])
+    end
   end
 end
 ```
