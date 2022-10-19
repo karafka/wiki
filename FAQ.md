@@ -15,6 +15,7 @@
 15. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
 16. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
 17. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
+18. [Why can't I connect to Kafka from another Docker container?](#tba)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -206,3 +207,7 @@ In any case, it is **not** recommended to ignore this if it happens frequently.
 No. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
 
 Karafka supports the standard SASL + SSL mechanisms available for MSK. You can read more about it [here](Deployment-(systemd,-Docker,-AWS-MSK)/#aws-msk-cluster-setup).
+
+### Why can't I connect to Kafka from another Docker container?
+
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Setting-up-Kafka#connecting-to-kafka-from-other-docker-containers.
