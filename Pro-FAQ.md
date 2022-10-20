@@ -10,7 +10,7 @@ The trial license does **not** grant you our Pro commercial support.
 
 ## What is the license?
 
-See [COMM-LICENSE](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) in the root of the Karafka repo.
+See [LICENSE-COMM](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) in the root of the Karafka repo.
 
 ## How does Pro licensing work?
 
