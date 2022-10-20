@@ -17,6 +17,8 @@
 17. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
 18. [Why can't I connect to Kafka from another Docker container?](#why-cant-i-connect-to-kafka-from-another-docker-container)
 19. [How can I configure multiple bootstrap servers?](#how-can-i-configure-multiple-bootstrap-servers)
+20. [Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?](#why-when-using-cooperative-sticky-rebalance-strategy-all-topics-get-revoked-on-rebalance)
+21. [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -219,3 +221,13 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+### Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?
+
+This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
+
+### What will happen with uncommitted offsets during a rebalance?
+
+When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
+
+Upon rebalance, all uncommitted offsets will be committed before a given partition is re-assigned.
