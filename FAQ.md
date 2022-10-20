@@ -16,6 +16,7 @@
 16. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
 17. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
 18. [Why can't I connect to Kafka from another Docker container?](#why-cant-i-connect-to-kafka-from-another-docker-container)
+19. [How can I configure multiple bootstrap servers?](#how-can-i-configure-multiple-bootstrap-servers)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -200,4 +201,21 @@ Karafka supports the standard SASL + SSL mechanisms available for MSK. You can r
 
 ### Why can't I connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Setting-up-Kafka#connecting-to-kafka-from-other-docker-containers.
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Setting-up-Kafka#connecting-to-kafka-from-other-docker-containers).
+
+### How can I configure multiple bootstrap servers?
+
+You need to define them comma-separated under `kafka` `bootstrap.servers` configuration key:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    # This value needs to be a string string with comma separated servers
+    config.kafka = {
+      'bootstrap.servers': 'server1.address:9092, server2.address:9092'
+    }
+  end
+end
+```
