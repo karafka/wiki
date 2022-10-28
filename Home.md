@@ -3,7 +3,7 @@
 ## Basics
 
 * [Getting Started](Getting-Started)
-* [The Basics](The-Basics)
+* [Components](Components)
 * [Configuration](Configuration)
 * [Setting up Kafka](Setting-up-Kafka)
 * [Producing messages](Producing-messages)
@@ -15,9 +15,9 @@
 * [Development vs Production](Development-vs-Production)
 * [Signals](Signals)
 * [Deployment](Deployment)
-    * [systemd (+ Capistrano)](#systemd-capistrano)
-    * [Docker](#docker)
-    * [AWS + MSK (Fully Managed Apache Kafka)](#aws-msk)
+    * [systemd (+ Capistrano)](Deployment#systemd-capistrano)
+    * [Docker](Deployment#docker)
+    * [AWS + MSK (Fully Managed Apache Kafka)](Deployment#aws-msk-fully-managed-apache-kafka)
 * [Monitoring and logging](Monitoring-and-logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
