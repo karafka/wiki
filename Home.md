@@ -14,7 +14,7 @@
 
 * [Development vs Production](Development-vs-Production)
 * [Signals](Signals)
-* [Deployment (systemd, Docker, AWS MSK)](Deployment-(systemd,-Docker,-AWS-MSK))
+* [Deployment (systemd, Docker, AWS MSK, Heroku)](Deployment)
 * [Monitoring and logging](Monitoring-and-logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
