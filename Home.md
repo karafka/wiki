@@ -41,7 +41,7 @@
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
 
-## Karafka Pro and Pro Aspects
+## Karafka Pro
 
 * [Build vs. Buy](Build-vs-Buy)
 * [Purchase Karafka Pro](Purchase-Karafka-Pro)
