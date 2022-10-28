@@ -14,7 +14,10 @@
 
 * [Development vs Production](Development-vs-Production)
 * [Signals](Signals)
-* [Deployment (systemd, Docker, AWS MSK, Heroku)](Deployment)
+* [Deployment](Deployment)
+    * [systemd (+ Capistrano)](Deployment-systemd)
+    * [Docker](Deployment-Docker)
+    * [AWS + MSK (Fully Managed Apache Kafka)](Deployment-AWS-MSK)
 * [Monitoring and logging](Monitoring-and-logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
