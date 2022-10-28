@@ -17,7 +17,7 @@
 * [Deployment](Deployment)
     * [systemd (+ Capistrano)](#systemd-capistrano)
     * [Docker](#docker)
-    * [AWS + MSK (Fully Managed Apache Kafka)](Deployment-AWS-MSK)
+    * [AWS + MSK (Fully Managed Apache Kafka)](#aws-msk)
 * [Monitoring and logging](Monitoring-and-logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
