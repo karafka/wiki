@@ -1,9 +1,9 @@
 Karafka is currently being used in production with the following deployment methods:
 
-  - systemd (+ Capistrano)
-  - Docker
-  - Heroku
-  - AWS with MSK ([Fully Managed Apache Kafka](https://aws.amazon.com/msk/))
+  - [systemd (+ Capistrano)](#systemd-capistrano)
+  - [Docker](#docker)
+  - [AWS with MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
+  - [Heroku](#heroku)
 
 Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
@@ -240,3 +240,139 @@ Please make sure your custom setting `default.replication.factor` value matches 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/brokers_count.png" />
 </p>
+
+## Heroku
+
+Karafka works with the Heroku Kafka add-on, but it requires some extra configuration and understanding of how the Heroku Kafka add-on works.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/heroku/dyno.png" />
+</p>
+
+### Heroku Kafka prefix convention
+
+**Note**: This section **only** applies to the Multi-Tenant add-on mode.
+
+All Kafka Basic topics and consumer groups begin with a unique prefix associated with your add-on. This prefix is accessible via the `KAFKA_PREFIX` environment variable.
+
+That means that in the multi-tenant mode, you must remember **always** to prefix all the topic names and all the consumer group names with the `KAFKA_PREFIX` environment variable value.
+
+To make it work you need to follow few steps:
+
+1. Use a consumer mapper that will inject the Heroku Kafka prefix into each consumer group id automatically.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # other config options...
+
+    # Inject the prefix automatically to every consumer group
+    config.consumer_mapper = ->(raw_group_name) { "#{ENV['KAFKA_PREFIX']}#{raw_group_name}" }
+  end
+end
+```
+
+2. Create all the consumer groups before using them via the Heroku CLI.
+
+
+```bash
+heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
+```
+
+**Note**: `KAFKA_PREFIXapp` will be the name of the default consumer group in Karafka when used with the mapper defined above.
+
+This means that the Heroku CLI command needs to look as follows:
+
+```bash
+heroku kafka:consumer-groups:create app
+```
+
+3. When consuming, you **always** need to use the prefixed topic name:
+
+```ruby
+class KarafkaApp < Karafka::App
+  # ...
+  routes.draw do
+    topic "#{ENV['KAFKA_PREFIX']}users_events" do
+      consumer UsersEventsConsumer
+    end
+  end
+end
+```
+
+4. When producing, you **always** need to use the prefixed topic name:
+
+```ruby
+Karafka.producer.produce_async(
+  topic: "#{ENV['KAFKA_PREFIX']}users_events",
+  payload: {
+    user_id: user.id,
+    event: 'user.deleted'
+  }.to_json
+)
+```
+
+### Configuring Karafka to work with Heroku SSL
+
+When you turn on the add-on, Heroku exposes a few environment variables within which important details are stored. You need to use them to configure Karafka as follows:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # ...
+      'security.protocol': 'ssl',
+      # KAFKA_URL has the protocol that we do not need as we define the protocol separately
+      'bootstrap.servers': ENV['KAFKA_URL'].gsub('kafka+ssl://', ''),
+      'ssl.certificate.pem': ENV['KAFKA_CLIENT_CERT'],
+      'ssl.key.pem': ENV['KAFKA_CLIENT_CERT_KEY'],
+      'ssl.ca.pem': ENV['KAFKA_TRUSTED_CERT']
+    }
+
+    # ... other config options
+  end
+end
+```
+
+### Troubleshooting
+
+There are few problems you may encounter when configuring things for Heroku:
+
+#### Unsupported protocol "KAFKA+SSL"
+
+```
+parse error: unsupported protocol "KAFKA+SSL"
+```
+
+**Solution**: Make sure you strip off the `kafka+ssl://` component from the `KAFKA_URL` env variable content.
+
+#### Disconnected while requesting ApiVersion
+
+```
+Disconnected while requesting ApiVersion: might be caused by incorrect security.protocol configuration
+(connecting to a SSL listener?)
+```
+
+**Solution**: Make sure all the settings are configured **exactly** as presented in the configuration section.
+
+#### Topic authorization failed
+
+```
+Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::RdkafkaError)
+```
+
+**Solution**: Make sure to namespace all the topics and consumer groups with the `KAFKA_PREFIX` environment value.
+
+#### Messages are not being consumed
+
+```
+DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
+DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polling messages...
+DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
+DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polling messages...
+DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
+```
+
+**Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
+
+**Solution 2**: Make sure you've created appropriate consumer groups **prior** to them being used via the Heroku CLI.
