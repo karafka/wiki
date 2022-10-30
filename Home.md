@@ -18,6 +18,7 @@
     * [systemd (+ Capistrano)](Deployment#systemd-capistrano)
     * [Docker](Deployment#docker)
     * [AWS + MSK (Fully Managed Apache Kafka)](Deployment#aws-msk-fully-managed-apache-kafka)
+    * [Heroku](Deployment#heroku)
 * [Monitoring and logging](Monitoring-and-logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 * [Administration (topics management and cluster info)](Administration-(topics-management-and-cluster-info))
