@@ -251,9 +251,9 @@ Karafka works with the Heroku Kafka add-on, but it requires some extra configura
 
 Details about how Kafka for Heroku works can also be found here:
 
-- https://devcenter.heroku.com/articles/kafka-on-heroku
-- https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku
-- https://devcenter.heroku.com/articles/kafka-addon-migration
+- [https://devcenter.heroku.com/articles/kafka-on-heroku](https://devcenter.heroku.com/articles/kafka-on-heroku)
+- [https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku](https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku)
+- [https://devcenter.heroku.com/articles/kafka-addon-migration](https://devcenter.heroku.com/articles/kafka-addon-migration)
 
 ### Heroku Kafka prefix convention
 
