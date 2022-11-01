@@ -285,13 +285,16 @@ end
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 ```
 
-**Note**: `KAFKA_PREFIXapp` will be the name of the default consumer group in Karafka when used with the mapper defined above.
+**Note**: The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the default consumer group in Karafka `smoothboulder-1234.app` when used with the mapper defined above. Kafka itself does not need to know the prefix when creating the consumer group.
 
 This means that the Heroku CLI command needs to look as follows:
 
 ```bash
 heroku kafka:consumer-groups:create app
 ```
+
+This allows Heroku's multi-tenant setup to route `smoothboulder-1234.app` to your cluster correctly.
+
 
 3. When consuming, you **always** need to use the prefixed topic name:
 
@@ -317,6 +320,8 @@ Karafka.producer.produce_async(
   }.to_json
 )
 ```
+
+**Note**: You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
 ### Configuring Karafka to work with Heroku SSL
 
