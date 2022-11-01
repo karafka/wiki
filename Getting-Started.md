@@ -1,12 +1,12 @@
-**Prerequisites**: Kafka running. You can start it by following instructions from [here](Setting-up-Kafka).
+1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Setting-up-Kafka).
 
-1. Add Karafka to your Gemfile:
+2. Add Karafka to your Gemfile:
 
-```ruby
+```bash
 bundle add karafka
 ```
 
-2. Install Karafka (works for both Rails and standalone applications) by running:
+3. Install Karafka (works for both Rails and standalone applications) by running:
 
 ```bash
 bundle exec karafka install
@@ -18,7 +18,7 @@ the above command will create all the necessary files and directories to get you
 - `app/consumers/example_consumer.rb` - example consumer.
 - `app/consumers/application_consumer.rb` - base consumer from which all consumers should inherit.
 
-3. After that, you can run a development console to produce messages to this example topic:
+4. After that, you can run a development console to produce messages to this example topic:
 
 ```ruby
 # Works from any place in your code and is thread-safe
@@ -26,7 +26,7 @@ the above command will create all the necessary files and directories to get you
 Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
 
-4. Run the karafka server to start consuming messages:
+5. Run the karafka server to start consuming messages:
 
 ```
 bundle exec karafka server
