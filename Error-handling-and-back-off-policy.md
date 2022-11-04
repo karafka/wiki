@@ -58,7 +58,7 @@ end
 
 ### Exponential backoff
 
-If needed, you can also use exponential backoff. If `pause_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.
+If needed, you can also use exponential backoff. If `pause_with_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.
 
 Regardless of the error nature, you can always use the [Monitoring and logging](Monitoring-and-logging) to track any problems during work time.
 
