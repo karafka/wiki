@@ -54,11 +54,9 @@ class SingleMessageBaseConsumer < Karafka::BaseConsumer
     messages.each do |message|
       @message = message
       consume_one
+    
+      mark_as_consumed(message)
     end
-
-    # This could be moved into the loop but would slow down the processing, it is a trade-off
-    # between retrying the batch and processing performance
-    mark_as_consumed(messages.last)
   end
 end
 
