@@ -64,14 +64,25 @@ end
 
 ## Processing during revocation
 
-Upon a group rebalance, there are two scenarios affecting the paused partition you are processing:
+Upon a group rebalance, there are three scenarios affecting the paused partition you are processing:
 
-1. Partition is revoked and re-assigned to the same process.
-2. Partition is revoked and assigned to a different process.
+1. Partition is not revoked because `cooperative-sticky` assignment strategy is in use.
+2. Partition is revoked and re-assigned to the same process.
+3. Partition is revoked and assigned to a different process.
+
+### `cooperative-sticky` rebalance
+
+Using the `cooperative-sticky` assignment strategy is recommended when using Long-Running Jobs. This can increase overall stability by not triggering revocation of partitions upon rebalances when partition would be re-assigned back:
+
+```ruby
+setup_karafka do |config|
+  config.kafka[:'partition.assignment.strategy'] = 'cooperative-sticky'
+end
+```
 
 ### Revocation and re-assignment
 
-In the case of scenario `1`, there is nothing you need to do. Karafka will continue processing your messages and resume partition after it is done with the work.
+In the case of scenario `2`, there is nothing you need to do. Karafka will continue processing your messages and resume partition after it is done with the work.
 
 ### Revocation without re-assignment
 
