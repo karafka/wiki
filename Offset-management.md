@@ -16,18 +16,7 @@ There are several cases in which this API can be helpful:
 
 ### Configuring Karafka not to mark messages as consumed automatically
 
-To use this API, you need to switch the ```manual_offset_management``` setting to `true`, either globally for the whole app:
-
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # Other settings
-    config.manual_offset_management = true
-  end
-end
-```
-
-or on a per-consumer group or topic level:
+To use this API, you need to switch the ```manual_offset_management``` setting to `true` on a per topic basis:
 
 ```ruby
 class KarafkaApp < Karafka::App

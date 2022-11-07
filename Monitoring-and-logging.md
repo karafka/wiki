@@ -83,6 +83,28 @@ You can also find [here](https://github.com/karafka/karafka/blob/master/lib/kara
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
+### Tracing consumers using DataDog logger listener
+
+If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
+
+```ruby
+# you need to add ddtrace to your Gemfile
+require 'ddtrace'
+require 'karafka/instrumentation/vendors/datadog/logger_listener'
+
+# Initialize the listener
+dd_logger_listener = Karafka::Instrumentation::Vendors::Datadog::LoggerListener.new do |config|
+  config.client = Datadog::Tracing
+end
+
+# Use the DD tracing only for staging and production
+Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?(Rails.env)
+```
+
+![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_tracing.png)
+
+**Note**: Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
+
 ## Example listener with Errbit/Airbrake support
 
 Here's a simple example of a listener used to handle errors logging into Airbrake/Errbit.
