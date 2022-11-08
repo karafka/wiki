@@ -12,16 +12,6 @@ Virtual Partitions solve this problem by providing you with the means to further
   </small>
 </p>
 
-## Messages distribution
-
-Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `concurrency` setting defined within the `virtual_partitions` method.
-
-Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.png" />
-</p>
-
 ## Using virtual partitions
 
 The only thing you need to add to your setup is the `virtual_partitions` definition for topics for which you want to enable it:
@@ -54,6 +44,16 @@ No other changes are needed.
 The virtual `partitioner` requires to respond to a `#call` method, and it accepts a single Karafka message as an argument.
 
 The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
+
+## Messages distribution
+
+Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `concurrency` setting defined within the `virtual_partitions` method.
+
+Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.png" />
+</p>
 
 ### Partitioning based on the message key
 
@@ -208,46 +208,3 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_shutdown.png" />
 </p>
-
-## Usage with Long-Running Jobs
-
-Virtual Partitions **can** be used with [Long-Running Jobs](Pro-Long-Running-Jobs). There are no special procedures.
-
-```ruby
-routes.draw do
-  topic :orders_states do
-    consumer OrdersStatesConsumer
-    long_running_job true
-    virtual_partitions(
-      partitioner: ->(message) { message.headers['order_id'] }
-    )
-  end
-end
-```
-
-## Usage with Enhanced Active Job
-
-Virtual Partitions **can** be used with Active Job without any limitations. The only thing worth keeping in mind is that the message payload for Active Job contains serialized job details and should not be deserialized in the partitioner.
-
-The recommended approach is to use the Enhanced Active Job headers support to add a key that can be used for partitioning:
-
-```ruby
-class Job < ActiveJob::Base
-  queue_as :jobs
-
-  karafka_options(
-    dispatch_method: :produce_async,
-    partitioner: ->(job) { job.arguments.first[0] }
-  )
-end
-
-class KarafkaApp < Karafka::App
-  routes.draw do
-    active_job_topic :jobs do
-      virtual_partitions(
-        partitioner: ->(job) { job.key }
-      )
-    end
-  end
-end
-```

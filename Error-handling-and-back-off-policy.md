@@ -56,6 +56,35 @@ Karafka.monitor.subscribe 'error.occurred' do |event|
 end
 ```
 
+### Dead Letter Queue
+
+Karafka provides out-of-the-box Dead Letter Queue pattern implementation that can be used to move failing messages to a separate topic.
+
+You can read about it [here](Dead-Letter-Queue).
+
+#### Finding the failing message
+
+Whenever a `consumer.consume.error` error occurs, Karafka will publish the `seek_offset` alongside other things. It contains the offset of the first uncommitted message in the `messages` batch.
+
+```ruby
+Karafka.monitor.subscribe 'error.occurred' do |event|
+  type = event[:type]
+  error = event[:error]
+
+  # Skip any other error types
+  next unless type == 'consumer.consume.error'
+
+  messages = event[:caller].messages
+  seek_offset = event[:seek_offset]
+
+  failing_message = messages.find { |message| message.offset == seek_offset }
+
+  puts "We have failed while processing message with offset: #{failing_message.offset}"
+end
+```
+
+**Note**: When doing batch operations, this message may not be the exact cause of the processing error.
+
 ### Exponential backoff
 
 If needed, you can also use exponential backoff. If `pause_with_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.

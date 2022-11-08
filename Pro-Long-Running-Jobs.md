@@ -42,7 +42,7 @@ That way, as long as no rebalances occur during the processing that would cause 
 
 This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
 
-## Using Long Running Jobs
+## Using Long-Running Jobs
 
 The only thing you need to add to your setup is the `long_running_job` option in your routing section:
 
@@ -122,22 +122,13 @@ def consume
 end
 ```
 
-## Usage with Virtual Partitions
+## Using Long-Running Jobs alongside regular jobs in the same subscription group 
 
-Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions will respond to `#revoked?` if the partition is lost.
+By default, Long-Running Jobs defined alongside regular jobs will be grouped in a single subscription group. This means they will share an underlying connection to Kafka and be subject to the same blocking polling limitations.
 
-There is only one thing you need to keep in mind:
+In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke the regular jobs and the defined Long-Running Jobs.
 
-It is **not** recommended to use manual offset management with Virtual Partitions. Hence you need to set `shutdown_timeout` to a value that 
-will compensate for that.
-
-## Using Long Running Jobs with regular jobs 
-
-By default, Long Running Jobs defined alongside regular jobs will be grouped in a single subscription group. This means they will share an underlying connection to Kafka and be subject to the same blocking polling limitations.
-
-In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke the regular jobs and the defined Long Running Jobs.
-
-If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth doing. This will ensure that external factors do not influence Long Running Jobs's stability.
+If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth doing. This will ensure that external factors do not influence Long-Running Jobs's stability.
 
 ```ruby
 class KarafkaApp < Karafka::App

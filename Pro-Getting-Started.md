@@ -1,4 +1,4 @@
-To activate your Karafka Pro subscription, you need to do four things:
+To activate your Karafka Pro subscription, you need to do three things:
 
 1. Follow the standard Karafka [installation](Getting-Started) procedure.
 
@@ -16,16 +16,3 @@ gem 'karafka'
 ```
 
 **Note**: You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
-
-4. Then, instead of inheriting from `Karafka::BaseConsumer`, your `ApplicationConsumer` should inherit from the `Karafka::Pro::BaseConsumer`:
-
-```ruby
-# Replace this:
-# class ApplicationConsumer < Karafka::BaseConsumer
-
-# With this
-class ApplicationConsumer < Karafka::Pro::BaseConsumer
-end
-```
-
-That is all. You are now consuming messages like a Pro and can use all of the Pro features!

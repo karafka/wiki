@@ -1,4 +1,4 @@
-**Note**: All of the documentation here refers to Karafka `2.0.0` or higher. If you are looking for the documentation for Karafka `1.4`, please click [here](https://github.com/karafka/wiki/tree/1.4).
+**Note**: All of the documentation here refers to Karafka `2.0.16` or higher. If you are looking for the documentation for Karafka `1.4`, please click [here](https://github.com/karafka/wiki/tree/1.4).
 
 ## Basics
 
@@ -27,6 +27,7 @@
 
 * [Routing](Routing)
 * [Active Job](Active-Job)
+* [Dead Letter Queue](Dead-Letter-Queue)
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
@@ -52,8 +53,10 @@
 
 ### Features and enhancements
 
+* [Features Compatibility](Pro-Features-Compatibility)
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
+* [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Scheduler](Pro-Enhanced-Scheduler)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
