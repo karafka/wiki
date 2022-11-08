@@ -65,9 +65,9 @@ Messages will never be re-processed with the following settings and will be move
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
 
-Please note that the original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Enhanced-Dead-Letter-Queue).
+Please note that the original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue).
 
-If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Enhanced-Dead-Letter-Queue) implementation.
+If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) implementation.
 
 ## Manual DLQ dispatch
 
@@ -92,7 +92,7 @@ end
 
 ## Pro Enhanced Dead Letter Queue
 
-We highly recommend you check out the [Enhanced Dead Letter Queue](Enhanced-Dead-Letter-Queue), especially if you:
+We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue), especially if you:
 
 - expect a higher quantity of messages being moved to the DLQ topic,
 - need to preserve original topic, partition, and offset,
