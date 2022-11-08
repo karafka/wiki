@@ -46,6 +46,34 @@ Karafka.monitor.subscribe('app.initialized') do |_event|
 end
 ```
 
+## Usage statistics and subscribing to `statistics.emitted` event 
+
+Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event.
+
+The statistics include all of the metrics from `librdkafka` (full list [here](https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md)) as well as the diff of those against the previously emitted values.
+
+For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages received between statistics emitted events), Karafka diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': 'localhost:9092',
+      # Emit statistics every second
+      'statistics.interval.ms': 1_000
+    }
+  end
+end
+
+Karafka::App.monitor.subscribe('statistics.emitted') do |event|
+  sum = event[:statistics]['rxmsgs']
+  diff = event[:statistics]['rxmsgs_d']
+
+  p "Received messages: #{sum}"
+  p "Messages received from last statistics report: #{diff}"
+end
+```
+
 ## Datadog and StatsD integration
 
 **Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
