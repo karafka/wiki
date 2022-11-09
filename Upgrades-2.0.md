@@ -10,7 +10,7 @@ Please note, that there are many aspects of Karafka upgrade that are specific to
 
 Those upgrade notes will be extended whenever someone points out any missing content.
 
-### Note on concurrency
+## Note on concurrency
 
 Karafka 2.0 **is** multi-threaded. This means that all of your code **needs** to be thread-safe.
 
@@ -25,11 +25,11 @@ end
 
 may cause severe problems and is **not** recommended.
 
-### Deploying Karafka 2.0 after the upgrade
+## Deploying Karafka 2.0 after the upgrade
 
 To safely upgrade from Karafka from `1.4` to `2.0` you need to shut down all your consumers completely.
 
-### Gemfile alignment
+## Gemfile alignment
 
 1. Update your `karafka` gem version reference
 
@@ -61,7 +61,7 @@ gem 'karafka-testing', '~> 2.0'
 4. Run `bundle install`
 
 
-### WaterDrop (producer) update
+## WaterDrop (producer) update
 
 1. Remove WaterDrop setup code from your `karafka.rb`:
 
@@ -81,7 +81,7 @@ you can remove it.
 Karafka.monitor.subscribe(WaterDrop::Instrumentation::LoggerListener.new)
 ```
 
-### Settings alignment
+## Settings alignment
 
 Karafka 2.0 is powered by librdkafka. Because of that, we've decided to split the settings into two sections:
 
@@ -122,11 +122,11 @@ Kafka options:
 - `SASL` and `SSL` options changes are described in their own section.
 - Check out the [configuration](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) details of librdkafka for all the remaining options.
 
-### Heartbeat no longer needed
+## Heartbeat no longer needed
 
 Sending heartbeats is no longer needed. Both `#trigger_heartbeat` and `trigger_heartbeat!` can be safely removed.
 
-### SASL, SSL, authentication
+## SASL, SSL, authentication
 
 Please read the [Deployment](Deployment) documentation to see appropriate configuration for given environment.
 
@@ -134,7 +134,7 @@ You can optionally check the `librdkafka` [configuration documentation](https://
 
 If you still struggle, feel free to reach out to us either via [Slack](https://slack.karafka.io/) or by creating a [Github issue](https://github.com/karafka/karafka/issues/new/).
 
-### Manual offset management is now a per-topic setting
+## Manual offset management is now a per-topic setting
 
 In Karafka 1.4 you could set `config.manual_offset_management = true` to make all the topics work with manual offset management.
 
@@ -153,7 +153,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Ruby on Rails integration
+## Ruby on Rails integration
 
 Karafka 2.0 introduces seamless Ruby on Rails integration via `Rails::Railte` without needing extra configuration.
 
@@ -214,7 +214,7 @@ Karafka.monitor.subscribe(
 KarafkaApp.boot!
 ```
 
-### Consumer callbacks are no longer supported
+## Consumer callbacks are no longer supported
 
 All of the consumer callbacks were removed. They were replaced with the following lifecycle consumer methods:
 
@@ -223,13 +223,13 @@ All of the consumer callbacks were removed. They were replaced with the followin
 
 You can still use instrumentation hooks if you need to perform any consumer, not related actions, but please be aware that this code will not run in the same thread as the consumption.
 
-### Unified error message bus
+## Unified error message bus
 
 Karafka `1.4` published errors under several instrumentation keys. Karafka `2.0` publishes all the errors under the same instrumentation event name: `error.occurred`.
 
 The payload there always contains a `type` field that can be used to understand the origin of the issue.
 
-### Routing changes
+## Routing changes
 
 Simple routing style creates now a single consumer group for all the topics defined on a root level.
 
@@ -307,7 +307,7 @@ Karafka::App.consumer_groups.map(&:id)
 #=> ['example_app_user_events', 'example_app_system_events', 'example_app_payment_events']
 ```
 
-### Topic mappers are no longer supported
+## Topic mappers are no longer supported
 
 **Note**: Unless you used Heroku, you can probably skip this section.
 
@@ -315,7 +315,7 @@ Topic mapping is no longer supported. Please prefix all of your topic names with
 
 You can read more about integrating Karafka 2.0 with Heroku [here](https://karafka.io/docs/Deployment/#heroku).
 
-### Pidfile and daemonization support has been removed
+## Pidfile and daemonization support has been removed
 
 Quote from [Mike](https://github.com/mperham/sidekiq/issues/4045):
 
@@ -323,7 +323,7 @@ Quote from [Mike](https://github.com/mperham/sidekiq/issues/4045):
 - Log only to STDOUT, the entity starting Karafka can control where STDOUT redirects to, if any.
 - PID files are a legacy of double forking and have no reason to exist anymore.
 
-### `sidekiq-backend` is no longer supported
+## `sidekiq-backend` is no longer supported
 
 Karafka 2.0 is multi-threaded.
 
@@ -332,7 +332,7 @@ If you use `sidekiq-backend`, you have two options:
 - Pipe the jobs to Sidekiq yourself
 - Elevate Karafka's multi-threading capabilities
 
-### Responders are not replaced with `Karafka.producer`
+## Responders are not replaced with `Karafka.producer`
 
 Responders were a dead end.
 
@@ -364,7 +364,7 @@ Karafka.producer.produce_async(
 
 2. Replace all the `#respond_with` consumer responder invocations with direct `Karafka.producer` code
 
-### Simple message consumption mode is no longer supported
+## Simple message consumption mode is no longer supported
 
 You can achieve this functionality by slightly altering your consumer:
 
@@ -389,13 +389,13 @@ class Consumer < SingleMessageBaseConsumer
 end
 ```
 
-[Here](Consuming-messages/#one-at-a-time) you can find more details about this.
+[Here](Consuming-messages#one-at-a-time) you can find more details about this.
 
-### Dependency changes
+## Dependency changes
 
 Karafka `2.0` no longer uses any of the `dry-rb` ecosystem libraries. If you've relied on them indirectly via Karafka, you will have to define them in your `Gemfile`.
 
-### Naming convention changes
+## Naming convention changes
 
 `#params_batch` is now `#messages`:
 
@@ -412,10 +412,10 @@ def consume
 end
 ```
 
-### Instrumentation and monitoring
+## Instrumentation and monitoring
 
 Instrumentation and monitoring are often application specific.
 
-The recommendation here is to revisit your current integration and align it with the events published by Karafka and to follow the `2.0` [instrumentation guidelines document](Monitoring-and-logging/).
+The recommendation here is to revisit your current integration and align it with the events published by Karafka and to follow the `2.0` [instrumentation guidelines document](Monitoring-and-logging).
 
 - `Karafka::Instrumentation::StdoutListener` is now `Karafka::Instrumentation::LoggerListener`
