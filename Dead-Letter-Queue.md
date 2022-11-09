@@ -90,6 +90,24 @@ class OrdersStatesConsumer
 end
 ```
 
+## Monitoring and instrumentation
+
+Each time a message is moved to the Dead Letter Queue topic, it will emit a `dead_letter_queue.dispatched` with a `message` key.
+
+You can use it to enrich your instrumentation and monitoring:
+
+```ruby
+Karafka.monitor.subscribe('dead_letter_queue.dispatched') do |event|
+  message = event[:message]
+
+  topic = message.topic
+  partition = message.partition
+  offset = message.offset
+
+  puts "Oh no! We gave up on this flunky message: #{topic}/#{partition}/#{offset}"
+end
+```
+
 ## Batch processing limitations
 
 At the moment, DLQ does **not** have the ability to skip whole batches. For scenarios where the collective outcome of messages operations is causing errors, Karafka will skip one after another. This means that you may encounter "flickering", where seemingly valid messages are being moved to the DLQ before reaching the corrupted one.
