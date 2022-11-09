@@ -52,7 +52,7 @@ gem 'karafka-sidekiq-backend', '~> 1.4'
 
 ```ruby
 # Replace
-gem 'karafka-testing', '~> 2.0'
+gem 'karafka-testing', '~> 1.4'
 
 # with
 gem 'karafka-testing', '~> 2.0'
