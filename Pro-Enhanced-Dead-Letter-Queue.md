@@ -41,9 +41,9 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
 
 Karafka Pro, upon transferring the message to the DLQ topic, aside from preserving the `payload`, and the `headers` will add a few additional headers that allow for increased traceability of broken messages:
 
-- `original-topic` - topic from which the message came
-- `original-partition` - partition from which the message came
-- `original-offset` - offset of the transferred message
+- `original_topic` - topic from which the message came
+- `original_partition` - partition from which the message came
+- `original_offset` - offset of the transferred message
 
 **Note**: Karafka headers values are **always** strings.
 
@@ -53,9 +53,9 @@ This can be used for debugging or for example when you want to have a single DLQ
 class DlqConsumer
   def consume
     messages.each do |broken_message|
-      original_topic = broken_message.headers['original-topic']
-      original_partition = broken_message.headers['original-partition'].to_i
-      original_offset = broken_message.headers['original-offset'].to_i
+      original_topic = broken_message.headers['original_topic']
+      original_partition = broken_message.headers['original_partition'].to_i
+      original_offset = broken_message.headers['original_offset'].to_i
       payload = broken_message.raw_payload
 
       case original_topic
