@@ -19,6 +19,7 @@
 19. [How can I configure multiple bootstrap servers?](#how-can-i-configure-multiple-bootstrap-servers)
 20. [Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?](#why-when-using-cooperative-sticky-rebalance-strategy-all-topics-get-revoked-on-rebalance)
 21. [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
+22. [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -151,3 +152,40 @@ This behavior can occur if you are using blocking `mark_as_consumed!` method and
 When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
 
 Upon rebalance, all uncommitted offsets will be committed before a given partition is re-assigned.
+
+### Can I use Karafka with Ruby on Rails as a part of an internal gem?
+
+Karafka 2.0 has [Rails auto-detection](https://github.com/karafka/karafka/blob/78ea23f7044b81b7e0c74bb02ad3d2e5a5fa1b7c/lib/karafka/railtie.rb#L19), and it is loaded early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
+
+Moreover, despite the same code base, some processes (`rails s`, `rails db:migrate`, `sidekiq s`) may not need to know about karafka, and there is no need to load it.
+
+The problem is presented in [this](https://github.com/karafka/example-apps/pull/190) example app PR.
+
+To mitigate this, you can create an empty karafka bootfile. With a file structure like this:
+```
++-- karafka_root_dir
+|   +-- karafka.rb     # default bootfile (empty file)
+|   +-- karafka_app.rb # real bootfile with Karafka::App definition and other stuff
+|   +-- ...
+```
+
+It is possible to postpone the definition of the Karafka app and do it manually whenever & wherever the user wants (`karafka_app.rb` could be loaded for example, in some initializer).
+
+```ruby
+# karafka_app.rb
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+    ...
+  end
+end
+
+# config/initializers/karafka_init.rb
+
+require 'karafka_root_dir/karafka_app'
+```
+
+Still not a perfect solution because karafka gem is still loaded.
+
+**Note**: This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
