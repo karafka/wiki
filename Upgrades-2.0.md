@@ -113,7 +113,7 @@ Root options:
 - `serializer` is no longer needed because `Responders` have been removed from Karafka
 - `topic_mapper` is no longer needed as concept of mapping topic names has been removed from Karafka
 - `backend` is no longer needed because Karafka is now multi-threaded with single-threaded backend
-- `manual_offset_management` needs to be set not on a per topic basis
+- `manual_offset_management` needs to be set now on a per topic basis
 
 Kafka options:
 
@@ -130,7 +130,7 @@ Sending heartbeats is no longer needed. Both `#trigger_heartbeat` and `trigger_h
 
 Please read the [Deployment](Deployment) documentation to see appropriate configuration for given environment.
 
-You can optionally check the `librdkafka` [configuration documentation](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)as well.
+You can optionally check the `librdkafka` [configuration documentation](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) as well.
 
 If you still struggle, feel free to reach out to us either via [Slack](https://slack.karafka.io/) or by creating a [Github issue](https://github.com/karafka/karafka/issues/new/).
 
@@ -332,7 +332,7 @@ If you use `sidekiq-backend`, you have two options:
 - Pipe the jobs to Sidekiq yourself
 - Elevate Karafka's multi-threading capabilities
 
-## Responders are not replaced with `Karafka.producer`
+## Responders are now replaced with `Karafka.producer`
 
 Responders were a dead end.
 
