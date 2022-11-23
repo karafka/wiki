@@ -20,6 +20,7 @@
 20. [Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?](#why-when-using-cooperative-sticky-rebalance-strategy-all-topics-get-revoked-on-rebalance)
 21. [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
 22. [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
+23. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -189,3 +190,7 @@ require 'karafka_root_dir/karafka_app'
 Still not a perfect solution because karafka gem is still loaded.
 
 **Note**: This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
+
+### Can I skip messages on errors?
+
+Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).

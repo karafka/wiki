@@ -23,6 +23,29 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## Disabling dispatch
+
+For some use cases, you may want to skip messages after retries without dispatching them to an alternative topic.
+
+To do this, you need to set the DLQ `topic` attribute value to `false`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: false,
+        retries: 2
+      )
+    end
+  end
+end
+```
+
+When that happens, Karafka will retry two times and continue processing despite errors.
+
 ## Dispatch warranties
 
 Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.

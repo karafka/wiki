@@ -61,6 +61,12 @@ end
 
 Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic.
 
+## Disabling dispatch
+
+For some use cases, you may want to skip messages after retries without dispatching them to an alternative topic.
+
+This functionality is available in Karafka Pro, and you can read about it [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+
 ## Dispatch warranties
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
