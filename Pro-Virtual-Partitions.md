@@ -32,7 +32,7 @@ class KarafkaApp < Karafka::App
         # Defines how many concurrent virtual partitions will be created for this
         # topic partition. When not specified, Karafka global concurrency setting
         # will be used to make sure to accommodate as many worker threads as possible.
-        concurrency: 5
+        max_partitions: 5
       )
     end
   end
