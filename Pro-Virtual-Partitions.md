@@ -47,7 +47,7 @@ The return value of this partitioner needs to classify messages that should be g
 
 ## Messages distribution
 
-Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `concurrency` setting defined within the `virtual_partitions` method.
+Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `max_partitions` setting defined within the `virtual_partitions` method.
 
 Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
@@ -131,17 +131,17 @@ routes.draw do
       partitioner: ->(message) { message.payload.fetch('user_id') },
       # Leave two threads for other work of other topics partitions
       # (non VP or VP of other partitions)
-      concurrency: 8
+      max_partitions: 8
     )
   end
 end
 ```
 
-**Note**: Virtual Partitions `concurrency` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
+**Note**: Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
 
 ### Increasing number of Virtual Partitions
 
-There are specific scenarios where you may be interested in having more Virtual Partitions than threads. One example would be to create one Virtual Partition for the data of each user. If you set the `concurrency` to match the `max_messages`, Karafka will create each Virtual Partition based on your grouping without reducing it to match number of worker threads.
+There are specific scenarios where you may be interested in having more Virtual Partitions than threads. One example would be to create one Virtual Partition for the data of each user. If you set the `max_partitions` to match the `max_messages`, Karafka will create each Virtual Partition based on your grouping without reducing it to match number of worker threads.
 
 ```ruby
 setup do |config|
@@ -156,7 +156,7 @@ routes.draw do
     virtual_partitions(
       partitioner: ->(message) { message.payload.fetch('user_id') },
       # Make sure, that each virtual partition always contains data of only a single user
-      concurrency: 200
+      max_partitions: 200
     )
   end
 end
