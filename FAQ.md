@@ -21,6 +21,7 @@
 21. [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
 22. [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
 23. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
+24. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
 
 ### Does Karafka require Ruby on Rails?
 
@@ -194,3 +195,16 @@ Still not a perfect solution because karafka gem is still loaded.
 ### Can I skip messages on errors?
 
 Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+
+### What does static consumer fenced by other consumer with same group.instance.id mean?
+
+If you see such messages in your logs:
+
+```bash
+Fatal error: Broker: Static consumer fenced by other consumer with same group.instance.id
+```
+
+It can mean two things:
+
+1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
+2. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.

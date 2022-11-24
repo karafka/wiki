@@ -259,7 +259,7 @@ Karafka `1.4` would create for you three separate consumer groups while Karafka 
 
 ```ruby
 # Karafka 1.4
-Karafka::App.consumer_groups.count.count #=> 3
+Karafka::App.consumer_groups.count #=> 3
 
 # Karafka 2.0
 Karafka::App.consumer_groups.count #=> 1
