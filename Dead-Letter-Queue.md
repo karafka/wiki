@@ -31,7 +31,7 @@ class KarafkaApp < Karafka::App
         # moving the message to the DLQ topic and continuing the work
         #
         # If set to zero, will not retry at all.
-        retries: 2
+        max_retries: 2
       )
     end
   end
@@ -42,7 +42,7 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 ## Disabling retries
 
-If you do not want to retry processing at all upon errors, you can set the `retries` value to `0`:
+If you do not want to retry processing at all upon errors, you can set the `max_retries` value to `0`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -52,7 +52,7 @@ class KarafkaApp < Karafka::App
 
       dead_letter_queue(
         topic: 'dead_messages',
-        retries: 0
+        max_retries: 0
       )
     end
   end

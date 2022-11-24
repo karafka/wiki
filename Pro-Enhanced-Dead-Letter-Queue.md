@@ -16,7 +16,7 @@ class KarafkaApp < Karafka::App
 
       dead_letter_queue(
         topic: 'dead_messages',
-        retries: 2
+        max_retries: 2
       )
     end
   end
@@ -37,7 +37,7 @@ class KarafkaApp < Karafka::App
 
       dead_letter_queue(
         topic: false,
-        retries: 2
+        max_retries: 2
       )
     end
   end
