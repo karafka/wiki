@@ -419,3 +419,66 @@ Instrumentation and monitoring are often application specific.
 The recommendation here is to revisit your current integration and align it with the events published by Karafka and to follow the `2.0` [instrumentation guidelines document](Monitoring-and-logging).
 
 - `Karafka::Instrumentation::StdoutListener` is now `Karafka::Instrumentation::LoggerListener`
+
+
+## Tips and tricks
+
+1. `bootstrap.servers` setting under `kafka` should **not** have a protocol, and it **needs** to be a string with comma-separated hosts.
+
+**BAD**:
+
+```ruby
+# protocol should not be here
+config.kafka = { 'bootstrap.servers': 'kafka://my.kafka.host1:9092' }
+```
+
+**BAD**:
+
+```ruby
+# it should be a comma separate string, not an array
+config.kafka = { 'bootstrap.servers': ['my.kafka.host1:9092', 'my.kafka.host2:9092'] }
+```
+
+**GOOD**:
+
+```ruby
+config.kafka = { 'bootstrap.servers': 'my.kafka.host1:9092,my.kafka.host2:9092' }
+```
+
+2. Make sure **not** to overwrite your settings similar to how it was done in the section below.
+
+**BAD**:
+
+```ruby
+config.kafka = {
+  'bootstrap.servers': ENV.fetch('BROKERS').split(',')
+}
+
+# This section will FULLY overwrite the `bootstrap.servers`.
+# You want to merge those sections and NOT overwrite.
+if Rails.env.production?
+  config.kafka = {
+    'ssl.ca.pem':          ENV.fetch('CA_CERT'),
+    'ssl.certificate.pem': ENV.fetch('CLIENT_CERT'),
+    'ssl.key.pem':         ENV.fetch('CLIENT_CERT_KEY'),
+    'security.protocol':   'ssl'
+  }
+end
+```
+
+**GOOD**:
+
+```ruby
+config.kafka = {
+  'bootstrap.servers': ENV.fetch('BROKERS').split(',')
+}
+
+if Rails.env.production?
+  config.kafka.merge!({
+    'ssl.ca.pem':          ENV.fetch('CA_CERT'),
+    'ssl.certificate.pem': ENV.fetch('CLIENT_CERT'),
+    'ssl.key.pem':         ENV.fetch('CLIENT_CERT_KEY'),
+    'security.protocol':   'ssl'
+  })
+end
+```
