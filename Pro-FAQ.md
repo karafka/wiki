@@ -1,5 +1,20 @@
 Karafka Pro is an enhanced version of the Karafka framework, adding more functionalities and providing additional customer support options.
 
+1. [Is there a trial version?](#is-there-a-trial-version)
+2. [What is the license?](#what-is-the-license)
+3. [How does Pro licensing work?](#how-does-pro-licensing-work)
+4. [Do I require to change source of the package?](#do-i-require-to-change-source-of-the-package)
+5. [What happens if my subscription lapses?](#what-happens-if-my-subscription-lapses)
+6. [Do I need to replace the license for my running processes?](#do-i-need-to-replace-the-license-for-my-running-processes)
+7. [How do I buy Karafka Pro?](#how-do-i-buy-karafka-pro)
+8. [Can I distribute Karafka Pro to my customers?](#can-i-distribute-karafka-pro-to-my-customers)
+9. [Can you transfer a license?](#can-you-transfer-a-license)
+10. [Do I have to share the credentials with all of my developers?](#do-i-have-to-share-the-credentials-with-all-of-my-developers)
+11. [Can I get a refund?](#can-i-get-a-refund)
+12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
+13. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+14. [Contact Info](#contact-info)
+
 ## Is there a trial version?
 
 Yes. For free, you can obtain temporary credentials from our [website](https://karafka.io/#become-pro).

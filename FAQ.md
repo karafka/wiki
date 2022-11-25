@@ -23,27 +23,27 @@
 23. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
 24. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
 
-### Does Karafka require Ruby on Rails?
+## Does Karafka require Ruby on Rails?
 
 **No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
 
-### Why there used to be an ApplicationController mentioned in the Wiki and some articles?
+## Why there used to be an ApplicationController mentioned in the Wiki and some articles?
 
 You can name the main application consumer with any name. You can even call it ```ApplicationController``` or anything else you want. Karafka will sort that out, as long as your root application consumer inherits from the ```Karafka::BaseConsumer```. It's not related to Ruby on Rails controllers. Karafka framework used to use the ```*Controller``` naming convention up until Karafka 1.2 where it was changed because many people had problems with name collisions.
 
-### Does Karafka require Redis and/or Sidekiq to work?
+## Does Karafka require Redis and/or Sidekiq to work?
 
 **No**. Karafka is a standalone framework, with an additional process that will be used to consume Kafka messages.
 
-### Could an HTTP controller also consume a fetched message through the Karafka router?
+## Could an HTTP controller also consume a fetched message through the Karafka router?
 
 **No**. Kafka messages can be consumed only using Karafka consumers. You cannot use your Ruby on Rails HTTP consumers to consume Kafka messages, as Karafka is **not** an HTTP Kafka proxy. Karafka uses Kafka API for messages consumption.
 
-### Does Karafka require a separate process running?
+## Does Karafka require a separate process running?
 
 **Yes**. Karafka  requires a separate process to be running (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of the Wiki.
 
-### Can I start Karafka process with only particular consumer groups running for given topics?
+## Can I start Karafka process with only particular consumer groups running for given topics?
 
 Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as follows:
 
@@ -51,44 +51,44 @@ Yes. Karafka allows you to listen with a single consumer group on multiple topic
 bundle exec karafka server --consumer_groups group_name1 group_name3
 ```
 
-### Can I use ```#seek``` to start processing topics partition from a certain point?
+## Can I use ```#seek``` to start processing topics partition from a certain point?
 
 Karafka has a ```#seek``` consumer method that can be used to do that.
 
-### Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?
+## Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?
 
 Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
 
-### Why Karafka does not restart dead PG connections?
+## Why Karafka does not restart dead PG connections?
 
 Karafka starting from `2.0.16` will automatically clean dead ActiveRecord connections. No extra action is needed.
 
-### Does Karafka require gems to be thread-safe?
+## Does Karafka require gems to be thread-safe?
 
 Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidekiq does it. The same rules apply.
 
-### When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
+## When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
 
 Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be required [before](https://github.com/simplecov-ruby/simplecov#getting-started=) any code is loaded.
 
-### Can I use Thread.current to store data between batches?
+## Can I use Thread.current to store data between batches?
 
 **No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
 
 
-### Why Karafka process does not pick up newly created topics until restarted?
+## Why Karafka process does not pick up newly created topics until restarted?
 
 - Karafka in the `development` mode will refresh cluster metadata every 5 seconds. It means that it will detect topic changes fairly fast.
 - Karafka in `production` will refresh cluster metadata every 5 minutes. It is recommended to create production topics before running consumers.
 
 The frequency of cluster metadata refreshes can be changed via `topic.metadata.refresh.interval.ms` in the `kafka` config section.
 
-### Why is Karafka not doing work in parallel when I started two processes?
+## Why is Karafka not doing work in parallel when I started two processes?
 
 Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
 
 
-### Can I remove a topic while the Karafka server is running?
+## Can I remove a topic while the Karafka server is running?
 
 **Not recommended**. You may encounter the following errors if you decide to do so:
 
@@ -101,7 +101,7 @@ ERROR -- : librdkafka internal error occurred: Broker: Unknown topic or partitio
 
 It is recommended to stop Karafka server instances and then remove and recreate the topic.
 
-### What is a forceful Karafka stop?
+## What is a forceful Karafka stop?
 
 When you attempt to stop Karafka, you may notice the following information in your logs:
 
@@ -118,17 +118,17 @@ When you ask Karafka to stop, it will wait for all the currently running jobs to
 
 In any case, it is **not** recommended to ignore this if it happens frequently.
 
-### Can I use AWS MSK Serverless with IAM authentication?
+## Can I use AWS MSK Serverless with IAM authentication?
 
 No. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
 
 Karafka supports the standard SASL + SSL mechanisms available for MSK. You can read more about it [here](Deployment#aws-msk-cluster-setup).
 
-### Why can't I connect to Kafka from another Docker container?
+## Why can't I connect to Kafka from another Docker container?
 
 You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Setting-up-Kafka#connecting-to-kafka-from-other-docker-containers).
 
-### How can I configure multiple bootstrap servers?
+## How can I configure multiple bootstrap servers?
 
 You need to define them comma-separated under `kafka` `bootstrap.servers` configuration key:
 
@@ -145,17 +145,17 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?
+## Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?
 
 This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
 
-### What will happen with uncommitted offsets during a rebalance?
+## What will happen with uncommitted offsets during a rebalance?
 
 When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
 
 Upon rebalance, all uncommitted offsets will be committed before a given partition is re-assigned.
 
-### Can I use Karafka with Ruby on Rails as a part of an internal gem?
+## Can I use Karafka with Ruby on Rails as a part of an internal gem?
 
 Karafka 2.0 has [Rails auto-detection](https://github.com/karafka/karafka/blob/78ea23f7044b81b7e0c74bb02ad3d2e5a5fa1b7c/lib/karafka/railtie.rb#L19), and it is loaded early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
 
@@ -192,11 +192,11 @@ Still not a perfect solution because karafka gem is still loaded.
 
 **Note**: This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
 
-### Can I skip messages on errors?
+## Can I skip messages on errors?
 
 Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
-### What does static consumer fenced by other consumer with same group.instance.id mean?
+## What does static consumer fenced by other consumer with same group.instance.id mean?
 
 If you see such messages in your logs:
 
