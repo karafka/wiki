@@ -208,3 +208,46 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_shutdown.png" />
 </p>
+
+## Customizing the partitioning engine / Load aware partitioning
+
+There are scenarios upon which you can differentiate your partitioning strategy based on the number of received messages per topic partition. It is impossible to set it easily using the default partitioning API, as this partitioner accepts single messages. However, Pro users can use the `Karafka::Pro::Processing::Partitioner` as a base for a custom partitioner that can achieve something like this.
+
+One great example of this is a scenario where you may want to partition messages in such a way as to always end up with at most `5 000` messages in a single Virtual Partition.
+
+```ruby
+# This is a whole process partitioner, not a per topic one
+class CustomPartitioner < Karafka::Pro::Processing::Partitioner
+  def call(topic_name, messages)
+    # Apply the "special" strategy for this special topic
+    if topic_name == 'balanced_topic'
+      balanced_strategy(messages)
+    else
+      # Apply standard behaviours to other topics
+      super
+    end
+  end
+
+  private
+
+  # Make sure you end up with virtual partitions that always have at most 5 000 messages and create
+  # as few partitions as possible
+  def balanced_strategy(messages)
+    messages.each_slice(5_000).with_index do |slice, index|
+      yield(index, slice)
+    end
+  end
+end
+```
+
+Once you create your custom partitioner, you need to overwrite the default one in your configuration:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.internal.processing.partitioner_class = CustomPartitioner
+  end
+end
+```
+
+When used that way, your `balanced_topic` will not use the per topic `partitioner` nor `max_partitions`. This topic data distribution will solely rely on your `balanced_strategy` logic.
