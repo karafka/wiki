@@ -22,6 +22,7 @@
 22. [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
 23. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
 24. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
+25. [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -208,3 +209,7 @@ It can mean two things:
 
 1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
 2. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+
+## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
+
+The `#revoked` will be executed even though the `#consume` did not run upon revocation because `#revoked` can be used to teardown resources initialized prop to `#consume`. For example, for things initialized in a custom `initialize` method.
