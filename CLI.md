@@ -22,7 +22,7 @@ bundle exec karafka help [COMMAND]
 
 ## Karafka server
 
-### Starting particular consumer groups per process
+### Running particular consumer groups per process
 
 Karafka supports having multiple consumer groups within a single application. You can run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as follows:
 
@@ -31,3 +31,19 @@ bundle exec karafka server --consumer_groups group_name1 group_name3
 ```
 
 If you specify none, by default, all will run.
+
+### Running particular subscription groups per process
+
+Karafka supports having multiple subscription groups within a single application. You can run multiple Karafka instances, specifying subscription groups that should be running per each process using the ```--subscription_groups``` server flag as follows:
+
+```bash
+bundle exec karafka server --subscription_groups group_name1 group_name3
+```
+
+### Running particular topic subscriptions per process
+
+Karafka supports having multiple topics within a single application. You can run multiple Karafka instances, specifying topics that should be running per each process using the ```--topics``` server flag as follows:
+
+```bash
+bundle exec karafka server --subscription_groups group_name1 group_name3
+```
