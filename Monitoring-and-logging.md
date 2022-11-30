@@ -21,7 +21,7 @@ The best place to hook your listener is at the end of the ```karafka.rb``` file.
 ### Subscribing with a listener class/module
 
 ```ruby
-Karafka.monitor.subscribe(AirbrakeListener.new)
+Karafka.monitor.subscribe(MyAirbrakeListener.new)
 ```
 
 ### Subscribing with a block
@@ -75,6 +75,16 @@ Karafka::App.monitor.subscribe('statistics.emitted') do |event|
 
   p "Received messages: #{sum}"
   p "Messages received from last statistics report: #{diff}"
+end
+```
+
+## Sentry error tracking integration
+
+If you are using Sentry and want to track errors that occurred in Karafka for both consumptions as well as any errors happening in the background threads, all you need to do is to connect to the `error.occurred` using Sentry `#capture_exception` API:
+
+```ruby
+Karafka.monitor.subscribe 'error.occurred' do |event|
+  Sentry.capture_exception(event[:error])
 end
 ```
 
