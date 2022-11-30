@@ -23,6 +23,7 @@
 23. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
 24. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
 25. [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
+26. [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -213,3 +214,30 @@ It can mean two things:
 ## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
 
 The `#revoked` will be executed even though the `#consume` did not run upon revocation because `#revoked` can be used to teardown resources initialized prop to `#consume`. For example, for things initialized in a custom `initialize` method.
+
+## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
+
+If you are seeing following error:
+
+```ruby
+Rdkafka::RdkafkaError (Local: Timed out (timed_out)
+```
+
+It may mean one of three things:
+
+1. High probability: 
+2. Low probability: Slow network connection.
+3. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
+
+WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the ` queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
+
+Additionally, you may also:
+
+- Dispatch smaller batches using `#produce_many_sync`.Effectively it will throttle the process that way.
+- Establish a limit on how many messages you want to dispatch at once. This will prevent you from scenarios where you accidentally flush too much. If you dispatch based on an array of samples, you can do it that way:
+
+```ruby
+data_to_dispatch.each_slice(2_00) do |data_slice|
+  Karafka.producer.produce_many_sync(data_slice)
+end
+```
