@@ -34,6 +34,7 @@
 * [Concurrency and multithreading](Concurrency-and-multithreading)
 * [Deserialization](Deserialization)
 * [Offset management (checkpointing)](Offset-management)
+* [Pausing](Pausing)
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
