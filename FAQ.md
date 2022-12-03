@@ -24,6 +24,7 @@
 24. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
 25. [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
 26. [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
+27. [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-check-revoked-when-not-using-long-running-jobs)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -241,3 +242,9 @@ data_to_dispatch.each_slice(2_00) do |data_slice|
   Karafka.producer.produce_many_sync(data_slice)
 end
 ```
+
+## Do I need to check `#revoked?` when not using Long-Running jobs?
+
+In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
+
+You can read about Karafka revocation/rebalance behaviours [here](Offset-management) and [here](Consuming-messages#detecting-revocation-midway).
