@@ -247,4 +247,4 @@ end
 
 In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
 
-You can read about Karafka revocation/rebalance behaviours [here](Offset-management) and [here](Consuming-messages#detecting-revocation-midway).
+You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Consuming-messages#detecting-revocation-midway).
