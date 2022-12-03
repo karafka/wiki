@@ -141,6 +141,8 @@ def consume
 end
 ```
 
+In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+
 **Note**: You need to mark the message as consumed for the `#revoked?` method result to change.
 
 **Note**: When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result changes independently from marking messages.
