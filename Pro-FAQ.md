@@ -12,8 +12,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 10. [Do I have to share the credentials with all of my developers?](#do-i-have-to-share-the-credentials-with-all-of-my-developers)
 11. [Can I get a refund?](#can-i-get-a-refund)
 12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
-13. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-14. [Contact Info](#contact-info)
+13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
+14. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+15. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -70,6 +71,23 @@ In general, **yes**. The credentials are required to download the gems and your 
 ## Can I accidentally use Pro because it is in the same repository?
 
 **No**. The Pro code is **never** loaded unless a valid `karafka-license` is detected.
+
+## Why do I see a "Bad username or password" message when trying to bundle install?
+
+If you are seeing the following error when trying to `bundle install`:
+
+```
+Fetching source index from https://gems.karafka.io/
+
+Bad username or password for https://LOGIN@gems.karafka.io/.
+Please double-check your credentials and correct them.
+```
+
+1. Check the account email's Spam/Junk folder for any billing or payment emails. You would need to purchase a new subscription if your subscription was canceled.
+
+2. Double-check your login and password to the gem server.
+
+3. Upgrade Bundler. Versions before 2.3.x are buggy with the gem server.
 
 ## Ethics, Privacy, and Information Usage
 
