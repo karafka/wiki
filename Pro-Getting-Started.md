@@ -7,8 +7,8 @@ To activate your Karafka Pro subscription, you need to do three things:
 3. Add it to your Gemfile and `bundle install`:
 
 ```ruby
-source 'https://LOGIN:PASSWORD@gems.karafka.io' do
-  gem 'karafka-license', 'LICENSE-ID'
+source 'https://USERNAME:PASSWORD@gems.karafka.io' do
+  gem 'karafka-license', 'LICENSE_ID'
 end
 
 gem 'karafka'
