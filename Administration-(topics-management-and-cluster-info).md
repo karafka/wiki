@@ -28,3 +28,38 @@ info = Karafka::Admin.cluster_info
 
 puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 ```
+
+## Reading topic messages
+
+Using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
+
+**Note**: While the returned messages are `Karafka::Messages::Message` objects, they do not hold a correct notion of the topic. This is because the admin API can also work with topics not being part of the routing. Hence there is no topic resolution. The default JSON deserializer is used.
+
+### Getting last N messages
+
+```ruby
+topic = 'my_topic'
+partition = 0
+how_many = 10
+
+messages = Karafka::Admin.read_topic(topic, partition, how_many)
+
+messages.each do |message|
+  puts message.raw_payload
+end
+```
+
+### Getting messages from a given offset
+
+```ruby
+topic = 'my_topic'
+partition = 0
+how_many = 10
+first_offset = 50
+
+messages = Karafka::Admin.read_topic(topic, partition, how_many, first_offset)
+
+messages.each do |message|
+  puts message.raw_payload
+end
+```
