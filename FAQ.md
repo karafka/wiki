@@ -224,11 +224,12 @@ If you are seeing following error:
 Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
 
-It may mean one of three things:
+It may mean one of four things:
 
-1. High probability: 
-2. Low probability: Slow network connection.
-3. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
+1. High probability: Broker can't keep up with the produce rate.
+2. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
+3. Low probability: Slow network connection.
+4. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
 WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the ` queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
 
