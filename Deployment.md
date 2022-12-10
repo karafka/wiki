@@ -377,11 +377,11 @@ Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::Rdkafk
 #### Messages are not being consumed
 
 ```
-DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
-DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polling messages...
-DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
-DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polling messages...
-DEBUG -- : [e1fe0093-5d91-411e-8b06-3e19b1818479] Polled 0 messages in 1000ms
+DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
+DEBUG -- : [3732873c8a74] Polling messages...
+DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
+DEBUG -- : [3732873c8a74] Polling messages...
+DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 ```
 
 **Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
