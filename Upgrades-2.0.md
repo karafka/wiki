@@ -33,13 +33,13 @@ To safely upgrade from Karafka from `1.4` to `2.0` you need to shut down all you
 
 1. Update your `karafka` gem version reference
 
-```ruby
-# Replace
-gem 'karafka', '~> 1.4'
+    ```ruby
+    # Replace
+    gem 'karafka', '~> 1.4'
 
-# with
-gem 'karafka', '~> 2.0'
-```
+    # with
+    gem 'karafka', '~> 2.0'
+    ```
 
 2. Remove the `sidekiq-backend` reference
 
