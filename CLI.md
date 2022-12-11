@@ -40,10 +40,10 @@ Karafka supports having multiple subscription groups within a single application
 bundle exec karafka server --subscription_groups group_name1 group_name3
 ```
 
-### Running particular topic subscriptions per process
+### Running particular topics per process
 
 Karafka supports having multiple topics within a single application. You can run multiple Karafka instances, specifying topics that should be running per each process using the ```--topics``` server flag as follows:
 
 ```bash
-bundle exec karafka server --subscription_groups group_name1 group_name3
+bundle exec karafka server --topics topic1 topic2
 ```
