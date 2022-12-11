@@ -39,6 +39,7 @@
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
 * [Embedding](Embedding)
+* [Env Variables](Env-Variables)
 * [Articles and other references](Articles-and-other-references)
 * [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
