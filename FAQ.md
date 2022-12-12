@@ -25,6 +25,7 @@
 25. [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
 26. [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
 27. [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-check-revoked-when-not-using-long-running-jobs)
+28. [Can I consume from more than one Kafka cluster at the same time?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -249,3 +250,36 @@ end
 In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
 
 You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Consuming-messages#detecting-revocation-midway).
+
+## Can I consume from more than one Kafka cluster simultaneously?
+
+**Yes**. Karafka allows you to redefine `kafka` settings on a per-topic basis. You can create separate consumer groups to consume from separate clusters:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    consumer_group :group_name do
+      topic :example do
+        kafka('bootstrap.servers': 'cluster1:9092')
+        consumer ExampleConsumer
+      end
+
+      topic :example2 do
+        kafka('bootstrap.servers': 'cluster1:9092')
+        consumer ExampleConsumer2
+      end
+    end
+
+    consumer_group :group_name2 do
+      topic :example3 do
+        kafka('bootstrap.servers': 'cluster2:9092')
+        consumer Example2Consumer3
+      end
+    end
+  end
+end
+```
