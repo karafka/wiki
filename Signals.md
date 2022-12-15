@@ -9,6 +9,21 @@ Process.kill("TTIN", pid)
 
 Karafka will respond to `TTIN` by printing backtraces for all threads to the logger.  This is useful for debugging if you have a Karafka process that appears dead or stuck.
 
+```
+Thread TID-c70x
+processing/jobs_queue.rb:64:in `pop'
+processing/jobs_queue.rb:64:in `pop'
+processing/worker.rb:47:in `process'
+processing/worker.rb:37:in `block in call'
+...
+Thread TID-c72h
+instrumentation/logger_listener.rb:83:in `backtrace'
+instrumentation/logger_listener.rb:83:in `block in on_process_notice_signal'
+instrumentation/logger_listener.rb:77:in `each'
+instrumentation/logger_listener.rb:77:in `on_process_notice_signal'
+...
+```
+
 **Note**: You need to have the `LoggerListener` enabled for this signal to print. It is enabled by default, so this signal should work out of the box unless you altered that.
 
 ## TSTP
