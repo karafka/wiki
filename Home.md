@@ -13,7 +13,7 @@
 ## Production usage
 
 * [Development vs Production](Development-vs-Production)
-* [Signals](Signals)
+* [Signals and statuses](Signals-and-statuses)
 * [Deployment](Deployment)
     * [systemd (+ Capistrano)](Deployment#systemd-capistrano)
     * [Docker](Deployment#docker)

@@ -32,4 +32,4 @@ Here are a few guidelines that you should follow when trying to create a reprodu
 4. If the issue is related to Active Job or Ruby on Rails, try using the latest stable release.
 5. Check the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) page to make sure that your Ruby and Ruby on Rails (if used) combination is supported.
 6. Try disabling all Karafka components that may be irrelevant to the issue, like extensive listeners and other hooks.
-7. You can use `TTIN` [signal](Signals) to print a backtrace of all the Karafka threads if Karafka appears to be hanging or dead. For this to work, the `LoggerListener` needs to be enabled.
+7. You can use `TTIN` [signal](Signals-and-statuses#signals) to print a backtrace of all the Karafka threads if Karafka appears to be hanging or dead. For this to work, the `LoggerListener` needs to be enabled.
