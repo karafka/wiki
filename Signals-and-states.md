@@ -42,6 +42,15 @@ Use `TSTP` + `TERM` to guarantee shut down within a period. The best practice is
 
 Send `TERM` or `QUIT` signal to a Karafka process to shut it down. It will stop accepting new work but continue working on current messages.  Workers who do not finish within the `shutdown_timeout` are forcefully terminated.
 
-## Statuses
+## States
 
-TBA
+The Karafka process can be in a few states during its lifecycle, and each has a separate meaning and indicates different things happening internally.
+
+- `initializing` - The initial state of the application before configuration or routes are loaded.
+- `initialized` - The process is configured in this state but has yet to start listeners and workers.
+- `running` - The process started Kafka clients and is polling data.
+- `quieting` - The process received the `TSTP` signal and is finishing the current work.
+- `quiet` - The process no longer processes work and will keep running in quiet mode. 
+- `stopping` - The process is finishing current work, no longer accepting more, and shutting down.
+- `stopped` - The process finished everything and closed all the Kafka connections.
+- `terminated` - The process is going to exit shortly.
