@@ -33,7 +33,7 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 Using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
-**Note**: While the returned messages are `Karafka::Messages::Message` objects, they do not hold a correct notion of the topic. This is because the admin API can also work with topics not being part of the routing. Hence there is no topic resolution. The default JSON deserializer is used.
+**Note**: While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
 ### Getting last N messages
 
