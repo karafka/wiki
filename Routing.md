@@ -116,14 +116,15 @@ Almost all the default settings configured can be changed on either on the ```to
 
 There are several options you can set inside of the ```topic``` block. All of them except ```consumer``` are optional. Here are the most important once:
 
-| Option                            | Value type   | Description                                                                                                        |
-|-----------------------------------|--------------|--------------------------------------------------------------------------------------------------------------------|
-| [consumer](Consuming-messages)    | Class        | Name of a consumer class that we want to use to consume messages from a given topic                                |
-| [deserializer](Deserialization)   | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                        |
-| [manual_offset_management](Offset-management#manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not |
-| [long_running_job](Pro-Long-Running-Jobs)        | Boolean     | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`              |
-| [virtual_partitions](Pro-Virtual-Partitions)     | Hash        | Allows you to parallelize the processing of data from a single partition.                            |
-| [dead_letter_queue](Dead-Letter-Queue)           | Hash        | Provides a systematic way of dealing with persistent consumption errors.                             |
+| Option                            | Value type   | Description                                                                                                                 |
+|-----------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------|
+| active                            | Boolean      | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
+| [consumer](Consuming-messages)    | Class        | Name of a consumer class that we want to use to consume messages from a given topic                                         |
+| [deserializer](Deserialization)   | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
+| [manual_offset_management](Offset-management#manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not          |
+| [long_running_job](Pro-Long-Running-Jobs)        | Boolean     | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                       |
+| [virtual_partitions](Pro-Virtual-Partitions)     | Hash        | Allows you to parallelize the processing of data from a single partition.                                     |
+| [dead_letter_queue](Dead-Letter-Queue)           | Hash        | Provides a systematic way of dealing with persistent consumption errors.                                      |
 
 
 ```ruby
@@ -142,6 +143,13 @@ class KarafkaApp < Karafka::App
       topic :new_videos do
         consumer Videos::NewVideosConsumer
       end
+    end
+
+    topic :events do
+      # Set to false because not for consumption.
+      # Only inspection via admin API.
+      active false
+      deserializer EventsDeserializer.new
     end
   end
 end
