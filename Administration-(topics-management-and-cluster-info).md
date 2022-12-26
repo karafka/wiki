@@ -1,4 +1,4 @@
-Karafka has a few simple admin module that allows for getting cluster info and creating and deleting topics.
+Karafka has a few simple admin functions that allows for getting cluster info and creating and deleting topics.
 
 **Note**: Admin actions will always be applied to the **default** cluster defined in the configuration.
 
@@ -31,7 +31,7 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 ## Reading topic messages
 
-Using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
+By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
 **Note**: While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
