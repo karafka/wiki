@@ -261,7 +261,7 @@ If you want to verify that this is indeed an ACL issue, try running `::Karafka::
 
 You can also use this ACL command to give all operations access for the brokers on all the topics to a given user:
 
-```bash
+```shell
 ./bin/kafka-acls.sh \
   --authorizer-properties zookeeper.connect=<ZOOKEEPER_CONNECTION_STRING> \
   --add \
@@ -271,6 +271,8 @@ You can also use this ACL command to give all operations access for the brokers 
   --topic=* \
   --group=*
 ```
+
+**Note**: The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
 
 ## Heroku
 
