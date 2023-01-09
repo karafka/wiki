@@ -50,7 +50,7 @@
 * [Build vs. Buy](Build-vs-Buy)
 * [Purchase Karafka Pro](Purchase-Karafka-Pro)
 * [Getting Started](Pro-Getting-Started)
-* [Rotating Pro credentials](Pro-Rotating-Credentials)
+* [Rotating credentials](Pro-Rotating-Credentials)
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
 
