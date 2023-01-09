@@ -241,6 +241,16 @@ Please make sure your custom setting `default.replication.factor` value matches 
   <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/brokers_count.png" />
 </p>
 
+### Rdkafka::RdkafkaError: Broker: Topic authorization failed (topic_authorization_failed)
+
+This error occurs in case you enabled Kafka ACL but did not grant proper ACL permissions to your users. It often happens when you make your [AWS MSK public](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html).
+
+Please note that `allow.everyone.if.no.acl.found` `false` superseeds `auto.create.topics.enable`. This means that despite `auto.create.topics.enable` being set to `true`, you will not be able to auto-create topics as the ACL will block this.
+
+We recommend creating all the needed topics before making the cluster public and assigning proper permissions via Kafka ACL.
+
+**Note**: If you want to verify that this is indeed an ACL issue, try running `::Karafka::Admin.cluster_info`. If you get cluster info and no errors, you can connect to the cluster, but ACL blocks any usage.
+
 ## Heroku
 
 Karafka works with the Heroku Kafka add-on, but it requires some extra configuration and understanding of how the Heroku Kafka add-on works.
