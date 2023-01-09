@@ -20,7 +20,7 @@ gem 'karafka'
 **Note**: You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
 
 
-## License gem integrity verification for CI/CD
+## License gem integrity verification
 
 Using Karafka Pro means we are part of your Open Source Supply Chain. We take this exceptionally seriously, and that is why we encourage you to verify the integrity of the license gem we provide in your CI/CD.
 
