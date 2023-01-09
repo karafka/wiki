@@ -251,6 +251,14 @@ We recommend creating all the needed topics before making the cluster public and
 
 **Note**: If you want to verify that this is indeed an ACL issue, try running `::Karafka::Admin.cluster_info`. If you get cluster info and no errors, you can connect to the cluster, but ACL blocks any usage.
 
+```ruby
+::Karafka::Admin.cluster_info =>
+#<Rdkafka::Metadata:0x00007fea8e3a43c0                                           
+ @brokers=[{:broker_id=>1001, :broker_name=>"your-kafka-host", :broker_port=>9092}],   
+ @topics=[]
+>
+```
+
 ## Heroku
 
 Karafka works with the Heroku Kafka add-on, but it requires some extra configuration and understanding of how the Heroku Kafka add-on works.
