@@ -13,7 +13,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 11. [Can I get a refund?](#can-i-get-a-refund)
 12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
 13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
-14. [Where can I find my license credentials page URL?](#tba)
+14. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
 15. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 16. [Contact Info](#contact-info)
 
