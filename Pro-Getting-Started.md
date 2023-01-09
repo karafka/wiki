@@ -39,10 +39,12 @@ KARAFKA_PRO_LICENSE_CHECKSUM='PROVIDE-CHECKSUM'
 curl \
   --fail \
   -u $KARAFKA_PRO_USERNAME:$KARAFKA_PRO_PASSWORD \
-  https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_LICENSE_ID.gem \
+  https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_VERSION.gem \
   -o ./karafka-license.gem
 
 detected=`sha256sum ./karafka-license.gem | awk '{ print $1 }'`
+
+rm ./karafka-license.gem
 
 echo -n "Karafka Pro license artifact checksum verification result: "
 
