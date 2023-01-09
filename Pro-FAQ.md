@@ -13,8 +13,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 11. [Can I get a refund?](#can-i-get-a-refund)
 12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
 13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
-14. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-15. [Contact Info](#contact-info)
+14. [Where can I find my license credentials page URL?](#tba)
+15. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+16. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -88,6 +89,10 @@ Please double-check your credentials and correct them.
 2. Double-check your login and password to the gem server.
 
 3. Upgrade Bundler. Versions before 2.3.x are buggy with the gem server.
+
+## Where can I find my license credentials page URL?
+
+You can find it in the email you received from us when you requested the Pro license via our gems UI.
 
 ## Ethics, Privacy, and Information Usage
 
