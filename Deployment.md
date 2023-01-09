@@ -262,7 +262,14 @@ If you want to verify that this is indeed an ACL issue, try running `::Karafka::
 You can also use this ACL command to give all operations access for the brokers on all the topics to a given user:
 
 ```bash
-./bin/kafka-acls.sh --authorizer-properties zookeeper.connect=<ZOOKEEPER_CONNECTION_STRING> --add --allow-principal User:<USER_NAME> --allow-host=*  --operation All --topic=* --group=*
+./bin/kafka-acls.sh \
+  --authorizer-properties zookeeper.connect=<ZOOKEEPER_CONNECTION_STRING> \
+  --add \
+  --allow-principal User:<USER_NAME> \
+  --allow-host=* \
+  --operation All \
+  --topic=* \
+  --group=*
 ```
 
 ## Heroku
