@@ -20,4 +20,4 @@ To do so:
 
 5. Click on the link received in the email.
 
-6. View your new credentials and replace them in your Gemfile.
+6. View your new credentials and replace them in your Gemfile and any other place where you use them.
