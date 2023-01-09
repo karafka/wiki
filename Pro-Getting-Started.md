@@ -36,11 +36,18 @@ KARAFKA_PRO_PASSWORD='PROVIDE-PASSWORD'
 KARAFKA_PRO_LICENSE_ID='PROVIDE-LICENSE-ID'
 KARAFKA_PRO_LICENSE_CHECKSUM='PROVIDE-CHECKSUM'
 
-curl \
-  --fail \
-  -u $KARAFKA_PRO_USERNAME:$KARAFKA_PRO_PASSWORD \
-  https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_VERSION.gem \
-  -o ./karafka-license.gem
+if [ "$MODE" = "before" ]; then
+  # Check the remote license prior to bundle installing
+  curl \
+    --fail \
+    -u $KARAFKA_PRO_USERNAME:$KARAFKA_PRO_PASSWORD \
+    https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_VERSION.gem \
+    -o ./karafka-license.gem
+else
+  # Check the local cached one after bundle install
+  cache_path=`ruby -e 'puts "#{Gem.dir}/cache/"'`
+  cp "$cache_path/karafka-license-$KARAFKA_PRO_VERSION.gem" ./karafka-license.gem
+fi
 
 detected=`sha256sum ./karafka-license.gem | awk '{ print $1 }'`
 
@@ -56,12 +63,21 @@ else
 fi
 ```
 
+Due to the nature of how Bundler works, it is **recommended** to run this script twice in the CI/CD:
+
+1. First, before `bundle install` is executed, to ensure that the gem server is serving the correct data.
+2. Second time after `bundle install` to ensure consistency of the fetched package.
+
 To use it:
 
 1. Store above script in your repository preferably under `bin/verify_karafka_license_checksum`.
 
-2. Set the `KARAFKA_PRO_USERNAME`, `KARAFKA_PRO_PASSWORD`, `KARAFKA_PRO_LICENSE_ID` and `KARAFKA_PRO_LICENSE_CHECKSUM` based on data provided to you in the license issuing email.
+2. Set the `KARAFKA_PRO_USERNAME`, `KARAFKA_PRO_PASSWORD`, `KARAFKA_PRO_LICENSE_ID` and `KARAFKA_PRO_LICENSE_CHECKSUM` based on data provided to you in the license issuing email or set those values as your CI/CD ENV variables.
 
 4. Run `bin/verify_karafka_license_checksum` as part of your CI/CD **before** running `bundle install`.
+
+5. Run `bundle install`
+
+6. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
 **Note**: Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.
