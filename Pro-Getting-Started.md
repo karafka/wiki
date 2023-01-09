@@ -80,4 +80,6 @@ To use it:
 
 6. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
+In case the verification fails, script will exit with the exit code `1`.
+
 **Note**: Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.
