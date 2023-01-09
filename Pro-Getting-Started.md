@@ -36,7 +36,7 @@ KARAFKA_PRO_PASSWORD='PROVIDE-PASSWORD'
 KARAFKA_PRO_LICENSE_ID='PROVIDE-LICENSE-ID'
 KARAFKA_PRO_LICENSE_CHECKSUM='PROVIDE-CHECKSUM'
 
-if [ "$MODE" = "before" ]; then
+if [ "$MODE" != "after" ]; then
   # Check the remote license prior to bundle installing
   curl \
     --fail \
