@@ -249,7 +249,7 @@ Please note that `allow.everyone.if.no.acl.found` `false` superseeds `auto.creat
 
 We recommend creating all the needed topics before making the cluster public and assigning proper permissions via Kafka ACL.
 
-**Note**: If you want to verify that this is indeed an ACL issue, try running `::Karafka::Admin.cluster_info`. If you get cluster info and no errors, you can connect to the cluster, but ACL blocks any usage.
+If you want to verify that this is indeed an ACL issue, try running `::Karafka::Admin.cluster_info`. If you get cluster info and no errors, you can connect to the cluster, but ACL blocks any usage.
 
 ```ruby
 ::Karafka::Admin.cluster_info =>
@@ -257,6 +257,12 @@ We recommend creating all the needed topics before making the cluster public and
  @brokers=[{:broker_id=>1001, :broker_name=>"your-kafka-host", :broker_port=>9092}],   
  @topics=[]
 >
+```
+
+You can also use this ACL command to give all operations access for the brokers on all the topics to a given user:
+
+```bash
+./bin/kafka-acls.sh --authorizer-properties zookeeper.connect=<ZOOKEEPER_CONNECTION_STRING> --add --allow-principal User:<USER_NAME> --allow-host=*  --operation All --topic=* --group=*
 ```
 
 ## Heroku
