@@ -41,12 +41,12 @@ if [ "$MODE" != "after" ]; then
   curl \
     --fail \
     -u $KARAFKA_PRO_USERNAME:$KARAFKA_PRO_PASSWORD \
-    https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_VERSION.gem \
+    https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_LICENSE_ID.gem \
     -o ./karafka-license.gem
 else
   # Check the local cached one after bundle install
   cache_path=`ruby -e 'puts "#{Gem.dir}/cache/"'`
-  cp "$cache_path/karafka-license-$KARAFKA_PRO_VERSION.gem" ./karafka-license.gem
+  cp "$cache_path/karafka-license-$KARAFKA_PRO_LICENSE_ID.gem" ./karafka-license.gem
 fi
 
 detected=`sha256sum ./karafka-license.gem | awk '{ print $1 }'`
