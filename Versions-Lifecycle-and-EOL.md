@@ -21,6 +21,8 @@ Karafka versions or release series are categorized below into the following phas
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
+**Note**: If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
+
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 3.2     | Active      | N/A        |
@@ -28,8 +30,6 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 | 3.0     | Active      | N/A        |
 | 2.7     | Active      | 2023-11-30 |
 | 2.6     | EOL         | 2022-04-12 |
-
-**Note**: If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
 ## Ruby on Rails versions support
 
