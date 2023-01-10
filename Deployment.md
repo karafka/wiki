@@ -216,6 +216,7 @@ ERROR -- : librdkafka internal error occurred: Local: Authentication failure (au
 ```
 
 It may mean two things:
+
 - Your credentials are wrong
 - AWS MSK did not yet refresh its allowed keys, and you need to wait. Despite AWS reporting cluster as `Active` with no pending changes, it may take a few minutes for the credentials to start working.
 
