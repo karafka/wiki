@@ -11,7 +11,7 @@
 * [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
 * [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)
 
-## Articles and references
+## Articles and references about Karafka
 
 **Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
@@ -25,3 +25,10 @@
 * [Benchmarking Karafka – how does it handle multiple TCP connections](http://dev.mensfeld.pl/2015/11/benchmarking-karafka-how-does-it-handle-multiple-tcp-connections/)
 * [Reduce your method calls by 99.9% by replacing Thread#pass with Queue#pop](https://mensfeld.pl/2022/01/reduce-your-method-calls-by-99-9-by-replacing-threadpass-with-queuepop/)
 * [Karafka – Ruby framework for building Kafka message based applications (presentation)](http://mensfeld.github.io/karafka-framework-introduction/)
+
+## General articles and references about working with Apache Kafka
+
+*[Kafka topic naming conventions - 5 recommendations with examples](https://www.kadeck.com/blog/kafka-topic-naming-conventions-5-recommendations-with-examples)
+*[Kafka Topic Naming Conventions](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions)
+*[Should You Put Several Event Types in the Same Kafka Topic?](https://www.confluent.io/blog/put-several-event-types-kafka-topic/)
+*[Kafka topic creation best-practice](https://stackoverflow.com/questions/48498414/kafka-topic-creation-best-practice)
