@@ -28,7 +28,7 @@
 
 ## General articles and references about working with Apache Kafka
 
-*[Kafka topic naming conventions - 5 recommendations with examples](https://www.kadeck.com/blog/kafka-topic-naming-conventions-5-recommendations-with-examples)
-*[Kafka Topic Naming Conventions](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions)
-*[Should You Put Several Event Types in the Same Kafka Topic?](https://www.confluent.io/blog/put-several-event-types-kafka-topic/)
-*[Kafka topic creation best-practice](https://stackoverflow.com/questions/48498414/kafka-topic-creation-best-practice)
+* [Kafka topic naming conventions - 5 recommendations with examples](https://www.kadeck.com/blog/kafka-topic-naming-conventions-5-recommendations-with-examples)
+* [Kafka Topic Naming Conventions](https://cnr.sh/essays/how-paint-bike-shed-kafka-topic-naming-conventions)
+* [Should You Put Several Event Types in the Same Kafka Topic?](https://www.confluent.io/blog/put-several-event-types-kafka-topic/)
+* [Kafka topic creation best-practice](https://stackoverflow.com/questions/48498414/kafka-topic-creation-best-practice)
