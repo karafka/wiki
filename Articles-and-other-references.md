@@ -2,6 +2,9 @@
 
 * [Karafka](https://github.com/karafka/karafka)
 * [WaterDrop](https://github.com/karafka/waterdrop)
+* [Karafka-Testing](https://github.com/karafka/karafka-testing)
+* [Karafka-Core](https://github.com/karafka/karafka-core)
+* [Karafka Rdkafka](https://github.com/karafka/karafka-rdkafka)
 * [Apache Kafka](http://kafka.apache.org/)
 * [librdkafka](https://github.com/edenhill/librdkafka)
 
