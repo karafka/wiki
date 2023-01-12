@@ -138,8 +138,6 @@ class MyConsumer
     dlq_message[:headers]['extra-header'] = 'yes'
   end
 end
-
-
 ```
 
 **Note**: No routing changes are needed to make it work.
