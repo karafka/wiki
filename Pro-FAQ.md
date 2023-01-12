@@ -14,8 +14,10 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
 13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
 14. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
-15. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-16. [Contact Info](#contact-info)
+15. [Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?](#do-you-require-any-personal-information-financial-data-confidentialsensitive-data-government-data-etc)
+16. [How do you ensure security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
+17. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+18. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -93,6 +95,25 @@ Please double-check your credentials and correct them.
 ## Where can I find my license credentials page URL?
 
 You can find it in the email you received from us when you requested the Pro license via our gems UI.
+
+## Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?
+
+No. We only collect enough customer information to fill out a standard invoice for billing purposes, and customer information is never shared or sold to anyone.
+
+Karafka license gem contains **only** the organization name.
+
+## How do you ensure the security of your gem server?
+
+Using Karafka Pro means we are part of your Open Source Supply Chain. We take this exceptionally seriously.
+
+Here are the steps we take to make sure the service works as expected:
+
+- Karafka gem server is monitored with uptime tools.
+- We monitor server logs for suspicious activities and requests.
+- Karafka Pro provides [scripts](Pro-Getting-Started/#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
+- We monitor the integrity of all the licenses using automated tools to ensure they are not compromised.
+- Our license packages **do not** include any code.
+- **All** Karafka components are digitally signed and released from an account with 2FA enabled.
 
 ## Ethics, Privacy, and Information Usage
 
