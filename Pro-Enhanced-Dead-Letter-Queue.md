@@ -67,6 +67,7 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `original_topic` - topic from which the message came
 - `original_partition` - partition from which the message came
 - `original_offset` - offset of the transferred message
+- `original_consumer_group` - id of the consumer group that was consuming this message
 
 **Note**: Karafka headers values are **always** strings.
 
@@ -103,3 +104,42 @@ class DlqConsumer
   end
 end
 ```
+
+## Adding custom details to the DLQ message
+
+If you want to add some extra information or change anything in the message that will be dispatched to the DLQ topic, you can do it by defining a custom method called `#enhance_dlq_message`.
+
+It accepts two arguments:
+
+- `dql_message` - a hash with all the details of the DLQ message that will be dispatched
+- `skippable_message` - Karafka message that we skip via the DLQ feature
+
+Let's say you want to add some headers and alter the payload. You can do it in the following way:
+
+```ruby
+class MyConsumer
+  def consume
+    # some code that can raise an error...
+  end
+
+  private
+
+  def enhance_dlq_message(dlq_message, skippable_message)
+    # Replace the DLQ message payload with a hash containing the original raw payload as well as
+    # process pid
+    #
+    # Note that payload here needs to be a string
+    dlq_message[:payload] = {
+      original_raw_payload: skippable_message.raw_payload,
+      process_pid: Process.pid
+    }.to_json
+
+    # Add one extra header to the message headers
+    dlq_message[:headers]['extra-header'] = 'yes'
+  end
+end
+
+
+```
+
+**Note**: No routing changes are needed to make it work.
