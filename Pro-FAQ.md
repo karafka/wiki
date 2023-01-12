@@ -110,7 +110,7 @@ Here are the steps we take to make sure the service works as expected:
 
 - Karafka gem server is monitored with uptime tools.
 - We monitor server logs for suspicious activities and requests.
-- Karafka Pro provides [scripts](Pro-Getting-Started/#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
+- Karafka Pro provides [scripts](Pro-Getting-Started#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
 - We monitor the integrity of all the licenses using automated tools to ensure they are not compromised.
 - Our license packages **do not** include any code.
 - **All** Karafka components are digitally signed and released from an account with 2FA enabled.
