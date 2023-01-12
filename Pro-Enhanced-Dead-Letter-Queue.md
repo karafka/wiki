@@ -107,7 +107,7 @@ end
 
 ## Adding custom details to the DLQ message
 
-If you want to add some extra information or change anything in the message that will be dispatched to the DLQ topic, you can do it by defining a custom method called `#enhance_dlq_message`.
+If you want to add some extra information or change anything in the message that will be dispatched to the DLQ topic, you can do it by defining a custom method called `#enhance_dlq_message` in your consumer class.
 
 It accepts two arguments:
 
