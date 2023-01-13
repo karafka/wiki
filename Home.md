@@ -51,6 +51,7 @@
 * [Rotating credentials](Pro-Rotating-Credentials)
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
+* [Security](Pro-Security)
 
 ### Features and enhancements
 

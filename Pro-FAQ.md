@@ -104,16 +104,7 @@ Karafka license gem contains **only** the organization name.
 
 ## How do you ensure the security of your gem server?
 
-Using Karafka Pro means we are part of your Open Source Supply Chain. We take this exceptionally seriously.
-
-Here are the steps we take to make sure the service works as expected:
-
-- Karafka gem server is monitored with uptime tools.
-- We monitor server logs for suspicious activities and requests.
-- Karafka Pro provides [scripts](Pro-Getting-Started#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
-- We monitor the integrity of all the licenses using automated tools to ensure they are not compromised.
-- Our license packages **do not** include any code beyond code needed to read the version and the license files.
-- **All** Karafka components are digitally signed and released from an account with 2FA enabled.
+Please read our [Security statement](Pro-Security) for details on this manner.
 
 ## Ethics, Privacy, and Information Usage
 
