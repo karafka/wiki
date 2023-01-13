@@ -52,12 +52,7 @@ end
 
 ## Environment variables settings
 
-There are several env settings you can use:
-
-| ENV name          | Default | Description                                                                           |
-|-------------------|-----------------|-------------------------------------------------------------------------------|
-| KARAFKA_ENV       | development     | In what mode this application should boot (production/development/test/etc)   |
-| KARAFKA_BOOT_FILE | app_root/karafka.rb | Path to a file that contains Karafka app configuration and booting procedures |
+There are several env settings you can use with Karafka. They are described under the [Env Variables](Env-Variables) section of this Wiki.
 
 ## Messages compression
 
