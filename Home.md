@@ -7,6 +7,7 @@
 * [Producing messages](Producing-messages)
 * [Consuming messages](Consuming-messages)
 * [Testing](Testing)
+* [FAQ](FAQ)
 
 ## Production usage
 
@@ -39,7 +40,6 @@
 * [Embedding](Embedding)
 * [Env Variables](Env-Variables)
 * [Articles and other references](Articles-and-other-references)
-* [FAQ](FAQ)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
 
