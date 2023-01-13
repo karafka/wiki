@@ -5,6 +5,9 @@ Each Pro customer is encouraged to implement our [license gem integrity verifica
 On top of that, to ensure the stability and security of the system:
 
 - Karafka Github organization participates in the private vulnerability reporting program.
+- **No** Karafka ecosystem components collect and send out any data from your systems.
+- We do not hold your credit card information. All subscription management is done via Stripe.
+- We do not collect **any** PII when a gem license is fetched. The only things logged are IP and the last request time.
 - **All** of Karafka ecosystem code is available publically in our [Github organization](https://github.com/karafka/).
 - Karafka gem server is monitored with uptime tools.
 - We monitor server logs for suspicious activities and requests.
