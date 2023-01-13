@@ -18,4 +18,4 @@ On top of that, to ensure the stability and security of the system:
 - **All** Karafka components released to RubyGems are digitally signed and published from an account with 2FA enabled.
 - Karafka Pro provides [script](Pro-Getting-Started#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
 
-**Note**: If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate agreement with us. Please [contact us](/#support) for more details.
+**Note**: If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate agreement with us. Please [contact us](https://karafka.io#support) for more details.
