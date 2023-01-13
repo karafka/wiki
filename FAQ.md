@@ -27,6 +27,7 @@
 27. [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-check-revoked-when-not-using-long-running-jobs)
 28. [Can I consume from more than one Kafka cluster at the same time?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
 29. [Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?](#why-karafka-uses-karafka-rdkafka-instead-of-rdkafka-directly)
+30. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -288,3 +289,32 @@ end
 ## Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?
 
 We release our version of the `rdkafka` gem to ensure it meets our quality and stability standards. That way, we ensure that unexpected `rdkafka` releases will not break the Karafka ecosystem.
+
+## Why am I seeing an `Implement this in a subclass` error?
+
+```bash
+[bc01b9e1535f] Consume job for ExampleConsumer on my_topic started
+Worker processing failed due to an error: Implement this in a subclass
+```
+
+This error occurs when you have defined your consumer but without a `#consume` method:
+
+**BAD**:
+
+```ruby
+class ExampleConsumer < Karafka::BaseConsumer
+  # No consumption method
+end
+```
+
+**GOOD**:
+
+```ruby
+class ExampleConsumer < Karafka::BaseConsumer
+  def consume
+    messages.each do |message|
+      puts message.payload
+    end
+  end
+end
+```
