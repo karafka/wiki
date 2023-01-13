@@ -4,6 +4,8 @@ Each Pro customer is encouraged to implement our [license gem integrity verifica
 
 On top of that, to ensure the stability and security of the system:
 
+- Karafka Github organization participates in the private vulnerability reporting program.
+- **All** of Karafka ecosystem code is available publically in our [Github organization](https://github.com/karafka/).
 - Karafka gem server is monitored with uptime tools.
 - We monitor server logs for suspicious activities and requests.
 - Every single SSH connection is logged.
