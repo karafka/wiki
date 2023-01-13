@@ -28,6 +28,7 @@
 28. [Can I consume from more than one Kafka cluster at the same time?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
 29. [Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?](#why-karafka-uses-karafka-rdkafka-instead-of-rdkafka-directly)
 30. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
+31. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -318,3 +319,14 @@ class ExampleConsumer < Karafka::BaseConsumer
   end
 end
 ```
+
+## What is Karafka `client_id` used for?
+
+Karafka `client_id` is, by default, used for two things:
+
+- Building ids for consumer groups using the default [consumer mapper](Consumer-mappers).
+- Populating kafka `client.id` value.
+
+kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging.
+
+Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
