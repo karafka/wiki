@@ -29,6 +29,7 @@
 29. [Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?](#why-karafka-uses-karafka-rdkafka-instead-of-rdkafka-directly)
 30. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
 31. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
+32. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -330,3 +331,46 @@ Karafka `client_id` is, by default, used for two things:
 kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging.
 
 Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
+
+## How can I increase Kafka and Karafka max message size?
+
+To make Kafka accept messages bigger than 1MB, you must change both Kafka and Karafka configurations.
+
+To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` configuration parameter in the server.properties file. This parameter controls the maximum size of a message the Kafka broker will accept.
+
+To allow [WaterDrop](https://github.com/karafka/waterdrop) (Karafka producer) to send bigger messages, you need to:
+
+- set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
+- set `kafka` scoped `message.max.bytes` to the same value.
+
+You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during Karafka setup:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.producer = ::WaterDrop::Producer.new do |producer_config|
+      # Use all the settings already defined for consumer by default
+      producer_config.kafka = ::Karafka::Setup::AttributesMap.producer(config.kafka.dup)
+      producer_config.logger = config.logger
+
+      # Alter things you want to alter
+      producer_config.max_payload_size = 1_000_000_000
+      producer_config.kafka[:'message.max.bytes'] = 1_000_000_000
+    end
+  end
+end
+```
+
+It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
+
+Note: If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
+
+```ruby
+WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
+```
+
+or
+
+```ruby
+Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
+```
