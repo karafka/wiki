@@ -5,8 +5,8 @@
 5. [Does Karafka require a separate process running?](#does-karafka-require-a-separate-process-running)
 6. [Can I start Karafka process with only particular consumer groups running for given topics?](#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
 7. [Can I use ```#seek``` to start processing topics partition from a certain point?](#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
-8. [Why Karafka does not pre-initialize consumers so all the callbacks can be executed in their context?](#why-karafka-does-not-pre-initialize-consumers-so-all-the-callbacks-can-be-executed-in-their-context)
-9. [Why Karafka does not restart dead PG connections?](#why-karafka-does-not-restart-dead-pg-connections)
+8. [Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?](#why-karafka-does-not-pre-initializes-consumers-prior-to-first-message-from-a-given-topic-being-received)
+9. [Does Karafka restart dead PG connections?](#does-karafka-restart-dead-pg-connections)
 10. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
 11. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 12. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
@@ -51,7 +51,7 @@ You can name the main application consumer with any name. You can even call it `
 
 No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of the Wiki.
 
-Karafka can also run in an alternative mode called Embedding. You can read about it [here](Embedding).
+Karafka can also be embedded within another process so you do not need to run a separate process. You can read about it [here](Embedding).
 
 ## Can I start Karafka process with only particular consumer groups running for given topics?
 
@@ -69,7 +69,7 @@ Karafka has a ```#seek``` consumer method that can be used to do that.
 
 Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
 
-## Why Karafka does not restart dead PG connections?
+## Does Karafka restart dead PG connections?
 
 Karafka starting from `2.0.16` will automatically clean dead ActiveRecord connections. No extra action is needed.
 
