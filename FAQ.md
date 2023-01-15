@@ -49,7 +49,9 @@ You can name the main application consumer with any name. You can even call it `
 
 ## Does Karafka require a separate process running?
 
-**Yes**. Karafka  requires a separate process to be running (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of the Wiki.
+No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-messages) section of the Wiki.
+
+Karafka can also run in an alternative mode called Embedding. You can read about it [here](Embedding).
 
 ## Can I start Karafka process with only particular consumer groups running for given topics?
 
