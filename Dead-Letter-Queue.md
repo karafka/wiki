@@ -140,6 +140,7 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - need to preserve original topic, partition, and offset,
 - need to preserve the ordering of messages,
 - want to have a DLQ topic with several partitions.
+- want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
 
 ## Features compatibility
 
