@@ -141,3 +141,27 @@ end
 ```
 
 **Note**: No routing changes are needed to make it work.
+
+## DLQ message `key` enhancements for a compacted DLQ topic
+
+If you use a `compact` value for Kafka `log.cleanup.policy`, you may lose messages dispatched to the DLQ topic due to the [DLQ compacting limitations](Dead-Letter-Queue#compacting-limitations).
+
+You can mitigate this by enhancing the DLQ message with a unique key using the `#enhance_dlq_message` consumer method:
+
+```ruby
+class MyConsumer
+  def consume
+    # some code that can raise an error...
+  end
+
+  private
+
+  def enhance_dlq_message(dlq_message, skippable_message)
+    dlq_message[:key] = [
+      topic.name,
+      skippable_message.partition,
+      skippable_message.offset
+    ].join('-')
+  end
+end
+```

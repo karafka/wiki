@@ -120,6 +120,18 @@ At the moment, DLQ does **not** have the ability to skip whole batches. For scen
 
 If skipping batches is something you would utilize, please get in touch with us so we can understand your use cases and possibly introduce this functionality.
 
+## Compacting limitations
+
+Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older once when the log compaction process kicks in.
+
+Karafka Pro sets the `key` value based on the errored message partition to ensure the same partition delivery for consecutive errors from the same original partition.
+
+We recommend either:
+
+- Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) feature.
+- Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
+- Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
+
 ## Pro Enhanced Dead Letter Queue
 
 We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue), especially if you:

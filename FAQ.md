@@ -30,6 +30,7 @@
 30. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
 31. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
 32. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
+33. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -338,7 +339,7 @@ Therefore the `client_id` should be shared across multiple instances in a cluste
 
 To make Kafka accept messages bigger than 1MB, you must change both Kafka and Karafka configurations.
 
-To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` configuration parameter in the server.properties file. This parameter controls the maximum size of a message the Kafka broker will accept.
+To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters controls the maximum size of a message the Kafka broker will accept.
 
 To allow [WaterDrop](https://github.com/karafka/waterdrop) (Karafka producer) to send bigger messages, you need to:
 
@@ -376,3 +377,13 @@ or
 ```ruby
 Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
 ```
+
+## Why do DLQ messages in my system keep disappearing?
+
+DLQ messages may disappear due to many reasons. Some possible causes include the following:
+
+- The DLQ topic has a retention policy that causes them to expire and be deleted.
+- The DLQ topic is a compacted topic, which only retains the last message with a given key.
+- The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
+
+For more details, please look at the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
