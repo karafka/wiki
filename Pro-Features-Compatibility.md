@@ -110,3 +110,8 @@ end
 ### Using with Enhanced Dead Letter Queue
 
 The Active Job Adapter can be used with the Enhanced Dead Letter Queue feature.
+
+
+## Messages At Rest Encryption
+
+[Messages at rest encryption](Pro-Messages-At-Rest-Encryption) works with all other Pro features without any changes required.

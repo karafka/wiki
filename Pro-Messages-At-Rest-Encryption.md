@@ -1,6 +1,6 @@
 Specific industries have strong regulations around the storage of personal data. Private medical data, financial data, social security numbers, and credit card numbers are all sensitive. Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
-Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to encrypt data.
+Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data.
 
 ## Enabling encryption
 
