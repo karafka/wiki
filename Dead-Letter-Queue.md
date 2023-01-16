@@ -128,7 +128,7 @@ Karafka Pro sets the `key` value based on the errored message partition to ensur
 
 We recommend either:
 
-- Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) feature.
+- Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Enhanced-Dead-Letter-Queue#dlq-message-key-enhancements-for-a-compacted-dlq-topic) feature.
 - Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
