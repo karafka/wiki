@@ -55,6 +55,7 @@
 
 ### Features and enhancements
 
+* [Features list](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
