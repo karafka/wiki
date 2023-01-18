@@ -6,8 +6,28 @@
 * [Setting up Kafka](Setting-up-Kafka)
 * [Producing messages](Producing-messages)
 * [Consuming messages](Consuming-messages)
+* [Web UI](Web-UI)
 * [Testing](Testing)
 * [FAQ](FAQ)
+
+## Web UI
+
+* [Getting Started](Web-UI-Getting-Started)
+* [Configuration](Web-UI-Configuration)
+* [Features](Web-UI-Features)
+    * [Consumers](#tba)
+    * [Jobs](#tba)
+    * [Health](#tba)
+    * [Routing](#tba)
+    * [Explorer](#tba)
+    * [Errors](#tba)
+    * [DLQ / Dead](#tba)
+    * [Cluster](#tba)
+* [Troubleshooting](#tba)
+* [Production setup](#tba)
+* [Limitations](#tba)
+* [Good practices](#tba)
+* [Components](#tba)
 
 ## Production usage
 
@@ -55,6 +75,7 @@
 
 ### Features and enhancements
 
+* [Features]
 * [Features Compatibility](Pro-Features-Compatibility)
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
@@ -62,6 +83,12 @@
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Scheduler](Pro-Enhanced-Scheduler)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
+* [Web UI Pro](#tba)
+    * [Enhanced Consumers](#tba)
+    * [Health](#tba)
+    * [Explorer](#tba)
+    * [Enhanced Errors](#tba)
+    * [DLQ / Dead](#tba)
 
 ## Upgrade notes
 
