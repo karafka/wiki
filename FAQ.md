@@ -31,6 +31,7 @@
 31. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
 32. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
 33. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
+34. [What is the optimal number of Virtual Partitions?](#what-is-the-optimal-number-of-threads-to-use)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -387,3 +388,13 @@ DLQ messages may disappear due to many reasons. Some possible causes include the
 - The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
 
 For more details, please look at the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
+
+## What is the optimal number of threads to use?
+
+The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing number of threads brings the most significant benefits for IO-bound operations.
+
+It's recommended to use the number of available cores to determine the optimal number of threads for an application.
+
+It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
+
+Remember that the optimal number of threads may change as the workload and system resources change over time.
