@@ -8,3 +8,4 @@ Below you can find the list of the Pro features with their brief description:
 - [Enhanced Active Job](Pro-Enhanced-Active-Job) - Enhanced Active Job adapter provides extra capabilities to regular Active Job to elevate the combination of Active Job and Kafka.
 - [Enhanced Scheduler](Pro-Enhanced-Scheduler) - The Enhanced Scheduler uses a non-preemptive LJF (Longest Job First) algorithm to achieve better performance, especially on jobs that perform IO operations.
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
+- [Enhanced Web UI](#tba) - 
