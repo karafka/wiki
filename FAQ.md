@@ -31,7 +31,7 @@
 31. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
 32. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
 33. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
-34. [What is the optimal number of Virtual Partitions?](#what-is-the-optimal-number-of-threads-to-use)
+34. [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
 
 ## Does Karafka require Ruby on Rails?
 
