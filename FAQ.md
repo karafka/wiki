@@ -395,6 +395,17 @@ The optimal number of threads for a specific application depends on various fact
 
 It's recommended to use the number of available cores to determine the optimal number of threads for an application.
 
+When working with Karafka, you also need to take into consideration things that may reduce the number of threads being in use, that is:
+
+- Your topics count.
+- Your partitions count.
+- Number of processes within a given consumer group.
+- To how many topics and partitions a particular process is subscribed to.
+
+Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
+
+You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-multithreading).
+
 It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
 Remember that the optimal number of threads may change as the workload and system resources change over time.
