@@ -6,4 +6,4 @@ Karafka Pro includes a commercial-friendly license, priority support, architectu
 
 Help us provide high-quality open-source software.
 
-If you want to purchase or trial Karafka Pro (there is 30 days trial without any commitment requirements), please go to [our website](https://karafka.io/#become-pro) and follow the instructions there.
+If you want to purchase or trial Karafka Pro (there is 14 days trial without any commitment requirements), please go to [our website](https://karafka.io/#become-pro) and follow the instructions there.
