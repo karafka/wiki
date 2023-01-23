@@ -84,10 +84,10 @@
 * [Enhanced Scheduler](Pro-Enhanced-Scheduler)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 * [Enhanced Web UI](#tba)
-    * [Enhanced Consumers](#tba)
+    * [Consumers](#tba)
     * [Health](#tba)
     * [Explorer](#tba)
-    * [Enhanced Errors](#tba)
+    * [Errors](#tba)
     * [DLQ / Dead](#tba)
 
 ## Upgrade notes
