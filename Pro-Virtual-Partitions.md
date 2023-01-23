@@ -164,10 +164,6 @@ end
 
 **Note**: Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
-## Monitoring
-
-Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
-
 ## Behaviour on errors
 
 For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the first offset received from the regular partition.
@@ -180,12 +176,41 @@ If processing in all virtual partitions ends up successfully, Karafka will mark 
 
 **Note**: Since pausing happens in Kafka, the re-fetched data may contain more or fewer messages. This means that after retry, the number of messages and their partition distribution may differ. Despite that, all ordering warranties will be maintained.
 
+### Collapsing
+
+When an error occurs in virtual partitions, pause, retry and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties allowing for the usage of things like offset marking and Dead-Letter Queue.
+
+You can detect that your Virtual Partitions consumers are operating in the collapsed mode by invoking the `#collapsed?` method:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      Event.store!(message.payload)
+
+      # When consumer operates in a collective mode, strong Kafka
+      # ordering warranties apply throughout all the messages
+      mark_as_consumed(message) if collapsed?
+    end
+  end
+end
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapse.png" />
+</p>
+<p align="center">
+  <small>*This example illustrates the retry and collapse of two virtual partitions into one upon errors.
+  </small>
+</p>
+
 ## Ordering warranties
 
-Virtual Partitions provide two types of warranties in regards to order:
+Virtual Partitions provide three types of warranties in regards to order:
 
 - Standard warranties per virtual partitions group - that is, from the "outside" of the virtual partitions group Kafka ordering warranties are preserved.
 - Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4), but lower offsets will always precede larger (1, 2, 4, 9). This depends on the `virtual_partitions` `partitioner` used for partitioning a given topic.
+- Strong Kafka ordering warranties when operating in the `collapsed` mode.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.png" />
@@ -194,6 +219,10 @@ Virtual Partitions provide two types of warranties in regards to order:
   <small>*Example distribution of messages in between two virtual partitions.
   </small>
 </p>
+
+## Monitoring
+
+Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
 ## Manual offset management
 
@@ -218,9 +247,10 @@ One great example of this is a scenario where you may want to partition messages
 ```ruby
 # This is a whole process partitioner, not a per topic one
 class CustomPartitioner < Karafka::Pro::Processing::Partitioner
-  def call(topic_name, messages)
-    # Apply the "special" strategy for this special topic
-    if topic_name == 'balanced_topic'
+  def call(topic_name, messages, coordinator)
+    # Apply the "special" strategy for this special topic unless VPs were collapsed
+    # In the case of collapse you want to process with the default flow.
+    if topic_name == 'balanced_topic' && !coordinator.collapsed?
       balanced_strategy(messages)
     else
       # Apply standard behaviours to other topics
