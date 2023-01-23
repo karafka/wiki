@@ -8,7 +8,7 @@ Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions
 
 There is only one thing you need to keep in mind:
 
-It is **not** allowed to use manual offset management with Virtual Partitions. Hence you need to set `shutdown_timeout` to a value that will compensate for that.
+It is **not** allowed to use manual offset management with Virtual Partitions unless Virtual Partitions operate in the `collapsed` mode. Hence you need to set `shutdown_timeout` to a value that will compensate for that.
 
 ### Using with Enhanced Dead Letter Queue
 
@@ -61,7 +61,25 @@ end
 
 ### Using with Enhanced Dead Letter Queue
 
-Virtual Partitions are **not** compatible with Dead Letter Queue and you cannot use them together.
+Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
+
+The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`:
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+    virtual_partitions(
+      partitioner: ->(message) { message.headers['order_id'] }
+    )
+    dead_letter_queue(
+      topic: 'dead_messages',
+      # Minimum one retry because VPs needs to switch to the collapsed mode
+      max_retries: 1
+    )
+  end
+end
+```
 
 ## Enhanced ActiveJob
 
@@ -110,7 +128,6 @@ end
 ### Using with Enhanced Dead Letter Queue
 
 The Active Job Adapter can be used with the Enhanced Dead Letter Queue feature.
-
 
 ## Messages At Rest Encryption
 
