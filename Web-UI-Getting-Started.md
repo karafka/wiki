@@ -1,4 +1,4 @@
-Karafka comes with a web application that can display the current state of a Karafka installation and processes running.
+Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Karafka-based applications, without the need to use the command line or third party software.
 
 The interface, amongst others, displays:
 
@@ -22,16 +22,18 @@ To use it:
 bundle add karafka-web
 ```
 
-3. Create needed topics from a Ruby or Rails console:
+3. Add the following line at the **end** of your `karafka.rb` file:
+
+```ruby
+require 'karafka/web'
+
+Karafka::Web.enable!
+```
+
+4. Create needed topics from a Ruby or Rails console:
 
 ```ruby
 Karafka::Web.bootstrap_topics!
-```
-
-4. Add the following line at the **end** of your `karafka.rb` file:
-
-```ruby
-Karafka::Web.enable!
 ```
 
 5. Mount the Web interface in your Ruby on Rails application routing:
