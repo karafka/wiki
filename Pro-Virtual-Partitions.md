@@ -204,6 +204,29 @@ end
   </small>
 </p>
 
+
+### Usage with Dead Letter Queue
+
+Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
+
+The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`:
+
+```ruby
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+    virtual_partitions(
+      partitioner: ->(message) { message.headers['order_id'] }
+    )
+    dead_letter_queue(
+      topic: 'dead_messages',
+      # Minimum one retry because VPs needs to switch to the collapsed mode
+      max_retries: 1
+    )
+  end
+end
+```
+
 ## Ordering warranties
 
 Virtual Partitions provide three types of warranties in regards to order:
