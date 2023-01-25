@@ -39,6 +39,8 @@ Karafka::Web.bootstrap_topics!
 5. Mount the Web interface in your Ruby on Rails application routing:
 
 ```ruby
+require 'karafka/web'
+
 Rails.application.routes.draw do
   # other routes...
 
