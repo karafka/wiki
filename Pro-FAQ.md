@@ -23,7 +23,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 
 Yes. For free, you can obtain temporary credentials from our [website](https://karafka.io/#become-pro).
 
-Those credentials will be valid for a month for every environment.
+Those credentials will be valid for 14 days for every environment.
 
 The trial license does **not** grant you our Pro commercial support.
 
@@ -69,7 +69,7 @@ In general, **yes**. The credentials are required to download the gems and your 
 
 ## Can I get a refund?
 
-**No**. We offer a monthly trial during which you can check out Karafka Pro capabilities.
+**No**. We offer a 14 days trial during which you can check out Karafka Pro capabilities.
 
 ## Can I accidentally use Pro because it is in the same repository?
 
