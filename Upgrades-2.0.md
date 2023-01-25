@@ -72,8 +72,6 @@ monitor.subscribe('app.initialized') do
 end
 ```
 
-you can remove it.
-
 2. Remove direct WaterDrop listener references from your `karafka.rb`
 
 ```ruby
@@ -112,7 +110,7 @@ Root options:
 - `batch_consuming` is no longer needed
 - `serializer` is no longer needed because `Responders` have been removed from Karafka
 - `topic_mapper` is no longer needed as concept of mapping topic names has been removed from Karafka
-- `backend` is no longer needed because Karafka is now multi-threaded with single-threaded backend
+- `backend` is no longer needed because Karafka is now multi-threaded
 - `manual_offset_management` needs to be set now on a per topic basis
 
 Kafka options:
