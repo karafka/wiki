@@ -151,3 +151,7 @@ The Dead Letter Queue feature can be used with ActiveJob. The only thing worth k
 ### Usage with Manual Offset Management
 
 The Dead Letter Queue feature can be used with Manual Offset Management. The only implication is that Karafka will **not** commit the offset when skipping messages.
+
+### Usage with Virtual Partitions
+
+[Virtual Partitions](Pro-Virtual-Partitions) can be used with the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue.md).

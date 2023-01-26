@@ -6,6 +6,8 @@ Below you can find a comprehensive description of the most important features yo
 
 ## Consumers
 
+**Note**: More metrics and detailed consumers inspection are available only in our Pro offering.
+
 The consumers status view allows users to view and monitor the performance of Kafka-running consumers. The page displays real-time data and aggregated metrics about the status of the consumers, such as their current offset, lag, the current state of consumers, and others.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/consumers.png)
@@ -17,9 +19,9 @@ The following metrics are available for each consumer:
 - `Utilization` - Displays the number of threads in a given process against a number of threads actively processing data in a given moment.
 - `Total lag` - Sumed lag from all the partitions actively consumed by a given process.
 
-**Note**: More metrics and detailed consumers inspection are available only in our Pro offering.
-
 ## Jobs
+
+**Note**: More metrics are available in our Pro offering.
 
 This page provides a real-time view of the jobs that are currently being processed, including information such as:
 
@@ -30,8 +32,6 @@ This page provides a real-time view of the jobs that are currently being process
 - `Started at` - Since when the job is running.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/jobs.png)
-
-**Note**: More metrics are available in our Pro offering.
 
 ## Health
 
@@ -61,6 +61,8 @@ Data explorer allows users to view and explore the data produced to Kafka. It un
 
 ## Errors
 
+**Note**: More backtrace and high-scale features are available in our Pro offering.
+
 A Karafka errors page UI view is a user interface that allows users to inspect errors occurring during a Kafka-based application built with Karafka. It includes the following information:
 
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
@@ -71,8 +73,6 @@ A Karafka errors page UI view is a user interface that allows users to inspect e
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors1.png)
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors2.png)
-
-**Note**: More backtrace and high-scale features are available in our Pro offering.
 
 ## DLQ / Dead
 
