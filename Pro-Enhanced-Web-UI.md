@@ -20,7 +20,10 @@ Enhanced consumer view reports all of the metrics available in the OSS version b
 
 - Machine memory usage
 - Machine memory available
-- CPU utilization from the last minute, 5 minutes and 15 minutes
+- Average CPU load from the last minute, 5 minutes and 15 minutes
+- Threads utilization from the last 60 seconds
+
+Those metrics can allow you to identify bottlenecks (CPU vs IO) in your running Karafka consumers.
 
 ## Health
 
