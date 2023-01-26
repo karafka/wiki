@@ -32,6 +32,7 @@
 32. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
 33. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
 34. [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
+35. [Can I use several producers with different configurations with Karafka?](#can-i-use-several-producers-with-different-configurations-with-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -409,3 +410,26 @@ You can read more about Karafka and Karafka Pro concurrency model [here](Concurr
 It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
 Remember that the optimal number of threads may change as the workload and system resources change over time.
+
+## Can I use several producers with different configurations with Karafka?
+
+**Yes**. You can create as many producers as you want using [WaterDrop API](https://github.com/karafka/waterdrop#setup) directly:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.deliver = true
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'request.required.acks': 1
+  }
+end
+```
+
+and you can use them.
+
+There are a few things to keep in mind, though:
+
+1. Producers should be long-lived.
+2. Producers should be closed before the process shutdown to ensure proper resource finalization.
+3. You need to instrument each producer using the WaterDrop instrumentation API.
+4. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
