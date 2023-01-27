@@ -98,7 +98,7 @@ It is highly recommended to have a monitoring and logging layer to notify you ab
 Karafka keeps track of the last committed offset alongside Kafka when you mark a message as consumed. This means that after the pause, Karafka will start back from the failed message, not from the first message from the batch. This approach severely reduces the number of messages that must be reprocessed upon errors.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/on_errors_behaviour.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/on_errors_behaviour.svg" />
 </p>
 
 **Note**: This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Virtual-Partitions#behaviour-on-errors) for more details.

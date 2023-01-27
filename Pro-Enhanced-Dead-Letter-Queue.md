@@ -51,7 +51,7 @@ When that happens, Karafka will retry two times and continue processing despite 
 Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/enhanced_dlq_flow.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/enhanced_dlq_flow.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how Enhanced DLQ preserves order of messages from different partitions.

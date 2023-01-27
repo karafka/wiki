@@ -52,7 +52,7 @@ Message distribution is based on the outcome of the `virtual_partitions` setting
 Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.svg" />
 </p>
 
 ### Partitioning based on the message key
@@ -169,7 +169,7 @@ end
 For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the first offset received from the regular partition.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_error_handling.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_error_handling.svg" />
 </p>
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
@@ -197,7 +197,7 @@ end
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapse.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapse.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the retry and collapse of two virtual partitions into one upon errors.
@@ -236,7 +236,7 @@ Virtual Partitions provide three types of warranties in regards to order:
 - Strong Kafka ordering warranties when operating in the `collapsed` mode.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.svg" />
 </p>
 <p align="center">
   <small>*Example distribution of messages in between two virtual partitions.
@@ -258,7 +258,7 @@ Both `#shutdown` and `#revoked` handlers work the same as within [regular consum
 For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_shutdown.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_shutdown.svg" />
 </p>
 
 ## Customizing the partitioning engine / Load aware partitioning
