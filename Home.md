@@ -23,7 +23,7 @@
     * [Errors](Web-UI-Features#errors)
     * [DLQ / Dead](Web-UI-Features#dlq-dead)
     * [Cluster](Web-UI-Features#cluster)
-* [Components](#tba)
+* [Components](Web-UI-Components)
 
 ## Production usage
 
