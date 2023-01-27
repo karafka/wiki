@@ -61,9 +61,29 @@ Message view with deserialized payload:
 
 ## Errors
 
-Enhanced Web UI errors provides few enhancements:
+Enhanced Web UI errors provide a few enhancements:
 
-- Supports error tracking in high-scale due to support of multiple partitions for the error topic.
+- Supports error tracking on a high-scale due to the support of multiple partitions for the error topic.
 - Supports errors backtrace reporting in the dashboard.
 
+It allows for easier debuggability and error exploration, enabling users to perform real-time data analysis and troubleshoot issues faster.
+
+Errors list:
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-errors1.png)
+
+Error details:
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-errors2.png)
+
 ## DLQ / Dead
+
+Dead insights allowing to navigate through DLQ topics and messages that were dispatched to them.
+
+DLQ dispatched messages view:
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-dead1.png)
+
+DLQ dispatched per message view:
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq2.png)
