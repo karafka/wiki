@@ -10,7 +10,9 @@ Below you can find a comprehensive description of the most important features yo
 
 The consumers status view allows users to view and monitor the performance of Kafka-running consumers. The page displays real-time data and aggregated metrics about the status of the consumers, such as their current offset, lag, the current state of consumers, and others.
 
-![karafka web consumers view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/consumers.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/consumers.png" alt="karafka web consumers view" />
+</p>
 
 The following metrics are available for each consumer:
 
@@ -31,7 +33,9 @@ This page provides a real-time view of the jobs that are currently being process
 - `Type` - Type of work: `#consume`, `#revoke` or `#shutdown`
 - `Started at` - Since when the job is running.
 
-![karafka web jobs view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/jobs.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/jobs.png" alt="karafka web jobs view" />
+</p>
 
 ## Health
 
@@ -41,23 +45,30 @@ This dashboard view shows Karafka consumers' groups' health state with their lag
 
 Here you can learn more about the information available in this dashboard view.
 
-![karafka web health view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/health.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/health.png" alt="karafka web health view" />
+</p>
 
 ## Routing
 
 The Routing UI view allows users to inspect Karafka's routing configuration, including details about particular topics.
 
-![karafka web routing view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/routing1.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/routing1.png" alt="karafka web routing view" />
+</p>
 
-![karafka web routing view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/routing2.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/routing2.png" alt="karafka web routing view" />
+</p>
 
 ## Explorer
 
 **Note**: This functionality is available only in our Pro offering.
 
 Data explorer allows users to view and explore the data produced to Kafka. It understands the routing table and can deserialize data before it being displayed. It allows for quick investigation of both payload and header information.  
-
-![karafka web explorer view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer3.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />
+</p>
 
 ## Errors
 
@@ -70,9 +81,13 @@ A Karafka errors page UI view is a user interface that allows users to inspect e
 - `Error` - Error type.
 - `Occurred at` - Moment in time when the error occurred.
 
-![karafka web errors view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors1.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
+</p>
 
-![karafka web error view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors2.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors2.png" alt="karafka web error view" />
+</p>
 
 ## DLQ / Dead
 
@@ -80,12 +95,18 @@ A Karafka errors page UI view is a user interface that allows users to inspect e
 
 The Dead Letter Queue (DLQ) dashboard allows users to view messages that have failed to be processed and were skipped and moved to the Dead Letter Queue topic with their original details.
 
-![karafka web dlq view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq1.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq1.png" alt="karafka web dlq view" />
+</p>
 
-![karafka web dlq view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq2.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq2.png" alt="karafka web dlq view" />
+</p>
 
 ## Cluster
 
 The Cluster dashboard view displays information about the status of the Kafka cluster and the topics list.
 
-![karafka web cluster view](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/cluster1.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
+</p>

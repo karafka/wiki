@@ -1,0 +1,17 @@
+Karafka Web UI data aggregation is combined out of a few stages:
+
+- Tracking - Refers to collecting per-consumer and other data related to each process's operations.
+- Processing - Refers to taking the tracking data and building proper representation models around it for presentation.
+- Presenting - Refers to all the work needed to present the data via the Web UI.
+
+This conceptual separation impacts the Web code design. It is divided into three main pieces:
+
+- `Tracking` - All the code related to per-process data tracking and reporting to Kafka
+- `Processing`- All code related to processing the tracked data and their aggregation
+- `Web` - All code related to the presentation layer
+
+Below you can find the diagram of the whole data flow:
+
+![karafka web ui data flow](https://raw.githubusercontent.com/karafka/misc/master/charts/web-ui-flow.png)
+
+**Note**: Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when one `karafka server` process running.
