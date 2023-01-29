@@ -78,13 +78,12 @@ If you do everything right, you should see this in your browser:
 
 ## Troubleshooting
 
-As mentioned above, the initial setup **requires** you to run `karafka server` at least once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
+As mentioned above, the initial setup **requires** you to run `Karafka::Web.bootstrap!`once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
 
 Before reporting an issue, please make sure that:
 
 - All the topics required by Karafka Web exist
 - Use `Karafka::Web.bootstrap!` to create missing topics
-- You have started the karafka server at least once
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
 
