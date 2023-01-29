@@ -30,10 +30,10 @@ require 'karafka/web'
 Karafka::Web.enable!
 ```
 
-4. Create needed topics with recommended partition count and retention policies from a Ruby or Rails console:
+4. Create needed Kafka topics and other data structures from a Ruby or Rails console by running:
 
 ```ruby
-Karafka::Web.bootstrap_topics!
+Karafka::Web.bootstrap!
 ```
 
 By default, Karafka uses three topics with the following names:
