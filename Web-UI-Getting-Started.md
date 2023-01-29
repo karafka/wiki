@@ -83,7 +83,7 @@ As mentioned above, the initial setup **requires** you to run `karafka server` a
 Before reporting an issue, please make sure that:
 
 - All the topics required by Karafka Web exist
-- Use `Karafka::Web.bootstrap_topics!` to create missing topics
+- Use `Karafka::Web.bootstrap!` to create missing topics
 - You have started the karafka server at least once
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
