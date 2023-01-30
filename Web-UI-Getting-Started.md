@@ -22,29 +22,10 @@ To use it:
 bundle add karafka-web
 ```
 
-3. Add the following line at the **end** of your `karafka.rb` file:
+3. Run the following command to install the karafka-web in your project:
 
 ```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # setup stuff..
-  end
-
-  routes.draw do
-    # routes...
-  end
-end
-
-# But those lines after the `KarafkaApp` definitions
-require 'karafka/web'
-
-Karafka::Web.enable!
-```
-
-4. Create needed Kafka topics and other data structures from a Ruby or Rails console by running:
-
-```ruby
-Karafka::Web.bootstrap!
+bundle exec karafka-web install
 ```
 
 By default, Karafka uses three topics with the following names:
@@ -53,9 +34,11 @@ By default, Karafka uses three topics with the following names:
 - `karafka_consumers_reports`
 - `karafka_consumers_states`
 
-If you have the `auto.create.topics.enable` set to `false`, create them manually. For OSS, each of them **needs** to have one partition. In the case of Karafka Pro, `karafka_errors` can have as many partitions as you need.
+If you have the `auto.create.topics.enable` set to `false`, create them manually.
 
-5. Mount the Web interface in your Ruby on Rails application routing:
+For OSS, each of them **needs** to have one partition. In the case of Karafka Pro, `karafka_errors` can have as many partitions as you need.
+
+4. Mount the Web interface in your Ruby on Rails application routing:
 
 ```ruby
 require 'karafka/web'
@@ -77,11 +60,7 @@ require_relative 'karafka.rb'
 run Karafka::Web::App
 ```
 
-6. Run at least one `karafka server` process to populate initial data.
-
-**Note**: Running `karafka server` is unnecessary once the initial data is populated. Once data is populated, you can use Karafka Web UI without any consumers running.
-
-7. Enjoy Karafka Web UI.
+5. Enjoy Karafka Web UI.
 
 If you do everything right, you should see this in your browser:
 
@@ -94,7 +73,7 @@ As mentioned above, the initial setup **requires** you to run `Karafka::Web.boot
 Before reporting an issue, please make sure that:
 
 - All the topics required by Karafka Web exist
-- Use `Karafka::Web.bootstrap!` to create missing topics
+- Use `bundle exec karafka-web install` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
 
