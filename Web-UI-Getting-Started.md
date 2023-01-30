@@ -53,7 +53,7 @@ end
 Or use it as a standalone Rack application by creating `karafka_web.ru` rackup file with the following content:
 
 ```ruby
-# Require your application cod here and then...
+# Require your application code here and then...
 
 require_relative 'karafka.rb'
 
