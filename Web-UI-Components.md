@@ -12,6 +12,8 @@ This conceptual separation impacts the Web code design. It is divided into three
 
 Below you can find the diagram of the whole data flow:
 
-![karafka web ui data flow](https://raw.githubusercontent.com/karafka/misc/master/charts/web-ui-flow.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
+</p>
 
 **Note**: Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when one `karafka server` process running.
