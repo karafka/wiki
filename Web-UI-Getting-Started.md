@@ -25,6 +25,17 @@ bundle add karafka-web
 3. Add the following line at the **end** of your `karafka.rb` file:
 
 ```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup stuff..
+  end
+
+  routes.draw do
+    # routes...
+  end
+end
+
+# But those lines after the `KarafkaApp` definitions
 require 'karafka/web'
 
 Karafka::Web.enable!
