@@ -40,6 +40,8 @@ if [ "$MODE" != "after" ]; then
   # Check the remote license prior to bundle installing
   curl \
     --fail \
+    --retry 5 \
+    --retry-delay 1 \
     -u $KARAFKA_PRO_USERNAME:$KARAFKA_PRO_PASSWORD \
     https://gems.karafka.io/gems/karafka-license-$KARAFKA_PRO_LICENSE_ID.gem \
     -o ./karafka-license.gem

@@ -105,7 +105,7 @@ Active Job Karafka adapter will follow the Karafka general [runtime errors handl
 Please keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.svg" />
 </p>
 
 ## Behaviour on shutdown

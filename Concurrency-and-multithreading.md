@@ -84,7 +84,7 @@ end
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/subscription_group_routing.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/subscription_group_routing.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how Karafka routing translates into subscription groups and their underlying connections to Kafka.
