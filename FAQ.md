@@ -33,6 +33,7 @@
 33. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
 34. [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
 35. [Can I use several producers with different configurations with Karafka?](#can-i-use-several-producers-with-different-configurations-with-karafka)
+36. [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -441,3 +442,17 @@ There are a few things to keep in mind, though:
 2. Producers should be closed before the process shutdown to ensure proper resource finalization.
 3. You need to instrument each producer using the WaterDrop instrumentation API.
 4. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
+
+## What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?
+
+If you are seeing the following error:
+
+```bash
+`validate!': {:kafka=>"Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
+```
+
+It means you want to use SSL, but `librdkafka` was built without it. You have to:
+
+1. Uninstal it by running `gem remove karafka-rdkafka`
+2. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
+3. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
