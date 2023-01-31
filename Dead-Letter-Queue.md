@@ -154,4 +154,4 @@ The Dead Letter Queue feature can be used with Manual Offset Management. The onl
 
 ### Usage with Virtual Partitions
 
-[Virtual Partitions](Pro-Virtual-Partitions) can be used with the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue.md).
+[Virtual Partitions](/docs/Pro-Virtual-Partitions) can be used with the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue.md).
