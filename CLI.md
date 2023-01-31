@@ -22,28 +22,50 @@ bundle exec karafka help [COMMAND]
 
 ## Karafka server
 
-### Running particular consumer groups per process
+### Limiting consumer groups used per process
 
-Karafka supports having multiple consumer groups within a single application. You can run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--consumer_groups``` server flag as follows:
+Karafka supports having multiple consumer groups within a single application. You can run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--include-consumer-groups``` server flag as follows:
 
 ```bash
-bundle exec karafka server --consumer_groups group_name1 group_name3
+bundle exec karafka server --include-consumer-groups group_name1 group_name3
 ```
 
 If you specify none, by default, all will run.
 
-### Running particular subscription groups per process
-
-Karafka supports having multiple subscription groups within a single application. You can run multiple Karafka instances, specifying subscription groups that should be running per each process using the ```--subscription_groups``` server flag as follows:
+You can also exclude certain consumer groups by using the `--exclude-consumer-groups` flag:
 
 ```bash
-bundle exec karafka server --subscription_groups group_name1 group_name3
+bundle exec karafka server --exclude-consumer-groups group_name2
 ```
 
-### Running particular topics per process
+### Limiting subscription groups used per process
 
-Karafka supports having multiple topics within a single application. You can run multiple Karafka instances, specifying topics that should be running per each process using the ```--topics``` server flag as follows:
+Karafka supports having multiple subscription groups within a single application. You can run multiple Karafka instances, specifying subscription groups that should be running per each process using the ```--include-subscription-groups``` server flag as follows:
 
 ```bash
-bundle exec karafka server --topics topic1 topic2
+bundle exec karafka server --include-subscription-groups group_name1 group_name3
+```
+
+If you specify none, by default, all will run.
+
+You can also exclude certain subscription groups by using the `--exclude-subscription-groups` flag:
+
+```bash
+bundle exec karafka server --exclude-subscription-groups group_name2
+```
+
+### Limiting topics used per process
+
+Karafka supports having multiple topics within a single application. You can run multiple Karafka instances, specifying topics that should be running per each process using the ```--include-topics``` server flag as follows:
+
+```bash
+bundle exec karafka server --include-topics topic_name1 topic_name3
+```
+
+If you specify none, by default, all will run.
+
+You can also exclude certain topics by using the `--exclude-topics` flag:
+
+```bash
+bundle exec karafka server --exclude-topics topic_name2
 ```
