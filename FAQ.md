@@ -411,7 +411,7 @@ When working with Karafka, you also need to take into consideration things that 
 - Number of processes within a given consumer group.
 - To how many topics and partitions a particular process is subscribed to.
 
-Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
+Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](/docs/Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
 You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-multithreading).
 
