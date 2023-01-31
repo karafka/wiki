@@ -6,7 +6,7 @@
 * [Setting up Kafka](Setting-up-Kafka)
 * [Producing messages](Producing-messages)
 * [Consuming messages](Consuming-messages)
-* [Web UI](Web-UI)
+* [Web UI](Web-UI-Getting-Started)
 * [Testing](Testing)
 * [FAQ](FAQ)
 
