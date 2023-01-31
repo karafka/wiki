@@ -448,7 +448,9 @@ There are a few things to keep in mind, though:
 If you are seeing the following error:
 
 ```bash
-`validate!': {:kafka=>"Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
+`validate!':
+{:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
+ OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
 ```
 
 It means you want to use SSL, but `librdkafka` was built without it. You have to:
