@@ -80,3 +80,7 @@ Before reporting an issue, please make sure that:
 - The resource you requested exists
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist. 
+
+**Note**: To reset the state of the UI for any reason, you can just run the `bundle exec karafka-web install` again. Upon usage, it materializes a new empty state of the Web UI aggregations.
+
+If you want to remove all errors and other data, please remove the relevant Karafka Web UI topics and run `bundle exec karafka-web install`.
