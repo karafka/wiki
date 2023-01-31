@@ -78,6 +78,16 @@ Karafka::App.monitor.subscribe('statistics.emitted') do |event|
 end
 ```
 
+## Web UI monitoring and error tracking
+
+Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Karafka-based applications, without the need to use the command line or third party software. It does **not** require any additional database beyond Kafka itself.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
+</p>
+
+You can read more about its features [here](Web-UI-Features), and the installation documentation can be found [here](Web-UI-Components).
+
 ## Sentry error tracking integration
 
 If you are using Sentry and want to track errors that occurred in Karafka for both consumptions as well as any errors happening in the background threads, all you need to do is to connect to the `error.occurred` using Sentry `#capture_exception` API:
