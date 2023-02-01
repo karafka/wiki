@@ -68,6 +68,36 @@ If you do everything right, you should see this in your browser:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
+## Authentication
+
+Karafka Web UI is "just" a Rack application, and it can be protected the same way as any other. For Ruby on Rails, in case you use Devise, you can just:
+
+```ruby
+authenticate :user, lambda { |user| user.admin? } do
+  mount Karafka::Web::App, at: '/karafka'
+end
+```
+
+or in case you want the HTTP Basic Auth, you can wrap the Web UI with the Basic Auth callable:
+
+```ruby
+Rails.application.routes.draw do
+  with_dev_auth = lambda do |app|
+      Rack::Builder.new do
+        use Rack::Auth::Basic do |username, password|
+          username == 'username' && password == 'password'
+        end
+
+        run app
+      end
+    end
+
+  mount with_dev_auth.call(Karafka::Web::App), at: 'karafka'
+end
+```
+
+You can find an explanation of how that works [here](https://blog.arkency.com/common-authentication-for-mounted-rack-apps-in-rails/).
+
 ## Troubleshooting
 
 As mentioned above, the initial setup **requires** you to run `bundle exec karafka-web install` once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
