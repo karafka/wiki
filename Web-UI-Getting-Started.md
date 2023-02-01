@@ -87,6 +87,11 @@ To reset the state of the UI for any reason, you can just run the `bundle exec k
 
 If you want to remove all errors and other data, please remove the relevant Karafka Web UI topics and run `bundle exec karafka-web install`.
 
+### `statistics.interval.ms` alignment
+
+Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
+
+**Note**: Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 
 ### Message-producing permissions for consumers
 
