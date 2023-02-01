@@ -81,6 +81,18 @@ Before reporting an issue, please make sure that:
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist. 
 
-**Note**: To reset the state of the UI for any reason, you can just run the `bundle exec karafka-web install` again. Upon usage, it materializes a new empty state of the Web UI aggregations.
+### Resetting the Web UI state
+
+To reset the state of the UI for any reason, you can just run the `bundle exec karafka-web install` again. Upon usage, it materializes a new empty state of the Web UI aggregations.
 
 If you want to remove all errors and other data, please remove the relevant Karafka Web UI topics and run `bundle exec karafka-web install`.
+
+
+### Message-producing permissions for consumers
+
+Karafka Web-UI uses `Karafka.producer` to produce state reports out of processes. This means that you need to make sure that the default `Karafka.producer` can deliver messages to the following topics:
+
+- `karafka_consumers_states`
+- `karafka_errors`
+
+Without that, Karafka will **not** be able to report anything.
