@@ -44,6 +44,8 @@ Here's the demo of the installation process:
 
 [![asciicast](https://asciinema.org/a/qXzQmDyH7Rzk5hF8OwXKO92Sh.svg)](https://asciinema.org/a/qXzQmDyH7Rzk5hF8OwXKO92Sh)
 
+6. (Optionally) Install and configure the Web UI by following [this](Web-UI-Getting-Started) documentation section.
+
 ## Example applications
 
 If you have any problems settings things up or want a ready application to play around with, then the best idea is just to clone our examples repository:

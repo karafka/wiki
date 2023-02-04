@@ -1,6 +1,7 @@
 ## Libraries and components
 
 * [Karafka](https://github.com/karafka/karafka)
+* [Karafka Web UI](https://github.com/karafka/karafka-web)
 * [WaterDrop](https://github.com/karafka/waterdrop)
 * [Karafka-Testing](https://github.com/karafka/karafka-testing)
 * [Karafka-Core](https://github.com/karafka/karafka-core)
