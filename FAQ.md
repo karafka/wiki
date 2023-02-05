@@ -34,6 +34,8 @@
 34. [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
 35. [Can I use several producers with different configurations with Karafka?](#can-i-use-several-producers-with-different-configurations-with-karafka)
 36. [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
+37. [Can Karafka ask Kafka to list available topics?](#can-karafka-ask-kafka-to-list-available-topics)
+38. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -458,3 +460,26 @@ It means you want to use SSL, but `librdkafka` was built without it. You have to
 1. Uninstal it by running `gem remove karafka-rdkafka`
 2. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
 3. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
+
+## Can Karafka ask Kafka to list available topics?
+
+Yes. You can use admin API to do this:
+
+```ruby
+# Get cluster info and list all the topics
+info = Karafka::Admin.cluster_info
+
+puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
+```
+
+## Why Karafka prints some of the logs with a time delay?
+
+Karafka `LoggerListener` dispatches messages to the logger immediately. You may be encountering buffering in the stdout itself. This is done because IO operations are slow, and usually it makes more sense to avoid writing every single character immediately to the console.
+
+To avoid this behavior and instead write immediately to stdout, you can set it to a sync mode:
+
+```ruby
+$stdout.sync = true
+```
+
+You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync-3D).
