@@ -2,7 +2,8 @@ Karafka is a framework for producing and consuming messages using Kafka. It is b
 
 - Karafka (Consumer) - responsible for consumption messages from Kafka
 - WaterDrop (Producer) - messages producer integrated with Karafka out of the box
-- Karafka-Web - User interface for the Karafka framework
+- Karafka-Web (UI) - User interface for the Karafka framework
+- Karafka-Rdkafka (Driver) - A customized fork of `rdkafka-ruby` providing additional functionalities and extended stability
 
 ## Producer
 
@@ -46,8 +47,6 @@ Karafka Web UI is a user interface for the [Karafka framework](https://github.co
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
-## Apache Kafka
+## Karafka-Rdkafka
 
-Apache Kafka acts as a storage backbone for Karafka.
-
-See [Setting up Kafka](Setting-up-Kafka) for info about Kafka configuration.
+Karafka uses its fork of the `rdkafka-ruby`. It is done to ensure that each release is complete, stable, and tested against the Karafka ecosystem. Providing our driver layer ensures that upgrades are safe and reliable.

@@ -3,7 +3,7 @@ Karafka Web UI is a user interface for the [Karafka framework](https://github.co
 The interface, amongst others, displays:
 
 - real-time aggregated metrics,
-- real-time information on resource usage,
+- real-time information on resources usage,
 - errors details,
 - performance statistics,
 - trends
