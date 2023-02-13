@@ -63,3 +63,17 @@ messages.each do |message|
   puts message.raw_payload
 end
 ```
+
+## Adding partitions to a topic
+
+If you want to add partitions to an existing topic, you can use the `create_partitions` admin method:
+
+```ruby
+topic_name = 'my-busy-topic'
+# Indicates how many partitions we want to end up with
+total_partitions = 20
+
+Karafka::Admin.create_partitions(topic_name, total_partitions)
+```
+
+This method will create all the additional partitions to reach your desired count.
