@@ -119,6 +119,16 @@ If you want to reset the overall counters without removing the errors collection
 
 If you want to fully reset the Web UI state, you can run the `bundle exec karafka-web reset` command. This command **will** remove all the Web UI topics and re-create them with an empty state.
 
+### Uninstalling the Web UI
+
+If you want to remove Karafka Web UI, you need to:
+
+1. Remove all the Web app routes from your routing.
+2. Run `bundle exec karafka-web uninstall`.
+3. Remove `karafka-web` from your `Gemfile`.
+
+And that is all.
+
 ### `statistics.interval.ms` alignment
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
