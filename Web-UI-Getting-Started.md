@@ -117,8 +117,6 @@ If you were looking for a given process or other real-time information, the stat
 
 If you want to reset the overall counters without removing the errors collection, you can run the `bundle exec karafka-web install` again.
 
-If you want to remove all errors and other data, please remove the relevant Karafka Web UI topics and run `bundle exec karafka-web install`.
-
 If you want to fully reset the Web UI state, you can run the `bundle exec karafka-web reset` command. This command **will** remove all the Web UI topics and re-create them with an empty state.
 
 ### `statistics.interval.ms` alignment
