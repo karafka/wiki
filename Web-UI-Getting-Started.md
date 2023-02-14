@@ -25,6 +25,8 @@ bundle add karafka-web
 3. Run the following command to install the karafka-web in your project:
 
 ```ruby
+# For production you should add --replication-factor N
+# Where N is the replication factor you want to use in your cluster
 bundle exec karafka-web install
 ```
 
@@ -113,9 +115,11 @@ If you were looking for a given process or other real-time information, the stat
 
 ### Resetting the Web UI state
 
-To reset the state of the UI for any reason, you can just run the `bundle exec karafka-web install` again. Upon usage, it materializes a new empty state of the Web UI aggregations.
+If you want to reset the overall counters without removing the errors collection, you can run the `bundle exec karafka-web install` again.
 
 If you want to remove all errors and other data, please remove the relevant Karafka Web UI topics and run `bundle exec karafka-web install`.
+
+If you want to fully reset the Web UI state, you can run the `bundle exec karafka-web reset` command. This command **will** remove all the Web UI topics and re-create them with an empty state.
 
 ### `statistics.interval.ms` alignment
 

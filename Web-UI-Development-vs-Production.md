@@ -20,3 +20,13 @@ It is also worth pointing out certain other limitations of the Web UI:
 
 - Karafka Web UI data explorer may not work well with compacted topics as it computes the paginated offsets manually. Per message display should work as expected, though.
 - Karafka Web UI may be slow if you have more than 1 000 active consumer processes running. If you encounter this, please get in touch with us so we can work with you to optimize this case.
+
+## Web UI topics replication factor
+
+When running `bundle exec karafka-web install`, Karafka Web will create needed topics with the replication factor of `1`. Such a value may not be desirable in a production environment.
+
+You can increase the replication factor by providing the `--replication-factor N` with `N` being the desired replication factor in your cluster:
+
+```bash
+bundle exec karafka-web install --replication-factor 5
+```
