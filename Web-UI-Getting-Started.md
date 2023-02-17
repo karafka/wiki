@@ -44,8 +44,6 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 | karafka_consumers_reports | `1`                                      | Aligned with your company policy | `# Keep reports for 7 days`<br>`retention.ms`: `7 * 86_400_000`                     |
 | karafka_errors            | OSS: `1`<br>Pro: as many as you need | Aligned with your company policy | `# Keep errors details for 3 months`<br>`retention.ms`: `3 * 31 * 86_400_000`       |                                                                                 |
 
-For OSS, each of them **needs** to have one partition. In the case of Karafka Pro, `karafka_errors` can have as many partitions as you need.
-
 4. Mount the Web interface in your Ruby on Rails application routing:
 
 ```ruby
