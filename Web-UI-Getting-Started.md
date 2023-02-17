@@ -32,11 +32,17 @@ bundle exec karafka-web install
 
 By default, Karafka uses three topics with the following names:
 
-- `karafka_errors`
-- `karafka_consumers_reports`
 - `karafka_consumers_states`
+- `karafka_consumers_reports`
+- `karafka_errors`
 
-If you have the `auto.create.topics.enable` set to `false`, create them manually.
+If you have the `auto.create.topics.enable` set to `false` or problems running the install command, create them manually. The recommended settings are as followed:
+
+| Topic name                | Partitions count                       | Replication factor               | Settings                                                                                  |
+|---------------------------|----------------------------------------|----------------------------------|-------------------------------------------------------------------------------------------|
+| karafka_consumers_states  | `1`                                      | Aligned with your company policy | `# We are only interested in the current materialized state`<br>`cleanup.policy`: `compact` |
+| karafka_consumers_reports | `1`                                      | Aligned with your company policy | `# Keep reports for 7 days`<br>`retention.ms`: `7 * 86_400_000`                     |
+| karafka_errors            | OSS: `1`<br>Pro: as many as you need | Aligned with your company policy | `# Keep errors details for 3 months`<br>`retention.ms`: `3 * 31 * 86_400_000`       |                                                                                 |
 
 For OSS, each of them **needs** to have one partition. In the case of Karafka Pro, `karafka_errors` can have as many partitions as you need.
 
