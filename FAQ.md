@@ -36,6 +36,7 @@
 36. [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
 37. [Can Karafka ask Kafka to list available topics?](#can-karafka-ask-kafka-to-list-available-topics)
 38. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
+39. [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -483,3 +484,15 @@ $stdout.sync = true
 ```
 
 You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync-3D).
+
+
+## Why is increasing `concurrency` not helping upon a sudden burst of messages?
+
+Karafka uses multiple threads to process messages from multiple partitions or topics in parallel. If your consumer process has a single topic partition assigned, increasing `concurrency` will not help because there is no work that could be parallelized.
+
+To handle such cases, you can:
+
+- Increase the number of partitions beyond the number of active consumer processes to achieve multiple assignments in a single consumer process. In a case like this, the given process will be able to work in parallel.
+- Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
+
+You can read more about the Karafka concurrency model [here](Concurrency-and-multithreading).
