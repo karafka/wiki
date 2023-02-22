@@ -169,3 +169,45 @@ module AirbrakeListener
   end
 end
 ```
+
+## Publishing Karafka and WaterDrop notifications events using `ActiveSupport::Notifications`
+
+If you already use `ActiveSupport::Notifications` for notifications event tracking, you may also want to pipe all the Karafka and WaterDrop notifications events there.
+
+To do so, subscribe to all Karafka and WaterDrop events and publish those events via `ActiveSupport::Notifications`:
+
+```ruby
+# Karafka subscriptions piping
+::Karafka::Instrumentation::Notifications::EVENTS.each do |event_name|
+  ::Karafka.monitor.subscribe(event_name) do |event|
+    # Align with ActiveSupport::Notifications default naming convention
+    event = (event_name.split('.').reverse << 'karafka').join('.')
+
+    # Instrument via ActiveSupport
+    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+  end
+end
+```
+
+```ruby
+## WaterDrop subscriptions piping
+::WaterDrop::Instrumentation::Notifications::EVENTS.each do |event_name|
+  ::Karafka.producer.subscribe(event_name) do |event|
+    # Align with ActiveSupport::Notifications default naming convention
+    event = (event_name.split('.').reverse << 'waterdrop').join('.')
+
+    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+  end
+end
+```
+
+Once that is done, you can subscribe directly to the events published there:
+
+```ruby
+# Note that the events naming is reverted to follow ActiveSupport::Notifications conventions
+ActiveSupport::Notifications.subscribe('consumed.consumer.karafka') do |event|
+  Rails.logger.info "[consumer.consumed]: #{event.inspect}"
+end
+```
+
+**Note**: Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
