@@ -190,7 +190,7 @@ end
 ```
 
 ```ruby
-## WaterDrop subscriptions piping
+# WaterDrop subscriptions piping
 ::WaterDrop::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.producer.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
