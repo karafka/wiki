@@ -75,6 +75,9 @@ At this point, Karafka will run the job for us. If the job fails, Karafka will r
 
 ### Enqueuing modes
 
+
+### `#perform_later`
+
 When you enqueue a job using `#perform_later`, Karafka, by default, will produce a message to Kafka in an async fashion. A job will be added to a background process queue and dispatched without blocking the processing flow.
 
 You may want to alter this behavior for critical jobs and use synchronous enqueuing. To use it, just call the `karafka_options` method within your job class definition and set the `dispatch_method` to `:produce_sync` as followed:
@@ -92,6 +95,33 @@ class Job < ActiveJob::Base
     puts "value2: #{value2}"
   end
 end
+
+Job.perform_later(1, 2)
+```
+
+### `#perform_all_later`
+
+When you enqueue a jobs using `#perform_all_later`, Karafka, by default, will produce messages to Kafka in an async fashion. Jobs will be added to a background process queue and dispatched without blocking the processing flow.
+
+You may want to alter this behavior for critical jobs and use synchronous enqueuing. To use it, just call the `karafka_options` method within your job class definition and set the `dispatch_many_method` to `:produce_many_sync` as followed:
+
+```ruby
+class Job < ActiveJob::Base
+  queue_as :my_kafka_jobs
+
+  karafka_options(
+    dispatch_many_method: :produce_many_sync
+  )
+
+  def perform(value1, value2)
+    puts "value1: #{value1}"
+    puts "value2: #{value2}"
+  end
+end
+
+jobs = 2.times.map { |i| Job.new(i, i + 1) }
+
+Job.perform_all_later(jobs)
 ```
 
 ## Execution warranties

@@ -37,6 +37,7 @@
 37. [Can Karafka ask Kafka to list available topics?](#can-karafka-ask-kafka-to-list-available-topics)
 38. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
 39. [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
+40. [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -496,3 +497,18 @@ To handle such cases, you can:
 - Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
 
 You can read more about the Karafka concurrency model [here](Concurrency-and-multithreading).
+
+## Why am I seeing a "needs to be consistent namespacing style" error?
+
+Due to limitations in metric names, topics with a period ('.') or underscore ('_') could collide. To avoid issues, it is best to use either but not both.
+
+Karafka validates that your topics' names are consistent to minimize the collision risk. If you work with pre-existing topics, you can disable this check by setting `config.strict_topics_namespacing` value to `false`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Do not validate topics naming consistency
+    config.strict_topics_namespacing = false
+  end
+end
+```
