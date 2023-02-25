@@ -21,6 +21,7 @@
 
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
 * [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
+* [Using Avro in Ruby and Karafka](https://mkrisher.medium.com/using-avro-in-ruby-6d0e1d092d5f)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://mensfeld.pl/2017/11/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 2 - Getting started with Rails and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
 * [Karafka example applications](https://github.com/karafka/example-apps)

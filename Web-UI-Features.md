@@ -110,3 +110,13 @@ The Cluster dashboard view displays information about the status of the Kafka cl
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
 </p>
+
+## Status
+
+The Karafka Web UI status page allows you to check and troubleshoot the state of your Karafka Web UI integration with your application.
+
+It can help you identify and mitigate problems that would cause the Web UI to malfunction or misbehave. If you see the `404` page or have issues with Karafka Web UI, this page is worth visiting.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/status.png" alt="karafka web status view" />
+</p>
