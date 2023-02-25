@@ -9,6 +9,7 @@ The interface, amongst others, displays:
 - trends
 - allows for Kafka topics data exploration
 - routing and system information
+- status of Web UI integration within your application
 
 Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-web) with minimal dependencies.
 
@@ -110,12 +111,21 @@ As mentioned above, the initial setup **requires** you to run `bundle exec karaf
 
 Before reporting an issue, please make sure that:
 
+- You have visited the Karafka Web [status](Web-UI-Features#status) page
 - All the topics required by Karafka Web exist
 - Use `bundle exec karafka-web install` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist. 
+
+### Web UI status page
+
+The Karafka Web UI status page allows you to check and troubleshoot the state of your Karafka Web UI integration with your application.
+
+It can help you identify and mitigate problems that would cause the Web UI to malfunction or misbehave. If you see the `404` page or have issues with Karafka Web UI, this page is worth visiting.
+
+You can read more about it [here](Web-UI-Features#status).
 
 ### Resetting the Web UI state
 

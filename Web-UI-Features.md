@@ -117,6 +117,8 @@ The Karafka Web UI status page allows you to check and troubleshoot the state of
 
 It can help you identify and mitigate problems that would cause the Web UI to malfunction or misbehave. If you see the `404` page or have issues with Karafka Web UI, this page is worth visiting.
 
+It is accessible regardless of connection permissions to Kafka and can be found under the `/status` path of your Karafka Web installation.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
