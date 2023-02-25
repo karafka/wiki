@@ -38,6 +38,7 @@
 38. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
 39. [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
 40. [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
+41. [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -500,7 +501,7 @@ You can read more about the Karafka concurrency model [here](Concurrency-and-mul
 
 ## Why am I seeing a "needs to be consistent namespacing style" error?
 
-Due to limitations in metric names, topics with a period ('.') or underscore ('_') could collide. To avoid issues, it is best to use either but not both.
+Due to limitations in metric names, topics with a period (`.`) or underscore (`_`) could collide. To avoid issues, it is best to use either but not both.
 
 Karafka validates that your topics' names are consistent to minimize the collision risk. If you work with pre-existing topics, you can disable this check by setting `config.strict_topics_namespacing` value to `false`:
 
@@ -512,3 +513,21 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?
+
+There are a few reasons why Karafka may not be picking up messages from the beginning, even if you set `initial_offset` to `earliest`:
+
+1. Consumer group already exists: If the consumer group you are using to consume messages already exists, Karafka will not start consuming from the beginning by default. Instead, it will start consuming from the last committed offset for that group. To start from the beginning, you need to reset the offsets for the consumer group using the Kafka CLI or using the Karafka consumer `#seek` method.
+2. Topic retention period: If the messages you are trying to consume are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, setting `initial_offset` to `earliest` will not allow you to consume those messages.
+3. Message timestamps: If the messages you are trying to consume have timestamps that are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, even setting `initial_offset` to `earliest` will not allow you to consume those messages.
+4. Kafka configuration: There may be a misconfiguration in your Kafka setup that is preventing Karafka from consuming messages from the beginning. For example, the `log.retention.ms` or `log.retention.bytes` settings may be set too low, causing messages to be deleted before you can consume them.
+
+To troubleshoot the issue, you can try:
+
+- changing the Karafka `client_id` temporarily,
+- renaming the consumer group,
+- resetting the offsets for the consumer group using `#seek`,
+- checking the retention period for the topic,
+- verifying the messages timestamps,
+- reviewing your Kafka configuration to ensure it is correctly set up for your use case.
