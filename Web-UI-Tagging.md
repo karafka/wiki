@@ -34,7 +34,7 @@ Each tag consists of a name and a value. Names are used to identify tags in case
 
 ### Adding a tag
 
-To tag a resource, you must invoke the fetch the `Karafka::Core::Taggable::Tags` object using the `#tags` method and invoke the `#add` method on it.
+To tag a resource, you must fetch the `Karafka::Core::Taggable::Tags` object using the `#tags` method and invoke the `#add` method on it.
 
 `#add` method accepts two arguments:
 
