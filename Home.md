@@ -24,6 +24,7 @@
     * [DLQ / Dead](Web-UI-Features#dlq-dead)
     * [Cluster](Web-UI-Features#cluster)
     * [Status](Web-UI-Features#status)
+* [Tagging][Web-UI-Tagging]
 * [Development vs Production](Web-UI-Development-vs-Production)
 * [Components](Web-UI-Components)
 
