@@ -75,6 +75,12 @@ If you do everything right, you should see this in your browser:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
+## Multi-App / Multi-Tenant configuration
+
+Karafka Web-UI can be configured to monitor and report data about many applications to a single dashboard.
+
+Please visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
+
 ## Authentication
 
 Karafka Web UI is "just" a Rack application, and it can be protected the same way as any other. For Ruby on Rails, in case you use Devise, you can just:
