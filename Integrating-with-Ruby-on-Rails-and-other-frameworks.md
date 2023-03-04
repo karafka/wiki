@@ -7,7 +7,7 @@ Karafka detects Ruby on Rails by itself, so no extra changes are required beside
 Add Karafka to your Gemfile:
 
 ```bash
-bundle add karafka --version ">= 2.0.28"
+bundle add karafka --version ">= 2.0.34"
 ```
 
 and run the installation command:
