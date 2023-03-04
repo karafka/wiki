@@ -107,7 +107,7 @@ Karafka comes with (optional) full Datadog and StatsD integration that you can u
 ```ruby
 # require datadog/statsd and the listener as it is not loaded by default
 require 'datadog/statsd'
-require 'karafka/instrumentation/vendors/datadog/listener'
+require 'karafka/instrumentation/vendors/datadog/metrics_listener'
 
 # initialize Karafka with statistics.interval.ms enabled so the librdkafka metrics are published
 # as well (without this, you will get only part of the metrics)
@@ -121,7 +121,7 @@ class KarafkaApp < Karafka::App
 end
 
 # initialize the listener with statsd client
-dd_listener = ::Karafka::Instrumentation::Vendors::Datadog::Listener.new do |config|
+dd_listener = ::Karafka::Instrumentation::Vendors::Datadog::MetricsListener.new do |config|
   config.client = Datadog::Statsd.new('localhost', 8125)
   # Publish host as a tag alongside the rest of tags
   config.default_tags = ["host:#{Socket.gethostname}"]
