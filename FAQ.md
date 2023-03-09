@@ -40,6 +40,7 @@
 40. [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
 41. [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
 42. [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
+43. [Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?](#why-am-i-getting-error0a000086ssl-routinescertificate-verify-failed-after-upgrading-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -548,3 +549,27 @@ The general rule is that if you want to ensure all of your current work finishes
 If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
 
 If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor if using the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
+
+
+## Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?
+
+If you are getting following error after upgrading `karafka` and `karafka-core`:
+
+```bash
+SSL handshake failed: error:0A000086:SSL routines::certificate verify failed:  
+broker certificate could not be verified, verify that ssl.ca.location is correctly configured or  
+root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
+```
+
+Please set `ssl.endpoint.identification.algorithm` to `false` in your configuration:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # Other settings...
+      'ssl.endpoint.identification.algorithm': false
+    }
+  end
+end
+```
