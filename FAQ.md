@@ -39,6 +39,7 @@
 39. [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
 40. [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
 41. [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
+42. [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -531,3 +532,19 @@ To troubleshoot the issue, you can try:
 - checking the retention period for the topic,
 - verifying the messages timestamps,
 - reviewing your Kafka configuration to ensure it is correctly set up for your use case.
+
+## Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?
+
+This depends on many factors:
+
+- do you use `cooperative.sticky` rebalance strategy?
+- do you use static group memberships?
+- do you do rolling deploys or all at once?
+- are your jobs long-running?
+- are you ok with intermediate rebalances?
+
+The general rule is that if you want to ensure all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It won't accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
+
+If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
+
+If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor if using the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
