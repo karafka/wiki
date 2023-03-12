@@ -73,4 +73,4 @@ bundle exec karafka server --exclude-topics topic_name2
 
 ## Karafka topics
 
-Topics management via the CLI has its own section. You can read about that [here](Topics-management).
+Topics management via the CLI has its own section. You can read about that [here](Topics-management-and-administration#topics-management).

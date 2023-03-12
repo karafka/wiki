@@ -48,8 +48,6 @@
 * [Dead Letter Queue](Dead-Letter-Queue)
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [Topics management and administration](Topics-management-and-administration)
-    * [Topics management](Topics-management)
-    * [Admin API](Admin-API)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
 * [Concurrency and multithreading](Concurrency-and-multithreading)
