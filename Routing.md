@@ -125,7 +125,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [long_running_job](Pro-Long-Running-Jobs)        | Boolean     | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                       |
 | [virtual_partitions](Pro-Virtual-Partitions)     | Hash        | Allows you to parallelize the processing of data from a single partition.                                     |
 | [dead_letter_queue](Dead-Letter-Queue)           | Hash        | Provides a systematic way of dealing with persistent consumption errors.                                      |
-| [config](Topics-management-and-administration#topics-management) | Hash         | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
+| [config](Topics-management-and-administration#declarative-topics) | Hash         | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
 
 ```ruby
 class KarafkaApp < Karafka::App

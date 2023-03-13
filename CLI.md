@@ -71,6 +71,6 @@ You can also exclude certain topics by using the `--exclude-topics` flag:
 bundle exec karafka server --exclude-topics topic_name2
 ```
 
-## Karafka topics
+## Declarative Topics
 
-Topics management via the CLI has its own section. You can read about that [here](Topics-management-and-administration#topics-management).
+Declarative Topics managament via the CLI has its own section. You can read about that [here](Topics-management-and-administration#declarative-topics).
