@@ -46,7 +46,9 @@ There are the following commands supported:
   The below example illustrates the usage of the `migrate` command to align the number of partitions and to add one additional topic:
 
   <span style="display: none;">
-    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Please use our online documentation instead.
+    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Please use our
+    <a href="https://karafka.io/docs">online</a>
+    documentation instead.
   </span>
 </div>
 
