@@ -42,21 +42,13 @@ bundle exec karafka server
 
 Here's the demo of the installation process:
 
-<div id="initial-setup" style="z-index: 1; position: relative" cols="12" rows="80"></div>
-<script>
-  window.onload = function(){
-    AsciinemaPlayer.create(
-      '/docs/asciicasts/getting-started.cast',
-      document.getElementById('initial-setup'),
-      {
-        cols: 100,
-        rows: 14,
-        preload: true,
-        poster: 'npt:0:5'
-      }
-    );
-}
-</script>
+<div class="asciinema" data-cols="100" data-rows="14" data-cast="getting-started">
+  <span style="display: none;">
+    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Please use our
+    <a href="https://karafka.io/docs">online</a>
+    documentation instead.
+  </span>
+</div>
 
 6. (Optionally) Install and configure the Web UI by following [this](Web-UI-Getting-Started) documentation section.
 
