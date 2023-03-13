@@ -35,16 +35,16 @@ There are the following commands supported:
 - `karafka topics reset` - deletes and re-creates all the topics.
 - `karafka topics migrate` - creates missing topics and repartitions existing to match expected partitions count.
 
-<div
+<span
   id="topics-migrate"
   class="asciinema"
-  style="z-index: 1; position: relative"
+  style="z-index: 1; position: relative; display: none;"
   data-cols="100"
   data-rows="16"
   data-cast="topics-migrate">
 
   The below example illustrates the usage of the `migrate` command to align the number of partitions and to add one additional topic:
-</div>
+</span>
 
 ### Defining topic configuration
 
