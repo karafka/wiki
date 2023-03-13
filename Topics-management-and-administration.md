@@ -87,11 +87,49 @@ config(
 
 ### Excluding topics from the topics management
 
-TBA
+If you want to manage only part of your topics using Karafka, you can set the `active` flag for a given topic configuration to false.
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :a do
+      config(active: false)
+    end
+  end
+end
+```
+
+This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
+
+**Note**: Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
+
+You can use Karafka to manage topics that you do not consume from as well by defining their config and making them inactive at the same time:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :a do
+      config(
+        partitions: 2,
+        replication_factor: 3
+      )
+
+      active false
+    end
+  end
+end
+```
+
+Setting such as above will allow Karafka to manage the topic while instructing Karafka not to try to consume it. A configuration like this is helpful in a multi-app environment where you want Karafka to manage topics, but their consumption belongs to other applications.
 
 ### Production usage
 
-TBA
+The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
+
+Please keep in mind two things, though:
+
+1. Karafka currently does **not** update settings different than the partition count.
+2. Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
 ### Limitations and other info
 
