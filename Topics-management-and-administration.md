@@ -133,6 +133,7 @@ Please keep in mind two things, though:
 
 ### Limitations and other info
 
+- Karafka currently does **not** update settings different than the partition count.
 - Topics management is enabled by default but will not be used unless any CLI commands are invoked.
 - `migrate` does not support changing other settings than partitions count.
 - If a topic is used by several consumer groups defined in one application, only the first `config` defined will be used.
