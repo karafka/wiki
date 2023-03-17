@@ -135,7 +135,29 @@ You can also find [here](https://github.com/karafka/karafka/blob/master/lib/kara
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
-### OpenTelemetry
+### Tracing consumers using DataDog logger listener
+
+If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
+
+```ruby
+# you need to add ddtrace to your Gemfile
+require 'ddtrace'
+require 'karafka/instrumentation/vendors/datadog/logger_listener'
+
+# Initialize the listener
+dd_logger_listener = Karafka::Instrumentation::Vendors::Datadog::LoggerListener.new do |config|
+  config.client = Datadog::Tracing
+end
+
+# Use the DD tracing only for staging and production
+Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?(Rails.env)
+```
+
+![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_tracing.png)
+
+**Note**: Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
+
+## OpenTelemetry
 
 **Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
 
@@ -189,28 +211,6 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
-
-### Tracing consumers using DataDog logger listener
-
-If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
-
-```ruby
-# you need to add ddtrace to your Gemfile
-require 'ddtrace'
-require 'karafka/instrumentation/vendors/datadog/logger_listener'
-
-# Initialize the listener
-dd_logger_listener = Karafka::Instrumentation::Vendors::Datadog::LoggerListener.new do |config|
-  config.client = Datadog::Tracing
-end
-
-# Use the DD tracing only for staging and production
-Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?(Rails.env)
-```
-
-![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_tracing.png)
-
-**Note**: Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
 ## Example listener with Errbit/Airbrake support
 
