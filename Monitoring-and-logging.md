@@ -135,6 +135,61 @@ You can also find [here](https://github.com/karafka/karafka/blob/master/lib/kara
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
+### OpenTelemetry
+
+**Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
+
+OpenTelemetry does not support async tracing in the same way that Datadog does. Therefore it is impossible to create a tracer that will accept reporting without the code running from within a block nested inside the `#in_span` method.
+
+Because of this, you need to subclass the default `Monitor` and inject the OpenTelemetry tracer into it. Below is an example that traces the `consumer.consumed` event. You can use this approach to trace any events Karafka publishes:
+
+```ruby
+class MonitorWithOpenTelemetry < ::Karafka::Instrumentation::Monitor
+  # Events we want to trace with OpenTelemetry
+  TRACEABLE_EVENTS = %w[
+    consumer.consumed
+  ].freeze
+
+  def instrument(event_id, payload = EMPTY_HASH, &block)
+    # Always run super, so the default instrumentation pipeline works
+    return super unless TRACEABLE_EVENTS.include?(event_id)
+
+    # If event is trackable, run it inside the opentelemetry tracer
+    OpenTelemetry.tracer.in_span(
+      "karafka.#{event_id}",
+      attributes: extract_attributes(event_id, payload)
+    ) { super }
+  end
+
+  private
+
+  # Enrich the telemetry with custom attributes information
+  def extract_attributes(event_id, payload)
+    payload_caller = payload[:caller]
+
+    case event_id
+    when 'consumer.consumed'
+      {
+        'topic' => payload_caller.topic.name,
+        'consumer' => payload_caller.class.to_s
+      }
+    else
+      raise ArgumentError, event_id
+    end
+  end
+end
+```
+
+Once created, assign it using the `config.monitor` setting:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.monitor = MonitorWithOpenTelemetry.new
+  end
+end
+```
+
 ### Tracing consumers using DataDog logger listener
 
 If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
