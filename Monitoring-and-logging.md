@@ -177,7 +177,7 @@ class MonitorWithOpenTelemetry < ::Karafka::Instrumentation::Monitor
     return super unless TRACEABLE_EVENTS.include?(event_id)
 
     # If event is trackable, run it inside the opentelemetry tracer
-    OpenTelemetry.tracer.in_span(
+    MyAppTracer.in_span(
       "karafka.#{event_id}",
       attributes: extract_attributes(event_id, payload)
     ) { super }
