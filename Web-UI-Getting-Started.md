@@ -45,7 +45,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 | karafka_consumers_reports | `1`                                      | Aligned with your company policy | `# Keep reports for 7 days`<br>`retention.ms`: `7 * 86_400_000`                     |
 | karafka_errors            | OSS: `1`<br>Pro: as many as you need | Aligned with your company policy | `# Keep errors details for 3 months`<br>`retention.ms`: `3 * 31 * 86_400_000`       |                                                                                 |
 
-**Note**: Karafka Web UI topics are **not** managed via the [Ddeclarative topics API](Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
+**Note**: Karafka Web UI topics are **not** managed via the [Ddeclarative topics API](/docs/Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
 4. Mount the Web interface in your Ruby on Rails application routing:
 
