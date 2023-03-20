@@ -2,7 +2,7 @@ Open Source software is great. Why should you pay money for Karafka Pro when you
 
 ## Pricing
 
-A senior developer is typically $10,000/mo. One with Kafka knowledge even more. The price of Karafka Pro is $60/mo. Is your business building infrastructure or user functionalities?
+A senior developer is typically $10,000/mo. One with Kafka knowledge even more. The price of Karafka Pro is 995 a year. Is your business building infrastructure or user functionalities?
 
 - How many days or weeks will it take your team to piece together similar functionalities?
 - How long will they spend fixing bugs in production?
@@ -34,7 +34,7 @@ You can spend days or weeks integrating various OSS gems, or you can pay me for 
 
 You can scale your Ruby application with Karafka quickly. At that point, Karafka is a significant piece of your business's infrastructure, so a dedicated support policy becomes insurance: three years from now, after many on your engineering team have moved on, **who will help you if a problem suddenly develops**?  It's very common for issues with OSS projects to linger for weeks or months.
 
-Upgrades months or years from now are as simple as `bundle up karafka.` The upgrade path between major versions is always well documented.  So why pay? Because it's my business to make your life as simple and easy as possible. On top of that, by paying me, you are helping other OSS projects that Karafka relies on, as **20%** of the income will be distributed back to other OSS projects that Karafka uses under the hood.
+Upgrades months or years from now are as simple as `bundle up karafka.` The upgrade path between major versions is always well documented.  So why pay? Because it's my business to make your life as simple and easy as possible. On top of that, by paying me, you are helping other OSS projects that Karafka relies on, as **10%** of the income will be distributed back to other OSS projects that Karafka uses under the hood.
 
 Help me build and maintain a high-quality Kafka ecosystem for Ruby and Ruby on Rails.
 
