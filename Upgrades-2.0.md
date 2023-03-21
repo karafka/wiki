@@ -27,7 +27,7 @@ may cause severe problems and is **not** recommended.
 
 ## Deploying Karafka 2.0 after the upgrade
 
-To safely upgrade from Karafka from `1.4` to `2.0` you need to shut down all your consumers completely.
+To safely upgrade from Karafka from `1.4` to `2.0`, you need to shut down completely all the consumers of the application you are upgrading.
 
 ## Gemfile alignment
 
