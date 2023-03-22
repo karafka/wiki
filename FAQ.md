@@ -42,6 +42,7 @@
 42. [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
 43. [Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?](#why-am-i-getting-error0a000086ssl-routinescertificate-verify-failed-after-upgrading-karafka)
 44. [Why am I seeing a `karafka_admin` consumer group with a constant lag present?](#why-am-i-seeing-a-karafka_admin-consumer-group-with-a-constant-lag-present)
+45. [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -578,3 +579,31 @@ end
 ## Why am I seeing a `karafka_admin` consumer group with a constant lag present?
 
 The `karafka_admin` consumer group was created when using certain admin API operations. After upgrading to karafka `2.0.37` or higher, this consumer group is no longer needed and can be safely removed.
+
+## Can I consume the same topic independently using two consumers within the same application?
+
+Yes. You can define independent consumer groups operating within the same application. Let's say you want to consume messages from a topic called `event` using two consumers. You can do this as follows:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    consumer_group :db_storage do
+      topic :events do
+        consumer DbFlusherConsumer
+      end
+    end
+
+    consumer_group :s3_storage do
+      topic :events do
+        consumer S3StoringConsumer
+      end
+    end
+  end
+end
+```
+
+Such a setup will ensure that both of them can be processed independently in parallel. Error handling, dead letter queue, and all the other per-topic behaviors will remain independent despite consuming the same topic.
