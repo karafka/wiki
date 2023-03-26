@@ -224,3 +224,24 @@ Karafka::Admin.create_partitions(topic_name, total_partitions)
 ```
 
 This method will create all the additional partitions to reach your desired count.
+
+### Reading the watermark offsets
+
+Watermark offsets represent the current high and low offsets for each partition in a topic.
+
+- The high-watermark offset is the offset of the last message that has been fully replicated across all of the brokers in the Kafka cluster. 
+- The low watermark offset is important because it determines the starting point for a new consumer reading from a partition. When a consumer subscribes to a Kafka topic, it must know where to start reading messages from in each partition. A new consumer will start reading from the low watermark offset by default. 
+
+Watermark offsets are used to track consumers' progress in a Kafka topic. As a consumer reads messages from a topic, it keeps track of the offset of the last message consumed for each partition. By comparing this offset to the watermark offset, the consumer can determine how far behind it is in processing messages.
+
+You can access this information using the `#read_watermark_offsets` admin method as follows:
+
+```ruby
+topic = 'my_topic'
+partition = 1
+
+low, high = Karafka::Admin.read_watermark_offsets(topic, partition)
+
+puts "Low watermark offset: #{low}"
+puts "High watermark offset: #{high}"
+```
