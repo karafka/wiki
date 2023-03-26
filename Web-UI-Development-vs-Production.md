@@ -18,8 +18,8 @@ bundle exec karafka server --exclude-consumer-groups karafka_web
 
 It is also worth pointing out certain other limitations of the Web UI:
 
-- Karafka Web UI data explorer may not work well with compacted topics as it computes the paginated offsets manually. Per message display should work as expected, though.
 - Karafka Web UI may be slow if you have more than 1 000 active consumer processes running. If you encounter this, please get in touch with us so we can work with you to optimize this case.
+- Karafka explorer can be slow when listing old messages from heavily compacted topics.
 
 ## Web UI topics replication factor
 
