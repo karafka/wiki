@@ -44,6 +44,7 @@
 44. [Why am I seeing a `karafka_admin` consumer group with a constant lag present?](#why-am-i-seeing-a-karafka_admin-consumer-group-with-a-constant-lag-present)
 45. [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
 46. [Why am I seeing Broker failed to validate record (invalid_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
+47. [How can I make polling faster?](#how-can-i-make-polling-faster)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -622,3 +623,20 @@ There are several reasons why a Kafka broker might reject some messages:
 - Broker capacity limitations: If the broker has limited resources and cannot handle the incoming message traffic, it may reject some messages.
 
 To resolve this error, it is essential to identify the root cause of the issue. Checking the message format and schema, ensuring proper authorization and permission, checking broker capacity, and addressing network issues can help resolve the issue. Additionally, monitoring Karafka logs to identify and resolve problems as quickly as possible is crucial.
+
+## How can I make polling faster?
+
+You can decrease the `max_wait_time` Karafka configuration or lower the `max_messages` setting.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other settings...
+
+    # Wait for messages at most 100ms
+    config.max_wait_time = 100
+    # If you got 10 messages faster than in 100ms also don't wait any longer
+    config.max_messages = 10
+  end
+end
+```
