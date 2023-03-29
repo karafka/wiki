@@ -47,7 +47,7 @@ To tag a resource, you must fetch the `Karafka::Core::Taggable::Tags` object usi
 Karafka::Process.tags.add(:tag_example, 'MySuperTag!')
 ```
 
-Since tags names are not displayed, if case you would want to add a tag that contains a name, you can just include the name itself in the tag value:
+Since tags names are not displayed, in case you would want to add a tag that contains a name, you can just include the name itself in the tag value:
 
 ```ruby
 # Add commit hash into process tag with a label
