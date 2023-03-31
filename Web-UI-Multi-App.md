@@ -1,3 +1,12 @@
+**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
+
+We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
+
+Please use [https://karafka.io/docs](https://karafka.io/docs).
+
+---
+
+
 Karafka Web UI can support data collection, aggregation, and presentation from multiple applications in a single dashboard. This is particularly useful for anyone dealing with micro-services that operate in the same Kafka cluster and are part of the same application.
 
 Here are the steps necessary to configure Karafka Web-UI to work in a multi-app mode:

@@ -1,3 +1,12 @@
+**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
+
+We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
+
+Please use [https://karafka.io/docs](https://karafka.io/docs).
+
+---
+
+
 While Kafka is not a message queue, it has certain features that make it a great fit for Active Job, especially when strict ordering and scaling are desired.
 
 Enhanced Active Job adapter provides extra capabilities to regular Active Job to elevate the combination of Active Job and Kafka.

@@ -1,3 +1,12 @@
+**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
+
+We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
+
+Please use [https://karafka.io/docs](https://karafka.io/docs).
+
+---
+
+
 The Enhanced Web UI, aside from all the features from the OSS version, also offers additional features and capabilities not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications. Some of the key benefits of the Enhanced Web UI version include the following:
 
 - Enhanced consumers utilization metrics providing much better insights into processes resources utilization.

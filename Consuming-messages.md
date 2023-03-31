@@ -1,3 +1,12 @@
+**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
+
+We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
+
+Please use [https://karafka.io/docs](https://karafka.io/docs).
+
+---
+
+
 Consumers should inherit from the **ApplicationConsumer**. You need to define a ```#consume``` method that will execute your business logic code against a batch of messages.
 
 Karafka fetches and consumes messages in batches by default.

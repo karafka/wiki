@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+# Script that makes sure, that the GH wiki header info is present in all the files.
+
+require 'fileutils'
+
+Dir["#{Dir.pwd}/pristine/**.md"].each do |file|
+  basename = File.basename(file)
+  target = "#{Dir.pwd}/#{basename}"
+
+  FileUtils.cp(file, target)
+end
+
+HEADER_TEMPLATE_CONTENT = IO.read("#{Dir.pwd}/_GH_Header.md")
+
+Dir["#{Dir.pwd}/**.md"].each do |file|
+  basename = File.basename(file)
+
+  next if basename.start_with?('_')
+
+  rd = IO.read(file)
+  IO.write file, HEADER_TEMPLATE_CONTENT + "\n" + rd
+end

@@ -1,3 +1,12 @@
+**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
+
+We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
+
+Please use [https://karafka.io/docs](https://karafka.io/docs).
+
+---
+
+
 **Source**: [Kafka on Rails: Using Kafka with Ruby on Rails — Part 2 — Getting started with Rails and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
 
 
