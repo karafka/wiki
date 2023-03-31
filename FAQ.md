@@ -46,6 +46,8 @@
 46. [Why am I seeing Broker failed to validate record (invalid_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
 47. [How can I make polling faster?](#how-can-i-make-polling-faster)
 48. [Can I dynamically add consumer groups and topics to a running Karafka process?](#can-i-dynamically-add-consumer-groups-and-topics-to-a-running-karafka-process)
+49. [Can a consumer instance be called multiple times from multiple threads?](#can-a-consumer-instance-be-called-multiple-times-from-multiple-threads)
+50. [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -644,4 +646,12 @@ end
 
 ## Can I dynamically add consumer groups and topics to a running Karafka process?
 
-No, it is not possible. Changes like this require `karafka server` restart.
+No. It is not possible. Changes like this require `karafka server` restart.
+
+## Can a consumer instance be called multiple times from multiple threads?
+
+**No**. Given consumer object instance will never be called/used from multiple threads simultaneously. Karafka ensures that a single consumer instance is always used from a single thread. Other threads may call the consumer object for coordination, but this is unrelated to your code.
+
+## Can multiple threads reuse a single consumer instance?
+
+A single consumer instance can perform work in many threads but only in one simultaneously. Karafka does **not** guarantee that consecutive batches of messages will be processed in the same thread, but it **does** ensure that the same consumer instance will process successive batches. A single consumer instance will **never** process any work in parallel.
