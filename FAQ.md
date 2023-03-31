@@ -45,6 +45,7 @@
 45. [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
 46. [Why am I seeing Broker failed to validate record (invalid_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
 47. [How can I make polling faster?](#how-can-i-make-polling-faster)
+48. [Can I dynamically add consumer groups and topics to a running Karafka process?](#can-i-dynamically-add-consumer-groups-and-topics-to-a-running-karafka-process)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -640,3 +641,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Can I dynamically add consumer groups and topics to a running Karafka process?
+
+No, it is not possible. Changes like this require `karafka server` restart.
