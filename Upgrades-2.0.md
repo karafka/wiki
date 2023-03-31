@@ -1,12 +1,3 @@
-**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
-
-We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
-
-Please use [https://karafka.io/docs](https://karafka.io/docs).
-
----
-
-
 ## Welcome to Karafka 2.0!
 
 Karafka 2.0 is a major rewrite that brings many new things to the table but removes specific concepts that could have been better when I created them.

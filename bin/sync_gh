@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+# Script that makes sure, that the GH wiki header info is present in all the files.
+# Builds that and pushes the update to GH.
+
+require 'fileutils'
+
+FailedCommand = Class.new(StandardError)
+
+def system!(cmd)
+  system(cmd) || raise(FailedCommand)
+end
+
+raise ArgumentError, 'GH wiki version missing' unless File.exists?("#{Dir.pwd}/gh")
+
+Dir["#{Dir.pwd}/**.md"].each do |file|
+  basename = File.basename(file)
+  target = "#{Dir.pwd}/gh/#{basename}"
+
+  FileUtils.cp(file, target)
+end
+
+HEADER_TEMPLATE_CONTENT = IO.read("#{Dir.pwd}/gh/_GH_Header.md")
+
+Dir["#{Dir.pwd}/gh/**.md"].each do |file|
+  basename = File.basename(file)
+
+  next if basename.start_with?('_')
+
+  rd = IO.read(file)
+  IO.write file, HEADER_TEMPLATE_CONTENT + "\n" + rd
+end
+
+system!('cd gh/ && git add ./')
+system('cd gh/ && git commit -m "docs update"')
+system!('cd gh/ && git push origin master')

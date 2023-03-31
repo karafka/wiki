@@ -1,12 +1,3 @@
-**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
-
-We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
-
-Please use [https://karafka.io/docs](https://karafka.io/docs).
-
----
-
-
 Karafka Web UI can operate in production mode. It is, however, essential to understand how it works and its limitations.
 
 To materialize and prepare the data for the Web UI, Karafka Web adds an additional consumer group to the routes. This is ok for a development environment as you usually run one or two `karafka server` instances in this mode.

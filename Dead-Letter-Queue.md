@@ -1,12 +1,3 @@
-**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
-
-We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
-
-Please use [https://karafka.io/docs](https://karafka.io/docs).
-
----
-
-
 The Dead Letter Queue feature provides a systematic way of dealing with persistent consumption errors that may require a different handling approach while allowing you to continue processing.
 
 While consuming data, not everything may go as intended. When an error occurs in Karafka, by default, the framework will apply a back-off strategy and will try again and again. Some errors, however, may be non-recoverable. For example, a broken JSON payload will not be fixed by parsing it again. Messages with non-recoverable errors can be safely moved and analyzed later without interrupting the flow of other valid messages.

@@ -1,12 +1,3 @@
-**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
-
-We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
-
-Please use [https://karafka.io/docs](https://karafka.io/docs).
-
----
-
-
 When working with Kafka, there is a setting called [`max.poll.interval.ms`](https://docs.confluent.io/platform/current/installation/configuration/consumer-configs.html#consumerconfigs_max.poll.interval.ms).
 
 It is the maximum delay between invocations of `poll()` commands. This places an upper bound on the time the consumer can wait before fetching more records.

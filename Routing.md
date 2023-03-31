@@ -1,12 +1,3 @@
-**Info**: Github Wiki is just a mirror of our [online](https://karafka.io/docs) documentation.
-
-We highly recommend using our website [docs](https://karafka.io/docs) due to Github Wiki limitations. Only some illustrations, links, screencasts, and code examples will work here.
-
-Please use [https://karafka.io/docs](https://karafka.io/docs).
-
----
-
-
 The routing engine provides an interface to describe how messages from all the topics should be received and consumed.
 
 Due to the dynamic nature of Kafka, you can use multiple configuration options; however, only a few are required.
