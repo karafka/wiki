@@ -9,8 +9,8 @@ Karafka versions or release series are categorized below into the following phas
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.0     | Active      | N/A        |
-| 1.4     | Maintenance | 2023-02-01 |
+| 2.x     | Active      | N/A        |
+| 1.4     | EOL         | 2023-02-01 |
 | 1.3     | EOL         | 2021-08-01 |
 | 1.2     | EOL         | 2020-08-01 |
 | 1.1     | EOL         | 2019-03-01 |
