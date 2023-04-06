@@ -48,6 +48,7 @@
 48. [Can I dynamically add consumer groups and topics to a running Karafka process?](#can-i-dynamically-add-consumer-groups-and-topics-to-a-running-karafka-process)
 49. [Can a consumer instance be called multiple times from multiple threads?](#can-a-consumer-instance-be-called-multiple-times-from-multiple-threads)
 50. [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
+51. [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -655,3 +656,16 @@ No. It is not possible. Changes like this require `karafka server` restart.
 ## Can multiple threads reuse a single consumer instance?
 
 A single consumer instance can perform work in many threads but only in one simultaneously. Karafka does **not** guarantee that consecutive batches of messages will be processed in the same thread, but it **does** ensure that the same consumer instance will process successive batches. A single consumer instance will **never** process any work in parallel.
+
+## What does `Broker: Unknown topic or partition` error mean?
+
+`The Broker: Unknown topic or partition` error typically indicates that the Kafka broker cannot find the specified topic or partition that the client is trying to access.
+
+There are several possible reasons why this error might occur:
+
+- The topic or partition may not exist on the broker. Double-check that the topic and partition you are trying to access exists on the Kafka cluster you are connecting to.
+- The topic or partition may still need to be created. If you are trying to access a topic or partition that has not been created yet, you will need to create it before you can use it.
+- The client may not have permission to access the topic or partition. Ensure that the client has the necessary permissions to read from or write to the topic or partition you are trying to access.
+- The client may be using an incorrect topic or partition name. Ensure you use the correct topic or partition name in your client code.
+
+You can use Karafka Web-UI or Karafka Admin API to inspect your cluster topics and ensure that the requested topic and partition exist.
