@@ -152,3 +152,19 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - want to have a DLQ topic with several partitions.
 - want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
 - want to delay processing of data dispatched to the DLQ topic.
+
+## Example use-cases
+
+- Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, ensuring no payment is lost.
+
+- Email delivery: In email delivery systems, DLQs can be used to capture email messages that fail to deliver due to invalid email addresses, network issues, or other issues. These messages can be later reviewed and resent, ensuring that important emails are not lost.
+
+- Order processing: In e-commerce systems, DLQs can be used to capture orders that fail to process due to system errors, payment failures, or other issues. These orders can be reviewed and processed later, ensuring no orders are lost, and customer satisfaction is maintained.
+
+- Data pipeline processing: In data pipeline systems, DLQs can be used to capture data events that fail to process due to data schema issues, data quality issues, or other issues. These events can be later reviewed and processed, ensuring that important data is not lost and data integrity is maintained.
+
+- Fraud detection: In financial systems, DLQs can be used to capture suspicious transactions that fail to process due to system errors, network issues, or other issues.
+
+- Gaming platforms: In gaming systems, DLQs can be used to capture game events that fail to process due to connectivity issues, data quality problems, or other issues.
+
+The Karafka Dead Letter Queue is worth using because it provides a way to handle messages that cannot be processed for any reason without losing data. The DLQ allows the failed messages to be reviewed and processed later, reducing the risk of data loss and providing greater reliability and resilience to the system. The DLQ in Karafka is easy to set up and can be configured to handle different scenarios, including retry mechanisms, error handling, and version incompatibilities. This makes it an essential feature for businesses that want to ensure the reliability of their messaging system and avoid data loss in case of errors.

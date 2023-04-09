@@ -157,3 +157,15 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Example use-cases
+
+- External Service Calls: In some cases, processing messages may require making HTTP requests to external services, which can take a long time to complete. For example, processing messages to perform payment processing, geocoding, or weather data retrieval may require making requests to external services that can take a significant amount of time to return a response.
+
+- IoT Data Processing: With the rise of the Internet of Things (IoT), data processing and analysis of IoT-generated data has become increasingly important. The processing of messages may involve analyzing sensor data, predicting equipment failure, and optimizing operations.
+
+- Complex Database Operations: Performing complex database operations such as joins, aggregations, or subqueries can take a significant amount of time, especially when dealing with large datasets. The processing of messages may involve performing such operations on the incoming data.
+
+- Data Cleaning and Preprocessing: Data cleaning and preprocessing can take significant time, especially when dealing with large datasets. The processing of messages may involve tasks such as data validation, data normalization, or data standardization.
+
+These are just a few examples of how Long-Running Jobs can benefit different industries where processing messages takes a significant amount of time. Karafka's Long-Running Jobs feature can be used to develop and manage these jobs, enabling continuous data processing and analysis.

@@ -304,3 +304,19 @@ end
 ```
 
 When used that way, your `balanced_topic` will not use the per topic `partitioner` nor `max_partitions`. This topic data distribution will solely rely on your `balanced_strategy` logic.
+
+## Example use-cases
+
+Here are some use cases from various industries where Karafka's virtual partition feature can be beneficial:
+
+- Adtech: An ad-tech company may need to process a large number of ad impressions or clicks coming in from a single Kafka topic partition. By using virtual partitions to parallelize the processing of these events, they can improve the efficiency and speed of their ad-serving system, which often involves database operations.
+
+- E-commerce: In the e-commerce industry, processing many product orders or inventory updates can be IO bound. By using virtual partitions to parallelize the processing of these events, e-commerce companies can improve the efficiency and speed of their systems, enabling them to serve more customers and update inventory more quickly.
+
+- Logistics: A logistics company may need to process a large volume of shipment or tracking data coming in from a single Kafka topic partition. By using virtual partitions to parallelize the processing of this data, they can improve the efficiency of their logistics operations and reduce delivery times.
+
+- Healthcare: In healthcare, processing a large volume of patient data can be IO bound, particularly when interacting with electronic health records (EHR) or other databases. By using virtual partitions to parallelize the processing of patient data coming from a single Kafka topic partition, healthcare organizations can improve the efficiency of their data analysis and provide more timely care to patients.
+
+- Social Media: Social media platforms often need to process many user interactions, such as likes, comments, and shares, coming in from a single Kafka topic partition. By using virtual partitions to parallelize the processing of these events, they can improve the responsiveness of their platform and enhance the user experience.
+
+Overall, virtual partitions can be beneficial in any industry where large volumes of data need to be processed quickly and efficiently, particularly when processing is IO bound. By parallelizing the processing of data from a single Kafka topic partition, organizations can improve the performance and scalability of their systems, enabling them to make more informed decisions and deliver better results.

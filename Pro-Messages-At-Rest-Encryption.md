@@ -104,3 +104,17 @@ end
 ```
 
 **Note**: Such a pattern should only be used when working with trusted entities.
+
+## Example use-cases
+
+- Healthcare: In the healthcare industry, patient data like medical history, diagnoses, and prescriptions are stored in Kafka. At-rest encryption can help ensure the confidentiality and integrity of this sensitive information, helping to meet regulatory requirements like HIPAA and GDPR.
+
+- E-commerce: E-commerce companies may store sensitive customer data like login credentials, shipping addresses, and credit card details in Kafka. At-rest encryption can help prevent data breaches and protect the privacy of customers, which can improve their trust in the company and increase sales.
+
+- Government: Government agencies often store sensitive information like personally identifiable information (PII) and classified data in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring national security and compliance with regulations.
+
+- IoT: Internet of Things (IoT) devices often send and receive sensitive data like sensor readings, user locations, and device configurations via Kafka. At-rest encryption can help prevent unauthorized access to this data, ensuring the privacy and security of users and devices.
+
+- Human Resources: Human resources departments may store sensitive employee data such as social security numbers, payroll information, and performance reviews in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring regulatory compliance and maintaining employee trust.
+
+Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
