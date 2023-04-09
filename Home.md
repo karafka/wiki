@@ -78,6 +78,7 @@
 * [Features list](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
 * [Virtual Partitions](Pro-Virtual-Partitions)
+* [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
