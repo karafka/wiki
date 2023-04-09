@@ -44,6 +44,8 @@ Here are some potential use cases for Delayed Topics:
 
 - General: By using Delayed Topics in conjunction with a Dead Letter Queue, you can create a more robust and dynamic system that is capable of handling a variety of failure scenarios and providing a more efficient and effective message processing system.
 
+- Data crawling: The Delayed Topics feature can be helpful in data crawling applications, where immediately published data may not be immediately available due to HTTP caches. In such cases, it may be beneficial to delay the processing of messages for a fixed period, to ensure that all the caches have expired and the data is fully available. By using delayed processing, you can avoid processing incomplete or stale data and ensure that your application works with the latest, fully available information.
+
 - E-commerce: Delay processing of orders for a short period to allow for cancellation or modification of orders by customers. During this delay, additional validation can be performed, such as stock availability or fraud detection. If there is a problem with processing an order, it can be moved to a Dead Letter Queue for reprocessing later.
 
 - Social Media: Delay processing of user-generated content to allow for moderation by human teams before publishing. During the delay, messages can be stored in a separate queue and notified to moderators for review. If approved, the message can be moved to the main processing queue for publishing. The message can be moved to a Dead Letter Queue for further action if not approved.
