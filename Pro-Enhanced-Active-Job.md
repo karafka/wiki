@@ -52,7 +52,9 @@ Same execution warranties apply as for standard [Active Job adapter](Active-Job#
 
 ## Behaviour on errors
 
-Same error behaviors apply as for standard [Active Job adapter](Active-Job#behaviour-on-errors).
+When using the ActiveJob adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
+
+For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Active-Job#behaviour-on-errors).
 
 **Note**: Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
@@ -62,4 +64,6 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 
 ## Behaviour on shutdown
 
-The same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).
+When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
+
+For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).

@@ -41,6 +41,27 @@ When processing messages from a Kafka topic, your code may raise any exception i
 
 Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That's why Karafka will **never** skip any messages.
 
+### Altering the consumer behaviour upon reprocessing
+
+The Karafka consumer `#retrying?` method is designed to detect whether we are in retry mode after an error has occurred. This method can be helpful in a variety of use cases where you need to alter the behavior of your application when a message is being retried. For example, you might want to send an alert or notification when a message is being retried, or you might want to branch out and perform a different action based on the fact that the message is being retried. By detecting whether a message is being retried or not, you can gain better control over your application's behavior and make sure that it is able to handle errors in a way that is appropriate for your specific use case.
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      if retrying?
+        puts 'We operate after an error'
+        puts message.payload
+      else
+        puts message.payload
+      end
+    end
+  end
+end
+```
+
+**Note**: Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
+
 ### Error tracking
 
 Karafka, in the runtime stage, publishes sync and async errors (any that would occur in background threads) to the monitor on an `error.occurred` channel. This allows you to connect any type of error logging or instrumentation by yourself:
