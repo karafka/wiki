@@ -23,6 +23,33 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## Delaying the DLQ data processing
+
+In some cases, it can be beneficial to delay the processing of messages dispatched to a Dead Letter Queue (DLQ) topic. This can be useful when a message has failed to be processed multiple times, and you want to avoid overwhelming the system with repeated processing attempts. By delaying the processing of these messages, you can avoid consuming valuable resources and prevent potential system failures or downtime.
+
+If you are processing data dispatched to the DLQ topic, all you need to do to make it delayed is to add `delay_by` to your DLQ topic routing definition as follows:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: :failed_orders_dlq,
+        max_retries: 2
+      )
+    end
+
+    topic :failed_orders_dlq do
+      consumer FailedOrdersRecoveryConsumer
+      # Try to process failed orders messages with 5 minutes of a delay
+      delay_by(5 * 60_000)
+    end
+  end
+end
+```
+
 ## Disabling dispatch
 
 For some use cases, you may want to skip messages after retries without dispatching them to an alternative topic.

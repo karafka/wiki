@@ -40,6 +40,16 @@ end
 
 Once enabled, after the defined number of retries, problematic messages will be moved to a separate topic unblocking the processing.
 
+## Delaying the DLQ data processing
+
+In some cases, it can be beneficial to delay the processing of messages dispatched to a Dead Letter Queue (DLQ) topic. This can be useful when a message has failed to be processed multiple times, and you want to avoid overwhelming the system with repeated processing attempts. By delaying the processing of these messages, you can avoid consuming valuable resources and prevent potential system failures or downtime.
+
+Another benefit of delaying the processing of messages dispatched to a DLQ topic is that it can allow developers to investigate the underlying issues that caused the message to fail in the first place. With delayed processing, you can give your team time to investigate and address the root cause of the issue rather than simply reprocessing the message repeatedly and potentially compounding the problem.
+
+Overall, delaying the processing of messages dispatched to a DLQ topic can help ensure the stability and reliability of your system while also giving your team the time and resources needed to address underlying issues and prevent future failures.
+
+You can read more about the Karafka [Delayed Topics] feature [here](Pro-Delayed-Topics).
+
 ## Disabling retries
 
 If you do not want to retry processing at all upon errors, you can set the `max_retries` value to `0`:
@@ -141,17 +151,4 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - need to preserve the ordering of messages,
 - want to have a DLQ topic with several partitions.
 - want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
-
-## Features compatibility
-
-### Usage with ActiveJob
-
-The Dead Letter Queue feature can be used with ActiveJob. The only thing worth keeping is that the `#payload` of the transferred message will be the serialized job.
-
-### Usage with Manual Offset Management
-
-The Dead Letter Queue feature can be used with Manual Offset Management. The only implication is that Karafka will **not** commit the offset when skipping messages.
-
-### Usage with Virtual Partitions
-
-[Virtual Partitions](/docs/Pro-Virtual-Partitions) can be used with the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue.md).
+- want to delay processing of data dispatched to the DLQ topic.
