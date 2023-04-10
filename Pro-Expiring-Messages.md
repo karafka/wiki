@@ -42,6 +42,16 @@ The delay occurs due to the nature of the Karafka consumer processing flow. When
 
 If case of such scenarios, we recommend running second-stage filtering to ensure that at the moment of processing particular messages, they are not expired.
 
+## Expiring Messages vs. using `log.retention.ms`
+
+The Karafka Expiring Messages feature and Kafka `log.retention.ms` setting serve different purposes in managing data retention. While both provide mechanisms to "exclude" messages, their scope, and implications differ.
+
+Karafka's Expiring Messages feature allows you to set a maximum age for a message to be processable. If a message exceeds the time limit, it is excluded from being processed by the consumer. However, it remains in Kafka, where it can be consumed by other consumers or applications that might still find it relevant. This feature enables the processing of new data without getting stuck on old messages that might no longer be relevant to the specific consumer.
+
+On the other hand, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka. This setting specifies the maximum time a message can remain in a Kafka topic before being removed. Once the retention time has passed, Kafka deletes the messages from the topic, freeing up space for new data. This setting is useful in scenarios where the data has a limited lifetime and is no longer needed after a certain period.
+
+In summary, Karafka's Expiring Messages feature excludes messages from being processed by consumers. However, it does not remove them from Kafka, so other consumers or applications can still use information that is relevant to them. In contrast, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka.
+
 ## Example use-cases
 
 - Email dispatch: In email dispatch applications, the expiring consumption of Kafka messages can be used to prevent sending emails based on old events. For example, skipping messages that would dispatch emails that would no longer be relevant or useful, such as promotions or marketing campaigns that have already ended.
