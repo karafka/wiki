@@ -81,6 +81,7 @@
 * [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Expiring Messages](Pro-Expiring-Messages)
+* [Rate Limiting](Pro-Rate-Limiting)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Scheduler](Pro-Enhanced-Scheduler)

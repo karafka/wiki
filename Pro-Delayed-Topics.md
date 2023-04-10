@@ -6,6 +6,14 @@ Delay is implemented by pausing the consumption of the partitions for a specifie
 
 This makes the Delayed Topic feature a great choice for applications that need to delay the processing of specific messages without impacting the processing of other messages in the system. By using Karafka's built-in partition pausing mechanism, delayed messages can be processed in a way that is both efficient and reliable.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/delayed_topics_flow.svg" />
+</p>
+<p align="center">
+  <small>*Illustration presenting how Delayed Topics delays too young messages.
+  </small>
+</p>
+
 ## Enabling Delayed Topics
 
 To enable the Delayed Topics feature in Karafka, you need to add the `delay_by` option to your Karafka routing configuration. Here's an example of how to do that:
