@@ -53,7 +53,7 @@
 * [Concurrency and multithreading](Concurrency-and-multithreading)
 * [Deserialization](Deserialization)
 * [Offset management (checkpointing)](Offset-management)
-* [Pausing and throttling](Pausing-and-throttling)
+* [Pausing and rate-limiting](Pausing-and-rate-limiting)
 * [Consumer mappers](Consumer-mappers)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)

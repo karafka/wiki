@@ -1,6 +1,6 @@
 ## Configuration
 
-To activate your Karafka Pro subscription, you need to do three things:
+To activate Karafka Pro, you need to do three things:
 
 1. Follow the standard Karafka [installation](Getting-Started) procedure.
 
