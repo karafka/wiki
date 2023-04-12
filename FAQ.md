@@ -680,3 +680,5 @@ If some of your Karafka consumer subscriptions are not visible in the Karafka We
 - The consumer group that the subscription belongs to is not active. Karafka only displays active consumer groups in the Web UI. Make - sure that your consumer group is up and running.
 The subscription is not properly configured. Ensure that your subscription is appropriately defined, has the correct topic, and is active.
 - There is a delay in the Karafka Web UI updating its data. Karafka Web UI may take a few seconds to update its data, especially if many subscriptions or messages are being processed.
+
+If none of these reasons explain why your subscriptions are not visible in the Karafka Web UI, you may need to investigate further and check your Karafka logs for any errors or warnings.
