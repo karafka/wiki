@@ -49,6 +49,7 @@
 49. [Can a consumer instance be called multiple times from multiple threads?](#can-a-consumer-instance-be-called-multiple-times-from-multiple-threads)
 50. [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
 51. [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
+52. [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -669,3 +670,13 @@ There are several possible reasons why this error might occur:
 - The client may be using an incorrect topic or partition name. Ensure you use the correct topic or partition name in your client code.
 
 You can use Karafka Web-UI or Karafka Admin API to inspect your cluster topics and ensure that the requested topic and partition exist.
+
+
+## Why some of consumer subscriptions are not visible in the Web UI?
+
+If some of your Karafka consumer subscriptions are not visible in the Karafka Web UI, there could be a few reasons for this:
+
+- You are using Karafka Web older than the `0.4.1` version. Older Karafka Web UI versions used to only shows subscriptions that have at least one message processed.
+- The consumer group that the subscription belongs to is not active. Karafka only displays active consumer groups in the Web UI. Make - sure that your consumer group is up and running.
+The subscription is not properly configured. Ensure that your subscription is appropriately defined, has the correct topic, and is active.
+- There is a delay in the Karafka Web UI updating its data. Karafka Web UI may take a few seconds to update its data, especially if many subscriptions or messages are being processed.
