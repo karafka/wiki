@@ -50,6 +50,7 @@
 50. [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
 51. [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
 52. [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
+53. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -682,3 +683,25 @@ The subscription is not properly configured. Ensure that your subscription is ap
 - There is a delay in the Karafka Web UI updating its data. Karafka Web UI may take a few seconds to update its data, especially if many subscriptions or messages are being processed.
 
 If none of these reasons explain why your subscriptions are not visible in the Karafka Web UI, you may need to investigate further and check your Karafka logs for any errors or warnings.
+
+## Is there a way to run Karafka in a producer-only mode?
+
+Yes, it is possible to run Karafka in producer-only mode. Karafka will not consume any messages from Kafka in this mode but only produce messages to Kafka.
+
+To run Karafka in producer-only mode, do not define any topics for consumption or set all of them as inactive:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    # Leave this empty or set `active false` for all the topics
+  end
+end
+```
+
+With this configuration, Karafka will not create any consumer groups and will only initialize the `Karafka.producer`.
+
+Keep in mind that with this configuration, you will not be able to start `karafka server` but you will be able to access `Karafka.producer` from other processes like Puma or Sidekiq.
