@@ -46,6 +46,49 @@ This means that if you need millisecond-precise timing for your application, the
 
 This limitation also means that messages may be delayed slightly more than the requirement minimum but will **never** be delayed less than expected.
 
+## Revocation and Shutdown
+
+When using the Delayed Topics feature in Karafka, it is essential to note that both the `#shutdown` and `#revocation` methods may be executed without the prior `#consume` running. This is because Delayed Topics may delay the processing of the first set of messages, which means that the messages batch may be empty, and the first and last offsets taken from metadata will be equal to `-1001`.
+
+In such scenarios, checking the message batch size when relying on them in `#revocation` and `#shutdown` is always recommended. This can be done using a conditional statement that checks if the batch is empty before executing further code.
+
+Below you can find an example scenario where a check is needed on `#shutdown` to verify that there are messages in the messages batch before committing the offset. This scenario occurs when the Karafka server is started and quickly shut down before the first batch of messages is old enough to be processed.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :orders do
+      consumer OrdersConsumer
+      delay_by(60_000)
+      manual_offset_management true
+    end
+  end
+end
+
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    puts messages.payloads
+  end
+
+  def shutdown
+    # When using `#delay_by`, make sure that there is any message
+    # we want to mark as consumed upon shutdown
+    #
+    # Please note, you do not need this check if you are not using
+    # filtering API or delayed topics functionalities.
+    return if messages.empty?
+
+    mark_as_consumed messages.last
+  end
+end
+```
+
+It is important to note that Delayed Topics can be a powerful tool for managing message processing, as it allows for messages to be processed in a controlled manner. However, it is essential to understand the potential side effects and implement appropriate error-handling mechanisms to ensure the system remains stable and reliable.
+
 ## Example use-cases
 
 Here are some potential use cases for Delayed Topics:

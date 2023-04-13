@@ -216,3 +216,5 @@ class LogsConsumer < ApplicationConsumer
   end
 end
 ```
+
+Please note that when using `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
