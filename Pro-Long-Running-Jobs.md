@@ -162,7 +162,7 @@ end
 
 When using Karafka Long-Running Jobs, it is not recommended to use manual pausing because it can lead to unexpected behaviors and errors in the system. Long-Running Jobs automatically pause and resume topic partitions based on the consumption flow. In case of a manual pause that operates for a shorter duration than the consumer processing time, the partition may be resumed before the consumer finishes its processing, which can cause unexpected behaviors and errors in the system.
 
-If a manual pause is needed, it is recommended to compute its duration based on following formula:
+If a manual pause is needed, it is recommended to compute its duration based on the following formula:
 
 `max_remaining_processing_time + 2 * max_wait_time`
 
