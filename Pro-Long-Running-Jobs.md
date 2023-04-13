@@ -158,6 +158,18 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## Pausing in Long-Running Jobs
+
+When using Karafka Long-Running Jobs, it is not recommended to use manual pausing because it can lead to unexpected behaviors and errors in the system. Long-Running Jobs automatically pause and resume topic partitions based on the consumption flow. In case of a manual pause that operates for a shorter duration than the consumer processing time, the partition may be resumed before the consumer finishes its processing, which can cause unexpected behaviors and errors in the system.
+
+If a manual pause is needed, it is recommended to compute its duration based on following formula:
+
+`max_remaining_processing_time + 2 * max_wait_time`
+
+This will ensure that the consumer has enough time to process all the messages in the batch before the partition is resumed.
+
+Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and leveraging the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
+
 ## Example use-cases
 
 - External Service Calls: In some cases, processing messages may require making HTTP requests to external services, which can take a long time to complete. For example, processing messages to perform payment processing, geocoding, or weather data retrieval may require making requests to external services that can take a significant amount of time to return a response.
