@@ -16,8 +16,14 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 14. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
 15. [Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?](#do-you-require-any-personal-information-financial-data-confidentialsensitive-data-government-data-etc)
 16. [How do you ensure security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
-17. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-18. [Contact Info](#contact-info)
+17. [Does Karafka Pro stores, processes or transmits Personal Health Information?](#does-karafka-pro-stores-processes-or-transmits-personal-health-information)
+18. [Does Karafka Pro stores, processes or transmits Personally Identifiable Information?](#does-karafka-pro-stores-processes-or-transmits-personally-identifiable-information)
+19. [Will Karafka store, process, or transmit company confidential information and data?](#will-karafka-store-process-or-transmit-company-confidential-information-and-data)
+20. [How do you store, process, or transmit Payment Cardholder Information?](#how-do-you-store-process-or-transmit-payment-cardholder-information)
+21. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
+22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
+23. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+24. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -105,6 +111,30 @@ Karafka license gem contains **only** the organization name.
 ## How do you ensure the security of your gem server?
 
 Please read our [Security statement](Pro-Security) for details on this manner.
+
+## Does Karafka Pro stores, processes or transmits Personal Health Information?
+
+**No**. Karafka and Karafka Pro do not store, process or transmit any information to me. Never.
+
+## Does Karafka Pro stores, processes or transmits Personally Identifiable Information?
+
+**No**. Karafka and Karafka Pro do not store, process or transmit any information to me. Never.
+
+## Will Karafka store, process, or transmit company confidential information and data?
+
+**No**., it will not store, process, or transmit company confidential information and data.
+
+## How do you store, process, or transmit Payment Cardholder Information?
+
+We do not hold your credit card information. All subscription management is done via Stripe.
+
+## What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?
+
+**No**. Karafka and Karafka Pro do not store, process or transmit any information to me. Never.
+
+## Where is the hosting infrastructure located?
+
+Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
 
 ## Ethics, Privacy, and Information Usage
 
