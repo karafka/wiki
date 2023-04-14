@@ -36,6 +36,30 @@ end
 
 **Note**: Please keep in mind, that the delay time needs to be provided in milliseconds
 
+## Delayed Topics vs. inline `#sleep` invocation
+
+Using `#sleep` inside consumers is **not** recommended. Sleep can heavily impact other topics and partitions and cause additional lags even for those, that do not invoke it. Below you can find a potential impact of sleeping on one of the topic partitions vs. using the delayed topics functionality instead:
+
+Using `#sleep` on one of the partitions:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/delayed-topics/sleep-lag.png" />
+</p>
+<p align="center">
+  <small>*Sleep can affect other topics and partitions running in parallel in other threads.
+  </small>
+</p>
+
+vs. delaying via the `#delay_by` API:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/delayed-topics/pause-lag.png" />
+</p>
+<p align="center">
+  <small><code>#delay_by</code> is affecting only the desired topic/partition while others are processed as fast as possible.
+  </small>
+</p>
+
 ## Limitations
 
 While the Karafka Delayed Topics feature provides a valuable way to delay message processing, it does have some limitations to keep in mind.
@@ -45,6 +69,12 @@ One significant limitation is that the delay is not always millisecond-precise. 
 This means that if you need millisecond-precise timing for your application, there may be better choices than Delayed Topics. However, this limitation is unlikely to be a significant issue for most use cases.
 
 This limitation also means that messages may be delayed slightly more than the requirement minimum but will **never** be delayed less than expected.
+
+Below is an example distribution of the extra lag beyond the tested and expected ten seconds. In most cases, it is equal to or less than 10% of Karafkas' max wait time.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/delayed-topics/histogram.png" />
+</p>
 
 ## Revocation and Shutdown
 
