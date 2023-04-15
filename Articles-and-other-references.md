@@ -21,6 +21,7 @@
 
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
 * [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
+* [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)
 * [Kafka topics as a code – declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
 * [An alternative approach to custom partition assignment strategy for Kafka consumers with Karafka](https://karolgalanciak.com/blog/2022/12/11/an-alternative-approach-to-custom-partition-assignment-strategy-for-kafka-consumers-with-karafka/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://mensfeld.pl/2017/11/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages/)
