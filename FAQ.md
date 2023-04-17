@@ -712,3 +712,5 @@ Keep in mind that with this configuration, you will not be able to start `karafk
 If you see this error from your Ruby process that is **not** a running Karafka process, you did not close the producer before finishing the process.
 
 It is recommended to **always** run `Karafka.producer.close` before finishing processes like rake tasks, Puma server, or Sidekiq, so Karafka producer has a chance to dispatch all pending messages and gracefully close.
+
+You can read more about producer shutdown [here](Producing-messages#producer-shutdown).
