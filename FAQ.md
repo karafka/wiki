@@ -51,6 +51,7 @@
 51. [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
 52. [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
 53. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
+54. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -705,3 +706,9 @@ end
 With this configuration, Karafka will not create any consumer groups and will only initialize the `Karafka.producer`.
 
 Keep in mind that with this configuration, you will not be able to start `karafka server` but you will be able to access `Karafka.producer` from other processes like Puma or Sidekiq.
+
+## Why am I getting the `can't alloc thread (ThreadError)` error from the producer?
+
+If you see this error from your Ruby process that is **not** a running Karafka process, you did not close the producer before finishing the process.
+
+It is recommended to **always** run `Karafka.producer.close` before finishing processes like rake tasks, Puma server, or Sidekiq, so Karafka producer has a chance to dispatch all pending messages and gracefully close.
