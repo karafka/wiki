@@ -18,7 +18,9 @@ TBA
 
 ### Idle runs
 
-TBA
+After applying filters to the messages batch, no data may be left to process. In such cases, Karafka may run an idle job to apply proper action and perform housekeeping work. The idle job will initialize the consumer instance and may invoke `#pause` or `seek` commands if needed.
+
+Idle jobs **do not** run any end-user code except strategy applications based on the Filtering API.
 
 ## Registering Filters
 
