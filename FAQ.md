@@ -52,6 +52,7 @@
 52. [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
 53. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
 54. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
+55. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -714,3 +715,14 @@ If you see this error from your Ruby process that is **not** a running Karafka p
 It is recommended to **always** run `Karafka.producer.close` before finishing processes like rake tasks, Puma server, or Sidekiq, so Karafka producer has a chance to dispatch all pending messages and gracefully close.
 
 You can read more about producer shutdown [here](Producing-messages#producer-shutdown).
+
+## Can I create all the topics needed by the Web UI manually?
+
+While it is possible to create the necessary topics manually using the Kafka command-line tools, it is generally recommended to use the `bundle exec karafka-web install` command instead.
+
+This is because the `karafka-web install` command ensures that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
+
+Overall, while it is technically possible to create the necessary topics for the Karafka Web-UI manually, it is generally recommended to use the `karafka-web install` command instead.
+
+If you need to create them manually, please include the settings listed [here](https://karafka.io/docs/Web-UI-Getting-Started/).
+
