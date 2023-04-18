@@ -6,7 +6,39 @@ This feature is handy in scenarios where a high volume of messages is being sent
 
 ## Creating Filters
 
-TBA
+Karafka filters need to inherit from the `Karafka::Pro::Processing::Filters::Base` and need to at least respond to two methods:
+
+- `#apply!` - a method that accepts an array of messages from a single topic partition for filtering. This array **needs** to be mutated using methods like `#delete_if`.
+- `#applied?` - did the filter limit the input messages array in any way? This should be true also in the case of no-altering but when post-execution action altering is required.
+
+If you plan to implement action-altering filters, you need to define two additional methods:
+
+- `action` - that needs to respond with `:skip`, `:pause` or `:seek` to inform Karafka what action to take after the batch processing.
+- `timeout` - `0` in case of non-pause actions or pause time in milliseconds.
+
+It is essential to remember that post-processing actions may also be applied when no data is left after filtering.
+
+Below is an example implementation of a filter that continuously removes messages with odd offsets. This filter sets the `@applied` in case even one message has been removed. 
+
+```ruby
+class OddRemoval < Karafka::Pro::Processing::Filters::Base
+  def apply!(messages)
+    @applied = false
+
+    messages.delete_if do |message|
+      remove = !(message.offset % 2).zero?
+      @applied = true if remove
+      remove
+    end
+  end
+end
+```
+
+If you are looking for more extensive examples, you can check out the implementations of:
+
+- `Karafka::Pro::Processing::Filters::Delayer` - used as a part of the [Delayed Jobs](Pro-Delayed-Topics) feature.
+- `Karafka::Pro::Processing::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Expiring-Messages) feature
+- `Karafka::Pro::Processing::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Rate-Limiting) feature.
 
 ### Filters lifecycle
 
