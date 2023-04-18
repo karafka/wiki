@@ -14,7 +14,29 @@ TBA
 
 ### Priority based action selection
 
-TBA
+To make the most of the Filtering API, it is crucial to have a deep understanding of how Karafka selects actions and the factors that determine their priority. While this may be a challenging aspect of the API to master, it is essential to build robust and efficient filters that can alter polling behaviors.
+
+Since each of the filters can impact the behavior of given topic partition polling, we need to ensure that they collectively do not collide with each other. This is done by applying the algorithm described below that selects proper action parameters.
+
+Each action consists of three elements that need to be selected:
+
+- `action` - defines how Karafka should behave after the data is processed or upon idle job execution. Karafka can either:
+    - `:skip` - in which case the default strategy action will be applied, like the filters would not exist.
+    - `:pause` - will pause processing for the `timeout` period.
+    - `:seek` - will move the offset to the desired location taken from the `:cursor` message.
+- `timeout` - value applicable for the `:pause` action that describes how long we should pause the consumption on a given topic partition.
+- `cursor` - The first message we need to get next time we poll or nil if not applicable.
+
+Here are the rules that the action selection follows:
+
+1. If none of the filters were applied, the action is always `:skip`.
+2. If any filter action is `:pause`, collectively, `:pause` will be applied.
+3. If any filter action is `:seek`, collectively, `:seek` will be applied.
+4. If no filters define action other than `:skip`, `:skip` will be applied.
+5. For `:pause`, minimum timeout out of the recommended will be selected.
+6. The message with the lowest offset always represents the' cursor' value.
+
+This algorithm ensures that all the expectations and constraints from any of the filters are always applicable collectively.
 
 ### Idle runs
 
