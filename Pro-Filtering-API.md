@@ -8,17 +8,23 @@ This feature is handy in scenarios where a high volume of messages is being sent
 
 TBA
 
+### Filters lifecycle
+
+Filter instance is created when Karafka encounters a given topic partition for the first time and is long-lived. While their primary responsibility is to filter the incoming data, they can also alter the flow behavior. Hence it is essential to remember that part of their operations happens **after** all the data is being processed at the moment of post-execution strategy application. This means that there may be a significant delay between the filtering and the invocation of `#action` that is equal to the collective processing time of all the data of a given topic partition.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/filtering_api_action_application.svg" />
+</p>
+<p align="center">
+  <small>*Lifecycle of filters, illustrating their post-processing usage for action altering.
+  </small>
+</p>
+
 ### Post execution action altering
 
-TBA
+By default, filters applied to messages do not alter the execution or polling behavior of Karafka. This means that even if a message is filtered out, Karafka will continue to poll for messages at the same rate. However, it is possible to alter this behavior by overwriting the `#action` method in a custom consumer. This method is responsible for executing the logic of a given message. By overwriting it, developers can modify the behavior of their Karafka application based on the result of the filtering. For example, they might choose to pause processing or resume from a particular message.
 
-### Priority based action selection
-
-To make the most of the Filtering API, it is crucial to have a deep understanding of how Karafka selects actions and the factors that determine their priority. While this may be a challenging aspect of the API to master, it is essential to build robust and efficient filters that can alter polling behaviors.
-
-Since each of the filters can impact the behavior of given topic partition polling, we need to ensure that they collectively do not collide with each other. This is done by applying the algorithm described below that selects proper action parameters.
-
-Each action consists of three elements that need to be selected:
+Each action consists of three elements that need to be present in case there is expectation on non-default post-execution action:
 
 - `action` - defines how Karafka should behave after the data is processed or upon idle job execution. Karafka can either:
     - `:skip` - in which case the default strategy action will be applied, like the filters would not exist.
@@ -26,6 +32,20 @@ Each action consists of three elements that need to be selected:
     - `:seek` - will move the offset to the desired location taken from the `:cursor` message.
 - `timeout` - value applicable for the `:pause` action that describes how long we should pause the consumption on a given topic partition.
 - `cursor` - The first message we need to get next time we poll or nil if not applicable.
+
+For example, in case you want to pause the processing, you need to return the following:
+
+- `:pause` as an `#action` result.
+- number of milliseconds to pause under `#timeout`.
+- message containing the desired offset from which to start processing after un-pausing under `#cursor`.
+
+**Note**: User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one.
+
+### Priority based action selection
+
+To make the most of the Filtering API, it is crucial to have a deep understanding of how Karafka selects actions and the factors that determine their priority. While this may be a challenging aspect of the API to master, it is essential to build robust and efficient filters that can alter polling behaviors.
+
+Since each of the filters can impact the behavior of given topic partition polling, we need to ensure that they collectively do not collide with each other. This is done by applying the algorithm described below that selects proper action parameters.
 
 Here are the rules that the action selection follows:
 
