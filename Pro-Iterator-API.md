@@ -44,12 +44,13 @@ end
 
 #### Subscribing to fetch the last N messages
 
-One everyday use case for Karafka Pro Iterator API is to fetch the last N messages from each topic partition and process them instead of starting from the beginning. This can be useful when you need to perform data analysis or processing on the most recent data without processing the entire dataset. By using the Iterator API to fetch the last N messages from each partition, you can save time and resources and focus on processing only the most relevant data.
+One everyday use case for Karafka Pro Iterator API is to fetch the last N messages from each topic partition and process them instead of starting from the beginning. This can be useful when you need to perform data analysis or processing on the most recent data without dealing with the entire dataset. By using the Iterator API to fetch the last N messages from each partition, you can save time and resources and focus on processing only the most relevant data.
 
 When subscribing with a negative offset, Karafka will compute the offset from which it should start for each partition independently, ensuring that at least the requested number of messages is being processed.
 
 ```ruby
-# Read and iterate
+# Read and iterate over the last 10 000 messages available in each
+# partition of the topic users_events
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => -10_000 
@@ -65,8 +66,31 @@ end
 
 #### Subscribing to particular partitions
 
+One reason it may be worth subscribing only to particular partitions of a topic using the iterator API is to reduce resource consumption. Consuming all topic partitions can be resource-intensive, especially when dealing with large amounts of data. By subscribing only to specific partitions, you can significantly reduce the amount of data that needs to be processed and reduce the overall resource consumption.
 
-#### Long-living subscriptions
+Another reason subscribing only to particular partitions can be helpful is to save time. When consuming all partitions of a topic, the iterator needs to search through all the partitions to find the data that matches the consumer's criteria. If you know to which partition the data you are looking for goes, you can skip the unnecessary search in other partitions, which can save a lot of time.
+
+To do so, you need to provide the list of the partitions with the initial offset. You can set the initial offset to `0` if you want to start from the beginning. If the `0` offset is unavailable, Karafka will seek to the beginning of the partition. You may also use negative per-partition offsets similar to how they use them for whole-topic subscriptions.
+
+```ruby
+# Go through two partitions: 0 and 5
+# Get 100 most recent messages for partition 0
+# Get 10 000 most recent messages for partition 5
+iterator = Karafka::Pro::Iterator.new(
+  {
+    'users_events' => {
+      0 => -100,
+      5 => -10_000
+    }
+  }
+)
+
+iterator.each do |message|
+  puts message.payload
+end
+```
+
+#### Long-living iterators
 
 TBA
 
