@@ -53,7 +53,7 @@
 53. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
 54. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
 55. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
-56. [Can I consume messages from a Rake task?](#tba)
+56. [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
 
 ## Does Karafka require Ruby on Rails?
 
