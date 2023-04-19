@@ -12,6 +12,7 @@ The iterator API requires you to create an instance of the `Karafka::Pro::Iterat
 
 - `topics` - A topic name or a hash with topics subscriptions settings
 - `settings` (keyword argument) - settings to pass to the consumer. Allow for altering the EOF behavior and other low-level settings.
+- `yield_nil` (keyword argument) - indicates if `nil` values should also be yielded. Useful for long-living scenarios. Defaults to `false`.
 
 ```ruby
 # A simple example to stream all partitions from beginning till the end
@@ -90,19 +91,69 @@ iterator.each do |message|
 end
 ```
 
-#### Long-living iterators
+### Long-living iterators
 
-TBA
+By default iterator instance will finish its work when it reaches end of data on all the partitions. This however may not be desired if you want to process data as it comes.
+
+You can alter this behavior by setting the `enable.partition.eof` to `false` and setting the `yield_nil` to `true`. Yielding nil is required because you need a way to exit the iterator even if no messages are being produced to the topic you are iterating on.
+
+```ruby
+iterator = Karafka::Pro::Iterator.new(
+  # Start from the last message available
+  { 'system_events' => -1 },
+  settings: { 'enable.partition.eof': false },
+  yield_nil: true
+)
+
+# Stop iterator when 100 messages are accumulated
+limit = 100
+buffer = []
+
+iterator.each do |message|
+  break if buffer.count >= limit
+
+  # Message may be a nil when `yield_nil` is set to true  
+  buffer << message if message
+end
+```
+
+**Note**: If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption. 
 
 ### Routing awareness
 
-TBA
+If you are iterating over topics defined in your `karafka.rb`, including those marked as inactive, the iterator will know what deserializer to use and will operate accordingly. If you are iterating over an unknown topic, defaults will be used.
+
+```ruby
+# karafka.rb
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic 'events' do
+      active false
+      deserializer XmlDeserializer
+    end
+  end
+end
+
+# Your iterator script
+
+iterator = Karafka::Pro::Iterator.new('events')
+
+iterator.each do |message|
+  # Karafka will know, to use the XmlDeserializer
+  puts message.payload
+end
+```
 
 ### Data iterating
 
 TBA
 
-#### Partition consumption early stopping
+#### Partition consumption early stop
 
 TBA
 
