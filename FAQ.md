@@ -53,6 +53,7 @@
 53. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
 54. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
 55. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
+56. [Can I consume messages from a Rake task?](#tba)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -726,3 +727,6 @@ Overall, while it is technically possible to create the necessary topics for the
 
 If you need to create them manually, please include the settings listed [here](https://karafka.io/docs/Web-UI-Getting-Started/).
 
+## Can I consume messages from a Rake task?
+
+**Yes**. Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.

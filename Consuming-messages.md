@@ -221,9 +221,11 @@ Please note that when using `#shutdown` with the filtering API or [Delayed Topic
 
 ## Inline API based consumption
 
-Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from rake tasks, custom scripts, Rails console, or any other Ruby processes.
+Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
 
 ```ruby
+# Note: you still need to configure your settings using `karafka.rb`
+
 # Select all the events of user with id 5 from last 10 000 messages of
 # each partition of the topic `users_events`
 
