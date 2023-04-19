@@ -218,3 +218,29 @@ end
 ```
 
 Please note that when using `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
+
+## Inline API based consumption
+
+Karafka Pro supports provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from rake tasks, custom scripts, Rails console, or any other Ruby processes.
+
+```ruby
+# Select all the events of user with id 5 from last 10 000 messages of
+# each partition of the topic `users_events`
+
+user_5_events = []
+
+iterator = ::Karafka::Pro::Iterator.new(
+  { 'users_events' => -1000 }
+)
+
+iterator.each do |message|
+  # Cast to integer because headers are always string
+  next unless message.headers['user-id'].to_i == 5
+
+  user_5_events << message
+end
+
+puts "There were #{user_5_events.count} messages"
+```
+
+You can read more about it [here](Pro-Iterator-API).
