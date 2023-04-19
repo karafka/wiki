@@ -178,15 +178,29 @@ end
 
 ### Integration with Ruby processes
 
-TBA
+The Karafka Pro Iterator API is designed to be simple and easy to use, and there is nothing special needed to get started with it. There are also no special recommendations when using it from any specific Ruby process type.
+
+However, it is important to remember that the Iterator API is designed for lightweight Kafka operations and should not be used to perform extensive Kafka operations during HTTP requests or similar. This is because performing extensive Kafka operations during requests can impact the application's performance and result in slower response times.
+
+Additionally, it is important to note that the Iterator API does not manage the offsets. This means that when you subscribe to a Kafka topic and partition, you must provide the initial offsets yourself.
 
 ### Scalability and Performance
 
-TBA
+It's important to note that the Karafka Pro iterator API is designed to be a straightforward way to access Kafka data using Ruby. However, it is a single-threaded API, meaning it does not provide any form of parallelizing data. This means that any data processing or analysis will be performed sequentially, which may impact performance when dealing with large amounts of data or performing extensive IO operations. While this can be limiting in some cases, the Iterator API's simplicity and ease of use make it an attractive option for developers looking for a quick and easy way to access Kafka data without the need for complex configuration or deployment of additional processes. If parallelization is required, alternative approaches, such as using the Karafka consumers feature, may need to be explored.
+
+The iterator should handle up to 100 000 messages per second.
 
 ## Example use-cases
 
-TBA
+- Custom Kafka data processing: The iterator API allows developers to create custom scripts that process Kafka data in a specific way. For example, you can extract specific fields from Kafka data, transform them into a different format, or perform calculations on the data.
+
+- Custom data analytics: With the iterator API, developers can perform custom data analytics on Kafka data, such as trend analysis, forecasting, or anomaly detection. This can be useful for detecting patterns in data that might take time to be noticeable.
+
+- Automated testing: With the iterator API, developers can automate the testing of Kafka data and verify that data is flowing correctly between different components of an application.
+
+- Custom reporting: By subscribing to specific Kafka topics and partitions, developers can create custom reports that provide insights into Kafka data. This can be useful for identifying trends or outliers in data.
+
+- Debugging: The iterator API can be used to quickly diagnose and fix issues with Kafka data by providing a simple way to inspect Kafka data in real time.
 
 ## Summary
 
