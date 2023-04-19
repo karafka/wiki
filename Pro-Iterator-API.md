@@ -149,13 +149,32 @@ iterator.each do |message|
 end
 ```
 
-### Data iterating
+### Partition consumption early stop
 
-TBA
+There may be situations when using the iterator where you may want to stop consuming data from specific partitions while continuing to consume data from other partitions. This can be useful in scenarios where you were looking for pieces of information in each of the partitions, and in some, you've already found it. In such scenarios, further processing of those partitions will not provide any benefits and will only consume resources.
 
-#### Partition consumption early stop
+To early stop one partition without stopping the iterator process, you can use the `#stop_partition` or `#stop_current_partition` methods.
 
-TBA
+```ruby
+iterator = Karafka::Pro::Iterator.new(
+  {
+    'users_events' => -10_000 
+  }
+)
+
+data_per_partition = Hash.new { |h, k| h[k] = [] }
+limit_per_partition = 20
+
+iterator.each do |message, iterator|
+  data_per_partition[message.partition] << message.payload
+
+  # Continue data collection for each partition until enough data
+  next if data_per_partition[message.partition].size < limit_per_partition
+
+  # Stop current partition from being fetched
+  iterator.stop_current_partition
+end
+```
 
 ### Integration with Ruby processes
 
