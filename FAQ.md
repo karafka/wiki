@@ -54,6 +54,7 @@
 54. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
 55. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
 56. [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
+57. [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -730,3 +731,7 @@ If you need to create them manually, please include the settings listed [here](h
 ## Can I consume messages from a Rake task?
 
 **Yes**. Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.
+
+## Do you provide an upgrade support when upgrading from EOL versions?
+
+While we always try to help anyone from the Karafka community with their problems, extensive upgrade support requiring involvement is part of our [Pro Support](Pro-Support#upgrade-support) offering.
