@@ -106,7 +106,6 @@ It is recommended to do one major upgrade at a time.
 * [Upgrading to 1.2](https://mensfeld.pl/2018/03/karafka-framework-1-2-0-release-notes-ruby-kafka/#upgrade-guide)
 * [Upgrading to 1.1](https://mensfeld.pl/2017/11/karafka-ruby-kafka-framework-1-1-0-release-notes/#incompatibilities-and-breaking-changes)
 
-
 ## Changelogs
 
 * [Karafka](https://github.com/karafka/karafka/blob/master/CHANGELOG.md)
@@ -114,3 +113,11 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Web](https://github.com/karafka/karafka-web/blob/master/CHANGELOG.md)
 * [Karafka-Testing](https://github.com/karafka/karafka-testing/blob/master/CHANGELOG.md)
 * [Karafka-Core](https://github.com/karafka/karafka-core/blob/master/CHANGELOG.md)
+
+## Code Docs
+
+* [Karafka](https://karafka.io/docs/code/karafka)
+* [WaterDrop](https://karafka.io/docs/code/waterdrop)
+* [Karafka-Web](https://karafka.io/docs/code/karafka-web)
+* [Karafka-Testing](https://karafka.io/docs/code/karafka-testing)
+* [Karafka-Core](https://karafka.io/docs/code/karafka-core)
