@@ -55,6 +55,7 @@
 55. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
 56. [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
 57. [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
+58. [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -735,3 +736,11 @@ If you need to create them manually, please include the settings listed [here](h
 ## Do you provide an upgrade support when upgrading from EOL versions?
 
 While we always try to help anyone from the Karafka community with their problems, extensive upgrade support requiring involvement is part of our [Pro Support](Pro-Support#upgrade-support) offering.
+
+## Why there are so many Karafka strategies in the codebase?
+
+Karafka provides several different strategies for consuming messages from Kafka, each with its own trade-offs and use cases. The reason for this is to give developers the flexibility to choose the strategy that best fits their specific requirements, and another reason is code simplification. Particular strategies often differ with one or two lines of code, but those changes significantly impact how Karafka operates. With separate strategies, each case is handled independently and can be debugged and understood in isolation.
+
+But why would Karafka need multiple strategies in the codebase? The answer lies in the diverse range of use cases that Karafka is designed to support.
+
+By supporting multiple strategies in the codebase, Karafka can cater to a wide range of use cases and provide developers with the flexibility they need to build the applications they want.
