@@ -56,6 +56,7 @@
 56. [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
 57. [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
 58. [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
+59. [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -744,3 +745,25 @@ Karafka provides several different strategies for consuming messages from Kafka,
 But why would Karafka need multiple strategies in the codebase? The answer lies in the diverse range of use cases that Karafka is designed to support.
 
 By supporting multiple strategies in the codebase, Karafka can cater to a wide range of use cases and provide developers with the flexibility they need to build the applications they want.
+
+## Why am I having problems running Karafka and Karafka Web with remote Kafka?
+
+Karafka and librdkafka are not designed to work over unstable and slow network connections, and these libraries contain internal timeouts on network operations that slow networks may impact. As a result, it is recommended to use a local Docker-based Kafka instance for local development. We are aware of this issue and are actively working to make these timeouts configurable in the future. Using a local Kafka instance for local development can help you avoid network-related problems and ensure a smoother development experience.
+
+## Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?
+
+If you have moved from Racecar to Karafka and your Confluent Datadog integration has stopped working, the consumer group name may not be aligned between the two. It is important to ensure that the consumer group name is the same in Racecar and Karafka. We recommend using a [custom consumer group mapper](/docs/Consumer-mappers) that does not inject the application name, as this can cause a mismatch:
+
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Aligns consumer group naming with Racecar
+    config.consumer_mapper = ->(raw_consumer_group_name) { raw_consumer_group_name }
+  end
+end
+```
+
+Another possible reason for the delay in reporting to Datadog is that when a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
+
+To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](docs/Monitoring-and-logging/#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.

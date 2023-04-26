@@ -22,8 +22,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 20. [How do you store, process, or transmit Payment Cardholder Information?](#how-do-you-store-process-or-transmit-payment-cardholder-information)
 21. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
 22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
-23. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-24. [Contact Info](#contact-info)
+23. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
+24. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+25. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -135,6 +136,12 @@ We do not hold your credit card information. All subscription management is done
 ## Where is the hosting infrastructure located?
 
 Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
+
+## Can I use Karafka Pro with an offline license without using the Karafka gem server?
+
+We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
+
+Karafka Pro can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional agreement, and there is an additional cost of USD 1000 yearly. Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on any third-party sources.
 
 ## Ethics, Privacy, and Information Usage
 
