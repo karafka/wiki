@@ -57,6 +57,7 @@
 57. [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
 58. [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
 59. [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
+60. [Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
 
 ## Does Karafka require Ruby on Rails?
 
