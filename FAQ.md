@@ -58,6 +58,7 @@
 58. [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
 59. [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
 60. [Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
+61. [Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?](#tba)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -768,3 +769,23 @@ end
 Another possible reason for the delay in reporting to Datadog is that when a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
 
 To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](docs/Monitoring-and-logging/#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
+
+## Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?
+
+If you encounter the following error:
+
+```
+========================================================================
+env: can't execute 'bash': No such file or directory
+========================================================================
+rake aborted!
+Failed to complete configure task
+/app/vendor/bundle/ruby/2.7.0/gems/mini_portile2-2.8.0/lib/mini_portile2/mini_portile.rb:460:in
+`block in execute'
+```
+
+you need to make sure that your Alpine-based image includes bash. Alpine Linux Docker image by default does **not** include it. To add it, please make sure to add this line before you run the `bundle install` process:
+
+```bash
+RUN apk update && apk add bash
+```
