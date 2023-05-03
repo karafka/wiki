@@ -63,6 +63,7 @@
 63. [Does Karafka Expiring Messages remove messages from Kafka?](#does-karafka-expiring-messages-remove-messages-from-kafka)
 64. [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
 65. [How do I specify Karafka's environment?](#how-do-i-specify-karafkas-environment)
+66. [How can I configure WaterDrop with SCRAM?](#how-can-i-configure-waterdrop-with-scram)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -844,3 +845,8 @@ You can read more about this topic [here](https://github.com/confluentinc/librdk
 ## How do I specify Karafka's environment?
 
 Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](https://karafka.io/docs/Env-Variables/).
+
+
+## How can I configure WaterDrop with SCRAM?
+
+You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment/#karafka-configuration-for-aws-msk-sasl-ssl).
