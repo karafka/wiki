@@ -62,6 +62,7 @@
 62. [Can I intercept WaterDrop messages in tests?](#can-i-intercept-waterdrop-messages-in-tests)
 63. [Does Karafka Expiring Messages remove messages from Kafka?](#does-karafka-expiring-messages-remove-messages-from-kafka)
 64. [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
+65. [How do I specify Karafka's environment?](#how-do-i-specify-karafkas-environment)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -839,3 +840,7 @@ If the method call is successful, it indicates that the Karafka application was 
 "Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, it's essential to use additional monitoring and alerting mechanisms to ensure the reliability and availability of your Kafka cluster.
 
 You can read more about this topic [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#is-kafka-up).
+
+## How do I specify Karafka's environment?
+
+Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](https://karafka.io/docs/Env-Variables/).
