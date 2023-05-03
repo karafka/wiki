@@ -59,6 +59,7 @@
 59. [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
 60. [Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
 61. [Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?](#why-am-i-getting-env-cant-execute-bash-when-installing-karafka-in-an-alpine-docker)
+62. [Can I intercept WaterDrop messages in tests?](#can-i-intercept-waterdrop-messages-in-tests)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -789,3 +790,30 @@ you need to make sure that your Alpine-based image includes bash. Alpine Linux D
 ```bash
 RUN apk update && apk add bash
 ```
+
+## Can I intercept WaterDrop messages in tests?
+
+**Yes**. You need to configure WaterDrop producer to use the `karafka-testing` spec dummy client:
+
+```ruby
+require 'karafka/testing/errors'
+require 'karafka/testing/spec_consumer_client'
+
+RSpec.describe MyTestedLib do
+  subject(:my_lib) { described_class.new }
+
+  let(:karafka_producer_client) { Karafka::Testing::SpecProducerClient.new(self) }
+
+  before do
+    allow(MY_KARAFKA_PRODUCER).to receive(:client).and_return(karafka_producer_client)
+  end
+
+  it 'expect to dispatch one message' do
+    my_lib.do_something
+
+    expect(karafka_producer_client.messages.count).to eq(1)
+  end
+end
+```
+
+You can find the `SpecProducerClient` API [here](https://karafka.io/docs/code/karafka-testing/Karafka/Testing/SpecProducerClient.html).
