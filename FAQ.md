@@ -61,6 +61,7 @@
 61. [Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?](#why-am-i-getting-env-cant-execute-bash-when-installing-karafka-in-an-alpine-docker)
 62. [Can I intercept WaterDrop messages in tests?](#can-i-intercept-waterdrop-messages-in-tests)
 63. [Does Karafka Expiring Messages remove messages from Kafka?](#does-karafka-expiring-messages-remove-messages-from-kafka)
+64. [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -828,3 +829,13 @@ Karafka's [Expiring Messages](karafka.io/docs/Pro-Expiring-Messages/) functional
 However, it's important to note that Karafka's Expiring Messages functionality does not remove messages from Kafka itself, and it only removes messages from Karafka's internal processing queue. Therefore, the retention policy of the Kafka topic will still apply, and the message will remain in Kafka until it expires based on the topic's retention policy.
 
 To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](karafka.io/docs/Topics-management-and-administration/#declarative-topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
+
+## Can you actively ping the cluster from Karafka to check the cluster availability?
+
+**Yes**, you can use Karafka's Admin API to retrieve cluster information and check the reachability of the Kafka cluster. The `Karafka::Admin.cluster_info` method can be used to retrieve metadata about the Kafka cluster, including details about brokers, topics, and partitions.
+
+If the method call is successful, it indicates that the Karafka application was able to connect to the Kafka cluster and retrieve metadata about the brokers and topics. However, it's important to note that this does not necessarily mean everything with the cluster is okay.
+
+"Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, it's essential to use additional monitoring and alerting mechanisms to ensure the reliability and availability of your Kafka cluster.
+
+You can read more about this topic [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#is-kafka-up).
