@@ -154,3 +154,16 @@ Revocation awareness is not part of the standard Active Job adapter. We recommen
 ## Queue Prefixes
 
 Active Job allows you to configure a queue prefix. Karafka does not support prefixes at the moment.
+
+## Current Attributes
+
+The Karakfa adapter supports the use of [CurrentAttributes](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html). You just need to put this in your `karafka.rb` config file (or initializer):
+```ruby
+require 'karafka/active_job/current_attributes'
+Karafka::ActiveJob::CurrentAttributes.persist('YourCurrentAttributesClass')
+```
+
+Now when you set your current attributes and create a background job, it will execute with your current attributes set.
+
+The way Karafka handles CurrentAttributes is by adding a `cattr` attribute to the serialized job before pushing it to Kafka. This attribute is then deserialized by the ActiveJob consumer and set in your CurrentAttributes class before executing the job.
+This approach was based on Mike Perham's approach on Sidekiq: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
