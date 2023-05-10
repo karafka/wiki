@@ -371,7 +371,7 @@ end
 
 Karafka `client_id` is, by default, used for two things:
 
-- Building ids for consumer groups using the default [consumer mapper](/docs/Consumer-mappers).
+- Building ids for consumer groups using the default [consumer mapper](https://karafka.io/docs/Consumer-mappers).
 - Populating kafka `client.id` value.
 
 kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging.
@@ -761,8 +761,7 @@ Karafka and librdkafka are not designed to work over unstable and slow network c
 
 ## Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?
 
-If you have moved from Racecar to Karafka and your Confluent Datadog integration has stopped working, the consumer group name may not be aligned between the two. It is important to ensure that the consumer group name is the same in Racecar and Karafka. We recommend using a [custom consumer group mapper](/docs/Consumer-mappers) that does not inject the application name, as this can cause a mismatch:
-
+If you have moved from Racecar to Karafka and your Confluent Datadog integration has stopped working, the consumer group name may not be aligned between the two. It is important to ensure that the consumer group name is the same in Racecar and Karafka. We recommend using a [custom consumer group mapper](https://karafka.io/docs/Consumer-mappers) that does not inject the application name, as this can cause a mismatch:
 
 ```ruby
 class KarafkaApp < Karafka::App
