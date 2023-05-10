@@ -64,6 +64,8 @@
 64. [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
 65. [How do I specify Karafka's environment?](#how-do-i-specify-karafkas-environment)
 66. [How can I configure WaterDrop with SCRAM?](#how-can-i-configure-waterdrop-with-scram)
+67. [Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?](#why-am-i-getting-a-local-broker-transport-failure-transport-error-with-the-disconnected-info)
+68. [Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?](#why-am-i-getting-a-all-broker-connections-are-down-all_brokers_down-error-together-with-the-disconnected-info)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -850,3 +852,51 @@ Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to det
 ## How can I configure WaterDrop with SCRAM?
 
 You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment/#karafka-configuration-for-aws-msk-sasl-ssl).
+
+## Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?
+
+If you are seeing following or similar error:
+
+```
+rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
+librdkafka internal error occurred: Local: Broker transport failure (transport)
+```
+
+The error message you mentioned may be related to the connection reaper in Kafka disconnecting because the TCP socket has been idle for a long time. The connection reaper is a mechanism in Kafka that monitors the idle TCP connections and disconnects them if they exceed a specific time limit. This is done to free up resources on the broker side and to prevent the accumulation of inactive connections.
+
+If the client application is not sending or receiving data over the TCP connection for a long time, the connection reaper may kick in and disconnect the client from the broker.
+
+However, this disconnection does not mean that any produced data will be lost. When the client application reconnects to the broker, it can resume sending or receiving messages from where it left off. 
+
+Suppose your data production patterns are not stable, and there are times when your client application is not producing any data to Kafka for over 10 minutes. In that case, you may want to consider setting the `log.connection.close` value to `false` in your configuration. This configuration parameter controls whether the client logs a message when a connection is closed by the broker. By default, the client will log a message indicating that the connection was closed, which can generate false alarms if the connection was closed due to inactivity by the connection reaper.
+
+Setting `log.connection.close` to false will suppress these log messages and prevent the error from being raised. It's important to note that even if you set `log.connection.close` to `false,` critical non-recoverable errors that occur in Karafka and WaterDrop will still be reported via the instrumentation pipeline.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      # other settings...
+      'log.connection.close': false
+    }
+  end
+end
+```
+
+Please note that you can control the `connections.max.idle.ms` on both Kafka and Karafka consumer / WaterDrop producer basis.
+
+You can read more about this issue [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#why-am-i-seeing-receive-failed-disconnected).
+
+## Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?
+
+When you see both the `Disconnected` error and the `all_brokers_down` error, it means that the TCP connection to the cluster was closed and that you no longer have any active connections.
+
+Please read the explanation of the previous question to understand the reasons and get tips on mitigating this issue.
+
+```
+rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
+librdkafka internal error occurred: Local: Broker transport failure (transport)
+Error occurred: Local: All broker connections are down (all_brokers_down) - librdkafka.error
+```
