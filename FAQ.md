@@ -66,6 +66,7 @@
 66. [How can I configure WaterDrop with SCRAM?](#how-can-i-configure-waterdrop-with-scram)
 67. [Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?](#why-am-i-getting-a-local-broker-transport-failure-transport-error-with-the-disconnected-info)
 68. [Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?](#why-am-i-getting-a-all-broker-connections-are-down-all_brokers_down-error-together-with-the-disconnected-info)
+69. [What is the difference between `partition_key` and `key` in the WaterDrop gem?](#what-is-the-difference-between-partition_key-and-key-in-the-waterdrop-gem)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -899,3 +900,10 @@ rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
 librdkafka internal error occurred: Local: Broker transport failure (transport)
 Error occurred: Local: All broker connections are down (all_brokers_down) - librdkafka.error
 ```
+
+## What is the difference between `partition_key` and `key` in the WaterDrop gem?
+
+In the WaterDrop gem, `partition_key` and `key` are two distinct options that can be used to set message keys, but they have different purposes and work slightly differently.
+
+- `partition_key` is used to determine the partition to which a message is sent and computes the destination partition in the Ruby process using the configured `partitioner` algorithm. The partitioner calculates a hash value based on the partition_key value and uses this hash value to select a partition for the message.
+- `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which ensures that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment. 
