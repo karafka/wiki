@@ -161,9 +161,11 @@ The Karakfa adapter supports the use of [CurrentAttributes](https://api.rubyonra
 ```ruby
 require 'karafka/active_job/current_attributes'
 Karafka::ActiveJob::CurrentAttributes.persist('YourCurrentAttributesClass')
+# or multiple current attributes
+Karafka::ActiveJob::CurrentAttributes.persist(['YourCurrentAttributesClass', 'AnotherCurrentAttributesClass'])
 ```
 
 Now when you set your current attributes and create a background job, it will execute with your current attributes set.
 
 The way Karafka handles CurrentAttributes is by adding a `cattr` attribute to the serialized job before pushing it to Kafka. This attribute is then deserialized by the ActiveJob consumer and set in your CurrentAttributes class before executing the job.
-This approach was based on Mike Perham's approach on Sidekiq: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
+This approach is based on Sidekiq's approach to persisting current attributes: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
