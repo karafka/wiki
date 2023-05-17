@@ -157,15 +157,32 @@ Active Job allows you to configure a queue prefix. Karafka does not support pref
 
 ## Current Attributes
 
-The Karakfa adapter supports the use of [CurrentAttributes](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html). You just need to put this in your `karafka.rb` config file (or initializer):
+The Karafka adapter supports the use of [CurrentAttributes](https://api.rubyonrails.org/classes/ActiveSupport/CurrentAttributes.html). You just need to put this in your `karafka.rb` config file (or initializer):
 ```ruby
 require 'karafka/active_job/current_attributes'
 Karafka::ActiveJob::CurrentAttributes.persist('YourCurrentAttributesClass')
 # or multiple current attributes
-Karafka::ActiveJob::CurrentAttributes.persist(['YourCurrentAttributesClass', 'AnotherCurrentAttributesClass'])
+Karafka::ActiveJob::CurrentAttributes.persist('YourCurrentAttributesClass', 'AnotherCurrentAttributesClass')
 ```
 
-Now when you set your current attributes and create a background job, it will execute with your current attributes set.
+Now when you set your current attributes and create a background job, it will execute with them set.
 
-The way Karafka handles CurrentAttributes is by adding a `cattr` attribute to the serialized job before pushing it to Kafka. This attribute is then deserialized by the ActiveJob consumer and set in your CurrentAttributes class before executing the job.
+```ruby
+class Current < ActiveSupport::CurrentAttributes
+  attribute :user_id
+end
+
+class Job < ActiveJob::Base
+  def perform
+    puts 'user_id: #{Current.user_id}'
+  end
+end
+
+Karafka::ActiveJob::CurrentAttributes.persist('Current')
+Current.user_id = 1
+Job.perform_later # the job will output "user_id: 1"
+```
+
+The way Karafka handles CurrentAttributes is by including them as part of the job serialization process before pushing it to Kafka. These attributes are then deserialized by the ActiveJob consumer and set back in your CurrentAttributes classes before executing the job.
+
 This approach is based on Sidekiq's approach to persisting current attributes: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
