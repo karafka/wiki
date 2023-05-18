@@ -4,6 +4,7 @@ Karafka is currently being used in production with the following deployment meth
   - [Docker](#docker)
   - [AWS with MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
   - [Heroku](#heroku)
+  - [Kubernetes](#kubernetes)
 
 Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
@@ -421,3 +422,94 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 **Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
 
 **Solution 2**: Make sure you've created appropriate consumer groups **prior** to them being used via the Heroku CLI.
+
+## Kubernetes
+
+Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
+
+### Basic deployment spec
+
+Below you can find the basic deployment spec for a Karafka consumer process:
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karafka-deployment
+  labels:
+    app: app-name
+spec:
+  replicas: 5 # Number of processes you want to have
+  selector:
+    matchLabels:
+      app: app-name
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: app-name
+    spec:
+      containers:
+        - name: app-name
+          image: app-docker-image
+          command: ["bundle", "exec", "karafka", "server"]
+          env:
+            - name: KARAFKA_ENV
+              value: production
+```
+
+When deploying Karafka consumers using Kubernetes, it's generally not recommended to use strategies other than `Replace`. This is because other strategies, such as `RollingUpdate` may cause extensive rebalancing among the consumer processes. This can lead to slow deployments and double-processing of messages, which can be a significant problem.
+
+For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue. 
+
+Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Replace` strategy and configuring Karafka static group memberships and `cooperative.sticky` rebalance strategy settings, you can ensure that your Karafka application stays reliable and performant, even during large-scale deployments.
+
+### Liveness
+
+There are many ways to define a liveness probe for a Kubernetes deployment, and the best approach depends on the application's specific requirements. We recommend using the HTTP liveness probe, as this is the most common type of liveness probe, which checks if the container is alive by sending an HTTP request to a specific endpoint. Karafka provides a base listener that starts a minimal HTTP server exposing basic health information about the running process using following HTTP codes:
+
+- `204` - Everything works as expected.
+- `500` - Karafka process is not behaving as expected and should be restarted.
+
+Karafka Kubernetes liveness listener can be initialized with two important thresholds: `consuming_ttl` and `polling_ttl`. These thresholds are used to determine if Karafka or the user code consuming from Kafka hangs for an extended time.
+
+If the `consuming_ttl` threshold is exceeded, it suggests that the user code consuming from Kafka is taking too long. Similarly, if the `polling_ttl` is exceeded, this means that the polling does not happen often enough. In both cases, when either of these thresholds is surpassed, the liveness endpoint configured in Karafka will respond with an HTTP 500 status code.
+
+This configuration allows you to handle scenarios where Karafka hangs, or the user code consuming from Kafka becomes unresponsive. By setting appropriate values for `consuming_ttl` and `polling_ttl`, you can tailor the liveness probe to detect and handle these situations effectively.
+
+Below you can find an example of how to require, configure and connect the liveness HTTP listener.
+
+1. Put following code at the end of your `karafka.rb` file:
+
+```ruby
+require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
+
+listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
+  # If hostname not specified or nil, will bind to all the interfaces
+  hostname: '192.168.1.100',
+  port: 3_000,
+  # Make sure polling happens at least once every 5 minutes
+  polling_ttl: 300_000,
+  # Make sure that consuming does not hang and does not take more than 1 minute
+  consuming_ttl: 60_000
+)
+
+Karafka.monitor.subscribe(listener)
+```
+
+2. Expand your deployment spec with the following `livenessProbe` section:
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3_000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+```
+
+The provided liveness listener is a generic implementation designed to handle common scenarios. However, it may not address all cases specific to your application's requirements. Fortunately, the listener serves as a solid foundation that can be customized and extended to create a more complex and tailored solution.
+
+By using the provided listener as a starting point, you can have the flexibility to build your liveness probe that accommodates your unique needs. This can involve adding additional checks, implementing custom logic, or integrating with other monitoring systems to create a more comprehensive and sophisticated liveness solution.
