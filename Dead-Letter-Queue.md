@@ -48,7 +48,7 @@ Another benefit of delaying the processing of messages dispatched to a DLQ topic
 
 Overall, delaying the processing of messages dispatched to a DLQ topic can help ensure the stability and reliability of your system while also giving your team the time and resources needed to address underlying issues and prevent future failures.
 
-You can read more about the Karafka [Delayed Topics] feature [here](Pro-Delayed-Topics).
+You can read more about the Karafka Delayed Topics feature [here](Pro-Delayed-Topics).
 
 ## Disabling retries
 
