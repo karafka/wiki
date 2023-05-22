@@ -488,7 +488,7 @@ require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
 listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
   # If hostname not specified or nil, will bind to all the interfaces
   hostname: '192.168.1.100',
-  port: 3_000,
+  port: 3000,
   # Make sure polling happens at least once every 5 minutes
   polling_ttl: 300_000,
   # Make sure that consuming does not hang and does not take more than 1 minute
@@ -504,7 +504,7 @@ Karafka.monitor.subscribe(listener)
 livenessProbe:
   httpGet:
     path: /
-    port: 3_000
+    port: 3000
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
