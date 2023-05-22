@@ -164,9 +164,51 @@ end
 
 **Note**: Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
+## Virtual Offset Management
+
+When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling seamless and streamlined data flow within your system.
+
+This feature operates on a few layers to provide as good warranties as possible while ensuring that each virtual partition can work independently. Below you can find a detailed explanation of each component making Virtual Offset Management.
+
+### Collective State Materialization
+
+While each of the Virtual Partitions operates independently, they are bound together to a single Kafka Partition. Collective State Materialization transforms the knowledge of messages marked as consumed in each virtual partition into a Kafka offset that can be committed. This process involves computing the highest possible offset by considering all the messages from all the virtual partitions marked as consumed. By analyzing the offsets across virtual partitions, Karafka can determine the maximum offset reached, allowing for an accurate and reliable offset commit to Kafka. This ensures that the state of consumption is properly synchronized and maintained.
+
+Whenever you `mark_as_consumed` when using Virtual Partitions, Karafka will ensure that Kafka receives the highest possible continuous offset matching the underlying partition.
+
+Below you can find a few examples of how Karafka transforms messages marked as consumed in virtual partitions into an appropriate offset that can be committed to Kafka.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collective_state.svg" />
+</p>
+
+### Virtual Partition Collective Marking
+
+When a message is marked as consumed, Karafka recognizes that all previous messages in that virtual partition have been processed as well, even if they were not explicitly marked as consumed.
+
+This functionality seamlessly integrates with collective marking to materialize the highest possible Kafka offset. With collective marking, Karafka can efficiently track the progress of message consumption across different virtual consumers.
+
+Below you can find an example illustrating which of the messages will be virtually marked as consumed when given message in a virtual partition is marked.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collective_marking.svg" />
+</p>
+
+### Reprocessing Exclusions
+
+When using Virtual Partitions, Karafka automatically skips previously consumed messages upon retries. This feature ensures that in the event of an error during message processing in one virtual partition, Karafka will not attempt to reprocess the messages that have already been marked as consumed in any of the virtual partitions.
+
+By automatically skipping already consumed messages upon encountering an error, Karafka helps ensure the reliability and consistency of message processing. It prevents the application from reprocessing messages unnecessarily and avoids potential data duplication issues during error recovery scenarios.
+
+This behavior is advantageous in scenarios where message processing involves external systems or operations that are not idempotent. Skipping previously consumed messages reduces the risk of executing duplicate actions and helps maintain the integrity of the overall system.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapsed_with_exclusions.svg" />
+</p>
+
 ## Behaviour on errors
 
-For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the first offset received from the regular partition.
+For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](TBA) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_error_handling.svg" />
@@ -188,9 +230,7 @@ class EventsConsumer < ApplicationConsumer
     messages.each do |message|
       Event.store!(message.payload)
 
-      # When consumer operates in a collective mode, strong Kafka
-      # ordering warranties apply throughout all the messages
-      mark_as_consumed(message) if collapsed?
+      puts 'We operate in a collapsed mode' if collapsed?
     end
   end
 end
@@ -233,7 +273,7 @@ Virtual Partitions provide three types of warranties in regards to order:
 
 - Standard warranties per virtual partitions group - that is, from the "outside" of the virtual partitions group Kafka ordering warranties are preserved.
 - Inside each virtual partition - the partitioner order is always preserved. That is, offsets may not be continuous (1, 2, 3, 4), but lower offsets will always precede larger (1, 2, 4, 9). This depends on the `virtual_partitions` `partitioner` used for partitioning a given topic.
-- Strong Kafka ordering warranties when operating in the `collapsed` mode.
+- Strong Kafka ordering warranties when operating in the `collapsed` mode with automatic exclusion of messages virtually marked as consumed.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.svg" />
@@ -246,10 +286,6 @@ Virtual Partitions provide three types of warranties in regards to order:
 ## Monitoring
 
 Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
-
-## Manual offset management
-
-Manual offset management as well as checkpointing during virtual partitions execution is **not** recommended. Virtual Partitions group order is not deterministic, which means that if you mark the message as processed from a virtual batch, it may not mean that messages with earlier offset from a different virtual partition were processed.
 
 ## Shutdown and revocation handlers
 
