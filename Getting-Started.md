@@ -3,8 +3,8 @@
 2. Add Karafka to your Gemfile:
 
 ```bash
-# Make sure to install Karafka 2.0 as Karafka 1.4 is no longer maintained
-bundle add karafka --version ">= 2.0.34"
+# Make sure to install Karafka 2.1 as Karafka 1.4 is no longer maintained
+bundle add karafka --version ">= 2.1.0"
 ```
 
 3. Install Karafka (works for both Rails and standalone applications) by running:
