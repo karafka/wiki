@@ -69,6 +69,7 @@
 69. [What is the difference between `partition_key` and `key` in the WaterDrop gem?](#what-is-the-difference-between-partition_key-and-key-in-the-waterdrop-gem)
 70. [How can I set up WaterDrop with SCRAM?](#how-can-i-set-up-waterdrop-with-scram)
 71. [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
+72. [How can I consume all the messages from a Kafka topic without a consumer process?](#how-can-i-consume-all-the-messages-from-a-kafka-topic-without-a-consumer-process)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -937,3 +938,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
 **Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](/docs/Pro-Virtual-Partitions/#virtual-offset-management) works.
+
+## How can I consume all the messages from a Kafka topic without a consumer process?
+
+Karafka has an Iterator API for that. You can read about it [here](https://karafka.io/docs/Pro-Iterator-API/).
