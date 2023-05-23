@@ -68,6 +68,7 @@
 68. [Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?](#why-am-i-getting-a-all-broker-connections-are-down-all_brokers_down-error-together-with-the-disconnected-info)
 69. [What is the difference between `partition_key` and `key` in the WaterDrop gem?](#what-is-the-difference-between-partition_key-and-key-in-the-waterdrop-gem)
 70. [How can I set up WaterDrop with SCRAM?](#how-can-i-set-up-waterdrop-with-scram)
+71. [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -912,3 +913,27 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 ## How can I set up WaterDrop with SCRAM?
 
 You can configure it the same way as Karafka support for SCRAM described [here](/docs/Deployment/#karafka-configuration-for-aws-msk-sasl-ssl).
+
+## Is there a way to mark messages as consumed in bulk?
+
+In Kafka, there is no explicit need to mark messages as "consumed" in bulk because Kafka's offset mechanism takes care of this automatically.
+
+The moment you consume a message from a specific topic partition at a particular offset, Kafka considers all previous messages up to that offset as consumed.
+
+Kafka maintains a commit log that records the offset of each message within a topic partition. When a consumer reads messages from a partition, it keeps track of the offset of the last consumed message. This offset is then used to resume consumption from the same point if the consumer restarts or fails.
+
+When you mark a message as consumed with a higher offset, it implies that all previous messages with lower offsets have been successfully processed and considered consumed. Kafka's offset mechanism ensures that the consumer's offset is moved accordingly, indicating that those messages have been processed.
+
+While Kafka's offset mechanism automatically tracks the progress of message consumption and allows you to resume from the last consumed offset, there can be scenarios where explicitly marking each message as consumed becomes beneficial. This is particularly relevant when messages are processed sequentially, with a significant time gap between consuming each message.
+
+In such cases, marking each message as consumed provides finer-grained control over the consuming progress. By explicitly acknowledging the consumption of each message, you ensure that even if a crash or failure occurs during processing, the consumer can resume from the last successfully processed message.
+
+Here's an explanation of the benefits of marking each message as consumed:
+
+- Granular Progress Tracking: Marking each message as consumed allows you to have a more detailed view of the processing progress. You can precisely identify the last processed message and easily determine the remaining messages that need to be processed.
+
+- Enhanced Fault Tolerance: In the event of a crash or failure, explicitly marking each message as consumed ensures that the consumer can restart from the last processed message rather than starting from the beginning or relying solely on the offset mechanism. This reduces duplicated processing and improves fault tolerance.
+
+- Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
+
+**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](/docs/Pro-Virtual-Partitions/#virtual-offset-management) works.
