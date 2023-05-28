@@ -854,7 +854,7 @@ Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to det
 
 ## How can I configure WaterDrop with SCRAM?
 
-You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment/#karafka-configuration-for-aws-msk-sasl-ssl).
+You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?
 
@@ -937,7 +937,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](/docs/Pro-Virtual-Partitions/#virtual-offset-management) works.
+**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
