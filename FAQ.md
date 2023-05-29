@@ -973,6 +973,6 @@ Yes.
 
 There are a few ways to do that:
 
-1. Use the [Iterator API](/docs/Pro-Iterator-API/) to run a one-time job alongside your regular Karafka consumption.
-2. Use the `#seek` consumer method in combination with [Admin watermark API](/docs/Topics-management-and-administration#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+1. Use the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) to run a one-time job alongside your regular Karafka consumption.
+2. Use the `#seek` consumer method in combination with [Admin watermark API](https://karafka.io/docs/Topics-management-and-administration#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 3. Create a new consumer group that will start from the beginning.
