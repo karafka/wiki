@@ -71,6 +71,7 @@
 71. [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
 72. [How can I consume all the messages from a Kafka topic without a consumer process?](#how-can-i-consume-all-the-messages-from-a-kafka-topic-without-a-consumer-process)
 73. [What does `Broker: Invalid message (invalid_msg)` error mean?](#what-does-broker-invalid-message-invalid_msg-error-mean)
+74. [Is there an option in Karafka to re-consume all the messages from a topic even though all were already consumed?](#is-there-an-option-in-karafka-to-re-consume-all-the-messages-from-a-topic-even-though-all-were-already-consumed)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -965,3 +966,13 @@ org.apache.kafka.common.errors.CorruptRecordException:
 ```
 
 This exception indicates a record has failed its internal CRC check; this generally indicates network or disk corruption.
+
+## Is there an option in Karafka to re-consume all the messages from a topic even though all were already consumed?
+
+Yes.
+
+There are a few ways to do that:
+
+1. Use the [Iterator API](/docs/Pro-Iterator-API/) to run a one-time job alongside your regular Karafka consumption.
+2. Use the `#seek` consumer method in combination with [Admin watermark API](/docs/Topics-management-and-administration#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+3. Create a new consumer group that will start from the beginning.
