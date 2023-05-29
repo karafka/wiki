@@ -70,6 +70,7 @@
 70. [How can I set up WaterDrop with SCRAM?](#how-can-i-set-up-waterdrop-with-scram)
 71. [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
 72. [How can I consume all the messages from a Kafka topic without a consumer process?](#how-can-i-consume-all-the-messages-from-a-kafka-topic-without-a-consumer-process)
+73. [What does `Broker: Invalid message (invalid_msg)` error mean?](#what-does-broker-invalid-message-invalid_msg-error-mean)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -942,3 +943,25 @@ Here's an explanation of the benefits of marking each message as consumed:
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
 Karafka has an Iterator API for that. You can read about it [here](https://karafka.io/docs/Pro-Iterator-API/).
+
+## What does `Broker: Invalid message (invalid_msg)` error mean?
+
+If you see the following error in your error tracking system:
+
+```
+ERROR -- : Listener fetch loop error: Broker: Invalid message (invalid_msg)
+ERROR -- : gems/karafka-rdkafka-0.12.1/lib/rdkafka/consumer.rb:432:in `poll'
+ERROR -- : gems/karafka-2.0.41/lib/karafka/connection/client.rb:368:in `poll'
+```
+
+It indicates that the broker contains a message that it cannot parse or understand. This error usually occurs when there is a mismatch or inconsistency in the format or structure of the message or when the message is corrupted.
+
+It is advised to check the Kafka logs around the polling time, as it may be a Kafka issue. You may encounter the following or similar errors:
+
+```
+org.apache.kafka.common.errors.CorruptRecordException:
+  Found record size 0 smaller than minimum record overhead (14)
+  in file /var/lib/my_topic-0/00000000000019077350.log.
+```
+
+This exception indicates a record has failed its internal CRC check; this generally indicates network or disk corruption.
