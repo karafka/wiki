@@ -916,7 +916,7 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 
 ## How can I set up WaterDrop with SCRAM?
 
-You can configure it the same way as Karafka support for SCRAM described [here](/docs/Deployment/#karafka-configuration-for-aws-msk-sasl-ssl).
+You can configure it the same way as Karafka support for SCRAM described [here](https://karafka.io/docs/Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Is there a way to mark messages as consumed in bulk?
 
@@ -940,7 +940,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
+**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](https://karafka.io/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
