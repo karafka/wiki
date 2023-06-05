@@ -19,6 +19,7 @@
 
 **Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Karafka framework 2.1 announcement](https://mensfeld.pl/2023/06/karafka-framework-2-1-announcement/)
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
 * [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
 * [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)

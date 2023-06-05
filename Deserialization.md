@@ -186,7 +186,6 @@ AvroProducer.produce_async(
 )
 ```
 
-
 ### Deserialization using Avro
 
 When receiving Avro-encoded messages in a Karafka consumer, you'll need to deserialize these messages back into a usable form. One efficient way to handle this is by creating a custom Karafka deserializer.
