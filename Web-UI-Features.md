@@ -74,12 +74,13 @@ Data explorer allows users to view and explore the data produced to Kafka. It un
 
 **Note**: More backtrace and high-scale features are available in our Pro offering.
 
-A Karafka errors page UI view is a user interface that allows users to inspect errors occurring during a Kafka-based application built with Karafka. It includes the following information:
+A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`. It includes the following information:
 
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
 - `Process name` - Name of the process on which the error occurred.
 - `Error` - Error type.
 - `Occurred at` - Moment in time when the error occurred.
+- `Backtrace` (Pro only) - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
