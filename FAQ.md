@@ -75,6 +75,7 @@
 75. [How can I make sure, that `Karafka.producer` does not block/delay my processing?](#how-can-i-make-sure-that-karafkaproducer-does-not-blockdelay-my-processing)
 76. [Can `at_exit` be used to close the WaterDrop producer?](#can-at_exit-be-used-to-close-the-waterdrop-producer)
 77. [Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?](#why-when-dlq-is-used-with-max_retries-set-to-0-karafka-also-applies-a-back-off)
+78. [Can I use `rdkafka` and `karafka-rdkafka` together in the same project?](#can-i-use-rdkafka-and-karafka-rdkafka-together-in-the-same-project)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1020,3 +1021,7 @@ By applying a back-off strategy, Karafka ensures that a pause is introduced betw
 For instance, if the error were due to a sudden spike in CPU usage, the back-off time would give the CPU a chance to cool down. If the error was due to a momentary network issue, the pause allows time for the network to stabilize.
 
 Without the back-off mechanism, even if retries are not requested, Karafka would move on to the next message immediately after an error. If errors are frequent, this could lead to the system getting into a state where it is constantly encountering errors and never getting a chance to recover. This, in turn, could lead to an overload of the system, causing degraded performance or even a complete system crash.
+
+## Can I use `rdkafka` and `karafka-rdkafka` together in the same project?
+
+**No**. `karafka-rdkafka` is a fork of `rdkafka` that includes many stability and performance enhancements while having a compatible API. If you try to use both, they will conflict with each other.
