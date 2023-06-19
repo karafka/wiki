@@ -141,7 +141,9 @@ Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafk
 
 We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
-Karafka Pro can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional agreement, and there is an additional cost of USD 1000 yearly. Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on any third-party sources.
+Karafka Pro can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional agreement, and there is an additional cost of USD 2000 yearly (USD 2995 in total).
+
+Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on any third-party sources.
 
 ## Ethics, Privacy, and Information Usage
 

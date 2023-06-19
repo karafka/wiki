@@ -2,11 +2,7 @@ Karafka provides several features that can work together. Unless explicitly stat
 
 ## Long Running Jobs + Virtual Partitions
 
-Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions will respond to `#revoked?` if the partition is lost.
-
-There is only one thing you need to keep in mind:
-
-It is **not** allowed to use manual offset management with Virtual Partitions unless Virtual Partitions operate in the `collapsed` mode. Hence you need to set `shutdown_timeout` to a value that will compensate for that.
+Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions consumers will respond to `#revoked?` if the partition is lost, similar to regular consumers.
 
 ### Enhanced Active Job + Virtual Partitions
 
