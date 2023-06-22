@@ -87,7 +87,7 @@
 * [Iterator API](Pro-Iterator-API)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
-* [Enhanced Scheduler](Pro-Enhanced-Scheduler)
+* [Enhanced Reliability](Pro-Enhanced-Reliability)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 * [Enhanced Web UI](Pro-Enhanced-Web-UI)
     * [Getting Started](Pro-Enhanced-Web-UI#getting-started)

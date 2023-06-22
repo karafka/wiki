@@ -1,3 +1,11 @@
+## Enhanced Execution Stability
+
+Karafka Pro comes with Enhanced Execution Stability improvements that significantly reduce the risks associated with involuntary revocations, which occur when partition ownership is transferred among consumers.
+
+This mechanism minimizes the number of jobs in flight during such reassignments, thereby preventing potential race conditions and ensuring a stable, predictable execution environment, even during high-volume data processing and dynamic consumer scenarios.
+
+## Enhanced Scheduler
+
 Karafka Pro comes shipped with an Enhanced Scheduler.
 
 The default scheduler schedules work in a FIFO (First-In, First-Out) order.
