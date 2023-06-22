@@ -219,6 +219,8 @@ By following these best practices, you can ensure that your Karafka Pro Filterin
 
 - **Throttling**: You can use filters to throttle and rate limit messages, including process or system-wide limitation solutions. 
 
+- **Data Reliability**: You can use the Filtering API to build a [transactional offset management](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/) system, improving the reliability of your processing pipelines.
+
 - **Data Validation**: You can use filters to validate the data of incoming messages. For example, you can check whether a message contains all required fields and has valid values and reject invalid.
 
 - **Data Deduplication**: You can use filters to prevent duplicate messages from a single batch from being processed. For example, you can remove messages with the same identifiers or timestamps.

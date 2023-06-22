@@ -9,12 +9,6 @@
 * [Apache Kafka](http://kafka.apache.org/)
 * [librdkafka](https://github.com/edenhill/librdkafka)
 
-## Videos
-
-* [Kafka For Rubyists YouTube series](https://www.youtube.com/watch?v=OK8k-krza0Y&list=PLOnisdeJdKQ2jiUfFW-Lq4LZI3vovwVg5)
-* [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
-* [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)
-
 ## Articles and references about Karafka
 
 **Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
@@ -35,6 +29,12 @@
 * [Benchmarking Karafka – how does it handle multiple TCP connections](http://dev.mensfeld.pl/2015/11/benchmarking-karafka-how-does-it-handle-multiple-tcp-connections/)
 * [Reduce your method calls by 99.9% by replacing Thread#pass with Queue#pop](https://mensfeld.pl/2022/01/reduce-your-method-calls-by-99-9-by-replacing-threadpass-with-queuepop/)
 * [Karafka – Ruby framework for building Kafka message based applications (presentation)](http://mensfeld.github.io/karafka-framework-introduction/)
+
+## Videos
+
+* [Kafka For Rubyists YouTube series](https://www.youtube.com/watch?v=OK8k-krza0Y&list=PLOnisdeJdKQ2jiUfFW-Lq4LZI3vovwVg5)
+* [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
+* [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)
 
 ## General articles and references about working with Apache Kafka
 
