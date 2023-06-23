@@ -76,6 +76,8 @@
 76. [Can `at_exit` be used to close the WaterDrop producer?](#can-at_exit-be-used-to-close-the-waterdrop-producer)
 77. [Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?](#why-when-dlq-is-used-with-max_retries-set-to-0-karafka-also-applies-a-back-off)
 78. [Can I use `rdkafka` and `karafka-rdkafka` together in the same project?](#can-i-use-rdkafka-and-karafka-rdkafka-together-in-the-same-project)
+79. [Does using consumer `#seek` resets the committed offset?](#does-using-consumer-seek-resets-the-committed-offset)
+80. [Is it recommended to use public consumer methods from outside the consumer?](#is-it-recommended-to-use-public-consumer-methods-from-outside-the-consumer)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1025,3 +1027,21 @@ Without the back-off mechanism, even if retries are not requested, Karafka would
 ## Can I use `rdkafka` and `karafka-rdkafka` together in the same project?
 
 **No**. `karafka-rdkafka` is a fork of `rdkafka` that includes many stability and performance enhancements while having a compatible API. If you try to use both, they will conflict with each other.
+
+## Does using consumer `#seek` resets the committed offset?
+
+No, using the `#seek` method in a Karafka consumer does not reset the committed offset.
+
+In Karafka, the `#seek` method is used to manually set the position of the next record that should be fetched, i.e., it changes the current position of the consumer. However, it does not affect the committed offset stored in Kafka.
+
+The committed offset is the position of the last record that Kafka will not read again in the event of recovery or failover. 
+
+So, you can think of the position set by `#seek` as a volatile, in-memory value, while the committed offset is a more durable, stored value.
+
+## Is it recommended to use public consumer methods from outside the consumer?
+
+In general, it is not recommended to use public consumer methods from outside the consumer in Karafka.
+
+Karafka is designed to handle the concurrent processing of messages. Directly calling consumer methods from outside the consumer could result in race conditions or other concurrency issues if not done carefully.
+
+The only exception is when you are using Karafka instrumentation API. However, it is still not recommended to invoke any methods or operations that would result in consumer state changes.
