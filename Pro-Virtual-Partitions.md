@@ -306,11 +306,11 @@ One great example of this is a scenario where you may want to partition messages
 ```ruby
 # This is a whole process partitioner, not a per topic one
 class CustomPartitioner < Karafka::Pro::Processing::Partitioner
-  def call(topic_name, messages, coordinator)
+  def call(topic_name, messages, coordinator, &block)
     # Apply the "special" strategy for this special topic unless VPs were collapsed
     # In the case of collapse you want to process with the default flow.
     if topic_name == 'balanced_topic' && !coordinator.collapsed?
-      balanced_strategy(messages)
+      balanced_strategy(messages, &block)
     else
       # Apply standard behaviours to other topics
       super
