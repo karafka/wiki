@@ -78,6 +78,8 @@
 78. [Can I use `rdkafka` and `karafka-rdkafka` together in the same project?](#can-i-use-rdkafka-and-karafka-rdkafka-together-in-the-same-project)
 79. [Does using consumer `#seek` resets the committed offset?](#does-using-consumer-seek-resets-the-committed-offset)
 80. [Is it recommended to use public consumer methods from outside the consumer?](#is-it-recommended-to-use-public-consumer-methods-from-outside-the-consumer)
+81. [Why do I see `SASL authentication error` after AWS MSK finished the `Heal cluster` operation?](#why-do-i-see-sasl-authentication-error-after-aws-msk-finished-the-heal-cluster-operation)
+82. [Why Karafka and WaterDrop are behaving differently than `rdkafka`?](#why-do-i-see-sasl-authentication-error-after-aws-msk-finished-the-heal-cluster-operation)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -524,7 +526,7 @@ To avoid this behavior and instead write immediately to stdout, you can set it t
 $stdout.sync = true
 ```
 
-You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync-3D).
+You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync).
 
 
 ## Why is increasing `concurrency` not helping upon a sudden burst of messages?
@@ -1045,3 +1047,17 @@ In general, it is not recommended to use public consumer methods from outside th
 Karafka is designed to handle the concurrent processing of messages. Directly calling consumer methods from outside the consumer could result in race conditions or other concurrency issues if not done carefully.
 
 The only exception is when you are using Karafka instrumentation API. However, it is still not recommended to invoke any methods or operations that would result in consumer state changes.
+
+## Why do I see `SASL authentication error` after AWS MSK finished the `Heal cluster` operation?
+
+Healing means that Amazon MSK is running an internal operation, like replacing an unhealthy broker. For example, the broker might be unresponsive. During this stage, under certain circumstances, the MSK permissions may be not restored correctly. We recommend that you reassign them back if the problem persists.
+
+## Why Karafka and WaterDrop are behaving differently than `rdkafka`?
+
+1. **`rdkafka-ruby` lack of instrumentation callbacks hooks by default**: By default, `rdkafka` does not include instrumentation callback hooks. This means that it does not publish asynchronous errors unless explicitly configured to do so. On the other hand, Karafka and WaterDrop, provide a unified instrumentation framework that reports errors, even those happening asynchronously, by default.
+
+2. **WaterDrop and Karafka use `karafka-rdkafka`, which is patched and provides specific improvements**: Both WaterDrop and Karafka use a variant of `rdkafka-ruby`, known as `karafka-rdkafka`. This version is patched, meaning it includes improvements and modifications that the standard `rdkafka-ruby` client does not. These patches may offer enhanced performance, additional features, and/or bug fixes that can impact how the two systems behaves.
+
+3. **Different setup conditions**: Comparing different Kafka clients or frameworks can be like comparing apples to oranges if they aren't set up under the same conditions. Factors such as client configuration, Kafka cluster configuration, network latency, message sizes, targeted topics, and batching settings can significantly influence the behavior and performance of Kafka clients. Therefore, when you notice a discrepancy between the behavior of `rdkafka-ruby` and Karafka or WaterDrop, it might be because the conditions they are running under are not identical. To make a fair comparison, ensure that they are configured similarly and are running under the same conditions.
+
+In summary, while `rdkafka-ruby`, Karafka, and WaterDrop all provide ways to interact with Kafka from a Ruby environment, differences in their design, their handling of errors, and the conditions under which they are run can result in different behavior. Always consider these factors when evaluating or troubleshooting these systems.
