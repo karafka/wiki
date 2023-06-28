@@ -40,4 +40,6 @@ We recognize the significance of prompt and effective bug resolution for your on
 
 4. Enhanced Testing: We understand the unique requirements and high standards of our Karafka Pro users. We perform additional layers of testing for bug fixes reported by Pro users to ensure the stability and reliability of the solution. 
 
+5. **Consideration for Backporting Features or Fixes**: We understand that certain features or fixes can significantly enhance the functionality and stability of your current projects. As a Karafka Pro user, you can request a backport of a particular feature or fix to support your specific needs. Please note that the possibility of backporting will be assessed on a case-by-case basis, taking into account factors like the feasibility of the backport and its impact on system stability.
+
 By opting for Karafka Pro, you are not just purchasing a product but partnering with people committed to ensuring the smooth operation of your applications.
