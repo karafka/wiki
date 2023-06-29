@@ -61,7 +61,7 @@ Each action consists of three elements that need to be present in case there is 
 - `action` - defines how Karafka should behave after the data is processed or upon idle job execution. Karafka can either:
     - `:skip` - in which case the default strategy action will be applied, like the filters would not exist.
     - `:pause` - will pause processing for the `timeout` period.
-    - `:seek` - will move the offset to the desired location taken from the `:cursor` message.
+    - `:seek` - will move the offset to the desired location or time taken from the `:cursor` message or set manually.
 - `timeout` - value applicable for the `:pause` action that describes how long we should pause the consumption on a given topic partition.
 - `cursor` - The first message we need to get next time we poll or nil if not applicable.
 
@@ -71,7 +71,7 @@ For example, in case you want to pause the processing, you need to return the fo
 - number of milliseconds to pause under `#timeout`.
 - message containing the desired offset from which to start processing after un-pausing under `#cursor`.
 
-**Note**: User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one.
+**Note**: User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 
 ### Priority based action selection
 

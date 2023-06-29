@@ -67,23 +67,47 @@ end
 
 **Note 2**: Negative lookups operate based on watermark offsets, not actual message counts. So, for compacted topics (where redundant data is removed), this could result in fetching fewer messages than requested, as the specified offset might include removed data.
 
+#### Subscribing to fetch messages from a certain point in time
+
+This functionality is handy when you need to analyze data from a specific period or start processing from a certain point in the Kafka topic, but you do not know the offset.
+
+To do this, you must provide a timestamp instead of a numerical offset when setting up your subscription. This timestamp should represent the exact time you wish to start processing messages. The Karafka Iterator API will then fetch all messages that were produced after this timestamp.
+
+```ruby
+# Read and iterate over the last 60 seconds of messages available in each
+# partition of the topic users_events
+iterator = Karafka::Pro::Iterator.new(
+  {
+    'users_events' => Time.now - 60
+  }
+)
+
+iterator.each do |message|
+  puts message.payload
+end
+```
+
+This feature enables a more intuitive way of accessing and processing historical Kafka data. Instead of calculating or estimating offsets, you can directly use real-world time to navigate through your data. Just like with offsets, remember that you can only fetch messages still stored in Kafka according to its data retention policy.
+
 #### Subscribing to particular partitions
 
 One reason it may be worth subscribing only to particular partitions of a topic using the iterator API is to reduce resource consumption. Consuming all topic partitions can be resource-intensive, especially when dealing with large amounts of data. By subscribing only to specific partitions, you can significantly reduce the amount of data that needs to be processed and reduce the overall resource consumption.
 
 Another reason subscribing only to particular partitions can be helpful is to save time. When consuming all partitions of a topic, the iterator needs to search through all the partitions to find the data that matches the consumer's criteria. If you know to which partition the data you are looking for goes, you can skip the unnecessary search in other partitions, which can save a lot of time.
 
-To do so, you need to provide the list of the partitions with the initial offset. You can set the initial offset to `0` if you want to start from the beginning. If the `0` offset is unavailable, Karafka will seek to the beginning of the partition. You may also use negative per-partition offsets similar to how they use them for whole-topic subscriptions.
+To do so, you need to provide the list of the partitions with the initial offset or time. You can set the initial offset to `0` if you want to start from the beginning. If the `0` offset is unavailable, Karafka will seek to the beginning of the partition. You may also use negative per-partition offsets similar to how they use them for whole-topic subscriptions.
 
 ```ruby
-# Go through two partitions: 0 and 5
+# Go through two partitions: 0, 5 and 7
 # Get 100 most recent messages for partition 0
 # Get 10 000 most recent messages for partition 5
+# Get messages from last 60 seconds from partition 7
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => {
       0 => -100,
-      5 => -10_000
+      5 => -10_000,
+      7 => Time.now - 60
     }
   }
 )
