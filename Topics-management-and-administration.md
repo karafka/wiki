@@ -211,6 +211,22 @@ messages.each do |message|
 end
 ```
 
+#### Getting messages from a given time
+
+```ruby
+topic = 'my_topic'
+partition = 0
+how_many = 10
+# Read at most 10 messages starting 60 seconds ago
+start_at = Time.now - 60
+
+messages = Karafka::Admin.read_topic(topic, partition, how_many, start_at)
+
+messages.each do |message|
+  puts message.raw_payload
+end
+```
+
 ### Adding partitions to a topic
 
 If you want to add partitions to an existing topic, you can use the `create_partitions` admin method:
