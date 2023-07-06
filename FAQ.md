@@ -85,6 +85,9 @@
 85. [What are consumer groups used for?](#what-are-consumer-groups-used-for)
 86. [Why am I getting the `all topic names within a single consumer group must be unique` error?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error)
 87. [Why am I getting `WaterDrop::Errors::ProduceError`, and how can I know the underlying cause?](#why-am-i-getting-waterdroperrorsproduceerror-and-how-can-i-know-the-underlying-cause)
+88. [Can extra information be added to the messages dispatched to the DLQ?](#can-extra-information-be-added-to-the-messages-dispatched-to-the-dlq)
+
+Is there a best practice for being able to keep track of the error class or other data when dispatching to the DLQ manually?
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1152,3 +1155,7 @@ puts error.cause
 Please note that in the case of the `WaitTimeoutError`, the message may actually be delivered but in a more extended time because of the network or other issues. Always instrument your producers to ensure that you are notified about errors occurring in Karafka and WaterDrop internal background threads as well.
 
 The exact cause can often be determined by examining the error message and stack trace accompanying the `WaterDrop::Errors::ProduceError`. Also, check the Kafka logs for more information. If the error message or logs aren't clear, you should debug your code or configuration to identify the problem.
+
+## Can extra information be added to the messages dispatched to the DLQ?
+
+**Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/#adding-custom-details-to-the-dlq-message).
