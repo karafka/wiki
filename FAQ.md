@@ -82,6 +82,9 @@
 82. [Why Karafka and WaterDrop are behaving differently than `rdkafka`?](#why-do-i-see-sasl-authentication-error-after-aws-msk-finished-the-heal-cluster-operation)
 83. [Why am I seeing `Inconsistent group protocol` in Karafka logs?](#why-am-i-seeing-inconsistent-group-protocol-in-karafka-logs)
 84. [What is the difference between WaterDrop's `max_payload_size` and librdkafka's `message.max.bytes`?](#what-is-the-difference-between-waterdrops-max_payload_size-and-librdkafkas-messagemaxbytes)
+85. [What are consumer groups used for?](#what-are-consumer-groups-used-for)
+86. [Why am I getting the `all topic names within a single consumer group must be unique` error?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error)
+87. [Why am I getting `WaterDrop::Errors::ProduceError`, and how can I know the underlying cause?](#why-am-i-getting-waterdroperrorsproduceerror-and-how-can-i-know-the-underlying-cause)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1096,3 +1099,56 @@ Another noteworthy point is that if you set `message.max.bytes` to a low yet acc
 A detailed discussion on this topic can be found on this GitHub thread: https://github.com/confluentinc/librdkafka/issues/3246. Please note that this discussion remains open, indicating this topic's complexity and continuous exploration.
 
 Lastly, while the term `message.max.bytes` may not be intuitively understandable, its role in managing message size within the Kafka ecosystem is crucial.
+
+## What are consumer groups used for?
+
+Consumer groups in Kafka are used to achieve parallel processing, high throughput, fault tolerance, and scalability in consuming messages from Kafka topics. They enable distributing of the workload among multiple consumers within a group, ensuring efficient processing and uninterrupted operation even in the presence of failures. In general, for 90% of cases, one consumer group is used per Karafka application. Using multiple consumer groups in a single app can be beneficial if you want to consume the same topic multiple times, structure your app for future division into microservices or introduce parallel consumption.
+
+## Why am I getting the `all topic names within a single consumer group must be unique` error?
+
+If you are seeing the following error when starting Karafka:
+
+```
+{:topics=>"all topic names within a single consumer group must be unique"}
+(Karafka::Errors::InvalidConfigurationError)
+```
+
+it indicates that you have duplicate topic names in your configuration of the same consumer group.
+
+In Karafka, each topic within a consumer group should have a unique name. This requirement is in place because each consumer within a consumer group reads from a unique partition of a specific topic. If there are duplicate topic names, then the consumers will not be able to distinguish between these topics.
+
+To solve this issue, you need to ensure that all topic names within a single consumer group in your Karafka configuration are unique.
+
+## Why am I getting `WaterDrop::Errors::ProduceError`, and how can I know the underlying cause?
+
+The specifics of why you're encountering this error will depend on the context of your use of WaterDrop and Kafka. Here are some possible causes:
+
+- Kafka is not running or unreachable: Ensure that Kafka is running and accessible from your application. If your application is running in a different environment (e.g., Docker, a different server, etc.), ensure there are no networking issues preventing communication.
+
+- Invalid configuration: Your WaterDrop and/or Kafka configuration may be incorrect. This could involve things like incorrect broker addresses, authentication details, etc.
+
+- Kafka topic does not exist: If you're trying to produce to a topic that doesn't exist, and if topic auto-creation is not enabled in your Kafka settings, the message production will fail.
+
+- Kafka cluster is overloaded or has insufficient resources: If Kafka is not able to handle the volume of messages being produced, this error may occur.
+
+- Kafka cluster is in a remote location with significant latency: Apache Kafka is designed to handle high-volume real-time data streams with low latency. If your Kafka cluster is located in a geographically distant location from your application or the network connectivity between your application and the Kafka cluster could be better, you may experience high latency. This can cause a variety of issues, including `WaterDrop::Errors::ProduceError`.
+
+When you receive the `WaterDrop::Errors::ProduceError` error, you can check the underlying cause by invoking the `#cause` method on the received error:
+
+```ruby
+error = nil
+
+begin
+  Karafka.producer.produce_sync(topic: 'topic', payload: 'payload')
+rescue WaterDrop::Errors::ProduceError => e
+  error = e
+end
+
+puts error.cause
+
+#<Rdkafka::AbstractHandle::WaitTimeoutError: Waiting for delivery timed out after 5 seconds>
+```
+
+Please note that in the case of the `WaitTimeoutError`, the message may actually be delivered but in a more extended time because of the network or other issues. Always instrument your producers to ensure that you are notified about errors occurring in Karafka and WaterDrop internal background threads as well.
+
+The exact cause can often be determined by examining the error message and stack trace accompanying the `WaterDrop::Errors::ProduceError`. Also, check the Kafka logs for more information. If the error message or logs aren't clear, you should debug your code or configuration to identify the problem.
