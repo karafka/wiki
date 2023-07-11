@@ -90,6 +90,7 @@
 90. [Why Karafka commits offsets on rebalances and librdafka does not?](#why-karafka-commits-offsets-on-rebalances-and-librdafka-does-not)
 91. [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
 92. [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
+93. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1237,3 +1238,37 @@ The assignment strategy or protocol for a Karafka consumer group might not be vi
 
 In such cases, Kafka doesn't have any information to establish an assignment strategy. Hence, it remains invisible until data is produced, consumed, and offsets are committed.
 
+## What can be done to log why the `produce_sync` has failed?
+
+WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under error.occurred notification key. You can subscribe to this event to ensure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered:
+
+```ruby
+Karafka.producer.monitor.subscribe('error.occurred') do |event|
+  error = event[:error]
+
+  p "WaterDrop error occurred: #{error}"
+end
+
+# Run this code without Kafka cluster
+loop do
+  Karafka.producer.produce_async(topic: 'events', payload: 'data')
+
+  sleep(1)
+end
+
+# After you stop your Kafka cluster, you will see a lot of those:
+#
+# WaterDrop error occurred: Local: Broker transport failure (transport)
+#
+# WaterDrop error occurred: Local: Broker transport failure (transport)
+```
+
+It is also recommended to check if the standard `LoggerListener` is enabled for the producer in your `karafka.rb`:
+
+```ruby
+Karafka.producer.monitor.subscribe(
+  WaterDrop::Instrumentation::LoggerListener.new(Karafka.logger)
+)
+```
+
+**Note**: `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
