@@ -358,6 +358,41 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+Please note that if your cluster configuration is complex, you may want to use set it up in the root scope and then alter it on a per-topic basis:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'enable.ssl.certificate.verification': kafka_config.ssl_verify_hostname,
+      'security.protocol': kafka_config.security_protocol,
+      'statistics.interval.ms': 1_000,
+      'ssl.key.password': kafka_config.auth[:cert_key_password],
+      'ssl.key.pem': Base64.decode64(kafka_config.auth[:base64_cert_key_pem]),
+      'ssl.certificate.pem': Base64.decode64(kafka_config.auth[:base64_client_cert_pem]),
+      'ssl.ca.pem': Base64.decode64(kafka_config.auth[:base64_ca_cert_pem])
+    }
+    end
+  end
+
+  routes.draw do
+    consumer_group :related_reviews do
+      topic :reviews do
+        target.kafka[:'bootstrap.servers'] = CLUSTERS[:related_reviews][:brokers]&.join(',')
+        consumer ReviewsConsumer
+      end
+    end
+
+    consumer_group :related_products do
+      topic :products do
+        target.kafka[:'bootstrap.servers'] = CLUSTERS[:related_products][:brokers]&.join(',')
+        consumer RelatedProductsConsumer
+      end
+    end
+  end
+end
+```
+
 ## Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?
 
 We release our version of the `rdkafka` gem to ensure it meets our quality and stability standards. That way, we ensure that unexpected `rdkafka` releases will not break the Karafka ecosystem.
