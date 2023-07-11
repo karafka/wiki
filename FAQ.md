@@ -88,6 +88,7 @@
 88. [Can extra information be added to the messages dispatched to the DLQ?](#can-extra-information-be-added-to-the-messages-dispatched-to-the-dlq)
 89. [Why does WaterDrop hang when I attempt to close it?](#why-does-waterdrop-hang-when-i-attempt-to-close-it)
 90. [Why Karafka commits offsets on rebalances and librdafka does not?](#why-karafka-commits-offsets-on-rebalances-and-librdafka-does-not)
+91. [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1183,3 +1184,13 @@ Karafka is designed with certain assumptions, such as auto-committing offsets, t
 On the other hand, `librdkafka` is a C library that implements the Apache Kafka protocol. It's designed to be more flexible and to offer more control to the user. It doesn't commit offsets on rebalances by default because it gives power to the application developer to decide when and how to commit offsets and where to store them. Depending on the specific requirements of your application, you may want to handle offsets differently.
 
 So the difference between the two libraries is mainly due to their different design principles and target audiences: Karafka is more opinionated and tries to simplify usage for Ruby developers, while `librdkafka` is more flexible and provides more control to the user but at the same time requires much more knowledge and effort.
+
+## What is Karafka's assignment strategy for topics and partitions?
+
+As of Karafka `2.0`, the default assignment strategy is `range`, which means that it attempts to assign partitions contiguously. For instance, if you have ten partitions and two consumers, then the first consumer might be assigned partitions 0-4, and the second consumer would be given partitions 5-9.
+
+The `range` strategy has some advantages over the `round-robin` strategy, where partitions are distributed evenly but not contiguously among consumers.
+
+Since data is often related within the same partition, `range` can keep related data processing within the same consumer, which could lead to benefits like better caching or business logic efficiencies. This can be useful, for example, to join records from two topics with the same number of partitions and the same key-partitioning logic.
+
+The assignment strategy is not a one-size-fits-all solution and can be changed based on the specific use case. If you want to change the assignment strategy in Karafka, you can set the `partition.assignment.strategy` configuration value to either `range`, `roundrobin` or `cooperative-sticky`. It's important to consider your particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
