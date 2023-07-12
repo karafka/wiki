@@ -91,6 +91,7 @@
 91. [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
 92. [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
 93. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
+94. [Can I password-protect Karafka Web-UI?](#can-i-password-protect-karafka-web-ui)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1272,3 +1273,9 @@ Karafka.producer.monitor.subscribe(
 ```
 
 **Note**: `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
+
+## Can I password-protect Karafka Web-UI?
+
+**Yes**, you can password-protect the Karafka Web UI, and it is highly recommended. Adding a layer of password protection adds a level of security to the interface, reducing the risk of unauthorized access to your data, configurations, and system settings.
+
+Karafka provides ways to implement password protection, and you can find detailed steps and guidelines [here](https://karafka.io/docs/Web-UI-Getting-Started/#authentication).
