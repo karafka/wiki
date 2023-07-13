@@ -12,6 +12,29 @@ Please respect our time and efforts by sticking to one of the options above.
 
 Please consider buying the Pro subscription for additional priority Pro support and extra features.
 
+## OSS Support Policy
+
+Karafka's Open Source Software (OSS) support primarily revolves around assisting users with issues related to the Karafka and librdkafka ecosystems. This involves troubleshooting and providing solutions for problems originating from Karafka or its related subcomponents.
+
+However, it is crucial to understand that the OSS support does **not** extend to application-specific issues that do not originate from Karafka or its related parts. This includes but is not limited to:
+
+1. Incorrect application configurations unrelated to Karafka.
+2. Conflicts with other libraries or frameworks within your application.
+3. Deployment issues on specific infrastructure or platforms.
+4. Application-specific runtime errors.
+5. Problems caused by third-party plugins or extensions.
+6. Data issues within your application.
+7. Issues related to application performance optimization.
+8. Integration problems with other services or databases.
+9. Design and architecture questions about your specific application.
+10. Language-specific issues are unrelated to Karafka or librdkafka.
+
+We acknowledge that understanding your specific applications and their configuration is essential, but due to the time and resource demands, this goes beyond the scope of our OSS support.
+
+For users seeking assistance with application-specific issues, we offer a Pro version of Karafka. This subscription provides comprehensive support, including help with application-specific problems.
+
+For more information about our Pro offering, please visit [this](https://karafka.io/#become-pro) page.
+
 ## Reporting problems
 
 When you encounter issues with Karafka, there are several things you can do:
