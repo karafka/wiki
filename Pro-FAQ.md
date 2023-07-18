@@ -24,8 +24,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
 23. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
 24. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
-25. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-26. [Contact Info](#contact-info)
+25. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
+26. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+27. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -153,6 +154,21 @@ If you need to change the email associated with your subscription, you have two 
 1. **Email**: You can send us a direct request by emailing us at contact@karafka.io. Ensure to include your current email address, the new one you want to use, and any relevant information about your subscription.
 
 2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request. Just write a message explaining that you want to change the email associated with your subscription. Include your current email address and the new one you want to use.
+
+## How can I change the credit card associated with my subscription?
+
+If you need to update the credit card associated with your subscription, you have two ways to request it:
+
+1. **Email**: You can send us a direct request by emailing us at contact@karafka.io.
+
+2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request.
+After receiving your request, we will generate a temporary link for you to update your payment method. This link will be generated through Stripe, our payment processor.
+
+This temporary link will be sent directly from Stripe to the billing email associated with your subscription. This email will include instructions for updating your credit card information.
+
+You will receive a confirmation email once you've successfully updated your payment method.
+
+Please check your spam or junk folders if you don't see the email in your inbox. If you encounter any issues, feel free to contact us for further assistance.
 
 ## Ethics, Privacy, and Information Usage
 
