@@ -23,8 +23,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 21. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
 22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
 23. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
-24. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-25. [Contact Info](#contact-info)
+24. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
+25. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+26. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -144,6 +145,14 @@ We understand that some companies have strict policies regarding their open-sour
 Karafka Pro can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional agreement, and there is an additional cost of USD 2000 yearly (USD 2995 in total).
 
 Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on any third-party sources.
+
+## How can I change the email associated with my subscription?
+
+If you need to change the email associated with your subscription, you have two ways to proceed:
+
+1. **Email**: You can send us a direct request by emailing us at contact@karafka.io. Ensure to include your current email address, the new one you want to use, and any relevant information about your subscription.
+
+2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request. Just write a message explaining that you want to change the email associated with your subscription. Include your current email address and the new one you want to use.
 
 ## Ethics, Privacy, and Information Usage
 
