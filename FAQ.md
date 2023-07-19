@@ -92,6 +92,7 @@
 92. [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
 93. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
 94. [Can I password-protect Karafka Web-UI?](#can-i-password-protect-karafka-web-ui)
+95. [Can I use a Karafka producer without setting up a consumer?](#can-i-use-a-karafka-producer-without-setting-up-a-consumer)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1279,3 +1280,13 @@ Karafka.producer.monitor.subscribe(
 **Yes**, you can password-protect the Karafka Web UI, and it is highly recommended. Adding a layer of password protection adds a level of security to the interface, reducing the risk of unauthorized access to your data, configurations, and system settings.
 
 Karafka provides ways to implement password protection, and you can find detailed steps and guidelines [here](https://karafka.io/docs/Web-UI-Getting-Started/#authentication).
+
+## Can I use a Karafka producer without setting up a consumer?
+
+Yes, it's possible to use a Karafka producer without a consumer in two ways:
+
+1. You can use [WaterDrop](https://github.com/karafka/waterdrop), a standalone Karafka component for producing Kafka messages. WaterDrop was explicitly designed for use cases where only message production is required, with no need for consumption.
+
+2. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
+
+Remember, if you're using Karafka without a consumer and encounter errors, ensure your consumer is set to inactive (active false), and refrain from running commands that necessitate a consumer, such as karafka server.
