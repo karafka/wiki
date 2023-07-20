@@ -60,3 +60,26 @@ Karafka::Web.setup do |config|
   config.tracking.producers.listeners = []
 end
 ```
+
+## Using a Shared Kafka Cluster for multiple Karafka application environments
+
+You can configure Karafka to use a single Kafka cluster across multiple environments. This can be beneficial for scenarios such as when you have different stages of development, including development, testing, staging, and production, all needing isolated data sets within the same Kafka cluster.
+
+To achieve this, each environment must maintain its unique set of Web-UI internal topics. This is accomplished by appending the environment's name to the base topic name for each Web-UI internal topic.
+Here is how you can configure it in your Karafka setup:
+
+```ruby
+Karafka::Web.setup do |config|
+  env_suffix = Rails.env.to_s
+
+  config.topics.errors = "karafka_errors_#{env_suffix}"
+  config.topics.consumers.reports = "karafka_consumers_reports_#{env_suffix}"
+  config.topics.consumers.states = "karafka_consumers_states_#{env_suffix}"
+end
+```
+
+In this setup, the `env_suffix` is created by converting the current Rails environment into a string. The `env_suffix` is then appended to the base topic name for each of the internal topics (`karafka_errors`, `karafka_consumers_reports`, and `karafka_consumers_states`).
+
+This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
+
+After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
