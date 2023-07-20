@@ -33,6 +33,18 @@ MY_CUSTOM_PRODUCER = WaterDrop::Producer.new
 end
 ```
 
+## Opting out of all the monitoring
+
+In specific scenarios, you may want to keep the Karafka Web UI without active reporting, for example, when you are only interested in the Explorer functionality. To turn off all the reporting and states materialization, overwrite all the listeners and turn off processing as follows:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.processing.active = false
+  config.tracking.consumers.listeners = []
+  config.tracking.producers.listeners = []
+end
+```
+
 ## Opting out of producers' monitoring
 
 In specific scenarios, you may not want the Karafka Web UI to monitor your Kafka producers. For instance:

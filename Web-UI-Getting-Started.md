@@ -33,6 +33,8 @@ bundle exec karafka-web install
 
 **Note**: Please make sure that `karafka server` is **not** running during the Web-UI installation process and that you only start `karafka server` instances after running the `karafka-web install` command.
 
+**Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
+
 By default, Karafka uses three topics with the following names:
 
 - `karafka_consumers_states`
