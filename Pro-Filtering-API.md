@@ -9,7 +9,7 @@ This feature is handy in scenarios where a high volume of messages is being sent
 Karafka filters need to inherit from the `Karafka::Pro::Processing::Filters::Base` and need to at least respond to two methods:
 
 - `#apply!` - a method that accepts an array of messages from a single topic partition for filtering. This array **needs** to be mutated using methods like `#delete_if`.
-- `#applied?` - did the filter limit the input messages array in any way? This should be true also in the case of no-altering but when post-execution action altering is required.
+- `#applied?` - did the filter limit the input messages array in any way? This should be `true` also in the case of no-altering but when post-execution action altering is required.
 
 If you plan to implement action-altering filters, you need to define two additional methods:
 
@@ -86,7 +86,7 @@ Here are the rules that the action selection follows:
 3. If any filter action is `:seek`, collectively, `:seek` will be applied.
 4. If no filters define action other than `:skip`, `:skip` will be applied.
 5. For `:pause`, minimum timeout out of the recommended will be selected.
-6. The message with the lowest offset always represents the' cursor' value.
+6. The message with the lowest offset always represents the `cursor` value.
 
 This algorithm ensures that all the expectations and constraints from any of the filters are always applicable collectively.
 
