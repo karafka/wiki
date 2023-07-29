@@ -93,6 +93,7 @@
 93. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
 94. [Can I password-protect Karafka Web-UI?](#can-i-password-protect-karafka-web-ui)
 95. [Can I use a Karafka producer without setting up a consumer?](#can-i-use-a-karafka-producer-without-setting-up-a-consumer)
+96. [What will happen when a message is dispatched to a dead letter queue topic that does not exist?](#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1292,3 +1293,48 @@ Yes, it's possible to use a Karafka producer without a consumer in two ways:
 2. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
 
 Remember, if you're using Karafka without a consumer and encounter errors, ensure your consumer is set to inactive (active false), and refrain from running commands that necessitate a consumer, such as karafka server.
+
+## What will happen when a message is dispatched to a dead letter queue topic that does not exist?
+
+When a message is dispatched to a [dead letter queue](https://karafka.io/docs/Dead-Letter-Queue/) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
+
+On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled. 
+
+Note that in production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
+
+For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
+
+Below you can find an example routing that includes a DLQ declaration as well as a declarative definition of the target DLQ topic:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic 'events' do
+      config(
+        partitions: 6,
+        replication_factor: 3,
+        'retention.ms': 31 * 86_400_000 # 31 days in ms,
+        'cleanup.policy': 'delete'
+      )
+
+      consumer EventsConsumer
+
+      dead_letter_queue(
+        topic: 'dlq',
+        max_retries: 2
+      )
+    end
+
+    topic 'dlq' do
+      config(
+        partitions: 2,
+        replication_factor: 2,
+        'retention.ms': 31 * 86_400_000 # 31 days in ms,
+      )
+
+      # Set to false because of no automatic DLQ handling
+      active false
+    end
+  end
+end
+```
