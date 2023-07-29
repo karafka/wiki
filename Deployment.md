@@ -513,3 +513,29 @@ livenessProbe:
 The provided liveness listener is a generic implementation designed to handle common scenarios. However, it may not address all cases specific to your application's requirements. Fortunately, the listener serves as a solid foundation that can be customized and extended to create a more complex and tailored solution.
 
 By using the provided listener as a starting point, you can have the flexibility to build your liveness probe that accommodates your unique needs. This can involve adding additional checks, implementing custom logic, or integrating with other monitoring systems to create a more comprehensive and sophisticated liveness solution.
+
+#### Additional processes inside the same pod
+
+The Liveness listener is configured to associate itself with **any** process incorporating the `karafka.rb` in your container. This implies that if you intend to run a separate process like `rails console` within an active container, the listener will attempt to associate with a port already in use, leading to an error. You should utilize an environment variable to run extra processes within your Kubernetes pods. For instance, consider using `KARAFKA_LIVENESS=true` coupled with conditional binding:
+
+```ruby
+require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
+
+listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
+  # config goes here...
+)
+
+# Bind only in the main Karafka process inside a pod
+if ENV['KARAFKA_LIVENESS'] == true
+  Karafka.monitor.subscribe(listener)
+end
+```
+
+Simultaneously, you might want to initiate the previously mentioned `rails console` with this value set to false:
+
+```bash
+# Within same pod
+KARAFKA_LIVENESS=false bundle exec rails console
+```
+
+This way, you can ensure that the Liveness listener doesn't interfere with other processes.
