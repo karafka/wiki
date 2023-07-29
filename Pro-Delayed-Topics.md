@@ -80,7 +80,7 @@ Below is an example distribution of the extra lag beyond the tested and expected
 
 When using the Delayed Topics feature in Karafka, it is essential to note that both the `#shutdown` and `#revocation` methods may be executed without the prior `#consume` running. This is because Delayed Topics may delay the processing of the first set of messages, which means that the messages batch may be empty, and the first and last offsets taken from metadata will be equal to `-1001`.
 
-In such scenarios, checking the message batch size when relying on them in `#revocation` and `#shutdown` is always recommended. This can be done using a conditional statement that checks if the batch is empty before executing further code.
+In such scenarios, using the `#used?` method when relying on them in `#revocation` and `#shutdown` is always recommended. This can be done using a conditional statement that checks if there was even a single batch consumed or scheduled for consumption.
 
 Below you can find an example scenario where a check is needed on `#shutdown` to verify that there are messages in the messages batch before committing the offset. This scenario occurs when the Karafka server is started and quickly shut down before the first batch of messages is old enough to be processed.
 
@@ -110,7 +110,7 @@ class OrdersConsumer < ApplicationConsumer
     #
     # Please note, you do not need this check if you are not using
     # filtering API or delayed topics functionalities.
-    return if messages.empty?
+    return unless used?
 
     mark_as_consumed messages.last
   end
