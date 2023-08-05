@@ -31,7 +31,7 @@ bundle add karafka-web
 bundle exec karafka-web install
 ```
 
-**Note**: Please make sure that `karafka server` is **not** running during the Web-UI installation process and that you only start `karafka server` instances after running the `karafka-web install` command.
+**Note**: Please ensure that `karafka server` is **not** running during the Web-UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web-UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
 **Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
 
@@ -43,11 +43,77 @@ By default, Karafka uses three topics with the following names:
 
 If you have the `auto.create.topics.enable` set to `false` or problems running the install command, create them manually. The recommended settings are as followed:
 
-| Topic name                | Partitions count                       | Replication factor               | Settings                                                                                  |
-|---------------------------|----------------------------------------|----------------------------------|-------------------------------------------------------------------------------------------|
-| karafka_consumers_states  | `1`                                      | Aligned with your company policy | `# We are only interested in the current materialized state`<br>`cleanup.policy`: `compact` <br>`# For a short period of time`<br> `retention.ms`: `60 * 60 * 1_000`  |
-| karafka_consumers_reports | `1`                                      | Aligned with your company policy | `# Keep reports for 7 days`<br>`retention.ms`: `7 * 86_400_000`                     |
-| karafka_errors            | OSS: `1`<br>Pro: as many as you need | Aligned with your company policy | `# Keep errors details for 3 months`<br>`retention.ms`: `3 * 31 * 86_400_000`       |                                                                                 |
+<table>
+<thead>
+  <tr>
+    <th>Topic name</th>
+    <th>Settings</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>karafka_consumers_states</td>
+    <td>
+      <ul>
+        <li>
+          partitions: <code>1</code>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'cleanup.policy': 'compact'</code>
+        </li>
+        <li>
+          <code>'retention.ms': 60 * 60 * 1_000 # 1h</code>
+        </li>
+        <li>
+          <code>'segment.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
+        </li>
+        <li>
+          <code>'segment.bytes': 104_857_600 # 100MB</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>karafka_consumers_reports</td>
+    <td>
+      <ul>
+        <li>
+          partitions: <code>1</code>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'retention.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>karafka_errors</td>
+    <td>
+      <ul>
+        <li>
+          partitions:
+          <ul>
+            <li>OSS: <code>1</code></li>
+            <li>Pro: As many as needed</li>
+          </ul>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'retention.ms': 3 * 31 * 24 * 60 * 60 * 1_000 # 3 months</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</tbody>
+</table>
 
 **Note**: Karafka Web UI topics are **not** managed via the [Declarative topics API](/docs/Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
