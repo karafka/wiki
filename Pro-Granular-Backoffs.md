@@ -8,10 +8,19 @@ The Granular Backoffs feature enables you to customize backoff settings for each
 
 TBA
 
-
 ## Usefulness
 
-TBA
+Granular Backoffs can be valuable in numerous situations, including:
+
+1. **High-Importance Topics**: For a topic of high relevance to your application (e.g., containing updates that need immediate processing), you should assign a shorter backoff time and a higher retry count. This ensures any processing issues related to this topic are addressed promptly.
+
+2. **Low-Importance Topics**: In contrast, for a topic of low relevance to your application, you should assign a longer backoff time and a lower retry count. This can help alleviate system load as less processing power is expended in resolving issues with this topic.
+
+3. **High-Frequency Updates**: For a topic that updates frequently, you should assign a shorter pause time and a higher retry count. This ensures your consumer can keep pace with the update rate.
+
+4. **Resource-Intensive Topics**: For a topic that requires substantial resources to process (e.g., containing messages that necessitate complex computations), you should assign a longer backoff time. This ensures your consumer has adequate time to free up resources before retrying to process a message from this topic.
+
+5. **Topics Making External HTTP Calls**: Topics involving external HTTP calls could benefit from a longer backoff time. This ensures external systems, especially those encountering temporary issues, have enough recovery time before the subsequent request.
 
 ## Example use-cases
 
@@ -26,3 +35,7 @@ TBA
 - **Distributed Systems**: In distributed systems with a high level of microservice communication, some services might be more critical than others. Granular backoffs allow adjusting the pause and retry parameters based on each service's importance and load.
 
 - **Systems Making External HTTP Calls**: Systems that interact with external services via HTTP calls can use longer backoff times for these topics. This gives the external system adequate recovery time in case of issues, improving the overall success rate of requests.
+
+## Summary
+
+Granular Backoffs is a powerful feature, allowing for the per-topic customization of pause, backoff, and retry time settings. This ensures a flexible and tailored approach to handling and processing messages based on their respective topic characteristics.
