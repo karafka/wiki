@@ -6,7 +6,61 @@ The Granular Backoffs feature enables you to customize backoff settings for each
 
 ## Usage
 
-TBA
+Karafka, by default, includes three configuration-level settings for computing pause time:
+
+1. `pause_timeout`: This setting determines the waiting period after a processing error. The wait time is expressed in milliseconds, and the default is set to 1000 milliseconds (or 1 second).
+
+2. `pause_max_timeout`: This is the maximum time to wait in an exponential backoff scenario. The wait time is in milliseconds; by default, it's set to 30,000 milliseconds (or 30 seconds).
+
+3. `pause_with_exponential_backoff`: This Boolean setting determines whether or not the system should use exponential backoff. The default setting is true, meaning that the system will utilize an exponential backoff approach by default.
+
+However, these default settings aren't set in stone. You can override them on a per-topic basis using the routing `#pause` method. This method accepts the following keyword arguments:
+
+1. `timeout`: this argument allows you to set the pause time after a processing error.
+
+2. `max_timeout`: this lets you set the maximum time for the system to wait in case of an exponential backoff.
+
+3. `with_exponential_backoff`: when set to false, this argument will tell the system not to use an exponential backoff approach.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    # This topic will use the setup defaults
+    topic :example do
+      consumer ExampleConsumer
+    end
+
+    # This topic has a custom pause times
+    topic :externals do
+      consumer ExternalsConsumer
+      pause(
+        # Wait for at least 5 seconds after an error
+        timeout: 5_000,
+        # Wait for at most 1 minute after error
+        max_timeout: 60_000,
+        # Backoff exponentially on consecutive attempts
+        with_exponential_backoff: true
+      )
+    end
+
+    # This topic is expected to recover really fast
+    topic :events do
+      consumer EventsConsumer
+      pause(
+        # 100 ms atm ost
+        timeout: 100,
+        with_exponential_backoff: false
+      )
+    end
+  end
+end
+```
+
+If the `#pause` method is called without any of these keyword arguments, the system will fall back on using the default settings for those parameters. This means you have a great deal of flexibility and can adjust the system's behavior on a topic-by-topic basis, depending on your specific needs and use cases.
 
 ## Usefulness
 
