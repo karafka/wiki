@@ -232,6 +232,7 @@ Karafka uses its internal state knowledge and `librdkafka` metrics to report the
 Karafka Web-UI uses `Karafka.producer` to produce state reports out of processes. This means that you need to make sure that the default `Karafka.producer` can deliver messages to the following topics:
 
 - `karafka_consumers_states`
+- `karafka_consumers_reports`
 - `karafka_errors`
 
 Without that, Karafka will **not** be able to report anything.
@@ -240,6 +241,6 @@ Without that, Karafka will **not** be able to report anything.
 
 Karafka Web-UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it's monitoring.
 
-By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 8000 Karafka instances within the default Kafka payload limit.
+By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 1000 Karafka instances within the default Kafka payload limit.
 
-However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 5000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web-UI continues to function optimally and efficiently.
+However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web-UI continues to function optimally and efficiently.
