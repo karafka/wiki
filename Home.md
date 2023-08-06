@@ -85,6 +85,7 @@
 * [Rate Limiting](Pro-Rate-Limiting)
 * [Filtering API](Pro-Filtering-API)
 * [Iterator API](Pro-Iterator-API)
+* [Granular Backoffs](Pro-Granular-Backoffs)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Reliability](Pro-Enhanced-Reliability)
