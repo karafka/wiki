@@ -95,6 +95,7 @@
     * [Consumers](Pro-Enhanced-Web-UI#consumers)
     * [Health](Pro-Enhanced-Web-UI#health)
     * [Explorer](Pro-Enhanced-Web-UI#explorer)
+    * [Sanitization](Pro-Enhanced-Web-UI-Sanitization)
     * [Errors](Pro-Enhanced-Web-UI#errors)
     * [DLQ / Dead](Pro-Enhanced-Web-UI#dlq-dead)
 

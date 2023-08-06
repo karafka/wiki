@@ -1,0 +1,41 @@
+Karafka's Web UI includes a feature known as Explorer. This utility enables users to investigate data directly from Kafka topics, providing a window into the stored information that can be invaluable for debugging, data analysis, and system monitoring.
+
+However, in the era of data protection and privacy, it's essential to ensure that sensitive information is not displayed indiscriminately. For this reason, the Explorer has been designed with data sanitization and filtering in mind. By wrapping the deserializers in a filtering layer, it is possible to sanitize or exclude portions of the payload from being presented, thus preventing the accidental display of sensitive data.
+
+This is particularly critical if your system is configured to use encryption. When encryption is enabled, none of the data is presented by default. This is a safeguard to prevent accidental exposure of encrypted data. However, there might be instances when you need to visualize non-sensitive parts of the payload. In such scenarios, partial sanitization can be used, allowing certain non-sensitive data to be deserialized and displayed while keeping sensitive elements secure.
+
+## Usage
+
+To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish two key things:
+
+1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it's deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
+
+2. **Context-Aware Wrapper**: The wrapper used to sanitize the data should be able to understand its operating context. It should be aware of whether it is operating in a Web server context (in which case it should sanitize the data) or in a Karafka server context (in which case it should leave the data untouched). This ensures that sensitive information is only filtered when data is being presented on the Web UI and not during backend processing or other non-UI-related tasks.
+
+It is crucial to ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
+
+Remember that the sanitization process should be implemented carefully to ensure that it doesn't interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
+
+Below you can find an example implementation of a wrapper that removes the replaces the `:address` key from the deserializers hash with a `[FILTERED]` string.
+
+```ruby
+TBA
+```
+
+## Example use-cases
+
+The filtering and sanitization feature can be handy in various scenarios, such as:
+
+- **Privacy Compliance**: If your application processes personal data covered by regulations such as GDPR or CCPA, you can use filtering to prevent this data from being displayed, thus helping you stay compliant with data privacy laws.
+
+- **Secure Debugging**: During debugging, developers may need to inspect data flows without being exposed to sensitive information. In this case, filtering can allow them to see necessary data while hiding sensitive details.
+
+- **Customer Support**: In a customer support scenario, agents might need access to specific non-sensitive data to help diagnose or resolve issues. Filtering can show only the data required to address the customer's concern without exposing sensitive customer information.
+
+- **Audit and Compliance**: In industries like finance or healthcare, compliance officers or auditors may need to inspect data flow while ensuring sensitive data like financial transactions or patient health data remains secure. Filtering can help present the necessary information while maintaining data security and regulatory compliance.
+
+- **Data Analysis**: For data analysis or machine learning purposes, often raw data is used that may contain sensitive elements. A data analyst can utilize the filtering feature to see the data they need while still preserving the privacy of sensitive information.
+
+## Summary
+
+This ability to filter and sanitize data provides a powerful tool to ensure data privacy and security while still giving the necessary visibility into the data flow within your Kafka topics.
