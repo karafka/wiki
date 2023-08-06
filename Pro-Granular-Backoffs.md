@@ -51,7 +51,7 @@ class KarafkaApp < Karafka::App
     topic :events do
       consumer EventsConsumer
       pause(
-        # 100 ms atm ost
+        # 100 ms at most and no exponential
         timeout: 100,
         with_exponential_backoff: false
       )
