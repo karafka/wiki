@@ -6,11 +6,13 @@ This is particularly critical if your system is configured to use encryption. Wh
 
 ## Usage
 
-To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish two key things:
+To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish three key things:
 
 1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it's deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
 
 2. **Context-Aware Wrapper**: The wrapper used to sanitize the data should be able to understand its operating context. It should be aware of whether it is operating in a Web server context (in which case it should sanitize the data) or in a Karafka server context (in which case it should leave the data untouched). This ensures that sensitive information is only filtered when data is being presented on the Web UI and not during backend processing or other non-UI-related tasks.
+
+3. **Routing Wrapper Injection**: The final step for sanitizing data displayed in the Karafka Web UI is Wrapper Routing Injection, where the sanitizing wrapper is incorporated into the Karafka routing. This ensures the data is filtered for sensitive content after deserialization but before being displayed on the UI.
 
 It is crucial to ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
 
@@ -19,7 +21,42 @@ Remember that the sanitization process should be implemented carefully to ensure
 Below you can find an example implementation of a wrapper that removes the replaces the `:address` key from the deserializers hash with a `[FILTERED]` string.
 
 ```ruby
-TBA
+# Define your sanitizer that will wrap the deserializer
+class AddressSanitizer
+  def initialize(deserializer)
+    @deserializer = deserializer
+  end
+
+  def call(message)
+    payload = @deserializer.call(message)
+
+    # You need to set it yourself, it is NOT set by Karafka
+    # return full payload unless we're in Puma (indicating Web-UI)
+    return payload unless ENV.key?('PUMA')
+
+    # Replace the address field with indicator, that it was filtered
+    payload[:address] = '[FILTERED]' if payload.key?(:address)
+
+    # Return the result payload
+    payload
+  end
+end
+
+# And mount it inside the karafka.rb routing
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :orders do
+      consumer ExampleConsumer
+      # Make sure, that the OrdersDeserializer is wrapped with an address sanitizer
+      # so the address is not visible in the Web-UI
+      deserializer AddressSanitizer.new(OrdersDeserializer.new)
+    end
+  end
+end
 ```
 
 ## Example use-cases
