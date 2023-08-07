@@ -59,7 +59,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Below you can find an example of a similar sanitizer that removes the `visitor_id` from the displayed data:
+Below you can find an example of the effect of the usage of a similar sanitizer that removes the `visitor_id` from the displayed data:
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
