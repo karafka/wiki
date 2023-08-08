@@ -49,8 +49,9 @@ Remember that Karafka uses the `info` log level by default. If you assign it a l
 
 Here are a few guidelines that you should follow when trying to create a reproduction script:
 
-1. Use as few non-default gems as possible to eliminate issues emerging from other libraries.
-2. Try setting the `concurrency` value to `1` - this will simplify the processing flow.
+1. Ensure you are using the most recent versions of all the Karafka ecosystem gems. The issue you are facing might have already been fixed.
+2. Use as few non-default gems as possible to eliminate issues emerging from other libraries.
+3. Try setting the `concurrency` value to `1` - this will simplify the processing flow.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -60,7 +61,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-3. Use a single topic with a single partition (so Karafka does not create extensive concurrent jobs).
+4. Use a single topic with a single partition (so Karafka does not create extensive concurrent jobs).
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -81,11 +82,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-4. If the issue is related to Active Job or Ruby on Rails, try using the latest stable release.
-5. Check the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) page to make sure that your Ruby and Ruby on Rails (if used) combination is supported.
-6. Try disabling all Karafka components that may be irrelevant to the issue, like extensive listeners and other hooks.
-7. You can use `TTIN` [signal](Signals-and-states#signals) to print a backtrace of all the Karafka threads if Karafka appears to be hanging or dead. For this to work, the `LoggerListener` needs to be enabled.
-8. If you are interested/need extensive `librdkafka` debug info, you can set the kafka `debug` flag to `all` or one of the following values: `generic`, `broker`, `topic`, `metadata`, `feature`, `queue`, `msg`, `protocol`, `cgrp`, `security`, `fetch`, `interceptor`, `plugin`, `consumer`, `admin`, `eos`, `mock`, `assignor`, `conf`, `all`.
+5. If the issue is related to Active Job or Ruby on Rails, try using the latest stable release.
+6. Check the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) page to make sure that your Ruby and Ruby on Rails (if used) combination is supported.
+7. Try disabling all Karafka components that may be irrelevant to the issue, like extensive listeners and other hooks.
+8. You can use `TTIN` [signal](Signals-and-states#signals) to print a backtrace of all the Karafka threads if Karafka appears to be hanging or dead. For this to work, the `LoggerListener` needs to be enabled.
+9. If you are interested/need extensive `librdkafka` debug info, you can set the kafka `debug` flag to `all` or one of the following values: `generic`, `broker`, `topic`, `metadata`, `feature`, `queue`, `msg`, `protocol`, `cgrp`, `security`, `fetch`, `interceptor`, `plugin`, `consumer`, `admin`, `eos`, `mock`, `assignor`, `conf`, `all`.
 
 ```ruby
 class KarafkaApp < Karafka::App
