@@ -26,8 +26,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 24. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
 25. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
 26. [Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?](#does-the-pro-license-require-me-to-use-the-source-url-in-my-gemfile-to-fetch-the-license)
-27. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-28. [Contact Info](#contact-info)
+27. [Can I use Karafka Pro with a private gem server / private registry?](#can-i-use-karafka-pro-with-a-private-gem-server-private-registry)
+28. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+29. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -178,6 +179,12 @@ Yes, with the Karafka Pro license, you must fetch the license from the Source UR
 However, the Enterprise license would be more suitable if your use case requires total offline usage or involves private gem registries.
 
 Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended. 
+
+## Can I use Karafka Pro with a private gem server / private registry?
+
+Yes, however, you need a specific Enterprise agreement allowing you to leverage this capability.
+
+Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
 
 ## Ethics, Privacy, and Information Usage
 
