@@ -25,8 +25,9 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 23. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
 24. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
 25. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
-26. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-27. [Contact Info](#contact-info)
+26. [Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?](#does-the-pro-license-require-me-to-use-the-source-url-in-my-gemfile-to-fetch-the-license)
+27. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+28. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -66,7 +67,7 @@ Follow the instructions on our [website](https://karafka.io/#become-pro).
 
 This is a common requirement for "on-site installs" or "appliances" sold to large corporations.
 
-The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $2,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
+The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $4,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
 
 ## Can you transfer a license?
 
@@ -143,9 +144,9 @@ Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafk
 
 We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
-Karafka Pro can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional agreement, and there is an additional cost of USD 2000 yearly (USD 2995 in total).
+Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional Enterprise agreement, and there is an additional cost of USD 2000 yearly (USD 2995 in total).
 
-Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on any third-party sources.
+Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on our third-party source.
 
 ## How can I change the email associated with my subscription?
 
@@ -169,6 +170,14 @@ This temporary link will be sent directly from Stripe to the billing email assoc
 You will receive a confirmation email once you've successfully updated your payment method.
 
 Please check your spam or junk folders if you don't see the email in your inbox. If you encounter any issues, feel free to contact us for further assistance.
+
+## Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?
+
+Yes, with the Karafka Pro license, you must fetch the license from the Source URL specified in your Gemfile. This is the standard procedure for validating and activating your Pro license subscription.
+
+However, the Enterprise license would be more suitable if your use case requires total offline usage or involves private gem registries.
+
+Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended. 
 
 ## Ethics, Privacy, and Information Usage
 
