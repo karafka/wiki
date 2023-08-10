@@ -444,6 +444,8 @@ kafka `client.id` is a string passed to the server when making requests. This is
 
 Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
 
+**Note**: If you're using the default consumer group mapper in Karafka, altering the `client_id` will rename consumer groups, leading to the reconsumption of all subscribed topics. Exercise caution and avoid modifying the `client_id` unless intentional reprocessing of all messages is desired.
+
 ## How can I increase Kafka and Karafka max message size?
 
 To make Kafka accept messages bigger than 1MB, you must change both Kafka and Karafka configurations.
