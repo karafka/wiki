@@ -30,6 +30,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 28. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
 29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
 30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
+31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#tba)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -148,9 +149,9 @@ Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafk
 
 We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
-Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an additional Enterprise agreement, and there is an additional cost of USD 2000 yearly (USD 2995 in total).
+Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an Enterprise agreement.
 
-Upon agreement, we will provide the license gem with installation instructions, so you can start using Karafka Pro with ease without reliance on our third-party source.
+Upon agreement, we will provide the license gem sources with installation instructions, so you can start using Karafka Pro with ease without reliance on our third-party source.
 
 ## How can I change the email associated with my subscription?
 
@@ -202,6 +203,20 @@ Only for Karafka Enterprise tier.
 ## Can I request a change to the license terms?
 
 Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can ask for changes to the terms and conditions. Email your concerns and we can negotiate something.
+
+## Are there any feature related differences in between Karafka Pro and Enterprise?
+
+**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, and support for compliance documentation. With Enterprise:
+
+1. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
+
+2. You can legally utilize Karafka without needing my gem server for license gem download and verification.
+
+3. You are granted extended permission to continue using your private fork of Karafka even after your license expires or your subscription ends.
+
+4. Payments can be made via invoicing.
+
+5. I am available to assist with any security or compliance documentation required for your organization's needs. 
 
 ## Ethics, Privacy, and Information Usage
 
