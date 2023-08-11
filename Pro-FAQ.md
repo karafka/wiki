@@ -27,8 +27,11 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 25. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
 26. [Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?](#does-the-pro-license-require-me-to-use-the-source-url-in-my-gemfile-to-fetch-the-license)
 27. [Can I use Karafka Pro with a private gem server / private registry?](#can-i-use-karafka-pro-with-a-private-gem-server-private-registry)
-28. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-29. [Contact Info](#contact-info)
+28. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
+29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
+30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
+100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+101. [Contact Info](#contact-info)
 
 ## Is there a trial version?
 
@@ -185,6 +188,20 @@ Moreover, the Enterprise license comes with additional legal benefits. These inc
 Yes, however, you need a specific Enterprise agreement allowing you to leverage this capability.
 
 Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
+
+## Can I pay via invoice and purchase order?
+
+Karafka Pro is credit card only, no exceptions.
+
+Karafka Enterprise can be purchased via invoice and purchase order if needed. Email contact@karafka.io for more details.
+
+## Can you fill out my security or compliance documentation?
+
+Only for Karafka Enterprise tier.
+
+## Can I request a change to the license terms?
+
+Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can ask for changes to the terms and conditions. Email your concerns and we can negotiate something.
 
 ## Ethics, Privacy, and Information Usage
 
