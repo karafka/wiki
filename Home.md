@@ -73,6 +73,7 @@
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
 * [Security](Pro-Security)
+* [Enterprise](Pro-Enterprise)
 
 ### Features and enhancements
 
