@@ -13,3 +13,6 @@ Additionally, the offline/embedded mode available in the Enterprise version is s
 4. **Flexible Payment Options**: Understanding the diverse needs of large organizations, the Enterprise version offers the option of making payments via invoicing. This makes the financial transaction process more streamlined and adaptable to corporate financial workflows.
 
 5. **Compliance Documentation Support**: Legal compliance, especially in today's complex regulatory environment, is paramount. With the Enterprise version, I am available to assist your organization in crafting any security or compliance documentation. This bespoke service ensures that your usage of Karafka aligns with industry standards and meets organizational requirements.
+
+6. **Custom License Agreement**: While Karafka Pro is sold with its set terms and conditions, Enterprise customers may request contract changes. Recognizing that enterprise businesses might have specific requirements or concerns, we offer the flexibility for Enterprise users to request changes to the terms and conditions of the license agreement. This level of customization ensures that your organization's unique needs and preferences are met.
+
