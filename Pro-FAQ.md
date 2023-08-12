@@ -30,7 +30,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 28. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
 29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
 30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
-31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#tba)
+31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 

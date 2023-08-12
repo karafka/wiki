@@ -20,4 +20,4 @@ On top of that, to ensure the stability and security of the system:
 - Karafka Pro provides [script](Pro-Getting-Started#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
 - Every release of every Karafka component is announced on our [Slack](https://slack.karafka.io).
 
-**Note**: If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate agreement with us. Please [contact us](https://karafka.io#support) for more details.
+**Note**: If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate [Enterprise](https://karafka.io/docs/Pro-Enterprise/) agreement with us. Please [contact us](https://karafka.io#support) for more details.
