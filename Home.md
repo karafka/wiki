@@ -74,7 +74,7 @@
 * [Pro Support](Pro-Support)
 * [Security](Pro-Security)
 * [Enterprise](Pro-Enterprise)
-* [Enterprise Workshop Session](Pro-Enterprise-Workshop)
+* [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session)
 
 ### Features and enhancements
 
