@@ -206,7 +206,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 ## Are there any feature related differences in between Karafka Pro and Enterprise?
 
-**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, and support for compliance documentation. With Enterprise:
+**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, workshop session, and support for compliance documentation. With Enterprise:
 
 1. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
 
@@ -217,6 +217,10 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 4. Payments can be made via invoicing.
 
 5. I am available to assist with any security or compliance documentation required for your organization's needs. 
+
+6. You can request a 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka
+
+You can read more about those differences [here](https://karafka.io/docs/Pro-Enterprise/).
 
 ## Ethics, Privacy, and Information Usage
 
