@@ -51,7 +51,7 @@ By investing a few hours, you're setting yourself up to save weeks of collective
 ## Terms & Conditions
 
 1. **Karafka Enterprise Subscription**: You must have an active paid Karafka Enterprise subscription.
-2. **Advance Notice**: Submit your workshop session request at least two weeks prior to the desired date.
+2. **Advance Notice**: Submit your workshop session request at least two weeks before the desired date.
 3. **Attendee Limit**: The session can accommodate up to 6 people.
 4. **Experience**: While you don’t need any prior knowledge of Kafka or Karafka, attendees should understand Ruby and Ruby on Rails to get the most out of the workshop.
 5. **Technical Requirements**:
