@@ -30,7 +30,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 28. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
 29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
 30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
-31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#tba)
+31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -206,7 +206,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 ## Are there any feature related differences in between Karafka Pro and Enterprise?
 
-**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, and support for compliance documentation. With Enterprise:
+**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, workshop session, and support for compliance documentation. With Enterprise:
 
 1. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
 
@@ -217,6 +217,10 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 4. Payments can be made via invoicing.
 
 5. I am available to assist with any security or compliance documentation required for your organization's needs. 
+
+6. You can request a 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka
+
+You can read more about those differences [here](https://karafka.io/docs/Pro-Enterprise/).
 
 ## Ethics, Privacy, and Information Usage
 
