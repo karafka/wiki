@@ -35,10 +35,11 @@ bundle exec karafka-web install
 
 **Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
 
-By default, Karafka uses three topics with the following names:
+By default, Karafka uses four topics with the following names:
 
 - `karafka_consumers_states`
 - `karafka_consumers_reports`
+- `karafka_consumers_metrics`
 - `karafka_errors`
 
 If you have the `auto.create.topics.enable` set to `false` or problems running the install command, create them manually. The recommended settings are as followed:
@@ -88,6 +89,37 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
         </li>
         <li>
           <code>'retention.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>karafka_consumers_metrics</td>
+    <td>
+      <ul>
+        <li>
+          partitions: <code>1</code>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          partitions: <code>1</code>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'cleanup.policy': 'compact'</code>
+        </li>
+        <li>
+          <code>'retention.ms': 60 * 60 * 1_000 # 1h</code>
+        </li>
+        <li>
+          <code>'segment.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
+        </li>
+        <li>
+          <code>'segment.bytes': 104_857_600 # 100MB</code>
         </li>
       </ul>
     </td>
