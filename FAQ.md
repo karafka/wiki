@@ -98,6 +98,7 @@
 98. [Does Kafka guarantee message processing orders within a single partition for single or multiple topics? And does this mean Kafka topics consumption run on a single thread?](#does-kafka-guarantee-message-processing-orders-within-a-single-partition-for-single-or-multiple-topics-and-does-this-mean-kafka-topics-consumption-run-on-a-single-thread)
 99. [Why can I produce messages to my local Kafka docker instance but cannot consume?](#why-can-i-produce-messages-to-my-local-kafka-docker-instance-but-cannot-consume)
 100. [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
+101. [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1388,7 +1389,25 @@ If you're looking for a Kafka setup that doesn't require Zookeeper, consider usi
 Karafka and Karafka Pro do not follow a fixed official release schedule. Instead:
 
 - Releases containing breaking changes are rolled out once they are fully documented, and migration guides are prepared.
+
 - New features are released as soon as they are ready and thoroughly documented.
+
 - Bug fixes that don't involve API changes are released immediately.
 
 We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. It's worth noting that most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
+
+## Can I pass custom parameters during consumer initialization?
+
+**No**. In Karafka, consumers are typically created within the standard lifecycle of Kafka operations, after messages are polled but before they are consumed. This creation happens in the listener loop before work is delegated to the workers' queue.
+
+- You have the flexibility to modify the `#initialize` method. However, there are some nuances to note:
+
+- You can redefine the `#initialize` but not define it with arguments, i.e., `def initialize(args)` is not allowed.
+
+- If you redefine `#initialize`, you **need** to call `super`.
+
+- While you can perform actions during initialization, be cautious not to overload this phase with heavy tasks or large resource loads like extensive caches. This is because the initialization happens in the listener loop thread, and any extensive process here could block message consumption.
+
+- If there's a minor delay (a few seconds) during initialization, it's acceptable.
+
+Furthermore, with no arguments in the initialize method, this API structure is designed for your customization, and there are no plans to change this in the foreseeable future.
