@@ -33,6 +33,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
 30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
 31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
+32. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -239,6 +240,12 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 6. You can request a 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka
 
 You can read more about those differences [here](https://karafka.io/docs/Pro-Enterprise/).
+
+## What is the response and resolution time for priority support with Karafka?
+
+With Karafka's priority support, you'll receive an initial assessment and reply within a maximum of 2 working days. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
+
+Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
 
 ## Ethics, Privacy, and Information Usage
 

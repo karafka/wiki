@@ -43,3 +43,5 @@ We recognize the significance of prompt and effective bug resolution for your on
 5. **Consideration for Backporting Features or Fixes**: We understand that certain features or fixes can significantly enhance the functionality and stability of your current projects. As a Karafka Pro user, you can request a backport of a particular feature or fix to support your specific needs. Please note that the possibility of backporting will be assessed on a case-by-case basis, taking into account factors like the feasibility of the backport and its impact on system stability.
 
 By opting for Karafka Pro, you are not just purchasing a product but partnering with people committed to ensuring the smooth operation of your applications.
+
+**Note**: Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.

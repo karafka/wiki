@@ -97,6 +97,7 @@
 97. [Why do Karafka reports lag when processes are not overloaded and consume data in real-time?](#why-do-karafka-reports-lag-when-processes-are-not-overloaded-and-consume-data-in-real-time)
 98. [Does Kafka guarantee message processing orders within a single partition for single or multiple topics? And does this mean Kafka topics consumption run on a single thread?](#does-kafka-guarantee-message-processing-orders-within-a-single-partition-for-single-or-multiple-topics-and-does-this-mean-kafka-topics-consumption-run-on-a-single-thread)
 99. [Why can I produce messages to my local Kafka docker instance but cannot consume?](#why-can-i-produce-messages-to-my-local-kafka-docker-instance-but-cannot-consume)
+100. [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1381,3 +1382,13 @@ There are several potential reasons why you can produce messages to your local K
 Remember, these issues are common, so don't worry if you face them. Persistence and careful debugging are key in these situations.
 
 If you're looking for a Kafka setup that doesn't require Zookeeper, consider using KRaft (KRaft is short for Kafka Raft mode), a mode in which Kafka operates in a self-managed way without Zookeeper. This new mode introduced in Kafka `2.8.0` allows you to reduce the operational complexity by eliminating the Zookeeper dependency.
+
+## What is the release schedule for Karafka and its components?
+
+Karafka and Karafka Pro do not follow a fixed official release schedule. Instead:
+
+- Releases containing breaking changes are rolled out once they are fully documented, and migration guides are prepared.
+- New features are released as soon as they are ready and thoroughly documented.
+- Bug fixes that don't involve API changes are released immediately.
+
+We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. It's worth noting that most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
