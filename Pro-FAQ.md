@@ -1,5 +1,6 @@
 Karafka Pro is an enhanced version of the Karafka framework, adding more functionalities and providing additional customer support options.
 
+1. [To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?](#to-become-a-karafka-pro-user-do-i-need-to-follow-the-license-comm-terms)
 1. [Is there a trial version?](#is-there-a-trial-version)
 2. [What is the license?](#what-is-the-license)
 3. [How does Pro licensing work?](#how-does-pro-licensing-work)
@@ -15,10 +16,11 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
 14. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
 15. [Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?](#do-you-require-any-personal-information-financial-data-confidentialsensitive-data-government-data-etc)
-16. [How do you ensure security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
-17. [Does Karafka Pro stores, processes or transmits Personal Health Information?](#does-karafka-pro-stores-processes-or-transmits-personal-health-information)
-18. [Does Karafka Pro stores, processes or transmits Personally Identifiable Information?](#does-karafka-pro-stores-processes-or-transmits-personally-identifiable-information)
-19. [Will Karafka store, process, or transmit company confidential information and data?](#will-karafka-store-process-or-transmit-company-confidential-information-and-data)
+16. [How do you ensure the security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
+17. [What is Karafka Data Collection and GDPR Policy?](#what-is-karafka-data-collection-and-gdpr-policy)
+18. [Does Karafka Pro stores, processes or transmits Personal Health Information?](#does-karafka-pro-stores-processes-or-transmits-personal-health-information)
+19. [Does Karafka Pro stores, processes or transmits Personally Identifiable Information?](#does-karafka-pro-stores-processes-or-transmits-personally-identifiable-information)
+20. [Will Karafka store, process, or transmit company confidential information and data?](#will-karafka-store-process-or-transmit-company-confidential-information-and-data)
 20. [How do you store, process, or transmit Payment Cardholder Information?](#how-do-you-store-process-or-transmit-payment-cardholder-information)
 21. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
 22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
@@ -33,6 +35,10 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
+
+## To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?
+
+Yes, it is required to accept the [LICENSE-COMM](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) terms to become a Karafka Pro user.
 
 ## Is there a trial version?
 
@@ -120,6 +126,18 @@ Karafka license gem contains **only** the organization name.
 ## How do you ensure the security of your gem server?
 
 Please read our [Security statement](Pro-Security) for details on this manner.
+
+## What is Karafka Data Collection and GDPR Policy?
+
+We understand the importance of user privacy and data protection, especially in today's digital world. For this reason, we want to provide absolute clarity regarding the data practices associated with Karafka and Karafka Pro.
+
+- **Data Collection**: Karafka and Karafka Pro do NOT collect any data from the servers they operate on. Our primary concern is to deliver functionality without infringing on the privacy of our users.
+
+- **Logging**: The only data Karafka collects is the IP address from which the license gem request was made during the bundling process. This is purely for logging and linse validation purposes. Furthermore, the date of the last request is noted, but no other identifiable information is ever collected or stored.
+
+- **GDPR and Data Processing**: As per the General Data Protection Regulation (GDPR), a "data processor" is an entity that processes personal data on behalf of a data controller. Since Karafka does not collect or process any data from its users, it does not act as a data processor, and therefore, GDPR-related concerns in that context do not apply to Karafka.
+
+- **Future Changes**: Our commitment to data privacy is unwavering. We hereby affirm that this policy is not subject to change. Karafka will only introduce features or capabilities that collect data if explicitly requested by the community. Even then, all Pro and Enterprise users will be informed about that, and any such features will be turned off by default. We are and will remain committed to ensuring the privacy and trust of our users.
 
 ## Does Karafka Pro stores, processes or transmits Personal Health Information?
 
