@@ -99,6 +99,7 @@
 99. [Why can I produce messages to my local Kafka docker instance but cannot consume?](#why-can-i-produce-messages-to-my-local-kafka-docker-instance-but-cannot-consume)
 100. [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
 101. [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
+102. [Where can I find producer idempotence settings?](#where-can-i-find-producer-idempotence-settings)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1411,3 +1412,7 @@ We prioritize bugs and critical performance improvements to ensure optimal user 
 - If there's a minor delay (a few seconds) during initialization, it's acceptable.
 
 Furthermore, with no arguments in the initialize method, this API structure is designed for your customization, and there are no plans to change this in the foreseeable future.
+
+## Where can I find producer idempotence settings?
+
+They are located in the WaterDrop wiki [idempotence section](https://github.com/karafka/waterdrop#idempotence).
