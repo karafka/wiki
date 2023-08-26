@@ -154,7 +154,7 @@ If you are interested in how many threads in total your Karafka servers use, Kar
 
 This detailed view can provide invaluable insights, helping you understand how your Karafka server is performing and where any potential bottlenecks might occur.
 
-## ActiveRecord Connections Pool usage
+## Database connections usage
 
 Karafka, by itself, does not manage PostgreSQL or any other database connections directly. When using frameworks like Ruby on Rails, database connections are typically managed by the [ActiveRecord Connections Pool](https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html).
 
