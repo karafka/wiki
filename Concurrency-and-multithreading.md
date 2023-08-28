@@ -27,7 +27,7 @@ Karafka uses multiple threads to process messages coming from different topics a
 Using multiple threads for IO intense work can bring great performance improvements to your system "for free."
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/workers-performance.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/workers-performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates performace difference for IO intense jobs.</small>
@@ -104,7 +104,7 @@ Karafka allows you to parallelize further processing of data from a single parti
 Virtual Partitions allow you to parallelize the processing of data from a single partition. This can drastically increase throughput when IO operations are involved.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_performance.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates the throughput difference for IO intense work, where the IO cost of processing a single message is 1ms.
