@@ -101,22 +101,72 @@ Each fetched batch contained at most 500 messages.
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/1mb_memory.png" />
 </p>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/1mb_stdev.png" />
+</p>
+
+**Conclusion**: For messages approximately 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
+
 ### Message size of 100KB
 
-TBA
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/100kb_memory.png" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/100kb_stdev.png" />
+</p>
+
+**Conclusion**: For messages around 100KB in size, the Cleaner API still demonstrates a notable impact. While the memory savings might not be as dramatic as with 1MB messages, the reduction in memory usage and stabilization of consumption patterns remain significant, underscoring the API's effectiveness also at this size.
 
 ### Message size of 10KB
 
-TBA
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/10kb_memory.png" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/10kb_stdev.png" />
+</p>
+
+**Conclusion**: When processing messages of approximately 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
 
 ### Message size of 1KB
 
-TBA
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/1kb_memory.png" />
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/1kb_stdev.png" />
+</p>
+
+**Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application doesn't notably affect the memory usage metrics for such small messages. However, it's worth noting that even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there's an anticipation of intermittently receiving messages with increased payloads.
 
 ## Limitations
 
-TBA
+The Cleaner API offers several advantages, especially when it comes to efficiently managing memory for larger payloads. However, as with any tool or feature, there are certain limitations that users should be aware of:
+
+- **Overhead**: Despite its design focus on being lightweight and efficient, the Cleaner API introduces a small overhead. This is associated with the operation of releasing the data from memory.
+
+- **Not Suitable for Tiny Payloads**: The efficacy of the Cleaner API is more pronounced for larger message payloads, typically those sized 10KB and above. When dealing with tiny payloads, the memory management benefits are negligible, and the overhead might overshadow any gains.
+
+- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
+
+- **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
+
+- **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it's crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
+
+Understanding these limitations is essential for users to effectively and efficiently leverage the Cleaner API without encountering unforeseen issues or complications in their processes.
 
 ## Example use-cases
 
-TBA
+- **Log Aggregation and Analysis Systems**: Many enterprises gather vast amounts of log data from various sources like applications, servers, and network devices. Processing this data in real time often involves deserializing large chunks of data to analyze patterns, anomalies, or security breaches. After processing, the payload data often remains in memory until the whole batch is analyzed, causing inefficiencies.
+
+- **E-Commerce Transaction Processing**: E-commerce platforms process millions of daily transactions, including user data, product information, and payment details. Each transaction can be a sizeable chunk of data.
+
+- **IoT Data Ingestion**: IoT devices can send vast amounts of data, especially in smart cities or industrial IoT scenarios. This data often contains sensor readings, device status updates, and more. The Cleaner API can help quickly clean up processed data, ensuring efficient memory usage as millions of messages pour in.
+
+- **Financial Data Analysis**: Financial institutions process large datasets daily, including stock market feeds, transactions, and trading data. These data packets can vary in size and come in rapid succession. To ensure that analysis tools and algorithms function at peak efficiency, the Cleaner API can be employed to release memory as soon as a data packet has been processed, maintaining system responsiveness.
+
+In all these use cases, the key value of the Cleaner API is in enhancing memory management, ensuring that systems maintain optimal performance even when dealing with substantial or varied data loads with various message sizes.
