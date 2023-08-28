@@ -51,6 +51,20 @@ def consume
 end
 ```
 
+### Checking Message State
+
+To assess whether a message has undergone the cleaning process, you can use the `#cleaned?` method directly on the message object. This method provides a straightforward way to check the cleaning status of the message, returning a boolean value (`true` if cleaned, `false` otherwise). This functionality is particularly useful for conditional operations or logging scenarios.
+
+```ruby
+if message.cleaned?
+  puts 'The message has been cleaned.'
+else
+  puts 'The message has not been cleaned yet.'
+end
+```
+
+Regardless of where you are in your code, as long as the message object is accessible, you can leverage the `#cleaned?` method to determine the cleaning state of the message and proceed accordingly.
+
 ## Benefits
 
 - **Memory Efficiency**: Cleaner API optimizes memory usage by promptly releasing unused messages payloads, ensuring that your application uses memory judiciously.

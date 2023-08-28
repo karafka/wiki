@@ -20,6 +20,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Granular Backoffs](Pro-Granular-Backoffs) - Granular Backoffs provide heightened control over backing off, pausing, and retrying processing upon errors. This feature offers per-topic customization of the error-handling strategy.
 
+- [Cleaner API](Pro-Cleaner-API) - The Cleaner API efficiently releases messages payloads from memory after processing, optimizing memory management during batch operations.
+
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
