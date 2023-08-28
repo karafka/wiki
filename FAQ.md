@@ -101,6 +101,8 @@
 101. [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
 102. [Where can I find producer idempotence settings?](#where-can-i-find-producer-idempotence-settings)
 103. [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
+104. [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
+105. [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1421,3 +1423,25 @@ They are located in the WaterDrop wiki [idempotence section](https://github.com/
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
 Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](https://karafka.io/docs/Concurrency-and-multithreading/#database-connections-usage).
+
+## Why is my Karafka application consuming more memory than expected?
+
+Several factors may lead to increased memory consumption:
+
+- **Large Payloads**: Handling large message payloads can inherently consume more memory. Remember that Karafka will keep the raw payload alongside newly deserialized information after the message is deserialized.
+
+- **Batch Processing**: This can accumulate memory usage if you're processing large batches containing bigger messages.
+
+- **Memory Leaks**: There might be memory leaks in your application or the libraries you use.
+
+If your problems originate from batch and message sizes, we recommend looking into our [Pro Cleaner API](https://karafka.io/docs/Pro-Cleaner-API/).
+
+## How can I optimize memory usage in Karafka?
+
+- **Use Cleaner API**: The [Cleaner API](https://karafka.io/docs/Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and ensuring a steadier memory usage pattern.
+
+- **Adjust `librdkafka` Memory Settings**: The underlying library, `librdkafka`, has configurations related to memory usage. Tuning these settings according to your application's needs can optimize the memory footprint. Amongst others you may be interested in looking into the following settings: `fetch.message.max.bytes`, `queued.min.messages`, `queued.max.messages.kbytes` and `receive.message.max.bytes`
+
+- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
+
+While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
