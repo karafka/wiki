@@ -15,3 +15,11 @@ The Enhanced Scheduler uses a non-preemptive LJF (Longest Job First) algorithm.
 This scheduler is designed to optimize execution times, especially on jobs that perform IO operations. When computing the order, it considers the potential time cost of executing jobs based on the in-process p95 time and number of messages.
 
 For IO intense jobs, where the number of jobs exceeds the number of threads, this can provide gains up to **20%**.
+
+## Enhanced Memory Utilization
+
+Karafka Pro provides the Cleaner API. This feature is specifically designed to optimize memory management for message payloads, especially those exceeding 10KB.
+
+This mechanism allows users to achieve memory savings of up to 80%, ensuring that applications run more efficiently and with reduced risk. Moreover, the memory usage patterns become substantially more stable with the Cleaner API, offering robust protection against unexpected out-of-memory exceptions.
+
+For a deeper dive into the nuances and technicalities of this feature, please refer to the dedicated [Cleaner API documentation](karafka.io/docs/Pro-Cleaner-API/).
