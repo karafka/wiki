@@ -29,6 +29,8 @@ def consume
   messages.each do |message|
     DataStore.persist!(message.payload)
 
+    # Always make sure to mark as consumed before cleaning
+    # in case you are using the Dead Letter Queue
     mark_as_consumed(message)
 
     message.clean!
@@ -46,6 +48,8 @@ def consume
   messages.each(clean: true) do |message|
     DataStore.persist!(message.payload)
 
+    # Always make sure to mark as consumed before cleaning
+    # in case you are using the Dead Letter Queue
     mark_as_consumed(message)
   end
 end
@@ -166,6 +170,8 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 - **Not Suitable for Tiny Payloads**: The efficacy of the Cleaner API is more pronounced for larger message payloads, typically those sized 10KB and above. When dealing with tiny payloads, the memory management benefits are negligible, and the overhead might overshadow any gains.
 
 - **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
+
+- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Please do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
 
 - **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
 
