@@ -100,6 +100,7 @@
 100. [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
 101. [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
 102. [Where can I find producer idempotence settings?](#where-can-i-find-producer-idempotence-settings)
+103. [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1416,3 +1417,7 @@ Furthermore, with no arguments in the initialize method, this API structure is d
 ## Where can I find producer idempotence settings?
 
 They are located in the WaterDrop wiki [idempotence section](https://github.com/karafka/waterdrop#idempotence).
+
+## How can I control or limit the number of PostgreSQL database connections when using Karafka?
+
+Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](https://karafka.io/docs/Concurrency-and-multithreading/#database-connections-usage).
