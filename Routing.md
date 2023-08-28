@@ -160,3 +160,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Routing Patterns
+
+TBA

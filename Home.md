@@ -84,6 +84,7 @@
 * [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Expiring Messages](Pro-Expiring-Messages)
+* [Routing Patterns](Pro-Routing-Patterns)
 * [Rate Limiting](Pro-Rate-Limiting)
 * [Filtering API](Pro-Filtering-API)
 * [Iterator API](Pro-Iterator-API)
