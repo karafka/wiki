@@ -103,6 +103,7 @@
 103. [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
 104. [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
 105. [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
+106. [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web-UI?](#why-am-i-getting-no-such-file-or-directory-ps-errnoenoent-from-the-web-ui)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1445,3 +1446,43 @@ If your problems originate from batch and message sizes, we recommend looking in
 - **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
 
 While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
+
+## Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web-UI?
+
+If you are seeing the following error:
+
+```bash
+INFO pid=1 tid=gl9 Running Karafka 2.1.7 server
+#<Thread:0x0000aaab008cc9d0 karafka-2.1.7/lib/karafka/helpers/async.rb:25 run>
+# terminated with exception (report_on_exception is true):
+Traceback (most recent call last):
+17: lib/karafka/helpers/async.rb:28:in `block in async_call'
+16: lib/karafka/connection/listener.rb:48:in `call'
+15: lib/karafka/core/monitoring/monitor.rb:34:in `instrument'
+14: lib/karafka/core/monitoring/notifications.rb:101:in `instrument'
+13: lib/karafka/core/monitoring/notifications.rb:101:in `each'
+12: lib/karafka/core/monitoring/notifications.rb:105:in `block in instrument'
+11: lib/karafka/web/tracking/consumers/listeners/status.rb:18:in \
+  `on_connection_listener_before_fetch_loop'
+10: lib/forwardable.rb:238:in `report'
+ 9: lib/karafka/web/tracking/consumers/reporter.rb:35:in `report'
+ 8: lib/karafka/web/tracking/consumers/reporter.rb:35:in `synchronize'
+ 7: lib/karafka/web/tracking/consumers/reporter.rb:45:in `block in report'
+ 6: lib/karafka/web/tracking/consumers/sampler.rb:68:in `to_report'
+ 5: lib/karafka/web/tracking/consumers/sampler.rb:163:in `memory_total_usage'
+ 4: lib/karafka/web/tracking/memoized_shell.rb:32:in `call'
+ 3: open3.rb:342:in `capture2'
+ 2: open3.rb:159:in `popen2'
+ 1: open3.rb:213:in `popen_run'
+/usr/lib/ruby/2.7.0/open3.rb:213:in `spawn': No such file or directory - ps (Errno::ENOENT)
+```
+
+it typically indicates that the Karafka Web-UI is trying to execute the `ps` command but the system cannot locate it. This can occur for a few reasons:
+
+- **The Command is Not Installed**: The required command (`ps` in this instance) may not be installed on your system. This is less likely if you are on a standard Linux or macOS setup because `ps` is usually a default command. However, minimal Docker images or other restricted environments might not have these common utilities by default.
+
+- **PATH Environment Variable**: The environment in which your Web-UI runs might need to set its PATH variable up correctly to include the directory where the `ps` command resides.
+
+- **Restricted Permissions**: It could be a permission issue. The process/user running the Web-UI may not have the necessary permissions to execute the `ps` command.
+
+Please ensure you have **all** the Karafka Web-UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
