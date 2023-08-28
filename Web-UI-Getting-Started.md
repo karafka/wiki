@@ -35,6 +35,38 @@ bundle exec karafka-web install
 
 **Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
 
+4. Mount the Web interface in your Ruby on Rails application routing:
+
+```ruby
+require 'karafka/web'
+
+Rails.application.routes.draw do
+  # other routes...
+
+  mount Karafka::Web::App, at: '/karafka'
+end
+```
+
+Or use it as a standalone Rack application by creating `karafka_web.ru` rackup file with the following content:
+
+```ruby
+# Require your application code here and then...
+
+require_relative 'karafka.rb'
+
+run Karafka::Web::App
+```
+
+5. Enjoy Karafka Web UI.
+
+If you do everything right, you should see this in your browser:
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
+</p>
+
+## Manual Web-UI Topics Management
+
 By default, Karafka uses four topics with the following names:
 
 - `karafka_consumers_states`
@@ -149,35 +181,49 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 
 **Note**: Karafka Web UI topics are **not** managed via the [Declarative topics API](/docs/Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
-4. Mount the Web interface in your Ruby on Rails application routing:
+## External Shell/OS Required Commands
 
-```ruby
-require 'karafka/web'
+Karafka Web-UI relies on a few operating system commands to function correctly and collect OS data. The table below lists these commands according to the relevant operating systems:
 
-Rails.application.routes.draw do
-  # other routes...
+<table border="1">
+    <thead>
+        <tr>
+            <th>OS Command</th>
+            <th>Linux</th>
+            <th>macOS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ps</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>grep</td>
+            <td>✓</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>sysctl</td>
+            <td></td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>w</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+        <tr>
+            <td>head</td>
+            <td>✓</td>
+            <td>✓</td>
+        </tr>
+    </tbody>
+</table>
 
-  mount Karafka::Web::App, at: '/karafka'
-end
-```
 
-Or use it as a standalone Rack application by creating `karafka_web.ru` rackup file with the following content:
-
-```ruby
-# Require your application code here and then...
-
-require_relative 'karafka.rb'
-
-run Karafka::Web::App
-```
-
-5. Enjoy Karafka Web UI.
-
-If you do everything right, you should see this in your browser:
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
-</p>
+Note: The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web-UI to work correctly.
 
 ## Multi-App / Multi-Tenant configuration
 
