@@ -22,4 +22,4 @@ Karafka Pro provides the Cleaner API. This feature is specifically designed to o
 
 This mechanism allows users to achieve memory savings of up to 80%, ensuring that applications run more efficiently and with reduced risk. Moreover, the memory usage patterns become substantially more stable with the Cleaner API, offering robust protection against unexpected out-of-memory exceptions.
 
-For a deeper dive into the nuances and technicalities of this feature, please refer to the dedicated [Cleaner API documentation](karafka.io/docs/Pro-Cleaner-API/).
+For a deeper dive into the nuances and technicalities of this feature, please refer to the dedicated [Cleaner API documentation](https://karafka.io/docs/Pro-Cleaner-API/).
