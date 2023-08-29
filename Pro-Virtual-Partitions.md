@@ -5,7 +5,7 @@ While the default scaling strategy for Kafka consumers is to increase partitions
 Virtual Partitions solve this problem by providing you with the means to further parallelize work by creating "virtual" partitions that will operate independently but will, as a collective processing unit, obey all the Kafka warranties.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/stats/virtual_partitions_performance.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates the throughput difference for IO intense work, where the IO cost of processing a single message is 1ms.
@@ -52,7 +52,7 @@ Message distribution is based on the outcome of the `virtual_partitions` setting
 Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_partitioner.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/partitioner.svg" />
 </p>
 
 ### Partitioning based on the message key
@@ -179,7 +179,7 @@ Whenever you `mark_as_consumed` when using Virtual Partitions, Karafka will ensu
 Below you can find a few examples of how Karafka transforms messages marked as consumed in virtual partitions into an appropriate offset that can be committed to Kafka.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collective_state.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/collective_state.svg" />
 </p>
 
 ### Virtual Partition Collective Marking
@@ -191,7 +191,7 @@ This functionality seamlessly integrates with collective marking to materialize 
 Below you can find an example illustrating which of the messages will be virtually marked as consumed when given message in a virtual partition is marked.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collective_marking.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/collective_marking.svg" />
 </p>
 
 ### Reprocessing Exclusions
@@ -203,7 +203,7 @@ By automatically skipping already consumed messages upon encountering an error, 
 This behavior is advantageous in scenarios where message processing involves external systems or operations that are not idempotent. Skipping previously consumed messages reduces the risk of executing duplicate actions and helps maintain the integrity of the overall system.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapsed_with_exclusions.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/collapsed_with_exclusions.svg" />
 </p>
 
 ## Behaviour on errors
@@ -211,7 +211,7 @@ This behavior is advantageous in scenarios where message processing involves ext
 For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](/docs/Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_error_handling.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/error_handling.svg" />
 </p>
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
@@ -237,7 +237,7 @@ end
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_collapse.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/collapse.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the retry and collapse of two virtual partitions into one upon errors.
@@ -276,7 +276,7 @@ Virtual Partitions provide three types of warranties in regards to order:
 - Strong Kafka ordering warranties when operating in the `collapsed` mode with automatic exclusion of messages virtually marked as consumed.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_order.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/order.svg" />
 </p>
 <p align="center">
   <small>*Example distribution of messages in between two virtual partitions.
@@ -294,7 +294,7 @@ Both `#shutdown` and `#revoked` handlers work the same as within [regular consum
 For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions_shutdown.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/shutdown.svg" />
 </p>
 
 ## Customizing the partitioning engine / Load aware partitioning
