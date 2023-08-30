@@ -34,7 +34,7 @@ By investing a few hours, you're setting yourself up to save weeks of collective
     - Introduction to Karafka and its features
     - Explanation of how Karafka can be used to build event-driven Ruby applications
     - Walkthrough of Karafka installation and setup
-    - Karafka Web-UI installation
+    - Karafka Web UI installation
 5. **Building Your First Karafka Application** (60 minutes)
     - Hands-on coding session where attendees build a basic Karafka application
     - Guidance and support from instructor as attendees work through the exercise
