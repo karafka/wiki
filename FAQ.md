@@ -104,6 +104,8 @@
 104. [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
 105. [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
 106. [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web-UI?](#why-am-i-getting-no-such-file-or-directory-ps-errnoenoent-from-the-web-ui)
+107. [Can I retrieve all records produced in a single topic using Karafka?](#can-i-retrieve-all-records-produced-in-a-single-topic-using-karafka)
+108. [How can I get the total number of messages in a topic?](#how-can-i-get-the-total-number-of-messages-in-a-topic)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1486,3 +1488,53 @@ it typically indicates that the Karafka Web-UI is trying to execute the `ps` com
 - **Restricted Permissions**: It could be a permission issue. The process/user running the Web-UI may not have the necessary permissions to execute the `ps` command.
 
 Please ensure you have **all** the Karafka Web-UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
+
+## Can I retrieve all records produced in a single topic using Karafka?
+
+Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](https://karafka.io/docs/Pro-Iterator-API). 
+
+If your primary aim is to get the count of messages, you might have to maintain a counter as you consume the messages.
+
+If you are performing a one-time operation of that nature, Iterator API will be much better:
+
+```ruby
+iterator = Karafka::Pro::Iterator.new('my_topic_name')
+
+i = 0
+iterator.each do
+  puts i+= 1
+end
+```
+
+## How can I get the total number of messages in a topic?
+
+Getting the exact number of messages in a Kafka topic is more complicated due to the nature of Kafka's distributed log system and features such as log compaction. However, there are a few methods you can use:
+
+1. Using the `Karafa::Admin#read_watermark_offsets` to get offsets for each partition and summing them:
+
+```ruby
+Karafka::Admin
+  .cluster_info
+  .topics
+  .find { |top| top[:topic_name] == 'my_topic_name' }
+  .then { |topic| topic.fetch(:partitions) }
+  .size
+  .times
+  .sum do |partition_id|
+    offsets = Karafka::Admin.read_watermark_offsets('my_topic_name', partition_id)
+    offsets.last - offsets.first
+  end
+```
+
+2. Using the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) and counting all the messages:
+
+```ruby
+iterator = Karafka::Pro::Iterator.new('my_topic_name')
+
+i = 0
+iterator.each do
+  puts i+= 1
+end
+```
+
+The first approach offers rapid results, especially for topics with substantial messages. However, its accuracy may be compromised by factors such as log compaction. Conversely, the second method promises greater precision, but it's important to note that it could necessitate extensive data transfer and potentially operate at a reduced speed.
