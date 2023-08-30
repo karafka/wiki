@@ -19,7 +19,7 @@ To use it:
 
 2. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
 
-3. Add Karafka Web-UI to your `Gemfile`:
+3. Add Karafka Web UI to your `Gemfile`:
 
 ```bash
 bundle add karafka-web
@@ -33,7 +33,7 @@ bundle add karafka-web
 bundle exec karafka-web install
 ```
 
-**Note**: Please ensure that `karafka server` is **not** running during the Web-UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web-UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+**Note**: Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
 **Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
 
@@ -67,7 +67,7 @@ If you do everything right, you should see this in your browser:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
-## Manual Web-UI Topics Management
+## Manual Web UI Topics Management
 
 By default, Karafka uses four topics with the following names:
 
@@ -185,7 +185,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 
 ## External Shell/OS Required Commands
 
-Karafka Web-UI relies on a few operating system commands to function correctly and collect OS data. The table below lists these commands according to the relevant operating systems:
+Karafka Web UI relies on a few operating system commands to function correctly and collect OS data. The table below lists these commands according to the relevant operating systems:
 
 <table border="1">
     <thead>
@@ -229,7 +229,7 @@ Note: The required commands may not be pre-installed when using minimal Docker i
 
 ## Multi-App / Multi-Tenant configuration
 
-Karafka Web-UI can be configured to monitor and report data about many applications to a single dashboard.
+Karafka Web UI can be configured to monitor and report data about many applications to a single dashboard.
 
 Please visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
 
@@ -309,7 +309,7 @@ Karafka uses its internal state knowledge and `librdkafka` metrics to report the
 
 ### Message-producing permissions for consumers
 
-Karafka Web-UI uses `Karafka.producer` to produce state reports out of processes. This means that you need to make sure that the default `Karafka.producer` can deliver messages to the following topics:
+Karafka Web UI uses `Karafka.producer` to produce state reports out of processes. This means that you need to make sure that the default `Karafka.producer` can deliver messages to the following topics:
 
 - `karafka_consumers_states`
 - `karafka_consumers_reports`
@@ -319,8 +319,8 @@ Without that, Karafka will **not** be able to report anything.
 
 ### Limitations
 
-Karafka Web-UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it's monitoring.
+Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it's monitoring.
 
 By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 1000 Karafka instances within the default Kafka payload limit.
 
-However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web-UI continues to function optimally and efficiently.
+However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.

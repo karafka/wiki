@@ -91,7 +91,7 @@
 91. [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
 92. [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
 93. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
-94. [Can I password-protect Karafka Web-UI?](#can-i-password-protect-karafka-web-ui)
+94. [Can I password-protect Karafka Web UI?](#can-i-password-protect-karafka-web-ui)
 95. [Can I use a Karafka producer without setting up a consumer?](#can-i-use-a-karafka-producer-without-setting-up-a-consumer)
 96. [What will happen when a message is dispatched to a dead letter queue topic that does not exist?](#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist)
 97. [Why do Karafka reports lag when processes are not overloaded and consume data in real-time?](#why-do-karafka-reports-lag-when-processes-are-not-overloaded-and-consume-data-in-real-time)
@@ -103,9 +103,10 @@
 103. [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
 104. [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
 105. [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
-106. [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web-UI?](#why-am-i-getting-no-such-file-or-directory-ps-errnoenoent-from-the-web-ui)
+106. [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web UI?](#why-am-i-getting-no-such-file-or-directory-ps-errnoenoent-from-the-web-ui)
 107. [Can I retrieve all records produced in a single topic using Karafka?](#can-i-retrieve-all-records-produced-in-a-single-topic-using-karafka)
 108. [How can I get the total number of messages in a topic?](#how-can-i-get-the-total-number-of-messages-in-a-topic)
+109. [Why am I getting `Broker: Group authorization failed (group_authorization_failed)` when using Admin API or the Web UI?](#why-am-i-getting-broker-group-authorization-failed-group_authorization_failed-when-using-admin-api-or-the-web-ui)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -762,8 +763,7 @@ There are several possible reasons why this error might occur:
 - The client may not have permission to access the topic or partition. Ensure that the client has the necessary permissions to read from or write to the topic or partition you are trying to access.
 - The client may be using an incorrect topic or partition name. Ensure you use the correct topic or partition name in your client code.
 
-You can use Karafka Web-UI or Karafka Admin API to inspect your cluster topics and ensure that the requested topic and partition exist.
-
+You can use Karafka Web UI or Karafka Admin API to inspect your cluster topics and ensure that the requested topic and partition exist.
 
 ## Why some of consumer subscriptions are not visible in the Web UI?
 
@@ -812,7 +812,7 @@ While it is possible to create the necessary topics manually using the Kafka com
 
 This is because the `karafka-web install` command ensures that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
 
-Overall, while it is technically possible to create the necessary topics for the Karafka Web-UI manually, it is generally recommended to use the `karafka-web install` command instead.
+Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
 If you need to create them manually, please include the settings listed [here](https://karafka.io/docs/Web-UI-Getting-Started/).
 
@@ -1292,7 +1292,7 @@ Karafka.producer.monitor.subscribe(
 
 **Note**: `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
-## Can I password-protect Karafka Web-UI?
+## Can I password-protect Karafka Web UI?
 
 **Yes**, you can password-protect the Karafka Web UI, and it is highly recommended. Adding a layer of password protection adds a level of security to the interface, reducing the risk of unauthorized access to your data, configurations, and system settings.
 
@@ -1449,7 +1449,7 @@ If your problems originate from batch and message sizes, we recommend looking in
 
 While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
 
-## Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web-UI?
+## Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web UI?
 
 If you are seeing the following error:
 
@@ -1479,15 +1479,15 @@ Traceback (most recent call last):
 /usr/lib/ruby/2.7.0/open3.rb:213:in `spawn': No such file or directory - ps (Errno::ENOENT)
 ```
 
-it typically indicates that the Karafka Web-UI is trying to execute the `ps` command but the system cannot locate it. This can occur for a few reasons:
+it typically indicates that the Karafka Web UI is trying to execute the `ps` command but the system cannot locate it. This can occur for a few reasons:
 
 - **The Command is Not Installed**: The required command (`ps` in this instance) may not be installed on your system. This is less likely if you are on a standard Linux or macOS setup because `ps` is usually a default command. However, minimal Docker images or other restricted environments might not have these common utilities by default.
 
-- **PATH Environment Variable**: The environment in which your Web-UI runs might need to set its PATH variable up correctly to include the directory where the `ps` command resides.
+- **PATH Environment Variable**: The environment in which your Web UI runs might need to set its PATH variable up correctly to include the directory where the `ps` command resides.
 
-- **Restricted Permissions**: It could be a permission issue. The process/user running the Web-UI may not have the necessary permissions to execute the `ps` command.
+- **Restricted Permissions**: It could be a permission issue. The process/user running the Web UI may not have the necessary permissions to execute the `ps` command.
 
-Please ensure you have **all** the Karafka Web-UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
+Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
 
 ## Can I retrieve all records produced in a single topic using Karafka?
 
@@ -1538,3 +1538,17 @@ end
 ```
 
 The first approach offers rapid results, especially for topics with substantial messages. However, its accuracy may be compromised by factors such as log compaction. Conversely, the second method promises greater precision, but it's important to note that it could necessitate extensive data transfer and potentially operate at a reduced speed.
+
+## Why am I getting `Broker: Group authorization failed (group_authorization_failed)` when using Admin API or the Web UI?
+
+If you are seeing the following error
+
+```bash
+Broker: Group authorization failed (group_authorization_failed)
+```
+
+it most likely arises when there's an authorization issue related to the consumer group in your Kafka setup. This error indicates the lack of the necessary permissions for the consumer group to perform certain operations.
+
+When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer group named `karafka_admin`.
+
+Please review and update your Kafka ACLs or broker configurations to ensure this group has all the permissions it needs.
