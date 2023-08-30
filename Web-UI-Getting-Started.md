@@ -274,6 +274,7 @@ Before reporting an issue, please make sure that:
 - Use `bundle exec karafka-web install` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
+- You have granted correct ACL permissions to the `karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist. 
 
