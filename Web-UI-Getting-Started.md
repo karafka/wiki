@@ -17,13 +17,15 @@ To use it:
 
 1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Setting-up-Kafka).
 
-2. Add Karafka Web-UI to your `Gemfile`:
+2. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
+
+3. Add Karafka Web-UI to your `Gemfile`:
 
 ```bash
 bundle add karafka-web
 ```
 
-3. Run the following command to install the karafka-web in your project:
+4. Run the following command to install the karafka-web in your project:
 
 ```ruby
 # For production you should add --replication-factor N
@@ -35,7 +37,7 @@ bundle exec karafka-web install
 
 **Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
 
-4. Mount the Web interface in your Ruby on Rails application routing:
+5. Mount the Web interface in your Ruby on Rails application routing:
 
 ```ruby
 require 'karafka/web'
@@ -57,7 +59,7 @@ require_relative 'karafka.rb'
 run Karafka::Web::App
 ```
 
-5. Enjoy Karafka Web UI.
+6. Enjoy Karafka Web UI.
 
 If you do everything right, you should see this in your browser:
 
