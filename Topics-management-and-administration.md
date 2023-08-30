@@ -7,6 +7,12 @@ Karafka considers your topics setup (retention, partitions, etc.) as part of you
 
 **Note**: Admin actions will always be applied to the **default** cluster defined in the configuration.
 
+## Configuration
+
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`.
+
+It's essential to understand that the Web UI also leverages this same consumer group name - `karafka_admin` - as it utilizes the Admin API internally. If you're implementing granular ACL (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively.
+
 ## Declarative Topics
 
 Keeping Kafka topics configuration as code has several benefits:
