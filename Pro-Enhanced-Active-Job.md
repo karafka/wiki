@@ -48,7 +48,7 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
 
 ## Routing Patterns
 
-TBA
+Pro ActiveJob adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
 
 ## Execution warranties
 
