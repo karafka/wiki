@@ -76,6 +76,32 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
+### Testing messages consumption of Routing Patterns
+
+Since each [Routing Pattern](https://karafka.io/docs/Pro-Routing-Patterns) has a name, you can test them like regular topics.
+
+Giving a pattern with the name `visits`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # config stuff...
+  end
+
+  routes.draw do
+    pattern :visits, /_visits/ do
+      consumer VisitsConsumer
+    end
+  end
+end
+```
+
+You can reference this name when using the `karafka.consumer_for` method:
+
+```ruby
+subject(:consumer) { karafka.consumer_for(:visits) }
+```
+
 ### Testing messages production (producer)
 
 When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
