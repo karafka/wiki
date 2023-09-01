@@ -7,7 +7,7 @@ Karafka detects Ruby on Rails by itself, so no extra changes are required beside
 Add Karafka to your Gemfile:
 
 ```bash
-bundle add karafka --version ">= 2.1.0"
+bundle add karafka --version ">= 2.2.0"
 ```
 
 and run the installation command:
@@ -18,7 +18,7 @@ bundle exec karafka install
 
 It will create all the needed directories and files and the `karafka.rb` configuration file. After that, you should be good to go.
 
-We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.1-rails) that illustrates integration with this framework.
+We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.2-rails) that illustrates integration with this framework.
 
 ## Integrating with Sinatra and other frameworks
 

@@ -253,7 +253,7 @@ Upon rebalance, all uncommitted offsets will be committed before a given partiti
 
 ## Can I use Karafka with Ruby on Rails as a part of an internal gem?
 
-Karafka 2.1 has [Rails auto-detection](https://github.com/karafka/karafka/blob/78ea23f7044b81b7e0c74bb02ad3d2e5a5fa1b7c/lib/karafka/railtie.rb#L19), and it is loaded early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
+Karafka 2.x has [Rails auto-detection](https://github.com/karafka/karafka/blob/78ea23f7044b81b7e0c74bb02ad3d2e5a5fa1b7c/lib/karafka/railtie.rb#L19), and it is loaded early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
 
 Moreover, despite the same code base, some processes (`rails s`, `rails db:migrate`, `sidekiq s`) may not need to know about karafka, and there is no need to load it.
 
@@ -1455,8 +1455,8 @@ While tuning these settings can help optimize memory usage, it's essential to re
 If you are seeing the following error:
 
 ```bash
-INFO pid=1 tid=gl9 Running Karafka 2.1.7 server
-#<Thread:0x0000aaab008cc9d0 karafka-2.1.7/lib/karafka/helpers/async.rb:25 run>
+INFO pid=1 tid=gl9 Running Karafka 2.2.0 server
+#<Thread:0x0000aaab008cc9d0 karafka-2.2.0/lib/karafka/helpers/async.rb:25 run>
 # terminated with exception (report_on_exception is true):
 Traceback (most recent call last):
 17: lib/karafka/helpers/async.rb:28:in `block in async_call'
