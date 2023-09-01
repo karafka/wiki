@@ -9,9 +9,36 @@ Karafka considers your topics setup (retention, partitions, etc.) as part of you
 
 ## Configuration
 
-`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`.
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `CLIENT_ID_karafka_admin` where `CLIENT_ID` corresponds to the configured `client_id` value and is subject to the [Consumer Mapper](https://karafka.io/docs/Consumer-mappers/) logic as any other consumer group used throughout Karafka.
 
-It's essential to understand that the Web UI also leverages this same consumer group name - `karafka_admin` - as it utilizes the Admin API internally. If you're implementing granular ACL (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively.
+It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `CLIENT_ID_karafka_admin` consumer group is granted the necessary permissions to function effectively.
+
+`Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
+
+For example, if you're using Kafka ACLs with prefixed wildcard permissions, `Karafka::Admin` will be subject to the naming patterns established by the Consumer Mapper, ensuring security and consistent access control.
+
+If you wish to reconfigure `Karafka::Admin`, you may alter the `config.admin` scope during the Karafka framework configuration. You may, for example, use an alternative `group_id` to replace the default `karafka_admin` part and alter the `kafka` scope settings.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092'
+    }
+
+    # Fetch 20MB at most with admin, instead of the default 5MB
+    config.admin.kafka[:'fetch.message.max.bytes'] = 20 * 1_048_576
+    # Replace karafka_admin group name component with app_admin
+    config.admin.group_id = 'app_admin'
+  end
+end
+```
+
+We **strongly advise against** modifying the `config.admin.kafka` settings in their entirety, as they have been configured to meet the demands of admin operations. For any adjustments, we suggest adopting the granular approach outlined above.
+
+Please note that in the case of `kafka` settings, if a given setting is not found, the root `kafka` scope value will be used.
 
 ## Declarative Topics
 
