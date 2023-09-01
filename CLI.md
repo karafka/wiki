@@ -74,3 +74,7 @@ bundle exec karafka server --exclude-topics topic_name2
 ## Declarative Topics
 
 Declarative Topics managament via the CLI has its own section. You can read about that [here](Topics-management-and-administration#declarative-topics).
+
+## Routing Patterns
+
+Routing Patterns managament via the CLI has its own section. You can read about that [here](Pro-Routing-Patterns#limiting-patterns-used-per-process).

@@ -67,7 +67,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-
 ### Multiple subscription groups mode
 
 Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
@@ -107,6 +106,10 @@ end
 ```
 
 You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
+
+### Routing Patterns
+
+For users leveraging the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain comprehensive insights.
 
 ## Overriding Defaults
 

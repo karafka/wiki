@@ -46,6 +46,10 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
   </small>
 </p>
 
+## Routing Patterns
+
+Pro ActiveJob adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
+
 ## Execution warranties
 
 Same execution warranties apply as for standard [Active Job adapter](Active-Job#execution-warranties).
