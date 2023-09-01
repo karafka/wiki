@@ -107,6 +107,7 @@
 107. [Can I retrieve all records produced in a single topic using Karafka?](#can-i-retrieve-all-records-produced-in-a-single-topic-using-karafka)
 108. [How can I get the total number of messages in a topic?](#how-can-i-get-the-total-number-of-messages-in-a-topic)
 109. [Why am I getting `Broker: Group authorization failed (group_authorization_failed)` when using Admin API or the Web UI?](#why-am-i-getting-broker-group-authorization-failed-group_authorization_failed-when-using-admin-api-or-the-web-ui)
+110. [Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?](#why-am-i-getting-an-argumenterror-undefined-classmodule-yamlsyck-when-trying-to-install-karafka-license)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1552,3 +1553,16 @@ it most likely arises when there's an authorization issue related to the consume
 When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer group named `karafka_admin`.
 
 Please review and update your Kafka ACLs or broker configurations to ensure this group has all the permissions it needs.
+
+## Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?
+
+The error `ArgumentError: undefined class/module YAML::Syck` you're seeing when trying to install `karafka-license` is not directly related to the `karafka-license` gem. It's important to note that `karafka-license` does not serialize data using `YAML::Syck`.
+
+Instead, this error is a manifestation of a known bug within the Bundler and the Ruby gems ecosystem. During the installation of `karafka-license`, other gems may also be installed or rebuilt, triggering this issue.
+
+To address and potentially resolve this problem, you can update your system gems to the most recent version, which doesn't have this bug. You can do this by running:
+```bash
+gem update --system
+```
+
+Once you've done this, attempt to install the `karafka-license` gem again. If the problem persists, please get in touch with us.
