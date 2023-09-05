@@ -2,7 +2,7 @@ Karafka contains multiple configuration options. To keep everything organized, a
 
 * `karafka` options - options directly related to the Karafka framework and its components.
 
-* `librdkafka` options - options related to [librdkafka](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md)
+* `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
 
 To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
 
@@ -26,7 +26,7 @@ A list of all the karafka configuration options with their details and defaults 
 
 ## librdkafka driver configuration options
 
-A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md).
+A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](https://karafka.io/docs/Librdkafka-Configuration).
 
 ## External components configurators
 

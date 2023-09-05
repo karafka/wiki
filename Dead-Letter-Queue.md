@@ -142,6 +142,44 @@ We recommend either:
 - Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
+## Using Dead Letter Queue with a multi-cluster setup
+
+When working with a DLQ pattern and using Karafka multi-cluster support, please remember that by default, all the messages dispatched to the DLQ topic will go to the main cluster as the `#producer` uses the default cluster settings.
+
+You can alter this by overriding the `#producer` consumer method and providing your cluster-specific producer instance.
+
+**Note**: Do **not** create producer instances per consumer but one per cluster. Karafka producer is thread-safe and can operate from multiple consumers simultaneously.
+
+```ruby
+# In an initializer, before usage
+PRODUCERS_FOR_CLUSTERS = {
+  primary: Karafka.producer,
+  secondary: ::WaterDrop::Producer.new do |p_config|
+    p_config.kafka = {
+      'bootstrap.servers': 'localhost:9095',
+      'request.required.acks': 1
+    }
+  end
+}
+
+class ClusterXConsumer
+  def consume
+    # logic + DLQ setup in routes
+  end
+
+  private
+
+  # Make this consumer always write all data to the secondary cluster
+  # by making this method return your desired producer and not the default
+  # producer
+  def producer
+    PRODUCERS_FOR_CLUSTERS.fetch(:secondary)
+  end
+end
+```
+
+You can read more about producing to multiple clusters [here](https://karafka.io/docs/Producing-messages#producing-to-multiple-clusters).
+
 ## Pro Enhanced Dead Letter Queue
 
 We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue), especially if you:

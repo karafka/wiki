@@ -60,6 +60,7 @@
 * [Exit codes](Exit-codes)
 * [Embedding](Embedding)
 * [Env Variables](Env-Variables)
+* [librdkafka Configuration](Librdkafka-Configuration)
 * [Articles and other references](Articles-and-other-references)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)

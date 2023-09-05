@@ -118,7 +118,7 @@ Kafka options:
 - `kafka.seed_brokers` is now `bootstrap.servers` **without** the protocol definition
 - `kafka.heartbeat_interval` is no longer needed.
 - `SASL` and `SSL` options changes are described in their own section.
-- Check out the [configuration](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) details of librdkafka for all the remaining options.
+- Check out the [configuration](https://karafka.io/docs/Librdkafka-Configuration) details of librdkafka for all the remaining options.
 
 ## Heartbeat no longer needed
 
@@ -128,7 +128,7 @@ Sending heartbeats is no longer needed. Both `#trigger_heartbeat` and `trigger_h
 
 Please read the [Deployment](Deployment) documentation to see appropriate configuration for given environment.
 
-You can optionally check the `librdkafka` [configuration documentation](https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md) as well.
+You can optionally check the `librdkafka` [configuration documentation](https://karafka.io/docs/Librdkafka-Configuration) as well.
 
 If you still struggle, feel free to reach out to us either via [Slack](https://slack.karafka.io/) or by creating a [Github issue](https://github.com/karafka/karafka/issues/new/).
 

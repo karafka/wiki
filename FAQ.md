@@ -411,6 +411,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](https://karafka.io/docs/Producing-messages#producing-to-multiple-clusters).
+
 ## Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?
 
 We release our version of the `rdkafka` gem to ensure it meets our quality and stability standards. That way, we ensure that unexpected `rdkafka` releases will not break the Karafka ecosystem.

@@ -90,3 +90,45 @@ task send_users: :environment do
   ::Karafka.producer.close
 end
 ```
+
+## Producing to multiple clusters
+
+Karafka, by default, provides a producer that sends messages to a specified Kafka cluster. If you don't configure it otherwise, this producer will always produce messages to the default cluster that you've configured Karafka to work with. If you only specify one Kafka cluster in your configuration, all produced messages will be sent to this cluster. This is the out-of-the-box behavior and works well for many setups with a single cluster.
+
+However, if you have a more complex setup where you'd like to produce messages to different Kafka clusters based on certain logic or conditions, you need a more customized setup. In such cases, you must configure a producer for each cluster you want to produce. This means you'll have separate producer configurations tailored to each cluster, allowing you to produce to any of them as required.
+
+In scenarios where you want to decide which cluster to produce to based on the consumer logic or the consumed message, you can override the `#producer` method in your consumer. By overriding this method, you can specify a dedicated cluster-aware producer instance depending on your application's logic.
+
+```ruby
+# Define your producers for each of the clusters
+PRODUCERS_FOR_CLUSTERS = {
+  primary: Karafka.producer,
+  secondary: ::WaterDrop::Producer.new do |p_config|
+    p_config.kafka = {
+      'bootstrap.servers': 'localhost:9095',
+      'request.required.acks': 1
+    }
+  end
+}
+
+
+# And overwrite the default producer in any consumer you need
+class MyConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      # Pipe messages to the secondary cluster
+      producer.produce_async(topic: message.topic, payload: message.raw_payload)
+    end
+  end
+
+  private
+
+  def producer
+    PRODUCERS_FOR_CLUSTERS.fetch(:secondary)
+  end
+end
+```
+
+The Web UI relies on per-producer listeners to monitor asynchronous errors. If you're crafting your consumers and utilizing the Web UI, please ensure you configure this integration appropriately.
+
+By leveraging this flexibility in Karafka, you can effectively manage and direct the flow of messages in multi-cluster Kafka environments, ensuring that data gets to the right place based on your application's unique requirements.
