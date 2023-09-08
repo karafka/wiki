@@ -419,6 +419,10 @@ The recommendation here is to revisit your current integration and align it with
 - `Karafka::Instrumentation::StdoutListener` is now `Karafka::Instrumentation::LoggerListener`
 
 
+## `karafka-testing` gem code adjustments
+
+Alongside the recent updates to Karafka, the `karafka-testing` gem has also been updated. The comprehensive guides for the testing gem can be accessed [here](https://github.com/karafka/karafka-testing/blob/master/2.0-Upgrade.md).
+
 ## Tips and tricks
 
 1. `bootstrap.servers` setting under `kafka` should **not** have a protocol, and it **needs** to be a string with comma-separated hosts.
