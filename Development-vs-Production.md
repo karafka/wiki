@@ -4,13 +4,54 @@ When working with Karafka and Kafka, it's essential to understand the nuances be
 
 While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always ensure that this mode is disabled before deploying to production.
 
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other settings...
+
+    # Make sure, that persistence is always disabled for non-dev environments as it
+    # yields benefits only in dev
+    config.consumer_persistence = !Rails.env.development?
+  end
+end
+```
+
 ## Pre-create Necessary Topics in the Production Kafka Cluster
 
-Kafka topics act as communication channels for your messages. It would be best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions.
+Kafka topics act as communication channels for your messages. It would be best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics) functionality for that.
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :system_events do
+      config(
+        partitions: 6,
+        replication_factor: 3,
+        'retention.ms': 86_400_000 # 1 day in ms,
+        'cleanup.policy': 'delete',
+        'compression.codec': 'gzip'
+      )
+
+      consumer EventsConsumer
+    end
+  end
+end
+```
 
 ## Disable Automatic Topic Creation in Production
 
 When set to true, the `allow.auto.create.topics` setting enables Kafka to create topics automatically. However, it's recommended not to rely on this feature in a production environment. It's more controlled and predictable to manually set up your topics, ensuring they are configured correctly for your production needs.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'allow.auto.create.topics': !Rails.env.production?
+    }
+  end
+end
+```
 
 ## Lock Your Topics List in Development After Stabilization
 
@@ -22,7 +63,18 @@ Topics that are automatically created because of `allow.auto.create.topics` are 
 
 ## Consider the Impact of Rolling Deployments on Rebalances
 
-Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative.sticky` rebalance strategy can mitigate some of these issues.
+Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative-sticky` rebalance strategy can mitigate some of these issues.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'partition.assignment.strategy': 'cooperative-sticky'
+    }
+  end
+end
+```
 
 ## Manual Topic Creation and Consumer Starting Sequence
 
@@ -32,9 +84,31 @@ Creating a topic manually or by sending the first message and then initiating a 
 
 In the development environment, the `topic.metadata.refresh.interval.ms` setting defaults to 5 seconds. This means Karafka quickly discovers any topic created after starting the Karafka service. However, in production, this short interval is not recommended. The default value for a production environment should be 5 minutes to reduce unnecessary overhead.
 
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'topic.metadata.refresh.interval.ms': 5 * 60 * 1_000
+    }
+  end
+end
+```
+
 ## Opt for the cooperative-sticky Rebalance Strategy in Production
 
 The `cooperative-sticky` rebalance strategy set via the `partition.assignment.strategy` configuration is highly recommended for production environments. It offers better performance and stability compared to other rebalance strategies.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'partition.assignment.strategy': 'cooperative-sticky'
+    }
+  end
+end
+```
 
 ## Set the `compression.codec` for Both Topic/Broker Settings and Karafka
 
@@ -47,3 +121,14 @@ There are several reasons why you should configure compression for your producti
 - **Consistency**: Keeping the compression setting consistent between producers, consumers, and brokers ensures the data is uniformly compressed throughout its lifecycle. This minimizes issues related to unsupported compression formats or mismatched compression expectations.
 
 - **Performance & Storage**: Compressed data is typically smaller, leading to better storage efficiency on the broker side and quicker transmission times.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'compression.codec': 'gzip'
+    }
+  end
+end
+```

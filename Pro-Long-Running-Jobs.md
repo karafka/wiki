@@ -79,8 +79,13 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 Using the `cooperative-sticky` assignment strategy is recommended when using Long-Running Jobs. This can increase overall stability by not triggering revocation of partitions upon rebalances when partition would be re-assigned back:
 
 ```ruby
-setup_karafka do |config|
-  config.kafka[:'partition.assignment.strategy'] = 'cooperative-sticky'
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'partition.assignment.strategy': 'cooperative-sticky'
+    }
+  end
 end
 ```
 
