@@ -297,6 +297,50 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/shutdown.svg" />
 </p>
 
+## Virtual Partitions vs. Increasing Number of Partitions
+
+When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision: Should you increase the number of physical partitions or leverage the power of Virtual Partitions? Both strategies aim to parallelize work to boost processing speed but offer different advantages and considerations. This section delves into the differences between these two methods and provides insights to help you make an informed decision.
+
+### Conceptual Differences
+
+- **Physical Partitions**: These are actual divisions of a Kafka topic. Messages within a topic are divided amongst these partitions. Consumers can read from multiple partitions concurrently, but a single partition's data can only be read by one consumer at a time.
+
+- **Virtual Partitions**: VPs are a feature provided by Karafka. They allow for further parallelization of work within a physical partition. Using VPs, multiple workers can simultaneously process different chunks of data from the same physical partition.
+
+### Work Distribution
+
+- **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you're constrained by the fact that only one consumer can read from a partition at a given time.
+
+- **Virtual Partitions**: VPs enable multiple workers to process data from a single partition. This is useful when data within a partition can be divided into independent logical chunks. The result is better work distribution and utilization of worker threads, especially in heavy-load scenarios.
+
+### Polling Characteristics
+
+- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-utilized.
+
+- **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
+
+Virtual partitions in a Kafka context serve as a mechanism to enhance parallel processing without directly influencing the underlying partition-polling mechanism. When consumers poll data from Kafka, they rely on the actual partitions. The introduction of virtual partitions keeps this fundamental process the same. Instead, the true benefit of virtual partitions arises from the ability to distribute and parallelize work across multiple consumer threads or instances, allowing for improved scalability and performance without necessitating changes to the core Kafka infrastructure or the way data is polled.
+
+### Comparative Scenario
+
+Consider a single-topic scenario where IO is involved, and data can be further partitioned into Virtual Partitions:
+
+- Scenario #1: 200 partitions with 20 Karafka consumer processes and a concurrency of 10 results in 200 total worker threads.
+
+- Scenario #2: 100 partitions, 20 Karafka consumer processes with a concurrency of 10, and Virtual Partitions enabled, also results in 200 total worker threads.
+
+In both scenarios, the number of worker threads remains the same. However, with VPs (Scenario #2), Karafka will perform better due to a more effective distribution of work among worker threads. This enhanced performance is especially pronounced when messages are uneven across topic partitions or batches polled from Kafka contain data from a few or even one topic partition.
+
+### Conclusion
+
+While increasing the number of Kafka partitions offers a more native way to parallelize data processing, VPs provide a more efficient, flexible, and Karafka-optimized approach. Your choice should be based on your application's specific needs, the nature of your data, and the load you anticipate. However, when aiming for maximum throughput and efficient resource utilization, especially under heavy load, Virtual Partitions together with well-partitioned topics are a more favorable choice.
+
+### Scalability Constraints
+
+- **Physical Partitions**: There's a limit to how many physical partitions you can have, and re-partitioning a topic can be a complex task. Also, there's overhead associated with managing more partitions.
+
+- **Virtual Partitions**: VPs provide scalability within the confines of existing physical partitions. They don't add to the management overhead of Kafka and offer a more flexible way to scale processing power without altering the topic's physical partitioning.
+
 ## Customizing the partitioning engine / Load aware partitioning
 
 There are scenarios upon which you can differentiate your partitioning strategy based on the number of received messages per topic partition. It is impossible to set it easily using the default partitioning API, as this partitioner accepts single messages. However, Pro users can use the `Karafka::Pro::Processing::Partitioner` as a base for a custom partitioner that can achieve something like this.

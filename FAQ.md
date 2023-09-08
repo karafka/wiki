@@ -115,6 +115,13 @@
 115. [Why don't Virtual Partitions provide me with any performance benefits?](#why-dont-virtual-partitions-provide-me-with-any-performance-benefits)
 116. [What are Long Running Jobs in Kafka and Karafka, and when should I consider using them?](#what-are-long-running-jobs-in-kafka-and-karafka-and-when-should-i-consider-using-them)
 117. [What can I do to optimize the latency in Karafka?](#what-can-i-do-to-optimize-the-latency-in-karafka)
+118. [What is the maximum recommended concurrency value for Karafka?](#what-is-the-maximum-recommended-concurrency-value-for-karafka)
+119. [Are there concerns about having unused worker threads for a Karafka consumer process?](#are-there-concerns-about-having-unused-worker-threads-for-a-karafka-consumer-process)
+120. [How can you effectively scale Karafka during busy periods?](#how-can-you-effectively-scale-karafka-during-busy-periods)
+121. [What are the benefits of using Virtual Partitions (VPs) in Karafka?](#what-are-the-benefits-of-using-virtual-partitions-vps-in-karafka)
+122. [What's the difference between increasing topic partition count and using VPs in terms of concurrency?](#whats-the-difference-between-increasing-topic-partition-count-and-using-vps-in-terms-of-concurrency)
+123. [How do VPs compare to multiple subscription groups regarding performance?](#how-do-virtual-partitions-compare-to-multiple-subscription-groups-regarding-performance)
+124. [What is the principle of strong ordering in Kafka and its implications?](#what-is-the-principle-of-strong-ordering-in-kafka-and-its-implications)
 
 
 ## Does Karafka require Ruby on Rails?
@@ -1650,3 +1657,31 @@ Optimizing latency in Karafka involves tweaking various configurations and makin
 - **Optimize Message Processing**: Review the actual processing logic in your consumers. Consider optimizing database queries, reducing external service calls, or employing caching mechanisms to speed up processing.
 
 Remember, the best practices for optimizing latency in Karafka will largely depend on the specifics of your use case, workload, and infrastructure. Regularly monitoring, testing, and adjusting based on real-world data will yield the best results.
+
+## What is the maximum recommended concurrency value for Karafka?
+
+For a system with a single topic and a process assigned per partition, there's generally no need for multiple workers. `50` workers are a lot, and you might not fully utilize them because of the overhead from context switching. While Sidekiq and Karafka differ in their internals, not setting concurrency too high is a valid point for both. The same applies to the connection pool.
+
+## Are there concerns about having unused worker threads for a Karafka consumer process?
+
+The overhead of unused worker threads is minimal because they are blocked on pop, which is efficient, so they are considered sleeping. However, maintaining an unused pool of workers can distort the utilization metric, as a scenario where all workers are always busy is regarded as 100% utilized.
+
+## How can you effectively scale Karafka during busy periods?
+
+If you plan to auto-scale for busy periods, be aware that increasing scale might lead to reduced concurrency, especially if you are IO-intensive. With Karafka, how data is polled from Kafka can be a critical factor. For instance, thread utilization might be at most 50% even if you process two partitions in parallel because the batches you are getting consist primarily of data from a single partition. For handling of such cases, we recommend using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions).
+
+## What are the benefits of using Virtual Partitions (VPs) in Karafka?
+
+[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
+
+## What's the difference between increasing topic partition count and using VPs in terms of concurrency?
+
+Increasing topic partition count and Karafka concurrency (so that total worker threads match the total partitions) can parallelize work in Karafka. This strategy works as long as the assignment has consistent polling characteristics. With VPs, uneven distribution impact is negligible. This is because Karafka VPs can parallelize data processing of a single topic partition based on a virtual partitioner key, compensating for any uneven distribution from polling.
+
+## How do Virtual Partitions compare to multiple subscription groups regarding performance?
+
+Using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
+
+## What is the principle of strong ordering in Kafka and its implications?
+
+Strong ordering in Kafka means that records are strictly ordered in the partition log. Karafka consumers are bound by this design, which acts as a limiter. As a result, the way data is polled and distributed within Karafka is influenced by this principle, which can impact concurrency and performance.
