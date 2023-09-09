@@ -276,7 +276,21 @@ Before reporting an issue, please make sure that:
 - The resource you requested exists
 - You have granted correct ACL permissions to the `CLIENT_ID_karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error. You can find more about admin consumer group [here](https://karafka.io/docs/Topics-management-and-administration/#configuration).
 
-If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist. 
+If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist.
+
+### Web UI Topics Not Receiving Data Despite Processes Running
+
+Suppose your Web UI topics aren't displaying data despite active Karafka processes, and you encounter errors like `Rdkafka::AbstractHandle::WaitTimeoutError`. In that case, the topics might have been inadvertently auto-created while a Karafka process was running rather than being correctly initialized using the CLI commands.
+
+To address this:
+
+1. **Stop All Karafka Processes**: First, halt **all** running instances of `karafka server`. This step ensures no interference or further accidental topic creation during your troubleshooting.
+
+1. **Re-create Web UI Topics**: With all Karafka processes stopped, utilize the appropriate CLI commands to recreate the Web UI topics. This action guarantees that the topics are configured properly to receive and present data in the Web UI.
+
+1. **Start Karafka Processes**: After the topics have been recreated, restart the `karafka server` processes. Keep an eye on the Web UI to ensure that the topics are now displaying data.
+
+You should carefully follow these steps to resolve the data display issue in the Web UI topics. Always use the prescribed methods for creating topics to sidestep such issues in the future.
 
 ### Web UI status page
 
