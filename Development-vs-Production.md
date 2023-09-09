@@ -132,3 +132,31 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Avoid Rolling Upgrades for `partition.assignment.strategy` Changes
+
+The `partition.assignment.strategy` in Kafka determines how topic partitions are allocated amongst the consumers in a consumer group. Adjusting this strategy can influence the distribution of partitions and, thus, the performance and efficiency of your consumers.
+
+When you switch between assignment strategies, be aware that:
+
+1. **Deployment Concerns**: Direct strategy shifts using rolling upgrades can result in conflicts. Running consumers with distinct assignment strategies within the same group will trigger an "Inconsistent group protocol" error or similar.
+
+1. **Performance Variations**: Different strategies can lead to diverse load distributions, influencing the processing efficiency of individual consumers.
+
+1. **Potential for Uneven Distribution**: Some strategies might result in specific consumers being assigned a larger share of partitions, leading to uneven work distribution.
+
+1. **Compatibility Concerns**: Ensure the chosen strategy is compatible with your Kafka broker version. Some strategies might be exclusive to specific Kafka versions.
+
+To ensure a smooth transition when adjusting the assignment strategy, follow these steps:
+
+1. **Backup Configuration**: Initiate the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
+
+1. **Test in a Non-Production Environment**: Before rolling out changes in a live setting, validate the new strategy in a controlled, non-production environment.
+
+1. **Shutdown Consumers**: To sidestep the "Inconsistent group protocol" error and other critical issues, stop **all** consumers in the consumer group **before** enacting the change.
+
+1. **Update Strategy & Restart**: Modify the `partition.assignment.strategy` with **all** consumers offline. Once adjusted, you can bring all consumers back online.
+
+1. **Monitor Behavior**: Post-transition, maintain rigorous oversight of the consumer behaviors. Specifically, observe for unexpected rebalances or any imbalances in partition assignments.
+
+To recap, while modifying `partition.assignment.strategy` in Karafka may promise enhanced consumer efficiency, the transition demands solid planning and execution. With the insights and procedure outlined above, you're equipped to undertake the shift methodically and with minimal disruption.
