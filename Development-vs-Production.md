@@ -139,7 +139,7 @@ The `partition.assignment.strategy` in Kafka determines how topic partitions are
 
 When you switch between assignment strategies, be aware that:
 
-1. **Deployment Concerns**: Direct strategy shifts using rolling upgrades can result in conflicts. Running consumers with distinct assignment strategies within the same group will trigger an "Inconsistent group protocol" error or similar.
+1. **Deployment Concerns**: Direct strategy shifts using rolling upgrades can result in conflicts. Running consumers with distinct assignment strategies within the same group will trigger an "Inconsistent group protocol" error, "assignors must have the same protocol type" error or similar
 
 1. **Performance Variations**: Different strategies can lead to diverse load distributions, influencing the processing efficiency of individual consumers.
 

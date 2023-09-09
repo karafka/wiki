@@ -122,7 +122,7 @@
 122. [What's the difference between increasing topic partition count and using VPs in terms of concurrency?](#whats-the-difference-between-increasing-topic-partition-count-and-using-vps-in-terms-of-concurrency)
 123. [How do VPs compare to multiple subscription groups regarding performance?](#how-do-virtual-partitions-compare-to-multiple-subscription-groups-regarding-performance)
 124. [What is the principle of strong ordering in Kafka and its implications?](#what-is-the-principle-of-strong-ordering-in-kafka-and-its-implications)
-
+125. [Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?](#why-do-i-see-rdkafkaconfigclientcreationerror-when-changing-the-partitionassignmentstrategy)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1685,3 +1685,20 @@ Using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) is no
 ## What is the principle of strong ordering in Kafka and its implications?
 
 Strong ordering in Kafka means that records are strictly ordered in the partition log. Karafka consumers are bound by this design, which acts as a limiter. As a result, the way data is polled and distributed within Karafka is influenced by this principle, which can impact concurrency and performance.
+
+## Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?
+
+If you are seeing the following error:
+
+```bash
+All partition.assignment.strategy (cooperative-sticky,range)
+assignors must have the same protocol type,
+online migration between assignors with different protocol types
+is not supported (Rdkafka::Config::ClientCreationError)
+```
+
+It indicates that you're attempting an online/rolling migration between two different `partition.assignment.strategy` assignors with different protocol types. Specifically, you might try switching between "cooperative-sticky" and "range" strategies without first shutting down all consumers.
+
+In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
+
+You can read more about this process [here](https://karafka.io/docs/Development-vs-Production/#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
