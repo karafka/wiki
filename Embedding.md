@@ -66,10 +66,30 @@ PhusionPassenger.on_event(:stopping_worker_process) do
 end
 ```
 
-## Notes
+## Limitations
 
-- Karafka **cannot** be periodically started and stopped within the same process. Embedding was designed for long-living processes like Puma or Sidekiq.
-- The process owner owns any signal traps. Karafka won't react to Ctrl-C, TERM, or any other signal.
-- Code reload may not work as expected when Karafka is embedded or may not work at all.
-- Keep your concurrency settings low, so all the responsibilities of your process can get enough resources.
-- Your code application should be preloaded/eager loaded prior to starting the embedded Karafka server.
+### Long-living Processes Requirement
+
+Karafka is not designed to be periodically started and stopped within the same process. You might encounter unexpected behavior or errors if you attempt to do so. This design decision aligns with the nature of long-living processes in applications and services like Puma or Sidekiq. If you want to embed Karafka in your process, ensure it's persistent and long-living.
+
+### Signal Handling
+
+If your process captures signals, know Karafka won't intercept or handle them. This means actions like stopping the process using Ctrl-C, sending a TERM signal, or any other signals won't be managed by Karafka. The responsibility for signal handling lies entirely with the process owner. Properly managing these signals is crucial to avoid abrupt terminations or unforeseen consequences. Karafka won't react to Ctrl-C, TERM, or any other signal.
+
+### Code Reload
+
+When Karafka is embedded in another process, you might find that code reloading doesn't function as you'd expect or might not work altogether. This can be particularly problematic during development when code changes are frequent.
+
+### Concurrency Settings
+
+Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you ensure that all tasks and responsibilities of your process can effectively access and utilize the resources they need without causing undue strain.
+
+### Preloading/Eager Loading
+
+Before you initiate the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
+
+### Process Termination
+
+When Karafka operates in an Embedded mode, it is essential to recognize that the Karafka supervisor does not have the final say regarding the termination of the entire process. In practice, if your surrounding process has a shutdown timeout shorter than Karafka's, there is a risk that Karafka could be forcefully terminated before it has had a chance to dispatch and delegate all work and states properly. While this might not pose an issue due to how offsets are managed, it can affect monitoring and management tools. For instance, Karafka Web UI interface monitoring Karafka might not capture the final state transition from "stopping" to "stopped". Instead, it may give an impression that the Karafka process is perpetually in the "stopping" phase, which can be misleading and make diagnostics more challenging.
+
+Always ensure you account for this behavior when integrating Karafka in an Embedded mode, especially if you rely on external tools or interfaces to monitor and manage your processes. Adjusting your surrounding process's shutdown timeout or ensuring it respects Karafka's requirements can help avoid such discrepancies.
