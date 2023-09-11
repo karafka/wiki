@@ -115,6 +115,77 @@ For users leveraging the advanced capabilities of Karafka Pro, the Routing Patte
 
 Almost all the default settings configured can be changed on either on the ```topic``` level. This means that you can provide each topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
 
+## Shared Defaults
+
+This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also ensures consistency throughout your application.
+
+Here's how you can set up routing defaults and then define a topic that overrides one of those defaults:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    defaults do
+      config(
+        # Ensure there are always 5 partitions by default
+        partitions: 5,
+        # Make sure that topic is replicated in production
+        replication_factor: Rails.env.production? ? 2 : 1
+      )
+    end
+
+    topic :A do
+      consumer ConsumerA
+      # When overwriting defaults, all settings need to be
+      # redefined for a given method. Partial redefinition
+      # is not allowed and will not work
+      config(
+        partitions: 2,
+        replication_factor: Rails.env.production? ? 2 : 1
+      )
+    end
+
+    topic :B do
+      consumer ConsumerB
+    end
+  end
+end
+```
+
+When you decide to override any default option for a topic within the `#topic` block, it's crucial to understand that you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
+
+Karafka will not use the user-specified defaults you've defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    defaults do
+      config(
+        # Ensure there are always 5 partitions by default
+        partitions: 5,
+        # Make sure that topic is replicated in production
+        replication_factor: Rails.env.production? ? 2 : 1
+      )
+    end
+
+    topic :A do
+      consumer ConsumerA
+
+      # BAD idea because `replication_factor` is going to be set
+      # to `1` as it is the framework default
+      config(partitions: 2)
+    end
+  end
+end
+```
+
 ## Topic level options
 
 There are several options you can set inside of the ```topic``` block. All of them except ```consumer``` are optional. Here are the most important once:
@@ -163,3 +234,41 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Modular Monolith Approach
+
+A Modular Monolith architecture focuses on separating a monolith application into well-defined, loosely coupled modules. These modules can evolve and scale independently but still operate as part of a single unit. With Karafka, embracing this architecture becomes efficient due to its flexible routing mechanism.
+
+One of Karafka's routing beauties is the ability to call the #draw method multiple times. In a Modular Monolith architecture context, each of your application's modules can define its own set of topic routes.
+
+- **Decoupling**: Each module can define and manage its message routing without interfering with others.
+
+- **Scalability**: As modules grow, they can independently evolve their messaging strategies.
+
+- **Maintainability**: Changes to routing in one module won't impact others, making it easier to manage and refactor.
+
+Within each module, you can define a Karafka routing block using the #draw method:
+
+```ruby
+# app/modules/orders/karafka_routes.rb
+Karafka.routing.draw do
+  topic :order_created do
+    consumer Orders::OrderCreatedConsumer
+  end
+
+  topic :order_updated do
+    consumer Orders::OrderUpdatedConsumer
+  end
+end
+```
+
+```ruby
+# app/modules/users/karafka_routes.rb
+Karafka.routing.draw do
+  topic :user_registered do
+    consumer Users::UserRegisteredConsumer
+  end
+end
+```
+
+By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
