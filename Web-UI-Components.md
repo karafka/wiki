@@ -1,14 +1,12 @@
-Karafka Web UI data aggregation is combined out of a few stages:
+Karafka Web UI is an intuitive tool that visually represents the metrics related to the operation status of Karafka processes. It centralizes data, offers insights into the system's health, and ensures that users can understand and analyze the functioning of their Karafka processes in real time.
 
-- Tracking - Refers to collecting per-consumer and other data related to each process's operations.
-- Processing - Refers to taking the tracking data and building proper representation models around it for presentation.
-- Presenting - Refers to all the work needed to present the data via the Web UI.
+## How Karafka Web UI Works
 
-This conceptual separation impacts the Web code design. It is divided into three main pieces:
+- **Tracking**: Every Karafka process is responsible for publishing metrics that reflect its operational status. This is done automatically every 5 seconds by default. This periodic data publishing is termed as `tracking`. It captures information granularly, offering insights into individual consumer operations and other related data.
 
-- `Tracking` - All the code related to per-process data tracking and reporting to Kafka
-- `Processing`- All code related to processing the tracked data and their aggregation
-- `Web` - All code related to the presentation layer
+- **Processing**: Once the tracking data is published, it isn't displayed directly on the Web UI. Instead, a specialized consumer dedicated to Karafka Web UI aggregates this raw data. The purpose is to transform this raw data into meaningful information that can be easily represented and interpreted. Creating representations or models around the tracking data makes it easier to understand and present. For this purpose, Karafka employs a separate consumer group, which gets activated when the Web UI is in use. This stage of converting raw data into structured models for presentation is termed `processing`.
+
+- **Presenting**: After processing the data, the final step is to display it via the Web UI. This involves presenting the structured and aggregated data visually appealing and comprehensibly, ensuring you can easily gauge the status and health of your Karafka processes.
 
 Below you can find the diagram of the whole data flow:
 
