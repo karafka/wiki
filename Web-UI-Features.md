@@ -4,6 +4,14 @@ Below you can find a comprehensive description of the most important features yo
 
 **Note**: Karafka Pro offers enhanced Web UI with many additional metrics and functionalities.
 
+## Dashboard
+
+**Note**: More graphs are available only in our Pro offering.
+
+The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
+
+<img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dashboard.png" alt="karafka web dashboard view" />
+
 ## Consumers
 
 **Note**: More metrics and detailed consumers inspection are available only in our Pro offering.
