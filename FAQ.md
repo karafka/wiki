@@ -123,6 +123,7 @@
 123. [How do VPs compare to multiple subscription groups regarding performance?](#how-do-virtual-partitions-compare-to-multiple-subscription-groups-regarding-performance)
 124. [What is the principle of strong ordering in Kafka and its implications?](#what-is-the-principle-of-strong-ordering-in-kafka-and-its-implications)
 125. [Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?](#why-do-i-see-rdkafkaconfigclientcreationerror-when-changing-the-partitionassignmentstrategy)
+126. [Is it recommended to add the waterdrop gem to the Gemfile, or just karafka and karafka-testing?](#is-it-recommended-to-add-the-waterdrop-gem-to-the-gemfile-or-just-karafka-and-karafka-testing)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1702,3 +1703,7 @@ It indicates that you're attempting an online/rolling migration between two diff
 In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
 You can read more about this process [here](https://karafka.io/docs/Development-vs-Production/#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
+
+## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
+
+Adding the `waterdrop` gem to the Gemfile is unnecessary since `karafka` already depends on `waterdrop`. Karafka will ensure it selects the most compatible version of `waterdrop` on its own.
