@@ -83,3 +83,34 @@ In this setup, the `env_suffix` is created by converting the current Rails envir
 This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
 
 After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
+
+## In-Memory Cluster Data Caching
+
+Karafka Web UI implements an in-memory cache mechanism to optimize its performance and responsiveness. This cache is instrumental in storing essential cluster metadata, including the list of topics.
+
+### Cache Duration
+
+The default duration for which this cache remains valid is 5 minutes. This means that after performing actions such as topic creation, removal, or repartitioning in the cluster, the changes might not be immediately visible on the Karafka Web UI. There might be a delay of up to 5 minutes before the UI reflects these changes.
+
+### Configurability
+
+For those who require a different cache duration, perhaps due to more frequent cluster changes or other specific needs, Karafka allows this duration to be customizable. You can set the cache duration by modifying the `config.ui.cache` value to your desired timeframe.
+
+```ruby
+Karafka::Web.setup do |config|
+  # Lower the cache to 1 minute
+  config.ui.cache = Karafka::Web::Ui::Lib::TtlCache.new(60_000)
+end
+```
+
+### Cache Refresh
+
+One of the features to note is that whenever the Cluster view is accessed, the cache gets invalidated and refreshed. This ensures that users get the most recent and accurate cluster information when they visit this view.
+
+### Consideration for Multiple Processes Deployment
+
+If you've deployed Karafka Web UI across multiple processes, simply refreshing the cache in one process (by visiting the Cluster view) might not be sufficient. This is because subsequent requests could be routed to different processes, each with its cache state. In such scenarios, the cache would need to be refreshed in each of these processes to ensure consistency.
+
+### Summary
+
+In summary, while the in-memory cache in Karafka Web UI significantly enhances its efficiency, it's essential to understand its workings, especially in dynamic environments where cluster changes are frequent or when deploying across multiple processes, and to configure it according to your needs.

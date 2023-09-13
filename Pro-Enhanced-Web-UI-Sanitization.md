@@ -6,6 +6,58 @@ This is particularly critical if your system is configured to use encryption. Wh
 
 ## Usage
 
+Karafka's Web UI Explorer was designed to keep data privacy and security at its core. Ensuring selective visibility becomes paramount as we navigate the vast expanse of information stored in Kafka topics. Karafka achieves this via a two-tiered approach:
+
+- **Visibility Filtering**: At its basic level, the decision to display or mask fundamental components of a message is made. By using the `ui.visibility_filter` setting, users can dictate whether they want the entire payload, all headers, and the key (if provided) to be visible or hidden. This form of filtering provides an overarching control, allowing users, for instance, to completely obscure the payload while continuing to show headers and message key.
+
+- **Partial Payload Sanitization**: For those seeking a more nuanced approach, Karafka's partial payload sanitization is the answer. This method enables granular control over the data's visibility. Instead of blanketing an entire message, it allows specific attributes within a deserialized message, such as an address or other sensitive information, to be masked. While ensuring a higher level of data security, this process necessitates additional effort and precision in its implementation.
+
+In essence, Karafka offers both a broad-stroke and a fine-tuned approach to data visibility, ensuring that while essential information remains accessible, sensitive data is securely tucked away.
+
+### Visibility Filtering
+
+Two steps are needed to use your custom visibility filter:
+
+1. A custom visibility filter needs to be created
+2. The defined visibility filter must replace the default one via the reconfiguration.
+
+Each visibility filter requires three methods to be present:
+
+1. `#key?` - should the message key be presented
+1. `#headers?` - should the headers be visible
+1. `#payload?` - should the payload be visible
+
+Each method receives a message (of type `::Karafka::Messages::Message`) as a parameter and returns a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible.
+
+Below, you can see an example of a custom visibility filter that hides all the information:
+
+```ruby
+class MyCustomVisibilityFilter
+  def key?(_message)
+    false
+  end
+
+  def headers?(_message)
+    false
+  end
+
+  def payload?(_message)
+    false
+  end
+end
+```
+
+Once your filter is ready, you need to replace the default one in the configuration as follows:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Lower the cache to 1 minute
+  config.ui.visibility_filter = MyCustomVisibilityFilter.new
+end
+```
+
+### Partial Payload Sanitization
+
 To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish three key things:
 
 1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it's deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
