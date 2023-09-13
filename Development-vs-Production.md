@@ -160,3 +160,43 @@ To ensure a smooth transition when adjusting the assignment strategy, follow the
 1. **Monitor Behavior**: Post-transition, maintain rigorous oversight of the consumer behaviors. Specifically, observe for unexpected rebalances or any imbalances in partition assignments.
 
 To recap, while modifying `partition.assignment.strategy` in Karafka may promise enhanced consumer efficiency, the transition demands solid planning and execution. With the insights and procedure outlined above, you're equipped to undertake the shift methodically and with minimal disruption.
+
+## Messages from the Future / Time Drift Problem
+
+In Kafka, every message (or record) produced to a topic carries metadata, including a timestamp. This timestamp is set by the producer or the broker when the message gets appended to the log. Consumers then use the timestamp to understand the chronological order of messages.
+
+Under regular operations, this system works seamlessly. However, problems arise when there's a time drift between the Kafka cluster nodes and the consumer. Essentially, if the Kafka broker believes it's 2:00 PM, while the consumer thinks it's 1:50 PM, the messages produced in that 10-minute interval by the broker will appear as if they're coming from the "future" when consumed.
+
+The time synchronization issue usually boils down to the Network Time Protocol (NTP). NTP is a protocol used to synchronize the clocks of computers to some time reference, which can be an atomic clock, GPS, or another reliable source.
+
+- **NTP Not Installed**: If NTP isn't installed on the machines running Kafka or the consumer application, they rely on their internal clocks. Over time, even minor discrepancies between internal clocks can add up, leading to significant drifts.
+
+- **NTP Malfunctions**: Even with NTP installed, there might be cases where it's not working correctly. This can happen for various reasons, like network issues, software bugs, or misconfigurations.
+
+### Consequences of Time Drift
+
+When Kafka and the consumer drift apart in time, it doesn’t just result in the odd phenomenon of messages from the future. It can:
+
+- Impact consumer logic that relies on time-based processing.
+
+- Affect windowed operations in stream processing applications.
+
+- Cause retention policies based on time to behave unpredictably.
+
+- Cause other problems in Karafka Web UI tracking and reporting.
+
+### How to Prevent Time Drift
+
+1. **Ensure NTP is Installed**: Always ensure that NTP is installed on all machines running Kafka brokers and consumer applications.
+
+2. **Monitor NTP Status**: Regularly monitor the NTP status to ensure it's running and is in sync with its time sources.
+
+3. **Configure Alerts**: Set alerts for any significant time drift between the servers. This can provide early warnings before time drift becomes a problem.
+
+4. **Synchronize Frequently**: Reduce the time between synchronization intervals to ensure that even minor drifts are corrected promptly.
+
+In conclusion, while Kafka is a powerful tool, it's essential to remember the importance of time synchronization to ensure the reliable delivery and consumption of messages. Regularly monitoring and ensuring the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
+
+### Impact on Karafka
+
+Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, please note that time-sensitive metrics may not be accurate.
