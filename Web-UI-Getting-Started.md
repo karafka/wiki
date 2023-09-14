@@ -35,7 +35,7 @@ bundle exec karafka-web install
 
 **Note**: Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
-**Note**: `bundle exec karafka-web install` has to be executed on **each** of the environments because it also creates all the needed topics with appropriate configurations.
+**Note**: After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
 
 5. Mount the Web interface in your Ruby on Rails application routing:
 
@@ -66,6 +66,47 @@ If you do everything right, you should see this in your browser:
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
+
+## Karafka Web CLI commands
+
+The Karafka Web UI has CLI (Command-Line Interface) commands to facilitate its setup, management, and customization. Below is a detailed breakdown of these commands and their specific functionalities.
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Command</th>
+            <th>Description</th>
+            <th>Usage</th>
+            <th>Parameters</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>install</td>
+            <td>Installs the Karafka Web UI, creates necessary topics, populates initial zero state, and updates the <code>karafka.rb</code> file. Ensures the empty UI is displayed even if no <code>karafka server</code> processes are running.</td>
+            <td><code>karafka-web install [--replication-factor=<value>]</code></td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+        </tr>
+        <tr>
+            <td>migrate</td>
+            <td>Creates missing topics and missing zero states. Necessary for each environment where you want to use the Web UI.</td>
+            <td><code>karafka-web migrate [--replication-factor=<value>]</code></td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+        </tr>
+        <tr>
+            <td>reset</td>
+            <td>Removes all the Karafka topics and recreates them with the same replication factor.</td>
+            <td><code>karafka-web reset [--replication-factor=<value>]</code></td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+        </tr>
+        <tr>
+            <td>uninstall</td>
+            <td>Removes all the Karafka Web topics and cleans up all related configurations and setups.</td>
+            <td><code>karafka-web uninstall</code></td>
+            <td>N/A</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Manual Web UI Topics Management
 
@@ -225,7 +266,7 @@ Karafka Web UI relies on a few operating system commands to function correctly a
 </table>
 
 
-Note: The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web-UI to work correctly.
+Note: The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
 
 ## Multi-App / Multi-Tenant configuration
 
@@ -271,7 +312,7 @@ Before reporting an issue, please make sure that:
 
 - You have visited the Karafka Web [status](Web-UI-Features#status) page
 - All the topics required by Karafka Web exist
-- Use `bundle exec karafka-web install` to create missing topics
+- Use `bundle exec karafka-web migrate` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
 - You have granted correct ACL permissions to the `CLIENT_ID_karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error. You can find more about admin consumer group [here](https://karafka.io/docs/Topics-management-and-administration/#configuration).
@@ -302,7 +343,7 @@ You can read more about it [here](Web-UI-Features#status).
 
 ### Resetting the Web UI state
 
-If you want to reset the overall counters without removing the errors collection, you can run the `bundle exec karafka-web install` again.
+If you want to reset the overall counters without removing the errors collection, you can run the `bundle exec karafka-web reset` again.
 
 If you want to fully reset the Web UI state, you can run the `bundle exec karafka-web reset` command. This command **will** remove all the Web UI topics and re-create them with an empty state.
 
@@ -328,6 +369,7 @@ Karafka Web UI uses `Karafka.producer` to produce state reports out of processes
 
 - `karafka_consumers_states`
 - `karafka_consumers_reports`
+- `karafka_consumers_metrics`
 - `karafka_errors`
 
 Without that, Karafka will **not** be able to report anything.

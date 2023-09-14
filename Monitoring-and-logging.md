@@ -56,7 +56,10 @@ Karafka may be configured to emit internal metrics at a fixed interval by settin
 
 The statistics include all of the metrics from `librdkafka` (full list [here](https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md)) as well as the diff of those against the previously emitted values.
 
-For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages received between statistics emitted events), Karafka diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix:
+For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages received between statistics emitted events) and state changes, Karafka compares all the numeric values against previously available numbers enriching the original payload with following values:
+
+- `METRIC_KEY_d` - delta computed as a difference between current and previous value - useful for trends.
+- `METRIC_KEY_fd` - freeze duration. Informs how long (in milliseconds) the given metric did not change - helpful for staleness detection.
 
 ```ruby
 class KarafkaApp < Karafka::App

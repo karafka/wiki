@@ -14,6 +14,12 @@ Karafka Web UI will automatically switch to the Pro mode when Karafka Pro is in 
 
 There are **no** extra steps needed.
 
+## Dashboard
+
+The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
+
+<img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-dashboard.png" alt="karafka web pro dashboard view" />
+
 ## Consumers
 
 Enhanced consumer view reports all of the metrics available in the OSS version but also reports:
@@ -25,39 +31,123 @@ Enhanced consumer view reports all of the metrics available in the OSS version b
 
 Those metrics can allow you to identify bottlenecks (CPU vs. IO) in your Karafka consumers.
 
-### Consumer process inspection
+### Consumer Process Inspection
 
 Consumer process inspection view provides real-time visibility into the performance and behavior of a given consumer process and its Kafka subscriptions.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-subscriptions.png)
 
-### Consumer jobs inspection
+### Consumer Jobs Inspection
 
 The consumer jobs inspection view provides real-time visibility into the jobs running at the current moment on a given consumer instance.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-jobs.png)
 
+### Consumer Details Inspection
+
+This feature offers users a detailed look into each process's current state report. It's a valuable tool for thorough debugging and precise per-process inspection.
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-details.png)
+
 ## Health
 
-The health view of the Web UI displays the current status of all the running Karafka instances aggregated on a per-consumer-group basis. This view allows users to monitor the health of their messages consumption and troubleshoot any issues that may arise. It also allows quick identification of performance bottlenecks and can help with capacity planning.
+The health views of the Web UI display the current status of all the running Karafka instances aggregated on a per-consumer-group basis. Those views allow users to monitor the health of their messages consumption and troubleshoot any issues that may arise including issues related to hanging transactions (LSO issues). It also allows quick identification of performance bottlenecks and can help with capacity planning.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health.png)
 
+### LSO Freezes Awareness
+
+In the world of Kafka, the Last Stable Offset (LSO) is pivotal in ensuring message integrity and order, especially for idempotent producers. However, at times, the LSO may hang, affecting the consumption of messages and potentially bringing to a standstill any consumers operating at a `read_committed` isolation level. This documentation will shed light on the concept, the problems it may cause, and how the Karafka Web UI can be a lifesaver during such situations.
+
+#### Understanding the LSO - Last Stable Offset
+
+The Last Stable Offset (LSO) is a checkpoint marking the last point at which records were successfully committed. It is a significant reference point because any records beyond this point are not considered stable and may not be safely consumed by clients requiring transactional consistency.
+
+#### The Risk of LSO Freezes
+
+If the LSO hangs or is stuck, it signifies that new records have yet to be committed beyond this point. When such a scenario happens, all consumers with a `read_committed` isolation level will be unable to proceed. Essentially, they will have to wait until the LSO issue is resolved, which can be a significant challenge for real-time data processing systems.
+
+#### A Beacon in LSO Freezes
+
+The Karafka Web UI is equipped with robust health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
+
+Karafka's Web UI has visual cues to indicate potential problems concerning the LSO:
+
+1. **At Risk (Yellow Highlight)**
+    - **Scenario**: Consumption is at risk but is still moving forward. This happens when there is still data before reaching the LSO, so the consumer is progressing.
+    - **Web UI Indication**: The partition will be highlighted in yellow.
+    - **LSO State**: "At risk"
+
+![karafka web ui LSO warning](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health-lso1.png)
+
+2. **Stopped (Red Highlight)**
+    - **Scenario**: Consumption is halted and cannot move forward. This situation arises when more data is available on the topic, but it lies beyond the LSO, and the consumer has already reached it.
+    - **Web UI Indication**: The partition will be highlighted in red, emphasizing that it is stopped.
+    - **LSO State**: "Stopped".
+
+![karafka web ui LSO error](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health-lso2.png)
+
+These visual indicators allow immediate awareness of potential problems, ensuring quick identification and action.
+
+#### Conclusion
+
+Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, ensuring administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the seamless functioning of your Kafka-based data processing system.
+
 ## Explorer
 
-Data Explorer is a feature that allows users to explore data stored in Kafka topics. It provides an interface for the exploration and enables users to perform real-time data analysis and troubleshoot any issues. Explorer understands the routing table and can deserialize data before it is displayed.
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing.
 
-Topics list view:
+Below you can find the primary features of the Karafka Data Explorer.
+
+### Topics List View
+
+Before diving deep into the data, having a bird's eye view of all available topics is essential. This feature offers a list of all the topics, allowing users to select and focus on specific ones. It serves as a starting point for data exploration, giving a clear overview of the topics landscape.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-explorer1.png)
 
-Messages list view:
+### Per Topic View
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-explorer2.png)
+This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you don't miss out on the latest insights.
 
-Message view with deserialized payload:
+#### Limitations
+
+1. **Data Merging from Multiple Partitions**: When using the Per Topic View, the system merges data from several partitions. However, there's a limitation. If the number of partitions exceeds the number of elements allowed to be displayed on a single page, not all data might be visible immediately. For example, if there are 30 partitions but the page only shows data from 25, you would only see the combined data from those 25 partitions on the first page. The remaining data from the other partitions would be visible on the subsequent pages (Page 2, Page 3, and so on).
+
+1. **Displaying Sparse Data from Many Partitions**: Another limitation might arise in situations where topics have a small number of messages. If a topic has many partitions (say more than 25) but only a few messages, not all may be visible in the Per Topic View. This is due to the merging process, where data from many partitions might overshadow those few messages.
+
+1. **Low Watermark Offset Viewing**: It's worth noting that the limitations mentioned mainly apply when observing data close to the low watermark offset, typically when there's not much data present (less than 100 messages). In such cases, the view might provide a partial picture due to the abovementioned constraints.
+
+However, in most other scenarios, where there's a substantial amount of data, the Per Topic View should function seamlessly, providing a holistic and accurate representation of the most recent data across all partitions.
+
+### Per Partition View with Offset-Based Pagination
+
+Dive deeper into each partition and scroll through the data using offset-based pagination. This offers a granular view, ensuring detailed exploration of data within partitions.
+
+### Time-Based Offset Lookups
+
+Ever wanted to see a message generated at a particular moment? This feature facilitates precisely that. You can navigate to messages produced at specific times by performing time-based offset lookups. This functionality is particularly advantageous for debugging, allowing for precise tracking and resolution.
+
+### Real-Time Display of the Recent Message
+
+Stay updated with the latest information. The explorer can display the most recent message from a given topic partition in real time and even supports an auto-refresh feature, ensuring you always have the current data at your fingertips.
+
+### Detailed Message View
+
+Every message is more than just its content. With the Karafka Data Explorer, you can access the complete details of any message. This includes its payload, headers, and associated metadata, ensuring a comprehensive understanding of the data.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-explorer3.png)
+
+### Message Republishing
+
+Occasionally, there might be a need to republish a message for various reasons. This feature empowers users to seamlessly republish any message to the same topic partition. It retains the original payload and all the headers, ensuring data consistency and integrity during republishing.
+
+### Surroundings Lookup
+
+"Surroundings Lookup" enhances Karafka Web UI's debugging capabilities by allowing users to navigate directly to a specific message and instantly view its preceding and subsequent messages. This is essential for understanding the context, especially during batch processing.
+
+### Summary
+
+The Karafka Data Explorer is your go-to solution for an in-depth exploration of data produced to Kafka. It's not just about viewing the data; it's about understanding it.
 
 ## Errors
 
