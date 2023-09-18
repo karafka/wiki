@@ -179,12 +179,6 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
           replication factor: aligned with your company policy
         </li>
         <li>
-          partitions: <code>1</code>
-        </li>
-        <li>
-          replication factor: aligned with your company policy
-        </li>
-        <li>
           <code>'cleanup.policy': 'compact'</code>
         </li>
         <li>
