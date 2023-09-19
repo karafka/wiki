@@ -125,6 +125,7 @@
 125. [Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?](#why-do-i-see-rdkafkaconfigclientcreationerror-when-changing-the-partitionassignmentstrategy)
 126. [Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?](#is-it-recommended-to-add-the-waterdrop-gem-to-the-gemfile-or-just-karafka-and-karafka-testing)
 127. [Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?](#can-i-use-karafkaproducer-to-produce-messages-that-will-then-be-consumed-by-activejob-jobs)
+128. [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1716,3 +1717,16 @@ You cannot use `Karafka#producer` to produce messages that will then be consumed
 Attempting to use the Karafka producer to send messages for ActiveJob consumption results in mismatches and errors. Karafka's ActiveJob integration has its way of handling messages internally, and how those messages look and what is being sent is abstracted away from the developer. The developer's responsibility is to stick with the ActiveJob APIs.
 
 When you want to consume a message produced by an external source, it is not the domain of ActiveJob anymore. That would be regular Karafka consuming, which is different from job scheduling and execution with ActiveJob.
+
+## Why am I getting the `Broker: Policy violation (policy_violation)` error?
+
+The `Broker: Policy violation (policy_violation)` error in Karafka is typically related to violating some broker-set policies or configurations.
+
+In Karafka, this error might surface during two scenarios:
+
+- When upgrading the [Web UI](https://karafka.io/docs/Web-UI-Getting-Started) using the command `karafka-web migrate`.
+- When employing the [Declarative Topics](https://karafka.io/docs/topics-management-and-administration/#declarative-topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
+
+Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+
+On the other hand, if this error appears while using Declarative Topics, kindly review your current configuration. Ensure that it's in harmony with the broker's policies and limitations.

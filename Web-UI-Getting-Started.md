@@ -375,3 +375,15 @@ Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics 
 By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 1000 Karafka instances within the default Kafka payload limit.
 
 However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.
+
+### Web UI Schema Compatibility Notice
+
+When upgrading Karafka Web UI, particularly to versions with breaking changes, as noted in the changelogs, it's crucial to understand the implications for the rolling upgrades. Specifically, performing rolling upgrades under such circumstances can lead to schematic mismatches, which might introduce unintended behaviors.
+
+Starting from version `0.7.4`, the Karafka Web UI introduces enhanced schema detection capabilities. If an older consumer responsible for materializing the Web UI results encounters an unsupported newer schema, it will detect this incompatibility. Upon detection, the consumer will emit an error and initiate a backoff procedure, ensuring the system's stability and predictability.
+
+Furthermore, it's worth noting that if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
+
+Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
+
+It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
