@@ -50,6 +50,59 @@ Karafka.monitor.subscribe('app.initialized') do |_event|
 end
 ```
 
+## Using the `Karafka.monitor` for application specific events
+
+`Karafka.monitor` can be used for monitoring Karafka's internal events and for instrumenting and observing custom, application-specific events. Allowing developers to register and monitor their own events provides a unified way to instrument Karafka and custom business operations within Karafka.
+
+### Registering and Instrumenting Custom Events
+
+To register your custom event with the Karafka monitor, you can use the `#register_event` method:
+
+```ruby
+# Register the event
+Karafka.monitor.notifications_bus.register_event('app.custom.event')
+```
+
+After registering an event, you can instrument with it as follows:
+
+```ruby
+Karafka.monitor.instrument('app.custom.event') do
+  puts 'This is my instrumented custom logic!'
+end
+```
+
+You can subscribe to those events the same way as you subscribe to the internal Karafka events:
+
+```ruby
+# Via a block:
+Karafka.monitor.subscribe('app.custom.event') do |event|
+  puts "Custom logic was executed. Details: #{event}"
+end
+
+# Or by using a listener with `#on_app_custom_event` method:
+Karafka.monitor.subscribe(AppEventsListener.new)
+```
+
+### Use Cases for Custom Events
+
+Here are some examples where instrumenting custom events can be beneficial:
+
+- **Performance Monitoring**: If your application has a particular business operation or function that you suspect might be a performance bottleneck, you can instrument it and measure its execution time.
+
+- **External Service Calls**: If your application interacts with external APIs or services, you can instrument events to monitor the success, failure, and response time of these external calls.
+
+- **Data Flow Monitoring**: In data-intensive applications, you can instrument events to monitor data flow as it's ingested, processed, transformed, or exported.
+
+### Naming Considerations for Custom Events
+
+Ensuring that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
+
+For example, a custom event to monitor external API calls could be named `app.external_api_call`:
+
+```ruby
+Karafka.monitor.notifications_bus.register_event('app.external_api_call')
+```
+
 ## Usage statistics and subscribing to `statistics.emitted` event 
 
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event.
