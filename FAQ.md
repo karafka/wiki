@@ -1725,7 +1725,7 @@ The `Broker: Policy violation (policy_violation)` error in Karafka is typically 
 In Karafka, this error might surface during two scenarios:
 
 - When upgrading the [Web UI](https://karafka.io/docs/Web-UI-Getting-Started) using the command `karafka-web migrate`.
-- When employing the [Declarative Topics](https://karafka.io/docs/topics-management-and-administration/#declarative-topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
+- When employing the [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
 
 Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
 
