@@ -127,6 +127,7 @@
 127. [Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?](#can-i-use-karafkaproducer-to-produce-messages-that-will-then-be-consumed-by-activejob-jobs)
 128. [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
 129. [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
+130. [Why Karafka is consuming the same message multiple times?](#why-karafka-is-consuming-the-same-message-multiple-times)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1765,3 +1766,20 @@ Below, you can find a few recommendations in case you encounter this error:
 3. **Replication Factor**: For critical topics, especially if you're using Karafka Web UI, consider setting a replication factor greater than 1. This ensures data redundancy and availability even if a broker goes down.
 
 In summary, while the error message might seem daunting, understanding its nuances can guide targeted troubleshooting, and being on the latest software versions can often preemptively avoid such challenges.
+
+## Why Karafka is consuming the same message multiple times?
+
+When you use Karafka and notice that the same message is being consumed multiple times, several reasons might be causing this. Here are the common reasons why you may experience the same message being processed numerous times:
+
+- **At-Least-Once Delivery**: Kafka guarantees at-least-once delivery, which means a message can be delivered more than once in specific scenarios. This is a trade-off to ensure that no messages are lost during transport. As a result, it's up to the consumer to handle duplicate messages appropriately.
+
+- **Consumer Failures**: If a consumer crashes after processing a message but before it has had a chance to commit its offset, the consumer might process the same message again upon retry.
+
+- **Commit Interval**: The interval at which the consumer commits its offset can also lead to messages being consumed multiple times. If the commit interval is too long, and there's a crash before an offset is committed, messages received since the last commit will be re-consumed.
+
+- **Similar-Looking Messages**: It's possible that the messages aren't actually duplicates, but they look alike. This can be particularly common in systems where certain events occur regularly or when there's a glitch in the producing service. It's essential to check the message key, timestamp, or other unique identifiers to ascertain if two messages are identical or have similar payloads.
+
+- **Dead Letter Queue (DLQ) Misconfiguration with Manual Offset Management**: If you're using a Dead Letter Queue in combination with manual offset management, it's possible to get into a situation where messages are consumed multiple times. If a message cannot be processed and is forwarded to the DLQ, but its offset isn't correctly committed, or the message isn't marked as consumed, the consumer may pick up the same message again upon its next iteration or restart. This behavior can especially become evident when a message consistently fails to be processed correctly, leading to it being consumed multiple times and continually ending up in the DLQ. Ensuring a proper synchronization between message processing, DLQ forwarding, and offset management is essential to avoid such scenarios.
+
+Remember that distributed systems, Kafka included, are complex and can exhibit unexpected behaviors due to various factors. The key is to have comprehensive logging, monitoring, and alerting in place, which can provide insights into anomalies and help in their early detection and resolution.
+
