@@ -126,6 +126,7 @@
 126. [Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?](#is-it-recommended-to-add-the-waterdrop-gem-to-the-gemfile-or-just-karafka-and-karafka-testing)
 127. [Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?](#can-i-use-karafkaproducer-to-produce-messages-that-will-then-be-consumed-by-activejob-jobs)
 128. [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
+129. [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1730,3 +1731,37 @@ In Karafka, this error might surface during two scenarios:
 Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
 
 On the other hand, if this error appears while using Declarative Topics, kindly review your current configuration. Ensure that it's in harmony with the broker's policies and limitations.
+
+## Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?
+
+```
+Error querying watermark offsets for partition 0 of karafka_consumers_states
+Local: All broker connections are down (all_brokers_down)
+```
+
+It is indicative of a connectivity issue. Let's break down the meaning and implications of this error:
+
+1. **Main Message**: The primary message is about querying watermark offsets. Watermark offsets are pointers indicating the highest and lowest offsets (positions) in a Kafka topic partition the consumer has read. The error suggests that the client is facing difficulties in querying these offsets for a particular partition (in this case, partition 0) of the karafka_consumers_states topic.
+
+2. **Local: All broker connections are down (all_brokers_down)**: Despite the starkness of the phrasing, this doesn't necessarily mean that all the brokers in the Kafka cluster are offline. Instead, it suggests that the Karafka client cannot establish a connection to any of the brokers responsible for the mentioned partition. The reasons could be manifold:
+    - **Connectivity Issues**: Network interruptions between your Karafka client and the Kafka brokers might occur. This can be due to firewalls, routing issues, or other network-related blocks.
+
+    - **Broker Problems**: There's a possibility that the specific broker or brokers responsible for the mentioned partition are down or facing internal issues.
+
+    - **Misconfiguration**: Incorrect configurations, such as too short connection or request timeouts, could lead to premature termination of requests, yielding such errors.
+
+3. **Implications for Karafka Web UI**:
+
+    - If you're experiencing this issue with topics related to Karafka Web UI, it's essential to note that Karafka improved its error handling in version 2.2.2. If you're using an older version, upgrading to the latest Karafka and Karafka Web UI versions might alleviate the issue.
+
+    - Another scenario where this error might pop up is during rolling upgrades of the Kafka cluster. If the Karafka Web UI topics have a replication factor 1, there's no redundancy for the partition data. During a rolling upgrade, as brokers are taken down sequentially for upgrades, there might be brief windows where the partition's data isn't available due to its residing broker being offline.
+
+Below, you can find a few recommendations in case you encounter this error:
+
+1. **Upgrade Karafka**: If you're running a version older than `2.2.2`, consider upgrading both Karafka and Karafka Web UI. This might resolve the issue if it's related to previous error-handling mechanisms.
+
+2. **Review Configurations**: Examine your Karafka client configurations, especially timeouts and broker addresses, to ensure they're set appropriately.
+
+3. **Replication Factor**: For critical topics, especially if you're using Karafka Web UI, consider setting a replication factor greater than 1. This ensures data redundancy and availability even if a broker goes down.
+
+In summary, while the error message might seem daunting, understanding its nuances can guide targeted troubleshooting, and being on the latest software versions can often preemptively avoid such challenges.
