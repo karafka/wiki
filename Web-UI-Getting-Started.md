@@ -280,7 +280,7 @@ For those who consider `karafka server` indispensable to their production infras
 
 1. **Activation**: About five minutes after the previous action, Karafka will pinpoint the missing topics, adjust to operate, and catch up on the reporting.
 
-The procedure ensures the uninterrupted operation of your Karafka servers while integrating the enhanced capabilities of the Web UI.
+The procedure ensures the uninterrupted operation of your Karafka servers while integrating the enhanced capabilities of the Web UI. The intermediate errors from the Karafka Web UI consumer **are** expected.
 
 ## Multi-App / Multi-Tenant configuration
 
