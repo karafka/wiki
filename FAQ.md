@@ -1236,6 +1236,44 @@ Please note that in the case of the `WaitTimeoutError`, the message may actually
 
 The exact cause can often be determined by examining the error message and stack trace accompanying the `WaterDrop::Errors::ProduceError`. Also, check the Kafka logs for more information. If the error message or logs aren't clear, you should debug your code or configuration to identify the problem.
 
+If you're having trouble sending messages, a good debugging step is to set up a new producer with a shorter `message.timeout.ms` kafka setting. This means `librdkafka` won't keep retrying for long, and you'll see the main issue faster.
+
+```ruby
+# Create a producer configuration based on the Karafka one
+producer_kafka_cfg = ::Karafka::Setup::AttributesMap.producer(
+  Karafka::App.config.kafka.dup
+)
+
+# Set the message timeout to five seconds to get the underlying error fast
+producer_kafka_cfg[:'message.timeout.ms'] = 5_000
+
+# Build a producer
+producer = ::WaterDrop::Producer.new do |p_config|
+  p_config.kafka = producer_kafka_cfg
+  p_config.logger = Karafka::App.config.logger
+end
+
+# Print all async errors details
+producer.monitor.subscribe('error.occurred') do |event|
+  p event
+  p event[:error]
+end
+
+# Try to dispatch message to the topic with which you have problem
+#
+# Please note, that we use `#produce_async` here and wait.
+# That's because we do not want to crash the execution but instead wait on
+# the async error to appear.
+producer.produce_async(
+  topic: 'problematic_topic',
+  payload: 'test'
+)
+
+# Wait for the async error (if any)
+# librdkafka will give up after 5 seconds, so this should be more than enough
+sleep(30)
+```
+
 ## Can extra information be added to the messages dispatched to the DLQ?
 
 **Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/#adding-custom-details-to-the-dlq-message).

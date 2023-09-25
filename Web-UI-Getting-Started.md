@@ -262,6 +262,26 @@ Karafka Web UI relies on a few operating system commands to function correctly a
 
 Note: The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
 
+## Zero-Downtime Deployment
+
+For those who consider `karafka server` indispensable to their production infrastructure, there's a way to integrate the Karafka Web UI without inducing downtime. Let's dive into the steps to introduce it seamlessly:
+
+1. **Integration**: Begin by installing the Karafka Web UI. Ensure it's appropriately configured in your `karafka.rb` and works for you locally.
+
+1. **Topic Creation - `karafka_consumers_reports`**: Manually set up this topic using the specific configuration mentioned in the table provided above.
+
+1. **Topic Creation - `karafka_errors`**: Similarly, manually establish this topic based on the details in the table as mentioned above.
+
+1. **Avoidance**: Refrain from initiating any other topics related to the Karafka Web UI at this point.
+
+1. **Deployment**: Update and launch your `karafka server` versions incorporating the Web UI. When Karafka identifies the missing topics, it will yield errors and execute a backoff—this behavior is expected. Meanwhile, the Karafka Web UI will be on standby, awaiting the availability of the remaining topics.
+
+1. **Migration**: Use the `bundle exec karafka-web migrate` command. It will generate the remaining topics and bootstrap the initial states.
+
+1. **Activation**: About five minutes after the previous action, Karafka will pinpoint the missing topics, adjust to operate, and catch up on the reporting.
+
+The procedure ensures the uninterrupted operation of your Karafka servers while integrating the enhanced capabilities of the Web UI.
+
 ## Multi-App / Multi-Tenant configuration
 
 Karafka Web UI can be configured to monitor and report data about many applications to a single dashboard.
@@ -387,3 +407,60 @@ Furthermore, it's worth noting that if Karafka Web UI detects older schema repor
 Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
 It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
+
+### `Rdkafka::AbstractHandle::WaitTimeoutError` during installation or migration
+
+If you need to debug this problem further, adjusting the producer's timeout settings might be beneficial. Here's a simple code example of how to create and configure a producer with a reduced timeout and direct stdout reporting for both inline and async errors:
+
+```ruby
+# Create a producer configuration based on the Karafka one
+producer_kafka_cfg = ::Karafka::Setup::AttributesMap.producer(
+  Karafka::App.config.kafka.dup
+)
+
+# Set the message timeout to five seconds to get the underlying error fast
+producer_kafka_cfg[:'message.timeout.ms'] = 5_000
+
+# Build a producer
+producer = ::WaterDrop::Producer.new do |p_config|
+  p_config.kafka = producer_kafka_cfg
+  p_config.logger = Karafka::App.config.logger
+end
+
+# Print all async errors details
+producer.monitor.subscribe('error.occurred') do |event|
+  p event
+  p event[:error]
+end
+
+# Try to dispatch the initial state to the consumers states in case it was
+# the one failing.
+#
+# Please note, that we use `#produce_async` here and wait.
+# That's because we do not want to crash the execution but instead wait on
+# the async error to appear.
+producer.produce_async(
+  topic: Karafka::Web.config.topics.consumers.states,
+  key: Karafka::Web.config.topics.consumers.states,
+  payload: {
+    processes: {},
+    stats: {
+      batches: 0,
+      messages: 0,
+      retries: 0,
+      dead: 0,
+      busy: 0,
+      enqueued: 0,
+      threads_count: 0,
+      processes: 0,
+      rss: 0,
+      listeners_count: 0,
+      utilization: 0
+    }
+  }.to_json
+)
+
+# Wait for the async error (if any)
+# librdkafka will give up after 5 seconds, so this should be more than enough
+sleep(30)
+```
