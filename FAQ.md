@@ -129,6 +129,7 @@
 129. [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
 130. [Why Karafka is consuming the same message multiple times?](#why-karafka-is-consuming-the-same-message-multiple-times)
 131. [Why do Karafka Web UI topics contain binary/Unicode data instead of text?](#why-do-karafka-web-ui-topics-contain-binaryunicode-data-instead-of-text)
+132. [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1833,3 +1834,7 @@ If you've checked Karafka Web UI topics in an alternative Kafka UI, you may noti
 By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
 
 While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it's a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
+
+## Can I use same Karafka Web UI topics for multiple environments like production and staging?
+
+**No**. More details about that can be found [here](https://karafka.io/docs/Web-UI-Multi-App/#limitations).
