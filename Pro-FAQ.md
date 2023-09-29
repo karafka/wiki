@@ -134,7 +134,7 @@ We understand the importance of user privacy and data protection, especially in 
 
 - **Data Collection**: Karafka and Karafka Pro do NOT collect any data from the servers they operate on. Our primary concern is to deliver functionality without infringing on the privacy of our users.
 
-- **Logging**: The only data Karafka collects is the IP address from which the license gem request was made during the bundling process. This is purely for logging and linse validation purposes. Furthermore, the date of the last request is noted, but no other identifiable information is ever collected or stored.
+- **Logging**: The only data Karafka collects is the IP address from which the license gem request was made during the bundling process. This is purely for logging and license validation purposes. Furthermore, the date of the last request is noted, but no other identifiable information is ever collected or stored.
 
 - **GDPR and Data Processing**: As per the General Data Protection Regulation (GDPR), a "data processor" is an entity that processes personal data on behalf of a data controller. Since Karafka does not collect or process any data from its users, it does not act as a data processor, and therefore, GDPR-related concerns in that context do not apply to Karafka.
 
