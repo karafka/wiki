@@ -12,7 +12,7 @@ Virtual Partitions solve this problem by providing you with the means to further
   </small>
 </p>
 
-## Using virtual partitions
+## Using Virtual Partitions
 
 The only thing you need to add to your setup is the `virtual_partitions` definition for topics for which you want to enable it:
 
@@ -45,7 +45,7 @@ The virtual `partitioner` requires to respond to a `#call` method, and it accept
 
 The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
-## Messages distribution
+## Messages Distribution
 
 Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `max_partitions` setting defined within the `virtual_partitions` method.
 
@@ -55,7 +55,7 @@ Below is a diagram illustrating an example partitioning flow of a single partiti
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/partitioner.svg" />
 </p>
 
-### Partitioning based on the message key
+### Partitioning Based on the Message Key
 
 Suppose you already use message keys to direct messages to partitions automatically. In that case, you can use those keys to distribute work to virtual partitions without any risks of distributing data incorrectly (splitting dependent data to different virtual partitions):
 
@@ -72,7 +72,7 @@ routes.draw do
 end
 ```
 
-### Partitioning based on the message payload
+### Partitioning Based on the Message Payload
 
 Since the virtual partitioner accepts the message as the argument, you can use both `#raw_payload` as well as `#payload` to compute your distribution key:
 
@@ -92,7 +92,7 @@ end
 
 **Note**: Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
-### Partitioning randomly
+### Partitioning Randomly
 
 If your messages are independent, you can distribute them randomly by running `rand(Karafka::App.config.concurrency)` for even work distribution:
 
@@ -110,11 +110,11 @@ routes.draw do
 end
 ```
 
-## Managing number of Virtual Partitions
+## Managing Mumber of Virtual Partitions
 
 By default, Karafka will create at most `Karafka::App.config.concurrency` concurrent Virtual Partitions. This approach allows Karafka to occupy all the threads under optimal conditions.
 
-### Limiting number of Virtual Partitions
+### Limiting Number of Virtual Partitions
 
 However, it also means that other topics may not get their fair share of resources. To mitigate this, you may dedicate only 80% of the available threads to Virtual Partitions.
 
@@ -139,7 +139,7 @@ end
 
 **Note**: Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
 
-### Increasing number of Virtual Partitions
+### Increasing Number of Virtual Partitions
 
 There are specific scenarios where you may be interested in having more Virtual Partitions than threads. One example would be to create one Virtual Partition for the data of each user. If you set the `max_partitions` to match the `max_messages`, Karafka will create each Virtual Partition based on your grouping without reducing it to match number of worker threads.
 
@@ -206,7 +206,7 @@ This behavior is advantageous in scenarios where message processing involves ext
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/collapsed_with_exclusions.svg" />
 </p>
 
-## Behaviour on errors
+## Behaviour on Errors
 
 For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](/docs/Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
@@ -267,7 +267,7 @@ routes.draw do
 end
 ```
 
-## Ordering warranties
+## Ordering Warranties
 
 Virtual Partitions provide three types of warranties in regards to order:
 
@@ -287,7 +287,7 @@ Virtual Partitions provide three types of warranties in regards to order:
 
 Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
-## Shutdown and revocation handlers
+## Shutdown and Revocation Handlers
 
 Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Consuming-messages#shutdown-and-partition-revocation-handlers).
 

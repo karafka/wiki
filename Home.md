@@ -56,6 +56,7 @@
 * [Offset management (checkpointing)](Offset-management)
 * [Pausing and rate-limiting](Pausing-and-rate-limiting)
 * [Consumer mappers](Consumer-mappers)
+* [Inline Insights](Inline-Insights)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
 * [Embedding](Embedding)
