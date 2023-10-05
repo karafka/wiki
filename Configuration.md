@@ -20,6 +20,8 @@ end
 
 **Note**: Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
 
+**Note**: kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
+
 ## Karafka configuration options
 
 A list of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).

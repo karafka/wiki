@@ -128,6 +128,9 @@
 128. [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
 129. [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
 130. [Why Karafka is consuming the same message multiple times?](#why-karafka-is-consuming-the-same-message-multiple-times)
+131. [Why do Karafka Web UI topics contain binary/Unicode data instead of text?](#why-do-karafka-web-ui-topics-contain-binaryunicode-data-instead-of-text)
+132. [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
+133. [Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?](#does-karafka-plan-to-submit-metrics-via-a-supported-datadog-integration-ensuring-the-metrics-arent-considered-custom-metrics)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1236,6 +1239,44 @@ Please note that in the case of the `WaitTimeoutError`, the message may actually
 
 The exact cause can often be determined by examining the error message and stack trace accompanying the `WaterDrop::Errors::ProduceError`. Also, check the Kafka logs for more information. If the error message or logs aren't clear, you should debug your code or configuration to identify the problem.
 
+If you're having trouble sending messages, a good debugging step is to set up a new producer with a shorter `message.timeout.ms` kafka setting. This means `librdkafka` won't keep retrying for long, and you'll see the main issue faster.
+
+```ruby
+# Create a producer configuration based on the Karafka one
+producer_kafka_cfg = ::Karafka::Setup::AttributesMap.producer(
+  Karafka::App.config.kafka.dup
+)
+
+# Set the message timeout to five seconds to get the underlying error fast
+producer_kafka_cfg[:'message.timeout.ms'] = 5_000
+
+# Build a producer
+producer = ::WaterDrop::Producer.new do |p_config|
+  p_config.kafka = producer_kafka_cfg
+  p_config.logger = Karafka::App.config.logger
+end
+
+# Print all async errors details
+producer.monitor.subscribe('error.occurred') do |event|
+  p event
+  p event[:error]
+end
+
+# Try to dispatch message to the topic with which you have problem
+#
+# Please note, that we use `#produce_async` here and wait.
+# That's because we do not want to crash the execution but instead wait on
+# the async error to appear.
+producer.produce_async(
+  topic: 'problematic_topic',
+  payload: 'test'
+)
+
+# Wait for the async error (if any)
+# librdkafka will give up after 5 seconds, so this should be more than enough
+sleep(30)
+```
+
 ## Can extra information be added to the messages dispatched to the DLQ?
 
 **Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/#adding-custom-details-to-the-dlq-message).
@@ -1783,3 +1824,34 @@ When you use Karafka and notice that the same message is being consumed multiple
 
 Remember that distributed systems, Kafka included, are complex and can exhibit unexpected behaviors due to various factors. The key is to have comprehensive logging, monitoring, and alerting in place, which can provide insights into anomalies and help in their early detection and resolution.
 
+## Why do Karafka Web UI topics contain binary/Unicode data instead of text?
+
+If you've checked Karafka Web UI topics in an alternative Kafka UI, you may notice that topics seem to contain binary/unicode data rather than plain text. It's not an oversight or an error. This design choice is rooted in our data management and transmission efficiency approach.
+
+- **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, ensuring that Kafka remains efficient and responsive.
+
+- **Independent Compression without External Dependencies**: We understand the significance of maintaining a lightweight, hassle-free setup for our users. We chose Zlib for data compression - it comes bundled with every Ruby version. This means there's no need to rely on third-party libraries or go through configuration changes to your Kafka cluster to use Karafka Web UI.
+
+By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
+
+While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it's a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
+
+## Can I use same Karafka Web UI topics for multiple environments like production and staging?
+
+**No**. More details about that can be found [here](https://karafka.io/docs/Web-UI-Multi-App/#limitations).
+
+## Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?
+
+**No**, Karafka does not have plans to submit metrics through a dedicated Datadog integration that ensures these metrics are classified as non-custom. While Karafka has an integration with Datadog, the metrics from this integration will be visible as custom metrics.
+
+The reason for this approach is grounded in practicality and long-term maintainability. As with any software, weighing the benefits against the maintenance cost and the commitment involved is essential. While it might seem feasible to align certain features or integrations with the current framework changes, it could introduce challenges if the release cycle or external dependencies were to change.
+
+To put it in perspective:
+
+- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works seamlessly with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
+
+- **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in ensuring smooth integration. This introduces an external dependency that's out of Karafka's direct control.
+
+- **Ecosystem Benefits**: While such integrations can offer added value, assessing if their benefits are substantial enough to justify the effort and potential challenges is vital. In this case, the perceived benefit to the ecosystem seems insignificant.
+
+In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it's essential to strike a balance that ensures the software remains efficient, maintainable, and free from unnecessary complexities.

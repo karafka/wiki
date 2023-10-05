@@ -119,11 +119,11 @@ It is recommended to do one major upgrade at a time.
 
 ## Changelogs
 
-* [Karafka](https://github.com/karafka/karafka/blob/master/CHANGELOG.md)
-* [WaterDrop](https://github.com/karafka/waterdrop/blob/master/CHANGELOG.md)
-* [Karafka-Web](https://github.com/karafka/karafka-web/blob/master/CHANGELOG.md)
-* [Karafka-Testing](https://github.com/karafka/karafka-testing/blob/master/CHANGELOG.md)
-* [Karafka-Core](https://github.com/karafka/karafka-core/blob/master/CHANGELOG.md)
+* [Karafka](https://karafka.io/docs/Changelog-Karafka)
+* [WaterDrop](https://karafka.io/docs/Changelog-WaterDrop)
+* [Karafka-Web](https://karafka.io/docs/Changelog-Karafka-Web-UI)
+* [Karafka-Testing](https://karafka.io/docs/Changelog-Karafka-Testing)
+* [Karafka-Core](https://karafka.io/docs/Changelog-Karafka-Core)
 
 ## Code Docs
 

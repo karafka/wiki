@@ -1,4 +1,4 @@
-Karafka Web UI can support data collection, aggregation, and presentation from multiple applications in a single dashboard. This is particularly useful for anyone dealing with micro-services that operate in the same Kafka cluster and are part of the same application.
+Karafka Web UI can support data collection, aggregation, and presentation from multiple applications from the same environment in a single dashboard. This is particularly useful for anyone dealing with micro-services that operate in the same Kafka cluster and are part of the same application.
 
 Here are the steps necessary to configure Karafka Web-UI to work in a multi-app mode:
 
@@ -27,3 +27,34 @@ Karafka::Process.tags.add(:application_name, 'MyApp1')
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/multi-app.png" alt="karafka web multi-app processes view" />
 </p>
+
+## Limitations
+
+While Karafka Web UI can handle multiple applications effectively, it's essential to understand that it perceives all these applications as a part of one cohesive system. In Karafka's eyes, the distinction between these applications is different from between different environments of the same application.
+
+**Never** use the same setup with the same topics to handle reports from multiple environments like staging and production.
+
+This is where the confusion and complications arise. Mixing data from different environments of the same application would be akin to rearranging the ingredients of two different recipes in the same bowl. The result can become unpredictable and unpalatable even if they share some common elements.
+
+Mixing data from different environments (like staging and production) of the same application within that dashboard is **not advisable**.
+
+There are several reasons why you should never use the same Karafka Web UI setup and the same Web UI topics for applications from multiple environments:
+
+- **Data Collisions**: Since each environment (production, staging, development, etc.) has its unique data set and workload, having them report to the same topic can cause collisions. It might get complicated to segregate which data belongs to which environment, especially when data starts streaming in real time.
+
+- **Ambiguity for Karafka**: Karafka is designed to handle and interpret data from topics based on specific expected patterns. When data from different environments with peculiarities stream into the same topic, Karafka will get confused. It will misinterpret the data or, worse, miss out on processing some critical data due to these discrepancies.
+
+- **Unpredictable Web UI Behavior**: The Web UI is essentially a visual interface to the data. When it starts receiving mixed data, its behavior can become unpredictable. You might see overlapping information, duplicated records, or even data that does not belong to either environment but is an outcome of materializing them into aggregated representations.
+
+- **Troubleshooting Difficulties**: In case of any issues or anomalies, troubleshooting will become a nightmare. Since you won't be able to identify which environment the problematic data is coming from immediately, the resolution will be delayed.
+
+
+## Example use-cases
+
+This capability immensely benefits organizations that manage multiple applications or microservices but want a centralized monitoring and visualization solution. For instance:
+
+- **Centralized Monitoring**: Instead of switching between multiple monitoring dashboards for each application, teams can monitor all their apps from a single Karafka Web UI dashboard.
+
+- **Unified Data Presentation**: Aggregating data from different applications provides a holistic view of the entire system's performance, traffic, and other metrics, making it easier to identify patterns or issues that might span across multiple applications.
+
+- **Efficiency & Cost Savings**: By using one platform (Karafka Web UI) for all applications, organizations can save on the costs and complexities of managing multiple monitoring solutions.
