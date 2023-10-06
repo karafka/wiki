@@ -96,6 +96,7 @@
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Reliability](Pro-Enhanced-Reliability)
+* [Enhanced Inline Insights](Pro-Enhanced-Inline-Insights)
 * [Enhanced Web UI](Pro-Enhanced-Web-UI)
     * [Getting Started](Pro-Enhanced-Web-UI#getting-started)
     * [Consumers](Pro-Enhanced-Web-UI#consumers)

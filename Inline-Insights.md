@@ -1,4 +1,4 @@
-Staying informed and adjusting to real-time changes is critical in the dynamic data processing world. Karafka's Inline Insights providesa way to enhance your data processing capabilities by allowing your consumers to adjust their actions based on real-time metrics. Whether dealing with lag or responding to specific partition data changes, Inline Insights empowers developers to have a more hands-on and responsive approach. By tapping into this feature, you can ensure your system runs efficiently and adapts swiftly to any incoming data fluctuations.
+Staying informed and adjusting to real-time changes is critical in the dynamic data processing world. Karafka's Inline Insights provides way to enhance your data processing capabilities by allowing your consumers to adjust their actions based on real-time metrics. Whether dealing with lag or responding to specific partition data changes, Inline Insights empowers developers to have a more hands-on and responsive approach. By tapping into this feature, you can ensure your system runs efficiently and adapts swiftly to any incoming data fluctuations.
 
 ## Using Inline Insights
 
@@ -84,9 +84,9 @@ end
 
 ### Crucial Insights Presence with Karafka Pro
 
-For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to Karafka Pro. With its extended capabilities regarding Inline Insights, you can ensure that insights are always available when you need them.
+For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities regarding Inline Insights, you can ensure that insights are always available when you need them.
 
-In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing.
+In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](https://karafka.io/docs/Pro-Enhanced-Inline-Insights).
 
 ## Insights Freshness
 
