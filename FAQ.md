@@ -131,6 +131,7 @@
 131. [Why do Karafka Web UI topics contain binary/Unicode data instead of text?](#why-do-karafka-web-ui-topics-contain-binaryunicode-data-instead-of-text)
 132. [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
 133. [Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?](#does-karafka-plan-to-submit-metrics-via-a-supported-datadog-integration-ensuring-the-metrics-arent-considered-custom-metrics)
+134. [How can I make Karafka not retry processing, and what are the implications?](#how-can-i-make-karafka-not-retry-processing-and-what-are-the-implications)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1855,3 +1856,57 @@ To put it in perspective:
 - **Ecosystem Benefits**: While such integrations can offer added value, assessing if their benefits are substantial enough to justify the effort and potential challenges is vital. In this case, the perceived benefit to the ecosystem seems insignificant.
 
 In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it's essential to strike a balance that ensures the software remains efficient, maintainable, and free from unnecessary complexities.
+
+## How can I make Karafka not retry processing, and what are the implications?
+
+If you make Karafka not retry, the system will not attempt retries on errors but will continue processing forward. You can achieve this in two methods:
+
+1. **Manual Exception Handling**: This involves catching all exceptions arising from your code and choosing to ignore them. This means the system doesn't wait or retry; it simply moves to the next task or message.
+
+```ruby
+def consume
+  messages.each do |message|
+    begin
+      persist(message)
+    # Ignore any errors and just log them
+    rescue StandardError => e
+      ErrorTracker.notify(e)
+    end
+
+    mark_as_consumed(message)
+  end
+end
+```
+
+2. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      # This setup will move broken messages to the DLQ, backoff and continue
+      dead_letter_queue(
+        topic: 'dead_messages',
+        max_retries: 0
+      )
+    end
+  end
+end
+
+class OrdersStatesConsumer < ApplicationConsumer
+  def consume
+    # No need to handle errors manually, if `#persist` fails,
+    # Karafka will pause, backoff and retry automatically and
+    # will move the failed messages to `dead_messages` topic
+    messages.each do |message|
+      persist(message)
+
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
+However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](https://karafka.io/docs/Pausing-and-rate-limiting/) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
