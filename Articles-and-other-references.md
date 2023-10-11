@@ -20,6 +20,7 @@
 * [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)
 * [Kafka topics as a code – declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
 * [Integration Patterns for Distributed Architecture - Intro to Kafka](https://www.smily.com/engineering/integration-patterns-for-distributed-architecture-intro-to-kafka)
+* [Add a Kafka Consumer to Rails](https://danielabaron.me/blog/rails-kafka-consumer/)
 * [An alternative approach to custom partition assignment strategy for Kafka consumers with Karafka](https://karolgalanciak.com/blog/2022/12/11/an-alternative-approach-to-custom-partition-assignment-strategy-for-kafka-consumers-with-karafka/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 1 - Kafka basics and its advantages](https://mensfeld.pl/2017/11/kafka-on-rails-using-kafka-with-ruby-on-rails-part-1-kafka-basics-and-its-advantages/)
 * [Kafka on Rails: Using Kafka with Ruby on Rails - Part 2 - Getting started with Rails and Kafka](https://mensfeld.pl/2018/01/kafka-on-rails-using-kafka-with-ruby-on-rails-part-2-getting-started-with-ruby-and-kafka/)
