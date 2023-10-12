@@ -107,6 +107,10 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
 ## Usage Statistics and Subscribing to `statistics.emitted` Event 
 
+!!! note ""
+  
+    Karafka emits metrics every 5 seconds by default, governed by the Kafka setting statistics.interval.ms. However, if a consumption process takes longer than this interval, metrics are only published after completion, potentially leading to less frequent updates. Adjust the setting if needed, but be aware of consumption times influencing metrics frequency.
+
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event.
 
 The statistics include all of the metrics from `librdkafka` (full list [here](https://github.com/edenhill/librdkafka/blob/master/STATISTICS.md)) as well as the diff of those against the previously emitted values.
@@ -148,7 +152,84 @@ You can read more about its features [here](/docs/Web-UI-Features), and the inst
 
 ## AppSignal Metrics and Error Tracking
 
-TBA
+!!! tip ""
+    [AppSignal](https://www.appsignal.com/) has had and continues to have, a **tremendous** impact on the Karafka ecosystem. Without their invaluable contributions and support, the progress and evolution of this ecosystem would not have been possible. For those searching for a top-notch monitoring system for Ruby and Rails applications, AppSignal stands out as a prime choice. Karafka officially recommends AppSignal as the supported integration for its community and users.
+
+Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a seamless solution for monitoring your Kafka-based applications.
+
+![Example Karafka AppSignal dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_appsignal_dashboard_example.png)
+
+The Karafka AppSignal integration provides an extensive set of metrics with both per-topic and per-partition resolution. This granularity allows you to drill down into specific aspects of your Kafka processing pipeline.
+
+Key Metrics Include:
+
+- Performance Metrics: Monitor the performance of your Karafka consumers, ensuring optimal message processing times.
+
+- Error Reporting: Gain insights into errors and exceptions within your Karafka application. AppSignal will help you identify and diagnose issues quickly, including asynchronous operation-related errors.
+
+- Dead Letter Queue: Keep an eye on messages that have failed to be processed and understand why they ended up in the dead letter queue.
+
+By using the Karafka AppSignal integration, you can proactively manage your Kafka-based applications, ensuring they operate smoothly and reliably.
+
+!!! note ""
+
+    When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
+
+### Error Tracking
+
+Monitoring errors in Karafka consumers and producers is as critical as tracking performance and stability. Doing so provides a holistic view of system health, ensuring no issues or anomalies are overlooked. With the integration of Appsignal, you gain an additional layer of instrumentation specifically for this purpose. Appsignal integration tracks and reports all errors, including the internal asynchronous ones that might arise while working with Kafka. This comprehensive error tracking ensures timely detection and resolution, safeguarding your Kafka operations' integrity and reliability.
+
+Below, you can find instructions on how to enable the errors instrumentation:
+
+```ruby
+# First configure your app in karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup goes here...
+  end
+end
+
+# require appsignal errors listener as it is not loaded by default
+require 'karafka/instrumentation/vendors/appsignal/errors_listener'
+
+# Create an appsignal errors listener
+appsignal_errors_listener = ::Karafka::Instrumentation::Vendors::Appsignal::ErrorsListener.new
+
+# Subscribe with your errors listener to Karafka and its producer and you should be ready to go!
+Karafka.monitor.subscribe(appsignal_errors_listener)
+Karafka.producer.monitor.subscribe(appsignal_errors_listener)
+
+# setup the metrics listener here if you want
+```
+
+![Example Karafka AppSignal Errors dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_appsignal_dashboard_errors_example.png)
+
+
+### Metrics Instrumentation
+
+The AppSignal integration offers comprehensive instrumentation, ensuring that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
+
+Below, you can find instructions on how to enable the metrics instrumentation:
+
+```ruby
+# First configure your app in karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup goes here...
+  end
+end
+
+# require appsignal metrics listener as it is not loaded by default
+require 'karafka/instrumentation/vendors/appsignal/metrics_listener'
+
+# Create an appsignal metrics listener
+appsignal_metrics_listener = ::Karafka::Instrumentation::Vendors::Appsignal::MetricsListener.new
+
+# Subscribe with your listener to Karafka and you should be ready to go!
+Karafka.monitor.subscribe(appsignal_metrics_listener)
+```
+
+Remember to import the Appsignal ready-to-import dashboard that you can find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
 
 ## Sentry Error Tracking Integration
 
@@ -169,20 +250,16 @@ end
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
 ```ruby
+# First configure your app in karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup goes here...
+  end
+end
+
 # require datadog/statsd and the listener as it is not loaded by default
 require 'datadog/statsd'
 require 'karafka/instrumentation/vendors/datadog/metrics_listener'
-
-# initialize Karafka with statistics.interval.ms enabled so the librdkafka metrics are published
-# as well (without this, you will get only part of the metrics)
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.kafka = {
-      'bootstrap.servers': 'localhost:9092',
-      'statistics.interval.ms': 1_000
-    }
-  end
-end
 
 # initialize the listener with statsd client
 dd_listener = ::Karafka::Instrumentation::Vendors::Datadog::MetricsListener.new do |config|
