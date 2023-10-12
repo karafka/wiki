@@ -90,7 +90,9 @@ routes.draw do
 end
 ```
 
-**Note**: Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
+!!! note ""
+
+    Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
 ### Partitioning Randomly
 
@@ -137,7 +139,9 @@ routes.draw do
 end
 ```
 
-**Note**: Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
+!!! note ""
+
+    Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
 
 ### Increasing Number of Virtual Partitions
 
@@ -162,7 +166,9 @@ routes.draw do
 end
 ```
 
-**Note**: Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
+!!! note ""
+
+    Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
 ## Virtual Offset Management
 
@@ -216,7 +222,9 @@ For a single partition-based Virtual Partitions group, offset management and ret
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
 
-**Note**: Since pausing happens in Kafka, the re-fetched data may contain more or fewer messages. This means that after retry, the number of messages and their partition distribution may differ. Despite that, all ordering warranties will be maintained.
+!!! note ""
+
+    Since pausing happens in Kafka, the re-fetched data may contain more or fewer messages. This means that after retry, the number of messages and their partition distribution may differ. Despite that, all ordering warranties will be maintained.
 
 ### Collapsing
 

@@ -34,7 +34,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: Please keep in mind, that the delay time needs to be provided in milliseconds
+!!! note ""
+
+    Please keep in mind, that the delay time needs to be provided in milliseconds
 
 ## Delayed Topics vs. inline `#sleep` invocation
 

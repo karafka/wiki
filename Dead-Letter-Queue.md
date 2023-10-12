@@ -81,7 +81,9 @@ This functionality is available in Karafka Pro, and you can read about it [here]
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
 
-Please note that the original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue).
+!!! note ""
+
+    The original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue).
 
 If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) implementation.
 
@@ -148,7 +150,9 @@ When working with a DLQ pattern and using Karafka multi-cluster support, please 
 
 You can alter this by overriding the `#producer` consumer method and providing your cluster-specific producer instance.
 
-**Note**: Do **not** create producer instances per consumer but one per cluster. Karafka producer is thread-safe and can operate from multiple consumers simultaneously.
+!!! note ""
+
+    Do **not** create producer instances per consumer but one per cluster. Karafka producer is thread-safe and can operate from multiple consumers simultaneously.
 
 ```ruby
 # In an initializer, before usage

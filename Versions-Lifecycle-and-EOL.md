@@ -20,7 +20,9 @@ Karafka versions or release series are categorized below into the following phas
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
-**Note**: If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
+!!! note ""
+
+    If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|

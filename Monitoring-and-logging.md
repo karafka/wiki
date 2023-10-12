@@ -16,7 +16,9 @@ A complete list of the supported events can be found [here](https://github.com/k
 
 The best place to hook your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
 
-**Note**: You should set up listeners **after** configuring the app because Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
+!!! note ""
+
+    You should set up listeners **after** configuring the app because Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
 
 ### Subscribing with a listener class/module
 
@@ -103,7 +105,7 @@ For example, a custom event to monitor external API calls could be named `app.ex
 Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 ```
 
-## Usage statistics and subscribing to `statistics.emitted` event 
+## Usage Statistics and Subscribing to `statistics.emitted` Event 
 
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event.
 
@@ -144,7 +146,11 @@ Karafka Web UI is a user interface for the [Karafka framework](https://github.co
 
 You can read more about its features [here](/docs/Web-UI-Features), and the installation documentation can be found [here](Web-UI-Getting-Started).
 
-## Sentry error tracking integration
+## AppSignal Metrics and Error Tracking
+
+TBA
+
+## Sentry Error Tracking Integration
 
 If you are using Sentry and want to track errors that occurred in Karafka for both consumptions as well as any errors happening in the background threads, all you need to do is to connect to the `error.occurred` using Sentry `#capture_exception` API:
 
@@ -156,7 +162,9 @@ end
 
 ## Datadog and StatsD integration
 
-**Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
+!!! note ""
+
+    WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
 
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
@@ -191,7 +199,7 @@ You can also find [here](https://github.com/karafka/karafka/blob/master/lib/kara
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
-### Tracing consumers using DataDog logger listener
+### Tracing Consumers using DataDog Logger Listener
 
 If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
 
@@ -211,11 +219,15 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_tracing.png)
 
-**Note**: Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
+!!! note ""
+
+    Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
 ## OpenTelemetry
 
-**Note**: WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
+!!! note ""
+
+    WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
 
 OpenTelemetry does not support async tracing in the same way that Datadog does. Therefore it is impossible to create a tracer that will accept reporting without the code running from within a block nested inside the `#in_span` method.
 
@@ -268,7 +280,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Example listener with Errbit/Airbrake support
+## Example Listener with Errbit/Airbrake Support
 
 Here's a simple example of a listener used to handle errors logging into Airbrake/Errbit.
 
@@ -321,9 +333,11 @@ ActiveSupport::Notifications.subscribe('consumed.consumer.karafka') do |event|
 end
 ```
 
-**Note**: Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
+!!! note ""
 
-## Implications of broken instrumentation listeners/listeners causing errors
+    Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
+
+## Implications of Broken Instrumentation listeners/listeners Causing Errors
 
 Instrumentation and monitoring listeners are essential components in Karafka-based applications as they provide insight into the app's performance and behavior. They are critical in collecting metrics, measuring response times, and tracking other performance data. When functioning correctly, they enable efficient identification of issues and performance optimization. However, their malfunctioning could lead to several challenges and problems.
 

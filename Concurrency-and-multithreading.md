@@ -39,7 +39,9 @@ Example of work distribution amongst two workers:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/processing-workers.svg" />
 </p>
 
-**Note**: Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
+!!! note ""
+
+    Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
 ### Parallel Kafka connections within a single consumer group (subscription groups)
 
@@ -91,11 +93,17 @@ end
   </small>
 </p>
 
-**Note**: This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that are within different subscription groups.
+!!! note ""
 
-**Note**: Subscription groups are a different concept than consumer groups. It is an internal Karafka concept; you can have many subscription groups in one consumer group.
+    This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that are within different subscription groups.
 
-If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
+!!! note ""
+
+    Subscription groups are a different concept than consumer groups. It is an internal Karafka concept; you can have many subscription groups in one consumer group.
+
+!!! note ""
+
+    If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
 
 ### Parallel processing of a single topic partition (Virtual Partitions)
 

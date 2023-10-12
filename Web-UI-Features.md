@@ -2,11 +2,15 @@ Karafka Web UI contains several features allowing you to understand your system'
 
 Below you can find a comprehensive description of the most important features you can use.
 
-**Note**: Karafka Pro offers enhanced Web UI with many additional metrics and functionalities.
+!!! note ""
+
+    Karafka Pro offers enhanced Web UI with many additional metrics and functionalities.
 
 ## Dashboard
 
-**Note**: More graphs are available only in our Pro offering.
+!!! note ""
+
+    More graphs are available only in our Pro offering.
 
 The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
 
@@ -14,7 +18,9 @@ The dashboard provides an all-encompassing insight into your Karafka operations.
 
 ## Consumers
 
-**Note**: More metrics and detailed consumers inspection are available only in our Pro offering.
+!!! note ""
+
+    More metrics and detailed consumers inspection are available only in our Pro offering.
 
 The consumers status view allows users to view and monitor the performance of Kafka-running consumers. The page displays real-time data and aggregated metrics about the status of the consumers, such as their current offset, lag, the current state of consumers, and others.
 
@@ -31,7 +37,9 @@ The following metrics are available for each consumer:
 
 ## Jobs
 
-**Note**: More metrics are available in our Pro offering.
+!!! note ""
+
+    More metrics are available in our Pro offering.
 
 This page provides a real-time view of the jobs that are currently being processed, including information such as:
 
@@ -47,7 +55,9 @@ This page provides a real-time view of the jobs that are currently being process
 
 ## Health
 
-**Note**: This functionality is available only in our Pro offering.
+!!! note ""
+
+    This functionality is available only in our Pro offering.
 
 This dashboard view shows Karafka consumers' groups' health state with their lag aggregated information and basic trends.
 
@@ -71,7 +81,9 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
 ## Explorer
 
-**Note**: This functionality is available only in our Pro offering.
+!!! note ""
+
+    This functionality is available only in our Pro offering.
 
 Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](https://karafka.io/docs/Pro-Enhanced-Web-UI/#explorer).
 
@@ -81,7 +93,9 @@ Karafka Data Explorer is an essential tool for users seeking to navigate and com
 
 ## Errors
 
-**Note**: More backtrace and high-scale features are available in our Pro offering.
+!!! note ""
+
+    More backtrace and high-scale features are available in our Pro offering.
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`. It includes the following information:
 
@@ -101,7 +115,9 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 ## DLQ / Dead
 
-**Note**: This functionality is available only in our Pro offering.
+!!! note ""
+
+    This functionality is available only in our Pro offering.
 
 The Dead Letter Queue (DLQ) dashboard allows users to view messages that have failed to be processed and were skipped and moved to the Dead Letter Queue topic with their original details.
 

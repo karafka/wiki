@@ -33,9 +33,13 @@ bundle add karafka-web
 bundle exec karafka-web install
 ```
 
-**Note**: Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+!!! note ""
 
-**Note**: After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
+    Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+
+!!! note ""
+
+    After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
 
 5. Mount the Web interface in your Ruby on Rails application routing:
 
@@ -216,7 +220,9 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 </tbody>
 </table>
 
-**Note**: Karafka Web UI topics are **not** managed via the [Declarative topics API](/docs/Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
+!!! note ""
+
+    Karafka Web UI topics are **not** managed via the [Declarative topics API](/docs/Topics-management-and-administration#declarative-topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
 ## External Shell/OS Required Commands
 
@@ -260,7 +266,9 @@ Karafka Web UI relies on a few operating system commands to function correctly a
 </table>
 
 
-Note: The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
+!!! note ""
+
+    The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
 
 ## Zero-Downtime Deployment
 
@@ -375,7 +383,9 @@ And that is all.
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
 
-**Note**: Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
+!!! note ""
+
+    Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 
 ### Message-producing permissions for consumers
 

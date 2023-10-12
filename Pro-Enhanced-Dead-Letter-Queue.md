@@ -85,7 +85,9 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
   </small>
 </p>
 
-**Note**: The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
+!!! note ""
+
+    The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
 ## Additional headers for increased traceability
 
@@ -96,7 +98,9 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `original_offset` - offset of the transferred message
 - `original_consumer_group` - id of the consumer group that was consuming this message
 
-**Note**: Karafka headers values are **always** strings.
+!!! note ""
+
+    Karafka headers values are **always** strings.
 
 This can be used for debugging or for example when you want to have a single DLQ topic with per topic strategies:
 
@@ -167,7 +171,9 @@ class MyConsumer
 end
 ```
 
-**Note**: No routing changes are needed to make it work.
+!!! note ""
+
+    No routing changes are needed to make it work.
 
 ## DLQ message `key` enhancements for a compacted DLQ topic
 

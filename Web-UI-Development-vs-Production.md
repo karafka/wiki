@@ -33,7 +33,9 @@ bundle exec karafka-web install --replication-factor 5
 
 ## Usage with Heroku Kafka Multi-Tenant add-on
 
-**Note**: This section **only** applies to the Multi-Tenant add-on mode.
+!!! note ""
+
+    This section **only** applies to the Multi-Tenant add-on mode.
 
 Please keep in mind that in order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
 

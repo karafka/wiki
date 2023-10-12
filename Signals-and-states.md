@@ -26,7 +26,9 @@ instrumentation/logger_listener.rb:77:in `on_process_notice_signal'
 ...
 ```
 
-**Note**: You need to have the `LoggerListener` enabled for this signal to print. It is enabled by default, so this signal should work out of the box unless you altered that.
+!!! note ""
+
+    You need to have the `LoggerListener` enabled for this signal to print. It is enabled by default, so this signal should work out of the box unless you altered that.
 
 ### TSTP
 
@@ -36,7 +38,9 @@ Using `TSTP` allows you to gracefully finish all the work and shut down without 
 
 Use `TSTP` + `TERM` to guarantee shut down within a period. The best practice is sending `TSTP` at the start of deployment and `TERM` at the end.
 
-**Note**: you still need to send `TERM` to exit the Karafka process.
+!!! note ""
+
+    You still need to send `TERM` to exit the Karafka process.
 
 ### TERM and QUIT
 

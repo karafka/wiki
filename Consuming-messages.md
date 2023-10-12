@@ -118,8 +118,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
+!!! note ""
 
+    This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
 ## Detecting revocation midway
 
@@ -145,9 +146,13 @@ It is worth, however, keeping in mind that under normal operating conditions, Ka
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
-**Note**: You do **not** need to mark the message as consumed for the `#revoked?` method result to change.
+!!! note ""
 
-**Note**: When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result also changes independently from marking messages.
+    You do **not** need to mark the message as consumed for the `#revoked?` method result to change.
+
+!!! note ""
+
+    When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result also changes independently from marking messages.
 
 ## Consumer persistence
 
@@ -155,7 +160,9 @@ Karafka consumer instances are persistent by default. This means that a single c
 
 Karafka consumer instance for a given topic partition will be re-created in case a given partition is lost and re-assigned.
 
-**Note**: if you decide to utilize such techniques, you may be better with manual offset management.
+!!! note ""
+
+    If you decide to utilize such techniques, you may be better with manual offset management.
 
 
 ```ruby

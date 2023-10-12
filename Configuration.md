@@ -18,9 +18,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**Note**: Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
+!!! note ""
 
-**Note**: kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
+    Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
+
+!!! note ""
+
+    kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
 
 ## Karafka configuration options
 
@@ -79,8 +83,10 @@ setup_karafka do |config|
 end
 ```
 
-*Note*: In order to use `zstd`, you need to install `libzstd-dev`:
+!!! note ""
 
-```bash
-apt-get install -y libzstd-dev
-```
+    In order to use `zstd`, you need to install `libzstd-dev`:
+
+    ```bash
+    apt-get install -y libzstd-dev
+    ```

@@ -12,7 +12,9 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/flow.svg" />
 </p>
 
-**Note**: The data stored in Kafka remains unaltered and intact, regardless of any actions taken using the Cleaner API. The Cleaner API is exclusively designed to manage and optimize the memory utilization of the running process. When the API removes a message's payload, it only clears that data from the application's active memory. This operation does not, in any manner, affect the original message data residing in Kafka.
+!!! note ""
+
+    The data stored in Kafka remains unaltered and intact, regardless of any actions taken using the Cleaner API. The Cleaner API is exclusively designed to manage and optimize the memory utilization of the running process. When the API removes a message's payload, it only clears that data from the application's active memory. This operation does not, in any manner, affect the original message data residing in Kafka.
 
 ## Using Cleaner API
 

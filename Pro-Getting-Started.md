@@ -17,7 +17,9 @@ gem 'karafka'
 # other gems...
 ```
 
-**Note**: You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
+!!! note ""
+
+    You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
 
 
 ## License gem integrity verification
@@ -84,4 +86,6 @@ To use it:
 
 In case the verification fails, script will exit with the exit code `1`.
 
-**Note**: Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.
+!!! note ""
+
+    Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.

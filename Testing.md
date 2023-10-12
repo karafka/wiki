@@ -28,9 +28,13 @@ Once included in your RSpec setup, this library will provide you with a special 
 - `#produce` - "sends" message to the consumer instance.
 - `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
 
-**Note:** Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer in case you want to test messages production.
+!!! note ""
 
-Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
+    Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer in case you want to test messages production.
+
+!!! note ""
+
+    Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
 
 ### Testing messages consumption (consumers)
 

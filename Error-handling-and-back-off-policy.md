@@ -60,7 +60,9 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-**Note**: Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
+!!! note ""
+
+    Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
 ### Error tracking
 
@@ -104,7 +106,9 @@ Karafka.monitor.subscribe 'error.occurred' do |event|
 end
 ```
 
-**Note**: When doing batch operations, this message may not be the exact cause of the processing error.
+!!! note ""
+
+    When doing batch operations, this message may not be the exact cause of the processing error.
 
 ### Exponential backoff
 
@@ -122,7 +126,9 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/on_errors_behaviour.svg" />
 </p>
 
-**Note**: This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Virtual-Partitions#behaviour-on-errors) for more details.
+!!! note ""
+
+    This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Virtual-Partitions#behaviour-on-errors) for more details.
 
 ## Shutdown
 

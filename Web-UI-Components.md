@@ -14,4 +14,6 @@ Below you can find the diagram of the whole data flow:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
 </p>
 
-**Note**: Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when one `karafka server` process running.
+!!! note ""
+
+    Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when one `karafka server` process running.

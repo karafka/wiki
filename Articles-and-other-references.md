@@ -11,7 +11,9 @@
 
 ## Articles and references about Karafka
 
-**Note**: some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
+!!! note ""
+
+    Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
 * [Karafka framework 2.1 announcement](https://mensfeld.pl/2023/06/karafka-framework-2-1-announcement/)
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)

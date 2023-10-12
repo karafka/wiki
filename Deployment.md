@@ -274,7 +274,9 @@ You can also use this ACL command to give all operations access for the brokers 
   --group=*
 ```
 
-**Note**: The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
+!!! note ""
+
+    The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
 
 ## Heroku
 
@@ -292,7 +294,9 @@ Details about how Kafka for Heroku works can also be found here:
 
 ### Heroku Kafka prefix convention
 
-**Note**: This section **only** applies to the Multi-Tenant add-on mode.
+!!! note ""
+
+    This section **only** applies to the Multi-Tenant add-on mode.
 
 All Kafka Basic topics and consumer groups begin with a unique prefix associated with your add-on. This prefix is accessible via the `KAFKA_PREFIX` environment variable.
 
@@ -320,7 +324,9 @@ end
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 ```
 
-**Note**: The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the default consumer group in Karafka `smoothboulder-1234.app` when used with the mapper defined above. Kafka itself does not need to know the prefix when creating the consumer group.
+!!! note ""
+
+    The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the default consumer group in Karafka `smoothboulder-1234.app` when used with the mapper defined above. Kafka itself does not need to know the prefix when creating the consumer group.
 
 This means that the Heroku CLI command needs to look as follows:
 
@@ -356,7 +362,9 @@ Karafka.producer.produce_async(
 )
 ```
 
-**Note**: You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
+!!! note ""
+
+    You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
 ### Configuring Karafka to work with Heroku SSL
 

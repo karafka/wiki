@@ -310,7 +310,9 @@ require 'karafka_root_dir/karafka_app'
 
 Still not a perfect solution because karafka gem is still loaded.
 
-**Note**: This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
+!!! note ""
+
+    This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
 
 ## Can I skip messages on errors?
 
@@ -481,7 +483,9 @@ kafka `client.id` is a string passed to the server when making requests. This is
 
 Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
 
-**Note**: If you're using the default consumer group mapper in Karafka, altering the `client_id` will rename consumer groups, leading to the reconsumption of all subscribed topics. Exercise caution and avoid modifying the `client_id` unless intentional reprocessing of all messages is desired.
+!!! note ""
+
+    If you're using the default consumer group mapper in Karafka, altering the `client_id` will rename consumer groups, leading to the reconsumption of all subscribed topics. Exercise caution and avoid modifying the `client_id` unless intentional reprocessing of all messages is desired.
 
 ## How can I increase Kafka and Karafka max message size?
 
@@ -514,7 +518,9 @@ end
 
 It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
 
-Note: If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
+!!! note ""
+
+    If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
 
 ```ruby
 WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
@@ -1037,7 +1043,9 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-**Note**: When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](https://karafka.io/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
+!!! note ""
+
+    When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](https://karafka.io/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
@@ -1355,7 +1363,9 @@ Karafka.producer.monitor.subscribe(
 )
 ```
 
-**Note**: `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
+!!! note ""
+
+    `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
 ## Can I password-protect Karafka Web UI?
 
@@ -1379,7 +1389,9 @@ When a message is dispatched to a [dead letter queue](https://karafka.io/docs/De
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled. 
 
-Note that in production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
+!!! note ""
+
+    In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 
 For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
 

@@ -307,7 +307,9 @@ Karafka::App.consumer_groups.map(&:id)
 
 ## Topic mappers are no longer supported
 
-**Note**: Unless you used Heroku, you can probably skip this section.
+!!! note ""
+
+    Unless you used Heroku, you can probably skip this section.
 
 Topic mapping is no longer supported. Please prefix all of your topic names with the env `KAFKA_PREFIX`.
 

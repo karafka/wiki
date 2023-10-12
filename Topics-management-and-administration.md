@@ -5,7 +5,9 @@ Karafka allows you to manage your topics in two ways:
 
 Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
-**Note**: Admin actions will always be applied to the **default** cluster defined in the configuration.
+!!! note ""
+
+    Admin actions will always be applied to the **default** cluster defined in the configuration.
 
 ## Configuration
 
@@ -134,7 +136,9 @@ end
 
 This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
 
-**Note**: Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
+!!! note ""
+
+    Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
 
 You can use Karafka to manage topics that you do not consume from as well by defining their config and making them inactive at the same time:
 
@@ -180,7 +184,9 @@ Please keep in mind two things, though:
 
 Karafka has a few simple admin functions that allows for getting cluster info and creating and deleting topics.
 
-**Note**: Admin actions will always be applied to the **default** cluster defined in the configuration.
+!!! note ""
+
+    Admin actions will always be applied to the **default** cluster defined in the configuration.
 
 ### Creating a topic
 
@@ -213,7 +219,9 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
-**Note**: While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
+!!! note ""
+
+    While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
 #### Getting last N messages
 
