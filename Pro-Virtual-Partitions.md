@@ -252,36 +252,6 @@ end
   </small>
 </p>
 
-
-#### Manual Collapsing
-
-When working with Virtual Partitions in Karafka, users can manually invoke a collapsing operation. This provides flexibility and control, especially when non-linear message processing is required.
-
-Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also initiate this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
-
-To manually collapse your Virtual Partitions, you need to invoke the `#collapse_until!` method as follows:
-
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    imported, failed = import(messages)
-
-    return if failed.empty?
-
-    # Collapse until last broken message
-    collapse_until!(failed.last.offset)
-
-    # Note, that pausing is collective for all VPs, hence we need to make sure, that when we pause
-    # we select the lowest offset out of all VPs for a given topic partition
-    PauseManager.pause(topic, partition, failed.first.offset) do |lowest_offset|
-      pause(lowest_offset, 5_000)
-    end
-  end
-end
-```
-
-When multiple Virtual Partitions invoke the `#collapse_until!` method concurrently, Karafka ensures consistency by considering all requested offsets. If different partitions request different offsets, the system will prioritize and collapse until the highest requested offset. This ensures that no messages before that offset are processed out of order, maintaining the integrity of your message stream even in complex processing scenarios. So, if multiple collapses are requested simultaneously, the most conservative (highest offset) collapse request takes precedence.
-
 ### Usage with Dead Letter Queue
 
 Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
@@ -304,6 +274,36 @@ routes.draw do
 end
 ```
 
+## Manual Collapsing
+
+When working with Virtual Partitions in Karafka, users can manually invoke a collapsing operation. This provides flexibility and control, especially when non-linear message processing is required.
+
+Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also initiate this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
+
+To manually collapse your Virtual Partitions, you need to invoke the `#collapse_until!` method as follows:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    imported, failed = import(messages)
+
+    return if failed.empty?
+
+    # Collapse until last broken message
+    collapse_until!(failed.last.offset)
+
+    # Note, that pausing is collective for all VPs, hence we need to make sure, that when we pause
+    # we select the lowest offset out of all VPs for a given topic partition
+    synchronize do
+      lowest_offset = PauseManager.pause(topic, partition, failed.first.offset)
+      pause(lowest_offset, 5_000)
+    end
+  end
+end
+```
+
+When multiple Virtual Partitions invoke the `#collapse_until!` method concurrently, Karafka ensures consistency by considering all requested offsets. If different partitions request different offsets, the system will prioritize and collapse until the highest requested offset. This ensures that no messages before that offset are processed out of order, maintaining the integrity of your message stream even in complex processing scenarios. So, if multiple collapses are requested simultaneously, the most conservative (highest offset) collapse request takes precedence.
+
 ## Ordering Warranties
 
 Virtual Partitions provide three types of warranties in regards to order:
@@ -319,6 +319,27 @@ Virtual Partitions provide three types of warranties in regards to order:
   <small>*Example distribution of messages in between two virtual partitions.
   </small>
 </p>
+
+## Consumers Synchronization
+
+When using Virtual Partitions in Karafka, multiple consumers will concurrently operate on data from the same topic partition. This can lead to potential data races and inconsistencies if not properly managed. To help with this, Karafka provides a mechanism to synchronize access among these consumers using the `#synchronize` method.
+
+Karafka's `#synchronize` method uses a mutex to guarantee that the code inside its block will not face race conditions with other consumers. This ensures that only one consumer can execute the synchronized block of code at a time, thus providing a way to perform operations that should be atomic safely.
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    sum = messages.payloads.map { |data| data.fetch(:count) }.sum
+
+    # Make sure that the counter is not in a race-condition with other
+    # consumers from same partition
+    synchronize do
+      counts = Cache.fetch(topic, partition) || 0
+      Cache.set(topic, partition, counts + sum)
+    end
+  end
+end
+```
 
 ## Monitoring
 
