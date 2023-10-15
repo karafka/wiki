@@ -343,7 +343,7 @@ end
 
 ## Monitoring
 
-Karafka default [DataDog/StatsD](Monitoring-and-logging#datadog-and-statsd-integration) monitor and dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
+Karafka default [monitor](Monitoring-and-logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
 ## Shutdown and Revocation Handlers
 

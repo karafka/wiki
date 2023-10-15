@@ -18,6 +18,7 @@
 * [Karafka framework 2.1 announcement](https://mensfeld.pl/2023/06/karafka-framework-2-1-announcement/)
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
 * [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
+* [Monitoring Karafka Jobs Progress Using Web UI](https://mensfeld.pl/2023/10/monitoring-karafka-jobs-progress-using-web-ui/)
 * [Enhancing Data Reliability Through Transactional Offsets with Karafka](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/)
 * [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)
 * [Kafka topics as a code – declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
