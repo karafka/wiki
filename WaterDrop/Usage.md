@@ -191,3 +191,41 @@ end
 
 producer.close
 ```
+
+## Shutdown
+
+Properly shutting down WaterDrop producers is crucial to ensure graceful handling and prevent potential resource leaks causing VM crashes. This section explains how to close WaterDrop producers and the implications of doing so.
+
+It is essential to close the WaterDrop producer before exiting the Ruby process. Closing the producer allows it to release resources, complete ongoing operations, and ensure that all messages are either successfully delivered to the Kafka cluster or purged due to exceeding the `message.timeout.ms` value.
+
+The `#close` method is used to shut down the producer. It is important to note that `#close` is a blocking operation, meaning it will block the execution of your program until all the necessary resources are cleaned up. Therefore, it is not recommended to start the `#close` operation in a separate thread and not wait for it to finish, as this may lead to unexpected behavior.
+
+Here is an example of how to use #close to shut down a producer:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+
+producer.close
+```
+
+In specific scenarios, such as working with unstable Kafka clusters or when you need to finalize your application fast, disregarding the risk of potential data loss, you may use the `#close!` method.
+
+The `#close!` method attempts to wait until a specified `max_wait_timeout` (default is `5` seconds) for any pending operations to complete. However, if the producer cannot be shut down gracefully within this timeframe, it will forcefully purge the dispatch queue and cancel all outgoing requests. This effectively prevents the closing procedure from blocking for an extensive period, ensuring that your application can exit more quickly.
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+
+producer.close!
+```
+
+While `#close!` can be helpful when you want to finalize your application quickly, be aware that it may result in messages not being successfully delivered or acknowledged, potentially leading to data loss. Therefore, use `#close!` with caution and only when you understand the implications of potentially losing undelivered messages.
+
+## Forking and potential memory problems
+
+If you work with forked processes, make sure you **don't** use the producer before the fork. You can easily configure the producer and then fork and use it.
+
+To tackle this [obstacle](https://github.com/appsignal/rdkafka-ruby/issues/15) related to rdkafka, WaterDrop adds finalizer to each of the producers to close the rdkafka client before the Ruby process is shutdown. Due to the [nature of the finalizers](https://www.mikeperham.com/2010/02/24/the-trouble-with-ruby-finalizers/), this implementation prevents producers from being GCed (except upon VM shutdown) and can cause memory leaks if you don't use persistent/long-lived producers in a long-running process or if you don't use the `#close` method of a producer when it is no longer needed. Creating a producer instance for each message is anyhow a rather bad idea, so we recommend not to.
