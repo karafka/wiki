@@ -21,7 +21,7 @@ Karafka.producer.class #=> WaterDrop::Producer
 
 Karafka uses [WaterDrop](https://github.com/karafka/waterdrop) to produce messages. It is a standalone Karafka framework component that can also be used in applications that only produce messages.
 
-Please refer to [WaterDrop README](https://github.com/karafka/waterdrop#usage=) for more details.
+Please refer to [WaterDrop documentation](https://karafka.io/docs/#waterdrop) for more details.
 
 ## Consumer / server
 

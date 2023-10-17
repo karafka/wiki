@@ -12,6 +12,7 @@
 
 ## Web UI
 
+* [About](Web-UI-About)
 * [Getting Started](Web-UI-Getting-Started)
 * [Configuration](Web-UI-Configuration)
 * [Features](Web-UI-Features)
@@ -28,6 +29,16 @@
 * [Multi App mode](Web-UI-Multi-App)
 * [Development vs Production](Web-UI-Development-vs-Production)
 * [Components](Web-UI-Components)
+
+## WaterDrop
+
+* [About](WaterDrop-About)
+* [Getting Started](WaterDrop-Getting-Started)
+* [Configuration](WaterDrop-Configuration)
+* [Usage](WaterDrop-Usage)
+* [Transactions](WaterDrop-Transactions)
+* [Monitoring and logging](WaterDrop-Monitoring-and-Logging)
+* [Middleware](WaterDrop-Middleware)
 
 ## Production usage
 

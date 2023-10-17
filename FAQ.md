@@ -565,7 +565,7 @@ Remember that the optimal number of threads may change as the workload and syste
 
 ## Can I use several producers with different configurations with Karafka?
 
-**Yes**. You can create as many producers as you want using [WaterDrop API](https://github.com/karafka/waterdrop#setup) directly:
+**Yes**. You can create as many producers as you want using [WaterDrop API](https://karafka.io/docs/WaterDrop-Getting-Started/) directly:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -1498,7 +1498,7 @@ Furthermore, with no arguments in the initialize method, this API structure is d
 
 ## Where can I find producer idempotence settings?
 
-They are located in the WaterDrop wiki [idempotence section](https://github.com/karafka/waterdrop#idempotence).
+They are located in the WaterDrop wiki [idempotence section](https://karafka.io/docs/WaterDrop-Configuration/#idempotence).
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 

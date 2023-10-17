@@ -23,6 +23,7 @@ end
 %w[
   Pro
   Web-UI
+  WaterDrop
 ].each do |namespace|
   Dir["#{Dir.pwd}/#{namespace}/**.md"].each do |file|
     basename = File.basename(file)
