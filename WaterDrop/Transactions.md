@@ -1,7 +1,3 @@
-!!! note ""
-
-    Transactions support is still under development.
-
 WaterDrop transactions provide a way to achieve exactly-once semantics during data streaming. They enable users to send multiple messages to multiple topics/partitions so that all messages are successfully published or none are, ensuring atomicity.
 
 ## Using Transactions
