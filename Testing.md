@@ -36,7 +36,7 @@ Once included in your RSpec setup, this library will provide you with a special 
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
 
-### Testing messages consumption (consumers)
+### Testing Messages Consumption (Consumers)
 
 ```ruby
 RSpec.describe InlineBatchConsumer do
@@ -80,7 +80,7 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
-### Testing messages consumption of Routing Patterns
+### Testing Messages Consumption of Routing Patterns
 
 Since each [Routing Pattern](https://karafka.io/docs/Pro-Routing-Patterns) has a name, you can test them like regular topics.
 
@@ -106,7 +106,7 @@ You can reference this name when using the `karafka.consumer_for` method:
 subject(:consumer) { karafka.consumer_for(:visits) }
 ```
 
-### Testing messages production (producer)
+### Testing Messages Production (Producer)
 
 When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
 
@@ -128,8 +128,8 @@ class UsersBuilder
   end
 end
 
-RSpec.describe InlineBatchConsumer do
-  let(:created_user) { UsersBuilder.new.create(user_details) }
+RSpec.describe UsersBuilder do
+  let(:created_user) { described_class.new.create(user_details) }
 
   before { created_user }
 
@@ -139,7 +139,53 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
-### Testing consumer groups and topics structure
+#### Testing Transactions
+
+When testing producer transactions in Karafka, the approach is similar to how the non-transactional production of messages is tested. Within a transaction, messages you send are held and not immediately placed into the buffer. When the transactional block finishes successfully, these messages get moved into the buffers, ready to be produced to Kafka.
+
+If, for any reason, the transaction is aborted, messages inside that transaction won't reach the buffers. This mimics the real-world behavior where an aborted transaction would prevent messages from being sent to Kafka.
+
+Therefore, when you're writing tests for producer transactions in Karafka, you can:
+
+1. Simulate the successful transaction completion and check if messages were placed into the buffers.
+
+2. Simulate an aborted transaction and ensure that no messages reach the buffers.
+
+This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handled as expected in both successful and aborted transaction scenarios.
+
+```ruby
+class UsersBuilder
+  def create_many(users_details)
+    users = []
+
+    Karafka.producer.transaction do
+      user = ::User.create!(user_details)
+
+      users << user
+
+      Karafka.producer.produce_async(
+        topic: 'users_changes',
+        payload: { user_id: user.id, type: 'user.created' },
+        key: user.id.to_s
+      )
+    end
+
+    users
+  end
+end
+
+RSpec.describe UsersBuilder do
+  let(:created_users) { described_class.new.create_many([user_details, user_details]) }
+
+  before { created_users }
+
+  it { expect(karafka.produced_messages.size).to eq(2) }
+  it { expect(karafka.produced_messages.first[:topic]).to eq('user.created') }
+  it { expect(karafka.produced_messages.first[:key]).to eq(created_users.first.id.to_s) }
+end
+```
+
+### Testing Consumer Groups and Topics Structure
 
 Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.routes``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
