@@ -98,6 +98,10 @@ end
 
 This flexibility in handling delivery reports and delivery handles in both synchronous and asynchronous scenarios makes WaterDrop a powerful choice for managing Kafka message production while accommodating different use cases and error-handling strategies.
 
+## Transactions
+
+Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Please refer to [this](https://karafka.io/docs/WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
+
 ## Usage across the application and with Ruby on Rails
 
 If you plan to both produce and consume messages using Kafka, you should install and use [Karafka](https://github.com/karafka/karafka). It integrates automatically with Ruby on Rails applications and auto-configures WaterDrop producer to make it accessible via `Karafka#producer` method:
