@@ -33,16 +33,18 @@ end
 
 Some of the options are:
 
-| Option                       | Description                                                                |
-|------------------------------|----------------------------------------------------------------------------|
-| `id`                         | id of the producer for instrumentation and logging                         |
-| `logger`                     | Logger that we want to use                                                 |
-| `deliver`                    | Should we send messages to Kafka or just fake the delivery                 |
-| `max_wait_timeout`           | Waits that long for the delivery report or raises an error                 |
-| `wait_timeout`               | Waits that long before re-check of delivery report availability            |
-| `wait_on_queue_full`         | Should be wait on queue full or raise an error when that happens           |
-| `wait_backoff_on_queue_full` | Waits that long before retry when queue is full                            |
-| `wait_timeout_on_queue_full` | If back-offs and attempts that that much time, error won't be retried more |
+| Option                                | Description                                                                    |
+|---------------------------------------|--------------------------------------------------------------------------------|
+| `id`                                  | id of the producer for instrumentation and logging                             |
+| `logger`                              | Logger that we want to use                                                     |
+| `deliver`                             | Should we send messages to Kafka or just fake the delivery                     |
+| `max_wait_timeout`                    | Waits that long for the delivery report or raises an error                     |
+| `wait_timeout`                        | Waits that long before re-check of delivery report availability                |
+| `wait_on_queue_full`                  | Should be wait on queue full or raise an error when that happens               |
+| `wait_backoff_on_queue_full`          | Waits that long before retry when queue is full                                |
+| `wait_timeout_on_queue_full`          | If back-offs and attempts that that much time, error won't be retried more     |
+| `wait_backoff_on_transaction_command` | How long to wait before retrying a retryable transaction related error         |
+| `max_attempts_on_transaction_command` | How many times to retry a retryable transaction related error before giving up |
 
 !!! info ""
 
