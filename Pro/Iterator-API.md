@@ -8,7 +8,7 @@ One of the major benefits of the Iterator API is its flexibility. You can use it
 
 !!! note ""
 
-    When using Karafka's Iterator API to access Kafka data, please take note: it skips compacted messages and transactions related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
+    When using Karafka's Iterator API to access Kafka data, please keep in mind, that it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
 
 ## Usage
 
