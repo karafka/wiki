@@ -328,6 +328,12 @@ Karafka producer transactions provide atomicity over streams, but users should b
 
 - **Hanging Transactions**: Transactions that don't complete (neither committed nor aborted) can impact the Last Stable Offset (LSO) in Kafka. This can block consumers from reading new data until the hanging transaction is resolved, affecting data consumption and overall system throughput.
 
+- **Web UI Dispatch Interference**: When both user code and Karafka Web UI use `Karafka.producer`, prolonged transactions can block the Web UI from reporting data due to a held lock, blocking other dispatches to Kafka. Ensure brief transactions, avoid concurrent access or initialize additional producers to mitigate this.
+
+- **Topic Creation During Production**: While WaterDrop's transactional producer can operate with non-existent topics when `allow.auto.create.topics` is set to `true`, creating topics beforehand is **strongly** advised. Failing to do so can lead to errors like:
+
+    > Broker: Producer attempted a transactional operation in an invalid state (invalid_txn_state)
+
 - **Thread Safety with WaterDrop**: While WaterDrop is inherently thread-safe, there are specifics to keep in mind for transactions:
     - **Lock During Transactions**: WaterDrop locks access to itself when a transaction is underway. For those anticipating high transactional loads, consider leveraging multiple producers. This way, while one producer is engaged in a transaction in one thread, others can operate independently.
 
