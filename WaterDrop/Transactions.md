@@ -37,8 +37,8 @@ For optimized performance, it's advisable to leverage batch dispatches. By batch
 **BAD**:
 
 ```ruby
-  # This code with a transactional producer will create and commit transaction
-  # with each outgoing message, slowing things down
+# This code with a transactional producer will create and commit transaction
+# with each outgoing message, slowing things down
 Users.find_each do |user|
   producer.produce_async(topic: 'users', payload: user.to_json)
 end
@@ -211,6 +211,17 @@ end
 
 Errors that are neither retryable, abortable, nor fatal are considered fatal as well.
 
+## Purge Errors
+
+Purge errors occur mostly when WaterDrop cannot deliver a given message for an extended period and decides to remove it from its internal queue.
+
+In the context of a standard producer, a purge error is relatively uncommon and usually indicative of a problem. This type of error often arises when WaterDrop cannot deliver a given message to Kafka for an extended period. Common causes include network issues, Kafka broker unavailability, or misconfigurations.
+
+Given the unexpected nature of purges in this context, they're flagged as errors. When such a situation arises, WaterDrop propagates the purge error via the `error.occurred` notification channel. As these are not typical behaviors, they should be diligently monitored and addressed.
+Conversely, purge errors take on a different meaning within a transactional producer context. Specifically, during aborted transactions, it's a standard operation for WaterDrop to purge each message within the transaction that hasn't been dispatched to Kafka yet. This behavior is expected and part of how transactional processes ensure atomicity and consistency.
+
+This purging process is anticipated within transactional boundaries, so these purge errors are not considered typical "errors." Instead of using the `error.occurred` notification channel, WaterDrop uses the `message.purged` channel to report these events. This distinction is crucial to ensure system monitors or logs are not flooded with false positives when working with transactional producers.
+
 ## Timeouts
 
 The `transaction.timeout.ms` parameter in Kafka is a configuration setting specifying the maximum amount of time (in milliseconds) a transactional session can remain open without being completed. Once this timeout is reached, Kafka will proactively abort the transaction.
@@ -329,6 +340,8 @@ Karafka producer transactions provide atomicity over streams, but users should b
 - **Hanging Transactions**: Transactions that don't complete (neither committed nor aborted) can impact the Last Stable Offset (LSO) in Kafka. This can block consumers from reading new data until the hanging transaction is resolved, affecting data consumption and overall system throughput.
 
 - **Web UI Dispatch Interference**: When both user code and Karafka Web UI use `Karafka.producer`, prolonged transactions can block the Web UI from reporting data due to a held lock, blocking other dispatches to Kafka. Ensure brief transactions, avoid concurrent access or initialize additional producers to mitigate this.
+
+- **Handling Purge Errors in Transactions**: Purge errors are common during aborted transactions. Instead of broadcasting these through the `error.occurred` notification channel, they are relayed via the `message.purged` notification. This distinction is important because undelivered messages from an aborted transaction will trigger this notification. Recognizing these as standard behavior rather than errors is crucial when working with transactions.
 
 - **Topic Creation During Production**: While WaterDrop's transactional producer can operate with non-existent topics when `allow.auto.create.topics` is set to `true`, creating topics beforehand is **strongly** advised. Failing to do so can lead to errors like:
 

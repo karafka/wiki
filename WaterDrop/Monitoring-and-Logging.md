@@ -143,6 +143,10 @@ end
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
+!!! note ""
+
+    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](https://karafka.io/docs/WaterDrop-Transactions) documentation.
+
 ## Acknowledgment notifications
 
 WaterDrop allows you to listen to Kafka messages' acknowledgment events. This will enable you to monitor deliveries of messages from WaterDrop even when using asynchronous dispatch methods.
