@@ -106,3 +106,119 @@ Keep in mind, that in order to use `zstd`, you need to install `libzstd-dev`:
 ```bash
 apt-get install -y libzstd-dev
 ```
+
+## Message Size Validation
+
+When working with WaterDrop, it's essential to know the various checks and validations to ensure the integrity and feasibility of producing messages. This section explains the message size validation process in WaterDrop, librdkafka, and Kafka.
+
+There are three primary parameters to consider:
+
+1. **WaterDrop `max_payload_size`**: this value checks only the payload size during client-side message validation.
+
+2. **librdkafka `message.max.bytes`**: This is a configuration value determining the maximum size of a message. Maximum Kafka protocol request message size. Due to differing framing overhead between protocol versions, the producer cannot reliably enforce a strict max message limit at production time and may exceed the maximum size by one message in protocol `ProduceRequests`. The broker will enforce the the topic's `max.message.bytes` limit automatically.
+
+3. **Broker max.message.bytes**: is a broker-level configuration in Apache Kafka that determines the maximum size of a message the broker will accept. If a producer attempts to send a message larger than this specified size, the broker will reject it. 
+
+### Validation Flow
+
+1. **WaterDrop Client-Side Validation**:
+
+  - Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to ensure the message payload is within permissible limits.
+
+  - It's worth noting that this validation only concerns the payload and not additional elements like metadata, headers, and key.
+
+2. **librdkafka Validation**:
+
+  - librdkafka, before publishing, validates the **uncompressed** size of the message.
+
+  - This check ensures that the message size adheres to configured standards even before compression.
+
+3. **Broker-Side Validation**:
+
+  - After the message is dispatched, the broker then validates the **compressed** size.
+
+  - The distinction between compressed and uncompressed size is essential because of the potential compression ratios achievable with different compression algorithms.
+
+Below you can find examples where each of the validations layers fails:
+
+1. WaterDrop raising the `WaterDrop::Errors::MessageInvalidError` because of the payload being too big (1MB):
+
+```ruby
+# Topic limit 1MB
+# Payload too big
+producer.produce_async(topic: 'test', payload: '1' * 1024 * 1024)
+# {:payload=>"is more than `max_payload_size` config value"}
+```
+
+2. librdkafka raising an error because of the message being too large:
+
+```ruby
+# Topic limit 1MB
+# Small payload
+# Large headers
+# message.max.bytes: 10 000
+Karafka.producer.produce_sync(
+  topic: 'test',
+  payload: '1',
+  key: '1',
+  headers: { rand.to_s => '1' * 1024 * 1024 }
+)
+
+# Error occurred: #<Rdkafka::RdkafkaError: Broker:
+#     Message size too large (msg_size_too_large)> - message.produce_sync
+# `rescue in produce_async': #<Rdkafka::RdkafkaError:
+#     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
+```
+
+3. librdkafka raising an error received from the broker
+
+```ruby
+# Topic limit 1MB
+# Small payload
+# Large headers
+# message.max.bytes: 10MB
+
+Karafka.producer.produce_sync(
+  topic: 'test',
+  payload: '1',
+  key: '1',
+  headers: { rand.to_s => '1' * 1024 * 1024 * 10 }
+)
+
+# Error occurred: #<Rdkafka::RdkafkaError: Broker:
+#     Message size too large (msg_size_too_large)> - message.produce_sync
+# `rescue in produce_async': #<Rdkafka::RdkafkaError:
+#     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
+```
+
+!!! note ""
+
+    The `msg_size_too_large error` can arise from:
+    
+    - Local Validation by librdkafka: Before reaching the Kafka broker, if a message size exceeds the library's limit.
+    
+    - Kafka Broker Rejection: If the broker finds the message too big based on its configuration.
+    
+    Both scenarios produce the same `msg_size_too_large` error code, making them indistinguishable in code.
+
+    When addressing this error, check message size settings in both librdkafka and the Kafka broker.
+
+### Adjusting Validation Parameters
+
+1. **Disabling max_payload_size**:
+
+  - If you don't use dummy or buffered clients for testing, it's possible to turn off `max_payload_size`.
+
+  - This can be done by setting it to a high value and bypassing this validation step.
+
+  - However, librdkafka will still validate the uncompressed size of the entire message, including headers, metadata, and key.
+
+2. **Interpreting Validation Errors**:
+
+  - A discrepancy between `max_payload_size` and `message.max.bytes` may arise due to the additional size from metadata, headers, and keys.
+
+  - Hence, it's possible to bypass WaterDrop's validation but fail on librdkafka's end.
+
+### Conclusion
+
+Understanding the nuances of message size validation is crucial to ensure smooth message production. While it may seem complex at first, being mindful of the distinctions between uncompressed and compressed sizes and client-side and broker-side validations can prevent potential pitfalls and disruptions in your Kafka workflows.

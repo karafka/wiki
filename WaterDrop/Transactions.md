@@ -352,6 +352,14 @@ Karafka producer transactions provide atomicity over streams, but users should b
 
     - **Exclusive Transactional Usage**: Should you configure a producer as transactional, be aware that it cannot then be used for non-transactional messaging, and all producer operations will be wrapped with a transaction.
 
+- **Kafka System Records and Offset Allocation**: Kafka transactions, by design, create an additional record in the topic partition. This record is a system record and doesn't contain any user data. However, this, along with the messages from aborted transactions, does occupy offsets. These offsets are not merely placeholders; they represent an actual record in the Kafka log. It's crucial to understand that aborted transactions, despite not delivering messages, take up space in the log and modify the offset count. In the Karafka Web UI, these are visible as system records. This behavior can sometimes lead to confusion, as users might observe a disparity between the number of user messages and the total count of records (including system records). Recognizing and understanding these system records can help users better manage and diagnose issues with their Kafka topics and transactions.
+  
+    Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
+
+    <p align="center">
+      <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
+    </p>
+
 These limitations underline the importance of a thorough understanding and careful implementation when leveraging Kafka transactions, especially with tools like WaterDrop.
 
 ## Example use-cases

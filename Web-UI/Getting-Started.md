@@ -263,17 +263,13 @@ For those who consider `karafka server` indispensable to their production infras
 
 1. **Integration**: Begin by installing the Karafka Web UI. Ensure it's appropriately configured in your `karafka.rb` and works for you locally.
 
-1. **Topic Creation - `karafka_consumers_reports`**: Manually set up this topic using the specific configuration mentioned in the table provided above.
+1. **Topic Creation**: Manually set up all the topics listed above using the specific configuration mentioned in the table provided above.
 
-1. **Topic Creation - `karafka_errors`**: Similarly, manually establish this topic based on the details in the table as mentioned above.
+1. **Deployment**: Update and launch your `karafka server` versions incorporating the Web UI. When Karafka identifies the missing initial states, it will yield errors and execute a backoff - this behavior is expected. Meanwhile, the Karafka Web UI will be on standby, awaiting the availability of the initial states and data.
 
-1. **Avoidance**: Refrain from initiating any other topics related to the Karafka Web UI at this point.
+1. **Migration**: Use the `bundle exec karafka-web migrate` command. It will bootstrap the missing initial states.
 
-1. **Deployment**: Update and launch your `karafka server` versions incorporating the Web UI. When Karafka identifies the missing topics, it will yield errors and execute a backoff—this behavior is expected. Meanwhile, the Karafka Web UI will be on standby, awaiting the availability of the remaining topics.
-
-1. **Migration**: Use the `bundle exec karafka-web migrate` command. It will generate the remaining topics and bootstrap the initial states.
-
-1. **Activation**: About five minutes after the previous action, Karafka will pinpoint the missing topics, adjust to operate, and catch up on the reporting.
+1. **Activation**: About five minutes after the previous action, Karafka will adjust to operate, and catch up on the reporting.
 
 The procedure ensures the uninterrupted operation of your Karafka servers while integrating the enhanced capabilities of the Web UI. The intermediate errors from the Karafka Web UI consumer **are** expected.
 
