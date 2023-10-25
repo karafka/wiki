@@ -1,3 +1,5 @@
+# WaterDrop Monitoring and Logging
+
 Each of the producers after the `#setup` is done, has a custom monitor to which you can subscribe.
 
 ```ruby

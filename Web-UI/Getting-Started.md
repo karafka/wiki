@@ -1,3 +1,5 @@
+# Getting Started with the Web UI
+
 Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-web) with minimal dependencies.
 
 To use it:

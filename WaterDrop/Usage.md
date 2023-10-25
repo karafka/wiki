@@ -1,3 +1,5 @@
+# WaterDrop Usage
+
 To send Kafka messages, just create a producer and use it:
 
 ```ruby

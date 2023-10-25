@@ -1,3 +1,5 @@
+# Karafka Pro Features List
+
 Karafka Pro is a commercial version of the open-source Karafka framework for building Ruby Kafka-based applications.
 
 Below you can find the list of the Pro features with their brief description:

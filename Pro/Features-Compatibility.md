@@ -1,3 +1,5 @@
+# Karafka Pro Features Compatibility
+
 Karafka provides several features that can work together. Unless explicitly stated otherwise, Karafka Pro features should work with each other without any limitations
 
 ## Long Running Jobs + Virtual Partitions

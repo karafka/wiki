@@ -1,3 +1,5 @@
+# WaterDrop Configuration
+
 WaterDrop is a complex tool that contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
 
 - WaterDrop options - options directly related to WaterDrop and its components

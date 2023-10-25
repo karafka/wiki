@@ -1,3 +1,5 @@
+# Web UI Features
+
 Karafka Web UI contains several features allowing you to understand your system's karafka consumption process.
 
 Below you can find a comprehensive description of the most important features you can use.

@@ -38,6 +38,7 @@
 * [Usage](WaterDrop-Usage)
 * [Transactions](WaterDrop-Transactions)
 * [Monitoring and logging](WaterDrop-Monitoring-and-Logging)
+* [Testing](WaterDrop-Testing)
 * [Middleware](WaterDrop-Middleware)
 
 ## Production usage

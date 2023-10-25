@@ -1,3 +1,5 @@
+# Web UI Tagging API Support
+
 Karafka Web supports process and consumer tagging.
 
 Tags can be used to add additional information about consumers and their execution and Karafka processes themselves.

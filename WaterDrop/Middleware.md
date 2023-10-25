@@ -1,3 +1,5 @@
+# WaterDrop Middleware
+
 WaterDrop supports injecting middleware similar to Rack.
 
 Middleware can be used to provide extra functionalities like auto-serialization of data or any other modifications of messages before their validation and dispatch.

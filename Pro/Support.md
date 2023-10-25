@@ -1,3 +1,5 @@
+# Karafka Pro Support
+
 Karafka offers community support via [Github issues](https://github.com/karafka/karafka/issues) and a [Slack channel](http://karafka.slack.com/).
 
 Karafka Pro offers priority support via a dedicated per-organization private Slack channel and via email.

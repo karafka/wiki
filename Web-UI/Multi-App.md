@@ -1,3 +1,5 @@
+# Multi-App Web UI Setup
+
 Karafka Web UI can support data collection, aggregation, and presentation from multiple applications from the same environment in a single dashboard. This is particularly useful for anyone dealing with micro-services that operate in the same Kafka cluster and are part of the same application.
 
 Here are the steps necessary to configure Karafka Web-UI to work in a multi-app mode:

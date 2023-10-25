@@ -1,3 +1,5 @@
+# Getting Started with WaterDrop
+
 !!! info ""
 
     If you want to both produce and consume messages, please use [Karafka](https://karafka.io/docs/Getting-Started/). It integrates WaterDrop automatically.

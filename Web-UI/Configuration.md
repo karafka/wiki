@@ -1,3 +1,5 @@
+# Web UI Configuration
+
 Similar to configuring Karafka, a few configuration options can also be used in Karafka Web.
 
 Those options can be used to control things like topics names, frequency of data reports, encrypted data visibility, pagination settings, and more.

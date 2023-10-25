@@ -1,3 +1,5 @@
+# Karafka Pro Security
+
 Using Karafka Pro means we are part of your Open Source Supply Chain. We take this exceptionally seriously.
 
 Each Pro customer is encouraged to implement our [license gem integrity verification](Pro-Getting-Started#license-gem-integrity-verification) flow that ensures license consistency provided via our Gem server.

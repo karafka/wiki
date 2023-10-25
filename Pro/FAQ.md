@@ -1,3 +1,5 @@
+# Karafka Pro FAQ
+
 Karafka Pro is an enhanced version of the Karafka framework, adding more functionalities and providing additional customer support options.
 
 1. [To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?](#to-become-a-karafka-pro-user-do-i-need-to-follow-the-license-comm-terms)

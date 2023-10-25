@@ -1,3 +1,5 @@
+# Web UI Setup for Development vs Production
+
 Karafka Web UI can operate in production mode. It is, however, essential to understand how it works and its limitations.
 
 To materialize and prepare the data for the Web UI, Karafka Web adds an additional consumer group to the routes. This is ok for a development environment as you usually run one or two `karafka server` instances in this mode.

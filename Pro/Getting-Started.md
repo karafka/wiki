@@ -1,3 +1,5 @@
+# Getting Started with Karafka Pro
+
 ## Configuration
 
 To activate Karafka Pro, you need to do three things:
