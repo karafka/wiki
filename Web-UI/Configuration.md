@@ -17,7 +17,7 @@ end
 Karafka::Web.enable!
 ```
 
-## Monitoring non-default producer instances
+## Monitoring Non-Default Producer Instances
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`
 
@@ -35,7 +35,7 @@ MY_CUSTOM_PRODUCER = WaterDrop::Producer.new
 end
 ```
 
-## Opting out of all the monitoring
+## Opting out of All the Monitoring
 
 In specific scenarios, you may want to keep the Karafka Web UI without active reporting, for example, when you are only interested in the Explorer functionality. To turn off all the reporting and states materialization, overwrite all the listeners and turn off processing as follows:
 
@@ -47,7 +47,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-## Opting out of producers' monitoring
+## Opting out of Producers' Monitoring
 
 In specific scenarios, you may not want the Karafka Web UI to monitor your Kafka producers. For instance:
 
@@ -63,7 +63,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-## Using a Shared Kafka Cluster for multiple Karafka application environments
+## Using a Shared Kafka Cluster for Multiple Karafka Application Environments
 
 You can configure Karafka to use a single Kafka cluster across multiple environments. This can be beneficial for scenarios such as when you have different stages of development, including development, testing, staging, and production, all needing isolated data sets within the same Kafka cluster.
 
@@ -116,25 +116,3 @@ If you've deployed Karafka Web UI across multiple processes, simply refreshing t
 ### Summary
 
 In summary, while the in-memory cache in Karafka Web UI significantly enhances its efficiency, it's essential to understand its workings, especially in dynamic environments where cluster changes are frequent or when deploying across multiple processes, and to configure it according to your needs.
-
-## Transactions Support
-
-Karafka's Web UI has been designed to support transactionally created data. This aligns with the increasing use of Kafka transactions for maintaining data consistency and atomicity across distributed systems.
-
-There are a few things worth keeping in mind if you work with transactional data:
-
-- **Dynamic Producer Types**: Karafka Web UI allows flexibility with its producer configuration. It's feasible to toggle your Karafka producer from transactional to non-transactional mode and vice versa, depending on the specific needs of a given process.
-
-- **Offset-Based Explorer**: The Karafka Explorer operates on an offset-based system. This means that it does more than just showcase the user messages. Instead, it fully views the Kafka topic, including compacted offsets, system entries, and aborted messages represented as system records. This comprehensive view gives users a granular understanding of the topic's state and helps diagnose potential issues or anomalies.
-
-    Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
-
-    <p align="center">
-      <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
-    </p>
-
-- **Limitations with "Recent" Feature**: Given the offset-based nature of the Karafka Explorer, the "Recent" feature, which typically displays the latest entries, might encounter difficulties if the first ten pages predominantly consist of aborted messages and system entries.
-
-- **Producer Locking & Web UI Impact**: An essential aspect to note is that when a WaterDrop transaction is initiated, the producer is locked to the specific thread executing the transaction. This means that other threads could be left waiting for the current transaction to complete. This thread-specific locking has implications for the Karafka Web UI's reporting and processing capabilities. For instance, if a user-initiated transaction lasts 30 seconds, the Karafka Web UI may be incapable of reporting states during this duration.
-
-    To mitigate this, in case of heavy usage of transactions, users are advised to create and use a dedicated Web UI producer that operates alongside the default producer. By doing this, even if user code transactions take longer, the Web UI's capability to report states remains unaffected, ensuring consistent and uninterrupted monitoring.

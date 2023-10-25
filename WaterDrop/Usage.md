@@ -104,7 +104,7 @@ This flexibility in handling delivery reports and delivery handles in both synch
 
 Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Please refer to [this](https://karafka.io/docs/WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
 
-## Usage across the application and with Ruby on Rails
+## Usage Across the Application and with Ruby on Rails
 
 If you plan to both produce and consume messages using Kafka, you should install and use [Karafka](https://github.com/karafka/karafka). It integrates automatically with Ruby on Rails applications and auto-configures WaterDrop producer to make it accessible via `Karafka#producer` method:
 
@@ -126,15 +126,32 @@ end
 KAFKA_PRODUCER.produce_sync(topic: 'my-topic', payload: 'my message')
 ```
 
-## Usage with a connection-pool
+## Usage With a Connection-Pool
 
 While WaterDrop is thread-safe, there is no problem in using it with a connection pool inside high-intensity applications. The only thing worth keeping in mind, is that WaterDrop instances should be shutdown before the application is closed.
 
 ```ruby
 KAFKA_PRODUCERS_CP = ConnectionPool.new do
-  WaterDrop::Producer.new do |config|
+  producer = WaterDrop::Producer.new do |config|
     config.kafka = { 'bootstrap.servers': 'localhost:9092' }
   end
+
+  logger = WaterDrop::Instrumentation::LoggerListener.new(
+    MyApp.logger,
+    log_messages: false
+  )
+
+  # Subscribe any listeners you want
+  producer.monitor.subscribe(logger)
+
+  # Make sure to subscribe the all Web UI listeners if you use Web UI
+  # Otherwise information from this producer will not be sent to the
+  # Karafka Web UI
+  ::Karafka::Web.config.tracking.producers.listeners.each do |listener|
+    producer.monitor.subscribe(listener)
+  end
+
+  producer
 end
 
 KAFKA_PRODUCERS_CP.with do |producer|
@@ -150,7 +167,7 @@ WaterDrop producers support buffering messages in their internal buffers and on 
 
 This means that depending on your use case, you can achieve both granular buffering and flushing control when needed with context awareness and periodic and size-based flushing functionalities.
 
-### Buffering messages based on the application logic
+### Buffering Messages Based on the Application Logic
 
 ```ruby
 producer = WaterDrop::Producer.new
@@ -176,7 +193,7 @@ end
 producer.close
 ```
 
-### Using rdkafka buffers to achieve periodic auto-flushing
+### Using rdkafka Buffers to Achieve Periodic Auto-Flushing
 
 ```ruby
 producer = WaterDrop::Producer.new
@@ -230,7 +247,7 @@ producer.close!
 
 While `#close!` can be helpful when you want to finalize your application quickly, be aware that it may result in messages not being successfully delivered or acknowledged, potentially leading to data loss. Therefore, use `#close!` with caution and only when you understand the implications of potentially losing undelivered messages.
 
-## Forking and potential memory problems
+## Forking and Potential Memory Problems
 
 If you work with forked processes, make sure you **don't** use the producer before the fork. You can easily configure the producer and then fork and use it.
 

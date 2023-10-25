@@ -15,6 +15,7 @@
 * [About](Web-UI-About)
 * [Getting Started](Web-UI-Getting-Started)
 * [Configuration](Web-UI-Configuration)
+* [Transactions](Web-UI-Transactions)
 * [Features](Web-UI-Features)
     * [Consumers](Web-UI-Features#consumers)
     * [Jobs](Web-UI-Features#jobs)
