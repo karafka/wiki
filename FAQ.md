@@ -132,6 +132,11 @@
 132. [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
 133. [Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?](#does-karafka-plan-to-submit-metrics-via-a-supported-datadog-integration-ensuring-the-metrics-arent-considered-custom-metrics)
 134. [How can I make Karafka not retry processing, and what are the implications?](#how-can-i-make-karafka-not-retry-processing-and-what-are-the-implications)
+135. [We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?](#we-faced-downtime-due-to-a-failure-in-updating-the-ssl-certs-how-can-we-retrieve-messages-that-were-sent-during-this-downtime)
+136. [How can the retention policy of Kafka affect the data sent during the downtime?](#how-can-the-retention-policy-of-kafka-affect-the-data-sent-during-the-downtime)
+137. [Is it possible to fetch messages per topic based on a specific time period in Karafka?](#is-it-possible-to-fetch-messages-per-topic-based-on-a-specific-time-period-in-karafka)
+138. [Where can I find details on troubleshooting and debugging for Karafka?](#where-can-i-find-details-on-troubleshooting-and-debugging-for-karafka)
+139. [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1922,3 +1927,25 @@ end
 ```
 
 However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](https://karafka.io/docs/Pausing-and-rate-limiting/) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+
+## We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?
+
+If the SSL certificates failed on the producer side, the data might not have been produced to Kafka in the first place. If your data is still present and not compacted due to the retention policy, then you should be able to read it.
+
+You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) or Web UI [Explorer](https://karafka.io/docs/Web-UI-Features/#explorer) to view those messages.
+
+## How can the retention policy of Kafka affect the data sent during the downtime?
+
+If your data retention policy has compacted the data, then the data from the downtime period might no longer be available.
+
+## Is it possible to fetch messages per topic based on a specific time period in Karafka?
+
+Yes, in newer versions of Karafka, you can use the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) or the [Enhanced Web UI](https://karafka.io/docs/Web-UI-Features/#explorer) to perform time-based offset lookups.
+
+## Where can I find details on troubleshooting and debugging for Karafka?
+
+You can refer to [this](https://karafka.io/docs/Problems%2C-Troubleshooting-and-Debugging) documentation page.
+
+## Does the open-source (OSS) version of Karafka offer time-based offset lookup features?
+
+Only partially. Karafka OSS allows you to use the consumer `#seek` method to navigate to a specific time in the subscribed topic partition. Still, you cannot do it outside the consumer subscription flow.

@@ -50,6 +50,42 @@ There are several reasons why you should never use the same Karafka Web UI setup
 
 - **Troubleshooting Difficulties**: In case of any issues or anomalies, troubleshooting will become a nightmare. Since you won't be able to identify which environment the problematic data is coming from immediately, the resolution will be delayed.
 
+## Explorer Routing Awareness
+
+The Karafka Web UI utilizes the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it utilizes the appropriate dedicated deserializer instead of defaulting to JSON.
+
+!!! note ""
+
+    Keep in mind that you need to specify deserializes for all of the topics consumed by all of your applications to be able to view the relevant topics' data.
+
+```ruby
+# Web UI karafka.rb
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  # Each topic can have custom deserializers and then, Web UI
+  # will know how to deserialize and display the data correctly
+  routes.draw do
+    topic :incoming_requests do
+      active false
+      deserializer XmlDataDeserializer
+    end
+
+    topic :events do
+      active false
+      deserializer AvroDeserializer
+    end
+
+    topic :webhooks do
+      active false
+      deserializer JsonDeserializer
+    end
+  end
+end
+```
 
 ## Example use-cases
 
