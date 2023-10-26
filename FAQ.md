@@ -1964,7 +1964,7 @@ This error occurs when a consumer tries to join a consumer group in Apache Kafka
 
 Remember to make sure that the timeout value you set is suitable for your use case, as it can affect the responsiveness of your consumer group to failures.
 
-## The "Producer Network Latency" producer metric in DD seems too high. Is there something wrong with it?
+## The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?
 
 In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind. 
 
