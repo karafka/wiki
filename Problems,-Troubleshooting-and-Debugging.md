@@ -99,3 +99,29 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+### Enabling Extensive Logging
+
+!!! note ""
+
+    Remember: Using debug mode extensively, especially in production, may impact performance and generate large log files. Ensure you revert to regular settings once your issue is resolved.
+
+If your Karafka server process is connected but not consuming any messages, the immediate step is to enable all debug settings. Running your Karafka server with these debug settings will provide detailed logs, shedding light on any potential issues.
+
+Examining the verbose logs can reveal connection problems, configuration mishaps, or other reasons preventing message consumption.
+
+```ruby
+# Use the debug all flag in your kafka options
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # other settings...
+      # 
+      debug: 'all'
+    }
+  end
+end
+
+# Set the logger level to debug to print all info
+Karafka::App.logger.level = Logger::DEBUG
+```

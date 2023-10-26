@@ -137,6 +137,8 @@
 137. [Is it possible to fetch messages per topic based on a specific time period in Karafka?](#is-it-possible-to-fetch-messages-per-topic-based-on-a-specific-time-period-in-karafka)
 138. [Where can I find details on troubleshooting and debugging for Karafka?](#where-can-i-find-details-on-troubleshooting-and-debugging-for-karafka)
 139. [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
+140. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
+141 [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-producer-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1949,3 +1951,23 @@ You can refer to [this](https://karafka.io/docs/Problems%2C-Troubleshooting-and-
 ## Does the open-source (OSS) version of Karafka offer time-based offset lookup features?
 
 Only partially. Karafka OSS allows you to use the consumer `#seek` method to navigate to a specific time in the subscribed topic partition. Still, you cannot do it outside the consumer subscription flow.
+
+## I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?
+
+This error occurs when a consumer tries to join a consumer group in Apache Kafka but provides an invalid session timeout value. The session timeout is when the broker waits after losing contact with a consumer before considering it gone and starting a rebalance of the consumer group. If this value is too low or too high (outside the broker's allowed range), the broker will reject the consumer's request to join the group.
+
+1. Check the configuration of your consumer to ensure you're setting an appropriate session timeout value.
+
+2. Ensure that the value lies within the broker's allowable range, which you can find in the broker's configuration.
+
+3. Adjust the consumer's session timeout value to be within this range and try reconnecting.
+
+Remember to make sure that the timeout value you set is suitable for your use case, as it can affect the responsiveness of your consumer group to failures.
+
+## The "Producer Network Latency" producer metric in DD seems too high. Is there something wrong with it?
+
+In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind. 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
+</p>
