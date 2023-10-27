@@ -39,6 +39,7 @@ Some of the options are:
 |---------------------------------------|--------------------------------------------------------------------------------|
 | `id`                                  | id of the producer for instrumentation and logging                             |
 | `logger`                              | Logger that we want to use                                                     |
+| `client_class`                        | Client class for creating the underlying client used to dispatch messages      |
 | `deliver`                             | Should we send messages to Kafka or just fake the delivery                     |
 | `max_wait_timeout`                    | Waits that long for the delivery report or raises an error                     |
 | `wait_timeout`                        | Waits that long before re-check of delivery report availability                |
