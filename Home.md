@@ -27,7 +27,8 @@
     * [Cluster](Web-UI-Features#cluster)
     * [Status](Web-UI-Features#status)
 * [Tagging](Web-UI-Tagging)
-* [Multi App mode](Web-UI-Multi-App)
+* [Multi App Mode](Web-UI-Multi-App)
+* [Single Process Setup](Web-UI-Single-Process-Setup)
 * [Development vs Production](Web-UI-Development-vs-Production)
 * [Components](Web-UI-Components)
 
