@@ -40,7 +40,11 @@ Overall, calling `#close` on the Karafka producer is a best practice that helps 
 
 Below you can find an example how to `#close` the producer used in various Ruby processes. Please note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
 
-### Closing producer used in Puma
+### Closing Producer Used in Karafka
+
+When you shut down Karafka, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+
+### Closing Producer Used in Puma
 
 ```ruby
 # config/puma.rb 
@@ -50,7 +54,7 @@ on_worker_shutdown do
 end
 ```
 
-### Closing producer used in Sidekiq
+### Closing Producer Used in Sidekiq
 
 ```ruby
 # config/initializers/sidekiq.rb
@@ -62,7 +66,7 @@ Sidekiq.configure_server do |config|
 end
 ```
 
-### Closing producer used in Passenger
+### Closing Producer Used in Passenger
 
 ```ruby
 PhusionPassenger.on_event(:stopping_worker_process) do
@@ -70,7 +74,7 @@ PhusionPassenger.on_event(:stopping_worker_process) do
 end
 ```
 
-### Closing producer used in a rake task
+### Closing Producer Used in a Rake Task
 
 In case of rake tasks, just invoke `::Karafka.producer.close` at the end of your rake task:
 
@@ -91,7 +95,7 @@ task send_users: :environment do
 end
 ```
 
-## Producing to multiple clusters
+## Producing to Multiple Clusters
 
 Karafka, by default, provides a producer that sends messages to a specified Kafka cluster. If you don't configure it otherwise, this producer will always produce messages to the default cluster that you've configured Karafka to work with. If you only specify one Kafka cluster in your configuration, all produced messages will be sent to this cluster. This is the out-of-the-box behavior and works well for many setups with a single cluster.
 

@@ -205,6 +205,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [expire_in](Pro-Expiring-Messages) | Integer     | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
 | [filter](Pro-Filtering-API)       | `#call`      | Feature that allows users to filter messages based on specific criteria.                                                    |
 | [config](Topics-management-and-administration#declarative-topics) | Hash         | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
+| kafka                             | Hash         | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
 
 ```ruby
 class KarafkaApp < Karafka::App

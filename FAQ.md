@@ -139,6 +139,7 @@
 139. [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
 140. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
 141 [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-producer-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
+142. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1971,3 +1972,7 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
 </p>
+
+## What is the purpose of the `karafka_consumers_reports` topic?
+
+The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](https://karafka.io/docs/Web-UI-About/). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
