@@ -4,7 +4,7 @@
 
 ```bash
 # Make sure to install Karafka 2.2 as Karafka 1.4 is no longer maintained
-bundle add karafka --version ">= 2.2.0"
+bundle add karafka --version ">= 2.2.10"
 ```
 
 3. Install Karafka (works for both Rails and standalone applications) by running:
