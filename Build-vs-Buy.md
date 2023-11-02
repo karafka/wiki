@@ -2,7 +2,7 @@ Open Source software is great. Why should you pay money for Karafka Pro when you
 
 ## Pricing
 
-A senior developer is typically $10,000/mo. One with Kafka knowledge even more. The price of Karafka Pro is $995 a year. Is your business building infrastructure or user functionalities?
+A senior developer is typically $10,000/mo. One with Kafka knowledge even more. The price of Karafka Pro is $1495 a year. Is your business building infrastructure or user functionalities?
 
 - How many days or weeks will it take your team to piece together similar functionalities?
 - How long will they spend fixing bugs in production?

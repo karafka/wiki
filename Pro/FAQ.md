@@ -81,7 +81,7 @@ Follow the instructions on our [website](https://karafka.io/#become-pro).
 
 This is a common requirement for "on-site installs" or "appliances" sold to large corporations.
 
-The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $4,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
+The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $5,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
 
 ## Can you transfer a license?
 
