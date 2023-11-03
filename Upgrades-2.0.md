@@ -416,7 +416,7 @@ end
 
 Instrumentation and monitoring are often application specific.
 
-The recommendation here is to revisit your current integration and align it with the events published by Karafka and to follow the `2.0` [instrumentation guidelines document](Monitoring-and-logging).
+The recommendation here is to revisit your current integration and align it with the events published by Karafka and to follow the `2.0` [instrumentation guidelines document](Monitoring-and-Logging).
 
 - `Karafka::Instrumentation::StdoutListener` is now `Karafka::Instrumentation::LoggerListener`
 

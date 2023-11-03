@@ -75,6 +75,12 @@ For example, in case you want to pause the processing, you need to return the fo
 
     User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 
+!!! Warning ""
+
+    Using `#seek` and `#pause` within a Filter requires a clear understanding of their implications. Misuse can result in unexpected behavior and performance issues.
+
+    For full details and best practices, refer to the [pausing and seeking](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/) documentation. Ensure you're informed before integrating these operations.
+
 ### Priority based action selection
 
 To make the most of the Filtering API, it is crucial to have a deep understanding of how Karafka selects actions and the factors that determine their priority. While this may be a challenging aspect of the API to master, it is essential to build robust and efficient filters that can alter polling behaviors.

@@ -39,7 +39,7 @@
 * [Configuration](WaterDrop-Configuration)
 * [Usage](WaterDrop-Usage)
 * [Transactions](WaterDrop-Transactions)
-* [Monitoring and logging](WaterDrop-Monitoring-and-Logging)
+* [Monitoring and Logging](WaterDrop-Monitoring-and-Logging)
 * [Testing](WaterDrop-Testing)
 * [Middleware](WaterDrop-Middleware)
 
@@ -52,7 +52,7 @@
     * [Docker](Deployment#docker)
     * [AWS + MSK (Fully Managed Apache Kafka)](Deployment#aws-msk-fully-managed-apache-kafka)
     * [Heroku](Deployment#heroku)
-* [Monitoring and logging](Monitoring-and-logging)
+* [Monitoring and Logging](Monitoring-and-Logging)
 * [Error handling and back off policy](Error-handling-and-back-off-policy)
 
 ## Advanced
