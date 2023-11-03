@@ -68,7 +68,7 @@
 * [Concurrency and multithreading](Concurrency-and-multithreading)
 * [Deserialization](Deserialization)
 * [Offset management (checkpointing)](Offset-management)
-* [Pausing and rate-limiting](Pausing-and-rate-limiting)
+* [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
 * [Consumer mappers](Consumer-mappers)
 * [Inline Insights](Inline-Insights)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)

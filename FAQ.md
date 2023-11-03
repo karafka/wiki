@@ -1929,7 +1929,7 @@ class OrdersStatesConsumer < ApplicationConsumer
 end
 ```
 
-However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](https://karafka.io/docs/Pausing-and-rate-limiting/) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
 ## We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?
 
