@@ -38,21 +38,20 @@ A list of all the configuration options related to `librdkafka` with their detai
 
 For additional setup and/or configuration tasks, you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used, for example, to configure some external components that need to be based on Karafka internal settings.
 
+Because of how the Karafka framework lifecycle works, this event is triggered after the `#setup` is done. You need to subscribe to this event before that happens, either from the `#setup` block or before.
+
 ```ruby
 class KarafkaApp < Karafka::App
-  # Setup and other things...
+  setup do |config|
+    # All the config magic
 
-  # Once everything is loaded and done, assign Karafka app logger as a MyComponent logger
-  # @note This example does not use config details, but you can use all the config values
-  #   to setup your external components
-  monitor.subscribe('app.initialized') do
-    MyComponent::Logging.logger = Karafka::App.logger
+    # Once everything is configured and done, assign Karafka app logger as a MyComponent logger
+    # @note This example does not use config details, but you can use all the config values
+    #   to setup your external components
+    config.monitor.subscribe('app.initialized') do
+      MyComponent::Logging.logger = Karafka::App.logger
+    end
   end
-end
-
-# Or if you prefer, you can do it from the outside of the app
-Karafka.monitor.subscribe('app.initialized') do
-  MyComponent::Logging.logger = Karafka::App.logger
 end
 ```
 
@@ -74,12 +73,14 @@ Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports fo
 You can enable the compression by using the `compression.codec` and `compression.level` settings:
 
 ```ruby
-setup_karafka do |config|
-  config.kafka = {
-    # Other kafka settings...
-    'compression.codec': 'gzip',
-    'compression.level': '12'
-  }
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # Other kafka settings...
+      'compression.codec': 'gzip',
+      'compression.level': '12'
+    }
+  end
 end
 ```
 
