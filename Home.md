@@ -140,6 +140,7 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Web](https://karafka.io/docs/Changelog-Karafka-Web-UI)
 * [Karafka-Testing](https://karafka.io/docs/Changelog-Karafka-Testing)
 * [Karafka-Core](https://karafka.io/docs/Changelog-Karafka-Core)
+* [Karafka-Rdkafka](https://karafka.io/docs/Changelog-Karafka-Rdkafka)
 
 ## Code Docs
 

@@ -140,7 +140,15 @@
 140. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
 141 [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-producer-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
 142. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
-143. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#tba)
+143. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
+144. [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
+145. [Is it acceptable to declare short-living producers in each app/jobs as needed?](#is-it-acceptable-to-declare-short-living-producers-in-each-appjobs-as-needed)
+146. [What are the consequences if you call a `#produce_async` and immediately close the producer afterward?](#what-are-the-consequences-if-you-call-a-produce_async-and-immediately-close-the-producer-afterward)
+147. [Is it problematic if a developer creates a new producer, calls `#produce_async`, and then closes the producer whenever they need to send a message?](#is-it-problematic-if-a-developer-creates-a-new-producer-calls-produce_async-and-then-closes-the-producer-whenever-they-need-to-send-a-message)
+148. [Could the async process remain open somewhere, even after the producer has been closed?](#could-the-async-process-remain-open-somewhere-even-after-the-producer-has-been-closed)
+149. [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
+150. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
+151. [Can you control the batching process in Karafka?](#can-you-control-the-batching-process-in-waterdrop)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -1981,3 +1989,35 @@ The `karafka_consumers_reports` topic is an integral component of the Karafka [W
 ## Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?
 
 **Yes**, any ActiveJob job running in the karafka server can access and use the `Karafka.producer`.
+
+## Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?
+
+Yes, unless you use transactions. In that case, you can use a connection pool. Using a long-living pool is fine.
+
+## Is it acceptable to declare short-living producers in each app/jobs as needed?
+
+It's not recommended to have a short-lived producer or per job class (e.g., 20 job classes and 20 producers). Instead, create producers that vary with usage or settings, not per class.
+
+## What are the consequences if you call a `#produce_async` and immediately close the producer afterward?
+
+No consequences. WaterDrop will wait until it is delivered because it knows the internal queue state.
+
+## Is it problematic if a developer creates a new producer, calls `#produce_async`, and then closes the producer whenever they need to send a message?
+
+**Yes**, this is problematic. WaterDrop producers are designed to be long-lived. Creating short-lived Kafka connections can be expensive.
+
+## Could the async process remain open somewhere, even after the producer has been closed?
+
+No.
+
+## Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?
+
+This depends on factors like your cluster, number of topics, number of partitions, and how and where you send the messages. However, you can get up to 100k messages per second from a single producer instance.
+
+## How does the batching process in WaterDrop works?
+
+Waterdrop and librdkafka batch messages under the hood and dispatch in groups. There's an internal queue limit you can set. If exceeded, a backoff will occur.
+
+## Can you control the batching process in WaterDrop?
+
+It auto-batches the requests. If the queue is full, a throttle will kick in. You can also configure WaterDrop to wait on queue full errors. The general approach is to dispatch in batches (or in transactions) and wait on batches or finalize a transaction.
