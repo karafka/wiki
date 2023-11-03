@@ -33,6 +33,19 @@ end
   end
 end
 
+# Move this to root without a namespace.
+# In this case namespace is used only as a organization layer
+%w[
+  Advanced
+].each do |namespace|
+  Dir["#{Dir.pwd}/#{namespace}/**.md"].each do |file|
+    basename = File.basename(file)
+    target = "#{Dir.pwd}/gh/#{basename}"
+
+    FileUtils.cp(file, target)
+  end
+end
+
 HEADER_TEMPLATE_CONTENT = IO.read("#{Dir.pwd}/gh/_GH_Header.md")
 
 Dir["#{Dir.pwd}/gh/**.md"].each do |file|
