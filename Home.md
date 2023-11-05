@@ -74,6 +74,7 @@
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
 * [Embedding](Embedding)
+* [Multi-Cluster Setup](Multi-Cluster-Setup)
 * [Env Variables](Env-Variables)
 * [Librdkafka Configuration](Librdkafka-Configuration)
 * [Librdkafka Statistics](Librdkafka-Statistics)

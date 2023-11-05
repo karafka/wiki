@@ -6,7 +6,7 @@ Karafka has a simple CLI built in. It provides the following commands:
 | console        | Start the Karafka irb console similar to the Rails console (short-cut alias: "c") |
 | info           | Print configuration details and other options of your application                 |
 | install        | Installs all required things for Karafka application in current directory         |
-| server         | Start the Karafka server (short-cut alias: "s")                                   |
+| server         | Start the Karafka server (short-cut aliases: "s", "consumer")                     |
 | topics         | Allows for topics management (create, delete, repartition, reset, migrate)        |
 
 All the commands are executed the same way:

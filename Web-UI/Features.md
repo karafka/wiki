@@ -147,6 +147,35 @@ It can help you identify and mitigate problems that would cause the Web UI to ma
 
 It is accessible regardless of connection permissions to Kafka and can be found under the `/status` path of your Karafka Web installation.
 
+Each check may display one of the following statuses:
+
+<table border="1">
+    <thead>
+        <tr>
+          <th>Check Status</th>
+          <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+          <td>Success</td>
+          <td>All is good, and the given check has passed.</td>
+      </tr>
+      <tr>
+          <td>Failure</td>
+          <td>Check has failed. Additional information should be provided to explain the nature of the issue.</td>
+      </tr>
+      <tr>
+          <td>Halted</td>
+          <td>Check was not executed due to a previous check failing. This status does not necessarily mean that a specific process was halted but rather that the check could not be performed because a prior check failed.</td>
+      </tr>
+      <tr>
+          <td>Info</td>
+          <td>Informative message that does not perform any checks but provides relevant details.</td>
+      </tr>
+    </tbody>
+</table>
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
