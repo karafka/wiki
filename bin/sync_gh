@@ -11,7 +11,7 @@ def system!(cmd)
   system(cmd) || raise(FailedCommand)
 end
 
-raise ArgumentError, 'GH wiki version missing' unless File.exists?("#{Dir.pwd}/gh")
+raise ArgumentError, 'GH wiki version missing' unless File.exist?("#{Dir.pwd}/gh")
 
 Dir["#{Dir.pwd}/**.md"].each do |file|
   basename = File.basename(file)
