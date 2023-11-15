@@ -37,6 +37,7 @@
 
 ## Videos
 
+* [Event Streaming Patterns for Ruby Services](https://www.youtube.com/watch?v=RBj4S9S-fJI)
 * [Kafka For Rubyists YouTube series](https://www.youtube.com/watch?v=OK8k-krza0Y&list=PLOnisdeJdKQ2jiUfFW-Lq4LZI3vovwVg5)
 * [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
 * [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)

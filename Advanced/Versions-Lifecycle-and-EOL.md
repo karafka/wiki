@@ -29,7 +29,7 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 | 3.2     | Active      | N/A        |
 | 3.1     | Active      | N/A        |
 | 3.0     | Active      | N/A        |
-| 2.7     | Active      | 2023-11-30 |
+| 2.7     | Active      | 2024-06-30 |
 | 2.6     | EOL         | 2022-04-12 |
 
 ## Ruby on Rails Versions Support

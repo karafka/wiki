@@ -149,6 +149,7 @@
 149. [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
 150. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
 151. [Can you control the batching process in Karafka?](#can-you-control-the-batching-process-in-waterdrop)
+152. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2021,3 +2022,7 @@ Waterdrop and librdkafka batch messages under the hood and dispatch in groups. T
 ## Can you control the batching process in WaterDrop?
 
 It auto-batches the requests. If the queue is full, a throttle will kick in. You can also configure WaterDrop to wait on queue full errors. The general approach is to dispatch in batches (or in transactions) and wait on batches or finalize a transaction.
+
+## Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?
+
+No.

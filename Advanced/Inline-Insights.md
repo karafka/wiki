@@ -90,7 +90,7 @@ In Karafka Pro, there's an option to define in the routing that insights are man
 
 ## Insights Freshness
 
-When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to leverage. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process for that particular batch. They only change once a new batch is fetched and new metrics updates are available.
+When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to leverage. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process until new metrics become available. This means that metrics may be updated while you are processing the data. Metrics, however, will never disappear, meaning you can rely on their presence if you have a metrics state. They may be updated, but they will not disappear.
 
 ```ruby
 # Simulate slow processing on a regular (non LRJ) consumer
@@ -110,8 +110,6 @@ class LogEventsConsumer < ApplicationConsumer
   end
 end
 ```
-
-However, there is a specific exception to this rule. For the [Long Running Job (LRJ)](https://karafka.io/docs/Pro-Long-Running-Jobs/) consumers, metrics can undergo updates even during ongoing processing. This behavior is exclusive to LRJ consumers and is attributed to their nature of handling long-running tasks where real-time metric updates can be crucial for efficient processing.
 
 ### Metrics Update Frequency
 
