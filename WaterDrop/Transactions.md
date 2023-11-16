@@ -180,6 +180,16 @@ handlers.each(&:wait)
 # Local: Purged in queue (purge_queue) (Rdkafka::RdkafkaError)
 ```
 
+### Delivery Warranties
+
+When a WaterDrop transaction is committed without errors, it guarantees that all messages within the transaction have been successfully produced. This simplifies the process of instrumentation and monitoring of the producer and messages dispatch process significantly:
+
+- **Single Point of Failure**: The end (commit) of the transaction is the primary focus. Its successful execution implies that all messages in the transaction have been produced, eliminating the need for additional checks.
+
+- **Implicit Success Confirmation**: The absence of errors during transaction commitment implicitly confirms successful message production.
+
+Because of the above, delivery reports may seem useless, however, while delivery reports are optional in transactional contexts, they still can help retrieve the offset of messages accepted by the broker, which can be valuable for tracking and auditing purposes.
+
 ## Internal Errors Retries
 
 WaterDrop is designed to be intelligent about handling transaction-related errors. It discerns which errors can be retried and will attempt based on the configuration settings. The retries aren't immediate – they come with a backoff period, giving the system a brief respite before trying again. This approach can mitigate transient issues that might resolve themselves after a short period.
