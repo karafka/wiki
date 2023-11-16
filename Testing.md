@@ -20,7 +20,7 @@ RSpec.configure do |config|
 end
 ```
 
-## Usage
+## Usage with RSpec
 
 Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods that you can use within your specs:
 
@@ -206,3 +206,7 @@ RSpec.describe Karafka::App.routes do
   end
 end
 ```
+
+## Usage with Minitest
+
+TBA
