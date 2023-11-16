@@ -138,7 +138,7 @@
 138. [Where can I find details on troubleshooting and debugging for Karafka?](#where-can-i-find-details-on-troubleshooting-and-debugging-for-karafka)
 139. [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
 140. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
-141 [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-producer-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
+141. [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
 142. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
 143. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
 144. [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
