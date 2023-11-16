@@ -150,6 +150,7 @@
 150. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
 151. [Can you control the batching process in Karafka?](#can-you-control-the-batching-process-in-waterdrop)
 152. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
+153. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2026,3 +2027,19 @@ It auto-batches the requests. If the queue is full, a throttle will kick in. You
 ## Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?
 
 No.
+
+## Can I log errors in Karafka with topic, partition, and other consumer details?
+
+Yes, it is possible to log errors with associated topic, partitions, and other information in Karafka, but it depends on the context and type of the event. Karafka's `error.occurred` event is used for logging any errors, including errors not only within your consumption code but also in other application areas due to its asynchronous nature.
+
+Key Points to Remember:
+
+- **Check Event Type**: Always examine the `event[:type]` to understand the nature of the error. This helps determine whether the error is related to message consumption and will have the relevant topic and partition information.
+
+- **Errors Outside Consumption Flow**: There can be instances where the caller is a consumer, but the error occurs outside the consumption flow. In such cases, the necessary details might not be available.
+
+The rationale for this Approach:
+
+Karafka provides a single, simplified API for all error instrumentation. This design choice aims to streamline error handling across different parts of the application, even though some errors may only sometimes have the complete contextual information you are looking for.
+
+Checking the `event[:type]` and recognizing the role of the `event[:caller]` will guide you in determining whether the necessary details are available for a specific error. Remember, due to the asynchronous nature of Karafka, not all errors will have associated topic and partition details.
