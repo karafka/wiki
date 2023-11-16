@@ -180,7 +180,7 @@ handlers.each(&:wait)
 # Local: Purged in queue (purge_queue) (Rdkafka::RdkafkaError)
 ```
 
-### Delivery Warranties
+## Delivery Warranties
 
 When a WaterDrop transaction is committed without errors, it guarantees that all messages within the transaction have been successfully produced. This simplifies the process of instrumentation and monitoring of the producer and messages dispatch process significantly:
 
