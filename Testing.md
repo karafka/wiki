@@ -1,8 +1,11 @@
 Karafka provides a dedicated helper library for testing consumers and producers called [karafka-testing](https://github.com/karafka/karafka-testing).
 
-## Installation
+## Usage with RSpec
+
+### Installation
 
 Add this gem to your Gemfile in the `test` group:
+
 ```ruby
 group :test do
   gem 'karafka-testing'
@@ -19,8 +22,6 @@ RSpec.configure do |config|
   config.include Karafka::Testing::RSpec::Helpers
 end
 ```
-
-## Usage with RSpec
 
 Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods that you can use within your specs:
 
@@ -208,9 +209,22 @@ end
 ```
 
 ## Usage with Minitest
-### Setup
+
+### Installation
+
+Add this gem to your Gemfile in the `test` group:
+
+```ruby
+group :test do
+  gem 'karafka-testing'
+  gem 'rspec'
+end
+```
+
+And then:
+
 - require the helpers: `require 'karafka/testing/minitest/helpers'`
-- include the helpers in your test:  `include Karafka::Testing::Minitest::Helpers`
+- include the following helper in your tests:  `include Karafka::Testing::Minitest::Helpers`
 
 Once included in your Minitest setup, this library will provide you with a special `@karafka` object that contains three methods that you can use within your specs:
 
@@ -220,7 +234,7 @@ Once included in your Minitest setup, this library will provide you with a speci
 
 !!! note ""
 
-    Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer in case you want to test messages production.
+    Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer if you want to test message production.
 
 !!! note ""
 
@@ -229,42 +243,41 @@ Once included in your Minitest setup, this library will provide you with a speci
 ### Testing Messages Consumption (Consumers)
 
 ```ruby
-  class InlineBatchConsumerTest < ActiveSupport::TestCase
+class InlineBatchConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
-    def setup
-      # ..
-      nr1_value = rand
-      nr2_value = rand
-      sum = nr1_value + nr2_value
+  def setup
+    # ..
+    nr1_value = rand
+    nr2_value = rand
+    sum = nr1_value + nr2_value
 
-      @consumer = @karafka.consumer_for('inline_batch_data')
-      # stub logger
-    end
-
-    it 'expects to log a proper message' do
-      # Sends first message to Karafka consumer
-      @karafka.produce({ 'number' => nr1_value }.to_json)
-
-      # Sends second message to Karafka consumer
-      @karafka.produce({ 'number' => nr2_value }.to_json, partition: 2)
-
-      expect(Karafka.logger).to receive(:info).with("Sum of 2 elements equals to: #{sum}")
-      consumer.consume
-    end
+    @consumer = @karafka.consumer_for('inline_batch_data')
   end
+
+  it 'expects to log a proper message' do
+    # Sends first message to Karafka consumer
+    @karafka.produce({ 'number' => nr1_value }.to_json)
+
+    # Sends second message to Karafka consumer
+    @karafka.produce({ 'number' => nr2_value }.to_json, partition: 2)
+
+    expect(Karafka.logger).to receive(:info).with("Sum of 2 elements equals to: #{sum}")
+
+    consumer.consume
+  end
+end
 ```
+
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
 ```ruby
-# ...
 it 'expects to dispatch async message to messages topic with value bigger by 1' do
   @karafka.produce({ 'number' => 1 }.to_json)
   @consumer.consume
 
   expect(@karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
 end
-# ...
 ```
 
 ### Testing Messages Production (Producer)
@@ -294,3 +307,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
   end
 end
 ```
+
+!!! note ""
+
+    If you're seeking guidance on testing transactions with Minitest, it's recommended to consult the RSpec transactions testing documentation, as the testing methods are similar for both.
