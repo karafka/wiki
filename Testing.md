@@ -266,3 +266,31 @@ it 'expects to dispatch async message to messages topic with value bigger by 1' 
 end
 # ...
 ```
+
+### Testing Messages Production (Producer)
+
+When running Minitest, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
+
+This means you can check your application flow, making sure your logic acts as expected:
+
+```ruby
+class UsersBuilderTest < ActiveSupport::TestCase
+  include Karafka::Testing::Minitest::Helpers
+
+  def setup
+    @user_details = { name: 'John Doe', email: 'john.doe@example.com' }
+    @created_user = UsersBuilder.new.create(@user_details)
+  end
+
+  test 'should produce messages' do
+      @karafka.producer.produce_sync(
+      topic: 'users_changes',
+      payload: { user_id: user.id, type: 'user.created' },
+      key: user.id.to_s
+      )
+    assert_equal 1, @karafka.produced_messages.size
+    assert_equal 'users_changes', @karafka.produced_messages.first[:topic]
+    assert_equal @created_user.id.to_s, @karafka.produced_messages.first[:key]
+  end
+end
+```
