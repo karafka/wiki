@@ -112,7 +112,7 @@ routes.draw do
 end
 ```
 
-## Managing Mumber of Virtual Partitions
+## Managing Number of Virtual Partitions
 
 By default, Karafka will create at most `Karafka::App.config.concurrency` concurrent Virtual Partitions. This approach allows Karafka to occupy all the threads under optimal conditions.
 
