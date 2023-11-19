@@ -30,6 +30,7 @@
 * [Multi App Mode](Web-UI-Multi-App)
 * [Single Process Setup](Web-UI-Single-Process-Setup)
 * [Development vs Production](Web-UI-Development-vs-Production)
+* [Data Management](Web-UI-Data-Management)
 * [Components](Web-UI-Components)
 
 ## WaterDrop
