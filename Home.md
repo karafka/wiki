@@ -127,8 +127,8 @@
 
 It is recommended to do one major upgrade at a time.
 
-* [Upgrading to 2.2](https://karafka.io/docs/Changelog-Karafka/#220-2023-09-01)
-* [Upgrading to 2.1](https://karafka.io/docs/Changelog-Karafka/#210-2023-05-22)
+* [Upgrading to 2.2](https://karafka.io/docs/Upgrades-2.2/)
+* [Upgrading to 2.1](https://karafka.io/docs/Upgrades-2.1/)
 * [Upgrading to 2.0](https://karafka.io/docs/Upgrades-2.0/)
 * [Upgrading to 1.4](https://mensfeld.pl/2020/09/karafka-framework-1-4-0-release-notes-ruby-kafka/#changes-features-incompatibilities-etc)
 * [Upgrading to 1.3](https://mensfeld.pl/2019/09/karafka-framework-1-3-0-release-notes-ruby-kafka/#changes-features-incompatibilities-etc)
