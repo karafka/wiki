@@ -127,9 +127,9 @@
 
 It is recommended to do one major upgrade at a time.
 
-* [Upgrading to 2.2](https://karafka.io/docs/Upgrades-2.2/)
-* [Upgrading to 2.1](https://karafka.io/docs/Upgrades-2.1/)
-* [Upgrading to 2.0](https://karafka.io/docs/Upgrades-2.0/)
+* [Upgrading to 2.2](Upgrades-2.2)
+* [Upgrading to 2.1](Upgrades-2.1)
+* [Upgrading to 2.0](Upgrades-2.0)
 * [Upgrading to 1.4](https://mensfeld.pl/2020/09/karafka-framework-1-4-0-release-notes-ruby-kafka/#changes-features-incompatibilities-etc)
 * [Upgrading to 1.3](https://mensfeld.pl/2019/09/karafka-framework-1-3-0-release-notes-ruby-kafka/#changes-features-incompatibilities-etc)
 * [Upgrading to 1.2](https://mensfeld.pl/2018/03/karafka-framework-1-2-0-release-notes-ruby-kafka/#upgrade-guide)
@@ -137,12 +137,12 @@ It is recommended to do one major upgrade at a time.
 
 ## Changelogs
 
-* [Karafka](https://karafka.io/docs/Changelog-Karafka)
-* [WaterDrop](https://karafka.io/docs/Changelog-WaterDrop)
-* [Karafka-Web](https://karafka.io/docs/Changelog-Karafka-Web-UI)
-* [Karafka-Testing](https://karafka.io/docs/Changelog-Karafka-Testing)
-* [Karafka-Core](https://karafka.io/docs/Changelog-Karafka-Core)
-* [Karafka-Rdkafka](https://karafka.io/docs/Changelog-Karafka-Rdkafka)
+* [Karafka](Changelog-Karafka)
+* [WaterDrop](Changelog-WaterDrop)
+* [Karafka-Web](Changelog-Karafka-Web-UI)
+* [Karafka-Testing](Changelog-Karafka-Testing)
+* [Karafka-Core](Changelog-Karafka-Core)
+* [Karafka-Rdkafka](Changelog-Karafka-Rdkafka)
 
 ## Code Docs
 
@@ -151,3 +151,4 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Web](https://karafka.io/docs/code/karafka-web)
 * [Karafka-Testing](https://karafka.io/docs/code/karafka-testing)
 * [Karafka-Core](https://karafka.io/docs/code/karafka-core)
+* [Rdkafka-Ruby](https://karafka.io/docs/code/rdkafka-ruby)
