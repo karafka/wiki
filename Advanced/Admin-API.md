@@ -37,7 +37,7 @@ We **strongly advise against** modifying the `config.admin.kafka` settings in th
 
 Please note that in the case of `kafka` settings, if a given setting is not found, the root `kafka` scope value will be used.
 
-## Creating a topic
+## Creating a Topic
 
 ```ruby
 topic_name = 'my_cool_topic'
@@ -47,7 +47,7 @@ replication_factor = 1 # 1 for dev, for prod you want more
 Karafka::Admin.create_topic(topic_name, partitions_count, replication_factor)
 ```
 
-## Deleting a topic
+## Deleting a Topic
 
 ```ruby
 topic_name = 'my_cool_topic'
@@ -55,7 +55,7 @@ topic_name = 'my_cool_topic'
 Karafka::Admin.delete_topic(topic_name)
 ```
 
-## Getting cluster-info
+## Getting Cluster Info
 
 ```ruby
 # Get cluster info and list all the topics
@@ -64,7 +64,7 @@ info = Karafka::Admin.cluster_info
 puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 ```
 
-## Reading topic messages
+## Reading Topic Messages
 
 By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
@@ -78,7 +78,7 @@ By using the `read_topic` method, you can read data from a given topic partition
 
     This behavior implies that if you request a certain number of the most recent messages, say the last 10, and all these 10 messages were either related to transactions or were compacted, then the `#read_topic` method will return no data. Thus, you might find situations where you expect data based on the total count but get none due to this offset-skipping behavior.
 
-### Getting last N messages
+### Getting Last N Messages
 
 ```ruby
 topic = 'my_topic'
@@ -92,7 +92,7 @@ messages.each do |message|
 end
 ```
 
-### Getting messages from a given offset
+### Getting Messages From a Given Offset
 
 ```ruby
 topic = 'my_topic'
@@ -107,7 +107,7 @@ messages.each do |message|
 end
 ```
 
-### Getting messages from a given time
+### Getting Messages From a Given Time
 
 ```ruby
 topic = 'my_topic'
@@ -123,7 +123,7 @@ messages.each do |message|
 end
 ```
 
-## Adding partitions to a topic
+## Adding Partitions To a Topic
 
 If you want to add partitions to an existing topic, you can use the `create_partitions` admin method:
 
@@ -137,7 +137,7 @@ Karafka::Admin.create_partitions(topic_name, total_partitions)
 
 This method will create all the additional partitions to reach your desired count.
 
-## Reading the watermark offsets
+## Reading the Watermark Offsets
 
 Watermark offsets represent the current high and low offsets for each partition in a topic.
 
@@ -157,3 +157,11 @@ low, high = Karafka::Admin.read_watermark_offsets(topic, partition)
 puts "Low watermark offset: #{low}"
 puts "High watermark offset: #{high}"
 ```
+
+## Deleting a Consumer Group
+
+TBA
+
+## Changing an Offset of a Consumer Group
+
+TBA
