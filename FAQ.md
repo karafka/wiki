@@ -960,7 +960,7 @@ Karafka's [Expiring Messages](https://karafka.io/docs/Pro-Expiring-Messages) fun
 
 However, it's important to note that Karafka's Expiring Messages functionality does not remove messages from Kafka itself, and it only removes messages from Karafka's internal processing queue. Therefore, the retention policy of the Kafka topic will still apply, and the message will remain in Kafka until it expires based on the topic's retention policy.
 
-To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](https://karafka.io/docs/Topics-management-and-administration#declarative-topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
+To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](https://karafka.io/docs/Declarative-Topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
 
 ## Can you actively ping the cluster from Karafka to check the cluster availability?
 
@@ -1099,7 +1099,7 @@ Yes.
 There are a few ways to do that:
 
 1. Use the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) to run a one-time job alongside your regular Karafka consumption.
-2. Use the `#seek` consumer method in combination with [Admin watermark API](https://karafka.io/docs/Topics-management-and-administration#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+2. Use the `#seek` consumer method in combination with [Admin watermark API](https://karafka.io/docs/Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 3. Create a new consumer group that will start from the beginning.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
@@ -1412,7 +1412,7 @@ On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will 
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 
-For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
+For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](https://karafka.io/docs/Declarative-Topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
 
 Below you can find an example routing that includes a DLQ declaration as well as a declarative definition of the target DLQ topic:
 
@@ -1800,7 +1800,7 @@ The `Broker: Policy violation (policy_violation)` error in Karafka is typically 
 In Karafka, this error might surface during two scenarios:
 
 - When upgrading the [Web UI](https://karafka.io/docs/Web-UI-Getting-Started) using the command `karafka-web migrate`.
-- When employing the [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
+- When employing the [Declarative Topics](https://karafka.io/docs/Declarative-Topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
 
 Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
 

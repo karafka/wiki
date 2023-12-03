@@ -18,7 +18,7 @@ end
 
 ## Pre-create Necessary Topics in the Production Kafka Cluster
 
-Kafka topics act as communication channels for your messages. It would be best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](https://karafka.io/docs/Topics-management-and-administration/#declarative-topics) functionality for that.
+Kafka topics act as communication channels for your messages. It would be best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](https://karafka.io/docs/Declarative-Topics) functionality for that.
 
 ```ruby
 class KarafkaApp < Karafka::App
