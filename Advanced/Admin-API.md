@@ -1,4 +1,4 @@
-Karafka has a few admin functions that allows for getting cluster info and creating and deleting topics.
+Karafka provides application administrative functions via the built-in `Karafka::Admin` module, including topic and consumer group management, cluster administration, and more.
 
 !!! note ""
 
