@@ -160,7 +160,21 @@ puts "High watermark offset: #{high}"
 
 ## Deleting a Consumer Group
 
-TBA
+!!! warning "Never delete active consumer groups."
+
+    This method should only be used for consumer groups **not** actively used. Deleting a consumer group that is currently in use (running) can lead to data loss, inconsistencies, or unexpected behavior in your Kafka cluster.
+
+The `Karafka::Admin.delete_consumer_group` method is designed to remove an existing consumer group from a Kafka cluster. This method effectively disbands the specified group, removing its metadata and state from the Kafka cluster.
+
+To use it, all you need to do is to provide your consumer group name:
+
+```ruby
+Karafka::Admin.delete_consumer_group('your_consumer_group_name')
+```
+
+!!! note ""
+
+    The provided consumer group name will be automatically remapped according to the configured [consumer mapper](https://karafka.io/docs/Consumer-mappers/).
 
 ## Changing an Offset of a Consumer Group
 
