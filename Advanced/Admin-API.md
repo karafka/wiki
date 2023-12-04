@@ -182,4 +182,66 @@ Karafka::Admin.delete_consumer_group('your_consumer_group_name')
 
     This method should only be used for consumer groups **not** actively used. Altering a consumer group that is currently in use (running) can lead to data loss, inconsistencies, or unexpected behavior in your Kafka cluster.
 
-TBA
+This method allows you to modify the offset for a specific topic within a consumer group, effectively controlling where the group starts consuming messages from within the topic.
+
+The `Karafka::Admin.seek_consumer_group` method takes two primary arguments:
+
+the name of the consumer group
+a topic-partition hash with topics, partitions, and offsets where the consumer group should be moved
+
+When invoked, it changes the current offset of the specified consumer group for the given topics to the new offsets provided. This method is beneficial when you need to reprocess or skip specific messages due to various operational requirements.
+
+!!! note ""
+
+    The provided consumer group name will be automatically remapped according to the configured [consumer mapper](https://karafka.io/docs/Consumer-mappers/).
+
+### Changing an Offset for All Partitions
+
+You can specify a hash mapping topics to integer offsets, allowing the adjustment of offsets for entire partitions within those topics:
+
+```ruby
+Karafka::Admin.seek_consumer_group(
+  'my_consumer_group',
+  {
+    # move offset to 0 on all partitions of this topic
+    'my_topic1' => 0,
+    # move offset to 1000 on all partitions of this topic
+    'my_other_topic' => 1000
+  }
+  
+)
+```
+
+### Changing an Offset for a Particular Partiton
+
+Alternatively, you can always move offset on specific partitions by specifying them directly:
+
+```ruby
+Karafka::Admin.seek_consumer_group(
+  'my_consumer_group',
+  {
+    # move offset to 0 on partition 0 and to 10 on partition 1
+    'my_topic1' => { 0 => 0, 1 => 10 },
+    # move offset to 10 000 on partition 5 and to 50 000 on partition 20
+    'my_other_topic' => { 5 => 10_000, 20 => 50_000 }
+  }
+)
+```
+
+### Changing an Offset to a Time-Based Location
+
+`seek_consumer_group` method also accepts time references as offsets, allowing for precise time-based location seeking. Karafka automatically locates the matching offsets for the specified times and moves the consumer group position to this location.
+
+```ruby
+now = Time.now
+
+Karafka::Admin.seek_consumer_group(
+  'my_consumer_group',
+  {
+    # move offset back by 1 hour for partition 0, and 2 hours for partition 5
+    'my_topic1' => { 0 => now - 60 * 60, 5 => now - 60 * 60 * 2 },
+    # move offset back by five minutes for all the partitions of the given topic
+    'my_other_topic' => now - 60 * 5
+  }
+)
+```
