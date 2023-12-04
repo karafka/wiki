@@ -54,7 +54,7 @@ Filter instance is created when Karafka encounters a given topic partition for t
 
 ### Post execution action altering
 
-!!! warning "Throughfully test your filters before usage."
+!!! warning "Throughfully test your filters before usage"
 
     Using `#seek` and `#pause` within a Filter requires a clear understanding of their implications. Misuse can result in unexpected behavior and performance issues.
 
