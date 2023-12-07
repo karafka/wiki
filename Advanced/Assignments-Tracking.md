@@ -7,12 +7,16 @@ To access your process's current assignments, you only need to execute `Karafka:
 It is worth pointing out that the topics are `Karafka::Routing::Topic` objects and not just topic names. This is done that way so the system supports providing you insights about the same topic if it is being consumed in multiple consumer groups simultaneously. You can use it from any place in your code.
 
 ```ruby
-TBA
+def consume
+  Karafka::App.assignments.each do |topic, partitions|
+    puts "In #{topic.name} I'm currently assigned to partitions: #{partitions.join(', ')}"
+  end
+end
 ```
 
-## Use Cases
+## Example Use-Cases
 
--**Building Assignments Aware Schedulers**: A custom scheduler that takes into account assignments can significantly improve efficiency and performance. Such a scheduler optimizes resource utilization and reduces latency by making intelligent scheduling decisions based on real-time cluster state.
+- **Building Assignments Aware Schedulers**: A custom scheduler that takes into account assignments can significantly improve efficiency and performance. Such a scheduler optimizes resource utilization and reduces latency by making intelligent scheduling decisions based on real-time cluster state.
 
 - **Dynamic Resources Allocation**: In scenarios where workloads fluctuate, the tracker can dynamically redistribute tasks based on the current partition assignments or apply specific processing strategies, ensuring optimal resource utilization.
 
