@@ -304,6 +304,10 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
     Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
+## Kubernetes
+
+Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](https://karafka.io/docs/Deployment/#kubernetes).
+
 ## OpenTelemetry
 
 !!! note ""
