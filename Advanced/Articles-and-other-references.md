@@ -37,10 +37,11 @@
 
 ## Videos
 
-* [Event Streaming Patterns for Ruby Services](https://www.youtube.com/watch?v=RBj4S9S-fJI)
-* [Kafka For Rubyists YouTube series](https://www.youtube.com/watch?v=OK8k-krza0Y&list=PLOnisdeJdKQ2jiUfFW-Lq4LZI3vovwVg5)
-* [Spinning up micro-services using Ruby/Kafka](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
-* [Karafka - Getting beyond HTTP](https://www.youtube.com/watch?v=4o7LcBO_RkE)
+* [RailsConf 2023 - Applying microservices patterns to a modular monolith by Guillermo Aguirre](https://www.youtube.com/watch?v=4zrQAJ0RlI4)
+* [RubyConfTH 2023 - Event Streaming Patterns for Ruby Services by Brad Urani](https://www.youtube.com/watch?v=RBj4S9S-fJI)
+* [Kafka For Rubyists YouTube series by Karol Galanciak](https://www.youtube.com/watch?v=OK8k-krza0Y&list=PLOnisdeJdKQ2jiUfFW-Lq4LZI3vovwVg5)
+* [RedDotRubyConf 2017 - Spinning up micro-services using Ruby/Kafka by Ankita Gupta](https://www.youtube.com/watch?v=jGoVOJl7vZ4)
+* [Pivorak - Karafka - Getting beyond HTTP by Maciej Mensfeld](https://www.youtube.com/watch?v=4o7LcBO_RkE)
 
 ## General articles and references about working with Apache Kafka
 

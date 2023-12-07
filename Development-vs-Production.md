@@ -200,3 +200,38 @@ In conclusion, while Kafka is a powerful tool, it's essential to remember the im
 ### Impact on Karafka
 
 Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, please note that time-sensitive metrics may not be accurate.
+
+## Configure your brokers' `offsets.retention.minutes` policy
+
+`offsets.retention.minutes` in Apache Kafka is a configuration setting that determines how long the Kafka broker will retain the offsets of consumer groups. The offset is a crucial piece of information that records the position of a consumer in a topic, essentially marking which messages have been processed.
+
+When a consumer is not running longer than the `offsets.retention.minutes` value, the following impacts can occur:
+
+- **Loss of Offset Data**: Once the retention period is exceeded, the offsets for that consumer group are deleted. If the consumer starts again after this period, it won't have a record of where it left off in processing the messages.
+
+- **Reprocessing of Messages**: Without the offset information, the consumer might start reading messages from the beginning of the log or the latest offset, depending on its configuration. This can lead to reprocessing messages (if they start from the beginning) or missing out on messages (if they start from the latest).
+
+- **Data Duplication or Loss**: The impact on data processing depends on the consumer's configuration and the nature of the data. It could result in data duplication or data loss if not managed properly.
+
+It's essential to set the `offsets.retention.minutes` value considering your consumer applications' most extended expected downtime to avoid these issues. Setting a longer retention period for offsets can be crucial for systems where consumers might be down for extended periods.
+
+It's important to note that while the `offsets.retention.minutes` setting in Kafka might not seem particularly relevant in a development environment, it becomes crucial in a production setting.
+
+In development, consumer downtimes are generally short, and losing offsets might not have significant consequences as the data is often test data, and reprocessing might not be a concern. However, in a production environment, consumer downtime can be more impactful if a consumer is down for a time exceeding the `offsets.retention.minutes` value. The loss of offset data can lead to significant issues like message reprocessing or missing out on unprocessed messages. This can affect data integrity and processing efficiency.
+
+
+## Topics Metadata Propagation During their Creation and Removal
+
+Apache Kafka, a distributed streaming platform, handles topic creation asynchronously. This means that when a new topic is created, there's a delay before it's recognized across all brokers in the Kafka cluster. This delay can cause temporary issues where the topic appears non-existent, leading to `unknown_topic` errors. To mitigate this, clients delay flagging a topic as non-existent for a default period of 30 seconds (configurable through `topic.metadata.propagation.max.ms`). This wait allows time for the topic metadata to propagate across the cluster.
+
+In Karafka it has specific implications:
+
+- **Delayed Writing to Newly Created Topics**: In Karafka, it's advisable not to start producing messages for a topic immediately after its creation using the Karafka Admin API. Due to Kafka's asynchronous nature, the topic might not be fully recognized across the cluster, leading to message delivery issues. Messages sent to these "in-limbo" topics get queued and might fail if the topic becomes unavailable within the propagation time.
+
+- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing sufficient time for topics to stabilize within the Kafka ecosystem before initiating message production.
+
+- **Handling Topic Resets**: Resetting topics in Karafka, especially in a production environment, should be approached with caution. Resetting a topic (deleting and recreating it) may lead to immediate marking of the topic as non-existent, as the propagation time does not apply in this scenario. This can cause significant disruptions in message flow and processing. We **do not** recommend removing and recreating topics on running systems. Always stop your producers and consumers before attempting to do so.
+
+- **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it's generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
+
+In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a robust and reliable streaming application.

@@ -151,6 +151,7 @@
 151. [Can you control the batching process in Karafka?](#can-you-control-the-batching-process-in-waterdrop)
 152. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
 153. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
+154. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2043,3 +2044,9 @@ The rationale for this Approach:
 Karafka provides a single, simplified API for all error instrumentation. This design choice aims to streamline error handling across different parts of the application, even though some errors may only sometimes have the complete contextual information you are looking for.
 
 Checking the `event[:type]` and recognizing the role of the `event[:caller]` will guide you in determining whether the necessary details are available for a specific error. Remember, due to the asynchronous nature of Karafka, not all errors will have associated topic and partition details.
+
+## Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?
+
+This issue is likely due to the `offsets.retention.minutes` setting in Kafka. Kafka deletes the saved offsets if a consumer is stopped for longer than this set retention period (like your 2-week downtime). Without these offsets, the consumer restarts from the beginning. However, the offsets are still available for shorter downtimes (like your 15-minute test), allowing the consumer to resume from where it left off.
+
+You can read more about this behavior [here](https://karafka.io/docs/Development-vs-Production/#configure-your-brokers-offsetsretentionminutes-policy).
