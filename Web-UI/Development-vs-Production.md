@@ -25,7 +25,7 @@ It is also worth pointing out certain other limitations of the Web UI:
 
 ## Web UI topics replication factor
 
-When running `bundle exec karafka-web install`, Karafka Web will create needed topics with the replication factor of `1`. Such a value may not be desirable in a production environment.
+When running `bundle exec karafka-web install`, Karafka Web will create needed topics with the replication factor of `2` as long as there are at least two brokers available. Such a value may not be desirable in a larger production environment.
 
 You can increase the replication factor by providing the `--replication-factor N` with `N` being the desired replication factor in your cluster:
 
