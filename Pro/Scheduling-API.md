@@ -127,6 +127,12 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
             <td>Executed when new idle jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done. Idle jobs are internal and should only be played with if understood well.</td>
         </tr>
         <tr>
+            <td><code>#schedule_periodic</code></td>
+            <td>Array with periodic jobs</td>
+            <td>No</td>
+            <td>Executed when new periodic jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
+        </tr>
+        <tr>
             <td><code>#manage</code></td>
             <td>None</td>
             <td>No</td>
