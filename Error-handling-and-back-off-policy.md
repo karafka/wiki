@@ -41,6 +41,48 @@ When processing messages from a Kafka topic, your code may raise any exception i
 
 Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That's why Karafka will **never** skip any messages.
 
+### Retryable Methods
+
+It's crucial to understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Retryable</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>    
+    <tr>
+      <td><code>#consume</code></td>
+      <td>Yes</td>
+      <td>Retries occur as Karafka implements a back-off policy for this method, suitable for handling transient issues in message processing.</td>
+    </tr>
+    <tr>
+      <td><code>#revoked</code></td>
+      <td>No</td>
+      <td>No retries, as this method is called when a partition is lost due to reassignment. Retrying in this context is not logical.</td>
+    </tr>
+    <tr>
+      <td><code>#shutdown</code></td>
+      <td>No</td>
+      <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown doesn't align with its purpose.</td>
+    </tr>
+    <tr>
+      <td><code>#tick</code></td>
+      <td>No</td>
+      <td>Since this method is invoked frequently, retries are unnecessary and could lead to inefficiencies and redundancy.</td>
+    </tr>
+  </tbody>
+</table>
+
+It's crucial to understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
+
+It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, and `#tick`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable. 
+
+Errors in the other methods (`#revoked`, `#shutdown`, and `#tick`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
+
 ### Altering the consumer behaviour upon reprocessing
 
 The Karafka consumer `#retrying?` method is designed to detect whether we are in retry mode after an error has occurred. This method can be helpful in a variety of use cases where you need to alter the behavior of your application when a message is being retried. For example, you might want to send an alert or notification when a message is being retried, or you might want to branch out and perform a different action based on the fact that the message is being retried. By detecting whether a message is being retried or not, you can gain better control over your application's behavior and make sure that it is able to handle errors in a way that is appropriate for your specific use case.
