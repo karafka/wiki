@@ -77,8 +77,7 @@ At this point, Karafka will run the job for us. If the job fails, Karafka will r
 
 ### Enqueuing modes
 
-
-### `#perform_later`
+#### `#perform_later`
 
 When you enqueue a job using `#perform_later`, Karafka, by default, will produce a message to Kafka in an async fashion. A job will be added to a background process queue and dispatched without blocking the processing flow.
 
@@ -101,7 +100,7 @@ end
 Job.perform_later(1, 2)
 ```
 
-### `#perform_all_later`
+#### `#perform_all_later`
 
 When you enqueue a jobs using `#perform_all_later`, Karafka, by default, will produce messages to Kafka in an async fashion. Jobs will be added to a background process queue and dispatched without blocking the processing flow.
 
@@ -139,6 +138,29 @@ Please keep in mind that **as long as** the error persists, **no** other jobs fr
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.svg" />
 </p>
+
+## Usage with the Dead Letter Queue
+
+The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](https://karafka.io/docs/Dead-Letter-Queue/) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    active_job_topic :default do
+      dead_letter_queue(
+        topic: 'dead_jobs',
+        max_retries: 2,
+        # Set this to true for AJ as AJ jobs are independent
+        independent: true
+      )
+    end
+  end
+end
+```
 
 ## Behaviour on shutdown
 
