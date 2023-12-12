@@ -45,11 +45,34 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 ## DLQ Configuration Options
 
-TBA
+The table below contains options the `#dead_letter_queue` routing method accepts.
 
-              max_retries: max_retries,
-              topic: topic,
-              independent: independent
+<table border="1">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>max_retries</code></td>
+      <td>Integer</td>
+      <td>Defines the number of retries before moving a message to the DLQ.</td>
+    </tr>
+    <tr>
+      <td><code>topic</code></td>
+      <td>String</td>
+      <td>Specifies the DLQ topic name for problematic messages.</td>
+    </tr>
+    <tr>
+      <td><code>independent</code></td>
+      <td>Boolean</td>
+      <td>Treats each message independently with its own error counter.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Independent Error Counting
 
