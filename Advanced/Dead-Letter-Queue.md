@@ -7,7 +7,7 @@ And this is where the Dead Letter Queue pattern shines.
 A Dead Letter Queue in Karafka is a feature that, when enabled, will transfer problematic messages into a separate topic allowing you to continue processing even upon errors.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dlq_example_flow.svg" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/example_flow.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates a simple DLQ flow with a processing retry.
@@ -102,6 +102,22 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/no_independent.svg" />
+</p>
+<p align="center">
+  <small>*.
+  </small>
+</p>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/independent.svg" />
+</p>
+<p align="center">
+  <small>*.
+  </small>
+</p>
 
 ## Delaying the DLQ Data Processing
 
