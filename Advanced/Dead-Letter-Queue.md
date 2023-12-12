@@ -31,7 +31,10 @@ class KarafkaApp < Karafka::App
         # moving the message to the DLQ topic and continuing the work
         #
         # If set to zero, will not retry at all.
-        max_retries: 2
+        max_retries: 2,
+        # Apply the independent approach for the DLQ recovery. More in the docs below
+        # It is set to false by default
+        independent: false
       )
     end
   end
@@ -40,7 +43,44 @@ end
 
 Once enabled, after the defined number of retries, problematic messages will be moved to a separate topic unblocking the processing.
 
-## Delaying the DLQ data processing
+## DLQ Configuration Options
+
+TBA
+
+              max_retries: max_retries,
+              topic: topic,
+              independent: independent
+
+## Independent Error Counting
+
+In standard operations, Karafka, while processing messages, does not make assumptions about the processing strategy employed by the user. Whether it’s individual message processing or batch operations, Karafka remains agnostic. This neutrality in the processing strategy becomes particularly relevant during the DLQ recovery phases.
+
+Under normal circumstances, Karafka treats a batch of messages as a collective unit during DLQ recovery. For example, consider a batch of messages labeled `0` through `9`, where message `4` is problematic. Messages `0` to `3` are processed successfully, but message `4` causes a crash. Karafka then enters the DLQ flow, attempting to reprocess message `4` multiple times before eventually moving it to the DLQ and proceeding to message `5` after a brief backoff period.
+This approach is based on the presumption that the entire batch might be problematic, possibly due to issues like batch upserts. Hence, if a subsequent message in the same batch (say, message `7`) fails after message `4` has recovered, Karafka will move message `7` to the DLQ without resetting the counter and will restart processing from message `8`.
+
+This collective approach might not align with specific use cases with independent message processing. In such cases, the failure of one message does not necessarily imply a problem with the entire batch.
+
+Karafka's independent flag introduces a nuanced approach to DLQ recovery, treating each message as an individual entity with its error counter. When enabled, this flag allows Karafka to reset the error count for each message as soon as it is successfully consumed, ensuring that each message is processed on its own merits, independent of the batch. This feature is especially beneficial in scenarios where messages are not interdependent, providing a more targeted and efficient error-handling process for each message within a batch.
+
+To enable it, add `independent: true` to your DLQ topic definition:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: 'dead_messages',
+        max_retries: 3,
+        independent: true
+      )
+    end
+  end
+end
+```
+
+## Delaying the DLQ Data Processing
 
 In some cases, it can be beneficial to delay the processing of messages dispatched to a Dead Letter Queue (DLQ) topic. This can be useful when a message has failed to be processed multiple times, and you want to avoid overwhelming the system with repeated processing attempts. By delaying the processing of these messages, you can avoid consuming valuable resources and prevent potential system failures or downtime.
 
@@ -50,7 +90,7 @@ Overall, delaying the processing of messages dispatched to a DLQ topic can help 
 
 You can read more about the Karafka Delayed Topics feature [here](Pro-Delayed-Topics).
 
-## Disabling retries
+## Disabling Retries
 
 If you do not want to retry processing at all upon errors, you can set the `max_retries` value to `0`:
 
@@ -71,13 +111,13 @@ end
 
 Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic.
 
-## Disabling dispatch
+## Disabling Dispatch
 
 For some use cases, you may want to skip messages after retries without dispatching them to an alternative topic.
 
 This functionality is available in Karafka Pro, and you can read about it [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
-## Dispatch warranties
+## Dispatch Warranties
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
 
@@ -87,7 +127,7 @@ Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They
 
 If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) implementation.
 
-## Manual DLQ dispatch
+## Manual DLQ Dispatch
 
 When the Dead Letter Queue is enabled, Karafka will provide you with an additional method called `#dispatch_to_dlq` that you can use to transfer messages to the DLQ topic. You can use it if you encounter messages you do not want to deal with but do not want to raise an exception:
 
@@ -108,7 +148,7 @@ class OrdersStatesConsumer
 end
 ```
 
-## Monitoring and instrumentation
+## Monitoring and Instrumentation
 
 Each time a message is moved to the Dead Letter Queue topic, it will emit a `dead_letter_queue.dispatched` with a `message` key.
 
@@ -126,13 +166,13 @@ Karafka.monitor.subscribe('dead_letter_queue.dispatched') do |event|
 end
 ```
 
-## Batch processing limitations
+## Batch Processing Limitations
 
 At the moment, DLQ does **not** have the ability to skip whole batches. For scenarios where the collective outcome of messages operations is causing errors, Karafka will skip one after another. This means that you may encounter "flickering", where seemingly valid messages are being moved to the DLQ before reaching the corrupted one.
 
 If skipping batches is something you would utilize, please get in touch with us so we can understand your use cases and possibly introduce this functionality.
 
-## Compacting limitations
+## Compacting Limitations
 
 Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older once when the log compaction process kicks in.
 
@@ -144,7 +184,7 @@ We recommend either:
 - Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
-## Using Dead Letter Queue with a multi-cluster setup
+## Using Dead Letter Queue with a Multi-Cluster Setup
 
 When working with a DLQ pattern and using Karafka multi-cluster support, please remember that by default, all the messages dispatched to the DLQ topic will go to the main cluster as the `#producer` uses the default cluster settings.
 
@@ -195,7 +235,7 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
 - want to delay processing of data dispatched to the DLQ topic.
 
-## Example use-cases
+## Example Use Cases
 
 - Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, ensuring no payment is lost.
 

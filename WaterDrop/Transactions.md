@@ -374,7 +374,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
 
 These limitations underline the importance of a thorough understanding and careful implementation when leveraging Kafka transactions, especially with tools like WaterDrop.
 
-## Example use-cases
+## Example Use Cases
 
 - **Order Processing Systems**: When an order is placed, various events might be produced, such as order creation, payment processing, and inventory updates. All or none of these events must be published to ensure data consistency.
 

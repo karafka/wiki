@@ -181,7 +181,7 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 Understanding these limitations is essential for users to effectively and efficiently leverage the Cleaner API without encountering unforeseen issues or complications in their processes.
 
-## Example use-cases
+## Example Use Cases
 
 - **Log Aggregation and Analysis Systems**: Many enterprises gather vast amounts of log data from various sources like applications, servers, and network devices. Processing this data in real time often involves deserializing large chunks of data to analyze patterns, anomalies, or security breaches. After processing, the payload data often remains in memory until the whole batch is analyzed, causing inefficiencies.
 

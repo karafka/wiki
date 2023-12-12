@@ -193,7 +193,7 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
 
-## Example use-cases
+## Example Use Cases
 
 1. **Tenant-specific Topics**: Modern SaaS applications often cater to multiple tenants, each requiring its own data isolation. You can ensure data segregation by having a Kafka topic for each tenant, like `tenantA_events`, `tenantB_logs`. Routing Patterns can simplify the consumption from these dynamically created topics.
 

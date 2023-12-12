@@ -14,7 +14,7 @@ def consume
 end
 ```
 
-## Example Use-Cases
+## Example Use Cases
 
 - **Building Assignments Aware Schedulers**: A custom scheduler that takes into account assignments can significantly improve efficiency and performance. Such a scheduler optimizes resource utilization and reduces latency by making intelligent scheduling decisions based on real-time cluster state.
 

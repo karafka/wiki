@@ -223,7 +223,7 @@ Remember that the order in which you register filters can affect the performance
 
 By following these best practices, you can ensure that your Karafka Pro Filtering API implementation is robust, efficient, and scalable.
 
-## Example use-cases
+## Example Use Cases
 
 - **Throttling**: You can use filters to throttle and rate limit messages, including process or system-wide limitation solutions. 
 

@@ -60,7 +60,7 @@ On the other hand, Kafka's `log.retention.ms` setting allows for the complete re
 
 In summary, Karafka's Expiring Messages feature excludes messages from being processed by consumers. However, it does not remove them from Kafka, so other consumers or applications can still use information that is relevant to them. In contrast, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka.
 
-## Example use-cases
+## Example Use Cases
 
 - Email dispatch: In email dispatch applications, the expiring consumption of Kafka messages can be used to prevent sending emails based on old events. For example, skipping messages that would dispatch emails that would no longer be relevant or useful, such as promotions or marketing campaigns that have already ended.
 

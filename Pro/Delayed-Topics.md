@@ -121,7 +121,7 @@ end
 
 It is important to note that Delayed Topics can be a powerful tool for managing message processing, as it allows for messages to be processed in a controlled manner. However, it is essential to understand the potential side effects and implement appropriate error-handling mechanisms to ensure the system remains stable and reliable.
 
-## Example use-cases
+## Example Use Cases
 
 Here are some potential use cases for Delayed Topics:
 

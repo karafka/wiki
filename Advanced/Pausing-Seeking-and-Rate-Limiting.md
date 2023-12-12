@@ -130,7 +130,7 @@ def consume
 end
 ```
 
-### Seeking Use-Cases
+### Seeking Use Cases
 
 - **Reprocessing Messages**: If there's a need to reprocess certain messages due to application logic changes or errors, you can seek back to an earlier offset to re-read and reprocess the messages.
 

@@ -109,7 +109,7 @@ end
 
     Such a pattern should only be used when working with trusted entities.
 
-## Example use-cases
+## Example Use Cases
 
 - Healthcare: In the healthcare industry, patient data like medical history, diagnoses, and prescriptions are stored in Kafka. At-rest encryption can help ensure the confidentiality and integrity of this sensitive information, helping to meet regulatory requirements like HIPAA and GDPR.
 

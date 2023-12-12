@@ -417,7 +417,7 @@ class FairScheduler < ::Karafka::Pro::Processing::Schedulers::Base
 end
 ```
 
-## Example Use-Cases
+## Example Use Cases
 
 Here is a list of use cases where the Scheduling API can be useful:
 

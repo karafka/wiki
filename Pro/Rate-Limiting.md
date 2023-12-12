@@ -39,7 +39,7 @@ While a powerful tool, the Rate Limiting API in Karafka has a few limitations an
 
 - Rebalance in the Kafka cluster will reset the Rate Limiting mechanism in Karafka. This happens because rebalancing can cause a redistribution of partitions between the consumer group members, affecting the consumption rate. However, Karafka provides an advanced filtering API that allows extending the throttler to prevent reset on rebalancing as long as the same process will receive the same assignment back. This feature can be helpful in scenarios where the consumer group members are frequently rebalanced, and the Rate Limiting mechanism needs to maintain its state across rebalances.
 
-## Example use-cases
+## Example Use Cases
 
 Here are some real-life examples of how Karafka's Rate Limiting feature can be useful across different industries:
 

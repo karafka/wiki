@@ -226,7 +226,7 @@ It's important to note that the Karafka Pro iterator API is designed to be a str
 
 The iterator should handle up to 100 000 messages per second.
 
-## Example use-cases
+## Example Use Cases
 
 - Custom Kafka data processing: The iterator API allows developers to create custom scripts that process Kafka data in a specific way. For example, you can extract specific fields from Kafka data, transform them into a different format, or perform calculations on the data.
 

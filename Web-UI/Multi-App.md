@@ -87,7 +87,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Example use-cases
+## Example Use Cases
 
 This capability immensely benefits organizations that manage multiple applications or microservices but want a centralized monitoring and visualization solution. For instance:
 

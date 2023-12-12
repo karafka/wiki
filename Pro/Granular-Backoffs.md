@@ -76,7 +76,7 @@ Granular Backoffs can be valuable in numerous situations, including:
 
 5. **Topics Making External HTTP Calls**: Topics involving external HTTP calls could benefit from a longer backoff time. This ensures external systems, especially those encountering temporary issues, have enough recovery time before the subsequent request.
 
-## Example use-cases
+## Example Use Cases
 
 - **E-commerce Applications**: An e-commerce application may have a high-priority topic for order processing and a low-priority topic for recommendation updates. Using granular backoffs, the application can prioritize order processing and avoid overwhelming the system with recommendation updates.
 

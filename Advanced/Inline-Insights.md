@@ -132,7 +132,7 @@ One of the primary considerations for any system is the memory footprint of its 
 
 The Karafka Inline Insights Tracker is designed with optimal memory usage in mind. It employs a caching system that retains metrics data for up to 5 minutes. This means that any metric data related to a partition that is no longer relevant or needed - like when a partition is lost or revoked - will be automatically cleared from the cache after a maximum of five minutes. This cache management approach ensures that memory is used efficiently, keeping only relevant and recent metrics in memory and preventing accumulating stale or unnecessary data.
 
-## Example Use-Cases
+## Example Use Cases
 
 1. E-Commerce Inventory Management: In an e-commerce platform, inventory levels for hot-selling products are crucial. If there is a sudden surge in orders for a product, inventory levels need to be updated in real time to prevent overselling. Insights-aware consumers can monitor the lag in the inventory update partition. If the lag increases beyond a threshold, indicating potential discrepancies between actual and recorded inventory, the consumer can notify the inventory management system to pause new orders temporarily.
 

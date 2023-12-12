@@ -443,7 +443,7 @@ end
 
 When used that way, your `balanced_topic` will not use the per topic `partitioner` nor `max_partitions`. This topic data distribution will solely rely on your `balanced_strategy` logic.
 
-## Example use-cases
+## Example Use Cases
 
 Here are some use cases from various industries where Karafka's virtual partition feature can be beneficial:
 

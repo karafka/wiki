@@ -117,7 +117,7 @@ Below you can find an example of the effect of the usage of a similar sanitizer 
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
 </p>
 
-## Example use-cases
+## Example Use Cases
 
 The filtering and sanitization feature can be handy in various scenarios, such as:
 
