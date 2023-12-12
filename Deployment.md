@@ -529,12 +529,13 @@ The Liveness listener is configured to associate itself with **any** process inc
 ```ruby
 require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
 
-listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
-  # config goes here...
-)
 
 # Bind only in the main Karafka process inside a pod
 if ENV['KARAFKA_LIVENESS'] == true
+  listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
+    # config goes here...
+  )
+
   Karafka.monitor.subscribe(listener)
 end
 ```
