@@ -103,11 +103,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+The following diagrams compare DLQ flows in Karafka: the first without the independent flag and the second with it enabled, demonstrating the operational differences between these two settings.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/no_independent.svg" />
 </p>
 <p align="center">
-  <small>*.
+  <small>*The diagram shows DLQ retry behavior without the independent flag: each error in a batch adds to the error counter until the DLQ dispatch takes place on the last erroneous message.
   </small>
 </p>
 
@@ -115,7 +117,7 @@ end
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/independent.svg" />
 </p>
 <p align="center">
-  <small>*.
+  <small>*The diagram shows DLQ retry behavior with the independent flag active: the error counter resets after each message is successfully processed, avoiding DLQ dispatch if all messages recover.
   </small>
 </p>
 
