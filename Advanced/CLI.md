@@ -55,6 +55,10 @@ You can also exclude certain subscription groups by using the `--exclude-subscri
 bundle exec karafka server --exclude-subscription-groups group_name2
 ```
 
+!!! note "Handling Multiplexed Subscription Groups in CLI Commands"
+
+    When using CLI commands to include or exclude subscription groups, it is important to remember that [multiplexed](Pro-Multiplexing) subscription group names carry a `_multiplex_NR` postfix matching the multiplexing level. This postfix distinguishes these groups from others and ensures proper identification and handling within the system. For accurate command execution, always verify and include the correct `_multiplex_NR` postfix for the intended multiplexed subscription groups.
+
 ### Limiting topics used per process
 
 Karafka supports having multiple topics within a single application. You can run multiple Karafka instances, specifying topics that should be running per each process using the ```--include-topics``` server flag as follows:
