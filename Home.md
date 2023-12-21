@@ -100,7 +100,7 @@
 
 ### Features and enhancements
 
-* [Features list](Pro-Features-List)
+* [Features List](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Delayed Topics](Pro-Delayed-Topics)
@@ -113,6 +113,7 @@
 * [Iterator API](Pro-Iterator-API)
 * [Granular Backoffs](Pro-Granular-Backoffs)
 * [Cleaner API](Pro-Cleaner-API)
+* [Multiplexing](Pro-Multiplexing)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)

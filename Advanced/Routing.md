@@ -77,6 +77,11 @@ Each subscription group connection operates independently in a separate backgrou
 
 All the subscription groups define within a single consumer group will operate within the same consumer group.
 
+!!! note "Pro Subscription Group Multiplexing"
+
+    Karafka's Open Source version supports one connection per subscription group without ability to subscribe to the same topic multiple times from the same process. If you want to establish many connections to the same topic from a single process, upgrade to Karafka Pro. [Multiplexing](Pro-Multiplexing) allows multiple connections to the same topic within a single subscription group, enhancing performance and parallel processing.
+
+
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
@@ -108,6 +113,28 @@ end
 ```
 
 You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
+
+### Subscription Group Multiplexing
+
+For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, please check out the [Multiplexing](Pro-Multiplexing) documentation.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    # Make sure to have to independent connections to this topic from every
+    # single process. They will be able to poll and process data independently
+    subscription_group 'a', multiplex: 2 do
+      topic :A do
+        consumer ConsumerA
+      end
+    end
+  end
+end
+```
 
 ### Routing Patterns
 
