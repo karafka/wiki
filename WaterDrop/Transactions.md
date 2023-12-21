@@ -128,7 +128,7 @@ In both behaviors, the overarching principle is to ensure data consistency and r
 
 In WaterDrop, when dispatching messages to Kafka, the feedback mechanism about the delivery status of a message depends on whether you choose synchronous or asynchronous dispatching. You'll receive a delivery report for synchronous dispatches, providing immediate feedback about the message's delivery status. With synchronous dispatch, your program will pause and await a confirmation from the Kafka broker, signaling the successful receipt of the message.
 
-Both delivery handlers and delivery reports are supported when working within transactions, but they behave differently in this context. Delivery reports will have relevant details, such as the appropriate partition and offset values; however, a crucial distinction is the difference between message "delivery" and its visibility to consumers in a transactional setting. Even if the delivery report acknowledges the successful dispatch of a message, it doesn't guarantee that consumers will see it. Messages sent within a transaction have their offsets "reserved" in Kafka. But, unless the transaction is fully committed, these messages might not reach the consumers. Instead, they may undergo a "compaction" process, where they're essentially removed or not made visible to consumers.
+Both delivery handels and delivery reports are supported when working within transactions, but they behave differently in this context. Delivery reports will have relevant details, such as the appropriate partition and offset values; however, a crucial distinction is the difference between message "delivery" and its visibility to consumers in a transactional setting. Even if the delivery report acknowledges the successful dispatch of a message, it doesn't guarantee that consumers will see it. Messages sent within a transaction have their offsets "reserved" in Kafka. But, unless the transaction is fully committed, these messages might not reach the consumers. Instead, they may undergo a "compaction" process, where they're essentially removed or not made visible to consumers.
 
 In a transactional context with WaterDrop, a delivery report signals the message's successful reservation in Kafka, not its eventual consumability. The entire transaction must be successfully committed for a message to be available for consumption.
 
@@ -162,12 +162,12 @@ end
 It's also vital to grasp a specific behavior when dealing with messages within a Kafka transaction in WaterDrop. If messages are part of a transaction but have yet to be delivered, and you attempt to use the `#wait` method on their delivery handles, you might encounter a `Rdkafka::RdkafkaError` `purge_queue` error. This error arises because the Kafka brokers did not acknowledge these undelivered messages. If the encompassing transaction is aborted, these messages are consequently removed from the delivery queue. This removal triggers the `purge_queue` error since you're essentially waiting on handles of messages that have been purged due to the transaction's abort.
 
 ```ruby
-handlers = []
+handles = []
 
 producer.transaction do
   100.times do
     # Async is critical here
-    handlers << producer.produce_async(topic: 'events', payload: rand.to_s)
+    handles << producer.produce_async(topic: 'events', payload: rand.to_s)
   end
 
   throw(:abort)
@@ -175,7 +175,7 @@ end
 
 # If messages were not yet acknowledged by the broker during the transaction
 # this may raise an error as below
-handlers.each(&:wait)
+handles.each(&:wait)
 
 # Local: Purged in queue (purge_queue) (Rdkafka::RdkafkaError)
 ```

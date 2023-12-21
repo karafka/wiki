@@ -152,6 +152,7 @@
 152. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
 153. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
 154. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
+155. [Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?](#why-am-i-experiencing-a-load-error-when-using-karafka-with-ruby-27-and-how-can-i-fix-it)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2050,3 +2051,12 @@ Checking the `event[:type]` and recognizing the role of the `event[:caller]` wil
 This issue is likely due to the `offsets.retention.minutes` setting in Kafka. Kafka deletes the saved offsets if a consumer is stopped for longer than this set retention period (like your 2-week downtime). Without these offsets, the consumer restarts from the beginning. However, the offsets are still available for shorter downtimes (like your 15-minute test), allowing the consumer to resume from where it left off.
 
 You can read more about this behavior [here](https://karafka.io/docs/Development-vs-Production/#configure-your-brokers-offsetsretentionminutes-policy).
+
+## Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?
+
+If you're experiencing a load error with Karafka on Ruby 2.7, it's due to a bug in Bundler. To fix this:
+
+- **Install Bundler v2.4.22**: Run `gem install bundler -v 2.4.22 --no-document`.
+- **Update RubyGems to v3.4.22**: Run `gem update --system 3.4.22 --no-document`.
+
+Note: Ruby 2.7 is EOL and no longer supported. For better security and functionality, upgrading to Ruby 3.0 or higher is highly recommended.

@@ -57,7 +57,7 @@ producer.monitor.subscribe(
 producer.produce_sync(topic: 'my.topic', payload: 'my.message')
 ```
 
-## Usage statistics
+## Usage Statistics
 
 WaterDrop is configured to emit internal `librdkafka` metrics every five seconds. You can change this by setting the `kafka` `statistics.interval.ms` configuration property to a value greater of equal `0`. Emitted statistics are available after subscribing to the `statistics.emitted` publisher event. If set to `0`, metrics will not be published.
 
@@ -121,8 +121,12 @@ WaterDrop allows you to listen to all errors that occur while producing messages
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
-  # Note invalid connection port...
-  config.kafka = { 'bootstrap.servers': 'localhost:9090' }
+  config.kafka = {
+    # Note invalid connection port...
+    'bootstrap.servers': 'localhost:9090',
+    # Make waterdrop give up on delivery after 100ms
+    'message.timeout.ms': 100
+  }
 end
 
 producer.monitor.subscribe('error.occurred') do |event|

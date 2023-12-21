@@ -92,12 +92,12 @@ end
 Whenever your code executes a dispatch operation, be it synchronous or asynchronous, the messages won't be sent to Kafka. Instead, they reach the `producer.client.messages` array, readily available for your examination.
 
 ```ruby
-handler = PRODUCER.produce_async(topic: 'test', payload: '123')
+handel = PRODUCER.produce_async(topic: 'test', payload: '123')
 
-puts handler
+puts handel
 #=> <WaterDrop::Clients::Dummy::Handle:... @offset=0, @partition=0, @topic="test">
 
-report = handler.wait
+report = handel.wait
 
 puts report
 #=> <Rdkafka::Producer::DeliveryReport:... @error=nil, @offset=0, @partition=0, @topic_name="test">

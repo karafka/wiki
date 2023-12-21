@@ -152,7 +152,7 @@ Therefore, when you're writing tests for producer transactions in Karafka, you c
 
 2. Simulate an aborted transaction and ensure that no messages reach the buffers.
 
-This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handled as expected in both successful and aborted transaction scenarios.
+This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handels as expected in both successful and aborted transaction scenarios.
 
 ```ruby
 class UsersBuilder
