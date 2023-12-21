@@ -79,7 +79,9 @@ end
 
 ## Multiplexing Memory Usage Implications
 
-TBA
+When employing Multiplexing, one must be aware of the potential impact on memory usage. Each additional connection established by a process consumes more memory as it maintains its own set of buffers, offsets, and other metadata related to its subscribed topics. In scenarios where many connections are established to handle high volumes of data, the memory footprint can increase significantly.
+
+This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it's successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
 
 ## Example Use Cases
 
