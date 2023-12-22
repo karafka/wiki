@@ -20,6 +20,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Filtering API](Pro-Filtering-API) - The Filtering API allows users to filter messages based on specific criteria, reducing the amount of data that needs to be processed downstream. It also provides advanced ways of altering the consumption flow by allowing for explicit pausing and seeking before the actual processing happens.
 
+- [Scheduling API](Pro-Scheduling-API) - Scheduling API was designed to control when specific consumption jobs are placed on the processing queue. This API is not just a simple timer-based mechanism but a sophisticated controller that allows for precise and intelligent scheduling of tasks.
+
 - [Iterator](Pro-Iterator-API) - Iterator API allows you to quickly subscribe to selected topics and partitions and perform data lookups without having to start a `karafka server` and create consumers.
 
 - [Granular Backoffs](Pro-Granular-Backoffs) - Granular Backoffs provide heightened control over backing off, pausing, and retrying processing upon errors. This feature offers per-topic customization of the error-handling strategy.
