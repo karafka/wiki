@@ -69,7 +69,7 @@
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
-* [Concurrency and multithreading](Concurrency-and-multithreading)
+* [Concurrency and multithreading](Concurrency-and-Multithreading)
 * [Deserialization](Deserialization)
 * [Offset management (checkpointing)](Offset-management)
 * [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
