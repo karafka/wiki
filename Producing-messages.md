@@ -11,7 +11,7 @@ Karafka.producer.produce_async(
 
 WaterDrop is thread-safe and operates well in scale.
 
-If you want to produce messages from the Karafka consumers, there's a handy alias method `#producer` for this:
+If you're looking to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including #producer, #produce_sync, #produce_async, #produce_many_sync, and #produce_many_async. Here's how you might use them:
 
 ```ruby
 class VisitsConsumer < ApplicationConsumer
@@ -19,6 +19,12 @@ class VisitsConsumer < ApplicationConsumer
     ::Visit.insert_all(messages.payloads)
 
     producer.produce_async(
+      topic: 'events',
+      payload: { type: 'inserted', count: messages.count }.to_json
+    )
+
+    # Or you can use the listed methods directly, bypassing `#producer` reference:
+    produce_async(
       topic: 'events',
       payload: { type: 'inserted', count: messages.count }.to_json
     )
