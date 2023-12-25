@@ -106,6 +106,8 @@
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
+* [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)
+* [Periodic Jobs](Pro-Periodic-Jobs)
 * [Expiring Messages](Pro-Expiring-Messages)
 * [Routing Patterns](Pro-Routing-Patterns)
 * [Rate Limiting](Pro-Rate-Limiting)

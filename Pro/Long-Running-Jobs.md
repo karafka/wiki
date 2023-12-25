@@ -179,6 +179,10 @@ This will ensure that the consumer has enough time to process all the messages i
 
 Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and leveraging the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
 
+## Non-Blocking Jobs: Complementing Long-Running Job Pausing
+
+The Long-Running Jobs feature is designed to handle tasks that take longer to process than the standard Kafka message batch. Using the pausing strategy allows for efficient parallel processing across multiple partitions of the same topic. This approach helps manage longer tasks without risking the stability of the consumer group due to frequent rebalances. For users looking to optimize their parallel processing further, reviewing the [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) documentation for additional strategies and best practices is recommended.
+
 ## Example Use Cases
 
 - External Service Calls: In some cases, processing messages may require making HTTP requests to external services, which can take a long time to complete. For example, processing messages to perform payment processing, geocoding, or weather data retrieval may require making requests to external services that can take a significant amount of time to return a response.
