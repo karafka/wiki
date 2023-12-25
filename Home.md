@@ -65,6 +65,7 @@
 * [Dead Letter Queue](Dead-Letter-Queue)
 * [Declarative Topics](Declarative-Topics)
 * [Admin API](Admin-API)
+* [ACLs API](Admin-Acls-API)
 * [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 * [CLI](CLI)
 * [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
