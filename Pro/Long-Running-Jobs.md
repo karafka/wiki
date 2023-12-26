@@ -62,6 +62,10 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+!!! warning "Long-Running Job Impact on Internal Queues"
+
+    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/#pause-and-seek-usage-potential-networking-impact).
+
 ## Processing during revocation
 
 Upon a group rebalance, there are three scenarios affecting the paused partition you are processing:

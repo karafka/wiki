@@ -32,7 +32,7 @@ end
 
 !!! note ""
 
-    It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself:
+    It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
 
 **BAD**:
 
