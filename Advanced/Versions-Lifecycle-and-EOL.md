@@ -26,6 +26,7 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
+| 3.3     | Active      | N/A        |
 | 3.2     | Active      | N/A        |
 | 3.1     | Active      | N/A        |
 | 3.0     | Active      | N/A        |
@@ -41,7 +42,7 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 | 7.1     | Active      | N/A        |
 | 7.0     | Active      | N/A        |
 | 6.1     | Active      | N/A        |
-| 5.2     | Maintenance | 2023-12-31 |
+| 5.2     | EOL         | 2023-12-31 |
 | 4.2     | EOL         | 2021-05-01 |
 
 ## Kafka Versions Support
