@@ -4,6 +4,14 @@ Multiplexing in Karafka enables more effective data handling and improves perfor
 
 Multiplexing increases throughput and significantly enhances processing capabilities in scenarios with multi-partition lags. When a single process subscribes to multiple partitions, it can swiftly address lags in any of them, ensuring more consistent performance across your system. This advantage becomes particularly prominent in IO-intensive workloads where efficient data handling and processing are crucial.
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/multiplexing/500k_lag.png" />
+</p>
+<p align="center">
+  <small>*This example illustrates the performance difference for IO intense work, where the IO cost of processing a single message is 1ms and a total lag of 500 000 messages in five partitions.
+  </small>
+</p>
+
 ## Enabling Multiplexing
 
 To enable multiplexing in Karafka, a simple yet crucial step must be taken when defining your subscription groups. By providing the `multiplex` option within your subscription group definition, you instruct Karafka to initiate multiplexing for that particular group:

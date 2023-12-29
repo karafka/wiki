@@ -25,6 +25,10 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+!!! Warning "Rate Limiting Impact on Internal Queues"
+
+    When using Rate Limiting, be aware it uses `#pause`, which will purge your internal message queue. This occurs because `#pause` is a fencing mechanism, invalidating all messages in the queue. To mitigate excessive network traffic due to re-fetching of messages, consider lowering the `queued.max.messages.kbytes` value. You can read more about this [here](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/#pause-and-seek-usage-potential-networking-impact).
+
 ## Behaviour on errors
 
 When an error occurs during message processing in Karafka, the Rate Limiting feature behaves in a way that ensures that the same message is not re-processed immediately. Instead, Karafka waits for a configurable period (known as the "backoff") before retrying the message.

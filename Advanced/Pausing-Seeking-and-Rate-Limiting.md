@@ -32,7 +32,7 @@ end
 
 !!! note ""
 
-    It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself:
+    It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
 
 **BAD**:
 
@@ -90,8 +90,6 @@ end
 
 In the context of Apache Kafka, "seeking" refers to moving the consumer's offset to a specific position within a topic's partition. In essence, it allows you to dictate where in the partition the consumer begins (or resumes) reading messages.
 
-In the context of Apache Kafka, "seeking" refers to moving the consumer's offset to a specific position within a topic's partition. In essence, it allows you to dictate where in the partition the consumer begins (or resumes) reading messages.
-
 ### Seeking to an Offset
 
 Inside your consumer's `#consume` method, you can use the `#seek` method to set the offset for a specific partition:
@@ -127,6 +125,35 @@ def consume
 
   # Get back by an hour of data and reprocess all
   seek(Time.now.utc - 60 * 60)
+end
+```
+
+### Seeking vs. Offset Position
+
+When utilizing the `#seek` API in Karafka, it's crucial to understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
+
+By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is not reset. This means that the position to which you're seeking won't automatically update the current offset in memory.
+
+Additionally, Karafka implements a safeguard to ensure data consistency and integrity. By default, it prevents committing offsets earlier than the highest offset committed on a consumer instance. This mechanism helps avoid scenarios where a consumer might read and process messages out of order, potentially leading to data duplication or loss.
+
+To address scenarios where you need to explicitly move the consumer's offset and update the in-memory position, the `#seek` method accepts an additional flag: `reset_offset`. When this flag is set to true, Karafka will move the consumer to the specified location and update the in-memory offset to match this new position.
+
+This is particularly useful in cases where you need to process messages from a specific point, regardless of previous commits, or when managing complex consumer behaviors that require precise control over message processing orders.
+
+```ruby
+def consume
+  results = []
+
+  messages.each do |message|
+    results << Processor.call(message.payload)
+  end
+  
+  return if results.all? { |result| result == true }
+
+  # Get back by 100 messages and reprocess data if anything went badly
+  # Move the offset position together so when reprocessing, things can be marked again despite
+  # the most recent offset committed till this point being ahead
+  seek(messages.last.offset - 100, reset_offset: true)
 end
 ```
 

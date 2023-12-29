@@ -578,7 +578,7 @@ When working with Karafka, you also need to take into consideration things that 
 
 Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](/docs/Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
-You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-multithreading).
+You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-Multithreading).
 
 It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
@@ -656,7 +656,7 @@ To handle such cases, you can:
 - Increase the number of partitions beyond the number of active consumer processes to achieve multiple assignments in a single consumer process. In a case like this, the given process will be able to work in parallel.
 - Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
 
-You can read more about the Karafka concurrency model [here](Concurrency-and-multithreading).
+You can read more about the Karafka concurrency model [here](Concurrency-and-Multithreading).
 
 ## Why am I seeing a "needs to be consistent namespacing style" error?
 
@@ -1159,6 +1159,16 @@ The committed offset is the position of the last record that Kafka will not read
 
 So, you can think of the position set by `#seek` as a volatile, in-memory value, while the committed offset is a more durable, stored value.
 
+If you would like to `#seek` back and be able to commit offsets from the seek location, please use the `reset_offset` flag when seeking:
+
+```ruby
+def consume
+  # Some operations...
+  # ...
+  seek(100, reset_offset: true)
+end
+```
+
 ## Is it recommended to use public consumer methods from outside the consumer?
 
 In general, it is not recommended to use public consumer methods from outside the consumer in Karafka.
@@ -1523,7 +1533,7 @@ They are located in the WaterDrop wiki [idempotence section](https://karafka.io/
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
-Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](https://karafka.io/docs/Concurrency-and-multithreading/#database-connections-usage).
+Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](https://karafka.io/docs/Concurrency-and-Multithreading/#database-connections-usage).
 
 ## Why is my Karafka application consuming more memory than expected?
 

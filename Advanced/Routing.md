@@ -112,7 +112,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
+You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
 
 ### Subscription Group Multiplexing
 

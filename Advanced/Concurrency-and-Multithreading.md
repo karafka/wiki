@@ -1,10 +1,11 @@
-Karafka uses native Ruby threads to achieve concurrent processing in three scenarios:
+Karafka uses native Ruby threads to achieve concurrent processing in four scenarios:
 
 - for concurrent processing of messages from different topics partitions.
+- for concurrent processing of messages from same topic different partitions (via [Multiplexing](Pro-Multiplexing) or [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)). 
 - for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Virtual-Partitions) feature.
 - to handle consumer groups management (each consumer group defined will be managed by a separate thread).
 
-## Parallel messages processing
+## Parallel Messages Processing
 
 After messages are fetched from Kafka, Karafka will split incoming messages into separate jobs. Those jobs will then be put on a queue from which a poll of workers can consume. All the ordering warranties will be preserved.
 
@@ -20,7 +21,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Parallel processing of multiple topics/partitions
+### Parallel Processing of Multiple Topics/Partitions
 
 Karafka uses multiple threads to process messages coming from different topics and partitions.
 
@@ -43,7 +44,7 @@ Example of work distribution amongst two workers:
 
     Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
-### Parallel Kafka connections within a single consumer group (subscription groups)
+### Parallel Kafka connections within a Single Consumer Group (Subscription Groups)
 
 Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
 
@@ -105,7 +106,7 @@ end
 
     If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
 
-### Parallel processing of a single topic partition (Virtual Partitions)
+### Parallel Processing Of a Single Topic Partition (Virtual Partitions)
 
 Karafka allows you to parallelize further processing of data from a single partition of a single topic via a feature called [Virtual Partitions](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
 
@@ -121,13 +122,17 @@ Virtual Partitions allow you to parallelize the processing of data from a single
 
 You can read more about this feature [here](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
 
-## Consumer group multi-threading
+### Parallel Consuming and Processing of the Same Topic Partitions
+
+Parallel consumption and processing of the same topic partitions in Karafka can be achieved through Multiplying the connections or using Non-Blocking Jobs feature. Multiplexing creates connections to Kafka, allowing for concurrent consumption, which is ideal for different operations or scaling needs. Non-Blocking Jobs, conversely, utilize the same connection but employ a sophisticated pausing strategy to handle processing efficiently. The choice between these approaches depends on the specific requirements, such as operation type and scale. For a comprehensive understanding, visiting the dedicated documentation pages for [Multiplexing](Pro-Multiplexing) and [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) is recommended.
+
+## Consumer Group Multi-Threading
 
 Since each consumer group requires a separate connection and a thread, we do this concurrently.
 
 It means that for each consumer group, you will have one additional thread running. For high-load topics, there is always an IO overhead on transferring data from and to Kafka. This approach allows you to consume data concurrently.
 
-## Work saturation
+## Work Saturation
 
 Karafka is designed to efficiently handle a high volume of Kafka messages by leveraging a pool of worker threads. These workers can run in parallel, each processing messages independently. This parallelization allows Karafka to achieve high throughput by distributing the work of processing messages across multiple threads. However, this concurrent processing model can sometimes encounter a phenomenon known as work saturation or job saturation.
 
@@ -143,7 +148,7 @@ There are a few ways to measure the saturation in Karafka:
 
 Job saturation in Karafka isn't inherently critical, but it may lead to increased consumption lag, resulting in potential delays in processing tasks. This is because when the system is overloaded with jobs, it takes longer to consume and process new incoming data. Moreover, heavily saturated processes can create an additional issue; they may exceed the max.poll.interval.ms configuration parameter. This parameter sets the maximum delay allowed before the Kafka broker considers the consumer unresponsive and reassigns its partitions. In such a scenario, maintaining an optimal balance in job saturation becomes crucial for ensuring efficient message processing.
 
-## OS threads usage
+## OS Threads Usage
 
 Karafka's multithreaded nature is one of its strengths and allows it to manage numerous tasks simultaneously. To understand how it achieves this, it's essential to realize that Karafka's threading model isn't just about worker poll threads. It also extends to other aspects of Karafka's functionality.
 
@@ -162,7 +167,7 @@ If you are interested in how many threads in total your Karafka servers use, Kar
 
 This detailed view can provide invaluable insights, helping you understand how your Karafka server is performing and where any potential bottlenecks might occur.
 
-## Database connections usage
+## Database Connections Usage
 
 Karafka, by itself, does not manage PostgreSQL or any other database connections directly. When using frameworks like Ruby on Rails, database connections are typically managed by the [ActiveRecord Connections Pool](https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html).
 
@@ -171,3 +176,23 @@ Under normal circumstances, Karafka will use the `concurrency` number of databas
 However, the number of potential concurrent database connections might increase when leveraging advanced Karafka APIs, such as the Filtering API, or making alterations to the scheduler and invoking DB requests from it. This is because these APIs operate from the listeners threads. In such advanced scenarios, the maximum number of concurrent DB connections would be the sum of the number of workers (`concurrency`) and the total number of subscription groups.
 
 It's important to note that a situation where all these threads would execute database operations simultaneously is highly unlikely. Therefore, in most use cases, the simplified assumption that only the `concurrency` parameter determines potential DB connections should suffice.
+
+## Subscription Group Blocking Polls
+
+In the Karafka framework, the default operation mode favors minimal connections to Kafka, typically using just one connection per process for all assigned topic partitions. This approach is generally efficient and ensures even workload distribution when data is evenly spread across partitions. However, this model might lead to reduced parallelism in scenarios where significant lag and many messages accumulate in a few partitions. This happens because polling under such circumstances retrieves many messages from the lagging partitions, concentrating work there rather than distributing it.
+
+Karafka's default compliance with the `max.poll.interval.ms` setting exacerbates this issue. The framework will initiate a new poll once all data from the previous poll is processed, potentially leading to periods where no further messages are being consumed because the system is busy processing a backlog from one or a few partitions. This behavior can dramatically reduce the system's overall concurrency and throughput in extreme cases of lag across many partitions.
+
+To address these challenges and enhance parallel processing, Karafka offers several strategies:
+
+- **Optimizing Polling**: Adjusting the `fetch.message.max.bytes` setting can reduce the number of messages fetched per partition in each poll. This ensures a more effective round-robin distribution of work and prevents any single partition from overwhelming the system.
+
+- **[Non-Blocking Jobs](Pro-Non-Blocking-Jobs)**: This approach allows the same connection to fetch new messages while previous messages are still being processed. It uses a sophisticated pausing strategy to manage the flow, ensuring processing stays caught up in polling.
+
+- **[Virtual Partitions](Pro-Virtual-Partitions)**: By subdividing actual Kafka partitions into smaller, virtual ones, Karafka can parallelize the processing of messages from a single physical partition. This can significantly increase the processing throughput and efficiency.
+
+- **[Connection Multiplexing](Pro-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, ensuring that a lag in one doesn't halt the polling of others.
+
+- **[Subscription Groups](Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)**: Organizes topics into groups for parallel data polling from multiple topics, mitigating lag effects and improving performance by utilizing multiple threads.
+
+Choosing the right strategy (or combination of strategies) depends on your system's specific characteristics and requirements, including the nature of your workload, the scale of your operations, and your performance goals. Each approach offers different benefits and trade-offs regarding complexity, resource usage, and potential throughput. Therefore, carefully analyzing your system's behavior under various conditions is crucial to determining the most effective path to improved parallelism and performance. For detailed guidance and best practices on implementing these strategies, consulting the dedicated documentation pages on Multiplexing, Non-Blocking Jobs, and other relevant sections of the Karafka documentation is highly recommended.

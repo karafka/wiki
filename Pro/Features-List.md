@@ -12,6 +12,10 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Long-Running Jobs are jobs that run continuously and handle messages from a Kafka topic over an extended time beyond `max.poll.interval.ms`. These jobs are designed to handle tasks requiring longer execution times, such as data processing, transformation, and analysis.
 
+- [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-blocking jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, ensuring efficient and timely data handling.
+
+- [Periodic Jobs](Pro-Periodic-Jobs) - Periodic Jobs enable consumers to perform operations at regular intervals, even without new data. This feature allows for advanced window-based operations and ensures consumers remain active and ready, facilitating consistent processing capabilities regardless of data inflow.
+
 - [Expiring Messages](Pro-Expiring-Messages) - Karafka's Expiring Messages feature allows messages to be excluded from processing automatically in case they are too old.
 
 - [Routing Patterns](Pro-Routing-Patterns) - Karafka's Routing Patterns feature allows users to define routes using regular expressions. When a Kafka topic matches the specified pattern, Karafka automatically initiates consumption, streamlining the handling of dynamically created topics without manual configuration.
