@@ -362,6 +362,32 @@ Karafka.producer.produce_async(
 )
 ```
 
+5. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # other config options...
+
+    # Make Karafka admin use such a group ID
+    config.admin.group_id = 'karafka-admin-extra'
+  end
+end
+
+Karafka::Web.setup do |config|
+  # other config options...
+  config.processing.consumer_group = 'karafka-web-ui'
+end
+```
+
+```bash
+# Create the admin consumer group
+heroku kafka:consumer-groups:create karafka-admin-extra
+
+# Create the web ui consumer group
+heroku kafka:consumer-groups:create karafka-web-ui
+```
+
 !!! note ""
 
     You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
