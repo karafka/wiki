@@ -381,6 +381,12 @@ end
 ```
 
 ```bash
+# Since both are set to karafka_admin by default, if you did not change those values,
+# you can just run:
+heroku kafka:consumer-groups:create karafka_admin
+
+# If you did change them according to the above example, create all the groups needed:
+
 # Create the admin consumer group
 heroku kafka:consumer-groups:create karafka-admin-extra
 
