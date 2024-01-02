@@ -362,7 +362,7 @@ Karafka.producer.produce_async(
 )
 ```
 
-5. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well:
+5. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well. By default, both those settings are set to `karafka_admin`:
 
 ```ruby
 class KarafkaApp < Karafka::App
