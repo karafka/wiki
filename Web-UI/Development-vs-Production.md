@@ -49,6 +49,15 @@ Karafka::Web.setup do |config|
 end
 ```
 
+Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.processing.consumer_group`:
+
+```ruby
+Karafka::Web.setup do |config|
+  # After configuration, do not forget to use Heroku CLI to assign proper ACL permissions to this group.
+  config.processing.consumer_group = 'karafka-web'
+end
+```
+
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Deployment#heroku).
 
 ## Upgrade recommendations
