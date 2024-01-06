@@ -176,6 +176,12 @@ end
 
 Understanding the interplay between polling and ticking is crucial for effectively managing both message consumption and the execution of periodic jobs. This interdependency ensures that the system not only fetches and processes messages efficiently but also executes regular, time-sensitive tasks even during low or no data activity periods.
 
+!!! note "Timing of Periodic Jobs"
+
+    Remember that periodic jobs in Karafka may start immediately after the Kafka assignment is ready, potentially before the first batch of messages is received. Ensure your `#tick` method is designed to handle this scenario effectively.
+
+    In such scenarios, using the `#used?` method is always recommended. This can be done using a conditional statement that checks if there was even a single batch consumed or scheduled for consumption.
+
 ### Polling Mechanism and Its Impact on Ticking
 
 Polling in Karafka refers to the process of retrieving messages from Kafka. This occurs at intervals defined by the `max_wait_time`, which dictates how long the consumer should wait for messages. After each poll operation:
