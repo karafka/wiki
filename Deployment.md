@@ -420,6 +420,10 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+### Heroku Retention Policy Impact on the Web UI
+
+Heroku's one-day default retention policy for Kafka may affect Karafka Web UI's functionality and reliability, leading to a lack of data and operational issues. The Web UI depends on continuous data flow and requires access to historical data for analytics. A one-day policy is insufficient for Web UI topics. To improve stability and reliability, we recommend configuring your Web UI topics according to our recommended defaults, which can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+
 ### Troubleshooting
 
 There are few problems you may encounter when configuring things for Heroku:
@@ -462,6 +466,10 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 **Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
 
 **Solution 2**: Make sure you've created appropriate consumer groups **prior** to them being used via the Heroku CLI.
+
+#### Missing Information or "Initial Consumers State Missing" Notice After a While
+
+Please read the [Heroku Retention Policy Impact on the Web UI](https://karafka.io/docs/Deployment/#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
 
 ## Kubernetes
 

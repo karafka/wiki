@@ -156,6 +156,9 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
           replication factor: aligned with your company policy
         </li>
         <li>
+          <code>'cleanup.policy': 'delete'</code>
+        </li>
+        <li>
           <code>'retention.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
         </li>
       </ul>
@@ -199,6 +202,9 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
         </li>
         <li>
           replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'cleanup.policy': 'delete'</code>
         </li>
         <li>
           <code>'retention.ms': 3 * 31 * 24 * 60 * 60 * 1_000 # 3 months</code>
