@@ -292,7 +292,7 @@ Details about how Kafka for Heroku works can also be found here:
 - [https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku](https://devcenter.heroku.com/articles/multi-tenant-kafka-on-heroku)
 - [https://devcenter.heroku.com/articles/kafka-addon-migration](https://devcenter.heroku.com/articles/kafka-addon-migration)
 
-### Heroku Kafka prefix convention
+### Heroku Kafka Prefix Convention
 
 !!! note ""
 
@@ -398,7 +398,7 @@ heroku kafka:consumer-groups:create karafka-web-ui
 
     You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
-### Configuring Karafka to work with Heroku SSL
+### Configuring Karafka to Work With Heroku SSL
 
 When you turn on the add-on, Heroku exposes a few environment variables within which important details are stored. You need to use them to configure Karafka as follows:
 

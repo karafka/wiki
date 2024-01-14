@@ -41,6 +41,8 @@ bundle exec karafka-web install --replication-factor 5
 
 Please keep in mind that in order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
 
+### Topics Automatic Prefix
+
 ```ruby
 Karafka::Web.setup do |config|
   config.topics.errors = "#{ENV['KAFKA_PREFIX']}_karafka_errors"
@@ -48,6 +50,8 @@ Karafka::Web.setup do |config|
   config.topics.consumers.states = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_states"
 end
 ```
+
+### Web UI Consumer Group Creation
 
 Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.processing.consumer_group`:
 
@@ -57,6 +61,10 @@ Karafka::Web.setup do |config|
   config.processing.consumer_group = 'karafka-web'
 end
 ```
+
+### Heroku Multi-Tenant Retention Policy Impact
+
+When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](https://karafka.io/docs/Deployment/#heroku-retention-policy-impact-on-the-web-ui).
 
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Deployment#heroku).
 
