@@ -6,7 +6,7 @@ Karafka provides several features that can work together. Unless explicitly stat
 
 Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions consumers will respond to `#revoked?` if the partition is lost, similar to regular consumers.
 
-### Enhanced Active Job + Virtual Partitions
+## Enhanced Active Job + Virtual Partitions
 
 Virtual Partitions **can** be used with Active Job without any limitations. The only thing worth keeping in mind is that the message payload for Active Job contains serialized job details and should not be deserialized in the partitioner.
 
@@ -35,7 +35,7 @@ end
 
 Please keep in mind that with Virtual Partitions, the offset will be committed after all the Virtual Partitions work is done. There is **no** "per job" marking as processed.
 
-### Enhanced Dead Letter Queue + Virtual Partitions
+## Enhanced Dead Letter Queue + Virtual Partitions
 
 Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
 
@@ -53,6 +53,30 @@ routes.draw do
       # Minimum one retry because VPs needs to switch to the collapsed mode
       max_retries: 1
     )
+  end
+end
+```
+
+## Virtual Partitions + Transactions
+
+Due to the Virtual Partitions' nature, message production transactions work entirely as expected. However, transactions involving offset storage operate in a simulated mode. This means that even if `#mark_as_consumed` is used within a transaction, it doesn't become part of the transaction itself. Instead, it's committed right after the transaction successfully ends. This creates an edge case: there could be inconsistencies if a consumer is killed or loses its assignment right after the Kafka transaction completes but before the consumer offset is sent to Kafka.
+
+This behavior aligns with the principles of the underlying Virtual Offset Management system. This system is crafted to handle offsets in a way distinct from Kafka's native offset handling due to the underlying parallelization process. As a result, certain operations, like `#mark_as_consumed`, are executed outside the main transaction scope, which is a direct consequence of the design and functionality of the Virtual Offset Management.
+
+The transactional behavior aligns with standard expectations in a collapsed virtual partition flow scenario. The associated offset is included in the transaction when a message is marked as consumed.
+
+```ruby
+class VirtualPartitionedEventsConsumer < ApplicationConsumer
+  def consume
+    transaction do
+      produce topic: totals, payload: messages.payloads.sum(&:count).to_s
+
+      # if this topic uses virtual partitions this will NOT be part of the transaction and will be
+      # executed right after the transaction has ended.
+      #
+      # In case `#collapsed?` would be true, this will behave like a regular transaction
+      mark_as_consumed messages.last
+    end
   end
 end
 ```

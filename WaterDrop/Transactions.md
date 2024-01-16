@@ -1,6 +1,10 @@
 # WaterDrop Transactions
 
-WaterDrop transactions provide a way to achieve exactly-once semantics during data streaming. They enable users to send multiple messages to multiple topics/partitions so that all messages are successfully published or none are, ensuring atomicity.
+!!! tip "Transactional and Exactly-Once Semantics Support in Consumers"
+
+    Karafka Pro supports transactional operations and Exactly-Once Semantics for both producers and consumers. This enhanced functionality includes the production of messages and the committing of consumer offset within the same transaction. This ensures atomicity and consistency in message handling, making your data streaming processes more reliable and efficient. For a detailed understanding of these capabilities and their implementation, refer to the Karafka Pro [Transactions](https://karafka.io/docs/Pro-Transactions) documentation section.
+
+WaterDrop transactions enable users to send multiple messages to multiple topics/partitions so that all messages are successfully published or none are, ensuring atomicity.
 
 ## Using Transactions
 
