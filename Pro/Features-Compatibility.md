@@ -80,3 +80,7 @@ class VirtualPartitionedEventsConsumer < ApplicationConsumer
   end
 end
 ```
+
+## Virtual Partitions + Offset Metadata Storage
+
+In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configurable during routing, dictates whether the system should use the most recent (`:current`) or the exact (`:exact`) metadata associated with a materialized offset, a choice crucial for aligning processing logic with data consistency requirements. For detailed usage and configuration, refer to [this](https://karafka.io/docs/Pro-Offset-Metadata-Storage/#interaction-with-virtual-partitions) Karafka documentation section.

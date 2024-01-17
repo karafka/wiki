@@ -6,13 +6,15 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Web UI](Pro-Enhanced-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
 
+- [Offset Metadata Storage](Pro-Offset-Metadata-Storage) - Offset Metadata Storage allows attaching custom metadata to message offsets during commit to Kafka. This feature enriches message processing by providing additional data annotations and enhancing system capabilities, traceability, and intelligence through retrievable metadata.
+
 - [Virtual Partitions](Pro-Virtual-Partitions) - Virtual Partitions allow you to parallelize data processing from a single partition. This can drastically increase throughput when IO operations are involved.
 
 - [Delayed Topics](Pro-Delayed-Topics) - Delayed Topics feature allows for arbitrary delay in processing messages from specified topics without impacting the processing of other topics.
 
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Long-Running Jobs are jobs that run continuously and handle messages from a Kafka topic over an extended time beyond `max.poll.interval.ms`. These jobs are designed to handle tasks requiring longer execution times, such as data processing, transformation, and analysis.
 
-- [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-blocking jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, ensuring efficient and timely data handling.
+- [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-Blocking Jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, ensuring efficient and timely data handling.
 
 - [Periodic Jobs](Pro-Periodic-Jobs) - Periodic Jobs enable consumers to perform operations at regular intervals, even without new data. This feature allows for advanced window-based operations and ensures consumers remain active and ready, facilitating consistent processing capabilities regardless of data inflow.
 

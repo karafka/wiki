@@ -103,7 +103,7 @@
 
 * [Features List](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
-* [Transactions](Transactions)
+* [Transactions](Pro-Transactions)
 * [Offset Metadata Storage](Pro-Offset-Metadata-Storage)
 * [Virtual Partitions](Pro-Virtual-Partitions)
 * [Delayed Topics](Pro-Delayed-Topics)

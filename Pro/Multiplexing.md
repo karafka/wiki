@@ -82,6 +82,39 @@ end
 
 Once you have configured multiplexing in your routing settings, no additional steps are required for it to function. Your application will start processing messages from multiple partitions simultaneously, leveraging the benefits of multiplexing immediately and seamlessly.
 
+The following configuration options are available for `#multiplexing`:
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Type</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>min</code></td>
+      <td>Integer, nil</td>
+      <td><code>nil</code> (sets to <code>max</code>)</td>
+      <td>The minimum multiplexing count. Setting this to <code>nil</code> or not setting it at all will set it to the <code>max</code> value, effectively turning off dynamic multiplexing and ensuring a stable number of multiplexed connections.</td>
+    </tr>
+    <tr>
+      <td><code>max</code></td>
+      <td>Integer</td>
+      <td>1</td>
+      <td>The maximum multiplexing count. This defines the upper limit for the number of connections that can be multiplexed.</td>
+    </tr>
+    <tr>
+      <td><code>boot</code></td>
+      <td>Integer, nil</td>
+      <td><code>nil</code> (defaults to half of <code>max</code> or <code>min</code> if <code>min</code> is set)</td>
+      <td>Specifies how many listeners should be started during the boot process by default in the dynamic mode. If not set, it picks half of <code>max</code> as long as possible. Otherwise, it goes with <code>min</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Multiplexing vs. Virtual Partitions
 
 Deciding between Multiplexing and Virtual Partitions isn't a strict either/or scenario; in fact, they can be complementary. While Virtual Partitions parallelize single-topic processing without extra Kafka connections, Multiplexing increases throughput by allowing a consumer to handle multiple partitions. Together, they can enhance capabilities, especially in IO-intensive workloads. For instance, with a concurrency of ten, you might use two Kafka connections and virtualize each into five virtual partitions. This approach leverages both strategies for optimal performance, adapting to your application's needs, data intricacies, and anticipated load.
