@@ -45,7 +45,7 @@
 * [Testing](WaterDrop-Testing)
 * [Middleware](WaterDrop-Middleware)
 
-## Production usage
+## Production Usage
 
 * [Development vs Production](Development-vs-Production)
 * [Signals and states](Signals-and-states)
@@ -99,7 +99,7 @@
 * [Enterprise](Pro-Enterprise)
 * [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session)
 
-### Features and enhancements
+### Features and Enhancements
 
 * [Features List](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
@@ -133,7 +133,7 @@
     * [Errors](Pro-Enhanced-Web-UI#errors)
     * [DLQ / Dead](Pro-Enhanced-Web-UI#dlq-dead)
 
-## Upgrade notes
+## Upgrade Notes
 
 It is recommended to do one major upgrade at a time.
 
