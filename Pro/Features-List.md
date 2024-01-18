@@ -6,6 +6,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Web UI](Pro-Enhanced-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
 
+- [Transactions](Pro-Transactions) - Transactions ensure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, ensuring that either all succeed or none.
+
 - [Offset Metadata Storage](Pro-Offset-Metadata-Storage) - Offset Metadata Storage allows attaching custom metadata to message offsets during commit to Kafka. This feature enriches message processing by providing additional data annotations and enhancing system capabilities, traceability, and intelligence through retrievable metadata.
 
 - [Virtual Partitions](Pro-Virtual-Partitions) - Virtual Partitions allow you to parallelize data processing from a single partition. This can drastically increase throughput when IO operations are involved.
