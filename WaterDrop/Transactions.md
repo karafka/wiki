@@ -345,6 +345,42 @@ producer.transaction do
 end
 ```
 
+## Instrumentation
+
+In  WaterDrop, transaction-related events are monitored, emitting notifications for key activities. These events include:
+
+- `transaction.started`
+- `transaction.committed`
+- `transaction.aborted`
+- `transaction.marked_as_consumed`
+- `transaction.finished`
+
+Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
+
+!!! Warning "Event Subscription with Multiple Producers"
+
+    In setups using a connection pool or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. Failure to subscribe to each can result in missing critical transaction-related events.
+
+```ruby
+producer = WaterDrop::Producer.new
+
+producer.setup do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+
+producer.monitor.subscribe('transaction.started') do |_event|
+  puts "Wow, transaction just started!"
+end
+
+producer.monitor.subscribe('transaction.committed') do |_event|
+  puts "Wow, transaction just got committed!"
+end
+
+producer.monitor.subscribe('transaction.aborted') do |_event|
+  puts "Wow, transaction just got aborted!"
+end
+```
+
 ## Limitations
 
 Karafka producer transactions provide atomicity over streams, but users should be mindful of the following limitations:
