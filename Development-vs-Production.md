@@ -9,8 +9,9 @@ class KarafkaApp < Karafka::App
   setup do |config|
     # Other settings...
 
-    # Make sure, that persistence is always disabled for non-dev environments as it
-    # yields benefits only in dev
+    # Recreate consumers with each batch. This will allow Rails code reload to work in the
+    # development mode. Otherwise Karafka process would not be aware of code changes
+    # It is recommended to have persistence turned on for any non-dev environment
     config.consumer_persistence = !Rails.env.development?
   end
 end
