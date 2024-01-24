@@ -153,6 +153,9 @@
 153. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
 154. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
 155. [Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?](#why-am-i-experiencing-a-load-error-when-using-karafka-with-ruby-27-and-how-can-i-fix-it)
+156. [Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?](#why-am-i-getting-nscharacterset-initialize-may-have-been-in-progress-in-another-thread-when-fork-error-when-forking-on-macos)
+
+objc[<pid>]: +[NSCharacterSet initialize] may have been in progress in another thread when fork() was called. We cannot safely call it or ignore it in the fork() child process. Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2070,3 +2073,44 @@ If you're experiencing a load error with Karafka on Ruby 2.7, it's due to a bug 
 - **Update RubyGems to v3.4.22**: Run `gem update --system 3.4.22 --no-document`.
 
 Note: Ruby 2.7 is EOL and no longer supported. For better security and functionality, upgrading to Ruby 3.0 or higher is highly recommended.
+
+## Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?
+
+When running a Rails application with Karafka and Puma on macOS, hitting the Karafka dashboard or endpoints can cause crashes with an error related to fork() and Objective-C initialization. This is especially prevalent in Puma's clustered mode.
+
+The error message is usually along the lines of:
+
+```shell
+objc[<pid>]: +[NSCharacterSet initialize]
+may have been in progress in another thread when fork() was called.
+We cannot safely call it or ignore it in the fork() child process.
+Crashing instead. Set a breakpoint on objc_initializeAfterForkError to debug.
+```
+
+The issue concerns initializing specific libraries or components in a macOS environment, particularly in a multi-process environment. It may involve Objective-C libraries being initialized unsafely after a fork, which macOS does not allow.
+
+There are a few potential workarounds:
+
+1. Setting the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` when running Puma. This is not ideal as it might introduce other issues.
+
+2. Creating an instance of `Rdkafka` that would force-load all the needed components before the fork as follows:
+
+```ruby
+require 'rdkafka'
+
+before_fork do
+  # Make sure to configure it according to your cluster location
+  config = {
+    'bootstrap.servers': 'localhost:9092'
+  }
+
+  # Create a new instance and close it
+  # This will load or dynamic components on macOS
+  # Not needed under other OSes, so not worth running
+  if RUBY_PLATFORM.include?('darwin')
+    ::Rdkafka::Config.new(config).admin.close
+  end
+end
+```
+    
+It is worth pointing out that this is not a Karafka-specific issue. While the issue manifests when using Karafka with Puma, it's more related to how macOS handles forking with Objective-C libraries and specific initializations post-fork.
