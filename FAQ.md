@@ -1565,8 +1565,8 @@ While tuning these settings can help optimize memory usage, it's essential to re
 If you are seeing the following error:
 
 ```bash
-INFO pid=1 tid=gl9 Running Karafka 2.2.0 server
-#<Thread:0x0000aaab008cc9d0 karafka-2.2.0/lib/karafka/helpers/async.rb:25 run>
+INFO pid=1 tid=gl9 Running Karafka 2.3.0 server
+#<Thread:0x0000aaab008cc9d0 karafka-2.3.0/lib/karafka/helpers/async.rb:25 run>
 # terminated with exception (report_on_exception is true):
 Traceback (most recent call last):
 17: lib/karafka/helpers/async.rb:28:in `block in async_call'
