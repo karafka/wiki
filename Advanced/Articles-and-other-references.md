@@ -6,6 +6,7 @@
 * [Karafka-Testing](https://github.com/karafka/karafka-testing)
 * [Karafka-Core](https://github.com/karafka/karafka-core)
 * [Karafka Rdkafka](https://github.com/karafka/karafka-rdkafka)
+* [Rdkafka-Ruby](https://github.com/karafka/rdkafka-ruby)
 * [Apache Kafka](http://kafka.apache.org/)
 * [librdkafka](https://github.com/edenhill/librdkafka)
 
@@ -15,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Karafka Framework 2.3 + Web UI 0.8 Release Announcement](https://mensfeld.pl/2024/01/karafka-framework-2-3-web-ui-0-8-release-announcement/)
 * [Karafka framework 2.1 announcement](https://mensfeld.pl/2023/06/karafka-framework-2-1-announcement/)
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
 * [Karafka framework 2.0 announcement](https://mensfeld.pl/2022/08/karafka-framework-2-0-announcement/)
