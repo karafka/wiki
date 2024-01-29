@@ -42,6 +42,7 @@
 * [Error Handling](WaterDrop-Error-Handling)
 * [Monitoring and Logging](WaterDrop-Monitoring-and-Logging)
 * [Transactions](WaterDrop-Transactions)
+* [Custom Partitioners](WaterDrop-Custom-Partitioners)
 * [Testing](WaterDrop-Testing)
 * [Middleware](WaterDrop-Middleware)
 
