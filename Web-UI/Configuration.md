@@ -77,6 +77,7 @@ Karafka::Web.setup do |config|
   config.topics.errors = "karafka_errors_#{env_suffix}"
   config.topics.consumers.reports = "karafka_consumers_reports_#{env_suffix}"
   config.topics.consumers.states = "karafka_consumers_states_#{env_suffix}"
+  config.topics.consumers.metrics = "karafka_consumers_metrics_#{env_suffix}"
 end
 ```
 
