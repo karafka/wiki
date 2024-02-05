@@ -29,11 +29,32 @@ This configuration is used by a set of Karafka [CLI](CLI) commands you can invok
 
 There are the following commands supported:
 
-- `karafka topics create` - creates topics with appropriate settings.
-- `karafka topics delete` - deletes all the topics defined in the routes.
-- `karafka topics repartition` - adds additional partitions to topics with fewer partitions than expected.
-- `karafka topics reset` - deletes and re-creates all the topics.
-- `karafka topics migrate` - creates missing topics and repartitions existing to match expected partitions count.
+<table>
+  <tr>
+    <th>Command</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>karafka topics create</code></td>
+    <td>creates topics with appropriate settings.</td>
+  </tr>
+  <tr>
+    <td><code>karafka topics delete</code></td>
+    <td>deletes all the topics defined in the routes.</td>
+  </tr>
+  <tr>
+    <td><code>karafka topics repartition</code></td>
+    <td>adds additional partitions to topics with fewer partitions than expected.</td>
+  </tr>
+  <tr>
+    <td><code>karafka topics reset</code></td>
+    <td>deletes and re-creates all the topics.</td>
+  </tr>
+  <tr>
+    <td><code>karafka topics migrate</code></td>
+    <td>creates missing topics and repartitions existing to match expected partitions count.</td>
+  </tr>
+</table>
 
 The below example illustrates the usage of the `migrate` command to align the number of partitions and to add one additional topic:
 
