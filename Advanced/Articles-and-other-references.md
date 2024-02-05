@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Refactoring in Practice (Using Kafka and Karafka)](https://remimercier.com/refactoring-in-practice/)
 * [Karafka Framework 2.3 + Web UI 0.8 Release Announcement](https://mensfeld.pl/2024/01/karafka-framework-2-3-web-ui-0-8-release-announcement/)
 * [Karafka framework 2.1 announcement](https://mensfeld.pl/2023/06/karafka-framework-2-1-announcement/)
 * [Karafka Web UI announcement](https://mensfeld.pl/2023/02/karafka-web-ui-your-ruby-and-rails-out-of-the-box-kafka-ui/)
