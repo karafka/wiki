@@ -25,6 +25,7 @@
 * [Enhancing Data Reliability Through Transactional Offsets with Karafka](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/)
 * [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)
 * [Kafka topics as a code – declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
+* [Batch Processing with Kafka using Karafka Batch](https://mamxalf.medium.com/batch-processing-with-kafka-using-karafka-batch-ac42b6e4a4a0)
 * [Integration Patterns for Distributed Architecture - Intro to Kafka](https://www.smily.com/engineering/integration-patterns-for-distributed-architecture-intro-to-kafka)
 * [Add a Kafka Consumer to Rails](https://danielabaron.me/blog/rails-kafka-consumer/)
 * [An alternative approach to custom partition assignment strategy for Kafka consumers with Karafka](https://karolgalanciak.com/blog/2022/12/11/an-alternative-approach-to-custom-partition-assignment-strategy-for-kafka-consumers-with-karafka/)
