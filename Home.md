@@ -99,6 +99,7 @@
 * [Security](Pro-Security)
 * [Enterprise](Pro-Enterprise)
 * [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session)
+* [Enterprise License Setup](https://karafka.io/docs/Pro-Enterprise-License-Setup)
 
 ### Features and Enhancements
 

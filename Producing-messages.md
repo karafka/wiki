@@ -11,7 +11,7 @@ Karafka.producer.produce_async(
 
 WaterDrop is thread-safe and operates well in scale.
 
-If you're looking to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including #producer, #produce_sync, #produce_async, #produce_many_sync, and #produce_many_async. Here's how you might use them:
+If you're looking to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including `#producer`, `#produce_sync`, `#produce_async`, `#produce_many_sync`, and `#produce_many_async`. Here's how you might use them:
 
 ```ruby
 class VisitsConsumer < ApplicationConsumer
@@ -32,15 +32,15 @@ class VisitsConsumer < ApplicationConsumer
 end
 ```
 
-Please follow the [WaterDrop README](https://github.com/karafka/waterdrop/blob/master/README.md) for more details on how to use it.
+Please follow the [WaterDrop documentation](https://karafka.io/docs/WaterDrop-Usage/) for more details on how to use it.
 
 ## Producer shutdown
 
-When using the Karafka producer in processes like Puma, Sidekiq, or rake tasks, it is always recommended to call the #close method on the producer before shutting it down.
+When using the Karafka producer in processes like Puma, Sidekiq, or rake tasks, it is always recommended to call the `#close` method on the producer before shutting it down.
 
-This is because the `#close` method ensures that any pending messages in the producer's buffer are flushed to the Kafka broker before shutting down the producer. If you do not call #close, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data.
+This is because the `#close` method ensures that any pending messages in the producer's buffer are flushed to the Kafka broker before shutting down the producer. If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data.
 
-In addition, calling #close also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
+In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
 
 Overall, calling `#close` on the Karafka producer is a best practice that helps ensure reliable and efficient message delivery to Kafka while promoting your application's stability and scalability.
 
@@ -48,7 +48,7 @@ Below you can find an example how to `#close` the producer used in various Ruby 
 
 ### Closing Producer Used in Karafka
 
-When you shut down Karafka, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+When you shut down Karafka consumer, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
 
 ### Closing Producer Used in Puma
 
@@ -98,6 +98,18 @@ task send_users: :environment do
   # Make sure, that the producer is always closed before finishing
   # any rake task
   ::Karafka.producer.close
+end
+```
+
+### Closing Producer in any Ruby Process
+
+While integrating Karafka producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+
+However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a Karafka producer:
+
+```ruby
+at_exit do
+  Karafka.producer.close
 end
 ```
 
