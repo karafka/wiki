@@ -1,5 +1,24 @@
-Karafka supports three exit statuses:
+Each Karafka process defines exit statuses to indicate how the process terminated, offering clarity on operational outcome. Below, you can find the meaning behind each of the exit codes used:
 
-- ```0``` - in case shutdown was smooth and everything was as expected (all the work was done, consumers stopped, etc.).
-- ```1``` - Ruby exit code for syntax errors and any other boot problems.
-- ```2``` - in case there was a forceful shutdown in which not all consumers finished their work. This can happen when you set up ```shutdown_timeout``` but your processing takes longer than that.
+<table>
+  <tr>
+    <th>Exit Code</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>0</code></td>
+    <td>Smooth shutdown: all work completed as expected, consumers stopped, etc.</td>
+  </tr>
+  <tr>
+    <td><code>1</code></td>
+    <td>Ruby exit code for syntax errors or other boot problems.</td>
+  </tr>
+  <tr>
+    <td><code>2</code></td>
+    <td>Forceful shutdown: not all consumers finished their work due to exceeding <code>shutdown_timeout</code>.</td>
+  </tr>
+  <tr>
+    <td><code>3</code></td>
+    <td>Exit code for an orphaned Swarm node.</td>
+  </tr>
+</table>
