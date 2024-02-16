@@ -7,6 +7,7 @@ Karafka has a simple CLI built in. It provides the following commands:
 | info           | Print configuration details and other options of your application                 |
 | install        | Installs all required things for Karafka application in current directory         |
 | server         | Start the Karafka server (short-cut aliases: "s", "consumer")                     |
+| swarm          | Start the Karafka server in the swarm mode (multiple forked processes)            |
 | topics         | Allows for topics management (create, delete, repartition, reset, migrate)        |
 
 All the commands are executed the same way:
@@ -74,6 +75,10 @@ You can also exclude certain topics by using the `--exclude-topics` flag:
 ```bash
 bundle exec karafka server --exclude-topics topic_name2,topic_name5
 ```
+
+## Karafka Swarm
+
+Swarm has its own section. You can read about it [here](Swarm-Multi-Process).
 
 ## Declarative Topics
 

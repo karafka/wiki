@@ -79,6 +79,7 @@
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)
 * [Embedding](Embedding)
+* [Swarm / Multi Process](Swarm-Multi-Process)
 * [Multi-Cluster Setup](Multi-Cluster-Setup)
 * [Env Variables](Env-Variables)
 * [Assignments Tracking](Assignments-Tracking)

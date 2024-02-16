@@ -5,6 +5,8 @@ Karafka uses native Ruby threads to achieve concurrent processing in four scenar
 - for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Virtual-Partitions) feature.
 - to handle consumer groups management (each consumer group defined will be managed by a separate thread).
 
+Additionally, Karafka supports [Swarm Mode](Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
+
 ## Parallel Messages Processing
 
 After messages are fetched from Kafka, Karafka will split incoming messages into separate jobs. Those jobs will then be put on a queue from which a poll of workers can consume. All the ordering warranties will be preserved.
@@ -196,3 +198,11 @@ To address these challenges and enhance parallel processing, Karafka offers seve
 - **[Subscription Groups](Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)**: Organizes topics into groups for parallel data polling from multiple topics, mitigating lag effects and improving performance by utilizing multiple threads.
 
 Choosing the right strategy (or combination of strategies) depends on your system's specific characteristics and requirements, including the nature of your workload, the scale of your operations, and your performance goals. Each approach offers different benefits and trade-offs regarding complexity, resource usage, and potential throughput. Therefore, carefully analyzing your system's behavior under various conditions is crucial to determining the most effective path to improved parallelism and performance. For detailed guidance and best practices on implementing these strategies, consulting the dedicated documentation pages on Multiplexing, Non-Blocking Jobs, and other relevant sections of the Karafka documentation is highly recommended.
+
+## Swarm Mode
+
+Karafka provides an advanced operation mode known as Swarm, designed to optimize the framework's performance by leveraging Ruby's Copy-On-Write (CoW) mechanism and multi-process architecture. This mode significantly enhances Karafka's ability to utilize multiple CPU cores more efficiently, thus improving the throughput and scalability of your Ruby applications that process Kafka messages.
+
+In Swarm Mode, Karafka forks multiple independent processes, each capable of running concurrently. This approach allows the framework to manage and supervise these processes effectively, ensuring high availability and resilience. By doing so, Karafka can better distribute the workload across available CPU cores, minimizing bottlenecks and maximizing processing speed.
+
+Swarm has its own section. You can read about it [here](Swarm-Multi-Process).
