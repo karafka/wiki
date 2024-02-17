@@ -526,6 +526,10 @@ If the `consuming_ttl` threshold is exceeded, it suggests that the user code con
 
 This configuration allows you to handle scenarios where Karafka hangs, or the user code consuming from Kafka becomes unresponsive. By setting appropriate values for `consuming_ttl` and `polling_ttl`, you can tailor the liveness probe to detect and handle these situations effectively.
 
+!!! Warning "Important Note on Liveness Probes in Swarm Mode"
+
+    The standard Karafka Kubernetes liveness listener is not suitable for Swarm Mode. In Swarm Mode, the default listener will cause Kubernetes to inaccurately mark the Karafka process as dead due to its inability to assess the health of individual swarm nodes correctly. Karafka offers a specialized liveness listener for Swarm Mode to ensure accurate health checks and prevent unnecessary restarts. Ensure you use the correct listener for Swarm Mode deployments to maintain your application's reliability in a Kubernetes environment.
+
 Below you can find an example of how to require, configure and connect the liveness HTTP listener.
 
 1. Put following code at the end of your `karafka.rb` file:
@@ -561,6 +565,52 @@ livenessProbe:
 The provided liveness listener is a generic implementation designed to handle common scenarios. However, it may not address all cases specific to your application's requirements. Fortunately, the listener serves as a solid foundation that can be customized and extended to create a more complex and tailored solution.
 
 By using the provided listener as a starting point, you can have the flexibility to build your liveness probe that accommodates your unique needs. This can involve adding additional checks, implementing custom logic, or integrating with other monitoring systems to create a more comprehensive and sophisticated liveness solution.
+
+
+### Liveness In the Swarm Mode
+
+Karafka provides a specialized Kubernetes liveness listener for applications operating in the Swarm Mode. This adaptation ensures accurate health monitoring and management of the supervisor process within the swarm
+
+The `SwarmLivenessListener` is tailored to supervise the health of the Karafka supervisor process in Swarm Mode, addressing unique operational dynamics. It provides:
+
+- **Controlling TTL**: A configurable time-to-live (TTL) for supervising thread activity, ensuring the supervisor actively manages child nodes. Set this with consideration for normal and shutdown states to avoid false positives.
+
+- **Minimal HTTP Server**: Similar to the standard listener, it runs an HTTP server for health checks, responding with:
+  - `204`: The supervisor is active and controlling, as expected.
+  - `500`: Supervisor activity is below the controlling_ttl, indicating potential issues.
+
+To integrate the `SwarmLivenessListener` into your Karafka application, follow these steps:
+
+1. Embed the listener setup at the end of your `karafka.rb` file to initialize and subscribe the listener to your Karafka monitoring system:
+
+```ruby
+require 'karafka/instrumentation/vendors/kubernetes/swarm_liveness_listener'
+
+listener = ::Karafka::Instrumentation::Vendors::Kubernetes::SwarmLivenessListener.new(
+  # Optional: Specify to bind to a specific interface
+  hostname: '192.168.1.100',
+  # TCP port for the HTTP server
+  port: 3000,
+  # TTL for supervisor control checks (in milliseconds)
+  controlling_ttl: 60_000
+)
+
+Karafka.monitor.subscribe(listener)
+```
+
+2. Adjust your deployment spec to include the liveness probe, targeting the listener's port and path.
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /
+    port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+```
+
+By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
 #### Additional processes inside the same pod
 
