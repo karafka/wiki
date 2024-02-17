@@ -13,7 +13,7 @@ With the Karafka Enhanced Active Job adapter, you can ensure jobs processing ord
 You can tell Karafka to which partition send a given job based on the job arguments. For it to work, Karafka provides two `karafka_options` options you can set:
 
 - `partitioner` - a callable that accepts the job as the argument
-- `partition_key_type` - either `:key` (default) or `:partition_key`
+- `partition_key_type` - either `:key` (default), `:partition_key` or `:partition`
 
 Jobs sent to the same partition will always be processed in the order. This can be useful when you process data of objects for which you need to apply your logic sequentially without risking any concurrency problems. For example for applying updates in a consistent order.
 

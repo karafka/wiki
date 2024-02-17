@@ -83,7 +83,7 @@ It's important to note that crashes or exceptions in all these methods, includin
 
 Errors in the other methods (`#revoked`, `#shutdown`, and `#tick`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
 
-### Altering the consumer behaviour upon reprocessing
+### Altering the Consumer Behaviour upon Reprocessing
 
 The Karafka consumer `#retrying?` method is designed to detect whether we are in retry mode after an error has occurred. This method can be helpful in a variety of use cases where you need to alter the behavior of your application when a message is being retried. For example, you might want to send an alert or notification when a message is being retried, or you might want to branch out and perform a different action based on the fact that the message is being retried. By detecting whether a message is being retried or not, you can gain better control over your application's behavior and make sure that it is able to handle errors in a way that is appropriate for your specific use case.
 
@@ -106,7 +106,32 @@ end
 
     Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
-### Error tracking
+In addition to detecting retry scenarios with `#retrying?`, Karafka provides the `#attempt` method for more nuanced control. This method indicates the current attempt, offering opportunities for specific actions or alerts based on the number of retries. This advanced functionality allows tailored behavior adjustments during message processing retries, enhancing error-handling strategies.
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    # Just move on if not possible to fix error after 10 attempts
+    # This is just an example, you probably want a more sophisticated flow
+    if attempt > 10
+      messages.each do |message|
+        begin
+          Processor.call(message)
+        rescue
+          nil
+        end
+      end
+    else
+      # Do not silence errors so there is a retry
+      messages.each do |message|
+        Processor.call(message)
+      end
+    end
+  end
+end
+```
+
+### Error Tracking
 
 Karafka, in the runtime stage, publishes sync and async errors (any that would occur in background threads) to the monitor on an `error.occurred` channel. This allows you to connect any type of error logging or instrumentation by yourself:
 
@@ -127,7 +152,7 @@ Karafka provides out-of-the-box Dead Letter Queue pattern implementation that ca
 
 You can read about it [here](Dead-Letter-Queue).
 
-#### Finding the failing message
+### Finding the Failing Message
 
 Whenever a `consumer.consume.error` error occurs, Karafka will publish the `seek_offset` alongside other things. It contains the offset of the first uncommitted message in the `messages` batch.
 
@@ -152,7 +177,7 @@ end
 
     When doing batch operations, this message may not be the exact cause of the processing error.
 
-### Exponential backoff
+### Exponential Backoff
 
 If needed, you can also use exponential backoff. If `pause_with_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.
 
@@ -160,7 +185,7 @@ Regardless of the error nature, you can always use the [Monitoring and Logging](
 
 It is highly recommended to have a monitoring and logging layer to notify you about errors that occur while processing Kafka messages.
 
-### Pause offset selection
+### Pause Offset Selection
 
 Karafka keeps track of the last committed offset alongside Kafka when you mark a message as consumed. This means that after the pause, Karafka will start back from the failed message, not from the first message from the batch. This approach severely reduces the number of messages that must be reprocessed upon errors.
 

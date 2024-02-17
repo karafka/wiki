@@ -223,3 +223,7 @@ end
 ```
 
 This adjustment ensures that messages dispatched to the DLQ and the marking of their consumption are processed separately, providing you with the flexibility to align Karafka's behavior with your system's needs.
+
+## Custom Context-Aware Recovery Strategies
+
+TBA

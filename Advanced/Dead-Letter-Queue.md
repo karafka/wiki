@@ -43,6 +43,10 @@ end
 
 Once enabled, after the defined number of retries, problematic messages will be moved to a separate topic unblocking the processing.
 
+!!! Tip "Advanced DLQ Management in Karafka Pro"
+
+    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
+
 ## DLQ Configuration Options
 
 The table below contains options the `#dead_letter_queue` routing method accepts.
@@ -272,6 +276,7 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - expect a higher quantity of messages being moved to the DLQ topic,
 - need to preserve original topic, partition, and offset,
 - need to preserve the ordering of messages,
+- need an ability to write complex context and error-type aware strategies for error handling,
 - want to have a DLQ topic with several partitions.
 - want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
 - want to delay processing of data dispatched to the DLQ topic.

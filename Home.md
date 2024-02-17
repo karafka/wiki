@@ -123,6 +123,7 @@
 * [Cleaner API](Pro-Cleaner-API)
 * [Multiplexing](Pro-Multiplexing)
 * [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
+* [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process)
 * [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue)
 * [Enhanced Active Job](Pro-Enhanced-Active-Job)
 * [Enhanced Reliability](Pro-Enhanced-Reliability)
