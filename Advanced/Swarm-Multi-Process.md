@@ -18,7 +18,7 @@ Karafka's Swarm Mode is based on the "Supervisor-Worker" architectural pattern. 
 
 ### Benefits of using Swarm Mode
 
-Swarm Mode in Karafka brings several advantages, especially for applications dealing with high volumes of data or requiring intensive computation. Here are ten benefits that highlight the importance and efficiency of using Swarm Mode:
+Swarm Mode in Karafka brings several advantages, especially for applications dealing with high volumes of data or requiring intensive computation. Here are some benefits that highlight the importance and efficiency of using Swarm Mode:
 
 - **Improved CPU Utilization**: By running multiple processes, Swarm Mode can fully utilize multi-core systems, ensuring CPU resources are maximally exploited for increased processing power.
 
@@ -56,15 +56,54 @@ However, using the Pidfd API comes with a specific requirement: it is only avail
 
 ## Getting Started with Swarm Mode
 
-TBA
+The startup command deviates slightly from the traditional server start command to activate Swarm Mode. Instead of starting your Karafka application with the usual `bundle exec karafka server`, you will invoke Swarm Mode using:
+
+```
+bundle exec karafka swarm
+```
+
+This command signals Karafka to initiate in Swarm Mode, creating a supervisor process and the forked nodes.
 
 ## Configuration and Tuning
 
-TBA
+Configuring and tuning your Karafka application for optimal performance in Swarm Mode involves setting up the correct number of worker processes (nodes) and optionally altering other settings. This setup is crucial for efficiently handling messages, especially in high-throughput or CPU-intensive environments.
+
+During your Karafka application setup, you can specify the Swarm Mode configuration as part of the setup block. This includes defining the number of worker processes that should be forked:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other settings...
+
+    # Configure the number of worker processes for Swarm Mode
+    config.swarm.nodes = 5
+  end
+end
+```
+
+In this example, `config.swarm.nodes = 5` instructs Karafka to operate in Swarm Mode with `5` worker processes, allowing for parallel message processing across multiple CPU cores.
+
+When deciding on the number of nodes (worker processes) to configure, consider the following guidelines:
+
+- **CPU/Cores**: Aim to align the number of worker processes with the number of CPU cores available. This ensures that each process can run on its core, maximizing parallelism and reducing context switching overhead. For example, if your server has 8 CPU cores, configuring `config.swarm.nodes = 8` might be optimal.
+
+- **Memory Availability**: Worker processes initially share the same memory space (thanks to Ruby's Copy-On-Write mechanism) but will gradually consume more memory as they diverge in their execution paths. Ensure your system has enough memory to support the cumulative memory footprint of all worker processes. Monitor memory usage under load to find a balance that prevents swapping while maximizing utilization of available CPUs.
+
+- **Workload Characteristics**: Consider the nature of your workload. CPU-bound tasks benefit from a process-per-core model, whereas I/O-bound tasks might not require as many processes as they often wait on external resources (e.g., network or disk).
+
+Below, you can find a few tuning hints worth considering if you strive to achieve optimal performance:
+
+- **Monitor and Adjust**: Performance tuning is an iterative process. Monitor key metrics such as CPU utilization, memory consumption, and message processing latency. Adjust the number of worker processes based on observed performance and system constraints.
+
+- **Balance with Kafka Partitions**: Ensure that the number of worker processes aligns with the number of partitions in your Kafka topics to avoid idle workers and ensure even load distribution.
+
+- **Consider System Overheads**: Leave headroom for the operating system and other applications. Overcommitting resources to Karafka can lead to contention and degraded performance across the system.
+
+By carefully configuring and tuning the number of worker processes with your system's CPU and memory resources and the specific demands of your workload, you can achieve a highly efficient and scalable Kafka processing environment with Karafka's Swarm Mode.
 
 ## Process Management and Supervision
 
-TBA
+In Swarm Mode, Karafka introduces a supervisor process responsible for forking child nodes and overseeing their operation. This section outlines the key aspects of process management and supervision within this architecture, covering supervision strategies, handling process failures, the limitations of forking, and efficiency through preloading.
 
 ### Supervision Strategies
 

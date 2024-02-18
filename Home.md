@@ -55,6 +55,7 @@
     * [Docker](Deployment#docker)
     * [AWS + MSK (Fully Managed Apache Kafka)](Deployment#aws-msk-fully-managed-apache-kafka)
     * [Heroku](Deployment#heroku)
+    * [Kubernetes](Deployment#kubernetes)
 * [Monitoring and Logging](Monitoring-and-Logging)
 * [Error Handling and back off policy](Error-handling-and-back-off-policy)
 
