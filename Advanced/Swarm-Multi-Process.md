@@ -107,15 +107,81 @@ In Swarm Mode, Karafka introduces a supervisor process responsible for forking c
 
 ### Supervision Strategies
 
-TBA
+In Karafka's Swarm Mode, the supervision of child nodes is a critical component in ensuring the reliability and resilience of the message processing. By design, the supervisor process employs a proactive strategy to monitor the health of each child node. A vital aspect of this strategy involves each child node periodically reporting its health status to the supervisor, independent of its current processing activities.
 
-### Handling Process Failures
+Child nodes are configured to send health signals to the supervisor every 10 seconds. This regular check-in is designed to occur seamlessly alongside ongoing message processing and data polling activities, ensuring that the supervision mechanism does not interrupt or degrade the performance of the message handling workflow. The health signal may include vital statistics and status indicators that allow the supervisor to assess whether a child node is functioning optimally or if intervention is required.
 
-TBA
+The effectiveness of the health reporting mechanism is subject to a critical configuration parameter: `config.max_wait_time`. This setting determines the maximum time Karafka will wait for new data. If this value is set close to or more than `config.internal.swarm.node_report_timeout` (60 seconds by default), nodes may not have a chance to report their health frequently enough.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other settings...
+
+    # If you want to have really long wait times
+    config.max_wait_time = 60_000
+
+    # Make sure node_report_timeout is aligned
+    config.internal.swarm.node_report_timeout = 120_000
+  end
+end
+```
+
+!!! Abstract "Health Checks vs. `max_wait_time`"
+
+    In Swarm Mode, ensure `max_wait_time` doesn't exceed the `node_report_timeout` interval (default 60 seconds). Setting it too high could prevent nodes from reporting their health promptly, affecting system monitoring and stability.
+
+Two scenarios may necessitate shutting down a node:
+
+1. **Extended Health Reporting Delays**: If a child node fails to report its health status within the expected timeframe, the supervisor interprets this as the node being unresponsive or "hanging". This situation triggers a protective mechanism to prevent potential system degradation or deadlock.
+
+1. **Unhealthy Status Reports (Karafka Pro)**: With the enhanced capabilities of Karafka Pro, nodes possess the self-awareness to report unhealthy states. This can range from excessive memory consumption and prolonged processing times to polling mechanisms becoming unresponsive. Recognizing these reports, the supervisor takes decisive action to address the compromised node.
+
+Upon identifying a node that requires a shutdown, either due to delayed health reports or self-reported unhealthy conditions, the supervisor initiates a two-step process:
+
+- **TERM Signal**: The supervisor first sends a TERM signal to the node, initiating a graceful shutdown sequence. This allows the node to complete its current tasks, release resources, and shut down properly, minimizing potential data loss or corruption.
+
+- **KILL Signal**: If the node fails to shut down within the specified `shutdown_timeout` period, the supervisor escalates its intervention by sending a KILL signal. This forcefully terminates the node, ensuring the system can recover from the situation but at the risk of abrupt process termination.
+
+Following a node's shutdown - graceful or forceful - Karafka imposes a mandatory delay of at least 5 seconds before attempting to restart the node. This deliberate pause serves a crucial purpose:
+
+- **Preventing System Overload**: By waiting before restarting a node, Karafka mitigates the risk of entering a rapid, endless loop of immediate process death and restart. Such scenarios can arise from external factors that instantaneously cause a newly spawned process to fail. The delay ensures that the system has a brief period to stabilize, assess the environment, and apply any necessary corrections before reintroducing the node into the swarm.
+
+- **System Health Preservation**: This pause also provides a buffer for the overall system to manage resource reallocation, clear potential bottlenecks, and ensure that restarting the node is conducive to maintaining system health and processing efficiency.
+
+Karafka's Swarm Mode ensures robust process management through these meticulous supervision strategies, promoting system stability and resilience.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/supervisor-flow.svg" />
+</p>
+<p align="center">
+  <small>*Diagram illustrating flow of supervision of a swarm node.
+  </small>
+</p>
 
 ### Limitations of Forking
 
-TBA
+Despite its benefits for CPU-bound tasks, forking has several limitations, especially in the context of I/O-bound operations and broader system architecture:
+
+- **Memory Overhead**: Initially, forking benefits from Ruby's Copy-On-Write (CoW) mechanism, which keeps the memory footprint low. However, as child processes modify their memory, the shared memory advantage may diminish, potentially leading to increased memory usage.
+
+- **I/O Bound Operations**: Forking is less effective for I/O-bound tasks because these tasks spend a significant portion of their time waiting on external resources (e.g., network or disk). In such cases, Karafka multi-threading and Virtual Partitions may be more efficient as they can handle multiple I/O operations in a single process.
+
+- **Database Connection Pooling**: Each forked process requires its database connections. This can rapidly increase the number of database connections, potentially exhausting the available pool and leading to scalability issues.
+
+- **File Descriptor Limits**: Forking multiple processes increases the number of open file descriptors, which can hit the system limit, affecting the application's ability to open new files or establish network connections.
+
+- **Startup Time**: Forking can increase the application's startup time, especially if the initial process needs to load a significant amount of application logic or data into memory before forking.
+
+- **Debugging and Monitoring Complexity**: Debugging issues or monitoring the performance of applications using the forking model can be more challenging due to multiple processes requiring more sophisticated tooling and approaches.
+
+- **Separate Kafka Connections**: Each forked process in a Karafka application is treated by Kafka as an individual client. This means every process maintains its connection to Kafka, increasing the total number of connections to the Kafka cluster.
+
+- **Independent Partition Assignments**: In Kafka, partitions of a topic are distributed among all consumers in a consumer group. With each forked process treated as a separate consumer, Kafka assigns partitions to each process independently. This behavior can lead to uneven workload distribution, especially if the number of processes significantly exceeds the number of partitions or if the partitioning does not align well with the data's processing requirements.
+
+- **Consumer Group Rebalancing**: Kafka uses consumer groups to manage which consumers are responsible for which partitions. When processes are forked, each one is considered a new consumer, triggering consumer group rebalances. Frequent rebalances can lead to significant overhead, especially in dynamic environments where processes are regularly started or stopped. Rebalancing pauses message consumption, as the group must agree on the new partition assignment, leading to potential delays in message processing.
+
+While forking enables Ruby applications like Karafka to parallelize work efficiently, these limitations highlight the importance of careful architectural consideration, especially when dealing with I/O-bound operations or scaling to handle high concurrency and resource utilization levels.
 
 ### Preloading for Efficiency
 
@@ -132,15 +198,7 @@ TBA
 
 TBA
 
-## Operational Behavior
-
-TBA
-
 ### Behavior on Shutdown
-
-TBA
-
-### Nodes Shutdown and Recovery
 
 TBA
 
