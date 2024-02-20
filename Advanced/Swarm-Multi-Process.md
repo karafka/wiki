@@ -183,9 +183,53 @@ Despite its benefits for CPU-bound tasks, forking has several limitations, espec
 
 While forking enables Ruby applications like Karafka to parallelize work efficiently, these limitations highlight the importance of careful architectural consideration, especially when dealing with I/O-bound operations or scaling to handle high concurrency and resource utilization levels.
 
-### Preloading for Efficiency
+### Warmup and Preloading for Efficiency
 
-TBA
+Preloading in the Swarm Mode, akin to Puma and Sidekiq Enterprise practices, offers substantial memory savings. By loading the application environment and dependencies before forking, Karafka can significantly reduce memory usage - 20-30% savings are common. However, this feature requires carefully managing resources inherited by child processes, such as file descriptors, network connections, and threads.
+
+When the supervisor process forks a worker, the child inherits open file descriptors and potentially other resources like network connections. Inherited resources can cause unexpected behavior or resource leaks if not properly managed. To address this, Karafka, similar to Puma, provides hooks that allow for resource cleanup and reinitialization before and after forking:
+
+!!! Tip "Automatic Reconfiguration of Karafka Internals Post-Fork"
+
+    All Karafka internal components, including the Karafka producer, will be automatically reconfigured post-fork, eliminating the need for manual reinitialization of these elements. Focus solely on reconfiguring any external components or connections your application relies on, such as databases or APIs, as these are not automatically reset. This automatic reconfiguration ensures that Karafka internals are immediately ready for use in each forked process, streamlining multi-process management.
+
+```ruby
+# At the end of karafka.rb
+
+# This will run in each forked node right after it was forked
+Karafka.monitor.subscribe('swarm.node.after_fork') do
+  # Make sure to re-establish all connections to the DB after fork (if any)
+  ActiveRecord::Base.clear_active_connections!
+end
+```
+
+Below, you can find a few examples of resources worth preparing and cleaning before forking:
+
+- **Database Connections**: Re-establish database connections to prevent sharing connections between processes, which could lead to locking issues or other concurrency problems. For ActiveRecord, this typically involves calling ActiveRecord::Base.establish_connection.
+
+- **Thread Cleanup**: If the preloaded application spawns threads, ensure they are stopped or re-initialized post-fork to avoid sharing thread execution contexts.
+
+- **Closing Unneeded File Descriptors**: Explicitly close or reopen file descriptors that shouldn't be shared across processes to avoid leaks and ensure the independent operation of each process.
+
+Given the potential complexities and dangers associated with preloading the entire application, Karafka makes this feature opt-in. This cautious approach enables developers to enable preloading when effectively managing the related resources.
+
+In addition to preloading for substantial memory savings, Karafka introduces a crucial phase known as "Process Warmup" right before the process starts. It occurs only in the supervisor. This phase is designed to optimize the application's readiness for forking and operation, leveraging Ruby 3.3's `Process.warmup` feature and similar techniques in previous Ruby versions. This method signals Ruby that the application has completed booting and is now ready for forking, triggering actions such as garbage collection and memory compaction to enhance the efficiency of Copy-On-Write (CoW) mechanics in child forks.
+
+Before the warmup phase, Karafka emits a `process.before_warmup` notification, providing an ideal opportunity to eager load the application code and perform other preparatory tasks. This hook is pivotal for loading any code that benefits from being loaded once and shared across forks, thereby reducing memory usage and startup time for each child process.
+
+```ruby
+# At the end of karafka.rb
+
+Karafka.monitor.subscribe('process.before_warmup') do
+  # Eager load the application code and other heavy resources here
+  # This code will run only once in supervisor before the final warmup
+  Rails.application.eager_load!
+end
+```
+
+The `Process.warmup` method and `process.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By utilizing these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
+
+By carefully preparing for and executing the warmup phase, you ensure your Karafka applications operates optimally, benefiting from reduced memory usage and enhanced process initialization performance.
 
 ## Instrumentation, Monitoring, and Logging
 
