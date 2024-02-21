@@ -183,6 +183,10 @@ Despite its benefits for CPU-bound tasks, forking has several limitations, espec
 
 While forking enables Ruby applications like Karafka to parallelize work efficiently, these limitations highlight the importance of careful architectural consideration, especially when dealing with I/O-bound operations or scaling to handle high concurrency and resource utilization levels.
 
+!!! danger "Avoid Using Karafka APIs in the Supervisor Process"
+
+    It is essential to refrain from using the Karafka producer or any other Karafka APIs, including administrative APIs, within the supervisor process, both before and after forking. `librdkafka`, the underlying library used by Karafka, is fundamentally not fork-safe. Utilizing these APIs from the supervisor process can lead to unexpected behaviors and potentially destabilize your application. Always ensure that interactions with Karafka's APIs occur within the forked worker nodes, where it is safe and designed to operate.
+
 ### Warmup and Preloading for Efficiency
 
 Preloading in the Swarm Mode, akin to Puma and Sidekiq Enterprise practices, offers substantial memory savings. By loading the application environment and dependencies before forking, Karafka can significantly reduce memory usage - 20-30% savings are common. However, this feature requires carefully managing resources inherited by child processes, such as file descriptors, network connections, and threads.
@@ -313,7 +317,7 @@ These statuses offer valuable diagnostics, enabling targeted interventions to ma
 
 When deploying a swarm within a Kubernetes cluster, it is recommended to use the swarm liveness listener to supervise only the supervisor process. This specialized liveness probe ensures that the Kubernetes orchestrator accurately reflects the Karafka supervisor's state, enhancing your deployment's reliability.
 
-Please refer to our [documentation](https://karafka.io/docs/Deployment/#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
+Please refer to our Kubernetes [documentation](https://karafka.io/docs/Deployment/#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
 
 ## Signal Handling
 
