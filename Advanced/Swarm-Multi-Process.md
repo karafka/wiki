@@ -233,10 +233,87 @@ By carefully preparing for and executing the warmup phase, you ensure your Karaf
 
 ## Instrumentation, Monitoring, and Logging
 
-TBA
+Karafka's Swarm Mode's instrumentation, monitoring, and logging approach remains consistent with the standard mode (`bundle exec karafka server`), ensuring a seamless transition and maintenance experience. The Web UI is fully compatible with Swarm Mode and requires no additional configuration, providing out-of-the-box functionality for monitoring your applications.
 
-- Mention K8s instrumentation
-- Update and reference from K8s deployment instrumentation
+### Notification Events in Swarm Mode
+
+Karafka introduces several event hooks specific to Swarm Mode, enhancing the observability and manageability of both the supervisor and forked nodes. These events allow for custom behavior and integration at different stages of the process lifecycle:
+
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Location</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>app.before_warmup</code></td>
+    <td>Supervisor</td>
+    <td>Runs code needed to be prepared before the warmup process.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.node.after_fork</code></td>
+    <td>Forked Node</td>
+    <td>Triggered after each node is forked, allowing for node-specific initialization.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.manager.before_fork</code></td>
+    <td>Supervisor</td>
+    <td>Occurs before each node is forked, enabling pre-fork preparation.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.manager.after_fork</code></td>
+    <td>Supervisor</td>
+    <td>Fires after each node fork, facilitating post-fork actions at the supervisor level.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.manager.control</code></td>
+    <td>Supervisor</td>
+    <td>Executed each time the supervisor checks the health of nodes, supporting ongoing supervision.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.manager.stopping</code></td>
+    <td>Supervisor</td>
+    <td>Indicates the supervisor is shutting down for reasons other than a full application shutdown.</td>
+  </tr>
+  <tr>
+    <td><code>swarm.manager.terminating</code></td>
+    <td>Supervisor</td>
+    <td>Initiated when the supervisor decides to terminate an unresponsive node.</td>
+  </tr>
+</table>
+
+It is worth highlighting that the `swarm.manager.stopping` event includes a status value, providing insight into the reason behind a node's shutdown:
+
+<table>
+  <tr>
+    <th>Status Code</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>-1</td>
+    <td>Node did not report its health for an extended period and was considered hanging.</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Node reported insufficient polling from Kafka (Pro only).</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Consumer is consuming a batch longer than expected (Pro only).</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Node exceeded the allocated memory limit (Pro only).</td>
+  </tr>
+</table>
+
+These statuses offer valuable diagnostics, enabling targeted interventions to maintain system health and performance.
+
+### Swarm Mode in Kubernetes Clusters
+
+When deploying a swarm within a Kubernetes cluster, it is recommended to use the swarm liveness listener to supervise only the supervisor process. This specialized liveness probe ensures that the Kubernetes orchestrator accurately reflects the Karafka supervisor's state, enhancing your deployment's reliability.
+
+Please refer to our [documentation](https://karafka.io/docs/Deployment/#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
 
 ## Signal Handling
 
