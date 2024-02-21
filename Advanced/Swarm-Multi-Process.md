@@ -321,11 +321,36 @@ Please refer to our Kubernetes [documentation](https://karafka.io/docs/Deploymen
 
 ## Signal Handling
 
-TBA
+Signal handling is designed to ensure seamless communication and control over both the supervisor's and their child's processes. This design allows for a centralized approach to managing process behavior in response to external signals.
+
+When a signal is sent to the supervisor process, Karafka ensures that this signal is propagated to all child processes. This mechanism is crucial for maintaining synchronized state changes across the entire application. For instance, if a SIGTERM (signal to terminate) is issued to the supervisor, it will pass this signal through to all children, will wait, and gracefully shut down.
+
+Conversely, signals can be sent directly to any child process to trigger specific actions, such as shutdown or backtrace printing. Importantly, interacting with a child process in this manner is isolated; it does not affect the supervisor or other child processes. This isolated signal handling allows for fine-grained control over individual processes within the swarm, enabling scenarios like:
+
+- Gracefully restarting a specific child process without disrupting the overall service.
+
+- Requesting debug information or a backtrace from a single process for diagnostic purposes without impacting the performance or state of other processes.
 
 ### Behavior on Shutdown
 
-TBA
+When the supervisor receives a request to shut down—typically through a SIGTERM or similar signal—it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
+
+After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
+
+When the supervisor receives a request to shut down—typically through a SIGTERM or similar signal—it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
+
+After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
+
+If, after the `shutdown_timeout` period, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
+This forceful termination step is crucial for preventing resource leaks and ensuring the system remains clean and ready for a potential restart or to end operation without impacting the underlying environment.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/shutdown.svg" />
+</p>
+<p align="center">
+  <small>*Diagram illustrating the shutdown flow and interactions between supervisor and child nodes.
+  </small>
+</p>
 
 ## Resources Management
 
