@@ -101,6 +101,42 @@ Below, you can find a few tuning hints worth considering if you strive to achiev
 
 By carefully configuring and tuning the number of worker processes with your system's CPU and memory resources and the specific demands of your workload, you can achieve a highly efficient and scalable Kafka processing environment with Karafka's Swarm Mode.
 
+### Static Group Membership Management
+
+Static Group Membership is an advanced feature that enhances the efficiency and reliability of consumer group management. This feature allows Kafka consumers to retain a stable membership within their consumer groups across sessions. By specifying a unique `group.instance.id` for each consumer, Kafka brokers can recognize individual consumers across disconnections and rebalances, reducing the overhead associated with consumer group rebalances and improving the overall consumption throughput.
+
+Swarm Mode supports Static Group Membership, seamlessly integrating this capability into its distributed architecture. This integration means that the `group.instance.id` configuration is preserved across multiple subscription groups and intelligently mapped onto the nodes within the swarm. This mapping ensures that each node maintains a unique identity, preventing conflicts that could arise from multiple nodes inadvertently sharing the same `group.instance.id`.
+
+When deploying your application in Swarm Mode, Karafka takes care of the underlying complexity associated with static group memberships. 
+
+Here's how Karafka ensures consistency and efficiency in this process:
+
+- **Automatic ID Management**: Karafka automatically assigns and manages `group.instance.id` for each node within the swarm, ensuring that each node's identity is unique and consistent across sessions. This automatic management simplifies setup and reduces potential configuration errors that could lead to rebalance issues.
+
+- **Enhanced Stability**: By utilizing static group memberships, Karafka minimizes the frequency of consumer group rebalances. This stability is particularly beneficial in environments where consumer groups handle high volumes of data, as it allows for uninterrupted data processing and maximizes throughput.
+
+- **Simplified Configuration**: Developers need to specify their desired configuration once, and Karafka's Swarm Mode propagates these settings across the swarm. This simplification reduces the operational burden and allows teams to focus on developing the logic and functionality of their applications.
+
+- **Seamless Nodes Restarts**: With Karafka Pro's enhanced monitoring, nodes can restart without causing consumer group rebalances, thanks to static group memberships. The `group.instance.id` remains constant across restarts, enabling swift recovery and reconnection to the consumer group. This ensures minimal processing disruption and maintains throughput, showcasing Karafka's fault-tolerant and efficient data-handling capability.
+
+While Karafka handles the complexities of `group.instance.id` assignments behind the scenes, developers should know how static group memberships are configured within their applications. Here's an example snippet for reference:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      # Other configuration options...
+
+      # Set instance id to the hostname (assuming they are unique)
+      'group.instance.id': Socket.gethostname
+    }
+  end
+end
+```
+
 ## Process Management and Supervision
 
 In Swarm Mode, Karafka introduces a supervisor process responsible for forking child nodes and overseeing their operation. This section outlines the key aspects of process management and supervision within this architecture, covering supervision strategies, handling process failures, the limitations of forking, and efficiency through preloading.
@@ -337,10 +373,6 @@ When the supervisor receives a request to shut down—typically through a SIGTER
 
 After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
 
-When the supervisor receives a request to shut down—typically through a SIGTERM or similar signal—it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
-
-After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
-
 If, after the `shutdown_timeout` period, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
 This forceful termination step is crucial for preventing resource leaks and ensuring the system remains clean and ready for a potential restart or to end operation without impacting the underlying environment.
 
@@ -352,15 +384,15 @@ This forceful termination step is crucial for preventing resource leaks and ensu
   </small>
 </p>
 
-## Resources Management
-
-TBA
-
-- Mention that static group memberships work
-
 ## Web UI Enhancements for Swarm
 
-TBA
+Karafka's Web UI fully supports Swarm Mode, showcasing each forked node as an independent entity for detailed monitoring.
+
+In Swarm Mode, the Web UI distinguishes each node as a separate process. However, each swarm node is marked with a "paid" label, indicating the parent process's PID (the supervisor). This feature aids in identifying the relationship between nodes and their supervisor.
+
+Due to librdkafka's fork-safety limitations, the supervisor process does not appear directly in the Web UI because it cannot hold open connections to Kafka. However, The supervisor's presence is inferred through the PPID label of swarm nodes. Since all nodes share the same supervisor PID as their PPID, you can indirectly identify the supervisor process that way.
+
+<img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/swarm-ppids.png" alt="karafka web dashboard view ppids" />
 
 ## Swarm vs. Multi-Threading and Virtual Partitions
 
