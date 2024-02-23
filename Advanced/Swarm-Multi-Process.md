@@ -1,4 +1,4 @@
-# Swarm / Multi Process Mode
+# Swarm / Multi-Process Mode
 
 ## Introduction
 
@@ -40,7 +40,7 @@ Swarm Mode in Karafka brings several advantages, especially for applications dea
 
 - **Simplified Complex Processing**: Facilitates the management of complex processing pipelines by distributing tasks across nodes, making it easier to reason about and maintain large-scale processing logic.
 
-- **Proactive Memory Management**: In Karafka Pro, the supervisor can monitor and control the memory usage of child processes. This feature allows it to shut down workers exceeding a specified memory threshold gracefully. While this is not a substitute for addressing memory leaks within the application, it is a crucial interim measure to manage and mitigate potential memory-related issues.
+- **Proactive Memory Management**: In Karafka Pro, the supervisor can monitor and control the memory usage of child processes. This feature allows it to shut down workers exceeding a specified memory threshold gracefully. While this is not a substitute for addressing memory leaks within the application, it is a crucial interim measure to manage and mitigate potential memory-related issues. You can read more about this capability [here](Pro-Enhanced-Swarm-Multi-Process).
 
 ## Supported Operating Systems
 
@@ -63,6 +63,20 @@ bundle exec karafka swarm
 ```
 
 This command signals Karafka to initiate in Swarm Mode, creating a supervisor process and the forked nodes.
+
+### CLI Configuration Options
+
+When starting your application in Swarm Mode using bundle exec karafka swarm, it's important to note that this command accepts the same CLI configuration options as the standard bundle exec karafka server command. This compatibility ensures that you can apply the same level of control and customization to your Swarm Mode deployment as you would to a single-process setup.
+
+The CLI options allow for the efficient limitation of topics, subscription groups, and consumer groups that should operate within the Swarm. You can start a Swarm Mode instance that focuses on processing specific parts of your Kafka infrastructure. For example, you might want to isolate certain consumer groups or topics to dedicated swarms for performance reasons or to manage resource allocation more effectively.
+
+```bash
+# Run swarm and include only given consumer groups
+bundle exec karafka swarm --include-consumer-groups group_name1,group_name3
+
+# Run swarm but ignore those two topics
+bundle exec karafka swarm --exclude-topics topic_name1,topic_name3
+```
 
 ## Configuration and Tuning
 
@@ -117,7 +131,7 @@ Here's how Karafka ensures consistency and efficiency in this process:
 
 - **Simplified Configuration**: Developers need to specify their desired configuration once, and Karafka's Swarm Mode propagates these settings across the swarm. This simplification reduces the operational burden and allows teams to focus on developing the logic and functionality of their applications.
 
-- **Seamless Nodes Restarts**: With Karafka Pro's enhanced monitoring, nodes can restart without causing consumer group rebalances, thanks to static group memberships. The `group.instance.id` remains constant across restarts, enabling swift recovery and reconnection to the consumer group. This ensures minimal processing disruption and maintains throughput, showcasing Karafka's fault-tolerant and efficient data-handling capability.
+- **Seamless Nodes Restarts**: With Karafka Pro's [enhanced monitoring](Pro-Enhanced-Swarm-Multi-Process), nodes can restart without causing consumer group rebalances, thanks to static group memberships. The `group.instance.id` remains constant across restarts, enabling swift recovery and reconnection to the consumer group. This ensures minimal processing disruption and maintains throughput, showcasing Karafka's fault-tolerant and efficient data-handling capability.
 
 While Karafka handles the complexities of `group.instance.id` assignments behind the scenes, developers should know how static group memberships are configured within their applications. Here's an example snippet for reference:
 
@@ -396,8 +410,36 @@ Due to librdkafka's fork-safety limitations, the supervisor process does not app
 
 ## Swarm vs. Multi-Threading and Virtual Partitions
 
-TBA
+Karafka's scalability and workload management strategies include Swarm Mode, multi-threading, virtual partitions, and multiplexing. Each serves specific workload needs, facilitating optimal architectural decisions.
+
+- **Swarm Mode** excels in CPU-intensive environments by utilizing multiple processes for true parallel execution, enhancing CPU utilization and throughput. However, its scalability is tied to the number of Kafka partitions, limiting parallelization.
+
+- **Multi-threading** is suited for I/O-bound tasks, efficiently managing wait times by concurrently handling tasks within a single process. Its scalability is constrained by Ruby's Global Interpreter Lock (GIL) and the number of Kafka partitions.
+
+- **Virtual Partitions** increase Karafka's scalability beyond Kafka's partition limits by simulating additional partitions, improving load distribution and processing for I/O-bound tasks.
+
+- **Multiplexing** allows a single process to subscribe to multiple topics or partitions with multiple connections, optimizing throughput without additional processes or threads. It's useful for high-partition topics but requires careful consumer instance management to maintain processing efficiency.
+
+Each strategy offers unique advantages for Karafka application optimization. Swarm Mode and multi-threading address CPU-intensive and I/O-bound workloads, respectively, while virtual partitions and multiplexing overcome Kafka partition scalability limits. Selecting the appropriate strategy depends on your workload's characteristics and scalability goals.
+
+## Example Use Cases
+
+Here are some use cases from various industries where Karafka's Swarm Mode can be beneficial:
+
+- **Background Job Processing**: Ruby on Rails applications frequently rely on background jobs for tasks that are too time-consuming to be processed during a web request. Examples include sending batch emails, generating reports, or processing uploaded files. Swarm Mode can distribute these jobs across multiple processes, significantly reducing processing time by leveraging all available CPU cores.
+
+- **Image Processing and Generation**: Many Ruby applications need to process images, whether resizing, cropping, or applying filters. Image processing is CPU-intensive and can benefit from parallel execution in Swarm Mode, especially when handling high volumes of images, such as in user-generated content platforms or digital asset management systems.
+
+- **Data Import and Export Operations**: Applications that require importing large datasets (e.g., CSV, XML, or JSON files) into the database or exporting data for reports can utilize Swarm Mode to parallelize parsing and processing. This accelerates the import/export operations, making it more efficient to handle bulk data operations without blocking web server requests.
+
+- **Real-time Data Processing**: Real-time analytics or event processing systems in Ruby can process incoming data streams (from webhooks, sensors, etc.) in parallel using Swarm Mode. This is particularly useful for applications that aggregate data, calculate statistics, or detect patterns in real time across large datasets.
+
+- **Complex Calculations and Simulations**: Applications that perform complex calculations or simulations, such as financial modeling, risk analysis, or scientific computations, can significantly improve performance with Swarm Mode. By distributing the computational load across multiple worker processes, Ruby applications can handle more complex algorithms and larger datasets without slowing down.
+
+Implementing Swarm Mode for these use cases allows applications to fully utilize server resources, overcoming the limitations of Ruby's Global Interpreter Lock (GIL) and enhancing overall application performance and scalability.
 
 ## Summary
 
-TBA
+Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-intensive Kafka message processing in Ruby, effectively bypassing the Global Interpreter Lock (GIL). It leverages Ruby's Copy-On-Write (CoW) for efficient memory use, employing a "Supervisor-Worker" pattern for parallel execution and system health monitoring.
+
+Swarm Mode supports Static Group Membership to enhance consumer group stability and allows for quick node restarts without rebalancing, thanks to Karafka Pro's monitoring.
