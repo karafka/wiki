@@ -97,6 +97,46 @@ The listener reports to the supervisor the following failure statuses for monito
 
 ## Node Assignments
 
-Feature under development.
+The Node Assignments feature in Karafka's Enhanced Swarm / Multi-Process Mode addresses the need for more granular control over topic processing across different nodes within the swarm. By default, Karafka Swarm assigns all topics to all nodes uniformly. This means each node attempts to connect to and subscribe to the same set of topics. This approach ensures that the processing load is distributed across all available nodes, providing a balanced workload under typical conditions. However, this can lead to inefficiencies in specific scenarios.
 
-TBA
+Granular control over node assignments becomes crucial when topics have varying loads, message volumes, or numbers of partitions. 
+
+Allocating specific topics to specific nodes allows for more efficient resource utilization and can significantly enhance performance by:
+
+- **Aligning Resource Allocation**: Directing high-volume topics to nodes with more processing power or assigning them exclusively can prevent bottlenecks and ensure smoother processing across the swarm.
+
+- **Optimizing for Partitions**: Topics with different numbers of partitions may benefit from being processed by a specific subset of nodes, enabling more effective load balancing and reducing cross-node communication overhead.
+
+**Improving Performance**: Tailoring node assignments can help optimize the processing time by ensuring that nodes are not overwhelmed by attempting to subscribe and process messages from topics that are too resource-intensive for their capacity.
+
+In Karafka, configuring node assignments is straightforward within the routing setup, utilizing the `#swarm` method to direct topic subscriptions to specified nodes. Nodes are indexed starting at `0`, allowing for individual or ranges of nodes to be targeted. Without explicit assignments, topics default to being accessible by all nodes. Below is a configuration example to demonstrate node assignment usage:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+    # Run 8 processes
+    config.swarm.nodes = 8
+  end
+
+  routes.draw do
+    consumer_group :group_name do
+      topic :example do
+        swarm(nodes: [0, 1, 2])
+        consumer ExampleConsumer
+      end
+
+      topic :example2 do
+        swarm(nodes: 4..7)
+        consumer ExampleConsumer2
+      end
+    end
+
+    consumer_group :group_name2 do
+      topic :example3 do
+        consumer Example2Consumer3
+      end
+    end
+  end
+end
+```
