@@ -295,6 +295,76 @@ Below, you can compare memory usage when running 3 independent processes versus 
   </small>
 </p>
 
+If you want to measure gains within your particular application under given conditions, you can use the below script.
+
+This script calculates and displays memory usage details for processes matching a specified pattern (e.g., "karafka") on a Linux system, utilizing the `smem` tool. It retrieves the Proportional Set Size (PSS), Unique Set Size (USS), and Resident Set Size (RSS) for each process, which helps in understanding both individual and collective memory usage, including shared memory aspects.
+
+```bash
+#!/bin/bash
+
+# Get USS, PSS, and RSS values for processes matching the pattern
+mapfile -t MEMORY_VALUES < <( \
+  smem -P karafka --no-header -c "pid uss pss rss" | sed '1d' \
+)
+
+# Initialize totals
+TOTAL_USS=0
+TOTAL_PSS=0
+TOTAL_RSS=0
+
+# Print header for process memory usage
+echo "PID | RSS Memory (MB) | PSS Memory (MB)"
+
+# Process each line
+for LINE in "${MEMORY_VALUES[@]}"; do
+  # Read values into variables
+  read -r PID USS PSS RSS <<<"$LINE"
+
+  TOTAL_USS=$((TOTAL_USS + USS))
+  TOTAL_PSS=$((TOTAL_PSS + PSS))
+  TOTAL_RSS=$((TOTAL_RSS + RSS))
+
+  # Convert RSS and PSS from kilobytes to megabytes for readability
+  RSS_MB=$(echo "scale=2; $RSS / 1024" | bc)
+  PSS_MB=$(echo "scale=2; $PSS / 1024" | bc)
+
+  # Print RSS and PSS memory usage for the current process
+  echo "$PID | $RSS_MB MB | $PSS_MB MB"
+done
+
+# Convert total USS and PSS from kilobytes to megabytes
+TOTAL_USS_MB=$(echo "scale=2; $TOTAL_USS / 1024" | bc)
+TOTAL_PSS_MB=$(echo "scale=2; $TOTAL_PSS / 1024" | bc)
+
+# Calculate and print the percentage of shared memory
+# Shared memory percentage is calculated from the difference between PSS and USS
+# compared to the total PSS, indicating how much of the memory is shared
+if [ "$TOTAL_PSS" -gt 0 ]; then
+    SHARED_MEMORY_MB=$(echo "scale=2; $TOTAL_PSS_MB - $TOTAL_USS_MB" | bc)
+    SHARED_MEM_PCT=$(echo "scale=2; ($SHARED_MEMORY_MB / $TOTAL_PSS_MB) * 100" | bc)
+    echo "Shared Memory Percentage: $SHARED_MEM_PCT%"
+else
+    echo "PSS is zero, cannot calculate shared memory percentage."
+fi
+
+echo "Total Memory Used: $TOTAL_PSS_MB MB"
+```
+
+When executed, you will get similar output:
+
+```bash
+./rss.sh
+
+PID    | RSS Memory (MB) | PSS Memory (MB)
+300119 | 329.12 MB       | 107.19 MB
+300177 | 355.17 MB       | 142.53 MB
+300159 | 355.25 MB       | 142.62 MB
+300166 | 356.16 MB       | 143.49 MB
+
+Shared Memory Percentage: 51.00%
+Total Memory Used: 535.85 MB
+```
+
 ## Instrumentation, Monitoring, and Logging
 
 Karafka's Swarm Mode's instrumentation, monitoring, and logging approach remains consistent with the standard mode (`bundle exec karafka server`), ensuring a seamless transition and maintenance experience. The Web UI is fully compatible with Swarm Mode and requires no additional configuration, providing out-of-the-box functionality for monitoring your applications.
