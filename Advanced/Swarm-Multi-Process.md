@@ -274,7 +274,7 @@ Before the warmup phase, Karafka emits a `process.before_warmup` notification, p
 ```ruby
 # At the end of karafka.rb
 
-Karafka.monitor.subscribe('process.before_warmup') do
+Karafka.monitor.subscribe('app.before_warmup') do
   # Eager load the application code and other heavy resources here
   # This code will run only once in supervisor before the final warmup
   Rails.application.eager_load!
@@ -284,6 +284,16 @@ end
 The `Process.warmup` method and `process.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By utilizing these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
 
 By carefully preparing for and executing the warmup phase, you ensure your Karafka applications operates optimally, benefiting from reduced memory usage and enhanced process initialization performance.
+
+Below, you can compare memory usage when running 3 independent processes versus Swarm with 3 nodes and a supervisor. In this case, Swarm uses around 50% less memory than independent processes.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/shared-memory.png" alt="Karafka Swarm mode vs. Shared Memory"/>
+</p>
+<p align="center">
+  <small>*Diagram illustrating memory usage with and without Swarm with the same number of consumers. Less is better.
+  </small>
+</p>
 
 ## Instrumentation, Monitoring, and Logging
 
