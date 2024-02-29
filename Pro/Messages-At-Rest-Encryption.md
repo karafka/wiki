@@ -2,7 +2,7 @@ Specific industries have strong regulations around the storage of personal data.
 
 Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data.
 
-## Enabling encryption
+## Enabling Encryption
 
 Encryption has its dedicated section in the configuration called `encryption`. To enable encryption, you need to:
 
@@ -32,11 +32,11 @@ Karafka keeps messages encrypted until their deserialization.
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
 
-## Handling of unencrypted messages with encryption enabled
+## Handling of Unencrypted Messages with Encryption Enabled
 
 Karafka automatically recognizes unencrypted messages and does not attempt to decrypt them. This means you can gradually enable and roll out encryption without worrying about previously unencrypted data.
 
-## Producing encrypted messages without private key configuration
+## Producing Encrypted Messages without Private Key Configuration
 
 If you do not plan to consume messages from some of your applications, you may skip the `private_keys` definition:
 
@@ -54,7 +54,7 @@ end
 
 That way, the given application can produce messages but not decrypt them. This is especially useful when you are building bigger systems where you want to provide limited granular permissions.
 
-## Rotating public and private keys
+## Rotating Public and Private Keys
 
 When you upgrade your keys, please remember to update the `config. encryption.version`, so Karafka can recognize the correct key pair.
 
@@ -78,7 +78,7 @@ end
 
 Karafka will automatically detect and use the correct private key to decrypt messages encrypted with the old public key.
 
-## Using multiple public and private keys to support multiple customers
+## Using Multiple Public and Private Keys to Support Multiple Customers
 
 There are scenarios where you may want your customers to publish messages directly to your Kafka cluster. You can ensure that this communication is also private and, At-Rest encrypted.
 
@@ -108,6 +108,32 @@ end
 !!! note ""
 
     Such a pattern should only be used when working with trusted entities.
+
+## Messages Fingerprinting
+
+In Ruby, decrypting a message with an incorrect but semantically valid key may complete the decryption process successfully but result in nonsensical data. This behavior poses a significant risk in systems lacking stringent consistency checks, as they might inadvertently persist corrupted data to database, assuming the decryption was successful.
+
+This situation can arise during key rotation processes or when encryption keys are changed. Karafka introduces a feature for enhancing message integrity through fingerprinting to mitigate such risks. By setting the `fingerprinter` option to an object that responds to the `#hexdigest` method, Karafka appends an additional `encryption_fingerprint` header to each message before sending. This fingerprint is then used after decrypting the message to verify its integrity. If the integrity check fails, indicating that the message was not decrypted with the correct key or was tampered with, Karafka will raise an error, preventing corrupted data from being processed further.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other config options...
+
+    config.encryption.active = true
+    config.encryption.version = '1'
+    config.encryption.public_key = ENV['PUBLIC_PEM_KEY']
+    config.encryption.private_keys = { '1' => ENV['PRIVATE_PEM_KEY'] }
+
+    # Set this to any system or custom digest engine that responds to `#hexdigest`
+    config.encryption.fingerprinter = Digest::MD5
+  end
+end
+```
+
+This mechanism of ensuring message integrity is distinct from the CRC (Cyclic Redundancy Check) integrity check provided by Kafka. While Kafka's CRC check ensures that a message has not been corrupted in transit, providing a form of transport-level integrity, it does not protect against decryption with the wrong key. Karafka's fingerprinting feature addresses this gap by offering an additional layer of security that ensures the decrypted message is the exact message that was encrypted initially, thereby safeguarding against processing corrupted data due to key mismanagement or other errors.
+
+This feature is especially critical in industries subject to stringent regulations around handling sensitive data, such as healthcare, finance, and government. By ensuring the integrity of decrypted messages, Karafka helps organizations maintain compliance with regulations like HIPAA and GDPR, which mandate strict controls over the confidentiality and integrity of sensitive information.
 
 ## Example Use Cases
 
