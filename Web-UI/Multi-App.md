@@ -87,6 +87,36 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## DLQ Routing Awareness
+
+To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references all **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
+
+Karafka applications leverage the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :incoming_requests do
+      # Set it to inactive if this comes from different app
+      # and should not be consumed
+      active false
+      
+      # Indicate, that there is `general_dlq` topic that is
+      # a DLQ to a different topic.
+      # This definition is required for Web UI to understand
+      # that topic named `general_dlq` is a DLQ topic
+      dead_letter_queue(topic: :general_dlq)
+    end
+  end
+end
+```
+
+In this configuration, the DLQ is defined with the topic marked explicitly for the Web UI's awareness. This setup ensures that the Web UI, when launched, can accurately reflect the state and contents of DLQ topics.
+
 ## Example Use Cases
 
 This capability immensely benefits organizations that manage multiple applications or microservices but want a centralized monitoring and visualization solution. For instance:
