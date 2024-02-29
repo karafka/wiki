@@ -157,6 +157,7 @@
 157. [How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?](#how-does-karafka-handle-messages-with-undefined-topics-and-can-they-be-routed-to-a-default-consumer)
 158. [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
 159. [What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?](#what-does-setting-the-initial_offset-to-earliest-mean-in-karafka-does-it-mean-the-consumer-starts-consuming-from-the-earliest-message-that-has-not-been-consumed-yet)
+160. [Why is the "Dead" tab in Web UI empty in my Multi App setup?](#why-is-the-dead-tab-in-web-ui-empty-in-my-multi-app-setup)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2127,3 +2128,19 @@ In Karafka's default flow, if an error occurs during message consumption, the pr
 ## What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?
 
 The `initial_offset` setting in Karafka is relevant only during the initial start of a consumer in a consumer group. It dictates the starting point for message consumption when a consumer group first encounters a topic. Setting `initial_offset` to `earliest` causes the consumer to start processing from the earliest available message in the topic (usually the message with offset 0, but not necessarily). Conversely, setting it to `latest` instructs the consumer to begin processing the next message after the consumer has started. It's crucial to note that `initial_offset` does not influence the consumption behavior during ongoing operations. For topics the consumer group has previously consumed, Karafka will continue processing from the last acknowledged message, ensuring that no message is missed or processed twice.
+
+## Why is the "Dead" tab in Web UI empty in my Multi App setup?
+
+If the "Dead" tab in your Karafka Web UI is empty, especially within a multi-app setup, there are two primary reasons to consider based on the DLQ routing awareness section:
+
+1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](https://karafka.io/docs/Web-UI-Multi-App/#dlq-routing-awareness).
+
+2. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
+
+To troubleshoot and resolve this issue, you should:
+
+- **Verify DLQ Topic Configuration**: Double-check your `karafka.rb` file to ensure that DLQ topics are correctly referenced within the routing configuration. Ensure the topic names match the expected DLQ topics in your Kafka setup.
+
+- **Check Kafka for DLQ Topic Existence**: Ensure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
+
+- **Review Topic Naming Consistency**: Ensure consistency in topic naming across your Kafka configuration and Karafka setup. Any discrepancy could lead to failed message routing.
