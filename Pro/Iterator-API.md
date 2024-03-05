@@ -29,11 +29,11 @@ end
 
 Please read the sections below for more details. 
 
-### Subscription modes
+### Subscription Modes
 
 Iterator accepts topic lists in various formats to support multiple use cases. Depending on your specific needs, you can pass in topics as a single string, a list of strings, or a hash with options. This allows developers to easily subscribe to one or multiple Kafka topics and partitions and perform data lookups according to their requirements.
 
-#### Subscribing to all topic partitions
+#### Subscribing to All Topic Partitions
 
 The easiest way to subscribe to a topic or few is by providing their names. In a scenario like this, Karafka will subscribe to all the topics' partitions and consume messages from the earliest available message.
 
@@ -47,7 +47,7 @@ iterator.each do |message|
 end
 ```
 
-#### Subscribing to fetch the last N messages
+#### Subscribing to Fetch the Last N Messages
 
 One everyday use case for Karafka Pro Iterator API is to fetch the last N messages from each topic partition and process them instead of starting from the beginning. This can be useful when you need to perform data analysis or processing on the most recent data without dealing with the entire dataset. By using the Iterator API to fetch the last N messages from each partition, you can save time and resources and focus on processing only the most relevant data.
 
@@ -75,7 +75,7 @@ end
 
     Negative lookups operate based on watermark offsets, not actual message counts. So, for compacted topics (where redundant data is removed), this could result in fetching fewer messages than requested, as the specified offset might include removed data.
 
-#### Subscribing to fetch messages from a certain point in time
+#### Subscribing to Fetch Messages From a Certain Point in Time
 
 This functionality is handy when you need to analyze data from a specific period or start processing from a certain point in the Kafka topic, but you do not know the offset.
 
@@ -97,7 +97,7 @@ end
 
 This feature enables a more intuitive way of accessing and processing historical Kafka data. Instead of calculating or estimating offsets, you can directly use real-world time to navigate through your data. Just like with offsets, remember that you can only fetch messages still stored in Kafka according to its data retention policy.
 
-#### Subscribing to particular partitions
+#### Subscribing to Particular Partitions
 
 One reason it may be worth subscribing only to particular partitions of a topic using the iterator API is to reduce resource consumption. Consuming all topic partitions can be resource-intensive, especially when dealing with large amounts of data. By subscribing only to specific partitions, you can significantly reduce the amount of data that needs to be processed and reduce the overall resource consumption.
 
@@ -110,12 +110,15 @@ To do so, you need to provide the list of the partitions with the initial offset
 # Get 100 most recent messages for partition 0
 # Get 10 000 most recent messages for partition 5
 # Get messages from last 60 seconds from partition 7
+# Get messages from partition 9 starting from the beginning
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => {
       0 => -100,
       5 => -10_000,
-      7 => Time.now - 60
+      7 => Time.now - 60,
+      # Below requires setting 'auto.offset.reset': 'beginning'
+      9 => true
     }
   }
 )
@@ -125,7 +128,7 @@ iterator.each do |message|
 end
 ```
 
-### Long-living iterators
+### Long-Living Iterators
 
 By default iterator instance will finish its work when it reaches end of data on all the partitions. This however may not be desired if you want to process data as it comes.
 
@@ -155,7 +158,7 @@ end
 
     If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption. 
 
-### Routing awareness
+### Routing Awareness
 
 If you are iterating over topics defined in your `karafka.rb`, including those marked as inactive, the iterator will know what deserializer to use and will operate accordingly. If you are iterating over an unknown topic, defaults will be used.
 
@@ -185,7 +188,7 @@ iterator.each do |message|
 end
 ```
 
-### Partition consumption early stop
+### Partition Consumption Early Stop
 
 There may be situations when using the iterator where you may want to stop consuming data from specific partitions while continuing to consume data from other partitions. This can be useful in scenarios where you were looking for pieces of information in each of the partitions, and in some, you've already found it. In such scenarios, further processing of those partitions will not provide any benefits and will only consume resources.
 
@@ -212,7 +215,7 @@ iterator.each do |message, iterator|
 end
 ```
 
-### Integration with Ruby processes
+### Integration with Ruby Processes
 
 The Karafka Pro Iterator API is designed to be simple and easy to use, and there is nothing special needed to get started with it. There are also no special recommendations when using it from any specific Ruby process type.
 

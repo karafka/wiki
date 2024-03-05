@@ -142,6 +142,7 @@
 
 It is recommended to do one major upgrade at a time.
 
+* [Upgrading to 2.4](Upgrades-2.4)
 * [Upgrading to 2.3](Upgrades-2.3)
 * [Upgrading to 2.2](Upgrades-2.2)
 * [Upgrading to 2.1](Upgrades-2.1)
