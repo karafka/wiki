@@ -13,9 +13,10 @@ group :test do
 end
 ```
 
-and then in your `spec_helper.rb` file:
+and then in your `spec_helper.rb` file you must require the karafka entrypoint, and the helpers:
 
 ```ruby
+require './karafka'
 require 'karafka/testing/rspec/helpers'
 
 RSpec.configure do |config|
