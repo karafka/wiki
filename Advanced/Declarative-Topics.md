@@ -77,7 +77,7 @@ class KarafkaApp < Karafka::App
       config(
         partitions: 6,
         replication_factor: 3,
-        'retention.ms': 86_400_000 # 1 day in ms,
+        'retention.ms': 86_400_000, # 1 day in ms
         'cleanup.policy': 'delete'
       )
 
