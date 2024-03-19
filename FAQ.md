@@ -158,6 +158,7 @@
 158. [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
 159. [What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?](#what-does-setting-the-initial_offset-to-earliest-mean-in-karafka-does-it-mean-the-consumer-starts-consuming-from-the-earliest-message-that-has-not-been-consumed-yet)
 160. [Why is the "Dead" tab in Web UI empty in my Multi App setup?](#why-is-the-dead-tab-in-web-ui-empty-in-my-multi-app-setup)
+161. [What causes a "Broker: Policy violation (policy_violation)" error when using Karafka, and how can I resolve it?](#what-causes-a-broker-policy-violation-policy_violation-error-when-using-karafka-and-how-can-i-resolve-it)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2144,3 +2145,13 @@ To troubleshoot and resolve this issue, you should:
 - **Check Kafka for DLQ Topic Existence**: Ensure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
 
 - **Review Topic Naming Consistency**: Ensure consistency in topic naming across your Kafka configuration and Karafka setup. Any discrepancy could lead to failed message routing.
+
+## What causes a "Broker: Policy violation (policy_violation)" error when using Karafka, and how can I resolve it?
+
+The `Broker: Policy violation (policy_violation)` error in Karafka typically occurs due to exceeding Kafka's quota limitations or issues with Access Control Lists (ACLs). This error indicates that an operation attempted by Karafka has violated the policies set on your Kafka cluster. To resolve this issue, follow these steps:
+
+1. **ACL Verification**: Ensure that your Kafka cluster's ACLs are configured correctly. ACLs control the permissions for topic creation, access, and modification. If ACLs are not properly set up, Karafka might be blocked from performing necessary operations.
+
+2. **Quota Checks**: Kafka administrators can set quotas on various resources, such as data throughput rates and the number of client connections. If Karafka exceeds these quotas, it may trigger a `policy_violation` error. Review your Kafka cluster's quota settings to ensure they align with your usage patterns.
+
+3. **Adjust Configurations**: Make the necessary adjustments based on your findings from the ACL and quota checks. This might involve modifying ACL settings to grant appropriate permissions or altering quota limits to accommodate your application's needs.
