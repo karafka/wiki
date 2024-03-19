@@ -15,9 +15,9 @@ end
 
 and then in your `spec_helper.rb` file you must:
 
+- require the karafka entrypoint (only when not using Ruby on Rails)
 - require the helpers
 - include appropriate helpers
-- require the karafka entrypoint (only when not using Ruby on Rails)
 
 ```ruby
 # Require entrypoint only when not using Rails, in Rails it happens automatically
