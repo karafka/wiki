@@ -20,7 +20,7 @@ Upon detecting a new topic, Karafka seamlessly integrates its operations just as
 
 !!! Warning "Regexp Implementation Differences"
 
-    The underlying `librdkafka` library utilizes a regexp engine from a `libc` library. It's crucial to note that this engine supports a POSIX-compatible regular expression format, which is not fully aligned with the regexp engine used by Ruby. Given these differences, it's highly advisable to conduct thorough testing of your regexp patterns to confirm that the dynamic topics you intend to match are not only visible within Karafka and the Karafka Web UI but are also being consumed as expected. The discrepancies between the regexp engines could lead to unexpected behaviors.
+    The underlying `librdkafka` library utilizes a regexp engine from a `libc` library. It's crucial to note that this engine supports a POSIX-compatible regular expression format, which is not fully aligned with the regexp engine used by Ruby. Given these differences, it's highly advisable to conduct thorough testing of your regexp patterns to confirm that the dynamic topics you intend to match are not only visible within Karafka and the Karafka Web UI but are also being consumed as expected. The discrepancies between the regexp engines could lead to unexpected behaviors. You can read more about this topic in [this](https://karafka.io/docs/Pro-Routing-Patterns/#differences-in-regexp-evaluation-between-ruby-and-libc) section.
 
 ### Representation of Routing Patterns
 
