@@ -18,6 +18,10 @@ Below, you can find a conceptual diagram of how the discovery process works:
 
 Upon detecting a new topic, Karafka seamlessly integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
 
+!!! Warning "Regexp Implementation Differences"
+
+    The underlying `librdkafka` library utilizes a regexp engine from a `libc` library. It's crucial to note that this engine supports a POSIX-compatible regular expression format, which is not fully aligned with the regexp engine used by Ruby. Given these differences, it's highly advisable to conduct thorough testing of your regexp patterns to confirm that the dynamic topics you intend to match are not only visible within Karafka and the Karafka Web UI but are also being consumed as expected. The discrepancies between the regexp engines could lead to unexpected behaviors.
+
 ### Representation of Routing Patterns
 
 Defining a pattern within Karafka automatically translates this into an underlying topic representation with a regular expression (regexp) that matches the appropriate Kafka topics.
@@ -185,13 +189,86 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Thoroughly Test Patterns**: Always ensure your patterns don't overlap within a single consumer group. Regular testing can prevent unwanted behavior.
 
-1. **Potential Regexp Differences**: While unlikely, the regular expressions in Ruby and `librdkafka` in C might not work identically. Always test the matching behaviors before deploying to production.
+1. **Potential Regexp Differences**: The regular expressions in Ruby and `librdkafka` in C might not work identically. Always test the matching behaviors before deploying to production.
 
 1. **Runtime Topic Detection Isn't Immediate**: When a new topic emerges, its detection isn't real-time. It's influenced by the cache TTL, governed by the `topic.metadata.refresh.interval.ms` setting. The default is 5 seconds in development and 5 minutes in production. For most production scenarios, sticking to the 5-minute default is advised as it strikes a good balance between operational responsiveness and system load.
 
 1. **Internal Regular Expression Requirements of `librdkafka`**: The library requires regular expression strings to start with `^`. Karafka's Routing Patterns adapt Ruby's regular expressions to fit this format internally. Remembering this transformation and thoroughly testing your patterns before deploying is important. You can find the adjusted regular expression in the Web UI under the routing page topic details view if you wish to review the adjusted regular expression.
 
 Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
+
+## Differences in Regexp Evaluation Between Ruby and libc
+
+When dealing with regular expressions in Karafka, it's important to understand the underlying differences between the regex engines used by Ruby and the one used by `librdkafka`. `librdkafka`, which is a core component of Karafka for interacting with Kafka, defaults to the POSIX regex engine provided by `libc`. On the other hand, Ruby employs a different format for regular expressions, specifically the Oniguruma engine, known for its extensive feature set and flexibility.
+
+### Key Differences
+
+1. **Syntax and Features**: The Oniguruma engine (Ruby) supports a broader range of syntaxes and features than the POSIX regex engine. These include look-ahead and look-behind assertions, non-greedy matching, and named groups, among others.
+
+1. **Character Classes**: Ruby's regex engine supports POSIX bracket expressions but also includes additional character class shorthands (like `\d`, `\w`, `\s`, and their uppercase counterparts), which are not part of the POSIX standard.
+
+1. **Grouping and Capturing**: Ruby supports non-capturing groups with `?:`, named groups with `?<name>`, and atomic groups, which are unavailable in the POSIX regex engine.
+
+### Testing Regular Expressions
+
+Given the differences between Ruby's and libc's regular expression engines, it is recommended to thoroughly test your regular expressions to ensure compatibility, especially when using them with Karafka for dynamic topic routing. Testing becomes crucial because a regular expression in Ruby might behave differently or not work with librdkafka.
+
+To bridge the gap and verify that your regular expressions work as expected in both environments, you can use the POSIX regex engine directly within a Ruby context through command-line tools like `grep`. This approach allows you to test regular expressions against the POSIX standard and ensure they're compatible with librdkafka.
+
+Here's how you can test a POSIX regular expression in a Unix-like terminal:
+
+```bash
+echo 'sample_string' | grep -E 'posix_regex'
+```
+
+We also recommend creating a test helper class or method to ensure consistency in matching behaviors similar to the one below:
+
+```ruby
+def ruby_posix_regexp_same?(test_string, ruby_regex)
+  # Prepare POSIX regex from Ruby regex
+  posix_regex = ruby_regex.source
+  
+  # Evaluate regex in Ruby
+  ruby_match = !!(test_string =~ ruby_regex)
+  
+  # Prepare command for bash execution
+  grep_command = "echo '#{test_string}' | grep -E '#{posix_regex}' > /dev/null"
+  
+  # Evaluate regex in bash (POSIX)
+  posix_match = system(grep_command)
+  
+  # Compare results
+  comparison_result = ruby_match == posix_match
+  
+  # Remove printing for automated specs
+  puts "Ruby match: #{ruby_match}"
+  puts "POSIX match: #{posix_match}"
+  puts "Comparison: #{comparison_result}"
+  
+  comparison_result
+end
+```
+
+Below, you can see how certain regular expressions differ between Ruby and `libc`:
+
+```ruby
+ruby_posix_regexp_same?('test12.production', /\d\d/)
+# Ruby match: true
+# POSIX match: false
+# Comparison: false
+
+ruby_posix_regexp_same?('test12.production', /[0-9]{2}/)
+# Ruby match: true
+# POSIX match: true
+# Comparison: true
+
+ruby_posix_regexp_same?('test12.production', /[0-9]{10}/)
+# Ruby match: false
+# POSIX match: false
+# Comparison: true
+```
+
+This comparative testing method offers a straightforward way to ensure your regular expressions behave as expected across different environments, particularly when working with librdkafka in Karafka.
 
 ## Example Use Cases
 
