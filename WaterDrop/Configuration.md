@@ -48,6 +48,7 @@ Some of the options are:
 | `wait_timeout_on_queue_full`          | If back-offs and attempts that that much time, error won't be retried more     |
 | `wait_backoff_on_transaction_command` | How long to wait before retrying a retryable transaction related error         |
 | `max_attempts_on_transaction_command` | How many times to retry a retryable transaction related error before giving up |
+| `instrument_on_wait_queue_full`       | Should we instrument when `queue_full` occurs                                  |
 
 !!! info ""
 
