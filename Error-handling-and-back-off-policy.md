@@ -179,11 +179,11 @@ end
 
 ### Exponential Backoff
 
-If needed, you can also use exponential backoff. If `pause_with_exponential_backoff` is enabled, each subsequent pause will cause the timeout to double until a message from the partition has been successfully processed. To not double the time indefinitely, you can please set `pause_max_timeout` to whatever you consider max pause.
+Karafka is configured with `pause_with_exponential_backoff` enabled (`true`) by default. This configuration doubles the timeout period after each pause until a message from the partition is processed successfully. To prevent the timeout from extending indefinitely, `pause_max_timeout` can be set to your preferred maximum duration. By default, this maximum timeout is set to 30 seconds.
 
-Regardless of the error nature, you can always use the [Monitoring and Logging](Monitoring-and-Logging) to track any problems during work time.
+Regardless of the error's nature, the Monitoring and Logging feature can track any issues encountered during operation.
 
-It is highly recommended to have a monitoring and logging layer to notify you about errors that occur while processing Kafka messages.
+A monitoring and logging layer is strongly recommended to ensure prompt notification of errors that arise while processing Kafka messages.
 
 ### Pause Offset Selection
 
