@@ -9,7 +9,9 @@ Karafka versions or release series are categorized below into the following phas
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.x     | Active      | N/A        |
+| 2.2+    | Active      | N/A        |
+| 2.1     | Maintenance | N/A        |
+| 2.0     | EOL         | 2024-02-01 |
 | 1.4     | EOL         | 2023-02-01 |
 | 1.3     | EOL         | 2021-08-01 |
 | 1.2     | EOL         | 2020-08-01 |
@@ -27,9 +29,9 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 3.3     | Active      | N/A        |
-| 3.2     | Active      | N/A        |
-| 3.1     | Active      | N/A        |
-| 3.0     | Active      | N/A        |
+| 3.2     | Active      | 2026-09-31 |
+| 3.1     | Active      | 2025-09-31 |
+| 3.0     | Active      | 2024-09-31 |
 | 2.7     | Active      | 2024-06-30 |
 | 2.6     | EOL         | 2022-04-12 |
 
@@ -51,7 +53,7 @@ Karafka and its components are designed to maintain compatibility with all Kafka
 
 - **Kafka Versions**: Karafka supports all Kafka versions that have yet to reach their End of Life (EOL). This ensures that users can confidently use Karafka with Kafka versions that are actively maintained and receive necessary security and bug fixes.
 
-- **librdkafka Compatibility**: The underlying broker support for Karafka is anchored by the librdkafka library. As of now, librdkafka supports Kafka brokers in versions `0.11` or higher.
+- **librdkafka Compatibility**: The underlying broker support for Karafka is anchored by the librdkafka library. As of now, librdkafka supports Kafka brokers in versions `1.0` or higher.
 
 - **Message Format**: Karafka mandates the use of Message Format v2 or later. This ensures efficient message handling and leverages the capabilities introduced in this format.
 

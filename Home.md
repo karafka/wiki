@@ -89,6 +89,7 @@
 * [Articles and other references](Articles-and-other-references)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
+* [Software Bill of Materials (SBOM)](SBOM)
 
 ## Karafka Pro
 
