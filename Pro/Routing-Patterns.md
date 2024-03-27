@@ -195,7 +195,44 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Internal Regular Expression Requirements of `librdkafka`**: The library requires regular expression strings to start with `^`. Karafka's Routing Patterns adapt Ruby's regular expressions to fit this format internally. Remembering this transformation and thoroughly testing your patterns before deploying is important. You can find the adjusted regular expression in the Web UI under the routing page topic details view if you wish to review the adjusted regular expression.
 
+1. **Too Broad Regular Expressions**: TBA
+
 Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
+
+## DLQ Accidental Auto-Consumption
+
+This feature requires careful attention when used alongside [Dead Letter Queues (DLQs)](Dead-Letter-Queue) to avoid unintended behaviors. A common pitfall arises from using regular expressions that are not precise enough, leading to scenarios where the base topic consumer consumes the DLQ topics themselves.
+
+The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can initiate an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
+
+Such a case can lead to situations where messages destined for the DLQ due to processing errors are re-consumed as regular messages, only to fail and be sent back to the DLQ, perpetuating a cycle.
+
+Below, you can see an example routing setup that will cause the DLQ topic to be consumed by the `EventsConsumer` despite it not being explicitly declared.
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    pattern /.*\.events/ do
+      consumer EventsConsumer
+
+      # The above regexp will also match the below DLQ topic
+      dead_letter_queue(
+        topic: 'global.events.dlq'
+      )
+    end
+  end
+end
+```
+
+To prevent such loops, it's essential to:
+
+- Craft regular expressions precisely, ensuring they match only the intended topics and not the DLQs unless explicitly desired.
+
+- Adopt clear naming conventions for DLQ topics that can easily be excluded in regex patterns.
+
+- Test regular expressions thoroughly against various topic names as described [here](#testing-regular-expressions).
+
+While routing patterns offer a dynamic and powerful method to manage topic consumption in Karafka, they demand careful consideration and testing, especially when integrating DLQ mechanisms.
 
 ## Differences in Regexp Evaluation Between Ruby and libc
 
