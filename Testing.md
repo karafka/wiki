@@ -31,7 +31,7 @@ end
 
 Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods that you can use within your specs:
 
-- `#consumer_for` - creates a consumer instance for the desired topic. It **needs** to be set as the spec subject.
+- `#consumer_for` - creates a consumer instance for the desired topic.
 - `#produce` - "sends" message to the consumer instance.
 - `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
 
@@ -234,7 +234,7 @@ And then:
 
 Once included in your Minitest setup, this library will provide you with a special `@karafka` object that contains three methods that you can use within your specs:
 
-- `#consumer_for` - creates a consumer instance for the desired topic. It **needs** to be set as the spec subject.
+- `#consumer_for` - creates a consumer instance for the desired topic.
 - `#produce` - "sends" message to the consumer instance.
 - `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
 
@@ -302,7 +302,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
   end
 
   test 'should produce messages' do
-      @karafka.producer.produce_sync(
+      Karafka.producer.produce_sync(
       topic: 'users_changes',
       payload: { user_id: user.id, type: 'user.created' },
       key: user.id.to_s
