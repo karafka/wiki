@@ -302,7 +302,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
   end
 
   test 'should produce messages' do
-      Karafka.producer.produce_sync(
+    Karafka.producer.produce_sync(
       topic: 'users_changes',
       payload: { user_id: user.id, type: 'user.created' },
       key: user.id.to_s
