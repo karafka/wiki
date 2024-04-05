@@ -1,5 +1,9 @@
 This documentation page provides recommended strategies for upgrading Karafka and its dependencies to ensure a smooth and seamless upgrade process. Upgrading Karafka and its dependencies is essential to benefit from the latest features, bug fixes, and security enhancements. It is necessary to follow these strategies to minimize disruptions and avoid compatibility issues during the upgrade.
 
+!!! tip "Pro & Enterprise Upgrade Support"
+
+    If you're gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you've got a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
+
 ## Pre-Upgrade Considerations
 
 1. **Review the Changelogs**: Read the release notes and changelog for each new version of Karafka and its dependencies. This will help you understand the changes, improvements, and potential breaking changes introduced in the latest version.
