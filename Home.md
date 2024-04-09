@@ -84,6 +84,7 @@
 * [Multi-Cluster Setup](Multi-Cluster-Setup)
 * [Env Variables](Env-Variables)
 * [Assignments Tracking](Assignments-Tracking)
+* [Active Record Connections Management](Active-Record-Connections-Management)
 * [Librdkafka Configuration](Librdkafka-Configuration)
 * [Librdkafka Statistics](Librdkafka-Statistics)
 * [Articles and other references](Articles-and-other-references)
