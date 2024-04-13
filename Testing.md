@@ -1,4 +1,10 @@
-Karafka provides a dedicated helper library for testing consumers and producers called [karafka-testing](https://github.com/karafka/karafka-testing).
+Karafka provides a dedicated testing library, [`karafka-testing`](https://github.com/karafka/karafka-testing), designed to facilitate the testing of Karafka producers and consumers without needing a running Kafka server. This library effectively mocks the interactions with Kafka, allowing developers to write and run tests for consumers and producers in an isolated environment. The primary aim of `karafka-testing` is to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
+
+It is important to note that the scope of `karafka-testing` is limited to mocking consumer and producer user-facing behaviors. It does not cover testing other Kafka-related functionalities, such as Admin API or web UI features that might interact with Kafka. By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight and efficient solution for developers to ensure the integrity of message handling in their applications without the dependency on a live Kafka setup.
+
+!!! Tip "Limited Testing Scope of `karafka-testing`"
+
+    `karafka-testing` enables testing of Karafka producers and consumers without a live Kafka server, but be aware that its scope is limited. While it effectively mocks client connections to Kafka for consumer and producer operations, it does not support testing of all Kafka functionalities. Specifically, `karafka-testing` does not facilitate testing of Admin API or any web UI interactions. This library is focused solely on consumer and producer functionalities.
 
 ## Usage with RSpec
 
