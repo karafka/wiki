@@ -2,7 +2,7 @@ Consumers should inherit from the **ApplicationConsumer**. You need to define a 
 
 Karafka fetches and consumes messages in batches by default.
 
-## Consuming messages
+## Consuming Messages
 
 Karafka framework has a long-running server process responsible for fetching and consuming messages.
 
@@ -12,7 +12,7 @@ To start the Karafka server process, use the following CLI command:
 bundle exec karafka server
 ```
 
-### In batches
+### In Batches
 
 Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable containing received data and additional information that can be useful during the processing.
 
@@ -40,7 +40,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-### One at a time
+### One At a Time
 
 While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may want to process messages one at a time.
 
@@ -67,7 +67,7 @@ class Consumer < SingleMessageBaseConsumer
 end
 ```
 
-### Accessing topic details
+### Accessing Topic Details
 
 If, in any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it, for example, in case you want to perform a different logic within a single consumer based on the topic from which your messages come:
 
@@ -97,7 +97,7 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-## Consuming from earliest or latest offset
+## Consuming From Earliest or Latest Offset
 
 Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value:
 
@@ -122,7 +122,7 @@ end
 
     This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
-## Detecting revocation midway
+## Detecting Revocation Midway
 
 When working with a distributed system like Kafka, partitions of a topic can be distributed among different consumers in a consumer group for processing. However, there might be cases where a partition needs to be taken away from a consumer and reassigned to another consumer. This is referred to as a partition revocation.
 
@@ -154,7 +154,7 @@ In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running
 
     When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result also changes independently from marking messages.
 
-## Consumer persistence
+## Consumer Persistence
 
 Karafka consumer instances are persistent by default. This means that a single consumer instance will "live" as long as a given process instance consumes a given topic partition. This means you can elevate in-memory processing and buffering to achieve better performance.
 
@@ -197,7 +197,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-## Shutdown and partition revocation handlers
+## Shutdown and Partition Revocation Handlers
 
 Karafka consumer, aside from the `#consume` method, allows you to define two additional methods that you can use to free any resources that you may be using upon certain events. Those are:
 
@@ -227,6 +227,58 @@ end
 ```
 
 Please note that when using `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
+
+## `enable.partition.eof` Early Yield
+
+In typical Karafka consumption scenarios, when a consumer reaches the end of a partition, it might still wait for new messages to arrive. This behavior is governed by settings such as `max_wait_time` or `max_messages`, which dictate how long a consumer should wait for new data before timing out or moving on. While this can benefit continuous data streams, it may introduce unnecessary latency in scenarios where real-time data processing and responsiveness are critical.
+
+The `enable.partition.eof` configuration option changes how Karafka responds when the end of a partition is reached during message consumption. By default, when Karafka encounters the end of a partition, it waits for more messages until either `max_wait_time` or `max_messages` limits are reached. However, if `enable.partition.eof` is set for a subscription group to `true`, Karafka will immediately delegate already accumulated messages (if any) for processing, even if neither `max_wait_time` nor `max_messages` has been reached.
+
+### Benefits of Early Yield
+
+- **Reduced Latency**: Immediate message yielding upon reaching the end of a partition can significantly reduce latency. This is particularly beneficial in environments where data must be processed and acted upon quickly.
+
+- **Increased Responsiveness**: Systems that require high responsiveness will benefit from not having to wait for the timeout conditions (`max_wait_time` or `max_messages`) to be met, allowing subsequent processing steps to commence without delay.
+
+- **Efficient Resource Utilization**: By avoiding unnecessary waiting times, system resources can be better utilized for processing rather than idling, potentially leading to cost optimizations and improved throughput.
+
+### Downsides of Early Yield
+
+- **Potential for Increased CPU Usage**: In highly active systems where new messages are frequently published, constantly checking for the end of partition could lead to increased CPU utilization. This is because the system needs to manage and check state transitions more frequently.
+
+- **Complexity in Batch Processing**: For applications that are optimized for batch processing, this setting might disrupt the batching logic, as messages could be processed in smaller batches, potentially leading to inefficiencies.
+
+### Configuring `enable.partition.eof`
+
+The `enable.partition.eof` is one of the `kafka` scoped options and can be set for all subscription groups or on a per-subscription group basis, depending on your use case.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'enable.partition.eof': true
+    }
+  end
+
+  # You can also do it per topics in a subscription group
+  routes.draw do
+    subscription_group :fast do
+      topic 'events' do
+        consumer EventsConsumer
+        kafka(
+          'bootstrap.servers': '127.0.0.1:9092',
+          'enable.partition.eof': true
+        )
+      end
+    end
+  end
+end
+```
+
+This configuration ensures that as soon as the end of a partition is reached, any accumulated messages are immediately processed, enhancing the system's responsiveness and efficiency.
 
 ## Inline API based consumption
 

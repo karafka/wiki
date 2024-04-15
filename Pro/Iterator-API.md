@@ -211,7 +211,9 @@ class KarafkaApp < Karafka::App
   routes.draw do
     topic 'events' do
       active false
-      deserializer XmlDeserializer
+      deserializers(
+        payload: XmlDeserializer
+      )
     end
   end
 end

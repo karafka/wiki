@@ -73,7 +73,7 @@ Remember that the sanitization process should be implemented carefully to ensure
 Below you can find an example implementation of a wrapper that removes the replaces the `:address` key from the deserializers hash with a `[FILTERED]` string.
 
 ```ruby
-# Define your sanitizer that will wrap the deserializer
+# Define your sanitizer that will wrap the payload deserializer
 class AddressSanitizer
   def initialize(deserializer)
     @deserializer = deserializer
@@ -105,7 +105,9 @@ class KarafkaApp < Karafka::App
       consumer ExampleConsumer
       # Make sure, that the OrdersDeserializer is wrapped with an address sanitizer
       # so the address is not visible in the Web-UI
-      deserializer AddressSanitizer.new(OrdersDeserializer.new)
+      deserializers(
+        payload: AddressSanitizer.new(OrdersDeserializer.new)
+      )
     end
   end
 end

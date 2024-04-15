@@ -223,7 +223,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 |-----------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------|
 | active                            | Boolean      | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
 | [consumer](Consuming-messages)    | Class        | Name of a consumer class that we want to use to consume messages from a given topic                                         |
-| [deserializer](Deserialization)   | Class        | Name of a deserializer that we want to use to deserialize the incoming data                                                 |
+| [deserializers](Deserialization)  | Hash        | Names of a deserializers that we want to use to deserializes the incoming data (payload, key and headers)                    |
 | [manual_offset_management](Offset-management#manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not          |
 | [long_running_job](Pro-Long-Running-Jobs)        | Boolean     | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                       |
 | [virtual_partitions](Pro-Virtual-Partitions)     | Hash        | Allows you to parallelize the processing of data from a single partition.                                     |
@@ -245,7 +245,9 @@ class KarafkaApp < Karafka::App
       topic :binary_video_details do
         config(partitions: 2)
         consumer Videos::DetailsConsumer
-        deserializer Serialization::Binary::Deserializer.new
+        deserializers(
+          payload: Serialization::Binary::Deserializer.new
+        )
       end
 
       topic :new_videos do
@@ -259,7 +261,9 @@ class KarafkaApp < Karafka::App
       # Set to false because not for consumption.
       # Only inspection via admin API.
       active false
-      deserializer EventsDeserializer.new
+      deserializers(
+        payload: EventsDeserializer.new
+      )
     end
   end
 end

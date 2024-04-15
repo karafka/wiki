@@ -71,17 +71,23 @@ class KarafkaApp < Karafka::App
   routes.draw do
     topic :incoming_requests do
       active false
-      deserializer XmlDataDeserializer
+      deserializers(
+        payload: XmlDataDeserializer
+      )
     end
 
     topic :events do
       active false
-      deserializer AvroDeserializer
+      deserializers(
+        payload: AvroDeserializer
+      )
     end
 
     topic :webhooks do
       active false
-      deserializer JsonDeserializer
+      deserializers(
+        payload: JsonDeserializer
+      )
     end
   end
 end
