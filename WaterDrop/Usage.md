@@ -322,7 +322,7 @@ producer.close
 
 In specific scenarios, such as working with unstable Kafka clusters or when you need to finalize your application fast, disregarding the risk of potential data loss, you may use the `#close!` method.
 
-The `#close!` method attempts to wait until a specified `max_wait_timeout` (default is `5` seconds) for any pending operations to complete. However, if the producer cannot be shut down gracefully within this timeframe, it will forcefully purge the dispatch queue and cancel all outgoing requests. This effectively prevents the closing procedure from blocking for an extensive period, ensuring that your application can exit more quickly.
+The `#close!` method attempts to wait until a specified `max_wait_timeout` (default is `60` seconds) for any pending operations to complete. However, if the producer cannot be shut down gracefully within this timeframe, it will forcefully purge the dispatch queue and cancel all outgoing requests. This effectively prevents the closing procedure from blocking for an extensive period, ensuring that your application can exit more quickly.
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|

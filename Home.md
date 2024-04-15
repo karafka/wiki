@@ -75,7 +75,6 @@
 * [Deserialization](Deserialization)
 * [Offset management (checkpointing)](Offset-management)
 * [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
-* [Consumer mappers](Consumer-mappers)
 * [Inline Insights](Inline-Insights)
 * [WaterDrop reconfiguration](WaterDrop-reconfiguration)
 * [Exit codes](Exit-codes)

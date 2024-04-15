@@ -42,7 +42,6 @@ Some of the options are:
 | `client_class`                        | Client class for creating the underlying client used to dispatch messages      |
 | `deliver`                             | Should we send messages to Kafka or just fake the delivery                     |
 | `max_wait_timeout`                    | Waits that long for the delivery report or raises an error                     |
-| `wait_timeout`                        | Waits that long before re-check of delivery report availability                |
 | `wait_on_queue_full`                  | Should be wait on queue full or raise an error when that happens               |
 | `wait_backoff_on_queue_full`          | Waits that long before retry when queue is full                                |
 | `wait_timeout_on_queue_full`          | If back-offs and attempts that that much time, error won't be retried more     |

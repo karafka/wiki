@@ -54,12 +54,12 @@ end
 
 ### Web UI Consumer Group Creation
 
-Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.processing.consumer_group`:
+Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.group_id`:
 
 ```ruby
 Karafka::Web.setup do |config|
   # After configuration, do not forget to use Heroku CLI to assign proper ACL permissions to this group.
-  config.processing.consumer_group = 'karafka-web'
+  config.group_id = 'karafka-web'
 end
 ```
 

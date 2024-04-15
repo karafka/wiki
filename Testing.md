@@ -214,7 +214,7 @@ RSpec.describe Karafka::App.routes do
     describe 'xml_data topic' do
       let(:topic) { group.topics.find('xml_data') }
 
-      it { expect(topic.deserializer).to eq XmlDeserializer }
+      it { expect(topic.deserializers.payload).to eq XmlDeserializer }
     end
   end
 end

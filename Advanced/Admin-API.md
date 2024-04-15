@@ -6,9 +6,7 @@ Karafka provides application administrative functions via the built-in `Karafka:
 
 ## Configuration
 
-`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `CLIENT_ID_karafka_admin` where `CLIENT_ID` corresponds to the configured `client_id` value and is subject to the [Consumer Mapper](https://karafka.io/docs/Consumer-mappers/) logic as any other consumer group used throughout Karafka.
-
-It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `CLIENT_ID_karafka_admin` consumer group is granted the necessary permissions to function effectively.
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively.
 
 `Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
 
@@ -158,6 +156,38 @@ puts "Low watermark offset: #{low}"
 puts "High watermark offset: #{high}"
 ```
 
+## Reading Lags and Offsets of a Consumer Group
+
+This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
+
+Using the following method, you can obtain the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
+
+```ruby
+# Specify the consumer group and the topics you are interested in
+consumer_group = 'example_consumer_group'
+topics = ['topic1', 'topic2']
+
+# Fetch the lags and offsets
+lags_and_offsets = Karafka::Admin.read_lags_and_offsets(consumer_group, topics)
+
+# Output the fetched data
+lags_and_offsets.each do |topic, partition_data|
+  partition_data.each do |partition, data|
+    puts "Topic: #{topic}, Partition: #{partition}, Offset: #{data[:offset]}, Lag: #{data[:lag]}"
+  end
+end
+```
+
+If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This ensures comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
+
+### Edge Cases and Considerations
+
+- **Non-existent Topics**: Returns an empty hash for non-existent topics to indicate the absence of data.
+
+- **Unconsumed Topics**: Topics with no recorded consumption by the specified consumer group will show a lag and offset of -1 for each partition, highlighting inactivity.
+
+- **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
+
 ## Deleting a Consumer Group
 
 !!! warning "Never delete active consumer groups"
@@ -171,10 +201,6 @@ To use it, all you need to do is to provide your consumer group name:
 ```ruby
 Karafka::Admin.delete_consumer_group('your_consumer_group_name')
 ```
-
-!!! note ""
-
-    The provided consumer group name will be automatically remapped according to the configured [consumer mapper](https://karafka.io/docs/Consumer-mappers/).
 
 ## Changing an Offset of a Consumer Group
 
@@ -190,10 +216,6 @@ the name of the consumer group
 a topic-partition hash with topics, partitions, and offsets where the consumer group should be moved
 
 When invoked, it changes the current offset of the specified consumer group for the given topics to the new offsets provided. This method is beneficial when you need to reprocess or skip specific messages due to various operational requirements.
-
-!!! note ""
-
-    The provided consumer group name will be automatically remapped according to the configured [consumer mapper](https://karafka.io/docs/Consumer-mappers/).
 
 ### Changing an Offset for All Partitions
 
