@@ -34,7 +34,11 @@ end
 
 Please follow the [WaterDrop documentation](https://karafka.io/docs/WaterDrop-Usage/) for more details on how to use it.
 
-## Producer shutdown
+## Messages Piping
+
+If you are looking for seamless message piping in Kafka-based systems, we recommend checking out the [message piping](https://karafka.io/docs/Pro-Piping) feature in Karafka Pro. Exclusive to Karafka Pro, this feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+
+## Producer Shutdown
 
 When using the Karafka producer in processes like Puma, Sidekiq, or rake tasks, it is always recommended to call the `#close` method on the producer before shutting it down.
 
