@@ -140,3 +140,37 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## Direct Assignments
+
+Direct Assignments allow you to specify which nodes should handle which topics and partitions.
+
+Configuring Direct Assignments involves specifying the partitions and the nodes that should handle them within the Karafka routing setup. Here's how you can define direct assignments for your topics:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+    # Run 8 processes
+    config.swarm.nodes = 8
+  end
+
+  routes.draw do
+    topic 'financial_data' do
+      consumer FinancialDataConsumer
+      # Directly assign partitions 0, 1, and 2
+      assign(0, 1, 2)
+      # Specify that only nodes 0 and 1 should handle these partitions
+      # with the 0 node receiving partition 0 and node 1 receiving
+      # partitions 1 and 2
+      swarm(nodes: { 0 => [0], 1 => [1, 2] })
+    end
+
+    topic 'user_activity' do
+      consumer UserActivityConsumer
+      assign [0, 1]  # Directly assign partitions 0 and 1
+      swarm(nodes: [2])  # Assign these partitions to node 2
+    end
+  end
+end
+```
