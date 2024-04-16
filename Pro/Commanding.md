@@ -24,7 +24,9 @@ Opting out of commanding is recommended for environments where direct consumer m
 
 The commanding functionality within the Karafka Pro Web UI is organized into two distinct tabs: "Controls" and "Commands." These tabs provide a centralized interface for managing consumer processes, making it easier for administrators to perform and track administrative actions directly from the Web UI.
 
-Warning 7 days retentin
+!!! Info ""
+
+    Commands issued through the Web UI are retained in Kafka for a default period of 7 days. After this duration, these commands are automatically removed from the system. This automatic cleanup helps manage the storage and maintain efficiency within Kafka without manual intervention.
 
 ### Controls Tab
 
