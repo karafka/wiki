@@ -110,6 +110,7 @@
 
 * [Features List](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
+* [Commanding](Pro-Commanding)
 * [Transactions](Pro-Transactions)
 * [Offset Metadata Storage](Pro-Offset-Metadata-Storage)
 * [Virtual Partitions](Pro-Virtual-Partitions)

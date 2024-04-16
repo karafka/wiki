@@ -7,12 +7,13 @@ The Enhanced Web UI, aside from all the features from the OSS version, also offe
 - Data Explorer allowing for viewing and exploring the data produced to Kafka topics. It understands the routing table and can deserialize data before it is displayed.
 - Enhanced error reporting allowing for backtrace inspection and providing multi-partition support.
 - DLQ / Dead insights allowing to navigate through DLQ topics and messages that were dispatched to them.
+- Consumer Processes Commanding from the Web interface.
 
 ## Getting Started
 
 Karafka Web UI will automatically switch to the Pro mode when Karafka Pro is in use.
 
-There are **no** extra steps needed.
+There are **no** extra steps needed unless you want to completely disable consumers processes management.
 
 ## Dashboard
 
@@ -48,6 +49,10 @@ The consumer jobs inspection view provides real-time visibility into the jobs ru
 This feature offers users a detailed look into each process's current state report. It's a valuable tool for thorough debugging and precise per-process inspection.
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-details.png)
+
+### Consumers Commanding
+
+This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Commanding).
 
 ## Health
 
@@ -169,6 +174,10 @@ Error details:
 ## DLQ / Dead
 
 Dead insights allowing to navigate through DLQ topics and messages that were dispatched to them.
+
+!!! Tip "Automatic Qualification of DLQ Topics"
+
+    Web UI will automatically classify any topics that contain `dlq` or `dead_letter` in their names - irrespective of case - as Dead Letter Queue (DLQ) topics. This means topics labeled with variations such as `DLQ`, `dlq`, `Dead_Letter`, or `DEAD_LETTER` will be viewed and managed under the DLQ view. 
 
 DLQ dispatched messages view:
 
