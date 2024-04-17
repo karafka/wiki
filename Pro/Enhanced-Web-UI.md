@@ -56,47 +56,9 @@ This feature has its own dedicated documentation that you can access [here](http
 
 ## Health
 
-The health views of the Web UI display the current status of all the running Karafka instances aggregated on a per-consumer-group basis. Those views allow users to monitor the health of their messages consumption and troubleshoot any issues that may arise including issues related to hanging transactions (LSO issues). It also allows quick identification of performance bottlenecks and can help with capacity planning.
+This dashboard views show Karafka consumers' groups' health states with their lag aggregated information and basic trends.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health.png)
-
-### LSO Freezes Awareness
-
-In the world of Kafka, the Last Stable Offset (LSO) is pivotal in ensuring message integrity and order, especially for idempotent producers. However, at times, the LSO may hang, affecting the consumption of messages and potentially bringing to a standstill any consumers operating at a `read_committed` isolation level. This documentation will shed light on the concept, the problems it may cause, and how the Karafka Web UI can be a lifesaver during such situations.
-
-#### Understanding the LSO - Last Stable Offset
-
-The Last Stable Offset (LSO) is a checkpoint marking the last point at which records were successfully committed. It is a significant reference point because any records beyond this point are not considered stable and may not be safely consumed by clients requiring transactional consistency.
-
-#### The Risk of LSO Freezes
-
-If the LSO hangs or is stuck, it signifies that new records have yet to be committed beyond this point. When such a scenario happens, all consumers with a `read_committed` isolation level will be unable to proceed. Essentially, they will have to wait until the LSO issue is resolved, which can be a significant challenge for real-time data processing systems.
-
-#### A Beacon in LSO Freezes
-
-The Karafka Web UI is equipped with robust health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
-
-Karafka's Web UI has visual cues to indicate potential problems concerning the LSO:
-
-1. **At Risk (Yellow Highlight)**
-    - **Scenario**: Consumption is at risk but is still moving forward. This happens when there is still data before reaching the LSO, so the consumer is progressing.
-    - **Web UI Indication**: The partition will be highlighted in yellow.
-    - **LSO State**: "At risk"
-
-![karafka web ui LSO warning](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health-lso1.png)
-
-2. **Stopped (Red Highlight)**
-    - **Scenario**: Consumption is halted and cannot move forward. This situation arises when more data is available on the topic, but it lies beyond the LSO, and the consumer has already reached it.
-    - **Web UI Indication**: The partition will be highlighted in red, emphasizing that it is stopped.
-    - **LSO State**: "Stopped".
-
-![karafka web ui LSO error](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-health-lso2.png)
-
-These visual indicators allow immediate awareness of potential problems, ensuring quick identification and action.
-
-#### Conclusion
-
-Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, ensuring administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the seamless functioning of your Kafka-based data processing system.
+[Here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Health) you can learn more about the health information available in this dashboard view.
 
 ## Explorer
 
