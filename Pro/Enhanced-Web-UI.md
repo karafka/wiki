@@ -60,6 +60,10 @@ This dashboard views show Karafka consumers' groups' health states with their la
 
 [Here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Health) you can learn more about the health information available in this dashboard view.
 
+## Topics Insights
+
+The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Topics-Insights).
+
 ## Explorer
 
 Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing.

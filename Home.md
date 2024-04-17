@@ -142,6 +142,7 @@
     * [Health](Pro-Enhanced-Web-UI-Health)
     * [Explorer](Pro-Enhanced-Web-UI#explorer)
     * [Sanitization](Pro-Enhanced-Web-UI-Sanitization)
+    * [Topics Insights](Pro-Enhanced-Web-UI-Topics-Insights)
     * [Errors](Pro-Enhanced-Web-UI#errors)
     * [DLQ / Dead](Pro-Enhanced-Web-UI#dlq-dead)
 
