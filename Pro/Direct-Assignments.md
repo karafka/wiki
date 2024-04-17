@@ -14,6 +14,8 @@ Direct Assignments enable scenarios where automatic partition assignments could 
 
 - **Tailored Processing Logic**: They facilitate complex processing logic that might be necessary for advanced use cases, such as maintaining state or processing partitions in a specific sequence.
 
+- **Unaffected by `max.poll.interval.ms`**: By using Direct Assignments, consumers are not subjected to the constraints of `max.poll.interval.ms`, which defines the maximum time between poll calls before a consumer is considered unresponsive.
+
 ## Configuring Direct Assignments
 
 To utilize Direct Assignments, you specify which partitions a consumer should subscribe to directly in your Karafka routing configuration. Here is an example of how to configure a consumer to only process specific partitions:
