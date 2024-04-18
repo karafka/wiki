@@ -2,6 +2,10 @@ Specific industries have strong regulations around the storage of personal data.
 
 Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data.
 
+!!! Warning "Custom Headers Deserializer and Encryption"
+
+    When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
+
 ## Enabling Encryption
 
 Encryption has its dedicated section in the configuration called `encryption`. To enable encryption, you need to:

@@ -90,3 +90,7 @@ In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configura
 While Karafka's Routing Patterns feature integrates seamlessly with the Dead Letter Queue (DLQ) mechanism, developers are advised to exercise caution. Specifically, there's a potential issue where an imprecisely crafted regular expression could inadvertently match both primary and DLQ topics. This misconfiguration might result in messages from the DLQ being consumed in an unexpected loop, especially if the DLQ topic isn't explicitly targeted for consumption.
 
 You can read more about this issue [here](https://karafka.io/docs/Pro-Routing-Patterns/#dlq-accidental-auto-consumption).
+
+## Messages At Rest Encryption + Custom Headers Deserializer and Encryption
+
+When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
