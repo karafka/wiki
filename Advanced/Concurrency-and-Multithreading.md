@@ -7,6 +7,10 @@ Karafka uses native Ruby threads to achieve concurrent processing in four scenar
 
 Additionally, Karafka supports [Swarm Mode](Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
 
+!!! Tip "Separate Resources Management Documentation"
+
+    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](https://karafka.io/docs/Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
+
 ## Parallel Messages Processing
 
 After messages are fetched from Kafka, Karafka will split incoming messages into separate jobs. Those jobs will then be put on a queue from which a poll of workers can consume. All the ordering warranties will be preserved.
@@ -149,35 +153,6 @@ There are a few ways to measure the saturation in Karafka:
 - If you are using our [Datadog](https://karafka.io/docs/Monitoring-and-logging/#datadog-and-statsd-integration) integration, it contains the `processing_lag` metrics.
 
 Job saturation in Karafka isn't inherently critical, but it may lead to increased consumption lag, resulting in potential delays in processing tasks. This is because when the system is overloaded with jobs, it takes longer to consume and process new incoming data. Moreover, heavily saturated processes can create an additional issue; they may exceed the max.poll.interval.ms configuration parameter. This parameter sets the maximum delay allowed before the Kafka broker considers the consumer unresponsive and reassigns its partitions. In such a scenario, maintaining an optimal balance in job saturation becomes crucial for ensuring efficient message processing.
-
-## OS Threads Usage
-
-Karafka's multithreaded nature is one of its strengths and allows it to manage numerous tasks simultaneously. To understand how it achieves this, it's essential to realize that Karafka's threading model isn't just about worker poll threads. It also extends to other aspects of Karafka's functionality.
-
-Aside from worker threads, each subscription group within a consumer group uses a background thread. These threads handle the polling and scheduling of messages for the assigned topics in the group.
-
-The C `librdkafka` client library, which Karafka uses under the hood, uses `2` to `4` threads per subscription group. This is crucial to remember, as each consumer group added to your application will introduce an additional `3` to `4` threads in total.
-
-The Kafka cluster size can also affect the number of threads since Karafka maintains connections with multiple brokers in a cluster. Therefore, a larger cluster size may result in more threads. A single consumer group Karafka server process in a Ruby on Rails application on a small cluster will have approximately `25` to `30` threads.
-
-This may sound like a lot, but for comparison, Puma, a popular Ruby web server in a similar app, will have around `21` to `25` threads. It's important to note that having a higher thread count in Karafka is perfectly normal. Karafka is designed to handle the complexity of multiple brokers and consumer groups in a Kafka cluster, which inherently requires a higher number of threads.
-
-With Karafka Pro Web-UI, you gain enhanced visibility into your Karafka server processes. This includes the ability to inspect the thread count on a per-process basis. This detailed view can provide invaluable insights, helping you understand how your Karafka server is performing and where any potential bottlenecks might occur.
-This visibility, combined with a sound understanding of how Karafka utilizes threads, can be a great asset when troubleshooting performance issues or planning for future scalability.
-
-If you are interested in how many threads in total your Karafka servers use, Karafka Pro Web-UI gives you visibility into this value.
-
-This detailed view can provide invaluable insights, helping you understand how your Karafka server is performing and where any potential bottlenecks might occur.
-
-## Database Connections Usage
-
-Karafka, by itself, does not manage PostgreSQL or any other database connections directly. When using frameworks like Ruby on Rails, database connections are typically managed by the [ActiveRecord Connections Pool](https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html).
-
-Under normal circumstances, Karafka will use the `concurrency` number of database connections at most. This is because, at any given time, that's the maximum number of workers that can run in parallel.
-
-However, the number of potential concurrent database connections might increase when leveraging advanced Karafka APIs, such as the Filtering API, or making alterations to the scheduler and invoking DB requests from it. This is because these APIs operate from the listeners threads. In such advanced scenarios, the maximum number of concurrent DB connections would be the sum of the number of workers (`concurrency`) and the total number of subscription groups.
-
-It's important to note that a situation where all these threads would execute database operations simultaneously is highly unlikely. Therefore, in most use cases, the simplified assumption that only the `concurrency` parameter determines potential DB connections should suffice.
 
 ## Subscription Group Blocking Polls
 
