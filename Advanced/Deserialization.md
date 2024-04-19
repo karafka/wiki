@@ -110,6 +110,7 @@ class KarafkaApp < Karafka::App
       deserializers(
         payload: TextDeserializer.new
         # Uses the default framework deserializers
+        # for headers and key
       )
     end
   end
