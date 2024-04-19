@@ -103,11 +103,12 @@ The Karafka Web UI has CLI (Command-Line Interface) commands to facilitate its s
 
 ## Manual Web UI Topics Management
 
-By default, Karafka uses four topics with the following names:
+By default, Karafka uses five topics with the following names:
 
 - `karafka_consumers_states`
 - `karafka_consumers_reports`
 - `karafka_consumers_metrics`
+- `karafka_consumers_commands`
 - `karafka_errors`
 
 If you have the `auto.create.topics.enable` set to `false` or problems running the install command, create them manually. The recommended settings are as followed:
@@ -179,6 +180,31 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
         </li>
         <li>
           <code>'retention.ms': 60 * 60 * 1_000 # 1h</code>
+        </li>
+        <li>
+          <code>'segment.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
+        </li>
+        <li>
+          <code>'segment.bytes': 104_857_600 # 100MB</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td>karafka_consumers_commands</td>
+    <td>
+      <ul>
+        <li>
+          partitions: <code>1</code>
+        </li>
+        <li>
+          replication factor: aligned with your company policy
+        </li>
+        <li>
+          <code>'cleanup.policy': 'delete'</code>
+        </li>
+        <li>
+          <code>'retention.ms': 7 * 24 * 60 * 60 * 1_000 # 1h</code>
         </li>
         <li>
           <code>'segment.ms': 24 * 60 * 60 * 1_000 # 1 day</code>

@@ -49,6 +49,7 @@ Karafka::Web.setup do |config|
   config.topics.consumers.reports = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_reports"
   config.topics.consumers.states = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_states"
   config.topics.consumers.metrics = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_metrics"
+  config.topics.consumers.commands = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_commands"
 end
 ```
 
