@@ -23,6 +23,8 @@ These errors indicate processes in the middle of certain operations during a for
 
 For developers using macOS and Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. To mitigate these issues, we recommend to establish a short-lived connection to a local development Kafka instance when Spring boots. This can be done using `Karafka::Admin.cluster_info` to ensure all necessary libraries are loaded and initialized correctly before Spring forks the process.
 
+Additionally, you can also try setting the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`. This is another strategy to consider, as it might help manage the initialization issues related to forking in macOS environments. This variable specifically targets Objective-C initialization safety mechanisms that can interfere with the forking process, making it a potentially useful fix for developers facing related issues.
+
 For more detailed information on macOS forking issues and solutions, see [Phusion's blog on Ruby app servers and macOS High Sierra](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/).
 
 ## Conclusion
