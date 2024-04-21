@@ -12,6 +12,10 @@ The only thing you need to be aware of when developing your listeners is that th
 
 A complete list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/notifications.rb).
 
+!!! Warning "Handle Instrumentation Listener Errors Carefully"
+
+    Instrumentation listeners in Karafka must not generate errors as they can cause severe disruptions, including forcing the framework into recovery mode or even shutting down processes. Errors within worker threads can lead to improper message acknowledgment, resulting in message loss or duplication. Always thoroughly test your instrumentation code and incorporate robust internal error handling to prevent any impact on the stability and functionality of your Karafka application.
+
 ## Subscribing to the instrumentation events
 
 The best place to hook your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
