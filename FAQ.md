@@ -1646,9 +1646,9 @@ Broker: Group authorization failed (group_authorization_failed)
 
 it most likely arises when there's an authorization issue related to the consumer group in your Kafka setup. This error indicates the lack of the necessary permissions for the consumer group to perform certain operations.
 
-When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer group named `CLIENT_ID_karafka_admin` where the `CLIENT_ID` value equals `config.client_id`. Assuming your `client_id` is set to `my_app`, the full name of the consumer group will be `my_app_karafka_admin`.
+When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer groups named `karafka_admin` and `karafka_web`.
 
-Please review and update your Kafka ACLs or broker configurations to ensure this group has all the permissions it needs.
+Please review and update your Kafka ACLs or broker configurations to ensure these groups have all the permissions they need.
 
 ## Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?
 
