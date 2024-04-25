@@ -107,6 +107,20 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+And make sure your consumer is marking each message as successfully consumed:
+
+```ruby
+class OrdersStatesConsumer < Karafka::BaseConsumer
+  def consume
+    messages.each do |message|
+      puts message.payload
+
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
 The following diagrams compare DLQ flows in Karafka: the first without the independent flag and the second with it enabled, demonstrating the operational differences between these two settings.
 
 <p align="center">
