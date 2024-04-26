@@ -42,6 +42,10 @@ That way, as long as no rebalances occur during the processing that would cause 
 
 This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
 
+!!! Tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
+
+An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](https://karafka.io/docs/Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
+
 ## Using Long-Running Jobs
 
 The only thing you need to add to your setup is the `long_running_job` option in your routing section:

@@ -75,6 +75,16 @@ The table below contains options the `#dead_letter_queue` routing method accepts
       <td>Boolean</td>
       <td>Treats each message independently with its own error counter.</td>
     </tr>
+    <tr>
+      <td><code>dispatch_method</code></td>
+      <td>Symbol (<code>:produce_async</code> or <code>:produce_async</code>)</td>
+      <td>Describes whether dispatch on dlq should be sync or async (async by default).</td>
+    </tr>
+    <tr>
+      <td><code>marking_method</code></td>
+      <td>Symbol (<code>:mark_as_consumed</code> or <code>:mark_as_consumed!</code>)</td>
+      <td>Describes whether marking on DLQ should be async or sync (async by default).</td>
+    </tr>
   </tbody>
 </table>
 
@@ -282,6 +292,35 @@ end
 ```
 
 You can read more about producing to multiple clusters [here](https://karafka.io/docs/Producing-messages#producing-to-multiple-clusters).
+
+## Dispatch and Marking Warranties
+
+When using the Dead Letter Queue (DLQ) feature in Karafka, messages are handled with specific dispatch and marking behaviors critical for understanding how message failures are managed. By default, Karafka employs asynchronous dispatch and non-blocking marking as consumed. However, these can be configured to behave synchronously for stricter processing guarantees.
+
+For environments where message processing integrity is critical, you should configure dispatch and marking to operate synchronously. This ensures that each message is not only sent to the DLQ but also acknowledged by Kafka before proceeding and, similarly, that a message is confirmed as consumed before moving on.
+
+To configure synchronous dispatch, you can set the `dispatch_method` option to `:produce_sync`. This setting ensures that the producer waits for a response from Kafka, confirming that the message has been received and stored before it returns control to the application.
+
+Similarly, to configure blocking marking, you can set the `marking_method` to `:mark_as_consumed!`. This ensures that the message is marked as consumed in your application when Kafka confirms that it has been committed, reducing the risk of losing the message's consumption state.
+
+Here is an example configuration that uses synchronous dispatch and blocking marking for messages sent to the DLQ:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: 'dead_messages',
+        max_retries: 2,
+        dispatch_method: :produce_sync,
+        marking_method: :mark_as_consumed!
+      )
+    end
+  end
+end
+```
 
 ## Pro Enhanced Dead Letter Queue
 

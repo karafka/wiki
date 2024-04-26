@@ -304,21 +304,48 @@ That means that in the multi-tenant mode, you must remember **always** to prefix
 
 To make it work you need to follow few steps:
 
-1. Use a consumer mapper that will inject the Heroku Kafka prefix into each consumer group id automatically.
+1. Change the `group_id` setting to match your `KAFKA_PREFIX`.
 
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
     # other config options...
 
-    # Inject the prefix automatically to every consumer group
-    config.consumer_mapper = ->(raw_group_name) { "#{ENV['KAFKA_PREFIX']}#{raw_group_name}" }
+    # Inject the prefix automatically to the default consumer group
+    config.group_id = "#{ENV['KAFKA_PREFIX']}app"
   end
 end
 ```
 
-2. Create all the consumer groups before using them via the Heroku CLI.
+2. If you use explicit consumer groups, ensure they are prefixed with `KAFKA_PREFIX`.
 
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    consumer_group "#{ENV['KAFKA_PREFIX']}my-group1" do
+      topic :example do
+        consumer ExampleConsumer
+      end
+
+      topic :example2 do
+        consumer ExampleConsumer2
+      end
+    end
+
+    consumer_group "#{ENV['KAFKA_PREFIX']}my-group2" do
+      topic :example3 do
+        consumer Example2Consumer3
+      end
+    end
+  end
+end
+```
+
+3. Create all the consumer groups before using them via the Heroku CLI.
 
 ```bash
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
@@ -326,7 +353,7 @@ heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 
 !!! note ""
 
-    The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the default consumer group in Karafka `smoothboulder-1234.app` when used with the mapper defined above. Kafka itself does not need to know the prefix when creating the consumer group.
+    The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
 
 This means that the Heroku CLI command needs to look as follows:
 
@@ -336,8 +363,7 @@ heroku kafka:consumer-groups:create app
 
 This allows Heroku's multi-tenant setup to route `smoothboulder-1234.app` to your cluster correctly.
 
-
-3. When consuming, you **always** need to use the prefixed topic name:
+4. When consuming, you **always** need to use the prefixed topic name:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -350,7 +376,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-4. When producing, you **always** need to use the prefixed topic name:
+5. When producing, you **always** need to use the prefixed topic name:
 
 ```ruby
 Karafka.producer.produce_async(
@@ -362,7 +388,7 @@ Karafka.producer.produce_async(
 )
 ```
 
-5. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well. By default, both those settings are set to `karafka_admin`:
+6. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -370,13 +396,13 @@ class KarafkaApp < Karafka::App
     # other config options...
 
     # Make Karafka admin use such a group ID
-    config.admin.group_id = 'karafka-admin-extra'
+    config.admin.group_id = "#{ENV['KAFKA_PREFIX']}karafka-admin-extra"
   end
 end
 
 Karafka::Web.setup do |config|
   # other config options...
-  config.processing.consumer_group = 'karafka-web-ui'
+  config.group_id = "#{ENV['KAFKA_PREFIX']}karafka-web-ui"
 end
 ```
 
@@ -624,4 +650,69 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new
 )
 
 Karafka.monitor.subscribe(listener)
+```
+
+## Custom OAuth Token Providers
+
+Karafka and its companion gem, WaterDrop, can integrate with any custom OAuth token provider, enabling secure communication with a Kafka cluster. This capability is instrumental in cloud environments like AWS, where securing access and credentials is crucial.
+
+Karafka provides flexibility through a listener that allows integration with any OAuth token provider. This means that, even if your token provider is not part of the Karafka ecosystem, you can still use it by writing custom integration code.
+
+Karafka and WaterDrop producers accept `config.oauth.token_provider_listener`, executed whenever tokens must be refreshed. Inside of the `event` object, there will be a `:bearer` on which you should invoke either:
+
+- `#oauthbearer_set_token` with `:token`, `:lifetime_ms` and `:principal_name`.
+- `#oauthbearer_set_token_failure` with a string reason explaining why the token was not obtained.
+
+!!! Tip "Default Producer Auto-Configuration"
+
+    The default Karafka producer (`Karafka.producer`) does not need a separate configuration as it inherits the Kafka settings directly from the Karafka application configuration. However, if you use custom-initialized WaterDrop producers, remember that they require individual configuration.
+
+Below is an example of how you can set up Karafka with AWS using a custom token refresher and how you can configure a custom WaterDrop producer instance:
+
+```ruby
+class OAuthTokenRefresher
+  # Refresh OAuth tokens when required by the Karafka connection lifecycle
+  def on_oauthbearer_token_refresh(event)
+    # Note that such library does not exist, it is an example
+    signer = AwsAbstractTokenGenerator.new
+    token = signer.generate_auth_token
+
+    if token
+      event[:bearer].oauthbearer_set_token(
+        token: token.token,
+        lifetime_ms: token.expiration_time_ms,
+        principal_name: 'kafka-cluster'
+      )
+    else
+      event[:bearer].oauthbearer_set_token_failure(
+        token.failure_reason
+      )
+    end
+  end
+end
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other config options...
+
+    config.kafka = {
+      'bootstrap.servers': 'your-kafka-server:9098',
+      'security.protocol': 'sasl_ssl',
+      'sasl.mechanisms': 'OAUTHBEARER'
+    }
+
+    config.oauth.token_provider_listener = OAuthTokenRefresher.new
+  end
+end
+
+# If you only use Karafka.producer, it will be auto-configured
+CUSTOM_PRODUCER = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'your-kafka-server:9098',
+    'security.protocol': 'sasl_ssl',
+    'sasl.mechanisms': 'OAUTHBEARER'
+  }
+
+  config.oauth.token_provider_listener = OAuthTokenRefresher.new
+end
 ```

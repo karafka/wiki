@@ -1,10 +1,39 @@
-Karafka, by default, assumes you are receiving and sending JSON information.
+Karafka provides extensive support for custom deserialization processes that accommodate various data representations in your Kafka messages. This guide outlines how Karafka facilitates payload deserialization and extends to deserializing message keys and headers, offering broad flexibility in handling Kafka data. Additionally, it introduces the concept of lazy deserialization, which optimizes performance by delaying the deserialization process until the data is actually needed.
 
-This means that if you receive, for example, an XML payload, deserialization will fail.
+## Deserializers for Payload, Key, and Headers
 
-Deserializers are used to convert raw Kafka messages into a workable format. They are used when working with incoming messages and accept the full `message` object as an argument.
+Deserializers transform the raw data of Kafka messages (payload, key, and headers) into a format your application can process. You can configure default deserializers or specify custom deserializers for each topic within your routes configuration.
 
-You can set a default deserializer that will be used for all the topics, or you can specify a deserializer per topic in the routing.
+Each type of deserializer in Karafka accepts different parameters within the `#call` method and is expected to return a specific type of deserialized data. Below is a brief description of what each deserializer receives and is expected to return:
+
+<table>
+  <tr>
+    <th>Deserializer Type</th>
+    <th>Receives</th>
+    <th>Expects Return</th>
+    <th>Input Data Method</th>
+  </tr>
+  <tr>
+    <td>Payload Deserializer</td>
+    <td><code>Karafka::Messages::Message</code></td>
+    <td>Deserialized Payload</td>
+    <td><code>#raw_payload</code></td>
+  </tr>
+  <tr>
+    <td>Key Deserializer</td>
+    <td><code>Karafka::Messages::Metadata</code></td>
+    <td>Deserialized Key</td>
+    <td><code>#raw_key</code></td>
+  </tr>
+  <tr>
+    <td>Headers Deserializer</td>
+    <td><code>Karafka::Messages::Metadata</code></td>
+    <td>Deserialized Headers Hash</td>
+    <td><code>#raw_headers</code></td>
+  </tr>
+</table>
+
+Below you can find an example of a payload XML deserializer:
 
 ```ruby
 class XmlDeserializer
@@ -15,18 +44,88 @@ class XmlDeserializer
     Hash.from_xml(message.raw_payload)
   end
 end
+```
 
-App.routes.draw do
-  topic :binary_video_details do
-    consumer Videos::DetailsConsumer
-    deserializer XmlDeserializer.new
+## Default Deserializers
+
+Karafka makes specific assumptions about incoming data format, setting defaults for how payloads, keys, and headers are handled unless explicitly overridden by custom deserializers. Here are the default behaviors:
+
+- **Payload**: Karafka assumes the message payload is in JSON format. This default deserializer automatically parses the raw payload from JSON into a Ruby hash, catering to common data interchange practices and supporting the tombstone event format.
+
+- **Key**: By default, the key remains as a raw string. This approach is practical for most applications where the key is used primarily as an identifier or a partitioning token within Kafka.
+
+- **Headers**: Headers are also kept in their original format by default. Karafka treats headers as a hash with string keys and string values, which is typical for transmitting metadata associated with the message.
+
+## Configuring Deserializers
+
+### Setting Defaults
+
+In Karafka, you can configure default deserializers for all topics by utilizing the `#defaults` block within your routing configuration. This is particularly useful if your application generally handles messages in a specific format and you wish to apply a consistent deserialization approach across multiple topics.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  defaults do
+    deserializers(
+      payload: JsonDeserializer.new,
+      key: StringDeserializer.new,
+      headers: HashDeserializer.new
+    )
   end
 end
 ```
 
-The default deserializer is `Karafka::Serialization::Json::Deserializer`.
+Suppose a specific deserializer is not set for a given element (payload, key, or headers). In that case, Karafka will revert to using the predefined defaults: JSON for payloads, raw strings for keys, and unchanged hashes for headers.
 
-Also, deserializes can use headers and topic values from the message to decode specific formats, for example, Avro:
+### Custom Per-Topic Deserializers
+
+While setting default deserializers is a reliable way to maintain consistency across an application, Karafka's true power lies in its flexibility. It allows for detailed customization by configuring deserializers for individual topics, a feature that becomes invaluable when dealing with topics that require specific data handling procedures or when integrating with external systems that use varied data formats.
+
+To set deserializers for a specific topic, you use the deserializers method within the topic configuration block in your routing setup. This allows you to define unique deserialization logic for the payload, key, and headers of messages consumed from that topic.
+
+Here's an example of how to configure deserializes for individual topics:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :financial_transactions do
+      consumer TransactionsConsumer
+
+      deserializers(
+        payload: AvroDeserializer.new,
+        key: IntegerDeserializer.new,
+        headers: JsonDeserializer.new
+      )
+    end
+
+    topic :system_logs do
+      consumer LogsConsumer
+      deserializers(
+        payload: TextDeserializer.new
+        # Uses the default framework deserializers
+        # for headers and key
+      )
+    end
+  end
+end
+```
+
+!!! Warning "Per-Topic Deserializer Overrides"
+
+    When you configure deserializers for a specific topic using the `#deserializers` method and do not include deserializers for all components (payload, key, headers), be aware that Karafka treats the `#deserializers` block as atomic. This means that for any component not explicitly defined within the topic's `#deserializers` block, Karafka will revert to using the framework's built-in defaults, **not** the overrides specified in the `#defaults` block.
+
+## Context Aware Deserialization
+
+In more complex messaging environments, a message's content and format can vary significantly based on its context, such as the topic or specific headers associated with it. Karafka supports context-aware deserialization, where the deserialization logic can adjust dynamically based on additional information from the message itself, enhancing flexibility and robustness in message processing.
+
+Deserializers in Karafka can access the full context of a message, including its headers and the topic it belongs to. This capability allows for dynamic adjustments in the deserialization process based on this context, such as selecting a specific schema or method for decoding the message data. An everyday use case for this is with formats like Avro, where a message header may indicate the schema needed to decode a message.
 
 ```ruby
 class AvroDeserializer
@@ -41,23 +140,42 @@ class AvroDeserializer
   end
 end
 
-App.routes.draw do
-  topic :binary_video_details do
-    consumer Videos::DetailsConsumer
-    deserializer AvroDeserializer.new(avro: AvroTurf.new)
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :binary_video_details do
+      consumer Videos::DetailsConsumer
+
+      deserializers(
+        payload: AvroDeserializer.new(avro: AvroTurf.new)
+      )
+    end
   end
 end
 ```
 
-## Lazy deserialization
+## Lazy Deserialization
 
-The payload will not be deserialized unless needed. This makes things like metadata-based filtering or raw string-based filtering extremely fast because no data parsing is involved.
+In Karafka, lazy deserialization extends beyond the payload to include both the message key and headers. This feature enhances performance by delaying the conversion of raw message data into a usable format until it is explicitly required. This approach is especially beneficial for operations such as metadata-based filtering or when dealing with large datasets where minimizing processing overhead is crucial.
 
-Whenever you invoke the `Karafka::Messages::Message#payload` method, the deserialization will happen, and the result will be stored. This means that consecutive `#payload` invocation on the same message won't deserialize it repeatedly.
+Karafka defers the deserialization for the payload, key, and headers. Here's how each component is handled:
 
-If you want to access raw payload data, you can use the `Karafka::Messages::Message#raw_payload` method.
+- **Payload**: Deserialization occurs when the `Karafka::Messages::Message#payload` method is invoked for the first time. The deserialized data is cached, so subsequent accesses do not trigger re-deserialization.
 
-Below you can find an example of the elevation of this feature. Any time you expect occurrences of certain characters in a JSON structure, you can quickly pre-filter raw data and only deserialize those that potentially may include what you are looking for.
+- **Key**: Similar to payloads, keys are deserialized on the first invocation of the `Karafka::Messages::Message#key` method, with the result cached for future accesses.
+
+- **Headers**: Headers are deserialized upon the first call to `Karafka::Messages::Message#headers`. The deserialized headers are stored to prevent redundant processing.
+
+Access to the raw data for each component is also provided without triggering deserialization:
+
+- `Karafka::Messages::Message#raw_payload` for payloads,
+- `Karafka::Messages::Message#raw_key` for keys,
+- `Karafka::Messages::Message#raw_headers` for headers.
+
+Here's an expanded example that illustrates the use of lazy deserialization across all components of a message. This example filters messages based on the content of the raw payload and headers, then processes and prints data from the deserialized payload and key:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -77,22 +195,37 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-## Handling of tombstone messages
+Lazy deserialization provides following benefits:
 
-Tombstone messages are messages that contain a valid key, but its value is null. Those messages are used with Kafka topics compaction to eliminate obsolete records.
+- **Performance Optimization**: By avoiding unnecessary deserialization, Karafka minimizes CPU usage and speeds up processing times, especially in filter-heavy applications.
 
-Whether or not you do plan to use tombstone messages, we highly recommend you supporting them in your custom deserializers:
+- **Resource Efficiency**: Memory usage is optimized as only necessary data is processed and stored after deserialization.
+
+- **Flexibility and Control**: Developers have more control over when and how data is processed, allowing for customized handling based on the content of the messages.
+
+Lazy deserialization in Karafka provides a robust mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
+
+## Handling of Tombstone Messages
+
+In Apache Kafka, tombstone messages are specific messages with the message key present, but the payload is null. These messages serve a critical role in Kafka's log compaction feature, which reduces the size of the log by removing outdated records. A tombstone message indicates that any previous messages with the same key should be considered deleted or obsolete, allowing Kafka to maintain only the most current data state for each key.
+
+Even if your current application logic does not specifically handle or generate tombstone messages, it is important to design your systems to accommodate them. This ensures that your application can correctly interpret and react to data streams that might include tombstone messages, particularly when integrating with other systems or when changes to data handling policies are implemented.
+
+When creating custom deserializers, you should explicitly manage the possibility of encountering tombstone messages. The deserializer should be able to gracefully handle `nil` payloads without causing errors or unintended behavior in the application. Here is how you can implement this in a custom XML deserializer:
 
 ```ruby
 class XmlDeserializer
   def call(message)
-    # nil case is for tombstone messages
+    # Check for tombstone messages where the payload is nil
     return nil if message.raw_payload.nil?
 
+    # Proceed with deserialization if the payload is not nil
     Hash.from_xml(message.raw_payload)
   end
 end
 ```
+
+By properly managing tombstone messages in your Kafka consumers, you can ensure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka’s log compaction feature.
 
 ## Apache Avro
 
@@ -212,7 +345,9 @@ And indicate that a given topic contains Avro data in your routing setup:
 ```ruby
 topic :person do
   consumer PersonConsumer
-  deserializer AvroLocalDeserializer.new
+  deserializers(
+    payload: AvroLocalDeserializer.new
+  )
 end
 ```
 
@@ -238,6 +373,8 @@ And indicate that a given topic contains Avro data in your routing setup:
 ```ruby
 topic :person do
   consumer PersonConsumer
-  deserializer AvroRegistryDeserializer.new
+  deserializers(
+    payload: AvroRegistryDeserializer.new
+  )
 end
 ```

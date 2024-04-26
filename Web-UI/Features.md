@@ -63,7 +63,7 @@ This page provides a real-time view of the jobs that are currently being process
 
 This dashboard view shows Karafka consumers' groups' health state with their lag aggregated information and basic trends.
 
-[Here](https://karafka.io/docs/Pro-Enhanced-Web-UI/#health) you can learn more about the information available in this dashboard view.
+[Here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Health) you can learn more about the information available in this dashboard view.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/health.png" alt="karafka web health view" />

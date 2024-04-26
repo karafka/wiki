@@ -504,18 +504,9 @@ end
 
 ## What is Karafka `client_id` used for?
 
-Karafka `client_id` is, by default, used for two things:
-
-- Building ids for consumer groups using the default [consumer mapper](https://karafka.io/docs/Consumer-mappers).
-- Populating kafka `client.id` value.
+Karafka `client_id` is, by default, used for populating kafka `client.id` value.
 
 kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging.
-
-Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
-
-!!! note ""
-
-    If you're using the default consumer group mapper in Karafka, altering the `client_id` will rename consumer groups, leading to the reconsumption of all subscribed topics. Exercise caution and avoid modifying the `client_id` unless intentional reprocessing of all messages is desired.
 
 ## How can I increase Kafka and Karafka max message size?
 
@@ -901,18 +892,7 @@ Karafka and librdkafka are not designed to work over unstable and slow network c
 
 ## Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?
 
-If you have moved from Racecar to Karafka and your Confluent Datadog integration has stopped working, the consumer group name may not be aligned between the two. It is important to ensure that the consumer group name is the same in Racecar and Karafka. We recommend using a [custom consumer group mapper](https://karafka.io/docs/Consumer-mappers) that does not inject the application name, as this can cause a mismatch:
-
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # Aligns consumer group naming with Racecar
-    config.consumer_mapper = ->(raw_consumer_group_name) { raw_consumer_group_name }
-  end
-end
-```
-
-Another possible reason for the delay in reporting to Datadog is that when a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
+When a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
 
 To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](https://karafka.io/docs/Monitoring-and-logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
 
@@ -1666,9 +1646,9 @@ Broker: Group authorization failed (group_authorization_failed)
 
 it most likely arises when there's an authorization issue related to the consumer group in your Kafka setup. This error indicates the lack of the necessary permissions for the consumer group to perform certain operations.
 
-When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer group named `CLIENT_ID_karafka_admin` where the `CLIENT_ID` value equals `config.client_id`. Assuming your `client_id` is set to `my_app`, the full name of the consumer group will be `my_app_karafka_admin`.
+When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer groups named `karafka_admin` and `karafka_web`.
 
-Please review and update your Kafka ACLs or broker configurations to ensure this group has all the permissions it needs.
+Please review and update your Kafka ACLs or broker configurations to ensure these groups have all the permissions they need.
 
 ## Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?
 

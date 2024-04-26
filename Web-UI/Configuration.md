@@ -78,10 +78,11 @@ Karafka::Web.setup do |config|
   config.topics.consumers.reports = "karafka_consumers_reports_#{env_suffix}"
   config.topics.consumers.states = "karafka_consumers_states_#{env_suffix}"
   config.topics.consumers.metrics = "karafka_consumers_metrics_#{env_suffix}"
+  config.topics.consumers.metrics = "karafka_consumers_commands_#{env_suffix}"
 end
 ```
 
-In this setup, the `env_suffix` is created by converting the current Rails environment into a string. The `env_suffix` is then appended to the base topic name for each of the internal topics (`karafka_errors`, `karafka_consumers_reports`, `karafka_consumers_states` and `karafka_consumers_metrics`).
+In this setup, the `env_suffix` is created by converting the current Rails environment into a string. The `env_suffix` is then appended to the base topic name for each of the internal topics (`karafka_errors`, `karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics` and `karafka_consumers_commands`).
 
 This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
 

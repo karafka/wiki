@@ -1,5 +1,19 @@
 This page lists the current maintenance status of the various Karafka versions.
 
+## Versioning Strategy
+
+Karafka and its components utilize a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here's how we structure our versioning:
+
+- **Major Version Upgrades**: The first digit in our version number represents significant rewrites or major changes in the architecture of Karafka gems. For example, transitioning from `0.x` to `1.0` or from `1.x` to `2.0` signifies transformative changes that introduce new concepts or substantially modify the system's design.
+
+- **Minor Version Updates**: The second digit signifies significant yet not always backward-incompatible changes. Upgrading from `2.3` to `2.4`, for instance, may include changes that demand attention, such as adjusting default settings, aligning configuration, or introducing new features that enhance functionality without breaking existing implementations. Such updates always have an extensive upgrade guide.
+
+- **Patch Releases**: The third digit is reserved for patch releases, focusing on bug fixes and minor, risk-free enhancements. These updates are intended to improve the stability and performance of the software without impacting the existing user base's operations.
+
+This versioning system is designed to provide clarity and predictability, ensuring developers can understand the impact of upgrading Karafka and its components. By informing you about the nature of each release, we aim to help you make informed decisions regarding when and how to update your versions.
+
+## Karafka Versions Support
+
 Karafka versions or release series are categorized below into the following phases:
 
 - **Active**: Branch receives general bug fixes, security fixes, and improvements.
@@ -9,8 +23,10 @@ Karafka versions or release series are categorized below into the following phas
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.2+    | Active      | N/A        |
-| 2.1     | Maintenance | N/A        |
+| 2.4     | Active      | N/A        |
+| 2.3     | Active      | N/A        |
+| 2.2     | Maintenance | N/A        |
+| 2.1     | Maintenance | 2024-05-01 |
 | 2.0     | EOL         | 2024-02-01 |
 | 1.4     | EOL         | 2023-02-01 |
 | 1.3     | EOL         | 2021-08-01 |

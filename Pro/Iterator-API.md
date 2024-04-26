@@ -128,6 +128,44 @@ iterator.each do |message|
 end
 ```
 
+### Stopping the Iterator
+
+When working with the Karafka Pro Iterator, there may be scenarios where you need to halt the iteration process entirely. Using the `#stop` method is recommended in such cases. This method provides a clean and graceful termination of the iterator, ensuring that all resources are properly managed and released. This approach is recommended over simply breaking out of the iteration loop, as it allows for a more controlled and efficient shutdown process.
+
+Using `#stop` is straightforward. Once invoked, the method sets an internal flag that indicates the iterator should cease processing as soon as possible. This check is performed internally within the iterator's loop, ensuring that the iteration stops cleanly after the current message processing completes.
+
+Here’s an example of how to use `#stop` effectively:
+
+```ruby
+iterator.each do |message, iterator|
+  process_message(message)
+
+  # A condition that determines when to stop iterating
+  # No need to break is the iterator will not yield more messages
+  iterator.stop if should_stop_iteration?
+end
+```
+
+### Marking As Consumed
+
+In scenarios where precise tracking of message consumption is crucial, the Karafka Pro Iterator provides functionality similar to that of a traditional Karafka consumer. This allows for marking messages as consumed, which is essential for managing the offsets of processed messages. This feature is handy to ensure that messages are not reprocessed unintentionally on subsequent iterations, maintaining the integrity and accuracy of data processing.
+
+The Iterator can mark messages as consumed using two methods:
+
+- `mark_as_consumed`
+- `mark_as_consumed!` (blocking)
+
+Example usage:
+
+```ruby
+iterator.each do |message, iterator|
+  process_message(message)
+
+  # Mark message as consumed non-blockingly
+  iterator.mark_as_consumed(message)
+end
+```
+
 ### Long-Living Iterators
 
 By default iterator instance will finish its work when it reaches end of data on all the partitions. This however may not be desired if you want to process data as it comes.
@@ -173,7 +211,9 @@ class KarafkaApp < Karafka::App
   routes.draw do
     topic 'events' do
       active false
-      deserializer XmlDeserializer
+      deserializers(
+        payload: XmlDeserializer
+      )
     end
   end
 end

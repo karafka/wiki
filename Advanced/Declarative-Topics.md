@@ -51,8 +51,16 @@ There are the following commands supported:
     <td>deletes and re-creates all the topics.</td>
   </tr>
   <tr>
+    <td><code>karafka topics plan</code></td>
+    <td>plans the migration process and prints what changes are going to be applied if migration runs.</td>
+  </tr>
+  <tr>
+    <td><code>karafka topics align</code></td>
+    <td>aligns configuration of all the declarative topics that exist based on the declarative topics definitions.</td>
+  </tr>
+  <tr>
     <td><code>karafka topics migrate</code></td>
-    <td>creates missing topics and repartitions existing to match expected partitions count.</td>
+    <td>creates missing topics, repartitions existing to match expected partitions count and aligns the configuration.</td>
   </tr>
 </table>
 
@@ -156,9 +164,8 @@ Please keep in mind two things, though:
 
 ## Limitations and other info
 
-- Karafka currently does **not** update settings different than the partition count.
 - Topics management is enabled by default but will not be used unless any CLI commands are invoked.
-- `migrate` does not support changing other settings than partitions count.
+- `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
 - If a topic is used by several consumer groups defined in one application, only the first `config` defined will be used.
 - Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one will be managed.
 - Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed. This means it is up to you to ensure that two topic CLI commands are not running in parallel during the deployments.

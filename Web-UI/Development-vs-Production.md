@@ -49,17 +49,18 @@ Karafka::Web.setup do |config|
   config.topics.consumers.reports = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_reports"
   config.topics.consumers.states = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_states"
   config.topics.consumers.metrics = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_metrics"
+  config.topics.consumers.commands = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_commands"
 end
 ```
 
 ### Web UI Consumer Group Creation
 
-Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.processing.consumer_group`:
+Additionally, if you decided to reconfigure the `config.admin.group_id` value, you might also need to update the Web UI `config.group_id`:
 
 ```ruby
 Karafka::Web.setup do |config|
   # After configuration, do not forget to use Heroku CLI to assign proper ACL permissions to this group.
-  config.processing.consumer_group = 'karafka-web'
+  config.group_id = 'karafka-web'
 end
 ```
 
