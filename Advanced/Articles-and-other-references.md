@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Karafka 2.4 Release Announcement: Advancing Kafka Processing for Ruby and Rails](https://mensfeld.pl/2024/04/karafka-2-4-release-announcement-advancing-kafka-processing-for-ruby-and-rails/)
 * [Refactoring in Practice (Using Kafka and Karafka)](https://remimercier.com/refactoring-in-practice/)
 * [Karafka Framework 2.3 + Web UI 0.8 Release Announcement](https://mensfeld.pl/2024/01/karafka-framework-2-3-web-ui-0-8-release-announcement/)
 * [The Art of Forking: Unlocking Scalability in Ruby (Swarm)](https://mensfeld.pl/2024/02/the-art-of-forking-unlocking-scalability-in-ruby/)
