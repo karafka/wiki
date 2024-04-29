@@ -10,7 +10,7 @@ Message piping in Karafka refers to forwarding messages from one topic to anothe
 
 - **Enhanced Data Flow Management**: It provides a controlled way to manage data flow, ensuring data integrity and traceability through enhanced metadata headers similar to those used in enhanced Dead Letter Queues (DLQ).
 
-- **Efficiency**: Message piping minimizes the overhead associated with cross-service communication by reusing the same Kafka infrastructure, making the system more efficient.
+- **Efficiency**: Message piping minimizes the overhead associated with messages piping by automatically applying a partitioning strategy and using raw payload and headers without any deserialization.
 
 ## Usage
 
