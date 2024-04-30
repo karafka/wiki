@@ -165,6 +165,7 @@
 165. [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
 166. [How can I namespace messages for producing in Karafka?](#how-can-i-namespace-messages-for-producing-in-karafka)
 167. [Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error-when-changing-the-location-of-the-boot-file-using-karafka_boot_file)
+168. [Why Is Kafka Using Only 7 Out of 12 Partitions Despite Specific Settings?](#why-is-kafka-using-only-7-out-of-12-partitions-despite-specific-settings)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2179,3 +2180,9 @@ You can namespace messages topics for producing automatically in Karafka by leve
 ## Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?
 
 You're seeing this error most likely because you have moved the `karafka.rb` file to a location that is automatically loaded, meaning that it is loaded and used by the Karafka framework and also by the framework of your choice. In the case of Ruby on Rails, it may be so if you've placed your `karafka.rb`, for example, inside the `config/initializers` directory.
+
+## Why Is Kafka Using Only 7 Out of 12 Partitions Despite Specific Settings?
+
+The issue you're encountering typically arises due to how Kafka calculates partition assignments when a key is provided. Kafka uses a hashing function (CRC32 by default) to determine the partition for each key. This function might not evenly distribute keys, especially if the key space is not large or diverse enough.
+
+As discussed, since the partitioner was configured to use the first argument (carrier name) as the key, the diversity and number of unique carrier names directly influence the distribution across partitions. If some carrier names hash the same partition, you will see less than 12 partitions being used.
