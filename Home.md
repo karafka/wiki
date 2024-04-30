@@ -87,8 +87,6 @@
 * [Active Record Connections Management](Active-Record-Connections-Management)
 * [Forking](Forking)
 * [Resources Management](Resources-Management)
-* [Librdkafka Configuration](Librdkafka-Configuration)
-* [Librdkafka Statistics](Librdkafka-Statistics)
 * [Articles and other references](Articles-and-other-references)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
@@ -146,6 +144,12 @@
     * [Topics Insights](Pro-Enhanced-Web-UI-Topics-Insights)
     * [Errors](Pro-Enhanced-Web-UI#errors)
     * [DLQ / Dead](Pro-Enhanced-Web-UI#dlq-dead)
+
+## Librdkafka
+
+* [Configuration](Librdkafka-Configuration)
+* [Statistics](Librdkafka-Statistics)
+* [Errors](Librdkafka-Errors)
 
 ## Upgrade Notes
 
