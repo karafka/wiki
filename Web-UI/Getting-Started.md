@@ -343,6 +343,41 @@ end
 
 You can find an explanation of how that works [here](https://blog.arkency.com/common-authentication-for-mounted-rack-apps-in-rails/).
 
+### Preventing Timing Attacks
+
+When setting up authentication for the Karafka Web UI, if you plan to use Basic Auth that is exposed to the world, it is crucial to implement secure authentication that is resilient to timing attacks. Timing attacks are a type of side-channel attack where an attacker can infer information based on the time it takes to perform certain operations, such as password verification.
+
+Below is an enhanced version of the authentication setup that uses `ActiveSupport::SecurityUtils.secure_compare` to mitigate the risk of timing attacks:
+
+```ruby
+Rails.application.routes.draw do
+  with_dev_auth = lambda do |app|
+    Rack::Builder.new do
+      use Rack::Auth::Basic do |username, password|
+        # Secure comparison to prevent timing attacks
+        username_secure = ActiveSupport::SecurityUtils.secure_compare(
+          ::Digest::SHA256.hexdigest(username),
+          ::Digest::SHA256.hexdigest('expected_username')
+        )
+
+        password_secure = ActiveSupport::SecurityUtils.secure_compare(
+          ::Digest::SHA256.hexdigest(password),
+          ::Digest::SHA256.hexdigest('expected_password')
+        )
+
+        username_secure && password_secure
+      end
+
+      run app
+    end
+  end
+
+  mount with_dev_auth.call(Karafka::Web::App), at: 'karafka'
+end
+```
+
+By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
+
 ## Troubleshooting
 
 As mentioned above, the initial setup **requires** you to run `bundle exec karafka-web install` once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
