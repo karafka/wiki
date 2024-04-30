@@ -164,6 +164,7 @@
 164. [What should I do if I encounter a loading issue with Karafka after upgrading Bundler to version `2.3.22`?](#what-should-i-do-if-i-encounter-a-loading-issue-with-karafka-after-upgrading-bundler-to-version-2322)
 165. [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
 166. [How can I namespace messages for producing in Karafka?](#how-can-i-namespace-messages-for-producing-in-karafka)
+167. [Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error-when-changing-the-location-of-the-boot-file-using-karafka_boot_file)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2174,3 +2175,7 @@ Karafka.monitor.subscribe(
 ## How can I namespace messages for producing in Karafka?
 
 You can namespace messages topics for producing automatically in Karafka by leveraging the [middleware in WaterDrop](https://karafka.io/docs/WaterDrop-Middleware/) to transform the destination topics.
+
+## Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?
+
+You're seeing this error most likely because you have moved the `karafka.rb` file to a location that is automatically loaded, meaning that it is loaded and used by the Karafka framework and also by the framework of your choice. In the case of Ruby on Rails, it may be so if you've placed your `karafka.rb`, for example, inside the `config/initializers` directory.
