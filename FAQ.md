@@ -162,6 +162,7 @@
 162. [Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-pause_with_exponential_backoff-enabled)
 163. [Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?](#does-karafka-store-the-kafka-server-address-anywhere-and-are-any-extra-steps-required-to-make-it-work-after-changing-the-server-iphostname)
 164. [What should I do if I encounter a loading issue with Karafka after upgrading Bundler to version `2.3.22`?](#what-should-i-do-if-i-encounter-a-loading-issue-with-karafka-after-upgrading-bundler-to-version-2322)
+165. [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2154,3 +2155,17 @@ This issue is typically caused by a gem conflict related to the Thor gem version
 1. Ensure you're using a version of Thor earlier than `1.3`, as recommended by community members.
 
 2. Upgrade to a newer version of Karafka that does not use Thor. It's recommended to upgrade to at least version `2.2.8` for stability and to take advantage of improvements.
+
+### Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
+
+Yes. You can set `log_polling` to `false` for the `LoggerListener` as follows:
+
+```ruby
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::LoggerListener.new(
+    # When set to false, polling will not be logged
+    # This makes logging in development less extensive
+    log_polling: false
+  )
+)
+```
