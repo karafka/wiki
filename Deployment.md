@@ -742,13 +742,13 @@ Begin by registering for a Confluent Cloud account at Confluent.io. After regist
 - Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-new.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-select.png" />
 </p>
 
 - Set appropriate partitions and retention policies based on your expected workload and data retention needs.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-select.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-new.png" />
 </p>
 
 4. **Configure Web UI Topics**
