@@ -163,6 +163,7 @@
 163. [Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?](#does-karafka-store-the-kafka-server-address-anywhere-and-are-any-extra-steps-required-to-make-it-work-after-changing-the-server-iphostname)
 164. [What should I do if I encounter a loading issue with Karafka after upgrading Bundler to version `2.3.22`?](#what-should-i-do-if-i-encounter-a-loading-issue-with-karafka-after-upgrading-bundler-to-version-2322)
 165. [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
+166. [How can I namespace messages for producing in Karafka?](#how-can-i-namespace-messages-for-producing-in-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2156,7 +2157,7 @@ This issue is typically caused by a gem conflict related to the Thor gem version
 
 2. Upgrade to a newer version of Karafka that does not use Thor. It's recommended to upgrade to at least version `2.2.8` for stability and to take advantage of improvements.
 
-### Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
+## Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
 
 Yes. You can set `log_polling` to `false` for the `LoggerListener` as follows:
 
@@ -2169,3 +2170,7 @@ Karafka.monitor.subscribe(
   )
 )
 ```
+
+## How can I namespace messages for producing in Karafka?
+
+You can namespace messages topics for producing automatically in Karafka by leveraging the [middleware in WaterDrop](https://karafka.io/docs/WaterDrop-Middleware/) to transform the destination topics.
