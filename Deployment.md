@@ -2,10 +2,11 @@ Karafka is currently being used in production with the following deployment meth
 
   - [systemd (+ Capistrano)](#systemd-capistrano)
   - [Docker](#docker)
-  - [AWS with MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
+  - [AWS + MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
   - [Heroku](#heroku)
   - [Kubernetes](#kubernetes)
   - [Confluent Cloud](#confluent-cloud)
+  - [Custom OAuth Token Providers](#custom-oauth-token-providers)
 
 Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
@@ -95,7 +96,16 @@ CMD bundle exec karafka server
 
 First of all, it is worth pointing out that Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
 
-Karafka **does**, however, support standard SASL + SSL mechanisms. Please follow the below instructions for both cluster initialization and Karafka configuration.
+Karafka **does**, however, support:
+
+- Standard SASL + SSL mechanisms.
+- [Custom OAuth Token Providers](https://karafka.io/docs/Deployment/#custom-oauth-token-providers) flow.
+
+Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](https://karafka.io/docs/Deployment/#custom-oauth-token-providers) section.
+
+!!! Info "AWS Integration with Custom OAuth Token Providers"
+
+    While Karafka can be deployed on AWS using the Custom OAuth Token provider flow, additional code or gems may be required to fetch the tokens when necessary. This code is not included in the standard Karafka setup, so you must implement or integrate it based on your authentication provider's requirements.
 
 ### AWS MSK cluster setup
 
@@ -653,6 +663,66 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new
 Karafka.monitor.subscribe(listener)
 ```
 
+## Confluent Cloud
+
+Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka infrastructure with less overhead on physical or cloud infrastructure management. Here are the detailed steps and considerations for setting up Karafka with Confluent Cloud.
+
+1. **Create a Confluent Cloud Account**
+
+Begin by registering for a Confluent Cloud account at Confluent.io. After registration, you can manage your Kafka clusters directly from the Confluent UI.
+
+2. **Create a Kafka Cluster**
+
+- Navigate to the Confluent Cloud dashboard.
+- Click on "Add Cluster" to configure a new Kafka cluster.
+- Select the appropriate cloud provider and region that fits your application needs.
+- Choose a Basic or Dedicated cluster plan depending on your scale requirements.
+
+!!! Tip "Region Selection"
+
+    Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
+
+3. **Configure Kafka Topics**
+
+- Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-select.png" />
+</p>
+
+- Set appropriate partitions and retention policies based on your expected workload and data retention needs.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-new.png" />
+</p>
+
+4. **Configure Web UI Topics**
+
+Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
+
+The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+
+5. **Integration with Karafka**
+
+In your Karafka application, configure the Kafka client to connect to your Confluent Cloud cluster. You will need to specify several configurations provided by Confluent Cloud:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'allow.auto.create.topics': false,
+      'bootstrap.servers': 'your-confluent-bootstrap-server.confluent.cloud:9092',
+      'security.protocol': 'SASL_SSL',
+      'sasl.username': 'CONFLUENT_USERNAME',
+      'sasl.password': 'CONFLUENT_PASSWORD',
+      'sasl.mechanisms': 'PLAIN'
+    }
+
+    # Other settings...
+  end
+end
+```
+
 ## Custom OAuth Token Providers
 
 Karafka and its companion gem, WaterDrop, can integrate with any custom OAuth token provider, enabling secure communication with a Kafka cluster. This capability is instrumental in cloud environments like AWS, where securing access and credentials is crucial.
@@ -715,65 +785,5 @@ CUSTOM_PRODUCER = WaterDrop::Producer.new do |config|
   }
 
   config.oauth.token_provider_listener = OAuthTokenRefresher.new
-end
-```
-
-## Confluent Cloud
-
-Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka infrastructure with less overhead on physical or cloud infrastructure management. Here are the detailed steps and considerations for setting up Karafka with Confluent Cloud.
-
-1. **Create a Confluent Cloud Account**
-
-Begin by registering for a Confluent Cloud account at Confluent.io. After registration, you can manage your Kafka clusters directly from the Confluent UI.
-
-2. **Create a Kafka Cluster**
-
-- Navigate to the Confluent Cloud dashboard.
-- Click on "Add Cluster" to configure a new Kafka cluster.
-- Select the appropriate cloud provider and region that fits your application needs.
-- Choose a Basic or Dedicated cluster plan depending on your scale requirements.
-
-!!! Tip "Region Selection"
-
-    Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
-
-3. **Configure Kafka Topics**
-
-- Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-select.png" />
-</p>
-
-- Set appropriate partitions and retention policies based on your expected workload and data retention needs.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-new.png" />
-</p>
-
-4. **Configure Web UI Topics**
-
-Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
-
-The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
-
-5. **Integration with Karafka**
-
-In your Karafka application, configure the Kafka client to connect to your Confluent Cloud cluster. You will need to specify several configurations provided by Confluent Cloud:
-
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.kafka = {
-      'allow.auto.create.topics': false,
-      'bootstrap.servers': 'your-confluent-bootstrap-server.confluent.cloud:9092',
-      'security.protocol': 'SASL_SSL',
-      'sasl.username': 'CONFLUENT_USERNAME',
-      'sasl.password': 'CONFLUENT_PASSWORD',
-      'sasl.mechanisms': 'PLAIN'
-    }
-
-    # Other settings...
-  end
 end
 ```

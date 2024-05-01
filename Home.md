@@ -57,6 +57,7 @@
     * [Heroku](Deployment#heroku)
     * [Kubernetes](Deployment#kubernetes)
     * [Confluent Cloud](Deployment#confluent-cloud)
+    * [Custom OAuth Token Providers](#custom-oauth-token-providers)
 * [Monitoring and Logging](Monitoring-and-Logging)
 * [Error Handling and back off policy](Error-handling-and-back-off-policy)
 
