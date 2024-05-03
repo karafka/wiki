@@ -171,6 +171,7 @@
 171. [How can I ensure that my Karafka consumers process data in parallel?](#how-can-i-ensure-that-my-karafka-consumers-process-data-in-parallel)
 172. [How should I handle the migration to different consumer groups for parallel processing?](#how-should-i-handle-the-migration-to-different-consumer-groups-for-parallel-processing)
 173. [What are the best practices for setting up consumer groups in Karafka for optimal parallel processing?](#what-are-the-best-practices-for-setting-up-consumer-groups-in-karafka-for-optimal-parallel-processing)
+174. [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2260,3 +2261,69 @@ Best practices for setting up consumer groups in Karafka to optimize parallel pr
 - **Monitoring and Scaling**: Regularly monitor the performance of your consumer groups and adjust their configurations as necessary. Utilize Karafka’s monitoring tools to track processing times, throughput, and lag to make informed scaling decisions.
 
 Implementing these best practices will help you fully leverage Karafka’s capabilities for parallel processing, enhancing the throughput and efficiency of your Kafka data pipelines.
+
+## How can I set up custom, per-message tracing in Karafka?
+
+Implementing detailed, per-message tracing in Karafka involves modifying the monitoring and tracing setup to handle individual messages. This setup enhances visibility into each message's processing and integrates seamlessly with many tracing products like DataDog.
+
+Here's how you can set up this  detailed tracing step-by-step:
+
+1. **Register Custom Event**
+
+Begin by registering a custom event in Karafka for each message processed. This is essential to create a unique event for the monitoring system to trigger on each message consumption.
+
+```ruby
+# This will trigger before consumption to start trace
+Karafka.monitor.notifications_bus.register_event('consumer.consume.message')
+# This will trigger after consumption to finish trace
+Karafka.monitor.notifications_bus.register_event('consumer.consumed.message')
+```
+
+Registering a custom event allows you to define specific behavior and tracking that aligns with your application's needs, distinct from the batch processing default.
+
+2. **Instrument with Karafka Monitor**
+
+Once the event is registered, use Karafka’s monitor to instrument it. This step does not involve actual data processing but sets up the framework for tracing.
+
+```ruby
+class OrdersStatesConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      Karafka.monitor.instrument('consumer.consume.message', message: message)
+
+      consume_one(message)
+
+      Karafka.monitor.instrument('consumer.consumed.message', message: message)
+
+      # Mark as consumed after each successfully processed message
+      mark_as_consumed(message)
+    end
+  end
+
+  def consume_one(message)
+    # Your logic goes here
+  end
+end
+```
+
+3. **Build a Custom Tracing Listener**
+
+Modify or build a new tracing listener that specifically handles the per-message tracing.
+
+```ruby
+class MyTracingListener
+  def on_consumer_consume_message(event)
+    # Start tracing here...
+  end
+
+  def on_consumer_consumed_message(event)
+    # Finalize trace when message is processed
+  end
+
+  def on_error_occurred(event)
+    # Do not forget to finalize also on errors if trace available
+  end
+end
+
+Karafka.monitor.subscribe(MyTracingListener.new)
+```
