@@ -1,8 +1,8 @@
 Karafka contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
 
-* `karafka` options - options directly related to the Karafka framework and its components.
+* root `karafka` options - options directly related to the Karafka framework and its components.
 
-* `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
+* kafka scoped `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
 
 To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
 
@@ -91,3 +91,63 @@ end
     ```bash
     apt-get install -y libzstd-dev
     ```
+
+## Types of Configuration in Karafka
+
+When working with Karafka, it is crucial to understand the different configurations available, as these settings directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
+
+### Root Configuration in the Setup Block
+
+The root configuration within the `setup` block of Karafka pertains directly to the Karafka framework and its components. This includes settings that influence the behavior of your Karafka application at a fundamental level, such as client identification, logging preferences, and consumer groups details.
+
+Example of root configuration:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+    config.initial_offset = 'latest'
+  end
+end
+```
+
+### Kafka Scoped `librdkafka` Options
+
+librdkafka configuration options are specified within the same setup block but scoped specifically under the `kafka` key. These settings are passed directly to the librdkafka library, the underlying Kafka client library that Karafka uses. This includes configurations for Kafka connections, such as bootstrap servers, SSL settings, and timeouts.
+
+Example of `librdkafka` scoped options:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'ssl.ca.location': '/etc/ssl/certs'
+    }
+  end
+end
+```
+
+### Admin Configs API
+
+Karafka also supports the Admin Configs API, which is designed to view and manage configurations at the Kafka broker and topic levels. These settings are different from the client configurations (root and Kafka scoped) as they pertain to the infrastructure level of Kafka itself rather than how your application interacts with it.
+
+Examples of these settings include:
+
+- **Broker Configurations**: Like log file sizes, message sizes, and default retention policies.
+
+- **Topic Configurations**: Such as partition counts, replication factors, and topic-level overrides for retention.
+
+To put it in perspective, these configurations can be likened to those in a database. Just as a database has client, database, and table configurations, Kafka has its own set of configurations at different levels.
+
+- **Client Configurations**: Similar to client-specific settings in SQL databases, such as query timeouts or statement timeouts.
+
+- **Database Configurations**: Analogous to database-level settings such as database encoding, connection limits, or default transaction isolation levels.
+
+- **Table Configurations**: Similar to table-specific settings like storage engine choices or per-table cache settings in a database.
+
+These infrastructural settings are crucial for managing Kafka more efficiently. They ensure that the Kafka cluster is optimized for both performance and durability according to the needs of the applications it supports.
+
+!!! Hint "Managing Topics Configuration with Declarative Topics API"
+
+    If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](https://karafka.io/docs/Librdkafka-Configuration/).
