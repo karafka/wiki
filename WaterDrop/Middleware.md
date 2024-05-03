@@ -59,7 +59,6 @@ class Distributor
 
     # Assign partitions in the round-robin fashion to messages
     message[:partition] = next_partition(topic)
-    p message[:partition]
 
     # Return the morphed message
     message
