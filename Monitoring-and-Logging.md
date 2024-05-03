@@ -308,6 +308,85 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
     Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
+#### Async Producer Tracing With The Consumption Context
+
+Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
+
+One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](https://karafka.io/docs/WaterDrop-Usage/#labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
+
+Here's how you can modify the message payload to include trace context information:
+
+```ruby
+# Check if there is an active parent span already (for example from consumer)
+parent_span = Datadog::Tracing.active_span
+span = Datadog::Tracing.trace('karafka.producer.produce')
+# Set some defaults on your span if needed
+set_span_tags(span, message, DEFAULT_SPAN_TAGS)
+
+label = { span: span }
+
+# If there is a parent span that is from the consumer, include it in the label so
+# it gets passed into the producer flow
+if parent_span && parent_span.name.start_with?('karafka.consumer')
+  label[:parent_span] = parent_span
+end
+
+kafka_message[:label] = label
+
+Karafka.producer.produce_async(kafka_message)
+```
+
+To complete the tracing lifecycle, you must handle the acknowledgment of message delivery or manage delivery failures. This involves finalizing the spans you initiated during the production step.
+
+Here's how to handle the finalization of the trace when a message is acknowledged or when an error occurs:
+
+```ruby
+def on_message_acknowledged(event)
+  report = event[:delivery_report]
+  label = report.label
+
+  if label
+    span = label[:span]
+
+    if span
+      # update offset and partition tags
+      span.set_tag('offset', report.offset)
+      span.set_tag('partition', report.partition)
+      span.finish
+    end
+
+    # close parent span (karafka.consumer trace)
+    label[:parent_span]&.finish
+  end
+end
+
+def on_error_occurred(event)
+  if event[:type] == 'librdkafka.dispatch_error'
+    report = event[:delivery_report]
+    label = report.label
+
+    if label
+      span = label[:span]
+      message = label[:message]
+      err = report.error
+      # set the error in case it's not set
+      span.set_error(err) if span.status.zero?
+      span.finish
+
+      # close parent span (karafka.consumer trace)
+      label[:parent_span]&.finish
+
+      # additional error handling behavior follows
+      # ...
+    end
+  end
+end
+```
+
+In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, ensuring that the span is marked with the error and then finished.
+
+By leveraging these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
+
 ## Kubernetes
 
 Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](https://karafka.io/docs/Deployment/#kubernetes).
