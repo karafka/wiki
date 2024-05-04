@@ -172,6 +172,7 @@
 172. [How should I handle the migration to different consumer groups for parallel processing?](#how-should-i-handle-the-migration-to-different-consumer-groups-for-parallel-processing)
 173. [What are the best practices for setting up consumer groups in Karafka for optimal parallel processing?](#what-are-the-best-practices-for-setting-up-consumer-groups-in-karafka-for-optimal-parallel-processing)
 174. [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
+175. [When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?](#when-karafka-reaches-maxpollintervalms-time-and-the-consumer-is-removed-from-the-group-does-this-mean-my-code-stops-executing)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2327,3 +2328,13 @@ end
 
 Karafka.monitor.subscribe(MyTracingListener.new)
 ```
+
+## When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?
+
+No, your code does not stop executing when Karafka reaches the `max.poll.interval.ms` time, and the consumer is removed from the group. Karafka does not interrupt the execution of your code. Instead, it reports an error  indicating that the maximum poll interval has been exceeded, like this:
+
+```
+Data polling error occurred: Application maximum poll interval (300000ms) exceeded by 348ms
+```
+
+Your code will continue to execute until it is complete. However, marking messages as consumed after this error will not be allowed.
