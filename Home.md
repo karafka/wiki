@@ -9,6 +9,7 @@
 * [Web UI](Web-UI-Getting-Started)
 * [Testing](Testing)
 * [FAQ](FAQ)
+* [Support](Support)
 
 ## Web UI
 
