@@ -41,6 +41,9 @@ class Distributor
   # We need the producer to fetch the number of partitions
   # This will make the distributor dynamic, allowing for graceful support of repartitioning
   # We also support the case of non-existing topics just by assigning partition 0.
+  #
+  # @param producer [WaterDrop::Producer]
+  # @param topics [Array]
   def initialize(producer, topics)
     @producer = producer
     @topics = topics
@@ -49,6 +52,7 @@ class Distributor
     @mutex = Mutex.new
   end
 
+  # @param message [Hash]
   def call(message)
     topic = message.fetch(:topic)
 
@@ -85,6 +89,7 @@ class Distributor
   end
 
   # @param topic [String]
+  #
   # @return [Integer] next partition to which dispatch the message
   def next_partition(topic)
     @mutex.synchronize do
@@ -93,6 +98,7 @@ class Distributor
   end
 
   # @param topic [String] topic for which we want to get number of partitions
+  #
   # @return [Integer] number of partitions
   #
   # @note `#partition_count` fetched from rdkafka is cached. No need to cache it again
@@ -100,7 +106,7 @@ class Distributor
   def fetch_partition_count(topic)
     @producer.partition_count(topic)
   rescue Rdkafka::RdkafkaError => e
-    # This erro means topic does not exist, we then assume auto-create and will use 0 for now
+    # This error means topic does not exist, we then assume auto-create and will use 0 for now
     return 1 if e.code == :unknown_topic_or_part
 
     raise(e)
