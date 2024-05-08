@@ -111,10 +111,6 @@ class LogEventsConsumer < ApplicationConsumer
 end
 ```
 
-### Metrics Update Frequency
-
-By default, metrics related to Inline Insights are updated during polling operations, which occur after each batch processing. It's crucial to realize that these metrics are not updated in the intervals between consecutive polling operations. This means the metric values remain static between polls and only get refreshed at the next polling cycle.
-
 ## Behaviour on Revocation
 
 Insights are only collected for partitions a given consumer owns. This means that if a consumer does not have ownership of a particular partition, no insights will be collected. This design ensures that the metrics are always pertinent and directly related to the partitions being consumed, maintaining the relevance and efficiency of the insights provided.
@@ -122,7 +118,6 @@ Insights are only collected for partitions a given consumer owns. This means tha
 There can be scenarios where a partition might be involuntarily revoked from a consumer by Kafka. In such events, rather than leaving the consumer without any insights, Karafka takes a proactive approach. Karafka will provide the last known metrics before the partition was forcefully revoked. This is paramount as it ensures that metrics are consistently available to the consumer, even during unforeseen Kafka operations.
 
 Karafka ensures that consumers can continue processing with insights throughout their entire operation by ensuring the continuous availability of metrics, even post-revocation. This approach minimizes disruptions and ensures consumers won't be left operating without metrics even if Kafka alters assignments.
-
 
 ## Memory Footprint
 
