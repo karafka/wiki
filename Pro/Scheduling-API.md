@@ -70,7 +70,7 @@ This section provides a guide on implementing and using a custom scheduler. It w
 
 !!! warning "Make Sure All Jobs Are Scheduled"
 
-        Please ensure that every job provided to the scheduler gets scheduled except for the subscription group recovery case. It's okay if job scheduling is delayed, but all jobs must end up in the jobs queue. Not doing this can cause problems with how the system works.
+    Please ensure that every job provided to the scheduler gets scheduled except for the subscription group recovery case. It's okay if job scheduling is delayed, but all jobs must end up in the jobs queue. Not doing this can cause problems with how the system works.
 
 ### Types of Schedulers
 
