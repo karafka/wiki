@@ -312,7 +312,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
 
-One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](https://karafka.io/docs/WaterDrop-Usage/#labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
+One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](https://karafka.io/docs/WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
 
 Here's how you can modify the message payload to include trace context information:
 

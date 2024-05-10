@@ -45,6 +45,7 @@
 * [Transactions](WaterDrop-Transactions)
 * [Testing](WaterDrop-Testing)
 * [Middleware](WaterDrop-Middleware)
+* [Labeling](WaterDrop-Labeling)
 * [Variants](WaterDrop-Variants)
 * [Custom Partitioners](WaterDrop-Custom-Partitioners)
 
