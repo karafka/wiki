@@ -75,7 +75,7 @@ ExampleJob.perform_later args
 
 At this point, Karafka will run the job for us. If the job fails, Karafka will retry the job as normal.
 
-### Enqueuing modes
+### Enqueuing Modes
 
 #### `#perform_later`
 
@@ -125,11 +125,42 @@ jobs = 2.times.map { |i| Job.new(i, i + 1) }
 Job.perform_all_later(jobs)
 ```
 
-## Execution warranties
+## `karafka_options` Partial Inheritance
+
+When an ActiveJob class defines `karafka_options`, these options are designed to be inherited by any subclass of the job. This inheritance mechanism ensures that all the settings are consistently applied across different jobs, simplifying configuration management and promoting reusability.
+
+By default, when a subclass inherits from a parent job class with predefined `karafka_options`, the subclass automatically inherits all of these options. If no explicit `karafka_options` are defined in the subclass, it will use the options set in its parent class.
+
+However, when `karafka_options` are set in a subclass, it does not necessarily have to redefine all the options specified in the parent class. Instead, it can choose to overwrite only specific options. Karafka will merge the options defined in the subclass with those of the parent class. This merging process ensures that any option not explicitly overridden in the subclass retains its value from the parent class.
+
+For example, consider a parent job class configured with multiple karafka_options:
+
+```ruby
+class ParentJob < ApplicationJob
+  karafka_options(
+    dispatch_method: :produce_sync,
+    dispatch_many_method: :produce_many_async
+  )
+end
+```
+
+If a subclass intends to modify only the `dispatch_method` option, it can do so without having to redefine all other options:
+
+```ruby
+class ChildJob < ParentJob
+  karafka_options dispatch_method: :produce_async
+end
+```
+
+In this case, `ChildJob` will have `dispatch_many_method` taken from the `ParentJob`.
+
+This feature of partial options overriding allows for flexible configuration adjustments in subclassed jobs, making it easier to manage variations in job behavior without duplicating the entire set of options across multiple classes.
+
+## Execution Warranties
 
 Karafka marks each job as consumed using `#mark_as_consumed` after successfully processing it. This means that the same job should not be processed twice unless the process is killed before the async marking in Kafka happens.
 
-## Behaviour on errors
+## Behaviour on Errors
 
 Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Error-handling-and-back-off-policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
 
@@ -139,7 +170,7 @@ Please keep in mind that **as long as** the error persists, **no** other jobs fr
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/aj_error_handling.svg" />
 </p>
 
-## Usage with the Dead Letter Queue
+## Usage With the Dead Letter Queue
 
 The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](https://karafka.io/docs/Dead-Letter-Queue/) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
 
@@ -162,11 +193,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Behaviour on shutdown
+## Behaviour on Shutdown
 
 After the shutdown is issued, Karafka will finish processing the current job. After it is processed, will mark it as consumed and will close. Other jobs that may be buffered will not be processed and picked up after the process is started again.
 
-## Behaviour on revocation
+## Behaviour on Revocation
 
 Revocation awareness is not part of the standard Active Job adapter. We recommend you either:
 
