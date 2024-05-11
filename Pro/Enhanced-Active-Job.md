@@ -46,15 +46,46 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
   </small>
 </p>
 
+## Custom Producer/Variant Usage
+
+When using ActiveJob with Karafka, you can customize the dispatch of Active Jobs by leveraging custom producers or producer variants. This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
+
+To utilize a custom producer or variant with ActiveJob, specify a `:producer` option within the `#karafka_options`. This option should be set to a callable object (such as a lambda or a proc) that accepts the job as an argument. This callable is expected to return a producer or a variant that will be used to dispatch the job's message to Kafka.
+
+Here is an example that demonstrates how to integrate a custom producer variant within an ActiveJob setup:
+
+```ruby
+# Define a custom producer variant for high-priority jobs
+HIGH_RELIABILITY_PRODUCER = Karafka.producer.with(topic_config: { 'acks': 'all' })
+
+# Define an ActiveJob class that uses this custom producer variant
+class HighPriorityJob < ActiveJob::Base
+  queue_as :critical_events
+
+  karafka_options(
+    # Job is accepted as an argument for dynamic producer selection
+    producer: ->(_job) { HIGH_RELIABILITY_PRODUCER }
+  )
+
+  def perform(event_data)
+    # Job implementation
+  end
+end
+```
+
+In the above example, `HighPriorityJob` is configured to use a specifically tailored producer variant for critical events. This producer variant is configured with a higher acknowledgment setting (`all`), ensuring that all replicas confirm each message before it is successfully delivered. This setup is particularly beneficial for jobs where data loss or delivery failure is unacceptable.
+
+Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it's adjusting the acknowledgment levels, managing timeouts, or utilizing specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within ActiveJob, opening up new possibilities for system optimization and performance improvement.
+
 ## Routing Patterns
 
 Pro ActiveJob adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
 
-## Execution warranties
+## Execution Warranties
 
 Same execution warranties apply as for standard [Active Job adapter](Active-Job#execution-warranties).
 
-## Behaviour on errors
+## Behaviour on Errors
 
 When using the ActiveJob adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
 
@@ -64,11 +95,11 @@ For non-VP setup, same error behaviors apply as for standard [Active Job adapter
 
     Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
-## Behaviour on revocation
+## Behaviour on Revocation
 
 Enhanced Active Job adapter has revocation awareness. That means that Karafka will stop processing other pre-buffered jobs upon discovering that a given partition has been revoked. In a scenario of a longer job where the revocation happened during the job execution, only at most one job per partition will be processed twice. You can mitigate this scenario with static group memberships.
 
-## Behaviour on shutdown
+## Behaviour on Shutdown
 
 When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
 
