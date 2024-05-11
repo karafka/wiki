@@ -267,3 +267,37 @@ Karafka::Admin.seek_consumer_group(
   }
 )
 ```
+
+### Changing an Offset to Earliest or Latest
+
+Adjusting consumer group offsets to "earliest" or "latest" helps control where consumption begins within a topic. However, these terms can be misleading, particularly with compacted topics where the "earliest" offset may not be zero due to log cleanup and message expiration. The "earliest" setting allows consumers to start from the oldest available message, ensuring comprehensive data coverage.
+
+Conversely, the "latest" offset refers to the end of the log, indicating the point where new messages will be appended. Setting the offset to "latest" means consumption will start with new messages arriving post-adjustment, which is ideal for applications focused on real-time data.
+
+The `Karafka::Admin.seek_consumer_group` method facilitates easy adjustment of offsets to either "earliest" or "latest", applicable across entire topics or specific partitions:
+
+```ruby
+# Adjust offsets for specific partitions
+Karafka::Admin.seek_consumer_group(
+  'your_consumer_group',
+  {
+    'your_topic' => {
+      0 => :latest,    # Start reading new messages from partition 0
+      1 => :earliest  # Start from the oldest message in partition 1
+    }
+  }
+)
+
+# Adjust all partitions of a topic to the earliest or latest
+Karafka::Admin.seek_consumer_group(
+  'your_consumer_group',
+  { 'your_topic' => :earliest }  # Start all partitions from the oldest available message
+)
+
+Karafka::Admin.seek_consumer_group(
+  'your_consumer_group',
+  { 'your_topic' => :latest }  # Start consuming new messages across all partitions
+)
+```
+
+Using `:earliest` and `:latest` is vital for managing consumer behavior, ensuring flexibility in data consumption strategies according to specific needs.

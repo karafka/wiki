@@ -48,7 +48,7 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
 
 ## Custom Producer/Variant Usage
 
-When using ActiveJob with Karafka, you can customize the dispatch of Active Jobs by leveraging custom producers or producer variants. This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
+When using ActiveJob with Karafka, you can customize the dispatch of Active Jobs by leveraging custom producers or [producer variants](https://karafka.io/docs/WaterDrop-Variants/). This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
 
 To utilize a custom producer or variant with ActiveJob, specify a `:producer` option within the `#karafka_options`. This option should be set to a callable object (such as a lambda or a proc) that accepts the job as an argument. This callable is expected to return a producer or a variant that will be used to dispatch the job's message to Kafka.
 
