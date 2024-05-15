@@ -173,6 +173,8 @@
 173. [What are the best practices for setting up consumer groups in Karafka for optimal parallel processing?](#what-are-the-best-practices-for-setting-up-consumer-groups-in-karafka-for-optimal-parallel-processing)
 174. [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
 175. [When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?](#when-karafka-reaches-maxpollintervalms-time-and-the-consumer-is-removed-from-the-group-does-this-mean-my-code-stops-executing)
+176. [Which component is responsible for committing the offset after consuming? Is it the listener or the worker?](#which-component-is-responsible-for-committing-the-offset-after-consuming-is-it-the-listener-or-the-worker)
+177. [Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?](#can-the-on_idle-and-handle_idle-methods-be-changed-for-a-specific-consumer)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2338,3 +2340,11 @@ Data polling error occurred: Application maximum poll interval (300000ms) exceed
 ```
 
 Your code will continue to execute until it is complete. However, marking messages as consumed after this error will not be allowed.
+
+## Which component is responsible for committing the offset after consuming? Is it the listener or the worker?
+
+In the Karafka framework, the worker contains a consumer that handles the offset committing. The consumer within the worker sends a commit request to the underlying C client instance. This process involves the worker's consumer storing the offset to be saved, which then goes through a C thread for the actual commit operation. It's important to note that Karafka commits offsets asynchronously by default.
+
+## Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?
+
+**No**. The `on_idle` and `handle_idle` methods are part of Karafka's internal API and are not editable. Internal components use these methods for periodic jobs within the Karafka framework. They are not intended for user modification or are not part of the official public API. If you need to execute a specific method when the consumer is idle or when the last message from the topic has been consumed, you should use Karafka's [periodic jobs](https://karafka.io/docs/Pro-Periodic-Jobs/) feature. This feature is designed to handle such use cases effectively.
