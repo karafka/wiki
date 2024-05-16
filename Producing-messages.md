@@ -54,7 +54,18 @@ Below you can find an example how to `#close` the producer used in various Ruby 
 
 When you shut down Karafka consumer, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
 
-### Closing Producer Used in Puma
+### Closing Producer Used in Puma (Single Mode)
+
+```ruby
+# config/puma.rb 
+
+# There is no `on_worker_shutdown` equivalent for single mode
+@config.options[:events].on_stopped do
+  Karafka.producer.close
+end
+```
+
+### Closing Producer Used in Puma (Cluster Mode)
 
 ```ruby
 # config/puma.rb 
