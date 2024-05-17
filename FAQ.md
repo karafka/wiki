@@ -177,6 +177,7 @@
 177. [Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?](#can-the-on_idle-and-handle_idle-methods-be-changed-for-a-specific-consumer)
 178. [Is Multiplexing an alternative to running multiple Karafka processes but using Threads?](#is-multiplexing-an-alternative-to-running-multiple-karafka-processes-but-using-threads)
 179. [Is it possible to get watermark offsets from inside a consumer class without using Admin?](#is-it-possible-to-get-watermark-offsets-from-inside-a-consumer-class-without-using-admin)
+180. [Why are message and batch numbers increasing even though I haven't sent any messages?](#why-are-message-and-batch-numbers-increasing-even-though-i-havent-sent-any-messages)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2358,3 +2359,11 @@ No, multiplexing serves a different use case. It's primarily for handling IO-bou
 ## Is it possible to get watermark offsets from inside a consumer class without using Admin?
 
 You can get watermark offsets and other metrics directly from within a consumer class using Karafka's Inline Insights. This feature provides a range of metrics, including watermark offsets, without using the Admin API. For more details, refer to the [Inline Insights](https://karafka.io/docs/Inline-Insights/) documentation.
+
+## Why are message and batch numbers increasing even though I haven't sent any messages?
+
+Karafka Web-UI uses Kafka to report the status of Karafka processes, sending status messages every 5 seconds by default. This is why you see the message and batch numbers increasing. The web UI uses these Kafka messages to show the status of the processes.
+
+Karafka processes messages in batches, and the value you see indicates how many batches have been processed, even if a batch contains only one message.
+
+To view the actual payload of messages sent from producer to consumer, you can use the Karafka Explorer.

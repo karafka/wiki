@@ -33,3 +33,29 @@ Legal compliance, especially in today's complex regulatory environment, is param
 ### Custom License Agreement
 
 While Karafka Pro is sold with its set terms and conditions, Enterprise customers may request contract changes. Recognizing that enterprise businesses might have specific requirements or concerns, we offer the flexibility for Enterprise users to request changes to the terms and conditions of the license agreement. This level of customization ensures that your organization's unique needs and preferences are met.
+
+## Who Should Choose Karafka Enterprise?
+
+Karafka Enterprise offering is designed to meet the specific needs of larger organizations and enterprises that require more than just the features offered by Karafka Pro. Below are key scenarios and organizational needs that make Karafka Enterprise the ideal choice:
+
+- **Organizations that Need Invoicing**
+
+Enterprise offers the flexibility of invoicing for payments, which is essential for many large organizations with strict financial processes and workflows. This option simplifies the financial transactions and aligns with corporate payment practices.
+
+- **Organizations Betting Their Business on Karafka**:
+
+For companies that plan to heavily rely on Karafka for their core business operations, Enterprise provides extended contingency rights. This ensures that even if the subscription expires, the organization can continue using the existing version of Karafka, thereby minimizing operational risks.
+
+- **Organizations with Strict Security Requirements**:
+
+Enterprise caters to organizations with stringent security needs by offering a fully offline license mode. This feature allows Karafka to be used without any external dependencies, which is crucial for environments with rigorous security checks and compliance requirements.
+
+- **Organizations Needing Custom License Agreements**:
+
+Unlike Karafka Pro, which comes with standard terms and conditions, Karafka Enterprise provides the flexibility to negotiate and customize license agreements. This is particularly beneficial for enterprises with specific legal or operational requirements.
+
+- **Organizations Requiring Special Documentation**:
+
+Enterprise includes support for creating custom compliance and security documentation. This service ensures that the organization’s use of Karafka meets industry standards and regulatory requirements, which is essential for legal and compliance audits.
+
+By choosing Karafka Enterprise, organizations can ensure that their Kafka and Karafka implementations are robust, secure, and aligned with their specific business and operational needs.

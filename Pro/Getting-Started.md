@@ -26,6 +26,10 @@ gem 'karafka'
 
 ## License gem integrity verification
 
+!!! Info "Checksum Verification in Enterprise Mode Not Needed"
+
+    When using Karafka with an offline [Enterprise](https://karafka.io/docs/Pro-Enterprise/) license, license gem checksum verification is not required. The Enterprise license is fully offline and not subject to change. It is also not being fetched from the Karafka gem server, thus making the checksum verification pointless.
+
 Using Karafka Pro means we are part of your Open Source Supply Chain. We take this exceptionally seriously, and that is why we encourage you to verify the integrity of the license gem we provide in your CI/CD.
 
 You can do it with the following script:
