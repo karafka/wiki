@@ -3,7 +3,6 @@
 * [Getting Started](Getting-Started)
 * [Components](Components)
 * [Configuration](Configuration)
-* [Setting up Kafka](Setting-up-Kafka)
 * [Producing messages](Producing-messages)
 * [Consuming messages](Consuming-messages)
 * [Web UI](Web-UI-Getting-Started)
@@ -155,6 +154,12 @@
 * [Configuration](Librdkafka-Configuration)
 * [Statistics](Librdkafka-Statistics)
 * [Errors](Librdkafka-Errors)
+
+## Kafka
+
+* [Setting Up](Kafka-Setting-Up)
+* [Topic Configuration](Kafka-Topic-Configuration)
+* [Cluster Configuration](Kafka-Cluster-Configuration)
 
 ## Upgrade Notes
 

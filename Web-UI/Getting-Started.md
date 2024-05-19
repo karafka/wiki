@@ -4,7 +4,7 @@ Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-
 
 To use it:
 
-1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Setting-up-Kafka).
+1. Make sure Apache Kafka is running. You can start it by following instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
 
 2. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
 
