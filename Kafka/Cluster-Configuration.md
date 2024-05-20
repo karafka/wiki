@@ -1,9 +1,1936 @@
 # Kafka Cluster Configuration
 
+!!! Tip "Kafka Configuration Variability"
+
+    The defaults and exact list of cluster configuration options may differ between various Kafka versions. For the most accurate information, please refer to the documentation for the specific Kafka version.
+
 <style>
   .md-grid {
     max-width: 100%;
   }
+
+  #configs-table tr td {
+    vertical-align: middle !important;
+  }
+
+  #configs-table tr td.middle {
+    text-align: center !important;
+  }
 </style>
 
-TBA
+<table border='1' id="configs-table">
+
+  <tr>
+    <th>Names</th>
+    <th>Default Value</th>
+    <th>Read-only</th>
+    <th>Sensitive</th>
+    <th>Description</th>
+  </tr>
+
+<tr>
+<td class="nowrap"><code>advertised.listeners</code></td>
+<td class="nowrap"><code>PLAINTEXT://127.0.0.1:9092</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Listeners to publish to ZooKeeper for clients to use, if different than the listeners config property.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>allow.everyone.if.no.acl.found</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Indicates whether a request should be allowed if no ACL is found for the resource.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>alter.config.policy.class.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>A class name that implements the AlterConfigPolicy interface, used for custom policies when altering configurations.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>alter.log.dirs.replication.quota.window.num</code></td>
+<td class="nowrap"><code>11</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of samples to use for tracking alter log dirs replication quotas.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>alter.log.dirs.replication.quota.window.size.seconds</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time span for each sample used for tracking alter log dirs replication quotas.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>authorizer.class.name</code></td>
+<td><code>org.apache.kafka.metadata.authorizer.StandardAuthorizer</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the authorizer used for ACL-based authorization.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>auto.create.topics.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable auto creation of topics.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>auto.include.jmx.reporter</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable automatic inclusion of JMX reporter.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>auto.leader.rebalance.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable auto leader balancing.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>background.threads</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of threads to use for various background processing tasks.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>broker.heartbeat.interval.ms</code></td>
+<td class="nowrap"><code>2000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>The interval at which the broker sends heartbeats to ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>broker.id</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Unique ID of the broker.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>broker.id.generation.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable automatic generation of broker IDs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>broker.rack</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Rack ID of the broker.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>broker.session.timeout.ms</code></td>
+<td class="nowrap"><code>9000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>The timeout used to detect broker failures when using ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>client.quota.callback.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>A class name that implements the ClientQuotaCallback interface.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>compression.type</code></td>
+<td class="nowrap"><code>producer</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Specify the compression type for data generated by the broker.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>connection.failed.authentication.delay.ms</code></td>
+<td class="nowrap"><code>100</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time in milliseconds to delay an authentication failure.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>connections.max.idle.ms</code></td>
+<td class="nowrap"><code>600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Idle time after which connections are closed.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>connections.max.reauth.ms</code></td>
+<td class="nowrap"><code>0</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum time to delay re-authentication of connections.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>control.plane.listener.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listener name for the control plane.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controlled.shutdown.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable controlled shutdown of the broker.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controlled.shutdown.max.retries</code></td>
+<td class="nowrap"><code>3</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum number of retries for controlled shutdown.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controlled.shutdown.retry.backoff.ms</code></td>
+<td class="nowrap"><code>5000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time between retries during controlled shutdown.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.listener.names</code></td>
+<td class="nowrap"><code>CONTROLLER</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listener names for the controller.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.append.linger.ms</code></td>
+<td class="nowrap"><code>25</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time in milliseconds to delay appending to the controller quorum log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.election.backoff.max.ms</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum backoff time in milliseconds for controller quorum election.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.election.timeout.ms</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout in milliseconds for controller quorum election.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.fetch.timeout.ms</code></td>
+<td class="nowrap"><code>2000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout in milliseconds for fetching from the controller quorum.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.request.timeout.ms</code></td>
+<td class="nowrap"><code>2000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout in milliseconds for controller quorum requests.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.retry.backoff.ms</code></td>
+<td class="nowrap"><code>20</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time in milliseconds between retries for controller quorum operations.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quorum.voters</code></td>
+<td class="nowrap"><code>1@127.0.0.1:9093</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Voters in the controller quorum.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quota.window.num</code></td>
+<td class="nowrap"><code>11</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of samples to use for tracking controller quotas.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.quota.window.size.seconds</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time span for each sample used for tracking controller quotas.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>controller.socket.timeout.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Socket timeout for controller connections.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>create.topic.policy.class.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>A class name that implements the CreateTopicPolicy interface.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>default.replication.factor</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Default replication factor for automatically created topics.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delegation.token.expiry.check.interval.ms</code></td>
+<td class="nowrap"><code>3600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for delegation token expiry checks.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delegation.token.expiry.time.ms</code></td>
+<td class="nowrap"><code>86400000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time in milliseconds for delegation token expiry.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delegation.token.master.key</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Master key for signing delegation tokens.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delegation.token.max.lifetime.ms</code></td>
+<td class="nowrap"><code>604800000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum lifetime for delegation tokens.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delegation.token.secret.key</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Secret key for signing delegation tokens.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delete.records.purgatory.purge.interval.requests</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in requests to purge the delete records purgatory.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>delete.topic.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable topic deletion.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>early.start.listeners</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listeners to start early during broker startup.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>fetch.max.bytes</code></td>
+<td class="nowrap"><code>57671680</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum bytes fetched per request.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>fetch.purgatory.purge.interval.requests</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in requests to purge the fetch purgatory.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>group.initial.rebalance.delay.ms</code></td>
+<td class="nowrap"><code>3000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Initial rebalance delay for consumer groups.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>group.max.session.timeout.ms</code></td>
+<td class="nowrap"><code>1800000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum session timeout for consumer groups.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>group.max.size</code></td>
+<td class="nowrap"><code>2147483647</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum size of consumer groups.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>group.min.session.timeout.ms</code></td>
+<td class="nowrap"><code>6000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum session timeout for consumer groups.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>initial.broker.registration.timeout.ms</code></td>
+<td class="nowrap"><code>60000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout for initial broker registration.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>inter.broker.listener.name</code></td>
+<td class="nowrap"><code>PLAINTEXT</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listener name for inter-broker communication.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>inter.broker.protocol.version</code></td>
+<td class="nowrap"><code>3.6-IV2</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Protocol version for inter-broker communication.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>kafka.metrics.polling.interval.secs</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Polling interval for Kafka metrics.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>kafka.metrics.reporters</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>List of classes implementing the MetricsReporter interface.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>leader.imbalance.check.interval.seconds</code></td>
+<td class="nowrap"><code>300</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in seconds to check for leader imbalance.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>leader.imbalance.per.broker.percentage</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Percentage of imbalance tolerated per broker.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>listener.security.protocol.map</code></td>
+<td class="nowrap"><code>CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Mapping of listener names to security protocols.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>listeners</code></td>
+<td class="nowrap"><code>PLAINTEXT://:9092,CONTROLLER://:9093</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Listeners for broker connections.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.backoff.ms</code></td>
+<td class="nowrap"><code>15000</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time between log cleaner operations.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.dedupe.buffer.size</code></td>
+<td class="nowrap"><code>134217728</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Size of the buffer used for log cleaning.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.delete.retention.ms</code></td>
+<td class="nowrap"><code>86400000</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention time for deleted records.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable log cleaner.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.io.buffer.load.factor</code></td>
+<td class="nowrap"><code>0.9</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Load factor for the log cleaner IO buffer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.io.buffer.size</code></td>
+<td class="nowrap"><code>524288</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Size of the log cleaner IO buffer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.io.max.bytes.per.second</code></td>
+<td class="nowrap"><code>1.7976931348623157E308</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum bytes per second for log cleaner IO.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.max.compaction.lag.ms</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum compaction lag for log cleaner.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.min.cleanable.ratio</code></td>
+<td class="nowrap"><code>0.5</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum cleanable ratio for log cleaner.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.min.compaction.lag.ms</code></td>
+<td class="nowrap"><code>0</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum compaction lag for log cleaner.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleaner.threads</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of threads for log cleaner.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.cleanup.policy</code></td>
+<td class="nowrap"><code>delete</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Policy for log cleanup.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.dir</code></td>
+<td class="nowrap"><code>/tmp/kafka-logs</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Directory for log files.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.dirs</code></td>
+<td class="nowrap"><code>/var/lib/kafka/data</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Directories for log files.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.flush.interval.messages</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in messages for log flush.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.flush.interval.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for log flush.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.flush.offset.checkpoint.interval.ms</code></td>
+<td class="nowrap"><code>60000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for log offset checkpoint.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.flush.scheduler.interval.ms</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for log flush scheduler.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.flush.start.offset.checkpoint.interval.ms</code></td>
+<td class="nowrap"><code>60000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for log flush start offset checkpoint.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.index.interval.bytes</code></td>
+<td class="nowrap"><code>4096</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in bytes for log index.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.index.size.max.bytes</code></td>
+<td class="nowrap"><code>10485760</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum size in bytes for log index.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.local.retention.bytes</code></td>
+<td class="nowrap"><code>-2</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Local retention size in bytes for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.local.retention.ms</code></td>
+<td class="nowrap"><code>-2</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Local retention time in milliseconds for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.downconversion.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable downconversion of log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.format.version</code></td>
+<td class="nowrap"><code>3.0-IV1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Format version for log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.timestamp.after.max.ms</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum timestamp difference for log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.timestamp.before.max.ms</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum timestamp before log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.timestamp.difference.max.ms</code></td>
+<td class="nowrap"><code>9223372036854775807</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum timestamp difference for log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.message.timestamp.type</code></td>
+<td class="nowrap"><code>CreateTime</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Type of timestamp for log messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.preallocate</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Preallocate log segments.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.retention.bytes</code></td>
+<td class="nowrap"><code>-1</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention size in bytes for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.retention.check.interval.ms</code></td>
+<td class="nowrap"><code>300000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for log retention check.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.retention.hours</code></td>
+<td class="nowrap"><code>168</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention time in hours for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.retention.minutes</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention time in minutes for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.retention.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention time in milliseconds for log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.roll.hours</code></td>
+<td class="nowrap"><code>168</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Roll interval in hours for log segments.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.roll.jitter.hours</code></td>
+<td class="nowrap"><code>0</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Jitter for log roll interval in hours.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.roll.jitter.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Jitter for log roll interval in milliseconds.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.roll.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Roll interval in milliseconds for log segments.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.segment.bytes</code></td>
+<td class="nowrap"><code>1073741824</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Size of log segments in bytes.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>log.segment.delete.delay.ms</code></td>
+<td class="nowrap"><code>60000</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Delay in milliseconds before deleting log segments.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>max.connection.creation.rate</code></td>
+<td class="nowrap"><code>2147483647</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum rate of connection creation.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>max.connections</code></td>
+<td class="nowrap"><code>2147483647</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum number of connections.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>max.connections.per.ip</code></td>
+<td class="nowrap"><code>2147483647</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum number of connections per IP.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>max.connections.per.ip.overrides</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Overrides for maximum connections per IP.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>max.incremental.fetch.session.cache.slots</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum cache slots for incremental fetch sessions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>message.max.bytes</code></td>
+<td class="nowrap"><code>1048588</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum size of messages.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.log.dir</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Directory for metadata log.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.log.max.record.bytes.between.snapshots</code></td>
+<td class="nowrap"><code>20971520</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum bytes between metadata log snapshots.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.log.max.snapshot.interval.ms</code></td>
+<td class="nowrap"><code>3600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum interval between metadata log snapshots.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.log.segment.bytes</code></td>
+<td class="nowrap"><code>1073741824</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Size of metadata log segments in bytes.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.log.segment.ms</code></td>
+<td class="nowrap"><code>604800000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval in milliseconds for metadata log segments.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.max.idle.interval.ms</code></td>
+<td class="nowrap"><code>500</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum idle interval for metadata.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.max.retention.bytes</code></td>
+<td class="nowrap"><code>104857600</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum retention size for metadata.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metadata.max.retention.ms</code></td>
+<td class="nowrap"><code>604800000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum retention time for metadata.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metric.reporters</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>List of metric reporter classes.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metrics.num.samples</code></td>
+<td class="nowrap"><code>2</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of metric samples.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metrics.recording.level</code></td>
+<td class="nowrap"><code>INFO</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Recording level for metrics.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>metrics.sample.window.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Sample window for metrics.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>min.insync.replicas</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum in-sync replicas.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>node.id</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>ID of the node.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.io.threads</code></td>
+<td class="nowrap"><code>8</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of IO threads.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.network.threads</code></td>
+<td class="nowrap"><code>3</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of network threads.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.partitions</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of partitions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.recovery.threads.per.data.dir</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of recovery threads per data directory.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.replica.alter.log.dirs.threads</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of threads for altering replica log dirs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>num.replica.fetchers</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of replica fetchers.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offset.metadata.max.bytes</code></td>
+<td class="nowrap"><code>4096</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum bytes for offset metadata.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.commit.required.acks</code></td>
+<td class="nowrap"><code>-1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Required acknowledgments for offset commits.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.commit.timeout.ms</code></td>
+<td class="nowrap"><code>5000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout for offset commits.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.load.buffer.size</code></td>
+<td class="nowrap"><code>5242880</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Buffer size for loading offsets.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.retention.check.interval.ms</code></td>
+<td class="nowrap"><code>600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval for checking offset retention.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.retention.minutes</code></td>
+<td class="nowrap"><code>10080</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Retention time in minutes for offsets.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.topic.compression.codec</code></td>
+<td class="nowrap"><code>0</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Compression codec for offsets topic.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.topic.num.partitions</code></td>
+<td class="nowrap"><code>50</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of partitions for offsets topic.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.topic.replication.factor</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Replication factor for offsets topic.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>offsets.topic.segment.bytes</code></td>
+<td class="nowrap"><code>104857600</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Segment size for offsets topic.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.cipher.algorithm</code></td>
+<td class="nowrap"><code>AES/CBC/PKCS5Padding</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Cipher algorithm for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.iterations</code></td>
+<td class="nowrap"><code>4096</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Iterations for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.key.length</code></td>
+<td class="nowrap"><code>128</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Key length for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.keyfactory.algorithm</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Key factory algorithm for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.old.secret</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Old secret for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>password.encoder.secret</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Secret for password encoder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>principal.builder.class</code></td>
+<td><code>org.apache.kafka.common.security.authenticator.DefaultKafkaPrincipalBuilder</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the principal builder.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>process.roles</code></td>
+<td class="nowrap"><code>broker,controller</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Roles of the process.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>producer.id.expiration.ms</code></td>
+<td class="nowrap"><code>86400000</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Expiration time for producer IDs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>producer.purgatory.purge.interval.requests</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Purge interval for producer purgatory.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>queued.max.request.bytes</code></td>
+<td class="nowrap"><code>-1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum request bytes in the queue.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>queued.max.requests</code></td>
+<td class="nowrap"><code>500</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum number of requests in the queue.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>quota.window.num</code></td>
+<td class="nowrap"><code>11</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of samples for quota tracking.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>quota.window.size.seconds</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time span for each quota sample.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.manager.task.interval.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval for remote log manager tasks.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.manager.thread.pool.size</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Thread pool size for remote log manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.metadata.custom.metadata.max.bytes</code></td>
+<td class="nowrap"><code>128</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum custom metadata bytes for remote log metadata.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.metadata.manager.class.name</code></td>
+<td><code>org.apache.kafka.server.log.remote.metadata.storage.TopicBasedRemoteLogMetadataManager</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the remote log metadata manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.metadata.manager.class.path</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class path for the remote log metadata manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.metadata.manager.impl.prefix</code></td>
+<td class="nowrap"><code>rlmm.config.</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Prefix for remote log metadata manager implementation.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.metadata.manager.listener.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listener name for the remote log metadata manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.reader.max.pending.tasks</code></td>
+<td class="nowrap"><code>100</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum pending tasks for remote log reader.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.reader.threads</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of threads for remote log reader.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.storage.manager.class.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the remote log storage manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.storage.manager.class.path</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class path for the remote log storage manager.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.storage.manager.impl.prefix</code></td>
+<td class="nowrap"><code>rsm.config.</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Prefix for remote log storage manager implementation.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>remote.log.storage.system.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable remote log storage system.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.fetch.backoff.ms</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time for replica fetch.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.fetch.max.bytes</code></td>
+<td class="nowrap"><code>1048576</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum bytes for replica fetch.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.fetch.min.bytes</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum bytes for replica fetch.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.fetch.response.max.bytes</code></td>
+<td class="nowrap"><code>10485760</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum response bytes for replica fetch.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.fetch.wait.max.ms</code></td>
+<td class="nowrap"><code>500</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum wait time for replica fetch.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.high.watermark.checkpoint.interval.ms</code></td>
+<td class="nowrap"><code>5000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval for high watermark checkpointing.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.lag.time.max.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum lag time for replica.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.selector.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the replica selector.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.socket.receive.buffer.bytes</code></td>
+<td class="nowrap"><code>65536</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Receive buffer size for replica socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replica.socket.timeout.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout for replica socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replication.quota.window.num</code></td>
+<td class="nowrap"><code>11</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of samples for replication quota.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>replication.quota.window.size.seconds</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Time span for each replication quota sample.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>request.timeout.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Timeout for requests.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>reserved.broker.max.id</code></td>
+<td class="nowrap"><code>1000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum reserved broker ID.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.client.callback.handler.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the SASL client callback handler.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.enabled.mechanisms</code></td>
+<td class="nowrap"><code>GSSAPI</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Enabled SASL mechanisms.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.jaas.config</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>JAAS configuration for SASL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.kinit.cmd</code></td>
+<td class="nowrap"><code>/usr/bin/kinit</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Kerberos kinit command.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.min.time.before.relogin</code></td>
+<td class="nowrap"><code>60000</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum time before Kerberos relogin.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.principal.to.local.rules</code></td>
+<td class="nowrap"><code>DEFAULT</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Rules for Kerberos principal to local mapping.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.service.name</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Kerberos service name.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.ticket.renew.jitter</code></td>
+<td class="nowrap"><code>0.05</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Jitter for Kerberos ticket renewal.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.kerberos.ticket.renew.window.factor</code></td>
+<td class="nowrap"><code>0.8</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Window factor for Kerberos ticket renewal.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.callback.handler.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the SASL login callback handler.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the SASL login module.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.connect.timeout.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Connection timeout for SASL login.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.read.timeout.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Read timeout for SASL login.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.refresh.buffer.seconds</code></td>
+<td class="nowrap"><code>300</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Buffer time for SASL login refresh.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.refresh.min.period.seconds</code></td>
+<td class="nowrap"><code>60</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum period for SASL login refresh.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.refresh.window.factor</code></td>
+<td class="nowrap"><code>0.8</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Window factor for SASL login refresh.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.refresh.window.jitter</code></td>
+<td class="nowrap"><code>0.05</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Jitter for SASL login refresh window.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.retry.backoff.max.ms</code></td>
+<td class="nowrap"><code>10000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum backoff for SASL login retry.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.login.retry.backoff.ms</code></td>
+<td class="nowrap"><code>100</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time for SASL login retry.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.mechanism.controller.protocol</code></td>
+<td class="nowrap"><code>GSSAPI</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>SASL mechanism for controller protocol.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.mechanism.inter.broker.protocol</code></td>
+<td class="nowrap"><code>GSSAPI</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>SASL mechanism for inter-broker protocol.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.clock.skew.seconds</code></td>
+<td class="nowrap"><code>30</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Clock skew for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.expected.audience</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Expected audience for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.expected.issuer</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Expected issuer for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.jwks.endpoint.refresh.ms</code></td>
+<td class="nowrap"><code>3600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>JWKS endpoint refresh interval for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms</code></td>
+<td class="nowrap"><code>10000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum backoff for JWKS endpoint retry.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.jwks.endpoint.retry.backoff.ms</code></td>
+<td class="nowrap"><code>100</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Backoff time for JWKS endpoint retry.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.jwks.endpoint.url</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>JWKS endpoint URL for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.scope.claim.name</code></td>
+<td class="nowrap"><code>scope</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Scope claim name for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.sub.claim.name</code></td>
+<td class="nowrap"><code>sub</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Sub claim name for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.oauthbearer.token.endpoint.url</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Token endpoint URL for OAuthBearer.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.server.callback.handler.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the SASL server callback handler.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>sasl.server.max.receive.size</code></td>
+<td class="nowrap"><code>524288</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum receive size for SASL server.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>security.inter.broker.protocol</code></td>
+<td class="nowrap"><code>PLAINTEXT</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Security protocol for inter-broker communication.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>security.providers</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>List of security providers.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.connection.setup.timeout.max.ms</code></td>
+<td class="nowrap"><code>30000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum setup timeout for socket connection.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.connection.setup.timeout.ms</code></td>
+<td class="nowrap"><code>10000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Setup timeout for socket connection.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.listen.backlog.size</code></td>
+<td class="nowrap"><code>50</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Listen backlog size for socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.receive.buffer.bytes</code></td>
+<td class="nowrap"><code>102400</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Receive buffer size for socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.request.max.bytes</code></td>
+<td class="nowrap"><code>104857600</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum request size for socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>socket.send.buffer.bytes</code></td>
+<td class="nowrap"><code>102400</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Send buffer size for socket.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.cipher.suites</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Cipher suites for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.client.auth</code></td>
+<td class="nowrap"><code>none</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Client authentication setting for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.enabled.protocols</code></td>
+<td class="nowrap"><code>TLSv1.2,TLSv1.3</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Enabled protocols for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.endpoint.identification.algorithm</code></td>
+<td class="nowrap"><code>https</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Endpoint identification algorithm for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.engine.factory.class</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Class name of the SSL engine factory.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.key.password</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Password for SSL key.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keymanager.algorithm</code></td>
+<td class="nowrap"><code>SunX509</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Key manager algorithm for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keystore.certificate.chain</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Certificate chain for SSL keystore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keystore.key</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Key for SSL keystore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keystore.location</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Location of the SSL keystore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keystore.password</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Password for SSL keystore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.keystore.type</code></td>
+<td class="nowrap"><code>JKS</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Type of the SSL keystore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.principal.mapping.rules</code></td>
+<td class="nowrap"><code>DEFAULT</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Principal mapping rules for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.protocol</code></td>
+<td class="nowrap"><code>TLSv1.3</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Protocol for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.provider</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Provider for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.secure.random.implementation</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Implementation of secure random for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.trustmanager.algorithm</code></td>
+<td class="nowrap"><code>PKIX</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Trust manager algorithm for SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.truststore.certificates</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Certificates for SSL truststore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.truststore.location</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Location of the SSL truststore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.truststore.password</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x2705;</td>
+<td>Password for SSL truststore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>ssl.truststore.type</code></td>
+<td class="nowrap"><code>JKS</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Type of the SSL truststore.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.abort.timed.out.transaction.cleanup.interval.ms</code></td>
+<td class="nowrap"><code>10000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval for cleaning up timed out transactions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.max.timeout.ms</code></td>
+<td class="nowrap"><code>900000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum timeout for transactions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.partition.verification.enable</code></td>
+<td class="nowrap"><code>true</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable partition verification for transactions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.remove.expired.transaction.cleanup.interval.ms</code></td>
+<td class="nowrap"><code>3600000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Interval for cleaning up expired transactions.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.state.log.load.buffer.size</code></td>
+<td class="nowrap"><code>5242880</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Buffer size for loading transaction state logs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.state.log.min.isr</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Minimum in-sync replicas for transaction state logs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.state.log.num.partitions</code></td>
+<td class="nowrap"><code>50</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Number of partitions for transaction state logs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.state.log.replication.factor</code></td>
+<td class="nowrap"><code>1</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Replication factor for transaction state logs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transaction.state.log.segment.bytes</code></td>
+<td class="nowrap"><code>104857600</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Segment size for transaction state logs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>transactional.id.expiration.ms</code></td>
+<td class="nowrap"><code>604800000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Expiration time for transactional IDs.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>unclean.leader.election.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x274C;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable unclean leader election.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.clientCnxnSocket</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Client connection socket for ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.connect</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>ZooKeeper connection string.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.connection.timeout.ms</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Connection timeout for ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.max.in.flight.requests</code></td>
+<td class="nowrap"><code>10</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Maximum in-flight requests for ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.metadata.migration.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable metadata migration to ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.session.timeout.ms</code></td>
+<td class="nowrap"><code>18000</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Session timeout for ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.set.acl</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Set ACL for ZooKeeper.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.cipher.suites</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Cipher suites for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.client.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable ZooKeeper SSL for clients.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.crl.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable CRL for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.enabled.protocols</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enabled protocols for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.endpoint.identification.algorithm</code></td>
+<td class="nowrap"><code>HTTPS</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Endpoint identification algorithm for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.keystore.location</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Location of the keystore for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.keystore.password</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Password for the keystore for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.keystore.type</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Type of the keystore for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.ocsp.enable</code></td>
+<td class="nowrap"><code>false</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Enable OCSP for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.protocol</code></td>
+<td class="nowrap"><code>TLSv1.2</code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Protocol for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.truststore.location</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Location of the truststore for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.truststore.password</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x2705;</td>
+<td>Password for the truststore for ZooKeeper SSL.</td>
+</tr>
+<tr>
+<td class="nowrap"><code>zookeeper.ssl.truststore.type</code></td>
+<td class="nowrap"><code></code></td>
+<td class="middle">&#x2705;</td>
+<td class="middle">&#x274C;</td>
+<td>Type of the truststore for ZooKeeper SSL.</td>
+</tr>
+</table>
+
+## Legend
+
+- **Names**: The name of the parameter or setting with its synonyms.
+- **Default Value**: The initial value assigned to the parameter if not explicitly set.
+- **Read-Only**: Indicates if the parameter is immutable and cannot be modified.
+- **Sensitive**: Specifies if the parameter contains sensitive information that will not be accessible or visible using Karafka.
+- **Description**: A detailed explanation of the parameter's purpose and usage.
