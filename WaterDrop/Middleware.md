@@ -38,6 +38,23 @@ Below, you can find an example of a middleware that implements a round-robin mes
 
 ```ruby
 class Distributor
+  # Ruby `#cycle` is not thread-safe, this is why we use our own
+  class ThreadSafeCycle
+    def initialize(array)
+      @array = array
+      @index = 0
+      @mutex = Mutex.new
+    end
+
+    def next
+      @mutex.synchronize do
+        value = @array[@index]
+        @index = (@index + 1) % @array.size
+        value
+      end
+    end
+  end
+
   # We need the producer to fetch the number of partitions
   # This will make the distributor dynamic, allowing for graceful support of repartitioning
   # We also support the case of non-existing topics just by assigning partition 0.
@@ -83,7 +100,7 @@ class Distributor
 
     @mutex.synchronize do
       last_partition_id = partition_count - 1
-      @cycles[topic] = (0..last_partition_id).cycle
+      @cycles[topic] = ThreadSafeCycle.new((0..last_partition_id).to_a)
       @partition_counts[topic] = partition_count
     end
   end
