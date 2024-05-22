@@ -73,7 +73,7 @@ end
 
 Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
 
-Each subscription group connection operates independently in a separate background thread. They do, however, share the workers poll for processing.
+Each subscription group connection operates independently in a separate background thread. They do, however, share the workers pool for processing.
 
 All the subscription groups define within a single consumer group will operate within the same consumer group.
 
