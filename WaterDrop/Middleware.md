@@ -42,7 +42,8 @@ class Distributor
   class ThreadSafeCycle
     def initialize(array)
       @array = array
-      @index = 0
+      # Start in random location not to prefer partition 0
+      @index = rand(array.size)
       @mutex = Mutex.new
     end
 
