@@ -255,6 +255,30 @@ iterator.each do |message, iterator|
 end
 ```
 
+### Iterating with the Cleaner API
+
+The [Cleaner API](https://karafka.io/docs/Pro-Cleaner-API/) is designed to enhance batch processing efficiency by promptly freeing up memory once a message's payload is no longer needed. This functionality is especially beneficial when working with large payloads (10KB and above) and can help manage memory usage more effectively.
+
+The Cleaner API can be integrated with the Iterator API to ensure optimal memory management during long-running iterations. When processing large datasets or streaming data over extended periods, it is essential to keep memory usage under control to avoid performance degradation or crashes due to memory overload.
+
+Here's how you can use the Cleaner API with the Iterator API to process messages and clean up memory efficiently:
+
+```
+# Initialize the iterator for a specific topic
+iterator = Karafka::Pro::Iterator.new(['my_topic'])
+
+iterator.each do |message|
+  # Process the message
+  process_message(message)
+
+  # Clean the message payload from memory after processing
+  # Message may be a nil when `yield_nil` is set to true  
+  message.clean!
+end
+```
+
+In this example, the `#clean!` method is called on each message after processing, immediately removing the payload from memory. This helps maintain a low memory footprint throughout the iteration process.
+
 ### Integration with Ruby Processes
 
 The Karafka Pro Iterator API is designed to be simple and easy to use, and there is nothing special needed to get started with it. There are also no special recommendations when using it from any specific Ruby process type.
