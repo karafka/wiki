@@ -178,6 +178,11 @@
 178. [Is Multiplexing an alternative to running multiple Karafka processes but using Threads?](#is-multiplexing-an-alternative-to-running-multiple-karafka-processes-but-using-threads)
 179. [Is it possible to get watermark offsets from inside a consumer class without using Admin?](#is-it-possible-to-get-watermark-offsets-from-inside-a-consumer-class-without-using-admin)
 180. [Why are message and batch numbers increasing even though I haven't sent any messages?](#why-are-message-and-batch-numbers-increasing-even-though-i-havent-sent-any-messages)
+181. [What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?](#what-does-configuisessionssecret-do-for-the-karafka-web-ui-do-we-need-it-if-we-are-using-our-authentication-layer)
+182. [Is there middleware for consuming messages similar to the middleware for producing messages?](#is-there-middleware-for-consuming-messages-similar-to-the-middleware-for-producing-messages)
+183. [Can we change the name of Karafka's internal topic for the Web UI?](#can-we-change-the-name-of-karafkas-internal-topic-for-the-web-ui)
+184. [Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?](#is-there-a-way-to-control-which-pages-we-show-in-the-karafka-web-ui-explorer-to-prevent-exposing-pii-data)
+
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2367,3 +2372,31 @@ Karafka Web-UI uses Kafka to report the status of Karafka processes, sending sta
 Karafka processes messages in batches, and the value you see indicates how many batches have been processed, even if a batch contains only one message.
 
 To view the actual payload of messages sent from producer to consumer, you can use the Karafka Explorer.
+
+## What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?
+
+The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It's not critical, but it needs to be set.
+
+Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Ensure that the secret is consistent across all deployment instances, with one value per environment.
+
+## Is there middleware for consuming messages similar to the middleware for producing messages?
+
+Due to the complexity of the data flow, there are only a few middleware layers for consuming messages in Karafka, but several layers can function similarly. These are referred to as "strategies" in Karafka, and there are around 80 different combinations available.
+
+Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](https://karafka.io/docs/Pro-Filtering-API/), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
+
+One of the key strengths of Karafka is its support for pluggable components. These components can be tailored to meet your specific requirements, offering a high degree of customization. Detailed information about these components and their configurations can be found in the Karafka documentation.
+
+## Can we change the name of Karafka's internal topic for the Web UI?
+
+Yes, you can change the name of Karafka's internal topic for the Web UI. 
+
+For instance, if you need to prepend a unique combination before the topic's name, such as `12303-karafka_consumers_states`, this is feasible.
+
+Detailed instructions on how to configure this can be found in the Karafka documentation under [this](https://karafka.io/docs/Web-UI-Configuration/#using-a-shared-kafka-cluster-for-multiple-karafka-application-environments) section.
+
+## Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?
+
+Yes. Karafka provides an API for visibility filtering, which allows you to decide what to display, and whether options to download payloads and JSON versions should be usable. Additionally, you can sanitize certain fields from being presented.
+
+For detailed information, refer to the [Pro Enhanced Web UI Sanitization documentation](https://karafka.io/docs/Pro-Enhanced-Web-UI-Sanitization/#visibility-filtering).
