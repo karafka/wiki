@@ -24,6 +24,109 @@ When you encounter issues with Karafka, there are several things you can do:
 - Feel free to ask on our [Slack channel](https://slack.karafka.io)
 - Use our [integration specs](https://github.com/karafka/karafka/tree/master/spec/integrations) and [example apps](https://github.com/karafka/example-apps) to create a reproduction code that you can then share with us.
 
+## Memory Usage / Memory Leaks
+
+As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, please follow these steps:
+
+1. **Upgrade to the Latest Version**: Ensure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
+
+2. **Check for External Dependencies**: Limit the use of non-default gems to eliminate issues that might arise from other libraries.
+
+3. **Simplify Concurrency**: Set the `concurrency` value to `1` to simplify the processing flow and identify if the issue is related to multi-threading.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.concurrency = 1
+  end
+end
+```
+
+4. **Use a Single Topic and Partition**: Test with a single topic and partition to reduce complexity and isolate the issue.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    topic :orders do
+      consumer OrdersConsumer
+    end
+  end
+end
+```
+
+5. **Monitor Memory Usage**: Use tools like `memory_profiler` or `derailed_benchmarks` to monitor and profile memory usage in your Karafka application.
+
+6. **Check Configuration**: Verify your Karafka configuration for any unusual settings that might cause excessive memory usage.
+
+7. **Review Logs**: Check your logs for any warnings or errors that might indicate a problem with memory management.
+
+8. **Isolate the Problem**: Reproduce the issue in a controlled environment. Use minimal configuration and isolate the components one by one.
+
+9. **Garbage Collection**: Force garbage collection and monitor if the memory usage drops. This can help determine if the issue is with Ruby's garbage collector.
+
+```ruby
+GC.start
+```
+
+10. **Collect Diagnostic Data**: Gather detailed diagnostic data, including heap dumps and backtraces. This information will be crucial for debugging the issue.
+
+```ruby
+Process.kill('TTIN', Process.pid)
+```
+
+### Understanding Memory Usage and Leaks
+
+Karafka is designed to be efficient with memory, but many factors can contribute to increased memory usage or leaks:
+
+1. **Memory Bloat**: This occurs when your process's memory size keeps increasing over time, even if it is not actively processing a higher load. Common causes include:
+   - Ruby gem issues or memory fragmentation.
+   - Unreleased resources or objects being held in memory longer than necessary.
+   
+2. **Garbage Collection**: Ruby uses a garbage collector (GC) to manage memory. Sometimes, tweaking GC settings can help manage memory usage more effectively. You can experiment with environment variables like `RUBY_GC_HEAP_GROWTH_FACTOR`, `RUBY_GC_MALLOC_LIMIT`, and `RUBY_GC_OLDMALLOC_LIMIT` to optimize memory use.
+
+3. **External Dependencies**: Libraries and gems that your application depends on might have their own memory issues. Regularly update and monitor all dependencies.
+
+4. **Profiling Tools**: Use memory profiling tools to identify potential leaks or bloat. Tools like `memory_profiler`, `derailed_benchmarks`, and `stackprof` can help pinpoint memory issues in your application.
+
+5. **Heap Dumps**: Collecting and analyzing heap dumps can provide insights into memory allocation and help identify objects that are using excessive memory.
+
+6. **Code Review**: Regularly review your code for inefficient memory usage patterns, such as large data structures or extensive caching without expiration policies.
+
+If you have followed these steps and still believe there is a memory leak in Karafka, please report it through one of the following channels:
+
+* [The Karafka official Slack channel](https://slack.karafka.io)
+* [Open a GitHub issue](https://github.com/karafka/karafka/issues/new)
+
+### Recommendations for Managing Memory in Karafka
+
+1. **Set `MALLOC_ARENA_MAX=2`**: This environment variable is the closest thing to a silver bullet if you are using Linux/glibc in production. Setting `MALLOC_ARENA_MAX=2` limits the number of memory arenas, which can significantly reduce memory fragmentation and overall memory usage.
+
+    ```sh
+    export MALLOC_ARENA_MAX=2
+    ```
+
+    On Heroku, you can set this configuration by running:
+
+    ```sh
+    heroku config:set MALLOC_ARENA_MAX=2
+    ```
+
+    By default, glibc can create multiple memory arenas to improve concurrency for multithreaded applications. However, this can lead to high memory usage due to fragmentation. Limiting the number of arenas helps to manage memory more efficiently.
+
+2. **Switch to `jemalloc`**: `jemalloc` is a memory allocator that works well with Ruby, particularly Ruby 3.0 and later. It is designed to reduce fragmentation and improve memory management, leading to more stable memory usage patterns.
+
+    To install `jemalloc`, follow these steps:
+
+    ```sh
+    sudo apt-get install libjemalloc-dev
+    ```
+
+    Then, compile your Ruby with `jemalloc` support.
+
 ## Debugging
 
 Remember that Karafka uses the `info` log level by default. If you assign it a logger with `debug,` debug will be used.
