@@ -1,4 +1,4 @@
-1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Setting-up-Kafka).
+1. Make sure Apache Kafka is running. You can start it by following instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
 
 2. Add Karafka to your Gemfile:
 
