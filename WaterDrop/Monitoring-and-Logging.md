@@ -115,7 +115,7 @@ producer.close
 
     The metrics returned may not be completely consistent between brokers, toppars and totals, due to the internal asynchronous nature of librdkafka. E.g., the top level tx total may be less than the sum of the broker tx values which it represents.
 
-## Error notifications
+## Error Notifications
 
 WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under `error.occurred` notification key. You can subscribe to this event to ensure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered.
 
@@ -157,7 +157,7 @@ end
 
     The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](https://karafka.io/docs/WaterDrop-Transactions) documentation.
 
-## Acknowledgment notifications
+## Acknowledgment Notifications
 
 WaterDrop allows you to listen to Kafka messages' acknowledgment events. This will enable you to monitor deliveries of messages from WaterDrop even when using asynchronous dispatch methods.
 
@@ -186,7 +186,11 @@ end
 # WaterDrop [dd8236fff672] delivered message with offset: 34
 ```
 
-## Datadog and StatsD integration
+## Labeling API
+
+Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](https://karafka.io/docs/WaterDrop-Labeling/) section.
+
+## Datadog and StatsD Integration
 
 WaterDrop comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
