@@ -222,3 +222,52 @@ producer.monitor.subscribe(listener)
 You can also find [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/instrumentation/vendors/datadog/dashboard.json) a ready to import DataDog dashboard configuration file that you can use to monitor all of your producers.
 
 ![Example WaterDrop DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/waterdrop_dd_dashboard_example.png)
+
+### Metrics Reporting Enhancement
+
+The WaterDrop Datadog listener provides a default set of metrics for reporting, but it does not cover every possible metric you might need. Fortunately, you can configure the listener to report additional metrics by enhancing its capabilities. There are two main methods to achieve this:
+
+1. **Notification Hook Enhanced Reporting**: This method allows you to add extra instrumentation by subscribing to any events WaterDrop publishes via its notification bus. For example, if you want to count the number of `transaction.aborted` events, you can subclass the metrics listener, enhance it using the instrumentation API, and publish the relevant information:
+
+```ruby
+class BetterListener < WaterDrop::Instrumentation::Vendors::Datadog::MetricsListener
+  def on_transaction_aborted(_event)
+    count('transactions_aborted', 1, tags: default_tags)
+  end
+end
+
+# Create listener instance
+listener = BetterListener.new do |config|
+  config.client = Datadog::Statsd.new('localhost', 8125)
+  # Publish host as a tag alongside the rest of tags
+  config.default_tags = ["host:#{Socket.gethostname}"]
+end
+
+# Subscribe your listener to the producer
+producer.monitor.subscribe(listener)
+```
+
+2. **Altering `librdkafka` Metrics**: Due to the volume and complexity of `librdkafka` statistical data, the WaterDrop listener allows you to define the metrics of interest by modifying the `rd_kafka_metrics` setting. This method does not require subclassing the listener. For  instance, to track throttling metrics on brokers, you can configure the  listener as follows:
+
+```ruby
+# Reference for readability
+list_class_ref = ::WaterDrop::Instrumentation::Vendors::Datadog::MetricsListener
+
+# Merge default reporting with custom metrics
+listener = list_class_ref.new do |config|
+  config.rd_kafka_metrics = config.rd_kafka_metrics + [
+    list_class_ref::RdKafkaMetric.new(:gauge, :brokers, 'brokers.throttle.avg', %w[throttle avg]),
+    list_class_ref::RdKafkaMetric.new(:gauge, :brokers, 'brokers.throttle.p95', %w[throttle p95]),
+    list_class_ref::RdKafkaMetric.new(:gauge, :brokers, 'brokers.throttle.p99', %w[throttle p99])
+  ]
+end
+
+# Subscribe your listener to the producer
+producer.monitor.subscribe(listener)
+```
+
+The structure and details about the librdkafka statistical metrics can be found [here](https://karafka.io/docs/Librdkafka-Statistics/).
+
+!!! hint "Mixing Approaches"
+
+    Both notification hook enhanced reporting and altering librdkafka metrics can be combined to create a custom listener that fully suits your monitoring needs.
