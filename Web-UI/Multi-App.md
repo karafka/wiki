@@ -30,6 +30,12 @@ Karafka::Process.tags.add(:application_name, 'MyApp1')
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/multi-app.png" alt="karafka web multi-app processes view" />
 </p>
 
+!!! Warning "Critical Setup Requirement"
+
+    It is critical to ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
+
+    Having any Karafka server process report to the Web UI before it is correctly bootstrapped via `bundle exec karafka-web migrate` may lead to critical state inconsistencies and other hard-to-debug issues. These inconsistencies can disrupt the accurate materialization of metrics and state data, causing unreliable or incorrect information to be displayed in the Web UI. To maintain a stable and reliable setup, ensure the Web UI is fully initialized and migrated before starting any Karafka server processes.
+
 ## Limitations
 
 While Karafka Web UI can handle multiple applications effectively, it's essential to understand that it perceives all these applications as a part of one cohesive system. In Karafka's eyes, the distinction between these applications is different from between different environments of the same application.
@@ -54,7 +60,7 @@ There are several reasons why you should never use the same Karafka Web UI setup
 
 The Karafka Web UI utilizes the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it utilizes the appropriate dedicated deserializer instead of defaulting to JSON.
 
-!!! note ""
+!!! note "Deserialization Requirement"
 
     Keep in mind that you need to specify deserializes for all of the topics consumed by all of your applications to be able to view the relevant topics' data.
 
