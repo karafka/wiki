@@ -116,7 +116,25 @@ The stopping command is used to halt a consumer process entirely. This command s
 
     When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues seamlessly without interruption.
 
-### Use Cases
+## Connection Management
+
+The commanding feature in Karafka Pro utilizes the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
+
+Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
+
+This dedicated subscription, while not 'mission-critical,' is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
+
+Key points include:
+
+- **Invisible Connection**: The pub-sub connection used by the commanding feature is not shown in the Web UI, avoiding unnecessary noise.
+
+- **Responsiveness**: Ensures high responsiveness by bypassing the standard data flow, crucial during debugging.
+
+- **Reliability**: Incorporates recovery and reconnection mechanisms for continuous operation.
+
+- **Error Reporting**: Publishes errors if they occur but does not track or publish statistics or other metrics.
+
+## Use Cases
 
 1. **Emergency Shutdown**: Quickly shutting down a consumer that is causing severe problems, such as data corruption or excessive resource consumption, to prevent further damage to the system.
 
