@@ -21,11 +21,13 @@ Two steps are needed to use your custom visibility filter:
 1. A custom visibility filter needs to be created
 2. The defined visibility filter must replace the default one via the reconfiguration.
 
-Each visibility filter requires three methods to be present:
+Each visibility filter requires five methods to be present:
 
 1. `#key?` - should the message key be presented
 1. `#headers?` - should the headers be visible
 1. `#payload?` - should the payload be visible
+1. `#download?` - should it be allowed to download this message raw payload
+1. `#export?` - should it be allowed to download the deserialized and sanitized payload as JSON
 
 Each method receives a message (of type `::Karafka::Messages::Message`) as a parameter and returns a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible.
 
@@ -42,6 +44,14 @@ class MyCustomVisibilityFilter
   end
 
   def payload?(_message)
+    false
+  end
+
+  def download?(message)
+    false
+  end
+
+  def export?(message)
     false
   end
 end
