@@ -182,6 +182,7 @@
 182. [Is there middleware for consuming messages similar to the middleware for producing messages?](#is-there-middleware-for-consuming-messages-similar-to-the-middleware-for-producing-messages)
 183. [Can we change the name of Karafka's internal topic for the Web UI?](#can-we-change-the-name-of-karafkas-internal-topic-for-the-web-ui)
 184. [Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?](#is-there-a-way-to-control-which-pages-we-show-in-the-karafka-web-ui-explorer-to-prevent-exposing-pii-data)
+185. [What does the `strict_topics_namespacing` configuration setting control?](#what-does-the-strict_topics_namespacing-configuration-setting-control)
 
 
 ## Does Karafka require Ruby on Rails?
@@ -2400,3 +2401,7 @@ Detailed instructions on how to configure this can be found in the Karafka docum
 Yes. Karafka provides an API for visibility filtering, which allows you to decide what to display, and whether options to download payloads and JSON versions should be usable. Additionally, you can sanitize certain fields from being presented.
 
 For detailed information, refer to the [Pro Enhanced Web UI Sanitization documentation](https://karafka.io/docs/Pro-Enhanced-Web-UI-Sanitization/#visibility-filtering).
+
+## What does the `strict_topics_namespacing` configuration setting control?
+
+The `strict_topics_namespacing` configuration in Karafka enforces consistent naming for topics by ensuring they use either dots (`.`) or underscores (`_`) but not a mix of both in a topic name. This validation helps prevent inconsistencies in topic names, which is crucial because inconsistent namespacing can lead to issues like Kafka metrics reporting name collisions. Such collisions occur because Kafka uses these characters to structure metric names, and mixing them can cause metrics to overlap or be misinterpreted, leading to inaccurate monitoring and difficulties in managing Kafka topics. By enabling `strict_topics_namespacing`, you ensure that all topic names follow a uniform pattern, avoiding these potential problems. This validation can be turned off by setting `config.strict_topics_namespacing` to false if your environment does not require uniform naming.
