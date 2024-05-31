@@ -22,11 +22,11 @@ bundle add karafka-web
 bundle exec karafka-web install
 ```
 
-!!! note ""
+!!! Warning "Karafka Web UI Installation Guidance"
 
     Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
-!!! note ""
+!!! Warning "Essential Environment Migration Step"
 
     After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
 
@@ -51,6 +51,12 @@ require_relative 'karafka.rb'
 
 run Karafka::Web::App
 ```
+
+!!! Tip "`config.ui.sessions.secret` Usage"
+
+    The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not utilized outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
+
+    This secret is critical for cookie management and CSRF protection, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment.
 
 6. Enjoy Karafka Web UI.
 
