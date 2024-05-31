@@ -186,6 +186,7 @@
 186. [Does librdkafka queue messages when using Waterdrop's `#produce_sync` method?](#does-librdkafka-queue-messages-when-using-waterdrops-produce_sync-method)
 187. [How reliable is the Waterdrop async produce? Will messages be recovered if the Karafka process dies before producing the message?](#how-reliable-is-the-waterdrop-async-produce-will-messages-be-recovered-if-the-karafka-process-dies-before-producing-the-message)
 188. [Will WaterDrop start dropping messages upon librdkafka buffer overflow?](#will-waterdrop-start-dropping-messages-upon-librdkafka-buffer-overflow)
+189. [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
 
 
 ## Does Karafka require Ruby on Rails?
@@ -2432,3 +2433,39 @@ When WaterDrop detects that the librdkafka queue is full, an exception will not 
 If the queue remains full even after the backoff period, WaterDrop will continue to retry sending the message until there is enough space. This retry mechanism ensures that messages are not lost.
 
 This behavior can be aligned by changing appropriate configuration settings.
+
+## How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
+
+If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](https://karafka.io/docs/Dead-Letter-Queue/), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
+
+In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This ensures that specific methods are not used outside their intended context, maintaining a clean and safe API.
+
+To handle this, you can use a guard to check whether the `#dispatch_to_dlq` method is available before calling it. Here are a couple of approaches:
+
+1. **Check for Method Availability**:
+
+You can use the `#respond_to?` method to check if dispatch_to_dlq is available before calling it.
+
+```ruby
+if respond_to?(:dispatch_to_dlq)
+  dispatch_to_dlq
+else
+  # Handle the error or reprocess logic here
+end
+```
+
+2. **Differentiate Using Topic Reference**:
+
+Alternatively, you can check if the consumer is processing a DLQ topic by using the `topic.dead_letter_queue?` method. This method returns true if the current topic has DLQ enabled but will be false when processing the DLQ itself.
+
+```ruby
+if topic.dead_letter_queue?
+  # This is the original topic, so `dispatch_to_dlq` is safe to use
+  dispatch_to_dlq
+else
+  # This is the DLQ topic, handle accordingly
+  # Handle the error or reprocess logic here
+end
+```
+
+When using the same consumer for both a topic and its DLQ in Karafka, ensure that you handle method availability appropriately to avoid errors. Using guards like checking the topic context with `topic.dead_letter_queue?` can help maintain robustness and prevent unexpected exceptions during reprocessing.
