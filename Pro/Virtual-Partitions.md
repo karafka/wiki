@@ -345,6 +345,26 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
+## Thread Management and Consumers Assignment
+
+Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design ensures that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
+
+One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control. 
+
+The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key ensures that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
+
+Karafka's architecture involves maintaining a map of consumer instances mapped to virtual partitions. These instances are managed dynamically and persist as long as the partition assignment is active. This persistence ensures stability and consistency in message processing, even as threads are reassigned between batches.
+
+By decoupling thread assignment from consumer instances and ensuring dedicated, long-lived consumer instances per virtual partition, Karafka achieves a balance between flexibility and consistency. This design allows for efficient resource utilization, consistent message processing, and the ability to handle high-throughput scenarios effectively.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/virtualization_flow.svg" />
+</p>
+<p align="center">
+  <small>*This example illustrates the flow of message distribution through virtualization and scheduling until the worker threads jobs pickup for processing.
+  </small>
+</p>
+
 ## Monitoring
 
 Karafka default [monitor](Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
