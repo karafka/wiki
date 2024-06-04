@@ -187,6 +187,7 @@
 187. [How reliable is the Waterdrop async produce? Will messages be recovered if the Karafka process dies before producing the message?](#how-reliable-is-the-waterdrop-async-produce-will-messages-be-recovered-if-the-karafka-process-dies-before-producing-the-message)
 188. [Will WaterDrop start dropping messages upon librdkafka buffer overflow?](#will-waterdrop-start-dropping-messages-upon-librdkafka-buffer-overflow)
 189. [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
+190. [What should I do if I encounter the `Broker: Not enough in-sync replicas` error?](#what-should-i-do-if-i-encounter-the-broker-not-enough-in-sync-replicas-error)
 
 
 ## Does Karafka require Ruby on Rails?
@@ -237,7 +238,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Does Karafka restart dead PG connections?
 
-Karafka starting from `2.0.16` will automatically clean dead ActiveRecord connections. No extra action is needed.
+Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found here(https://karafka.io/docs/Active-Record-Connections-Management/#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
@@ -2469,3 +2470,15 @@ end
 ```
 
 When using the same consumer for both a topic and its DLQ in Karafka, ensure that you handle method availability appropriately to avoid errors. Using guards like checking the topic context with `topic.dead_letter_queue?` can help maintain robustness and prevent unexpected exceptions during reprocessing.
+
+## What should I do if I encounter the `Broker: Not enough in-sync replicas` error?
+
+This error indicates that there are not enough in-sync replicas to handle the message persistence. Here's how to address the issue:
+
+1. **Check Cluster Size and Configuration:** Ensure that your Kafka cluster has enough brokers to meet the required replication factor for the topics. If your replication factor is set to `3`, you need at least `3` brokers.
+
+2. **Increase Broker Storage Size:** If your brokers are running out of storage space, they will not be able to stay in sync. Increasing the storage size, if insufficient, can help maintain enough in-sync replicas.
+
+3. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
+
+By following these steps, you should be able to resolve the "Broker: Not enough in-sync replicas" error and ensure your Kafka cluster is correctly configured to handle the required replication.

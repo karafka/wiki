@@ -456,7 +456,33 @@ Karafka Web UI uses `Karafka.producer` to produce state reports out of processes
 
 Without that, Karafka will **not** be able to report anything.
 
-### Limitations
+### `Broker: Not enough in-sync replicas` error occurrences
+
+If you encounter the `Broker: Not enough in-sync replicas` error, it typically means there are insufficient in-sync replicas to handle message persistence. Here are the steps to resolve this issue:
+
+- Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist.
+
+  In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreate the topics with the correct replication factor.
+
+- If you previously executed `bundle exec karafka-web migrate` without specifying the `--replication-factor` value, Karafka may have picked an incorrect default replication factor. This can cause issues if the replication factor does not match the `min.insync.replicas` setting.
+
+  To fix this, it is recommended to run:
+
+```sh
+bundle exec karafka-web reset --replication-factor=CORRECT_FACTOR
+```
+
+This command will recreate the topics with the correct configuration.
+
+- Alternatively, you can manually create the topics using Kafka's topic management tools with the proper replication factor.
+- Delete the `karafka_*` topics from your cluster. This can be done manually, through the Karafka Web UI, or using the Admin API.
+- Migrate Karafka Web UI with the correct replication factor using the following command after Karafka Web UI topics were removed:
+
+```sh
+bundle exec karafka-web migrate --replication-factor=CORRECT_FACTOR
+```
+
+## Limitations
 
 Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it's monitoring.
 
@@ -464,7 +490,7 @@ By default, Kafka has a payload limit of 1 megabyte. Considering the size of a f
 
 However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.
 
-### Web UI Schema Compatibility Notice
+## Web UI Schema Compatibility Notice
 
 When upgrading Karafka Web UI, particularly to versions with breaking changes, as noted in the changelogs, it's crucial to understand the implications for the rolling upgrades. Specifically, performing rolling upgrades under such circumstances can lead to schematic mismatches, which might introduce unintended behaviors.
 

@@ -27,6 +27,39 @@ In database replication scenarios, Karafka requires manual intervention to ensur
 end
 ```
 
+## Dealing with Dead Database Connections
+
+In production environments, database connections can sometimes become  "dead" or unusable due to various issues like network disruptions,  database restarts, or other unexpected problems. Rails, through ActiveRecord, provides mechanisms to handle such situations, ensuring your application can recover and continue functioning smoothly.
+
+ActiveRecord includes a feature known as the connection "reaper." The reaper periodically checks connections in the pool and removes any dead or idle for too long. This helps maintain a pool of valid connections, but immediate action might be needed when a connection is found dead during a database operation.
+
+ActiveRecord provides the `#verify!` method to handle dead connections dynamically. This method can be called to check if the current connection is still valid. If it is found invalid, `#verify!` will automatically attempt to re-establish it. This method is essential for ensuring that your application can recover from connection issues on the fly.
+
+### Implementing Immediate Dead Connection Handling
+
+The process of managing dead database connections in Karafka is straightforward. You should subscribe to the `error.occurred` event. This event is triggered for many errors, including when an error indicating a dead connection is detected. To handle this, you can simply call 'ActiveRecord::Base.connection.verify! ', which checks the connection and re-establishes it if needed.
+
+```ruby
+Karafka::App.monitor.subscribe('error.occurred') do |event|
+  # Check if the error is a known dead connection error for your database
+  case event[:error]
+  when PG::ConnectionBad
+    # For PostgreSQL
+    ActiveRecord::Base.connection.verify!
+  when Mysql2::Error::ConnectionError
+    # For MySQL
+    ActiveRecord::Base.connection.verify!
+  # Add more cases here for other database-specific dead connection errors
+  else
+    # Handle other types of errors or log them
+  end
+end
+```
+
+!!! Tip "Rails Reaper and Connection Verification Intervals"
+
+    Rails reaper checks and verifies connections at fixed intervals (`reaping_frequency`). If many connections become dead, more than verifying the used one may be needed, as retries might pick another dead connection before the reaper runs. Implementing [granular backoffs](https://karafka.io/docs/Pro-Granular-Backoffs/), which wait longer than the reaping frequency, can help ensure successful retries.
+
 ## Conclusion
 
 Karafka provides automatic database connection management for standard setups. However, when using database replicas, it's crucial to manage those connections to maintain system performance and stability manually. This process involves subscribing to Karafka's `worker.completed` event and explicitly releasing connections, ensuring they are available for subsequent use.
