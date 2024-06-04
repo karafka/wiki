@@ -91,7 +91,7 @@
 * [Active Record Connections Management](Active-Record-Connections-Management)
 * [Forking](Forking)
 * [Resources Management](Resources-Management)
-* [Latency Management](Latency-Management)
+* [Latency and Throughput](Latency-and-Throughput)
 * [Articles and other references](Articles-and-other-references)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems, Troubleshooting and Debugging](Problems,-Troubleshooting-and-Debugging)
