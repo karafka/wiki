@@ -105,23 +105,197 @@ producer.produce_many_async(
 
 ## Consumer Management
 
-TBA
+Tuning producers may seem straightforward, but managing consumers is a different and more complex matter. Understanding and optimizing consumer latency and throughput requires a deep dive into various aspects spanning several book chapters. The sections below should be viewed as an introduction rather than exhaustive documentation.
+
+Consumer management is influenced by numerous external factors that go beyond the framework itself. These include:
+
+- **Types of Data Consumed**: Different data types may require different processing strategies and resources.
+
+- **Nature of Assignments and Infrastructure**: How partitions are assigned to consumers and the underlying infrastructure significantly impact performance.
+
+- **Type of Processing**: Whether CPU-intensive or IO-intensive affects how consumers should be tuned.
+
+- **Amount and Sizes of Data**: The volume and size of consumed data are crucial in determining the optimal consumer configuration.
+
+- **Number of Worker Threads**: The number of threads available for processing can influence how effectively data is consumed.
+
+- **Routing Setup**: The complexity of the routing setup affect consumer performance.
+
+- **Data Production Patterns**: Steady data streams versus sudden bursts (flushes) require different handling strategies to maintain performance.
+
+- **Topics Configuration and Number of Partitions**: The configuration of topics and the number of partitions can significantly impact workload distribution and overall consumer efficiency.
+
+This document is designed to provide you with a solid foundation in consumer latency management. It offers detailed explanations and descriptions that can serve as a basis for making informed decisions about consumer configurations. While it does not cover every possible scenario, it provides essential insights to help you navigate the complexities of consumer management in your Kafka setup, ensuring you are well-prepared for any situation.
+
+The strategy and methods selected for consumer management can vary significantly depending on whether the priority is throughput or latency.
+
+- **Prioritizing Throughput**: When the goal is to maximize throughput, the focus is on efficiently processing large volumes of data. Strategies include increasing batch sizes, optimizing worker thread counts, and ensuring consumers can handle high loads without frequent pauses. This approach might accept higher latency for processing more messages per unit of time.
+
+- **Prioritizing Latency**: This strategy, when low latency is the priority, is a swift approach that minimizes the time taken for each message to be processed and acknowledged. It involves reducing batch sizes, using faster data processing methods, and ensuring that the consumer system is highly responsive. Here, throughput might be sacrificed, but the assurance of quick message processing is maintained.
+
+!!! Info "No Silver Bullet for Latency and Throughput Tuning"
+
+    There is no one-size-fits-all solution when it comes to tuning latency and throughput. As mentioned above, achieving optimal performance requires deeply understanding your specific expectations and use cases.
+
+!!! Info "Scope of this Guide"
+
+    This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, it's important to note that system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
+
+### Prerequisites and Initial References
+
+To effectively understand Karafka consumer processes latency and the topics discussed in this document, it is essential to be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
+
+- [Routing DSL](https://karafka.io/docs/Routing/) including multi-consumer group and multi-subscription group operations.
+- [Concurrency and Multithreading](https://karafka.io/docs/Concurrency-and-Multithreading/) design of the framework.
+- [Error Handling](https://karafka.io/docs/Error-handling-and-back-off-policy/) (Especially Backoff Policies)
+- [Offset Management Strategies](https://karafka.io/docs/Offset-management/)
+- [Monitoring and Logging](https://karafka.io/docs/Monitoring-and-Logging/) basics.
+- [Web UI Usage](https://karafka.io/docs/Web-UI-Getting-Started/) for monitoring.
+- [Swarm/Multi-Process Mode](https://karafka.io/docs/Swarm-Multi-Process/)
+- [Connection Multiplexing](https://karafka.io/docs/Pro-Multiplexing/)
+- [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)
+
+### Latency Types
+
+When working with Karafka, there are two primary types of latency: consumption latency and processing latency. Understanding these will help you optimize performance and ensure timely message processing.
+
+- **Consumption Latency**: Measures the time from when a message is created to when it is consumed.
+    - **Importance**: Indicates the real-time performance of your consumer setup. High consumption latency suggests bottlenecks in message processing.
+    - **Impact of Processing Lag**: Any increase in processing lag directly affects consumption latency. If the consumer process is overloaded, jobs will wait longer in the internal queue, increasing consumption lag.
+
+- **Processing Latency**: Measures the time a batch of messages waits before being picked up by a worker.
+    - **Importance**: Helps identify internal delays within the consumer process. High processing latency can indicate an overloaded system.
+    - **Relation to Consumption Latency**: Increased processing latency will also increase consumption latency, as delays in processing lead to longer overall time in the system.
+
+You will most often focus on consumption latency, as it reflects the overall performance and responsiveness of your consumer setup. Monitoring both consumption and processing latency helps identify and address performance issues, ensuring the efficient operation of your Karafka consumers.
 
 ### Configuration Tuning
 
+Tuning consumer configurations in Karafka involves adjusting various settings that impact how messages are consumed and processed. These settings help balance latency, throughput, and resource utilization according to your requirements. Below are the primary settings within the Karafka configuration and important librdkafka-specific settings that you must consider.
+
+!!! Hint "Optimizing Data Fetching"
+
+    Tuning the configurations below helps improve how fast or how much data Karafka can fetch from Kafka in a given time frame, as long as the consumer process is not blocked by processing or other factors. These are the primary ways to control latency and throughput when getting data from Kafka for the Ruby process.
+
+    Further sections also contain information on how to deal with lags caused by the processing phase.
+
+<table>
+  <tr>
+    <th>Setting</th>
+    <th>Description</th>
+    <th>Tuning Tips</th>
+  </tr>
+  <tr>
+    <td class="nowrap">
+      <code>max_wait_time</code>
+    </td>
+    <td>Maximum time a consumer will wait for messages before delegating them for processing.</td>
+    <td>
+      <ul>
+        <li>Lower values reduce latency by ensuring they are processed faster.</li>
+        <li>Higher values can improve throughput by allowing more messages to accumulate before processing.</li>
+        <li>When lowering consider also lowering the <code>fetch.wait.max.ms</code>to at least match it</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="nowrap">
+      <code>max_messages</code>
+    </td>
+    <td>Maximum number of messages a consumer processes in a single batch.</td>
+    <td>
+      <ul>
+        <li>Lower values reduce processing latency per batch.</li>
+        <li>Higher values can improve throughput but may increase latency and resource usage.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="nowrap">
+      <code>fetch.wait.max.ms</code>
+    </td>
+    <td>Maximum time the consumer waits for the broker to fill the fetch request with <code>fetch.min.bytes</code> worth of messages.</td>
+    <td>
+      <ul>
+        <li>Lower values reduce latency by minimizing wait time.</li>
+        <li>Higher values can reduce fetch requests, improving throughput by fetching larger batches.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="nowrap">
+      <code>fetch.min.bytes</code>
+    </td>
+    <td>Minimum amount of data the broker should return for a fetch request.</td>
+    <td>
+      <ul>
+        <li>Higher values can improve throughput by reducing the number of fetch requests.</li>
+        <li>Lower values ensure quicker fetching but might increase the number of requests.</li>
+      </ul>
+    </td>
+  </tr>
+    <td class="nowrap">
+      <code>fetch.message.max.bytes</code>
+    </td>
+    <td>Initial maximum number of bytes per topic+partition to request when fetching messages from the broker.</td>
+    <td>
+      <ul>
+        <li>Lower values can help achieve a better mix of topic partitions data, especially in subscription groups subscribed to multiple topics and/or partitions.</li>
+        <li>Higher values may be necessary for consuming larger messages but can reduce the mix of data and increase memory usage.</li>
+      </ul>
+    </td>
+  <tr>
+    <td class="nowrap">
+      <code>fetch.error.backoff.ms</code>
+    </td>
+    <td>Wait time before retrying a fetch request in case of an error.</td>
+    <td>
+      <ul>
+        <li>Lower values reduce delay in message consumption after an error, helping maintain low latency.</li>
+        <li>Avoid excessively low values to prevent frequent retries that could impact performance.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="nowrap">
+      <code>enable.partition.eof</code>
+    </td>
+    <td>Enables the consumer to raise an event when it reaches the end of a partition.</td>
+    <td>
+      <ul>
+        <li>When set to <code>true</code>, Karafka will bypass <code>max_wait_time</code> and <code>max_messages</code>, delegating all available messages for processing each time the end of the partition is reached.</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
 ### Parallel Processing
+
+TBA
 
 ### Prefetching Messages
 
+TBA
+
 ### Efficient Deserialization
+
+TBA
 
 ## Troubleshooting Latency Issues
 
+TBA
+
 ### Common Problems
+
+TBA
 
 ### Diagnostic Techniques
 
-## Additional Considerations
+TBA
+
+### Additional Considerations
+
+TBA
 
 ## Summary
 

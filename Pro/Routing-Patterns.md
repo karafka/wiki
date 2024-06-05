@@ -195,7 +195,7 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Internal Regular Expression Requirements of `librdkafka`**: The library requires regular expression strings to start with `^`. Karafka's Routing Patterns adapt Ruby's regular expressions to fit this format internally. Remembering this transformation and thoroughly testing your patterns before deploying is important. You can find the adjusted regular expression in the Web UI under the routing page topic details view if you wish to review the adjusted regular expression.
 
-1. **Too Broad Regular Expressions**: TBA
+1. **Too Broad Regular Expressions**: Broad regular expressions may unintentionally match a wide range of topics, leading to the over-consumption of topics that were not intended to be included. This can result in excessive resource utilization, unexpected data processing, and potential bottlenecks in the system.
 
 Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
 

@@ -220,7 +220,6 @@ It's important to note that while the `offsets.retention.minutes` setting in Kaf
 
 In development, consumer downtimes are generally short, and losing offsets might not have significant consequences as the data is often test data, and reprocessing might not be a concern. However, in a production environment, consumer downtime can be more impactful if a consumer is down for a time exceeding the `offsets.retention.minutes` value. The loss of offset data can lead to significant issues like message reprocessing or missing out on unprocessed messages. This can affect data integrity and processing efficiency.
 
-
 ## Topics Metadata Propagation During their Creation and Removal
 
 Apache Kafka, a distributed streaming platform, handles topic creation asynchronously. This means that when a new topic is created, there's a delay before it's recognized across all brokers in the Kafka cluster. This delay can cause temporary issues where the topic appears non-existent, leading to `unknown_topic` errors. To mitigate this, clients delay flagging a topic as non-existent for a default period of 30 seconds (configurable through `topic.metadata.propagation.max.ms`). This wait allows time for the topic metadata to propagate across the cluster.

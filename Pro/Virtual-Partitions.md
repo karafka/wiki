@@ -112,6 +112,41 @@ routes.draw do
 end
 ```
 
+### Round-Robin Partitioning
+
+If your messages are independent, you can also distribute them round-robin, ensuring their even distribution even during periods of lower traffic.
+
+```ruby
+# Create your partitioner
+class RoundRobinPartitioner
+  def initialize
+    # You can replace the general concurrency with a VPs limit
+    @cycle = (0...Karafka::App.config.concurrency).cycle
+  end
+
+  # @param _message [Karafka::Messages::Message] ignored as partitioner not message based
+  # @return [Integer] VP assignment partition
+  # @note This always runs in the partitioner within the listener thread,
+  #   so standard Ruby iterator is ok as no thread-safety issues are expected
+  def call(_message)
+    @cycle.next
+  end
+end
+
+# Assign it to the topics you want
+routes.draw do
+  topic :orders_states do
+    consumer OrdersStatesConsumer
+
+    # Distribute work to virtual partitions based on the user id, ensuring,
+    # that per user, everything is in order
+    virtual_partitions(
+      partitioner: RoundRobinPartitioner.new
+    )
+  end
+end
+```
+
 ## Managing Number of Virtual Partitions
 
 By default, Karafka will create at most `Karafka::App.config.concurrency` concurrent Virtual Partitions. This approach allows Karafka to occupy all the threads under optimal conditions.
