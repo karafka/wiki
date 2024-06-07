@@ -254,6 +254,10 @@ This behavior may impact you in the following ways:
 
 - **A Balancing Act**: Setting the correct value for `transaction.timeout.ms` requires a balance. If it's too short, legitimate transactions requiring more time might get prematurely aborted, leading to increased retries and system overhead. If it's too long, it might delay the detection and resolution of genuine issues.
 
+!!! Warning "Potential Exceedance of `max_wait_timeout` in WaterDrop Transactions"
+
+    When working with transactions in WaterDrop, especially in clusters experiencing connectivity issues or unavailability, be aware that the `max_wait_timeout` parameter may be exceeded. This behavior is due to the internal retry policies within WaterDrop, which are critical for maintaining system stability. Although this might result in longer wait times, it is an expected and necessary mechanism to ensure reliable message delivery and consistency across transactions. Therefore, this will not be addressed or altered in future updates.
+
 ## `transactional.id` Management and Fencing
 
 One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka ensures that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
