@@ -284,6 +284,18 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
   </tr>
 </table>
 
+Below is an example latency impact of enabling `enable.partition.eof` and lowering `fetch.wait.max.ms` to `100`ms, compared to the default values, on a low-traffic topic (1 message per second). In both cases, `max_wait_time` was set to `2000`ms (less is better).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/latency_and_throughput/consumption_lag_eof.png" />
+</p>
+<p align="center">
+  <small>*Latency in ms on low-volume topic with different configurations (less is better).
+  </small>
+</p>
+
+The presented example illustrates how big of an impact latency configuration can have. Proper configuration tuning can tremendously impact the Karafka data ingestion patterns.
+
 ### Parallel Processing
 
 Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka leverages native Ruby threads and supports multiple concurrency features to handle processing efficiently.
@@ -372,6 +384,18 @@ Below, you can find a table summarizing the key aspects of Karafka's parallel pr
     </td>
   </tr>
 </table>
+
+Below is an example latency impact of enabling Virtual Partitions compared to the default values on a partition with 10 messages per second and an IO cost of around 150ms per message. In both cases, the same settings are used.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/latency_and_throughput/no_vps_vs_vps.png" />
+</p>
+<p align="center">
+  <small>*Latency in ms on a partition with and without Virtual Partitions enabled (same traffic) with around 150ms of IO per message.
+  </small>
+</p>
+
+The presented example illustrates a growing latency due to the non-virtualized processing's inability to keep up with the steady pace of messages because of the IO cost. Work is distributed across multiple threads in the case of Virtual Partitions so the system can keep up.
 
 ### Prefetching Messages
 
