@@ -385,6 +385,16 @@ producer.monitor.subscribe('transaction.aborted') do |_event|
 end
 ```
 
+## Fatal Errors Recovery Strategy
+
+When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
+
+The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process.
+
+The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
+
+If you find this behaviour undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
+
 ## Limitations
 
 Karafka producer transactions provide atomicity over streams, but users should be mindful of the following limitations:
