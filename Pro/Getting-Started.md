@@ -19,10 +19,13 @@ gem 'karafka'
 # other gems...
 ```
 
-!!! note ""
+!!! Tip "Crucial Gemfile Tip for Karafka Pro Users"
 
     You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
 
+!!! Warning "Enterprise License Required for Offline or Private Registry Setup"
+
+    An Enterprise license is required if you are looking into hosting the license key offline within the app or via a private registry. This mode of operation allows you to use Karafka Pro without relying on our gem server. An Enterprise Agreement will grant you access to the license gem sources and installation instructions, ensuring you can proceed smoothly with your preferred setup.
 
 ## License gem integrity verification
 
@@ -92,6 +95,6 @@ To use it:
 
 In case the verification fails, script will exit with the exit code `1`.
 
-!!! note ""
+!!! Warning " Checksum Not Available on Web UI"
 
     Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.

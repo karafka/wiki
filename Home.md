@@ -31,6 +31,7 @@
 * [Single Process Setup](Web-UI-Single-Process-Setup)
 * [Development vs Production](Web-UI-Development-vs-Production)
 * [Data Management](Web-UI-Data-Management)
+* [Operational Cost Breakdown](Web-UI-Operational-Cost-Breakdown)
 * [Components](Web-UI-Components)
 
 ## WaterDrop
