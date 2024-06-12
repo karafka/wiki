@@ -168,7 +168,7 @@ consumer_group = 'example_consumer_group'
 topics = ['topic1', 'topic2']
 
 # Fetch the lags and offsets
-lags_and_offsets = Karafka::Admin.read_lags_and_offsets(consumer_group, topics)
+lags_and_offsets = Karafka::Admin.read_lags_with_offsets(consumer_group, topics)
 
 # Output the fetched data
 lags_and_offsets.each do |topic, partition_data|
