@@ -162,23 +162,129 @@ This functionality provides the means to track and understand the consumption pr
 
 Using the following method, you can obtain the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
 
+If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This ensures comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
+
+### Reading Lags of All Active Routing Topics
+
+To get the lag for all active topics in your Karafka setup, invoke `#read_lags_with_offsets` without any arguments. Karafka will automatically use the consumer groups and active topics defined in `karafka.rb`:
+
 ```ruby
-# Specify the consumer group and the topics you are interested in
-consumer_group = 'example_consumer_group'
-topics = ['topic1', 'topic2']
+lags_with_offsets = Karafka::Admin.read_lags_with_offsets
 
-# Fetch the lags and offsets
-lags_and_offsets = Karafka::Admin.read_lags_with_offsets(consumer_group, topics)
+lags_with_offsets.each do |group_name, topics|
+  puts "Consumer group: #{group_name}"
 
-# Output the fetched data
-lags_and_offsets.each do |topic, partition_data|
-  partition_data.each do |partition, data|
-    puts "Topic: #{topic}, Partition: #{partition}, Offset: #{data[:offset]}, Lag: #{data[:lag]}"
+  topics.each do |topic_name, partitions|
+    puts "  Topic: #{topic_name}"
+
+    partitions.each do |partition, data|
+      offset = data[:offset]
+      lag = data[:lag]
+      puts "    Partition: #{partition}, Offset: #{offset}, Lag: #{lag}"
+    end
   end
+
+  puts
 end
+
+# Consumer group: cg0
+#   Topic: visits
+#     Partition: 0, Offset: 204468, Lag: 6
+#     Partition: 1, Offset: 180631, Lag: 0
+#     Partition: 2, Offset: 181414, Lag: 5
+#     Partition: 3, Offset: 181070, Lag: 8
+#     Partition: 4, Offset: 180974, Lag: 4
+# 
+# Consumer group: karafka_web
+#   Topic: karafka_consumers_reports
+#     Partition: 0, Offset: 48669, Lag: 2
 ```
 
-If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This ensures comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
+### Reading Lags of All Routing Topics
+
+To fetch lags for all topics, including inactive ones, set `active_topics_only` to `false` when calling `Karafka::Admin.read_lags_with_offsets`:
+
+```ruby
+lags_with_offsets = Karafka::Admin.read_lags_with_offsets(active_topics_only: false)
+
+lags_with_offsets.each do |group_name, topics|
+  puts "Consumer group: #{group_name}"
+
+  topics.each do |topic_name, partitions|
+    puts "  Topic: #{topic_name}"
+
+    partitions.each do |partition, data|
+      offset = data[:offset]
+      lag = data[:lag]
+      puts "    Partition: #{partition}, Offset: #{offset}, Lag: #{lag}"
+    end
+  end
+
+  puts
+end
+
+# Consumer group: cg0
+#   Topic: visits
+#     Partition: 0, Offset: 204569, Lag: 12
+#     Partition: 1, Offset: 180736, Lag: 9
+#     Partition: 2, Offset: 181511, Lag: 11
+#     Partition: 3, Offset: 181163, Lag: 3
+#     Partition: 4, Offset: 181075, Lag: 14
+# 
+# Consumer group: karafka_web
+#   Topic: karafka_consumers_reports
+#     Partition: 0, Offset: 48689, Lag: 3
+#   Topic: karafka_consumers_states
+#     Partition: 0, Offset: -1, Lag: -1
+#   Topic: karafka_consumers_metrics
+#     Partition: 0, Offset: -1, Lag: -1
+#   Topic: karafka_consumers_commands
+#     Partition: 0, Offset: -1, Lag: -1
+#   Topic: karafka_errors
+#     Partition: 0, Offset: -1, Lag: -1
+```
+
+### Reading Lags of Selected Consumer Groups and Topics
+
+To get lags for a specific subset of data, you can explicitly define the consumer groups and topics you're interested in:
+
+```ruby
+# Specify the consumer group and the topics you are interested in
+consumer_group_with_topics = {
+  'example_consumer_group' => ['topic1', 'topic2']
+}
+
+# Fetch the lags and offsets
+lags_with_offsets = Karafka::Admin.read_lags_with_offsets(consumer_group_with_topics)
+
+lags_with_offsets.each do |group_name, topics|
+  puts "Consumer group: #{group_name}"
+
+  topics.each do |topic_name, partitions|
+    puts "  Topic: #{topic_name}"
+
+    partitions.each do |partition, data|
+      offset = data[:offset]
+      lag = data[:lag]
+      puts "    Partition: #{partition}, Offset: #{offset}, Lag: #{lag}"
+    end
+  end
+
+  puts
+end
+
+# Consumer group: example_consumer_group
+#   Topic: topic1
+#     Partition: 0, Offset: 204676, Lag: 3
+#     Partition: 1, Offset: 180825, Lag: 3
+#     Partition: 2, Offset: 181592, Lag: 4
+#     Partition: 3, Offset: 181249, Lag: 7
+#     Partition: 4, Offset: 181154, Lag: 6
+#
+#   Topic: topic2
+#     Partition: 0, Offset: 4676, Lag: 7
+#     Partition: 1, Offset: 825, Lag: 12
+```
 
 ### Edge Cases and Considerations
 
