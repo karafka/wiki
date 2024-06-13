@@ -6,7 +6,7 @@ Developers can customize their data processing logic and perform data lookups ac
 
 One of the major benefits of the Iterator API is its flexibility. You can use it from any Ruby process, including Rake tasks, custom scripts, and the Rails console. This means you can easily integrate Kafka data processing into their existing workflows and automation tasks. It also makes it easy to perform ad-hoc data processing and analysis without complex infrastructure.
 
-!!! note ""
+!!! Info "Iterator API and Compacted Messages"
 
     When using Karafka's Iterator API to access Kafka data, please keep in mind, that it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
 
@@ -67,11 +67,11 @@ iterator.each do |message|
 end
 ```
 
-!!! note ""
+!!! Tip "Differentiating Negative Offsets in Karafka"
 
     In Karafka, you may encounter a negative offset of `-1001` in the context of statistics reporting, and this does **not** represent the same concept as the Iterator negative offsets lookup. In the context of Karafka emitted statistics, the `-1001` means that the offset information is not yet available.
 
-!!! note ""
+!!! Info "Handling Compacted Topics with Negative Lookups"
 
     Negative lookups operate based on watermark offsets, not actual message counts. So, for compacted topics (where redundant data is removed), this could result in fetching fewer messages than requested, as the specified offset might include removed data.
 
@@ -192,7 +192,7 @@ iterator.each do |message|
 end
 ```
 
-!!! note ""
+!!! Tip "Recommended Approach for Long-Living Iterators"
 
     If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption. 
 
@@ -295,15 +295,58 @@ The iterator should handle up to 100 000 messages per second.
 
 ## Example Use Cases
 
-- Custom Kafka data processing: The iterator API allows developers to create custom scripts that process Kafka data in a specific way. For example, you can extract specific fields from Kafka data, transform them into a different format, or perform calculations on the data.
+- **Custom Kafka data processing**: The iterator API allows developers to create custom scripts that process Kafka data in a specific way. For example, you can extract specific fields from Kafka data, transform them into a different format, or perform calculations on the data.
 
-- Custom data analytics: With the iterator API, developers can perform custom data analytics on Kafka data, such as trend analysis, forecasting, or anomaly detection. This can be useful for detecting patterns in data that might take time to be noticeable.
+- **Custom data analytics**: With the iterator API, developers can perform custom data analytics on Kafka data, such as trend analysis, forecasting, or anomaly detection. This can be useful for detecting patterns in data that might take time to be noticeable.
 
-- Automated testing: With the iterator API, developers can automate the testing of Kafka data and verify that data is flowing correctly between different components of an application.
+- **Automated testing**: With the iterator API, developers can automate the testing of Kafka data and verify that data is flowing correctly between different components of an application.
 
-- Custom reporting: By subscribing to specific Kafka topics and partitions, developers can create custom reports that provide insights into Kafka data. This can be useful for identifying trends or outliers in data.
+- **Custom reporting**: By subscribing to specific Kafka topics and partitions, developers can create custom reports that provide insights into Kafka data. This can be useful for identifying trends or outliers in data.
 
-- Debugging: The iterator API can be used to quickly diagnose and fix issues with Kafka data by providing a simple way to inspect Kafka data in real time.
+- **Debugging**: The iterator API can be used to quickly diagnose and fix issues with Kafka data by providing a simple way to inspect Kafka data in real time.
+
+- **Data Analysis**: You can use the iterator API to quickly check your message sizes and compute needed distributions.
+
+### Iterator Usage for Message Size Distribution Computation
+
+Below is an example of how the Iterator can be used to compute and analyze message sizes.
+
+```ruby
+iterator = Karafka::Pro::Iterator.new(
+  {
+    'karafka_consumers_reports' => -10_000
+  },
+  settings: { 'enable.partition.eof': true }
+)
+
+parts = {}
+
+iterator.each do |message, iterator|
+  scope = parts[message.partition] ||= []
+  scope << message.raw_payload.bytesize
+  iterator.stop_current_partition if scope.size >= 10000
+  message.clean!
+end
+
+def percentile(values, percent)
+  sorted = values.sort
+  rank = (percent * (sorted.size - 1)).round
+  sorted[rank]
+end
+
+parts.each do |part, values|
+  avg = values.sum / values.size.to_f
+  p95 = percentile(values, 0.95)
+  p99 = percentile(values, 0.99)
+  mean = values.sum.to_f / values.size
+
+  puts "Partition: #{part}:"
+  puts "  avg: #{avg} bytes"
+  puts "  p95: #{p95} bytes"
+  puts "  p99: #{p99} bytes"
+  puts "  mean: #{mean} bytes"
+end
+```
 
 ## Summary
 

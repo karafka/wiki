@@ -45,6 +45,42 @@ The virtual `partitioner` requires to respond to a `#call` method, and it accept
 
 The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
+## Available Options
+
+Below is a list of arguments the `#virtual_partitions` topic method accepts.
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>max_partitions</code></td>
+      <td>Integer</td>
+      <td>Max number of virtual partitions that can come from the single distribution flow. When set to more than the Karafka threading, it will create more work than workers. When less, we can ensure we have spare resources to process other things in parallel.</td>
+    </tr>
+    <tr>
+      <td><code>partitioner</code></td>
+      <td><code>#call</code></td>
+      <td>Virtual Partitioner we want to use to distribute the work.</td>
+    </tr>
+    <tr>
+      <td><code>offset_metadata_strategy</code></td>
+      <td>Symbol</td>
+      <td>How we should match the metadata for the offset. <code>:exact</code> will match the offset matching metadata and <code>:current</code> will select the most recently reported metadata.</td>
+    </tr>
+    <tr>
+      <td><code>reducer</code></td>
+      <td><code>#call</code></td>
+      <td>Reducer for VPs key. It allows for a custom reducer to achieve enhanced parallelization when the default reducer is insufficient.</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Messages Distribution
 
 Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `max_partitions` setting defined within the `virtual_partitions` method.
@@ -90,7 +126,7 @@ routes.draw do
 end
 ```
 
-!!! note ""
+!!! Tip "Lazy Deserialization Advisory"
 
     Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
@@ -174,7 +210,7 @@ routes.draw do
 end
 ```
 
-!!! note ""
+!!! Tip "Virtual Partitions Workload Distribution"
 
     Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
 
@@ -201,7 +237,7 @@ routes.draw do
 end
 ```
 
-!!! note ""
+!!! note "Virtual Partitions Lifespan"
 
     Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
@@ -257,7 +293,7 @@ For a single partition-based Virtual Partitions group, offset management and ret
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
 
-!!! note ""
+!!! Info "Impact of Pausing on Message Count"
 
     Since pausing happens in Kafka, the re-fetched data may contain more or fewer messages. This means that after retry, the number of messages and their partition distribution may differ. Despite that, all ordering warranties will be maintained.
 
