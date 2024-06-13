@@ -1,6 +1,6 @@
 # Single Process Setup
 
-!!! info ""
+!!! Info "Single Process Setup Limitation"
 
     If you're embedding the Karafka Web UI directly into your Rails routes or Rackup, the Single Process Setup is not advisable. This approach is suited only for deploying the Web UI as a standalone dedicated process.
 
