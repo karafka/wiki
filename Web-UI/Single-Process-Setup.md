@@ -68,3 +68,11 @@ end
 By taking these steps, you effectively configure the system for an optimal Single Process Setup experience.
 
 After you start your Puma process, it will consume the necessary Karafka Web UI topics to process and materialize the state data.
+
+!!! Warning "Worker Mode Required"
+
+    In order for the single process setup to work in Puma, Puma needs to be started in worker mode and not in single mode.
+
+    When Puma runs without a worker mode, the `#on_worker_boot` and `#on_worker_shutdown` blocks are not invoked.
+
+    You can run Puma in a worker mode by setting the `#workers` value or using the `-w WORKER_COUNT` command line argument.
