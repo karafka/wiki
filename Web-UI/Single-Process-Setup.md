@@ -28,13 +28,20 @@ Single Process Setup provides few benefits over the default one:
 
 ## Configuration
 
+!!! Hint "Puma Configuration Depends on Node Mode"
+
+    Your `puma.rb` configuration depends on whether you run Puma in a single-node or cluster mode.
+
 To operate the Karafka Web UI in the single process mode, a couple of essential steps are required:
 
 1. You need to enable the Embedding functionality that allows the karafka server to run directly within the Puma process. To do so, alter your `puma.rb` to start and stop Karafka during its lifecycle:
 
+1.1. Use this config when your Puma operates in a cluster mode:
+
 ```ruby
 # config/puma.rb
 # Use only when your Web UI Puma does not host your main application!
+# Use when you run your Puma in a cluster mode
 
 workers 2
 threads 1, 3
@@ -47,6 +54,21 @@ end
 
 on_worker_shutdown do
   ::Karafka::Embedded.stop
+end
+```
+
+1.2. Use this configuration when running Puma in a single node mode:
+
+```ruby
+preload_app!
+
+@config.options[:events].on_booted do
+  ::Karafka::Embedded.start
+end
+
+# There is no `on_worker_shutdown` equivalent for single mode
+@config.options[:events].on_stopped do
+  Karafka.producer.close
 end
 ```
 
@@ -68,11 +90,3 @@ end
 By taking these steps, you effectively configure the system for an optimal Single Process Setup experience.
 
 After you start your Puma process, it will consume the necessary Karafka Web UI topics to process and materialize the state data.
-
-!!! Warning "Worker Mode Required"
-
-    In order for the single process setup to work in Puma, Puma needs to be started in worker mode and not in single mode.
-
-    When Puma runs without a worker mode, the `#on_worker_boot` and `#on_worker_shutdown` blocks are not invoked.
-
-    You can run Puma in a worker mode by setting the `#workers` value or using the `-w WORKER_COUNT` command line argument.
