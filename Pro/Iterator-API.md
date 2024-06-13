@@ -346,6 +346,12 @@ parts.each do |part, values|
   puts "  p99: #{p99} bytes"
   puts "  mean: #{mean} bytes"
 end
+
+# Partition: 0:
+#   avg: 808.4875 bytes
+#   p95: 903 bytes
+#   p99: 907 bytes
+#   mean: 808.4875 bytes
 ```
 
 ## Summary

@@ -436,6 +436,66 @@ By decoupling thread assignment from consumer instances and ensuring dedicated, 
   </small>
 </p>
 
+## Reducer Replacement
+
+In Karafka, the default reducer for Virtual Partitions is a method designed to distribute messages across virtual partitions. It does this by using a simple mathematical operation on the sum of the stringified version of the virtual key. While this method is generally effective, it may not be fully optimal under certain configurations. For example, it could consistently use only 60% or less of the available threads, leading to inefficiencies and underutilization of resources.
+
+Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally utilized, leading to better performance and throughput for your application.
+
+### Implementing a Custom Reducer
+
+A custom reducer must respond to the `#call` method, accepting a virtual key and returning an integer representing the assigned virtual partition. Below is an example of how to implement and configure a custom reducer:
+
+```ruby
+# Custom reducer that uses a different strategy for distributing messages
+class CustomReducer
+  def call(virtual_key)
+    concurrency = Karafka::App.config.concurrency
+
+    # Implement your custom logic here
+    # For example, you could use a hash function or any other distribution logic
+    Digest::MD5.hexdigest(virtual_key.to_s).to_i(16) % concurrency
+  end
+end
+
+# Configure the custom reducer in your Karafka application
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.concurrency = 10
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      # Use the custom reducer for virtual partitions
+      virtual_partitions(
+        partitioner: ->(message) { message.headers['order_id'] },
+        reducer: CustomReducer.new
+      )
+    end
+  end
+end
+```
+
+This class defines a custom reducer with a `#call` method. The method uses an MD5 hash function to compute an integer based on the virtual key, ensuring a more distributed and potentially collision-resistant assignment of messages to virtual partitions.
+
+### Benefits of Using a Custom Reducer
+
+- **Enhanced Distribution**: Custom reducers allow for more complex and nuanced distribution strategies, which can better balance the load and reduce hotspots.
+
+- **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that's handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
+
+- **Scalability**: By refining how messages are distributed across virtual partitions, custom reducers can help ensure that processing scales efficiently as the volume of messages increases.
+
+### When to Use a Custom Reducer
+
+- **Complex Workflows**: If your application has complex workflows that require fine-tuned distribution of messages.
+
+- **Performance Optimization**: When you need to optimize the performance and efficiency of message processing.
+
+- **Specialized Requirements**: If your data and processing requirements are unique and cannot be effectively managed by the default reducer.
+
 ## Monitoring
 
 Karafka default [monitor](Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
