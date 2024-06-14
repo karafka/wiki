@@ -68,7 +68,7 @@ end
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
-  Karafka.producer.close
+  ::Karafka::Embedded.stop
 end
 ```
 
