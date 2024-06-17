@@ -314,7 +314,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.3.0</td>
+    <td>2.4.0</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
