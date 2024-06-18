@@ -14,6 +14,10 @@ There are two embedding API calls that you need to connect to your main process 
 - `::Karafka::Embedded.start` - Starts Karafka without process supervision and ownership of signals in a background thread. This method is non-blocking, and it won't interrupt other things running
 - `::Karafka::Embedded.stop` - Stops Karafka in a blocking fashion. It waits for all the current work to be done and then shuts down all the threads, connections, etc.
 
+!!! Tip "Safe and Unsafe Trap Context Usage"
+
+    It is safe to use both `#quiet` and `#stop` from the trap context of a process that controls the execution in embedded mode, but it is **not** safe to run `#start` from the trap context.
+
 ### Usage with Puma
 
 ```ruby
