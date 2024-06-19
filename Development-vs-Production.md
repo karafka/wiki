@@ -235,3 +235,35 @@ In Karafka it has specific implications:
 - **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it's generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
 
 In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a robust and reliable streaming application.
+
+## `zstd` Support Issues on macOS
+
+When using `rdkafka` or `karafka-rdkafka` on macOS, `zstd` support may break on macOS development machines. Users have encountered the following error:
+
+```
+Karafka::Errors::InvalidConfigurationError:
+
+Unsupported value "zstd" for configuration property "compression.codec": libzstd not available at build time
+```
+
+This issue occurs because of karafka-rdkafka not being linked against `libzstd`, even if `brew install zstd` was previously used to provide `zstd` support.
+
+To resolve this issue, ensure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
+
+```
+brew install pkg-config
+gem uninstall karafka-rdkafka
+bundle install
+```
+
+The need for `pkg-config` might not have been apparent in older versions due to changes in macOS or dependencies over time.
+
+## Challenges with Puma Worker Mode on macOS
+
+Forking processes on macOS, especially from macOS High Sierra (10.13) onwards, can introduce significant challenges due to changes in how macOS handles system calls in forked processes. These challenges often manifest as errors such as:
+
+- `[NSCharacterSet initialize] may have been in progress in another thread when fork()`
+
+- Segmentation faults similar like: `[BUG] Segmentation fault at 0x0000000000000110`
+
+You can find an extensive explanation of Karafka ecosystem components forking support [here](https://karafka.io/docs/Forking/).
