@@ -267,3 +267,32 @@ Forking processes on macOS, especially from macOS High Sierra (10.13) onwards, c
 - Segmentation faults similar like: `[BUG] Segmentation fault at 0x0000000000000110`
 
 You can find an extensive explanation of Karafka ecosystem components forking support [here](https://karafka.io/docs/Forking/).
+
+## Be Aware of WaterDrop Default Producer Middleware Modifications
+
+When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also utilizes this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
+
+For example, when applying such a middleware:
+
+```ruby
+class NamespacerMiddleware
+  def call(message)
+    message[:topic] = "my_prefix.#{message[:topic]}"
+    message
+  end
+end
+
+Karafka.producer.middleware.append(NamespacerMiddleware.new)
+```
+
+Your Web UI topics configuration should look as follows:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.topics.errors = "my_prefix.karafka_errors"
+  config.topics.consumers.reports = "my_prefix.karafka_consumers_reports"
+  config.topics.consumers.states = "my_prefix.karafka_consumers_states"
+  config.topics.consumers.metrics = "my_prefix.karafka_consumers_metrics"
+  config.topics.consumers.commands = "my_prefix.karafka_consumers_commands"
+end
+```
