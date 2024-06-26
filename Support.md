@@ -69,6 +69,10 @@ Please include the following details to help me understand and address the issue
     <td>The exact error messages or <strong>full</strong> stack traces you encounter.</td>
   </tr>
   <tr>
+    <td class="nowrap">Karafka and librdkafka Logs</td>
+    <td>All Karafka debug logs including debug logs from librdkafka.</td>
+  </tr>
+  <tr>
     <td class="nowrap">Reproduction Steps</td>
     <td>A clear and concise set of steps to reproduce the issue.</td>
   </tr>
