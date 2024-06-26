@@ -62,7 +62,7 @@ Once your filter is ready, you need to replace the default one in the configurat
 ```ruby
 Karafka::Web.setup do |config|
   # Lower the cache to 1 minute
-  config.ui.visibility_filter = MyCustomVisibilityFilter.new
+  config.ui.visibility.filter = MyCustomVisibilityFilter.new
 end
 ```
 
