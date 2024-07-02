@@ -20,6 +20,8 @@ There are two embedding API calls that you need to connect to your main process 
 
 ### Usage with Puma
 
+In a cluster mode:
+
 ```ruby
 # config/puma.rb 
 
@@ -33,6 +35,23 @@ on_worker_boot do
 end
 
 on_worker_shutdown do
+  ::Karafka::Embedded.stop
+end
+```
+
+In a single node mode:
+
+```ruby
+# config/puma.rb 
+
+preload_app!
+
+@config.options[:events].on_booted do
+  ::Karafka::Embedded.start
+end
+
+# There is no `on_worker_shutdown` equivalent for single mode
+@config.options[:events].on_stopped do
   ::Karafka::Embedded.stop
 end
 ```
@@ -119,3 +138,7 @@ In conclusion, while embedding Karafka within larger processes can be efficient,
 When Karafka operates in an Embedded mode, it is essential to recognize that the Karafka supervisor does not have the final say regarding the termination of the entire process. In practice, if your surrounding process has a shutdown timeout shorter than Karafka's, there is a risk that Karafka could be forcefully terminated before it has had a chance to dispatch and delegate all work and states properly. While this might not pose an issue due to how offsets are managed, it can affect monitoring and management tools. For instance, Karafka Web UI interface monitoring Karafka might not capture the final state transition from "stopping" to "stopped". Instead, it may give an impression that the Karafka process is perpetually in the "stopping" phase, which can be misleading and make diagnostics more challenging.
 
 Always ensure you account for this behavior when integrating Karafka in an Embedded mode, especially if you rely on external tools or interfaces to monitor and manage your processes. Adjusting your surrounding process's shutdown timeout or ensuring it respects Karafka's requirements can help avoid such discrepancies.
+
+### Web UI Limitations in Embedding Mode
+
+When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To leverage the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
