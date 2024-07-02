@@ -322,6 +322,43 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## DLQ Topic Configuration Management
+
+The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. Managing their configuration requires separate route definitions with specific configuration settings. Paying attention to these details is crucial as they allow you to fully control and customize the DLQ topics to suit your needs.
+
+To manage the configuration of the DLQ topic, you need to define a separate route for it, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
+
+Here's an example of how to set up a DLQ topic with specific configurations:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: 'dead_messages',
+        max_retries: 2
+      )
+    end
+
+    # Separate route definition for the DLQ topic with specific configurations
+    topic :dead_messages do
+      # Indicate that we do not consume from this topic
+      active(false)
+      config(
+        partitions: 3,
+        replication_factor: 2,
+        'retention.ms': 604_800_000, # 7 days in milliseconds
+        'cleanup.policy': 'compact'
+      )
+    end
+  end
+end
+```
+
+This approach ensures that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
+
 ## Pro Enhanced Dead Letter Queue
 
 We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue), especially if you:
