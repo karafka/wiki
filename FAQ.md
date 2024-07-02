@@ -189,6 +189,7 @@
 189. [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
 190. [What should I do if I encounter the `Broker: Not enough in-sync replicas` error?](#what-should-i-do-if-i-encounter-the-broker-not-enough-in-sync-replicas-error)
 191. [Is there any way to measure message sizes post-compression in Waterdrop?](#is-there-any-way-to-measure-message-sizes-post-compression-in-waterdrop)
+192. [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
 
 
 ## Does Karafka require Ruby on Rails?
@@ -2489,3 +2490,7 @@ By following these steps, you should be able to resolve the "Broker: Not enough 
 Waterdrop metrics do not provide direct measurements for post-compression message sizes.
 
 To estimate message sizes post-client compression, you can use the `txmsgs` and `txbytes` metrics in Waterdrop instrumentation. These metrics provide information per topic partition and can give you a reasonable estimate of the message sizes after compression if the compression occurs on the client side.
+
+## What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?
+
+Yes, when a message fails on a specific topic partition and the exponential backoff strategy is applied, that partition is effectively paused during the retry period. This ensures strong ordering, which is a key guarantee of Karafka. If you want to bypass this behavior, you can configure a DLQ with delayed processing, allowing you to manage retries without pausing the partition.
