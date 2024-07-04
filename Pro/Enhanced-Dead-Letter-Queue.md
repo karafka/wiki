@@ -96,6 +96,7 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `original_topic` - topic from which the message came
 - `original_partition` - partition from which the message came
 - `original_offset` - offset of the transferred message
+- `original_key` - key of the transferred message
 - `original_consumer_group` - id of the consumer group that was consuming this message
 
 !!! note ""
