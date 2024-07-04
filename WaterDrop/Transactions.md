@@ -184,6 +184,66 @@ handles.each(&:wait)
 # Local: Purged in queue (purge_queue) (Rdkafka::RdkafkaError)
 ```
 
+### Risks of Early Exiting Transactional Block
+
+In all versions of WaterDrop, using `return`, `break`, or `throw` to exit a transactional block early is not allowed. 
+
+However, the behavior differs between versions:
+
+- **pre 2.8.0**: Exiting a transaction using `return`, `break`, or `throw` would cause the transaction to rollback.
+- **2.8.0 and Newer**: Exiting a transaction using these methods will raise an error.
+
+It is **not** recommended to use early exiting methods. To ensure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
+
+**BAD**:
+
+```ruby
+MAX = 10
+
+def process(messages)
+  count = 0
+
+  producer.transaction do
+    messages.each do |message|
+      count += 1
+
+      producer.produce_async(topic: 'events', payload: message.raw_payload)
+
+      # This will trigger a rollback or an error.
+      # Do not do this
+      return if count >= MAX
+    end
+  end
+end
+```
+
+**GOOD**:
+
+```ruby
+MAX = 10
+
+def process(messages)
+  producer.transaction do
+    # Early return from this method will not affect the transaction.
+    # It will be committed.
+    insert_with_limit(messages)
+  end
+end
+
+def insert_with_limit(messages)
+  count = 0
+
+  messages.each do |message|
+    count += 1
+
+    producer.produce_async(topic: 'events', payload: message.raw_payload)
+
+    # This would not trigger a rollback or raise an error.
+    return if count >= MAX
+  end
+end
+```
+
 ## Delivery Warranties
 
 When a WaterDrop transaction is committed without errors, it guarantees that all messages within the transaction have been successfully produced. This simplifies the process of instrumentation and monitoring of the producer and messages dispatch process significantly:
