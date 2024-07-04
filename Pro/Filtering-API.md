@@ -40,7 +40,7 @@ If you are looking for more extensive examples, you can check out the implementa
 - `Karafka::Pro::Processing::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Expiring-Messages) feature
 - `Karafka::Pro::Processing::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Rate-Limiting) feature.
 
-### Filters lifecycle
+### Filters Lifecycle
 
 Filter instance is created when Karafka encounters a given topic partition for the first time and is long-lived. While their primary responsibility is to filter the incoming data, they can also alter the flow behavior. Hence it is essential to remember that part of their operations happens **after** all the data is being processed at the moment of post-execution strategy application. This means that there may be a significant delay between the filtering and the invocation of `#action` that is equal to the collective processing time of all the data of a given topic partition.
 
@@ -52,7 +52,7 @@ Filter instance is created when Karafka encounters a given topic partition for t
   </small>
 </p>
 
-### Post execution action altering
+### Post Execution Action Altering
 
 !!! warning "Throughfully test your filters before usage"
 
@@ -81,7 +81,7 @@ For example, in case you want to pause the processing, you need to return the fo
 
     User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 
-### Priority based action selection
+### Priority Based Action Selection
 
 To make the most of the Filtering API, it is crucial to have a deep understanding of how Karafka selects actions and the factors that determine their priority. While this may be a challenging aspect of the API to master, it is essential to build robust and efficient filters that can alter polling behaviors.
 
@@ -98,11 +98,65 @@ Here are the rules that the action selection follows:
 
 This algorithm ensures that all the expectations and constraints from any of the filters are always applicable collectively.
 
-### Idle runs
+### Idle Runs
 
 After applying filters to the messages batch, no data may be left to process. In such cases, Karafka may run an idle job to apply proper action and perform housekeeping work. The idle job will initialize the consumer instance and may invoke `#pause` or `seek` commands if needed.
 
 Idle jobs **do not** run any end-user code except strategy applications based on the Filtering API.
+
+### Filters Based Marking
+
+This feature in the Filtering API enhances the ability to manage offsets directly from within filters. This allows for fine-grained control over the consumption flow, which is especially useful in high-volume data scenarios.
+
+This feature enables marking messages as consumed based on filter logic, ensuring that specific messages, even if filtered out, are acknowledged and their offsets committed. This helps in scenarios where:
+
+- You want to reduce lag reporting inaccuracies.
+- Filtered messages should still be considered processed for offset management purposes.
+- You aim to avoid processing large amounts of irrelevant data repeatedly.
+
+To implement filtering-based marking as consumed, filters must override additional methods beyond the basic `#apply!` and `#applied?`. These methods include:
+
+- `#mark_as_consumed?`: Indicates whether the filter requests marking offsets as consumed (`false` by default).
+- `#marking_method`: Specifies the marking method, either `:mark_as_consumed` or `:mark_as_consumed!` (`:mark_as_consumed` by default).
+
+When `#mark_as_consumed?` returns `true`, Karafka will mark the offset of the message returned by `#cursor` as consumed, even if the message is filtered out. This prevents the lag from growing unnecessarily and ensures that the Kafka consumer group offset is updated correctly.
+
+Below is an example filter that marks messages as consumed when all of them were filtered out:
+
+```ruby
+class MarkingFilter < Karafka::Pro::Processing::Filters::Base
+  def apply!(messages)
+    @applied = false
+    @cursor = nil
+    @all_filtered = false
+
+    messages.delete_if do |message|
+      next false if message.headers['source'] != 'internal'
+
+      @applied = true
+      @cursor = message
+
+      true
+    end
+
+    @all_filtered = messages.empty?
+  end
+
+  def applied?
+    @applied
+  end
+
+  def mark_as_consumed?
+    @all_filtered
+  end
+end
+```
+
+!!! Hint "Marking Based on Applied Filters"
+
+    Only filters that have been applied will mark offsets as consumed when requested. Filters that were not applied will not be considered for offset marking.
+
+    This ensures that only the relevant filters' logic affects the offset management, maintaining the intended processing flow and accuracy.
 
 ## Registering Filters
 
