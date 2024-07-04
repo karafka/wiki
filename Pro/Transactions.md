@@ -199,7 +199,7 @@ def consume
   count = 0
 
   transaction do
-    messages.each do
+    messages.each do |message|
       count += 1
 
       producer.produce_async(topic: 'events', payload: message.raw_payload)
@@ -217,8 +217,6 @@ end
 MAX = 10
 
 def consume
-  count = 0
-
   transaction do
     # This will be ok, sice it is not directly in the transaction block
     produce_with_limits(messages)
@@ -226,7 +224,9 @@ def consume
 end
 
 def produce_with_limits(messages)
-  messages.each do
+  count = 0
+
+  messages.each do |message|
     count += 1
 
     producer.produce_async(topic: 'events', payload: message.raw_payload)
