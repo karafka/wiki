@@ -115,7 +115,7 @@ PRODUCER.transaction do
   PRODUCER.produce_async(topic: 'test1', payload: '123')
   PRODUCER.produce_async(topic: 'test2', payload: '456')
 
-  throw(:abort)
+  raise(WaterDrop::AbortTransaction)
 end
 
 # No messages will be stored in the buffers as the transaction was aborted

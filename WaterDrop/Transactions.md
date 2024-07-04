@@ -112,7 +112,7 @@ producer.transaction do
 end
 ```
 
-WaterDrop also provides a manual way to abort a transaction without raising an error. By using `throw(:abort)`, you can signal the transaction to abort. This method is advantageous when you want to abort a transaction based on some business logic or condition without throwing an actual error.
+WaterDrop also provides a manual way to abort a transaction by raising an error. By using `raise WaterDrop::AbortTransaction`, you can signal the transaction to abort. This method is advantageous when you want to abort a transaction based on some business logic or condition without throwing an actual error that would leak out of the transaction.
 
 ```ruby
 producer.transaction do
@@ -122,7 +122,7 @@ producer.transaction do
   end
 
   # And abort if more events are no longer needed
-  throw(:abort) if KnowledgeBase.more_events_needed?
+  raise(WaterDrop::AbortTransaction) if KnowledgeBase.more_events_needed?
 end
 ```
 
@@ -146,7 +146,7 @@ producer.transaction do
     reports << producer.produce_sync(topic: 'events', payload: rand.to_s)
   end
 
-  throw(:abort)
+  raise WaterDrop::AbortTransaction
 end
 
 reports.each do |report|
@@ -174,7 +174,7 @@ producer.transaction do
     handles << producer.produce_async(topic: 'events', payload: rand.to_s)
   end
 
-  throw(:abort)
+  raise WaterDrop::AbortTransaction
 end
 
 # If messages were not yet acknowledged by the broker during the transaction

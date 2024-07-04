@@ -81,7 +81,7 @@ def consume
 end
 ```
 
-Karafka also provides a manual way to abort a transaction without raising an error. By using `throw(:abort)``, you can signal the transaction to abort. This method is advantageous when you want to abort a transaction based on some business logic or condition without throwing an actual error.
+Karafka also provides a manual way to abort a transaction without raising an error. By using `raise(WaterDrop::AbortTransaction)`, you can signal the transaction to abort. This method is advantageous when you want to abort a transaction based on some business logic or condition without throwing an actual error.
 
 ```ruby
 def consume
@@ -94,7 +94,7 @@ def consume
     mark_as_consumed(messages.last)
 
     # And abort if more events are no longer needed
-    throw(:abort) if KnowledgeBase.more_events_needed?
+    raise(WaterDrop::AbortTransaction) if KnowledgeBase.more_events_needed?
   end
 end
 ```
