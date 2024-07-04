@@ -179,6 +179,63 @@ With a producers' connection pool, this challenge is mitigated. When a transacti
 
 In essence, with support for dedicated transactional producers, Karafka's `#transaction` method offers a structured and efficient way to manage message transactions in highly-traffic systems.
 
+### Risks of Early Exiting Transactional Block
+
+In all versions of Karafka, using `return`, `break`, or `throw` to exit a transactional block early is **not allowed**.
+
+However, the behavior differs between versions of WaterDrop:
+
+- **pre 2.8.0**: Exiting a transaction using `return`, `break`, or `throw` would cause the transaction to rollback.
+- **2.8.0 and Newer**: Exiting a transaction using these methods will raise an error.
+
+It is not recommended to use early exiting methods. To ensure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
+
+**BAD**:
+
+```ruby
+MAX = 10
+
+def consume
+  count = 0
+
+  transaction do
+    messages.each do
+      count += 1
+
+      producer.produce_async(topic: 'events', payload: message.raw_payload)
+
+      # This will cause either abort or error
+      return if count >= MAX
+    end
+  end
+end
+```
+
+**GOOD**:
+
+```ruby
+MAX = 10
+
+def consume
+  count = 0
+
+  transaction do
+    # This will be ok, sice it is not directly in the transaction block
+    produce_with_limits(messages)
+  end
+end
+
+def produce_with_limits(messages)
+  messages.each do
+    count += 1
+
+    producer.produce_async(topic: 'events', payload: message.raw_payload)
+
+    return if count >= MAX
+  end
+end
+```
+
 ### Balancing Transactions and Long-Running Jobs
 
 Providing a custom producer to the `#transaction` method temporarily overwrites the default producer for that specific consumer instance. This behavior is relevant in scenarios involving [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) that execute alongside the message consumption process, such as handling `#revoked` under Long Running Jobs (LRJ).
