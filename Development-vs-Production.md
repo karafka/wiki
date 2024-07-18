@@ -176,7 +176,7 @@ The time synchronization issue usually boils down to the Network Time Protocol (
 
 ### Consequences of Time Drift
 
-When Kafka and the consumer drift apart in time, it doesn’t just result in the odd phenomenon of messages from the future. It can:
+When Kafka and the consumer drift apart in time, it doesn't just result in the odd phenomenon of messages from the future. It can:
 
 - Impact consumer logic that relies on time-based processing.
 
@@ -296,3 +296,45 @@ Karafka::Web.setup do |config|
   config.topics.consumers.commands = "my_prefix.karafka_consumers_commands"
 end
 ```
+
+## Consider Splitting Consumer Groups To Improve Stability and Performance
+
+When working with Karafka and Kafka, it is crucial to understand how rebalancing works, especially as you scale your deployment. A common pitfall occurs when a single consumer group subscribes to multiple topics, with individual consumers within the group only consuming subsets of those topics. This configuration can lead to significant inefficiencies during rebalances, affecting all consumers in the group regardless of the specific topics they are consuming and the assignment strategy.
+
+### Rebalance Mechanism
+
+Consumers within the same consumer group will undergo the same rebalance cycle, even if they are subscribed to different topics. Here's a detailed explanation of how this process works:
+
+- **Rebalance Trigger**: Rebalances can be triggered by several events, such as a new consumer joining the group, an existing consumer leaving, changes in subscription patterns, or changes in the number of partitions in the topics.
+
+- **Subscription and Assignment**: Each consumer can subscribe to different topics in a consumer group. However, during a rebalance, Kafka assigns partitions to consumers based on the collective subscription of the entire group, not individual consumer subscriptions.
+
+- **Partition Assignment**: Kafka's coordinator assigns partitions from the subscribed topics to the consumers within the group. Consumers receive partitions only from the topics to which they are subscribed, but the rebalance cycle affects all consumers in the group.
+
+### Example Scenario
+
+Consider a consumer group A with two consumers:
+
+- Consumer 1 (C1) subscribes to Topic Y.
+- Consumer 2 (C2) subscribes to Topic X.
+
+During a rebalance:
+
+- Kafka will assign partitions from Topic Y to C1.
+- Kafka will assign partitions from Topic X to C2.
+
+Despite C1 and C2 subscribing to different topics, both consumers are affected by the rebalance cycle.
+
+### Considerations
+
+For small-scale development environments, having a single consumer group with multiple topic subscriptions might be manageable. However, in larger deployments, particularly those with more than **10** processes, this approach can be sub-optimal. The key reasons are:
+
+- **Performance Impact**: Frequent rebalances can temporarily degrade performance as partitions are reassigned, and consumers may experience brief downtimes.
+
+- **Coordination Overhead**: The coordination and rebalance logic applies to the entire group, increasing the complexity and potential for inefficiencies.
+
+- **Rebalance Timeouts**: In heterogeneous deployments, where consumers subscribe to different topics, the rebalance process can become more complex and prolonged. This complexity can lead to rebalance timeouts, where the rebalance cannot be completed within the time limitations imposed by Kafka settings, such as max.poll.interval.ms and session.timeout.ms.
+
+### Recommendation
+
+For larger deployments, organizing your consumers and topics is advisable so that each consumer group subscribes to a smaller, more focused set of topics. This reduces the scope and impact of rebalances, leading to more stable and performant applications.
