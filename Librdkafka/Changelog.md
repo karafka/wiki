@@ -17,7 +17,7 @@ librdkafka v2.5.0 is a feature release.
 * [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) Client 
   metrics and observability (#4721).
 
-## Upgrade considerations
+### Upgrade considerations
 
  * CentOS 6 and CentOS 7 support was removed as they reached EOL
    and security patches aren't publicly available anymore.
@@ -25,7 +25,7 @@ librdkafka v2.5.0 is a feature release.
    AlmaLinux based.
    See also [Confluent supported OSs page](https://docs.confluent.io/platform/current/installation/versions-interoperability.html#operating-systems) (#4775).
 
-## Enhancements
+### Enhancements
 
   * Update bundled lz4 (used when `./configure --disable-lz4-ext`) to
     [v1.9.4](https://github.com/lz4/lz4/releases/tag/v1.9.4), which contains
@@ -36,16 +36,16 @@ librdkafka v2.5.0 is a feature release.
     happens before refreshing the metadata cache (#4756, #4767).
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
 *  Issues: [confluentinc/confluent-kafka-dotnet#2084](https://github.com/confluentinc/confluent-kafka-dotnet/issues/2084)
    Fix segfault when a segment is erased and more data is written to the buffer.
    Happens since 1.x when a portion of the buffer (segment) is erased for flexver or compression.
    More likely to happen since 2.1.0, because of the upgrades to flexver, with certain string sizes like a long client id (#4689).
 
-### Idempotent producer fixes
+#### Idempotent producer fixes
 
  * Issues: #4736
    Fix for an idempotent producer error, with a message batch not reconstructed
@@ -55,7 +55,7 @@ librdkafka v2.5.0 is a feature release.
    Happens since 2.2.0 (#4750).
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.5.0.zip SHA256 `644c1b7425e2241ee056cf8a469c84d69c7f6a88559491c0813a6cdeb5563206`
  * v2.5.0.tar.gz SHA256 `3dc62de731fd516dfb1032861d9a580d4d0b5b0856beb0f185d06df8e6c26259`
@@ -88,7 +88,7 @@ librdkafka v2.4.0 is a feature release:
    while closing the consumer (#4528).
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * With KIP 467, `INVALID_MSG` (Java: CorruptRecordExpection) will
    be retried automatically. `INVALID_RECORD` (Java: InvalidRecordException) instead
@@ -98,9 +98,9 @@ librdkafka v2.4.0 is a feature release:
    depending on the application logic (#4583).
 
 
-## Early Access
+### Early Access
 
-### [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol): The Next Generation of the Consumer Rebalance Protocol
+#### [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol): The Next Generation of the Consumer Rebalance Protocol
  * With this new protocol the role of the Group Leader (a member) is removed and
    the assignment is calculated by the Group Coordinator (a broker) and sent
    to each member through heartbeats.
@@ -112,9 +112,9 @@ librdkafka v2.4.0 is a feature release:
    with considerations and steps to follow to test it (#4610).
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Issues: [confluentinc/confluent-kafka-go#981](https://github.com/confluentinc/confluent-kafka-go/issues/981).
    In librdkafka release pipeline a static build containing libsasl2
@@ -150,7 +150,7 @@ librdkafka v2.4.0 is a feature release:
    Solved by doing a partition migration only with a non-stale leader epoch.
    Happening since 2.1.0 (#4680).
 
-### Consumer fixes
+#### Consumer fixes
 
  * Issues: #4686.
    In case of subscription change with a consumer using the cooperative assignor
@@ -167,7 +167,7 @@ librdkafka v2.4.0 is a feature release:
    Happening since 1.x (#4528).
    
    
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.4.0.zip SHA256 `24b30d394fc6ce5535eaa3c356ed9ed9ae4a6c9b4fc9159c322a776786d5dd15`
  * v2.4.0.tar.gz SHA256 `d645e47d961db47f1ead29652606a502bdd2a880c85c1e060e94eea040f1a19a`
@@ -212,7 +212,7 @@ librdkafka v2.3.0 is a feature release:
    after a leader change and subsequent `NOT_LEADER_OR_FOLLOWER` error (#4225).
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * `retry.backoff.ms`:
    If it is set greater than `retry.backoff.max.ms` which has the default value of 1000 ms then it is assumes the value of `retry.backoff.max.ms`.
@@ -225,9 +225,9 @@ librdkafka v2.3.0 is a feature release:
    If equal then the backoff will be linear instead of exponential.
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * An assertion failed with insufficient buffer size when allocating
    rack information on 32bit architectures.
@@ -236,7 +236,7 @@ librdkafka v2.3.0 is a feature release:
    making the necessary ListOffsets requests, and thus, it never timed out in
    case of broker/network issues. Fixed by setting an absolute timeout (#4460).
 
-### Idempotent producer fixes
+#### Idempotent producer fixes
 
  * After a possibly persisted error, such as a disconnection or a timeout, next expected sequence
    used to increase, leading to a fatal error if the message wasn't persisted and
@@ -249,7 +249,7 @@ librdkafka v2.3.0 is a feature release:
    `NO_ERROR` in case it wasn't, in both cases the message will be considered
    delivered (#4438).
 
-### Consumer fixes
+#### Consumer fixes
 
   * Stored offsets were excluded from the commit if the leader epoch was
     less than committed epoch, as it's possible if leader epoch is the default -1.
@@ -277,7 +277,7 @@ librdkafka v2.3.0 is a feature release:
     `topic.metadata.refresh.interval.ms` (#4225).
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.3.0.zip SHA256 `15e77455811b3e5d869d6f97ce765b634c7583da188792e2930a2098728e932b`
  * v2.3.0.tar.gz SHA256 `2d49c35c77eeb3d42fa61c43757fcbb6a206daa560247154e60642bcdcc14d12`
@@ -312,7 +312,7 @@ librdkafka v2.2.0 is a feature release:
  * [KIP-554](https://cwiki.apache.org/confluence/display/KAFKA/KIP-554%3A+Add+Broker-side+SCRAM+Config+API): Add Broker-side SCRAM Config API (#4241).
 
 
-## Enhancements
+### Enhancements
 
  * Added `fetch.queue.backoff.ms` to the consumer to control how long
    the consumer backs off next fetch attempt. When the pre-fetch queue
@@ -323,9 +323,9 @@ librdkafka v2.2.0 is a feature release:
    requirements.
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Fix a bug that happens when skipping tags, causing buffer underflow in
    MetadataResponse. This is triggered since RPC version 9 (v2.1.0),
@@ -343,7 +343,7 @@ librdkafka v2.2.0 is a feature release:
    ones. These types of errors can happen it the other side doesn't support `close_notify` or if there's a TCP connection reset.
 
 
-### Consumer fixes
+#### Consumer fixes
 
   * In case of multiple owners of a partition with different generations, the
     sticky assignor would pick the earliest (lowest generation) member as the
@@ -356,7 +356,7 @@ librdkafka v2.2.0 is a feature release:
     assignment completely.
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.2.0.zip SHA256 `e9a99476dd326089ce986afd3a5b069ef8b93dbb845bc5157b3d94894de53567`
  * v2.2.0.tar.gz SHA256 `af9a820cbecbc64115629471df7c7cecd40403b6c34bfdbb9223152677a47226`
@@ -380,9 +380,9 @@ librdkafka v2.1.1 is a maintenance release:
  * Fix to the C++ set_leader_epoch method of TopicPartitionImpl,
    that wasn't storing the passed value (@pavel-pimenov, #4267).
 
-## Fixes
+### Fixes
 
-### Consumer fixes
+#### Consumer fixes
 
  * Duplicate messages can be emitted when a fetch response is received
    in the middle of an offset validation request. Solved by avoiding
@@ -399,7 +399,7 @@ librdkafka v2.1.1 is a maintenance release:
    the broker, skipping these functions. This was fixed by encoding information
    in a queue itself, that, whether polling, resets the timer.
    
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.1.1.zip SHA256 `3b8a59f71e22a8070e0ae7a6b7ad7e90d39da8fddc41ce6c5d596ee7f5a4be4b`
  * v2.1.1.tar.gz SHA256 `7be1fc37ab10ebdc037d5c5a9b35b48931edafffae054b488faaff99e60e0108`
@@ -424,7 +424,7 @@ librdkafka v2.1.0 is a feature release:
 * Upgrade OpenSSL to v3.0.8 with various security fixes,
   check the [release notes](https://www.openssl.org/news/cl30.txt) (#4215).
 
-## Enhancements
+### Enhancements
 
  * Added `rd_kafka_topic_partition_get_leader_epoch()` (and `set..()`).
  * Added partition leader epoch APIs:
@@ -437,14 +437,14 @@ librdkafka v2.1.0 is a feature release:
      added to per-partition statistics.
 
 
-## Fixes
+### Fixes
 
-### OpenSSL fixes
+#### OpenSSL fixes
 
  * Fixed OpenSSL static build not able to use external modules like FIPS
    provider module.
 
-### Consumer fixes
+#### Consumer fixes
 
  * A reference count issue was blocking the consumer from closing.
    The problem would happen when a partition is lost, because forcibly
@@ -462,15 +462,15 @@ librdkafka v2.1.0 is a feature release:
    used for a partition.
 
 
-## Known Issues
+### Known Issues
 
-### Consume Batch API
+#### Consume Batch API
 
  * When `rd_kafka_consume_batch()` and `rd_kafka_consume_batch_queue()` APIs are used with
    any of the **seek**, **pause**, **resume** or **rebalancing** operation, `on_consume`
    interceptors might be called incorrectly (maybe multiple times) for not consumed messages.
 
-### Consume API
+#### Consume API
 
  * Duplicate messages can be emitted when a fetch response is received
    in the middle of an offset validation request.
@@ -478,7 +478,7 @@ librdkafka v2.1.0 is a feature release:
    calling `rd_kafka_message_leader_epoch()` on the polled `rkmessage`.
    
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.1.0.zip SHA256 `2fe898f9f5e2b287d26c5f929c600e2772403a594a691e0560a2a1f2706edf57`
  * v2.1.0.tar.gz SHA256 `d8e76c4b1cde99e283a19868feaaff5778aa5c6f35790036c5ef44bc5b5187aa`
@@ -489,7 +489,7 @@ librdkafka v2.0.2 is a bugfix release:
 
 * Fix OpenSSL version in Win32 nuget package (#4152).
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.0.2.zip SHA256 `87010c722111539dc3c258a6be0c03b2d6d4a607168b65992eb0076c647e4e9d`
  * v2.0.2.tar.gz SHA256 `f321bcb1e015a34114c83cf1aa7b99ee260236aab096b85c003170c90a47ca9d`
@@ -500,7 +500,7 @@ librdkafka v2.0.1 is a bugfix release:
 
 * Fixed nuget package for Linux ARM64 release (#4150).
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.0.1.zip SHA256 `7121df3fad1f72ea1c42dcc4e5367337207a75966216c63e58222c6433c528e0`
  * v2.0.1.tar.gz SHA256 `3670f8d522e77f79f9d09a22387297ab58d1156b22de12ef96e58b7d57fca139`
@@ -522,11 +522,11 @@ librdkafka v2.0.0 is a feature release:
  * Fixes to the transactional and idempotent producer.
 
 
-## Upgrade considerations
+### Upgrade considerations
 
-### OpenSSL 3.0.x
+#### OpenSSL 3.0.x
 
-#### OpenSSL default ciphers
+##### OpenSSL default ciphers
 
 The introduction of OpenSSL 3.0.x in the self-contained librdkafka bundles
 changes the default set of available ciphers, in particular all obsolete
@@ -541,7 +541,7 @@ Should you need to use any of these old ciphers you'll need to explicitly
 enable the `legacy` provider by configuring `ssl.providers=default,legacy`
 on the librdkafka client.
 
-#### OpenSSL engines and providers
+##### OpenSSL engines and providers
 
 OpenSSL 3.0.x deprecates the use of engines, which is being replaced by
 providers. As such librdkafka will emit a deprecation warning if
@@ -550,7 +550,7 @@ providers. As such librdkafka will emit a deprecation warning if
 OpenSSL providers may be configured with the new `ssl.providers`
 configuration property.
 
-### Broker TLS certificate hostname verification
+#### Broker TLS certificate hostname verification
 
 The default value for `ssl.endpoint.identification.algorithm` has been
 changed from `none` (no hostname verification) to `https`, which enables
@@ -559,9 +559,9 @@ impersonation attacks) by default.
 
 To restore the previous behaviour, set `ssl.endpoint.identification.algorithm` to `none`.
 
-## Known Issues
+### Known Issues
 
-### Poor Consumer batch API messaging guarantees
+#### Poor Consumer batch API messaging guarantees
 
 The Consumer Batch APIs `rd_kafka_consume_batch()` and `rd_kafka_consume_batch_queue()`
 are not thread safe if `rkmessages_size` is greater than 1 and any of the **seek**,
@@ -575,7 +575,7 @@ operations in sequential order in order to get consistent result.
 For **rebalancing** operation to work in sequencial manner, please set `rebalance_cb`
 configuration property (refer [examples/rdkafka_complex_consumer_example.c](examples/rdkafka_complex_consumer_example.c) for the help with the usage) for the consumer.
 
-## Enhancements
+### Enhancements
 
  * Self-contained static libraries can now be built on Linux arm64 (#4005).
  * Updated to zlib 1.2.13, zstd 1.5.2, and curl 7.86.0 in self-contained
@@ -595,9 +595,9 @@ configuration property (refer [examples/rdkafka_complex_consumer_example.c](exam
    for static members [KIP-345](https://cwiki.apache.org/confluence/display/KAFKA/KIP-345%3A+Introduce+static+membership+protocol+to+reduce+consumer+rebalances) (#3995).
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Windows: couldn't read a PKCS#12 keystore correctly because binary mode
    wasn't explicitly set and Windows defaults to text mode.
@@ -606,7 +606,7 @@ configuration property (refer [examples/rdkafka_complex_consumer_example.c](exam
  * Each HTTP request made when using OAUTHBEARER OIDC would leak a small
    amount of memory.
 
-### Transactional producer fixes
+#### Transactional producer fixes
 
  * When a PID epoch bump is requested and the producer is waiting
    to reconnect to the transaction coordinator, a failure in a find coordinator
@@ -631,7 +631,7 @@ configuration property (refer [examples/rdkafka_complex_consumer_example.c](exam
    returned.
 
 
-### Consumer fixes
+#### Consumer fixes
 
  * Back-off and retry JoinGroup request if coordinator load is in progress.
  * Fix `rd_kafka_consume_batch()` and `rd_kafka_consume_batch_queue()` skipping
@@ -641,7 +641,7 @@ configuration property (refer [examples/rdkafka_complex_consumer_example.c](exam
    intermittently returing incorrect partitions' messages if **rebalancing** 
    happens during these operations.
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v2.0.0.zip SHA256 `9d8a8be30ed09daf6c560f402e91db22fcaea11cac18a0d3c0afdbf884df1d4e`
  * v2.0.0.tar.gz SHA256 `f75de3545b3c6cc027306e2df0371aefe1bb8f86d4ec612ed4ebf7bfb2f817cd`
@@ -654,7 +654,7 @@ librdkafka v1.9.2 is a maintenance release:
  * The bundled version of OpenSSL has been upgraded to version 1.1.1q for non-Windows builds. Windows builds remain on OpenSSL 1.1.1n for the time being.
  * The bundled version of Curl has been upgraded to version 7.84.0.
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.9.2.zip SHA256 `4ecb0a3103022a7cab308e9fecd88237150901fa29980c99344218a84f497b86`
  * v1.9.2.tar.gz SHA256 `3fba157a9f80a0889c982acdd44608be8a46142270a389008b22d921be1198ad`
@@ -674,7 +674,7 @@ librdkafka v1.9.1 is a maintenance release:
    disabling curl's configure runtime check.
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.9.1.zip SHA256 `d3fc2e0bc00c3df2c37c5389c206912842cca3f97dd91a7a97bc0f4fc69f94ce`
  * v1.9.1.tar.gz SHA256 `3a54cf375218977b7af4716ed9738378e37fe400a6c5ddb9d622354ca31fdc79`
@@ -689,7 +689,7 @@ librdkafka v1.9.0 is a feature release:
  * Added KIP-140 Admin API ACL support (by @emasab, #2676)
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * Consumer:
    `rd_kafka_offsets_store()` (et.al) will now return an error for any
@@ -709,7 +709,7 @@ librdkafka v1.9.0 is a feature release:
    assigned to this consumer and the offset could not be stored for commit.
 
 
-## Enhancements
+### Enhancements
 
  * Improved producer queue scheduling. Fixes the performance regression
    introduced in v1.7.0 for some produce patterns. (#3538, #2912)
@@ -745,9 +745,9 @@ librdkafka v1.9.0 is a feature release:
  * Added `test.mock.broker.rtt` to simulate RTT/latency for mock brokers.
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Fix various 1 second delays due to internal broker threads blocking on IO
    even though there are events to handle.
@@ -786,7 +786,7 @@ librdkafka v1.9.0 is a feature release:
    accept and then disconnect new connections, it now refuses new connections.
 
 
-### Consumer fixes
+#### Consumer fixes
 
  * `rd_kafka_offsets_store()` (et.al) will now return an error for any
    partition that is not currently assigned (through `rd_kafka_*assign()`).
@@ -823,7 +823,7 @@ librdkafka v1.9.0 is a feature release:
    (@kevinconaway)
 
 
-### Transactional producer fixes
+#### Transactional producer fixes
 
  * Fix message loss in idempotent/transactional producer.
    A corner case has been identified that may cause idempotent/transactional
@@ -869,7 +869,7 @@ librdkafka v1.9.0 is a feature release:
    coordinators.
 
 
-### Producer fixes
+#### Producer fixes
 
  * Improved producer queue wakeup scheduling. This should significantly
    decrease the number of wakeups and thus syscalls for high message rate
@@ -884,7 +884,7 @@ librdkafka v1.9.0 is a feature release:
 
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.9.0.zip SHA256 `a2d124cfb2937ec5efc8f85123dbcfeba177fb778762da506bfc5a9665ed9e57`
  * v1.9.0.tar.gz SHA256 `59b6088b69ca6cf278c3f9de5cd6b7f3fd604212cd1c59870bc531c54147e889`
@@ -920,7 +920,7 @@ librdkafka v1.6.2 is a maintenance release with the following backported fixes:
  * Force address resolution if the broker epoch changes (#3238).
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.6.2.zip SHA256 `1d389a98bda374483a7b08ff5ff39708f5a923e5add88b80b71b078cb2d0c92e`
  * v1.6.2.tar.gz SHA256 `b9be26c632265a7db2fdd5ab439f2583d14be08ab44dc2e33138323af60c39db`
@@ -933,14 +933,14 @@ Release asset checksums:
 
 librdkafka v1.8.2 is a maintenance release.
 
-## Enhancements
+### Enhancements
 
  * Added `ssl.ca.pem` to add CA certificate by PEM string. (#2380)
  * Prebuilt binaries for Mac OSX now contain statically linked OpenSSL v1.1.1l.
    Previously the OpenSSL version was either v1.1.1 or v1.0.2 depending on
    build type.
 
-## Fixes
+### Fixes
 
  * The `librdkafka.redist` 1.8.0 package had two flaws:
    - the linux-arm64 .so build was a linux-x64 build.
@@ -960,7 +960,7 @@ librdkafka v1.8.2 is a maintenance release.
    e.g., the transactional producer API timeouts.
    These timers are now started with a timeout of 1 microsecond.
 
-### Transactional producer fixes
+#### Transactional producer fixes
 
  * Upon quick repeated leader changes the transactional producer could receive
    an `OUT_OF_ORDER_SEQUENCE` error from the broker, which triggered an
@@ -979,7 +979,7 @@ librdkafka v1.8.2 is a maintenance release.
    transaction timed out, transaction was aborted, or messages were produced
    to a new partition, whichever came first. #3571.
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.8.2.zip SHA256 `8b03d8b650f102f3a6a6cff6eedc29b9e2f68df9ba7e3c0f3fb00838cce794b8`
  * v1.8.2.tar.gz SHA256 `6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6`
@@ -1007,15 +1007,15 @@ librdkafka v1.8.0 is a security release:
    confluent-kafka-go, confluent-kafka-python and confluent-kafka-dotnet.
 
 
-## Enhancements
+### Enhancements
 
  * Producer `flush()` now overrides the `linger.ms` setting for the duration
    of the `flush()` call, effectively triggering immediate transmission of
    queued messages. (#3489)
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Correctly detect presence of zlib via compilation check. (Chris Novakovic)
  * `ERR__ALL_BROKERS_DOWN` is no longer emitted when the coordinator
@@ -1035,7 +1035,7 @@ librdkafka v1.8.0 is a security release:
  * `txidle` and `rxidle` in the statistics object was emitted as 18446744073709551615 when no idle was known. -1 is now emitted instead. (#3519)
 
 
-### Consumer fixes
+#### Consumer fixes
 
  * Automatically retry offset commits on `ERR_REQUEST_TIMED_OUT`,
    `ERR_COORDINATOR_NOT_AVAILABLE`, and `ERR_NOT_COORDINATOR` (#3398).
@@ -1060,13 +1060,13 @@ librdkafka v1.8.0 is a security release:
    from the broker.
 
 
-### Admin fixes
+#### Admin fixes
 
  * `DeleteRecords()` could crash if one of the underlying requests
    (for a given partition leader) failed at the transport level (e.g., timeout).
    (#3476).
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.8.0.zip SHA256 `4b173f759ea5fdbc849fdad00d3a836b973f76cbd3aa8333290f0398fd07a1c4`
  * v1.8.0.tar.gz SHA256 `93b12f554fa1c8393ce49ab52812a5f63e264d9af6a50fd6e6c318c481838b7f`
@@ -1084,7 +1084,7 @@ librdkafka v1.7.0 is feature release:
  * OpenSSL Engine support (`ssl.engine.location`) by @adinigam and @ajbarb.
 
 
-## Enhancements
+### Enhancements
 
  * Added `connections.max.idle.ms` to automatically close idle broker
    connections.
@@ -1097,7 +1097,7 @@ librdkafka v1.7.0 is feature release:
  * Improved static librdkafka Windows builds using MinGW (@neptoess, #3130).
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * The C++ `oauthbearer_token_refresh_cb()` was missing a `Handle *`
    argument that has now been added. This is a breaking change but the original
@@ -1114,9 +1114,9 @@ librdkafka v1.7.0 is feature release:
    to application).
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Fix accesses to freed metadata cache mutexes on client termination (#3279)
  * There was a race condition on receiving updated metadata where a broker id
@@ -1150,7 +1150,7 @@ librdkafka v1.7.0 is feature release:
  * Log CONFWARN warning when global topic configuration properties
    are overwritten by explicitly setting a `default_topic_conf`.
 
-### Consumer fixes
+#### Consumer fixes
 
  * If a rebalance happened during a `consume_batch..()` call the already
    accumulated messages for revoked partitions were not purged, which would
@@ -1188,7 +1188,7 @@ librdkafka v1.7.0 is feature release:
    rebalance for the remaining group members by up to `session.timeout.ms`.
  * The current subscription list was sometimes leaked when unsubscribing.
 
-### Producer fixes
+#### Producer fixes
 
  * The timeout value of `flush()` was not respected when delivery reports
    were scheduled as events (such as for confluent-kafka-go) rather than
@@ -1202,7 +1202,7 @@ librdkafka v1.7.0 is feature release:
    queue wakeups. This is now fixed by not rate-limiting queue wakeups but
    instead limiting them to one wakeup per queue reader poll. #2912.
 
-### Transactional Producer fixes
+#### Transactional Producer fixes
 
  * KIP-360: Fatal Idempotent producer errors are now recoverable by the
    transactional producer and will raise a `txn_requires_abort()` error.
@@ -1225,7 +1225,7 @@ librdkafka v1.7.0 is feature release:
 
 librdkafka v1.6.1 is a maintenance release.
 
-## Upgrade considerations
+### Upgrade considerations
 
  * Fatal idempotent producer errors are now also fatal to the transactional
    producer. This is a necessary step to maintain data integrity prior to
@@ -1237,9 +1237,9 @@ librdkafka v1.6.1 is a maintenance release.
    between auto offset resets and other consumer errors.
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Admin API and transactional `send_offsets_to_transaction()` coordinator
    requests, such as TxnOffsetCommitRequest, could in rare cases be sent
@@ -1248,7 +1248,7 @@ librdkafka v1.6.1 is a maintenance release.
    librdkafka-bundled OpenSSL might not have the same default CA search paths
    as the system or brew installed OpenSSL. Probing scans all known locations.
 
-### Transactional Producer fixes
+#### Transactional Producer fixes
 
  * Fatal idempotent producer errors are now also fatal to the transactional
    producer.
@@ -1268,7 +1268,7 @@ librdkafka v1.6.1 is a maintenance release.
    on the transaction coordinator. We now allow empty/no-op transactions to
    be committed.
 
-### Consumer fixes
+#### Consumer fixes
 
  * The consumer will now retry indefinitely (or until the assignment is changed)
    to retrieve committed offsets. This fixes the issue where only two retries
@@ -1291,7 +1291,7 @@ librdkafka v1.6.0 is feature release:
  * The [librdkafka.redist](https://www.nuget.org/packages/librdkafka.redist/) NuGet package now supports Linux ARM64/Aarch64.
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * Sticky producer partitioning (`sticky.partitioning.linger.ms`) is
    enabled by default (10 milliseconds) which affects the distribution of
@@ -1308,7 +1308,7 @@ librdkafka v1.6.0 is feature release:
    the **Transactional Producer fixes** below for more information.
 
 
-## Known issues
+### Known issues
 
  * The Transactional Producer's API timeout handling is inconsistent with the
    underlying protocol requests, it is therefore strongly recommended that
@@ -1317,7 +1317,7 @@ librdkafka v1.6.0 is feature release:
    set to `-1`, which will use the remaining transaction timeout.
 
 
-## Enhancements
+### Enhancements
 
  * KIP-107, KIP-204: AdminAPI: Added `DeleteRecords()` (by @gridaphobe).
  * KIP-229: AdminAPI: Added `DeleteGroups()` (by @gridaphobe).
@@ -1347,15 +1347,15 @@ librdkafka v1.6.0 is feature release:
    per-partition specific offsets.
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Fix a use-after-free crash when certain coordinator requests were retried.
  * The C++ `oauthbearer_set_token()` function would call `free()` on
    a `new`-created pointer, possibly leading to crashes or heap corruption (#3194)
 
-### Consumer fixes
+#### Consumer fixes
 
  * The consumer assignment and consumer group implementations have been
    decoupled, simplified and made more strict and robust. This will sort out
@@ -1366,7 +1366,7 @@ librdkafka v1.6.0 is feature release:
    connection is down, which was not previously the case.
 
 
-### Transactional Producer fixes
+#### Transactional Producer fixes
 
  * Transaction commit or abort failures on the broker, such as when the
    producer was fenced by a newer instance, were not propagated to the
@@ -1391,7 +1391,7 @@ librdkafka v1.6.0 is feature release:
    were exhausted.
 
 
-### Producer fixes
+#### Producer fixes
 
  * Calling `rd_kafka_topic_new()` with a topic config object with
    `message.timeout.ms` set could sometimes adjust the global `linger.ms`
@@ -1403,7 +1403,7 @@ librdkafka v1.6.0 is feature release:
    there were now no more messages. This has been fixed.
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.6.0.zip SHA256 `af6f301a1c35abb8ad2bb0bab0e8919957be26c03a9a10f833c8f97d6c405aa8`
  * v1.6.0.tar.gz SHA256 `3130cbd391ef683dc9acf9f83fe82ff93b8730a1a34d0518e93c250929be9f6b`
@@ -1415,19 +1415,19 @@ Release asset checksums:
 
 librdkafka v1.5.3 is a maintenance release.
 
-## Upgrade considerations
+### Upgrade considerations
 
  * CentOS 6 is now EOL and is no longer included in binary librdkafka packages,
    such as NuGet.
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * Fix a use-after-free crash when certain coordinator requests were retried.
 
 
-### Consumer fixes
+#### Consumer fixes
 
  * Consumer would not filter out messages for aborted transactions
    if the messages were compressed (#3020).
@@ -1439,7 +1439,7 @@ librdkafka v1.5.3 is a maintenance release.
    had asymmetric subscriptions (e.g., c1 subscribes to t1,t2 while c2
    subscribes to t2,t3).  (#3159)
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.5.3.zip SHA256 `3f24271232a42f2d5ac8aab3ab1a5ddbf305f9a1ae223c840d17c221d12fe4c1`
  * v1.5.3.tar.gz SHA256 `2105ca01fef5beca10c9f010bc50342b15d5ce6b73b2489b012e6d09a008b7bf`
@@ -1452,7 +1452,7 @@ Release asset checksums:
 librdkafka v1.5.2 is a maintenance release.
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * The default value for the producer configuration property `retries` has
    been increased from 2 to infinity, effectively limiting Produce retries to
@@ -1467,7 +1467,7 @@ librdkafka v1.5.2 is a maintenance release.
    This change yields increased robustness for broker-side congestion.
 
 
-## Enhancements
+### Enhancements
 
  * The generated `CONFIGURATION.md` (through `rd_kafka_conf_properties_show())`)
    now include all properties and values, regardless if they were included in
@@ -1478,9 +1478,9 @@ librdkafka v1.5.2 is a maintenance release.
    warning messages on client instantiation.
 
 
-## Fixes
+### Fixes
 
-### Security fixes
+#### Security fixes
 
  * There was an incorrect call to zlib's `inflateGetHeader()` with
    unitialized memory pointers that could lead to the GZIP header of a fetched
@@ -1490,7 +1490,7 @@ librdkafka v1.5.2 is a maintenance release.
    Reported by Ilja van Sprundel.
 
 
-### General fixes
+#### General fixes
 
  * `rd_kafka_topic_opaque()` (used by the C++ API) would cause object
    refcounting issues when used on light-weight (error-only) topic objects
@@ -1501,7 +1501,7 @@ librdkafka v1.5.2 is a maintenance release.
    condition with fd-reuse in other threads) if a custom `socket_cb` would
    return error.
 
-### Consumer fixes
+#### Consumer fixes
 
  * The `roundrobin` `partition.assignment.strategy` could crash (assert)
    for certain combinations of members and partitions.
@@ -1513,7 +1513,7 @@ librdkafka v1.5.2 is a maintenance release.
    rebalancing (#2933).
  * Topic authorization errors during fetching are now reported only once (#3072).
 
-### Producer fixes
+#### Producer fixes
 
  * Topic authorization errors are now properly propagated for produced messages,
    both through delivery reports and as `ERR_TOPIC_AUTHORIZATION_FAILED`
@@ -1537,7 +1537,7 @@ librdkafka v1.5.2 is a maintenance release.
 
 *Note: there was no v1.5.1 librdkafka release*
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.5.2.zip SHA256 `de70ebdb74c7ef8c913e9a555e6985bcd4b96eb0c8904572f3c578808e0992e1`
  * v1.5.2.tar.gz SHA256 `ca3db90d04ef81ca791e55e9eed67e004b547b7adedf11df6c24ac377d4840c6`
@@ -1550,7 +1550,7 @@ Release asset checksums:
 The v1.5.0 release brings usability improvements, enhancements and fixes to
 librdkafka.
 
-## Enhancements
+### Enhancements
 
  * Improved broker connection error reporting with more useful information and
    hints on the cause of the problem.
@@ -1577,7 +1577,7 @@ librdkafka.
  * Added RTT/delay simulation to mock brokers.
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * Subscribing to non-existent and unauthorized topics will now propagate
    errors `RD_KAFKA_RESP_ERR_UNKNOWN_TOPIC_OR_PART` and
@@ -1610,9 +1610,9 @@ librdkafka.
  * librdkafka's build tooling now requires Python 3.x (python3 interpreter).
 
 
-## Fixes
+### Fixes
 
-### General fixes
+#### General fixes
 
  * The client could crash in rare circumstances on ApiVersion or
    SaslHandshake request timeouts (#2326)
@@ -1628,7 +1628,7 @@ librdkafka.
    to an existing topic (#2917).
 
 
-### Consumer fixes
+#### Consumer fixes
 
  * The roundrobin partition assignor could crash if subscriptions
    where asymmetrical (different sets from different members of the group).
@@ -1648,11 +1648,11 @@ librdkafka.
    using the batch consume APIs (@pf-qiu, #2990).
 
 
-### Producer fixes
+#### Producer fixes
 
  * Proper locking for transaction state in EndTxn handler.
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.5.0.zip SHA256 `76a1e83d643405dd1c0e3e62c7872b74e3a96c52be910233e8ec02d501fa33c8`
  * v1.5.0.tar.gz SHA256 `f7fee59fdbf1286ec23ef0b35b2dfb41031c8727c90ced6435b8cf576f23a656`
@@ -1703,7 +1703,7 @@ v1.4.2 is a maintenance release with the following fixes and enhancements:
 
 
 
-## Checksums
+### Checksums
 
 Release asset checksums:
  * v1.4.2.zip SHA256 `ac50da08be69365988bad3d0c46cd87eced9381509d80d3d0b4b50b2fe9b9fa9`
@@ -1720,7 +1720,7 @@ v1.4.0 is a feature release:
  * [KIP-345](https://cwiki.apache.org/confluence/display/KAFKA/KIP-345%3A+Introduce+static+membership+protocol+to+reduce+consumer+rebalances): Static consumer group membership (by @rnpridgeon)
  * [KIP-511](https://cwiki.apache.org/confluence/display/KAFKA/KIP-511%3A+Collect+and+Expose+Client%27s+Name+and+Version+in+the+Brokers): Report client software name and version to broker
 
-## Transactional Producer API
+### Transactional Producer API
 
 librdkafka now has complete Exactly-Once-Semantics (EOS) functionality, supporting the idempotent producer (since v1.0.0), a transaction-aware consumer (since v1.2.0) and full producer transaction support (in this release).
 This enables developers to create Exactly-Once applications with Apache Kafka.
@@ -1728,7 +1728,7 @@ This enables developers to create Exactly-Once applications with Apache Kafka.
 See the [Transactions in Apache Kafka](https://www.confluent.io/blog/transactions-apache-kafka/) page for an introduction and check the librdkafka [transactions example](examples/transactions.c) for a complete transactional application example.
 
 
-## Security fixes
+### Security fixes
 
 Two security issues have been identified in the SASL SCRAM protocol handler:
  * The client nonce, which is expected to be a random string, was a static string.
@@ -1737,7 +1737,7 @@ Two security issues have been identified in the SASL SCRAM protocol handler:
 Both of these issues are fixed in this release.
 
 
-## Enhancements
+### Enhancements
  * Add FNV-1a partitioner (by @Manicben, #2724).
    The new `fnv1a_random` partitioner is compatible with Sarama's `NewHashPartitioner` partition, easing transition from Sarama to librdkafka-based clients such as [confluent-kafka-go](https://github.com/confluentinc/confluent-kafka-go).
  * Added `rd_kafka_error_t` / `RdKafka::Error` complex error type which provides error attributes such as indicating if an error is retriable.
@@ -1747,7 +1747,7 @@ Both of these issues are fixed in this release.
  * Documentation, licenses, etc, is now installed by `make install`
  * Bump OpenSSL to v1.0.2u (when auto-building dependencies)
 
-## Fixes
+### Fixes
 
 General:
  * Correct statistics names in docs (@TimWSpence, #2754)
@@ -1779,7 +1779,7 @@ Consumer:
  * Honour array size in `rd_kafka_event_message_array()` to avoid overflow (#2773)
 
 
-## Checksums
+### Checksums
 
 Release asset checksums:
  * v1.4.0.zip SHA256 `eaf954e3b8a2ed98360b2c76f55048ee911964de8aefd8a9e1133418ec9f48dd`
@@ -1791,17 +1791,17 @@ Release asset checksums:
 
 This is a feature release adding support for KIP-392 Fetch from follower, allowing a consumer to fetch messages from the closest replica to increase throughput and reduce cost.
 
-## Features
+### Features
 
  * [KIP-392](https://cwiki.apache.org/confluence/display/KAFKA/KIP-392%3A+Allow+consumers+to+fetch+from+closest+replica) - Fetch messages from closest replica / follower (by @mhowlett)
  * Added experimental (subject to change or removal) [mock broker](https://github.com/edenhill/librdkafka/blob/master/src/rdkafka_mock.h#L39) to make application and librdkafka development testing easier.
  
-## Fixes
+### Fixes
 
 *  Fix `consumer_lag` in stats when consuming from broker versions &lt;0.11.0.0 (regression in librdkafka v1.2.0).
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.3.0.zip SHA256 `bd3373c462c250ecebea9043fb94597a11bd6e0871d3cde19019433d3f74a99e`
  * v1.3.0.tar.gz SHA256 `465cab533ebc5b9ca8d97c90ab69e0093460665ebaf38623209cf343653c76d2`
@@ -1812,7 +1812,7 @@ Release asset checksums:
 
 **v1.2.2 fixes the producer performance regression introduced in v1.2.1 which may affect high-throughput producer applications.**
 
-## Fixes
+### Fixes
 
  * Fix producer insert msgq regression in v1.2.1 (#2450).
  * Upgrade builtin lz4 to 1.9.2 (CVE-2019-17543, #2598).
@@ -1823,14 +1823,14 @@ Release asset checksums:
  * LZ4 is available from ProduceRequest 0, not 3 (fixes assert in #2480).
  * Address 12 code issues identified by Coverity static code analysis.
 
-## Enhancements
+### Enhancements
 
  * Add warnings for inconsistent security configuration.
  * Optimizations to hdr histogram (stats) rollover.
  * Reorganized examples and added a cleaner consumer example, added minimal C++ producer example.
  * Print compression type per message-set when `debug=msg`
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.2.2.zip SHA256 `7557b37e5133ed4c9b0cbbc3fd721c51be8e934d350d298bd050fcfbc738e551`
  * v1.2.2.tar.gz SHA256 `c5d6eb6ce080431f2996ee7e8e1f4b8f6c61455a1011b922e325e28e88d01b53`
@@ -1856,7 +1856,7 @@ v1.2.1 is a maintenance release:
 
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.2.1.zip SHA256 `8b5e95318b190f40cbcd4a86d6a59dbe57b54a920d8fdf64d9c850bdf05002ca`
  * v1.2.1.tar.gz SHA256 `f6be27772babfdacbbf2e4c5432ea46c57ef5b7d82e52a81b885e7b804781fd6`
@@ -1874,7 +1874,7 @@ v1.2.0 is a feature release making the consumer transaction aware.
  * Sub-millisecond  buffering (`linger.ms`) on the producer.
  * Improved authentication errors ([KIP-152](https://cwiki.apache.org/confluence/display/KAFKA/KIP-152+-+Improve+diagnostics+for+SASL+authentication+failures))
 
-## Consumer-side transaction support
+### Consumer-side transaction support
 
 This release adds consumer-side support for transactions.
 In previous releases, the consumer always delivered all messages to the application, even those in aborted or not yet committed transactions. In this release, the consumer will by default skip messages in aborted transactions.
@@ -1883,16 +1883,16 @@ defaults to `read_committed` (only read committed messages, filter out aborted a
 For consumers in `read_committed` mode, the end of a partition is now defined to be the offset of the last message of a successfully committed transaction (referred to as the 'Last Stable Offset').
 For non-transactional messages there is no change from previous releases, they will always be read, but a consumer will not advance into a not yet committed transaction on the partition.
 
-## Upgrade considerations
+### Upgrade considerations
 
  * `linger.ms` default was changed from 0 to 0.5 ms to promote some level of batching even with default settings.
 
 
-## New configuration properties
+### New configuration properties
 
  * Consumer property `isolation.level=read_committed` ensures the consumer will only read messages from successfully committed producer transactions. Default is `read_committed`. To get the previous behaviour, set the property to `read_uncommitted`, which will read all messages produced to a topic, regardless if the message was part of an aborted or not yet committed transaction.
 
-## Enhancements
+### Enhancements
 
  * Offset commit metadata (arbitrary application-specified data) is now returned by `rd_kafka_committed()` and `rd_kafka_offsets_for_times()` (@damour, #2393)
  * C++: Added `Conf::c_ptr*()` to retrieve the underlying C config object.
@@ -1900,7 +1900,7 @@ For non-transactional messages there is no change from previous releases, they w
  * Increase `queue.buffering.max.kbytes` max to INT_MAX.
  * Optimize varint decoding, increasing consume performance by **~15%**.
 
-## Fixes
+### Fixes
 
 General:
  * Rate limit IO-based queue wakeups to `linger.ms`, this reduces CPU load and lock contention for high throughput producer applications. (#2509)
@@ -1934,7 +1934,7 @@ Producer:
  * Don't track `max.poll.interval.ms` unless in Consumer mode, this saves quite a few memory barries for high-performance Producers.
  * Optimization: avoid atomic fatal error code check when idempotence is disabled.
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.2.0.zip SHA256 `6e57f09c28e9a65abb886b84ff638b2562b8ad71572de15cf58578f3f9bc45ec`
  * v1.2.0.tar.gz SHA256 `eedde1c96104e4ac2d22a4230e34f35dd60d53976ae2563e3dd7c27190a96859`
@@ -1953,13 +1953,13 @@ v1.1.0 is a security-focused feature release:
  * Improved GSSAPI/Kerberos ticket refresh
 
 
-## Upgrade considerations
+### Upgrade considerations
 
  * Windows SSL users will no longer need to specify a CA certificate file/directory (`ssl.ca.location`), librdkafka will load the CA certs by default from the Windows Root Certificate Store.
  * SSL peer (broker) certificate verification is now enabled by default (disable with `enable.ssl.certificate.verification=false`)
  * `%{broker.name}` is no longer supported in `sasl.kerberos.kinit.cmd` since kinit refresh is no longer executed per broker, but per client instance.
 
-## SSL
+### SSL
 
 New configuration properties:
 
@@ -1971,14 +1971,14 @@ New configuration properties:
  * The private key data is now securely cleared from memory after last use.
 
 
-## Enhancements
+### Enhancements
 
  * configure: Improve library checking
  * Added `rd_kafka_conf()` to retrieve the client's configuration object
  * Bump `message.timeout.ms` max value from 15 minutes to 24 days (@sarkanyi, workaround for #2015)
 
 
-## Fixes
+### Fixes
 
  * SASL GSSAPI/Kerberos: Don't run kinit refresh for each broker, just per client instance.
  * SASL GSSAPI/Kerberos: Changed `sasl.kerberos.kinit.cmd` to first attempt ticket refresh, then acquire.
@@ -1989,7 +1989,7 @@ New configuration properties:
  * Windows build and CMake fixes (@myd7349)
 
 
-## Checksums
+### Checksums
 Release asset checksums:
  * v1.1.0.zip SHA256 `70279676ed863c984f9e088db124ac84a080e644c38d4d239f9ebd3e3c405e84`
  * v1.1.0.tar.gz SHA256 `123b47404c16bcde194b4bd1221c21fdce832ad12912bd8074f88f64b2b86f2b`
