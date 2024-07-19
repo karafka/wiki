@@ -156,6 +156,7 @@
 * [Configuration](Librdkafka-Configuration)
 * [Statistics](Librdkafka-Statistics)
 * [Errors](Librdkafka-Errors)
+* [Changelog](Librdkafka-Changelog)
 
 ## Kafka
 
@@ -185,6 +186,7 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Testing](Changelog-Karafka-Testing)
 * [Karafka-Core](Changelog-Karafka-Core)
 * [Karafka-Rdkafka](Changelog-Karafka-Rdkafka)
+* [Librdkafka](Librdkafka-Changelog)
 
 ## Code Docs
 
