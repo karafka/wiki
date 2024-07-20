@@ -1,8 +1,8 @@
 Karafka provides application administrative functions via the built-in `Karafka::Admin` module, including topic and consumer group management, cluster administration, and more.
 
-!!! note ""
+!!! Hint "Default Cluster Limitation"
 
-    Admin actions will always be applied to the **default** cluster defined in the configuration.
+    All admin operations in Karafka always run on the default cluster. To run admin operations on multiple clusters, you need separate Karafka boot files for each cluster. For more details, visit the [Multi-Cluster Setup](#multi-cluster-setup) section.
 
 ## Configuration
 
@@ -34,6 +34,48 @@ end
 We **strongly advise against** modifying the `config.admin.kafka` settings in their entirety, as they have been configured to meet the demands of admin operations. For any adjustments, we suggest adopting the granular approach outlined above.
 
 Please note that in the case of `kafka` settings, if a given setting is not found, the root `kafka` scope value will be used.
+
+### Multi-Cluster Setup
+
+Karafka allows you to manage multiple Kafka clusters using the `KARAFKA_BOOT_FILE` environment variable. This variable can point to different Karafka boot files configured for a specific cluster. By changing the value of `KARAFKA_BOOT_FILE`, you can specify which cluster to use when performing any Karafka admin and declarative topics operations.
+
+```ruby
+# cluster1.rb
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      'bootstrap.servers': '192.168.1.2:9092'
+    }
+  end
+end
+```
+
+```ruby
+# cluster2.rb
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.client_id = 'my_application'
+
+    config.kafka = {
+      'bootstrap.servers': '192.168.1.10:9092'
+    }
+  end
+end
+```
+
+```bash
+# Access Karafka console to operate in cluster 1
+export KARAFKA_BOOT_FILE=cluster1.rb
+bundle exec karafka console
+
+# Same applies to declarative topics management
+export KARAFKA_BOOT_FILE=cluster2.rb
+bundle exec karafka topics migrate
+```
 
 ## Creating a Topic
 
