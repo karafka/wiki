@@ -190,7 +190,8 @@
 190. [What should I do if I encounter the `Broker: Not enough in-sync replicas` error?](#what-should-i-do-if-i-encounter-the-broker-not-enough-in-sync-replicas-error)
 191. [Is there any way to measure message sizes post-compression in Waterdrop?](#is-there-any-way-to-measure-message-sizes-post-compression-in-waterdrop)
 192. [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
-
+193. [How can Virtual Partitions help with handling increased consumer lag in Karafka?](#how-can-virtual-partitions-help-with-handling-increased-consumer-lag-in-karafka)
+194. [Is scaling more processes a viable alternative to using Virtual Partitions?](#is-scaling-more-processes-a-viable-alternative-to-using-virtual-partitions)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2494,3 +2495,11 @@ To estimate message sizes post-client compression, you can use the `txmsgs` and 
 ## What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?
 
 Yes, when a message fails on a specific topic partition and the exponential backoff strategy is applied, that partition is effectively paused during the retry period. This ensures strong ordering, which is a key guarantee of Karafka. If you want to bypass this behavior, you can configure a DLQ with delayed processing, allowing you to manage retries without pausing the partition.
+
+## How can Virtual Partitions help with handling increased consumer lag in Karafka?
+
+Virtual Partitions (VPs) can significantly improve the parallelism of message consumption in Karafka. Suppose you have a topic with 6 partitions and are running 6 processes (each with 1 partition assigned). In that case, the parallelism is limited to one thread per partition. Using VPs, you can further split the data from each partition into multiple virtual partitions, allowing more threads to process the data concurrently. For example, with 5 virtual partitions per physical partition, you can achieve 30 virtual partitions, increasing the throughput and reducing the lag more efficiently.
+
+## Is scaling more processes a viable alternative to using Virtual Partitions?
+
+Scaling processes can help up to the number of partitions available. For instance, with 6 partitions, you can scale up to 6 processes. Beyond that, additional processes will not contribute to processing since Kafka consumer groups assign one partition per process. Each process will run a single thread per partition, which can become IO-constrained, especially with tasks like bulk inserts into Timescale. In contrast, using VPs allows better utilization of threads within the same partitions, providing a cost-effective performance boost without needing to scale processes proportionally.
