@@ -167,6 +167,58 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>
+      tailwindcss
+    </td>
+    <td>
+      3.4.7
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE">MIT</a>
+    </td>
+    <td>Tailwind Labs, Inc.</td>
+  </tr>
+
+  <tr>
+    <td>
+      heroicons
+    </td>
+    <td>
+      N/A
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/tailwindlabs/heroicons/blob/master/LICENSE">MIT</a>
+    </td>
+    <td>Tailwind Labs, Inc.</td>
+  </tr>
+
+  <tr>
+    <td>
+      daisyUI
+    </td>
+    <td>
+      4.12.10
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
+    </td>
+    <td>Pouya Saadeghi</td>
+  </tr>
+
+  <tr>
+    <td>
+      turbo
+    </td>
+    <td>
+      3.4.7
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/hotwired/turbo/blob/main/MIT-LICENSE">MIT</a>
+    </td>
+    <td>37signals LLC</td>
+  </tr>
+
+  <tr>
+    <td>
       air datepicker
     </td>
     <td>
