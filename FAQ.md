@@ -192,6 +192,14 @@
 192. [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
 193. [How can Virtual Partitions help with handling increased consumer lag in Karafka?](#how-can-virtual-partitions-help-with-handling-increased-consumer-lag-in-karafka)
 194. [Is scaling more processes a viable alternative to using Virtual Partitions?](#is-scaling-more-processes-a-viable-alternative-to-using-virtual-partitions)
+195. [What is the optimal strategy for scaling in Karafka to handle high consumer lag?](#what-is-the-optimal-strategy-for-scaling-in-karafka-to-handle-high-consumer-lag)
+196. [How does Karafka behave under heavy lag, and what should be considered in configuration?](#how-does-karafka-behave-under-heavy-lag-and-what-should-be-considered-in-configuration)
+197. [Is there an undo of Quiet for a consumer to get it consuming again?](#is-there-an-undo-of-quiet-for-a-consumer-to-get-it-consuming-again)
+198. [Can two Karafka server processes with the same group_id consume messages from the same partition in parallel?](#can-two-karafka-server-processes-with-the-same-group_id-consume-messages-from-the-same-partition-in-parallel)
+199. [What are some good default settings for sending large "trace" batches of messages for load testing?](#what-are-some-good-default-settings-for-sending-large-trace-batches-of-messages-for-load-testing)
+200. [Is it worth pursuing transactions for a low throughput but high-importance topic?](#is-it-worth-pursuing-transactions-for-a-low-throughput-but-high-importance-topic)
+201. [Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?](#does-the-waterdrop-producer-retry-to-deliver-messages-after-errors-such-as-librdkafkaerror-and-librdkafkadispatch_error-or-are-the-messages-lost)
+202. [In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?](#in-a-rails-request-can-i-publish-a-message-asynchronously-continue-the-request-and-block-at-the-end-to-wait-for-the-publish-to-finish)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2503,3 +2511,35 @@ Virtual Partitions (VPs) can significantly improve the parallelism of message co
 ## Is scaling more processes a viable alternative to using Virtual Partitions?
 
 Scaling processes can help up to the number of partitions available. For instance, with 6 partitions, you can scale up to 6 processes. Beyond that, additional processes will not contribute to processing since Kafka consumer groups assign one partition per process. Each process will run a single thread per partition, which can become IO-constrained, especially with tasks like bulk inserts into Timescale. In contrast, using VPs allows better utilization of threads within the same partitions, providing a cost-effective performance boost without needing to scale processes proportionally.
+
+## What is the optimal strategy for scaling in Karafka to handle high consumer lag?
+
+The optimal strategy depends on your specific processing patterns and data distribution. A balanced approach involves using a combination of more partitions and virtual partitions. For example, with 6 partitions, you could configure 2 processes with VPs that utilize half the concurrency each and a multiplexing factor of 2. This setup can balance cost and performance well, ensuring you have enough headroom to handle lag spikes efficiently.
+
+## How does Karafka behave under heavy lag, and what should be considered in configuration?
+
+Under heavy lag, incorrect settings can reduce Karafka's ability to utilize multiple threads effectively. While Karafka may perform well with multiple threads under normal conditions, heavy lag can force it to operate with reduced concurrency. Configuring Karafka with appropriate settings is crucial to maintaining optimal performance during lag periods. Understanding how to balance threads, processes, and virtual partitions is key to effectively managing high-lag situations.
+
+## Is there an undo of Quiet for a consumer to get it consuming again?
+
+A quietened consumer needs to be replaced. When a consumer is quieted, it holds the connections and technically still "moves" forward, but it does so without processing messages. Therefore, to resume consuming, the consumer should be stopped, and a new one should be started.
+
+## Can two Karafka server processes with the same group_id consume messages from the same partition in parallel?
+
+No, two Karafka server processes with the same `group_id` cannot consume messages from the same partition in parallel because this would violate Kafka's strong ordering guarantees. However, you can use virtual partitions to parallelize the work within a single process. Additionally, you can use direct assignments to assign specific partitions to specific processes, but managing offsets would still require a separate consumer group.
+
+## What are some good default settings for sending large "trace" batches of messages for load testing?
+
+You can use the `produce_many_sync` method to send large batches of messages, as it tends to avoid buffer overflows and performs well even with default settings. You might also want to increase the `queue.buffering.max.ms` setting. Consider dispatching multi-partition messages to delegate faster if you have a larger cluster.
+
+## Is it worth pursuing transactions for a low throughput but high-importance topic?
+
+Yes, for low throughput but high-importance topics, it is advisable to use transactions. Transactions ensure that operations are tied together and can be managed atomically, reducing the risk of data inconsistency. Even though the finalization of a transaction is synchronous, it provides an additional layer of reliability for critical data flows.
+
+## Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?
+
+It depends on the type of error. Waterdrop will retry the delivery for intermediate errors, such as network issues. However, for final errors like an unknown partition, the message will not be retried. If a message is purged, you should receive a final error notification indicating the purge.
+
+## In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?
+
+Yes, you can publish a message asynchronously using Waterdrop. You can get the handler for the async publish and wait on it before the response is returned. This approach ensures that the request continues while the publish happens in parallel. It blocks only at the end to ensure the publish is complete.
