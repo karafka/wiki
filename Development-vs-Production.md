@@ -373,3 +373,36 @@ The appropriate value for shutdown_timeout depends on your specific deployment c
 - **Workload Characteristics**: If your consumers process messages quickly, a lower timeout might suffice. For slower processing, increase the timeout accordingly.
 
 We recommend setting the `shutdown_timeout` to at least 30 seconds. A timeout of at least 90 seconds is advisable for larger deployments to ensure a smooth and stable rebalance process.
+
+### Static Group Membership Usage
+
+In addition to configuring `shutdown_timeout,` consider using static group membership if possible. Static group membership offers several benefits that can enhance the stability and efficiency of your consumer groups:
+
+- **Minimized Rebalance Impact**: Static members maintain their identity across rebalances, reducing the need for frequent reassignments of partitions and improving overall group stability.
+
+- **Faster Rebalance Process**: With static membership, the rebalance process can be completed more quickly as the coordinator has a clearer picture of group membership.
+
+- **Improved Resource Utilization**: Static membership improves resource utilization by reducing the churn of consumer instances and minimizes the overhead associated with consumer state transitions.
+
+To enable static group membership, set the `group.instance.id` configuration for each consumer instance in your `karafka.rb`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Primary cluster
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      # Unique value per consumer group
+      'group.instance.id': "consumer_instance_#{ENV['HOSTNAME']}"
+    }
+
+    # Other settings...
+  end
+end
+```
+
+!!! Warning "Static Group Membership and Multiplexing in Dynamic Mode"
+
+    We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](https://karafka.io/docs/Pro-Multiplexing/#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
+
+    However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.

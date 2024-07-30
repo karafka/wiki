@@ -250,6 +250,16 @@ end
 
 - **Improved Parallelism**: Enhances the system's ability to process data concurrently across multiple partitions and topics, resulting in faster processing times and higher throughput.
 
+### Limitations
+
+Below, you can find specific considerations and recommendations related to using dynamic mode multiplexing in Karafka.
+
+#### Static Group Membership and Dynamic Mode Multiplexing
+
+We do not recommend using static group membership with Multiplexing operating in Dynamic mode. Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
+
+However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.
+
 ### Conclusion
 
 Dynamic Multiplexing feature in Karafka represents a refined approach to managing connections with Kafka clusters. By focusing on partition assignments, Karafka ensures that resources are utilized efficiently, balancing performance needs with cost and resource conservation. This feature is handy for large-scale, distributed applications where partition loads vary significantly.
