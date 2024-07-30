@@ -338,3 +338,38 @@ For small-scale development environments, having a single consumer group with mu
 ### Recommendation
 
 For larger deployments, organizing your consumers and topics is advisable so that each consumer group subscribes to a smaller, more focused set of topics. This reduces the scope and impact of rebalances, leading to more stable and performant applications.
+
+## Configure `shutdown_timeout` for Cooperative-Sticky Strategy in Large Deployments
+
+When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This ensures that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
+
+### Why Set a High `shutdown_timeout`?
+
+The `shutdown_timeout` configuration defines the maximum time consumers can shut down gracefully. In larger deployments with many partitions, rebalances can take longer due to the complexity of ensuring minimal partition movement and maintaining a balanced load. A higher `shutdown_timeout` helps in:
+
+- **Ensuring Graceful Shutdowns**: Allows consumers sufficient time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
+
+- **Reducing Rebalance Interruptions**: Prevents premature shutdowns during rebalances, which can cause additional rebalances and increase system instability.
+
+- **Maintaining Consumer Health**: Gives consumers more time to handle their state transitions, ensuring a smoother rebalance process.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other configuration options...
+    config.shutdown_timeout = 90_000 # 90 seconds
+  end
+end
+```
+
+### Choosing the Right `shutdown_timeout` Value
+
+The appropriate value for shutdown_timeout depends on your specific deployment characteristics:
+
+- **Consumer Group Size**: Larger groups with more consumers may need a higher timeout to accommodate the increased coordination required.
+
+- **Partition Count**: More partitions mean more work during rebalances, necessitating a higher timeout.
+
+- **Workload Characteristics**: If your consumers process messages quickly, a lower timeout might suffice. For slower processing, increase the timeout accordingly.
+
+We recommend setting the `shutdown_timeout` to at least 30 seconds. A timeout of at least 90 seconds is advisable for larger deployments to ensure a smooth and stable rebalance process.
