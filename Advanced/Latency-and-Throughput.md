@@ -178,12 +178,12 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
     Tuning the configurations below helps improve how fast or how much data Karafka can fetch from Kafka in a given time frame, as long as the consumer process is not blocked by processing or other factors. These are the primary ways to control latency and throughput when getting data from Kafka for the Ruby process.
 
     Further sections also contain information on how to deal with lags caused by the processing phase.
-
 <table>
   <tr>
     <th>Setting</th>
     <th>Description</th>
     <th>Tuning Tips</th>
+    <th>Default</th>
   </tr>
   <tr>
     <td class="nowrap">
@@ -197,6 +197,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>When lowering consider also lowering the <code>fetch.wait.max.ms</code>to at least match it</li>
       </ul>
     </td>
+    <td>1000 ms (Karafka)</td>
   </tr>
   <tr>
     <td class="nowrap">
@@ -209,6 +210,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Higher values can improve throughput but may increase latency and resource usage.</li>
       </ul>
     </td>
+    <td>100 (Karafka)</td>
   </tr>
   <tr>
     <td class="nowrap">
@@ -221,6 +223,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Higher values can reduce fetch requests, improving throughput by fetching larger batches.</li>
       </ul>
     </td>
+    <td>500 ms (librdkafka)</td>
   </tr>
   <tr>
     <td class="nowrap">
@@ -233,7 +236,9 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Lower values ensure quicker fetching but might increase the number of requests.</li>
       </ul>
     </td>
+    <td>1 byte (librdkafka)</td>
   </tr>
+  <tr>
     <td class="nowrap">
       <code>fetch.message.max.bytes</code>
     </td>
@@ -244,6 +249,8 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Higher values may be necessary for consuming larger messages but can reduce the mix of data and increase memory usage.</li>
       </ul>
     </td>
+    <td>1048576 bytes (1 MB) (librdkafka)</td>
+  </tr>
   <tr>
     <td class="nowrap">
       <code>fetch.error.backoff.ms</code>
@@ -255,6 +262,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Avoid excessively low values to prevent frequent retries that could impact performance.</li>
       </ul>
     </td>
+    <td>500 ms (librdkafka)</td>
   </tr>
   <tr>
     <td class="nowrap">
@@ -266,6 +274,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>When set to <code>true</code>, Karafka will bypass <code>max_wait_time</code> and <code>max_messages</code>, delegating all available messages for processing each time the end of the partition is reached.</li>
       </ul>
     </td>
+    <td>false (librdkafka)</td>
   </tr>
   <tr>
     <td class="nowrap">
@@ -281,8 +290,10 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Adjust this setting in conjunction with <code>fetch.min.bytes</code> and <code>fetch.message.max.bytes</code> to balance throughput and memory usage.</li>
       </ul>
     </td>
+    <td>65536 KB (65 MB) (librdkafka)</td>
   </tr>
 </table>
+
 
 Below is an example latency impact of enabling `enable.partition.eof` and lowering `fetch.wait.max.ms` to `100`ms, compared to the default values, on a low-traffic topic (1 message per second). In both cases, `max_wait_time` was set to `2000`ms (less is better).
 
@@ -295,6 +306,48 @@ Below is an example latency impact of enabling `enable.partition.eof` and loweri
 </p>
 
 The presented example illustrates how big of an impact latency configuration can have. Proper configuration tuning can tremendously impact the Karafka data ingestion patterns.
+
+#### Per Topic Configuration
+
+In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, it's important to understand the implications of such configurations.
+
+When reconfiguring settings per topic, Karafka will create a distinct subscription group and an independent connection to Kafka for each topic with altered non-default settings. This isolation ensures that the specific configurations are applied correctly but also means that these topics will be managed independently, which can impact resource usage and system behavior.
+
+```ruby
+class App < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': 'localhost:9092',
+      'max.poll.interval.ms': 300_000,
+    }
+
+    config.shutdown_timeout = 60_000
+    config.max_wait_time = 5_000 # Default max_wait_time for all topics
+    config.max_messages = 50 # Default max_messages for all topics
+  end
+
+  routes.draw do
+    # This topic will use only defaults
+    topic :default_topic do
+      consumer DefaultConsumer
+    end
+
+    # This topic will use defaults that were not overwritten and special kafka level settings
+    topic :custom_topic do
+      consumer CustomConsumer
+      # Custom max_messages for this topic
+      max_messages 200
+      # It is important to remember that defaults are **not** merged, so things like
+      # `bootstrap.servers` need to be provided again
+      kafka(
+        'bootstrap.servers': 'localhost:9092',
+        'fetch.wait.max.ms': 200,
+        'queued.max.messages.kbytes': 50_000
+      )
+    end
+  end
+end
+```
 
 ### Parallel Processing
 
