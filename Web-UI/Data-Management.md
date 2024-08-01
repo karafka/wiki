@@ -39,6 +39,14 @@ For materialized topics, especially those holding aggregated statistics and metr
 
 - **Ensuring Data Integrity**: This system ensures that data across various versions remains consistent and reliable, essential for accurate data analysis and reporting.
 
+## Eventual Consistency of Web UI Data
+
+Karafka Web UI data is eventually consistent, meaning that while the system strives to keep the data current, there can be delays in metrics reporting. Most of the data presented in the Web UI is collected from consumer and producer processes, and their reporting depends on their current state.
+
+Under certain circumstances, such as heavy lags on multiple partitions, the data presented on the graphs may be outdated by a few minutes. This latency occurs because the consumer and producer processes may not immediately reflect the latest state of the system when they are under significant load.
+
+However, this delay is generally irrelevant when analyzing patterns and conducting general health assessments. The eventual consistency model ensures that, despite temporary delays, the data will ultimately reflect the accurate state of the system. This approach allows users to identify trends and monitor the overall health of their Kafka-based environment effectively, even if some metrics are momentarily lagging.
+
 ## Conclusion
 
 Karafka Web UI offers a robust, efficient, and reliable solution for monitoring Karafka-based environments. Its direct use of Kafka for data storage and sophisticated schema management and migration capabilities positions it as a powerful tool for users seeking to leverage Kafka within their applications.
