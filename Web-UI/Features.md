@@ -93,6 +93,18 @@ Karafka Data Explorer is an essential tool for users seeking to navigate and com
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />
 </p>
 
+## Search
+
+!!! Info "Pro Only Functionality"
+
+    This functionality is available only in our Pro offering.
+
+The Search feature is a tool that enables users to search and filter messages efficiently. This feature allows users to search within one or multiple partitions, start from a specific time or offset, apply custom matchers to payloads, keys, or headers, and use custom deserializers for data.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search1.png" alt="karafka web search view" />
+</p>
+
 ## Errors
 
 !!! Info "Additional Error Features in Pro"
