@@ -58,11 +58,11 @@ This feature has its own dedicated documentation that you can access [here](http
 
 This dashboard views show Karafka consumers' groups' health states with their lag aggregated information and basic trends.
 
-[Here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Health) you can learn more about the health information available in this dashboard view.
+[Here](https://karafka.io/docs/Pro-Web-UI-Health) you can learn more about the health information available in this dashboard view.
 
 ## Topics Insights
 
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](https://karafka.io/docs/Pro-Enhanced-Web-UI-Topics-Insights).
+The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](https://karafka.io/docs/Pro-Web-UI-Topics-Insights).
 
 ## Explorer
 

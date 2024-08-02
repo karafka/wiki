@@ -4,7 +4,7 @@ Karafka Pro is a commercial version of the open-source Karafka framework for bui
 
 Below you can find the list of the Pro features with their brief description:
 
-- [Enhanced Web UI](Pro-Enhanced-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
+- [Enhanced Web UI](Pro-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
 
 - [Transactions](Pro-Transactions) - Transactions ensure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, ensuring that either all succeed or none.
 
