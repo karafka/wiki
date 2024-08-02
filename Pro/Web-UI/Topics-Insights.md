@@ -52,6 +52,21 @@ Moreover, the Distribution tab features a graph that visually represents the dis
 - **Scalability Planning**: Identifying hot partitions allows for proactive scalability efforts, ensuring that the system can handle increases in load without performance degradation.
 - **Troubleshooting and Maintenance**: Uneven distribution can be a symptom of broader issues, such as configuration errors or network problems. Early detection enables quicker resolution.
 
+## Offsets
+
+The Offsets tab allows you to inspect all topic partitions' high and low watermark offsets. This feature is crucial for understanding your message flow in Kafka. By examining these offsets, you can determine the current position of consumers about the total available messages in each partition.
+
+Understanding offsets is useful in several scenarios:
+
+- **Lag Monitoring**: Helps identify how far behind consumers are in processing messages.
+- **Performance Analysis**: Assists in diagnosing performance issues by revealing partitions that may have unusually high or low offsets.
+- **Troubleshooting**: Aids in detecting potential problems in message processing and consumption.
+- **Distribution Monitoring**: Provides insights into how messages are distributed across partitions, helping identify imbalances and optimize resource allocation.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-offsets.png" />
+</p>
+
 ## Summary
 
 In summary, the Distribution Insights feature of the Karafka Pro Web UI is a powerful tool that empowers users with the necessary insights to manage, optimize, and troubleshoot Kafka topics effectively. By providing detailed configurations, replication status, and distribution analytics, it enables administrators to maintain a robust and efficient Kafka environment, thereby enhancing performance, scalability, and troubleshooting capabilities.

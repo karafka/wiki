@@ -50,7 +50,7 @@ This feature offers users a detailed look into each process's current state repo
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-details.png)
 
-### Consumers Commanding
+### Commanding
 
 This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Commanding).
 
