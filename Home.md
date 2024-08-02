@@ -115,7 +115,6 @@
 
 * [Features List](Pro-Features-List)
 * [Features Compatibility](Pro-Features-Compatibility)
-* [Commanding](Pro-Commanding)
 * [Transactions](Pro-Transactions)
 * [Offset Metadata Storage](Pro-Offset-Metadata-Storage)
 * [Virtual Partitions](Pro-Virtual-Partitions)
@@ -148,6 +147,7 @@
     * [Explorer](Pro-Web-UI#explorer)
     * [Sanitization](Pro-Web-UI-Sanitization)
     * [Topics Insights](Pro-Web-UI-Topics-Insights)
+    * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)
     * [DLQ / Dead](Pro-Web-UI#dlq-dead)
 
