@@ -280,7 +280,7 @@ end
 
 This configuration ensures that as soon as the end of a partition is reached, any accumulated messages are immediately processed, enhancing the system's responsiveness and efficiency.
 
-## Inline API based consumption
+## Inline API Based Consumption
 
 Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
 
@@ -307,3 +307,22 @@ puts "There were #{user_5_events.count} messages"
 ```
 
 You can read more about it [here](Pro-Iterator-API).
+
+## Avoiding Unintentional Overwriting of the Consumer Instance Variables
+
+When working with Karafka consumers, it is crucial to be aware of and avoid unintentionally overwriting certain instance variables used by the consumer instances. Overwriting these variables can lead to critical processing errors and result in issues such as `worker.process.error` visible in the web UI. Below are the primary instance variables used in consumers that you need to be cautious about:
+
+- `@id`: Represents the ID of the current consumer.
+- `@messages`: Stores the messages for the topic to which a given consumer is subscribed.
+- `@client`: Refers to the Kafka connection client.
+- `@coordinator`: Handles coordination of message processing.
+- `@producer`: Holds the instance of the producer.
+
+Accidentally overwriting any of these instance variables can disrupt the normal functioning of the consumer, leading to:
+
+- Inability to correctly process or retrieve messages.
+- Loss of connection to the Kafka server.
+- Failure in coordinating message processing.
+- Inability to produce messages properly.
+
+Such disruptions often manifest as "worker.process.error" in the web UI, indicating critical processing failures.
