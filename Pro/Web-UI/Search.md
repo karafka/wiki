@@ -197,7 +197,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search2.png)
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search3.png)
 
 The `.active?`` method enables or disables matchers for specific topics. This can be useful if certain matchers are only relevant to particular types of data or topics. By default, matchers are always active.
 
