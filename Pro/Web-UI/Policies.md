@@ -1,40 +1,72 @@
-Karafka's Web UI includes a feature known as Explorer. This utility enables users to investigate data directly from Kafka topics, providing a window into the stored information that can be invaluable for debugging, data analysis, and system monitoring.
+Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components.
 
-However, in the era of data protection and privacy, it's essential to ensure that sensitive information is not displayed indiscriminately. For this reason, the Explorer has been designed with data sanitization and filtering in mind. By wrapping the deserializers in a filtering layer, it is possible to sanitize or exclude portions of the payload from being presented, thus preventing the accidental display of sensitive data.
+This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
-This is particularly critical if your system is configured to use encryption. When encryption is enabled, none of the data is presented by default. This is a safeguard to prevent accidental exposure of encrypted data. However, there might be instances when you need to visualize non-sensitive parts of the payload. In such scenarios, partial sanitization can be used, allowing certain non-sensitive data to be deserialized and displayed while keeping sensitive elements secure.
+Data sanitization and filtering are integral to this engine, enabling the sanitization or exclusion of sensitive portions of payloads to prevent accidental exposure of sensitive information. When encryption is enabled, no data is displayed by default as a safeguard. However, partial sanitization can be applied to display non-sensitive parts of the payload, ensuring that only secure information is presented while sensitive elements remain protected.
 
 ## Usage
 
-Karafka's Web UI Explorer was designed to keep data privacy and security at its core. Ensuring selective visibility becomes paramount as we navigate the vast expanse of information stored in Kafka topics. Karafka achieves this via a two-tiered approach:
+Karafka's Web UI was designed to keep data privacy and security at its core. Ensuring selective visibility becomes paramount as we navigate the vast expanse of information stored in Kafka topics. Karafka achieves this via a three-tiered approach:
 
-- **Visibility Filtering**: At its basic level, the decision to display or mask fundamental components of a message is made. By using the `ui.visibility_filter` setting, users can dictate whether they want the entire payload, all headers, and the key (if provided) to be visible or hidden. This form of filtering provides an overarching control, allowing users, for instance, to completely obscure the payload while continuing to show headers and message key.
+- **Requests Policies**: The first level of control involves the ability to open particular pages within the Web UI. Configured via `ui.policies.requests`, a per-request policy engine can be used to both track and control access to specific URLs. This ensures that only authorized users can access certain parts of the interface, thereby providing a foundational layer of security and access management.
+
+- **Messages Policies**: At its basic level, the decision to display or mask fundamental components of a message is made. By using the `ui.policies.messages` setting, users can dictate whether they want the entire payload, all headers, and the key (if provided) to be visible or hidden. This form of filtering provides an overarching control, allowing users, for instance, to completely obscure the payload while continuing to show headers and message key.
 
 - **Partial Payload Sanitization**: For those seeking a more nuanced approach, Karafka's partial payload sanitization is the answer. This method enables granular control over the data's visibility. Instead of blanketing an entire message, it allows specific attributes within a deserialized message, such as an address or other sensitive information, to be masked. While ensuring a higher level of data security, this process necessitates additional effort and precision in its implementation.
 
 In essence, Karafka offers both a broad-stroke and a fine-tuned approach to data visibility, ensuring that while essential information remains accessible, sensitive data is securely tucked away.
 
-### Visibility Filtering
+### Requests Policies
 
-Two steps are needed to use your custom visibility filter:
+The Requests Policies feature in Karafka's Web UI provides a mechanism for controlling access to specific pages and functionalities within the Web UI on a per-request basis. Configured via `ui.policies.requests`, this policy engine allows the definition and enforcement of rules that determine which users can access particular URLs, ensuring a foundational layer of security and access management.
 
-1. A custom visibility filter needs to be created
-2. The defined visibility filter must replace the default one via the reconfiguration.
+To utilize the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
 
-Each visibility filter requires five methods to be present:
+
+Below is an example of how to define and configure a custom Requests Policy:
+
+```ruby
+class MyCustomRequestsPolicy
+  # @param env [Hash] rack env object that we can use to get request details
+  # @return [Boolean] should this request be allowed or not
+  def allow?(env)
+    # Example logic: Allow access only if the user is an admin
+    user = env['rack.session'][:user]
+    user && user.admin?
+  end
+end
+```
+
+Once your policy is ready, you need to replace the default one in the configuration as follows:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.ui.policies.requests = MyCustomRequestsPolicy.new
+end
+```
+
+### Messages Policies
+
+Two steps are needed to use your custom messages policies:
+
+1. A custom messages policy needs to be created
+2. The defined messages policy must replace the default one via the reconfiguration.
+
+Each messages policy requires six methods to be present:
 
 1. `#key?` - should the message key be presented
 1. `#headers?` - should the headers be visible
 1. `#payload?` - should the payload be visible
 1. `#download?` - should it be allowed to download this message raw payload
 1. `#export?` - should it be allowed to download the deserialized and sanitized payload as JSON
+1. `#republish?` - should it be allowed to repuliblish the message back to Kafka
 
 Each method receives a message (of type `::Karafka::Messages::Message`) as a parameter and returns a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible.
 
-Below, you can see an example of a custom visibility filter that hides all the information:
+Below, you can see an example of a custom messages policy that hides all the information:
 
 ```ruby
-class MyCustomVisibilityFilter
+class MyCustomMessagesPolicy
   def key?(_message)
     false
   end
@@ -54,15 +86,18 @@ class MyCustomVisibilityFilter
   def export?(message)
     false
   end
+
+  def republish?(message)
+    false
+  end
 end
 ```
 
-Once your filter is ready, you need to replace the default one in the configuration as follows:
+Once your policy is ready, you need to replace the default one in the configuration as follows:
 
 ```ruby
 Karafka::Web.setup do |config|
-  # Lower the cache to 1 minute
-  config.ui.visibility.filter = MyCustomVisibilityFilter.new
+  config.ui.policies.messages = MyCustomMessagesPolicy.new
 end
 ```
 

@@ -145,7 +145,7 @@
     * [Commanding](Pro-Web-UI-Commanding)
     * [Health](Pro-Web-UI-Health)
     * [Explorer](Pro-Web-UI#explorer)
-    * [Sanitization](Pro-Web-UI-Sanitization)
+    * [Policies](Pro-Web-UI-Policies)
     * [Topics Insights](Pro-Web-UI-Topics-Insights)
     * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)
