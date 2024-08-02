@@ -291,7 +291,7 @@ class ClusterXConsumer
 end
 ```
 
-You can read more about producing to multiple clusters [here](https://karafka.io/docs/Producing-messages#producing-to-multiple-clusters).
+You can read more about producing to multiple clusters [here](https://karafka.io/docs/Producing-Messages#producing-to-multiple-clusters).
 
 ## Dispatch and Marking Warranties
 

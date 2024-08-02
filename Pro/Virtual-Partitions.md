@@ -502,7 +502,7 @@ Karafka default [monitor](Monitoring-and-Logging) and the Web UI dashboard work 
 
 ## Shutdown and Revocation Handlers
 
-Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Consuming-messages#shutdown-and-partition-revocation-handlers).
+Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Consuming-Messages#shutdown-and-partition-revocation-handlers).
 
 For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
