@@ -190,12 +190,14 @@ Once you have defined your custom matcher, you must configure Karafka Web UI to 
 Karafka::Web.setup do |config|
   config.ui.search.matchers = [
     JsonFieldIncludes,
-    Matchers::RawPayloadIncludes,
-    Matchers::RawKeyIncludes,
-    Matchers::RawHeaderIncludes
+    Karafka::Web::Pro::Ui::Lib::Search::Matchers::RawPayloadIncludes,
+    Karafka::Web::Pro::Ui::Lib::Search::Matchers::RawKeyIncludes,
+    Karafka::Web::Pro::Ui::Lib::Search::Matchers::RawHeaderIncludes
   ]
 end
 ```
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search2.png)
 
 The `.active?`` method enables or disables matchers for specific topics. This can be useful if certain matchers are only relevant to particular types of data or topics. By default, matchers are always active.
 
@@ -228,7 +230,6 @@ end
 - **Performance**: If your custom matcher involves deserialization or complex processing, be mindful of the impact of the performance. Deserialization can be resource-intensive, so ensure your matcher is optimized for performance.
 
 - **Error Handling**: Ensure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it’s crucial to catch and manage potential errors within the matcher.
-
 
 ## Summary
 
