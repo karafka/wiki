@@ -34,6 +34,13 @@ end
   end
 end
 
+Dir["Pro/Web-UI/**.md"].each do |file|
+  basename = File.basename(file)
+  target = "#{Dir.pwd}/gh/Pro-Web-UI-#{basename}"
+
+  FileUtils.cp(file, target)
+end
+
 # Move this to root without a namespace.
 # In this case namespace is used only as a organization layer
 %w[
