@@ -1,5 +1,9 @@
 Karafka Pro offers powerful capabilities for directly managing consumer processes. These management features, accessible via the Web UI, allow administrators to interact with the consumer processes in real time to maintain optimal performance and address issues swiftly. Commanding includes probing consumers for detailed state information, quieting consumers to reduce activity, and stopping them when necessary.
 
+!!! Hint "Quiet and Stop Commands Limitation"
+
+    Quiet and Stop commands do not function with Karafka processes operating in embedded or swarm mode. This limitation arises because, in these modes, the Karafka process itself is not directly responsible for its state management.
+
 ## Configuration
 
 Commanding is **turned on by default**. During each consumer process startup, it initiates a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and probing consumers for backtraces.
