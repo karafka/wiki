@@ -143,7 +143,7 @@ If you want to add some extra information or change anything in the message that
 
 It accepts two arguments:
 
-- `dql_message` - a hash with all the details of the DLQ message that will be dispatched
+- `dlq_message` - a hash with all the details of the DLQ message that will be dispatched
 - `skippable_message` - Karafka message that we skip via the DLQ feature
 
 Let's say you want to add some headers and alter the payload. You can do it in the following way:
