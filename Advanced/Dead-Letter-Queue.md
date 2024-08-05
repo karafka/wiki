@@ -368,7 +368,7 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - need to preserve the ordering of messages,
 - need an ability to write complex context and error-type aware strategies for error handling,
 - want to have a DLQ topic with several partitions.
-- want to alter `payload`, `headers`, `key` or any other attributes of the DQL message.
+- want to alter `payload`, `headers`, `key` or any other attributes of the DLQ message.
 - want to delay processing of data dispatched to the DLQ topic.
 
 ## Example Use Cases
