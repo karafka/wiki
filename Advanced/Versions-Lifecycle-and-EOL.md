@@ -12,14 +12,16 @@ Karafka and its components utilize a versioning strategy that does not strictly 
 
 This versioning system is designed to provide clarity and predictability, ensuring developers can understand the impact of upgrading Karafka and its components. By informing you about the nature of each release, we aim to help you make informed decisions regarding when and how to update your versions.
 
-## Karafka Versions Support
+## Karafka and Web UI Versions Support
 
-Karafka versions or release series are categorized below into the following phases:
+Karafka and its Web UI versions or release series are categorized below into the following phases:
 
 - **Active**: Branch receives general bug fixes, security fixes, and improvements.
 - **Maintenance**: Only security and critical bug fixes are backported to this branch.
 - **EOL** (end-of-life): Branch is no longer supported and receives no fixes. No further patch release will be released.
 - **Preview**: Only previews or release candidates have been released for this branch so far.
+
+### Karafka Framework
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
@@ -29,6 +31,21 @@ Karafka versions or release series are categorized below into the following phas
 | 2.1     | EOL         | 2024-05-01 |
 | 2.0     | EOL         | 2024-02-01 |
 | 1.x     | EOL         | 2023-02-01 |
+
+### Karafka Web UI
+
+| Version | Status      | EOL date   |
+|---------|-------------|------------|
+| 0.10    | Preview     | N/A        |
+| 0.9     | Active      | N/A        |
+| 0.8     | Maintenance | 2024-08-31 |
+| 0.7     | EOL         | 2024-05-01 |
+| 0.6     | EOL         | 2023-12-01 |
+| 0.5     | EOL         | 2023-10-01 |
+| 0.4     | EOL         | 2023-08-01 |
+| 0.3     | EOL         | 2023-07-01 |
+| 0.2     | EOL         | 2023-05-01 |
+| 0.1     | EOL         | 2023-04-01 |
 
 ## Ruby Versions Support
 
