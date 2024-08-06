@@ -157,10 +157,7 @@ Setting such as above will allow Karafka to manage the topic while instructing K
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
-Please keep in mind two things, though:
-
-1. Karafka currently does **not** update settings different than the partition count.
-2. Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
+Please keep in mind that opics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
 ## Limitations and other info
 
@@ -172,3 +169,4 @@ Please keep in mind two things, though:
 - Topics commands are **not** transactional. It means that the state application may be partial in case of errors.
 - Topics commands **are** idempotent. Broken set of operations can be retried after fixes without worry.
 - Karafka will **never** alter any topics that are not defined in the routing.
+- `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
