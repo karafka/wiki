@@ -73,6 +73,10 @@ end
 
 When that happens, Karafka will retry two times and continue processing despite errors.
 
+!!! warning "Critical Configuration Notice"
+
+    Setting the `topic` value to `nil` when disabling dispatch will fully disable the Dead Letter Queue. If you intend to turn off dispatch but still want DLQ functionality, ensure the `topic` value is set to `false` instead of `nil`. This ensures that DLQ handling remains active while preventing message dispatch.
+
 ## Dispatch Warranties
 
 Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
