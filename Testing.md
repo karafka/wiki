@@ -323,3 +323,19 @@ end
 !!! note ""
 
     If you're seeking guidance on testing transactions with Minitest, it's recommended to consult the RSpec transactions testing documentation, as the testing methods are similar for both.
+
+## Limitations
+
+' karafka-testing' primarily aims to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
+
+However, it is important to be aware of the limitations of `karafka-testing`:
+
+1. **No Real Kafka Interactions**: While `karafka-testing` effectively mocks the Kafka interactions, it does not replicate the behavior of a real Kafka cluster. As a result, certain edge cases and Kafka-specific behaviors may not be accurately represented in your tests.
+
+1. **No Admin API Testing**: The `karafka-testing` library does not support testing of Kafka Admin API functionalities. If your application relies on Admin API operations, such as topic management or cluster metadata retrieval, you must perform these tests against a real Kafka cluster.
+
+1. **No Web UI Interactions**: Any web UI interactions that might rely on actual Kafka data or state cannot be tested using `karafka-testing`. This limitation means that end-to-end UI component testing will still require a live Kafka setup.
+
+1. **Transactional Testing**: While `karafka-testing` supports transactional message production, it may not fully capture all the intricacies of Kafka transactions in a real cluster environment. It's important to be mindful of potential discrepancies between mocked transactions and their real-world counterparts.
+
+1. **Batch Size Ignored**: The `karafka-testing` library does not respect the `max_messages` setting configured for topics in the `karafka.rb` routes. It simply accumulates and consumes all messages sent to it during testing, bypassing the actual fetching engine of Karafka. This means that the behavior of batch processing may not be accurately reflected in your tests, as the library will consume all produced messages regardless of the configured batch size.
