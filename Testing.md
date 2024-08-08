@@ -326,7 +326,7 @@ end
 
 ## Limitations
 
-' karafka-testing' primarily aims to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
+`karafka-testing` primarily aims to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
 
 However, it is important to be aware of the limitations of `karafka-testing`:
 
