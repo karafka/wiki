@@ -45,6 +45,10 @@ The virtual `partitioner` requires to respond to a `#call` method, and it accept
 
 The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
+!!! Warning "User-Handled Errors in Partitioner"
+
+    Please be aware that handling errors within the `partitioner` is solely the user's responsibility. Since partitioning occurs before the work execution, the full Karafka error recovery flow does not cover it. This means any exceptions or errors in your custom partitioning logic need to be managed and mitigated on your end to ensure the smooth operation of your application. Please do so to avoid unexpected behavior and potential data processing issues.
+
 ## Available Options
 
 Below is a list of arguments the `#virtual_partitions` topic method accepts.
