@@ -47,7 +47,7 @@ The return value of this partitioner needs to classify messages that should be g
 
 !!! Warning "User-Handled Errors in Partitioner"
 
-    Please be aware that handling errors within the `partitioner` is solely the user's responsibility. Since partitioning occurs before the work execution, the full Karafka error recovery flow does not cover it. This means any exceptions or errors in your custom partitioning logic need to be managed and mitigated on your end to ensure the smooth operation of your application. Please do so to avoid unexpected behavior and potential data processing issues.
+    Handling errors within the `partitioner` is primarily the user's responsibility. However, Karafka will catch partitioning errors. Suppose an error occurs even once for a given message in a batch. In that case, Karafka will emit an error via `error.occurred` and will proceed by assigning all messages from that batch to a single virtual partition. Despite this safeguard, users must manage and mitigate any exceptions or errors in their custom partitioning logic to ensure their application's smooth operation and prevent unexpected behavior and potential data processing issues.
 
 ## Available Options
 

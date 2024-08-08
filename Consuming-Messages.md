@@ -326,3 +326,96 @@ Accidentally overwriting any of these instance variables can disrupt the normal 
 - Inability to produce messages properly.
 
 Such disruptions often manifest as "worker.process.error" in the web UI, indicating critical processing failures.
+
+## Reaching the End of a Partition (EOF)
+
+Karafka includes dedicated handling for end-of-partition (EOF) scenarios, allowing you to execute specific logic when the end of a partition is reached. For this feature to work, you must enable the `enable.partition.eof` kafka setting in your configuration.    
+
+### Enabling EOF Handling
+
+To use the EOF features, ensure that the `enable.partition.eof` option is set to `true` in your Karafka configuration:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'enable.partition.eof': true
+    }
+  end
+end
+```
+
+### Implementing EOF Handling
+
+EOF signaling can happen in two ways:
+
+- Via `#eofed` Method: This method is triggered when no more messages are polled.
+- Alongside `#consume` Method: EOF can be signaled together with messages if some messages were polled.
+
+!!! Tip "Full Coverage of EOF"
+
+    To ensure full coverage of EOF scenarios, both the `#eofed` method and the `#eofed?` method should be used. This ensures that EOF is handled whether it occurs with or without new messages.
+
+#### `#eofed` Method
+
+Define the `#eofed` method in your consumer to handle cases where no more messages are polled alongside the EOF information:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      # Process each message
+      puts message.payload
+    end
+
+    # Check if EOF was signaled alongside messages
+    if eofed?
+      puts "Reached the end of the partition with messages."
+      # Implement any additional logic needed when EOF is reached with messages
+    end
+  end
+
+  def eofed
+    puts "Reached the end of the partition with no more messages."
+    # Implement any additional logic needed when EOF is reached
+  end
+end
+```
+
+#### Handling EOF in `#consume` Method
+
+If EOF is signaled together with messages, the `#eofed` method will not be triggered. In such cases, does Karafka provide a `#eofed?` method that can be used to detect that EOF has been signaled alongside the messages.
+
+The `#eofed?` method allows you to detect EOF within the `#consume` method:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      # Process each message
+      puts message.payload
+    end
+
+    # Check if EOF was signaled alongside messages
+    if eofed?
+      puts "Reached the end of the partition with messages."
+      # Implement any additional logic needed when EOF is reached with messages
+    end
+  end
+end
+```
+
+### Use Cases for EOF Handling
+
+Knowing when a partition has reached EOF can be helpful in several scenarios:
+
+- **Batch Processing Completion**: When processing data in batches, knowing when you have processed all available data can be beneficial. This allows you to finalize batch operations, such as committing transactions or aggregating results.
+
+- **Data Synchronization**: In cases where you need to synchronize data between different systems, knowing the EOF can signal that all current data has been consumed, and it's safe to start a new synchronization cycle.
+
+- **Resource Cleanup**: After reaching the end of a partition, you may want to release or reallocate resources that are no longer needed, optimizing your application's performance.
+
+- **Logging and Monitoring**: Logging EOF events can be useful for monitoring data consumption and detecting when there are no more messages to process, which can help debugging and performance tuning.
+
+- **Triggering Downstream Processes**: EOF can be a signal to trigger downstream processes that depend on the completion of data consumption, ensuring that subsequent operations only start once all relevant data has been processed.
