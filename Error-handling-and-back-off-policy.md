@@ -202,3 +202,22 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
 Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. If this value is not set, Karafka will wait indefinitely for consumers to finish processing given messages.
 
 Setting this value high enough is highly recommended so that Karafka won't stop itself in the middle of some non-transactional partially finished operations.
+
+## Internal Framework Errors
+
+Karafka handles framework and Kafka-related errors on several layers, ensuring robust and reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
+
+### Error Recovery and Retry Mechanisms
+
+Karafka employs multiple layers of error handling to manage issues seamlessly:
+
+- **Framework-Level Recovery**: Errors related to Karafka's internal operations are handled within the framework. This includes automatic retries and recovery procedures to maintain the stability of the message processing flow.
+- **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka ensures that these errors do not disrupt the overall processing pipeline.
+
+### Final Recovery Strategy
+
+In cases of unexpected errors within the listeners' loops, Karafka applies a final recovery strategy. This strategy involves resetting the client connection and restarting all associated resources. While this mechanism ensures continued operation, it is considered the last layer of defense.
+
+!!! Warning "User Responsibility for Listener Errors"
+
+    Users should **not** rely on the final recovery strategy as a primary error-handling method. Any errors originating from listeners should be deeply investigated and resolved to prevent recurring issues. Proper error management at the listener level is crucial for maintaining the efficiency and reliability of your Karafka application.
