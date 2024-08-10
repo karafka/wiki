@@ -333,7 +333,7 @@ Karafka includes dedicated handling for end-of-partition (EOF) scenarios, allowi
 
 ### Enabling EOF Handling
 
-To use the EOF features, ensure that the `enable.partition.eof` option is set to `true` in your Karafka configuration:
+To use EOF features, ensure that both the `enable.partition.eof` option and the `eofed` setting are configured properly:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -342,6 +342,14 @@ class KarafkaApp < Karafka::App
       'bootstrap.servers': '127.0.0.1:9092',
       'enable.partition.eof': true
     }
+  end
+
+  routes.draw do
+    topic 'events' do
+      consumer EventsConsumer
+      # Ensure EOF handling is activated
+      eofed true
+    end
   end
 end
 ```
