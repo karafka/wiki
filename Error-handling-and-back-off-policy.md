@@ -74,14 +74,19 @@ It's crucial to understand how Karafka handles retries for different methods in 
       <td>No</td>
       <td>Since this method is invoked frequently, retries are unnecessary and could lead to inefficiencies and redundancy.</td>
     </tr>
+    <tr>
+      <td><code>#eofed</code></td>
+      <td>No</td>
+      <td>This method is triggered when the end of a partition is reached. Since it's a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
+    </tr>
   </tbody>
 </table>
 
 It's crucial to understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
 
-It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, and `#tick`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable. 
+It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable. 
 
-Errors in the other methods (`#revoked`, `#shutdown`, and `#tick`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
+Errors in the other methods (`#revoked`, `#shutdown`, `#tick` and `#eofed`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
 
 ### Altering the Consumer Behaviour upon Reprocessing
 
