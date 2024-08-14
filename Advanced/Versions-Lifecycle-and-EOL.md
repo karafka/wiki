@@ -71,9 +71,10 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 7.1     | Active      | N/A        |
-| 7.0     | Active      | N/A        |
-| 6.1     | Active      | N/A        |
+| 7.2     | Active      | 2026-09-30 |
+| 7.1     | Active      | 2025-11-31 |
+| 7.0     | Active      | 2025-05-31 |
+| 6.1     | Maintenance | 2024-12-31 |
 | 5.2     | EOL         | 2023-12-31 |
 | 4.2     | EOL         | 2021-05-01 |
 
