@@ -28,9 +28,9 @@ In WaterDrop, errors encountered during the message-handling process can be cate
 
 - **Delivery Failures**: This type of error is specifically related to the non-delivery of a message. A delivery failure occurs when a message, identifiable by its label, is retried several times but ultimately fails to be delivered. After a certain period, WaterDrop determines that it is no longer feasible to continue attempting delivery. This error signifies a definitive failure in the message delivery process, marking the end of the message's lifecycle with a non-delivery status.
 
-- **ProduceMany** Errors: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` key with appropriate delivery handles for successfully enqueuing messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
+- **ProduceMany** Errors: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` method with appropriate delivery handles for successfully enqueuing messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
 
-- Transactional **ProduceMany** Errors: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` key will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
+- Transactional **ProduceMany** Errors: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
 
 Each error type plays a crucial role in understanding and managing the complexities of message handling in WaterDrop, providing precise categorization for troubleshooting and system optimization.
 
@@ -69,6 +69,11 @@ Each error type plays a crucial role in understanding and managing the complexit
             <td><code>WaterDrop::Errors::ProduceManyError</code></td>
             <td>Partially Yes</td>
             <td>Raised during batch dispatches with full queues. Some messages may be sent successfully (see <code>#dispatched</code> for details), while others fail. The <code>#cause</code> method provides the specific error reason.</td>
+        </tr>
+        <tr>
+            <td>Transactional <code>WaterDrop::Errors::ProduceManyError</code></td>
+            <td>Yes</td>
+            <td>Raised during transactional batch dispatches. If a failure occurs, no messages are sent, and a rollback is performed. The <code>#dispatched</code> method will be empty, as either all messages are successfully enqueued, or none are. The <code>#cause</code> method provides the specific error reason.</td>
         </tr>
     </tbody>
 </table>
