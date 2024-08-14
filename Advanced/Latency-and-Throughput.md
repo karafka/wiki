@@ -117,7 +117,6 @@ class App < Karafka::App
     config.max_messages = 50 # Default max_messages for all topics
   end
 end
-
 ```
 
 ### Asynchronous Producing
