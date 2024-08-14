@@ -88,6 +88,38 @@ Choosing the right acks setting depends on your application's requirements:
 
     Using [variants](https://karafka.io/docs/WaterDrop-Variants/), you can customize `request.required.acks` within the same producer instance. This feature allows different configuration settings per topic while sharing TCP connections, optimizing producer efficiency.
 
+#### `socket.nagle.disable`
+
+The `socket.nagle.disable` parameter in librdkafka controls the use of the Nagle algorithm for Kafka broker connections. The Nagle algorithm is a TCP optimization that reduces the number of small packets sent over the network by combining them into larger packets. While this can improve network efficiency, it also introduces latency as small messages wait to be sent together.
+
+- `true`: Disables the Nagle algorithm, ensuring messages are sent immediately without waiting to combine them into larger packets. This setting can significantly reduce latency, particularly in scenarios with many small messages, but may increase network overhead due to more frequent transmissions.
+  
+- `false`: Enables the Nagle algorithm, which can reduce the number of packets sent by aggregating smaller messages. This setting may improve overall throughput by reducing network load but at the cost of slightly higher latency.
+
+When configuring `socket.nagle.disable`, consider your application's priorities:
+
+- **Low Latency Needs**: Set `socket.nagle.disable` to `true` to minimize latency, ensuring that messages are sent as quickly as possible.
+  
+- **Throughput Optimization**: Set `socket.nagle.disable` to `false` to leverage the Nagle algorithm for reduced network traffic and improved throughput, if your application can tolerate the slight increase in latency.
+
+Here's an example configuration:
+
+```ruby
+class App < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': 'localhost:9092',
+      'socket.nagle.disable': true
+    }
+
+    config.shutdown_timeout = 60_000
+    config.max_wait_time = 5_000 # Default max_wait_time for all topics
+    config.max_messages = 50 # Default max_messages for all topics
+  end
+end
+
+```
+
 ### Asynchronous Producing
 
 Asynchronous dispatch reduces waiting time for acknowledgments, allowing your application to continue processing tasks immediately. This significantly lowers end-to-end latency within your application and increases WaterDrop throughput. 
