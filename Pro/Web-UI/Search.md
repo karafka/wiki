@@ -1,7 +1,3 @@
-!!! warning "Feature Under Development"
-
-    Please note that this feature is under development and has yet to be released. Stay tuned for updates.
-
 The Search feature is a tool that enables users to search and filter messages efficiently. This feature allows users to search within one or multiple partitions, start from a specific time or offset, apply custom matchers to payloads, keys, or headers, and use custom deserializers for data.
 
 ## Usage
