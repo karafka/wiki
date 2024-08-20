@@ -2416,7 +2416,7 @@ Detailed instructions on how to configure this can be found in the Karafka docum
 
 Yes. Karafka provides an API for visibility filtering, which allows you to decide what to display, and whether options to download payloads and JSON versions should be usable. Additionally, you can sanitize certain fields from being presented.
 
-For detailed information, refer to the [Pro Enhanced Web UI Policies documentation](https://karafka.io/docs/Pro-Web-UI-Policies/#visibility-policies).
+For detailed information, refer to the [Pro Enhanced Web UI Policies documentation](https://karafka.io/docs/Pro-Web-UI-Policies/).
 
 ## What does the `strict_topics_namespacing` configuration setting control?
 
