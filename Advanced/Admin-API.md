@@ -338,6 +338,10 @@ end
 
 ## Renaming a Consumer Group
 
+!!! Warning "Never rename active consumer groups"
+
+    This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
+
 The `rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
 
 ```ruby
@@ -349,10 +353,6 @@ Karafka::Admin.rename_consumer_group(
 ```
 
 When using `rename_consumer_group`, the method ensures that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
-
-!!! Warning "Never rename active consumer groups"
-
-    This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
 
 !!! Tip "Offset Merger with Existing Consumer Groups"
 
