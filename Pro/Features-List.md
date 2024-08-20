@@ -38,6 +38,10 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Multiplexing](Pro-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 
+- [Piping](Pro-Piping) - Feature allowing applications to forward processing results seamlessly to subsequent stages or other applications.
+
+- [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, ensuring consistent and reliable execution.
+
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, ensuring resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
