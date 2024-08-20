@@ -1,6 +1,6 @@
 Karafka's Routing Patterns is a powerful feature that offers flexibility in routing messages from various topics, including topics created during the runtime of Karafka processes. This feature allows you to use regular expression (regexp) patterns in routes. When a matching Kafka topic is detected, Karafka will automatically expand the routing and start consumption without additional configuration. This feature greatly simplifies the management of dynamically created Kafka topics.
 
-## How it works
+## How It Works
 
 Routing Patterns is not just about using regex patterns. It's about the marriage of regexp and Karafka's topic routing system.
 
