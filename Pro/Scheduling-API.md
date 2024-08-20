@@ -133,6 +133,12 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
             <td>Executed when new periodic jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
         </tr>
         <tr>
+            <td><code>#schedule_eofed</code></td>
+            <td>Array with eofed jobs</td>
+            <td>No</td>
+            <td>Executed when new eofed jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
+        </tr>
+        <tr>
             <td><code>#manage</code></td>
             <td>None</td>
             <td>No</td>
