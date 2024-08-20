@@ -2,7 +2,7 @@ The routing engine provides an interface to describe how messages from all the t
 
 Due to the dynamic nature of Kafka, you can use multiple configuration options; however, only a few are required.
 
-## Routing DSL organization
+## Routing DSL Organization
 
 Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it too as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
 
@@ -15,7 +15,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 Karafka provides two ways of defining topics on which you want to listen:
 
-### Single consumer group with multiple topics mode
+### Single Consumer Group with Multiple Topics Mode
 
 In this mode, Karafka will create a single consumer group to which all the topics will belong.
 
@@ -39,7 +39,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Multiple consumer groups mode
+### Multiple Consumer Groups Mode
 
 In this mode, Karafka will use a single consumer group per each of the topics defined within a single `#consumer_group` block.
 
@@ -69,7 +69,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Multiple subscription groups mode
+### Multiple Subscription Groups Mode
 
 Karafka uses a concept called `subscription groups` to organize topics into groups that can be subscribed to Kafka together. This aims to preserve resources to achieve as few connections to Kafka as possible.
 
@@ -215,7 +215,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Topic level options
+## Topic Level Options
 
 There are several options you can set inside of the ```topic``` block. All of them except ```consumer``` are optional. Here are the most important once:
 
@@ -263,6 +263,52 @@ class KarafkaApp < Karafka::App
       active false
       deserializers(
         payload: EventsDeserializer.new
+      )
+    end
+  end
+end
+```
+
+## Kafka Scope Configuration Reuse
+
+Karafka uses the' inherit' flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
+
+This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By leveraging the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'auto.offset.reset': 'earliest'
+    }
+  end
+
+  routes.draw do
+    # Topic that inherits base kafka settings and adds a specific one
+    topic :example1 do
+      consumer ExampleConsumer1
+      kafka(
+        'enable.partition.eof': true,
+        inherit: true
+      )
+    end
+
+    # Topic with its own kafka settings without inheritance
+    topic :example2 do
+      consumer ExampleConsumer2
+      kafka(
+        'bootstrap.servers': '127.0.0.1:9092',
+        'enable.partition.eof': true
+      )
+    end
+
+    # Another topic that inherits base kafka settings and adds a specific one
+    topic :example3 do
+      consumer ExampleConsumer3
+      kafka(
+        'fetch.message.max.bytes': 10_000_000,
+        inherit: true
       )
     end
   end
