@@ -34,7 +34,10 @@ class KarafkaApp < Karafka::App
         max_retries: 2,
         # Apply the independent approach for the DLQ recovery. More in the docs below
         # It is set to false by default
-        independent: false
+        independent: false,
+        # Should the offset of dispatched DLQ message be marked as consumed
+        # This is true by default except when using manual offset management
+        mark_after_dispatch: true
       )
     end
   end
@@ -46,6 +49,10 @@ Once enabled, after the defined number of retries, problematic messages will be 
 !!! Tip "Advanced DLQ Management in Karafka Pro"
 
     If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
+
+!!! Warning "Default Behavior with `manual_offset_management`"
+
+    When `manual_offset_management` is enabled, the `mark_after_dispatch` option is set to `false` by default. This means that messages moved to the Dead Letter Queue (DLQ) will not have their offsets automatically marked as consumed. You need to handle offset marking manually or set `mark_after_dispatch` to `true` explicitly to ensure proper message acknowledgment and avoid reprocessing the same message repeatedly.
 
 ## DLQ Configuration Options
 
@@ -84,6 +91,11 @@ The table below contains options the `#dead_letter_queue` routing method accepts
       <td><code>marking_method</code></td>
       <td>Symbol (<code>:mark_as_consumed</code> or <code>:mark_as_consumed!</code>)</td>
       <td>Describes whether marking on DLQ should be async or sync (async by default).</td>
+    </tr>
+    <tr>
+      <td><code>mark_after_dispatch</code></td>
+      <td>Boolean</td>
+      <td>Controls whether the message offset is marked as consumed after it's moved to the DLQ. When <code>true</code> (default for non-MOM), the offset is committed, ensuring smooth continuation of message processing. By default, it is set to <code>false</code> when <code>manual_offset_management(true)</code> is used.</td>
     </tr>
   </tbody>
 </table>

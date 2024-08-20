@@ -336,6 +336,28 @@ end
 
 - **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
 
+## Renaming a Consumer Group
+
+The `rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
+
+```ruby
+Karafka::Admin.rename_consumer_group(
+  'old_group_name',
+  'new_group_name',
+  ['topic1', 'topic2']
+)
+```
+
+When using `rename_consumer_group`, the method ensures that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
+
+!!! Warning: Avoid Using on Running Consumer Groups
+
+    This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
+
+!!! Tip: Offset Merger with Existing Consumer Groups
+
+    If the new consumer group already exists, the offsets from the old group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
+
 ## Deleting a Consumer Group
 
 !!! warning "Never delete active consumer groups"
