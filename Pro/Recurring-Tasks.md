@@ -4,6 +4,28 @@
 
 This feature provides a mechanism for scheduling and managing recurring tasks within Kafka-based applications. It allows you to define tasks that run at specified intervals, using cron-like syntax, ensuring that essential tasks are executed at the right time without manual intervention. This feature uses Kafka as the state store, so no extra database or third-party components are needed.
 
+```ruby
+# Example schedule for recurring tasks and events
+Karafka::Pro::RecurringTasks.define('1.0.0') do
+  schedule(id: 'daily_report', cron: '0 0 * * *') do
+    DailyReportJob.perform_async
+  end
+
+  schedule(id: 'cleanup', cron: '0 2 * * 7') do
+    CleanupJob.perform_async
+  end
+
+  # Executed tasks can also be events, they do not have to be jobs per-se
+  schedule(id: 'user_activity_summary', cron: '0 8 * * *') do
+    Karafka.producer.produce_sync(
+      topic: 'user_activities',
+      payload: { event: 'daily_summary', date: Date.today.to_s }.to_json,
+      key: 'user_activity_summary'
+    )
+  end
+end
+```
+
 ## How Does It Work?
 
 Recurring Tasks use Kafka to manage scheduled tasks efficiently without needing third-party databases.
@@ -152,7 +174,42 @@ In this example:
 
 ## Configuration
 
-TBA
+The configuration for Recurring Tasks in Karafka is designed to be straightforward yet flexible. It allows you to fine-tune the behavior of your scheduled tasks to meet your application's specific needs.
+
+The configuration for Recurring Tasks is done in the Karafka application's setup block. Here's how you might configure some basic settings:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other configurations...
+    
+    # Configuring Recurring Tasks
+    config.recurring_tasks.group_id = 'custom_group_id'
+    # Run the scheduler every 10 seconds
+    config.recurring_tasks.interval = 10_000
+    # Disable logging of task executions
+    config.recurring_tasks.logging = false
+
+    # You can also reconfigure used topics names
+    config.recurring_tasks.topics.schedules = 'recurring_schedules'
+    config.recurring_tasks.topics.logs = 'recurring_logs'
+  end
+end
+```
+
+### Key Configuration Options
+
+- `group_id`: Defines the consumer group ID used for the recurring tasks. This allows you to isolate these tasks within a specific group.
+
+- `producer`: Specifies the Kafka producer used for sending recurring tasks messages, like schedule updates and logs. Defaults to `Karafka.producer`.
+
+- `interval`: Determines the interval (in milliseconds) the scheduler will run to check for tasks that must be executed. The default is 15,000 milliseconds (15 seconds).
+
+- `logging`: Enables or disables the logging of task execution details. If set to true (the default), Karafka will log each task's execution, including both successful and failed attempts.
+
+- `topics.schedules`: Specifies the Kafka topic used for storing and managing the task schedules. By default, this is set to `karafka_recurring_tasks_schedules`, but you can customize it to any topic name that suits your application's needs.
+
+- `topics.logs`: Specifies the Kafka topic used for logging the execution of tasks. By default, this is set to `karafka_recurring_tasks_logs`. This topic stores logs of both successful and failed task executions, allowing you to monitor task performance and troubleshoot issues.
 
 ## Recurring Tasks Management
 
@@ -267,7 +324,15 @@ end
 
 ## Execution Modes
 
-TBA
+In larger setups, it's advisable to run a dedicated consumer process for executing recurring tasks and managing the Web UI (if used) to prevent potential saturation with other workloads.
+
+By isolating the recurring tasks execution in its own consumer process, you ensure that these tasks do not compete with other consumers for resources, which can be particularly important in high-throughput environments. This dedicated process will handle all scheduling and execution, leaving other consumers free to manage their specific workloads.
+
+Karafka provides CLI flag to facilitate running only dedicated consumer groups:
+
+```
+bundle exec karafka server --include-consumer-groups karafka_web,karafka_recurring_tasks
+```
 
 ## Testing
 
