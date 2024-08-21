@@ -6,6 +6,10 @@ This page exists because of our commitment to security, compliance, and transpar
 
     This SBOM explicitly contains only the Karafka ecosystem's runtime dependencies. This document does not include development and test dependencies, which are crucial during the build and testing phases but are not required for the software's operation.
 
+!!! info "Version-Specific SBOM Details"
+
+    This SBOM reflects the components used in the most recent versions of all ecosystem components within Karafka. It is important to note that older versions may have different dependencies.
+
 !!! tip "License Variability in OSS Dependencies"
 
     Please be aware that the license status of the dependencies within the Karafka ecosystem may change over time due to the dynamic nature of open-source software (OSS) and dependency management. While we strive to keep this SBOM as accurate and up-to-date as possible, it represents a best-effort snapshot. For those seeking to construct a comprehensive and current SBOM for their projects, incorporating all dependencies accurately, we recommend utilizing tools such as [Mend.io](https://www.mend.io/open-source-license-compliance/). Mend.io can help automate the creation of a detailed SBOM, ensuring it reflects the complete state of your target software, including any license changes in its dependencies.
@@ -154,15 +158,41 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>
-      bootstrap
+      fugit
     </td>
     <td>
-      5.2.3
+      All
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/twbs/bootstrap/blob/main/LICENSE">MIT</a>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/floraison/fugit/blob/master/LICENSE.txt">MIT</a>
     </td>
-    <td>Twitter, Inc.</td>
+    <td>John Mettraux</td>
+  </tr>
+
+  <tr>
+    <td>
+      et-orbi
+    </td>
+    <td>
+      All
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/floraison/et-orbi/blob/master/LICENSE.txt">MIT</a>
+    </td>
+    <td>John Mettraux</td>
+  </tr>
+
+  <tr>
+    <td>
+      raabro
+    </td>
+    <td>
+      All
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/floraison/raabro/blob/master/LICENSE.txt">MIT</a>
+    </td>
+    <td>John Mettraux</td>
   </tr>
 
   <tr>

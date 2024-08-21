@@ -205,7 +205,46 @@ If you don't specify a version, Karafka will operate without this safeguard. Reg
 
 ## Tasks Execution Logging
 
-TBA
+By default, after each task is executed, Karafka produces a log entry in the recurring tasks logs topic. This log entry is created regardless of whether the task execution was successful or failed. 
+
+### Benefits of Task Execution Logging
+
+- **Auditability**: Logging each task execution provides a comprehensive audit trail, allowing you to track when tasks were executed and their outcomes. This is crucial for maintaining transparency and accountability in your system.
+  
+- **Monitoring and Debugging**: The log entries enable effective monitoring and debugging of task executions. By analyzing these logs, you can identify patterns of failures or performance issues and address them proactively.
+
+- **Operational Insights**: The logs offer valuable insights into the operational efficiency of your recurring tasks, helping you optimize schedules and improve overall system performance.
+
+### Logging Details
+
+- **Successful Executions**: For tasks that are completed successfully, the log will record essential details such as task ID, execution time, and status.
+
+- **Failed Executions**: In the event of a task failure, Karafka will record the failure status in the logs. However, it will not capture detailed error information, such as backtraces, in these logs. Instead, errors are published through Karafka's regular instrumentation pipeline, allowing detailed error tracking and handling through your existing monitoring tools.
+
+Karafka's Web UI error tracking capabilities will automatically record and display failed task error details, similar to any other errors encountered.
+
+### Viewing Execution Logs
+
+Execution logs for your recurring tasks can be accessed in two primary ways:
+
+1. **Web UI Explorer**: The Karafka Web UI provides an intuitive interface for exploring execution logs. The Web UI Explorer lets you easily view and analyze task execution history, identify patterns, and monitor system health. This visual approach is beneficial for quickly assessing the status of your tasks and detecting any anomalies.
+
+2. **Karafka Admin APIs**: You can use the Karafka Admin APIs to read the logs topic directly for more programmatic access. This approach allows you to process the log messages customarily, such as integrating the data into your existing monitoring systems, triggering alerts based on specific log entries, or generating detailed reports on task execution performance.
+
+```ruby
+messages = Karafka::Admin.read_topic(
+  'karafka_recurring_tasks_logs',
+  0,
+  100
+)
+
+messages.each do |message|
+  log_data = message.payload
+  puts "Task ID: #{log_data[:task][:id]}, " \
+   "Result: #{log_data[:task][:result]}, " \
+   "Executed At: #{log_data[:dispatched_at]}"
+end
+```
 
 ## Error Handling and Retries
 
@@ -224,6 +263,48 @@ Karafka::Pro::RecurringTasks.define('1.0.0') do
     CriticalOperationJob.perform_async
   end
 end
+```
+
+## Execution Modes
+
+TBA
+
+## Testing
+
+Karafka provides easy access to the current schedule and the individual tasks within that schedule to facilitate testing of your recurring tasks.
+
+You can access the current schedule via the `Karafka::Pro::RecurringTasks.schedule` method. This allows you to inspect the schedule, verify that tasks are correctly defined, and interact with the tasks programmatically.
+
+Each task within the schedule can be accessed using the `Karafka::Pro::RecurringTasks.schedule.tasks` method. This method returns a hash where the keys are the task IDs, and the values are the corresponding task objects. This structure makes finding and working with specific tasks by their IDs easy.
+
+For testing purposes, each task can be executed manually by invoking the `#execute` method on the task object. This method bypasses the cron schedule and any associated instrumentation, allowing you to directly test the task's functionality to ensure it works as expected without any side effects.
+
+Here's an example of how you might define a schedule and test it:
+
+```ruby
+Karafka::Pro::RecurringTasks.define('1.0.0') do
+  schedule(id: 'daily_report', cron: '0 0 * * *') do
+    puts "Running daily report task..."
+  end
+
+  schedule(id: 'cleanup', cron: '0 2 * * 7') do
+    puts "Running cleanup task..."
+  end
+end
+
+# Access the current schedule
+schedule = Karafka::Pro::RecurringTasks.schedule
+
+# Access and manually execute the 'daily_report' task for testing
+daily_task = schedule.tasks['daily_report']
+
+# RSpec syntax just as a demo
+expect { daily_task.execute }.not_to raise_error
+
+# Access and manually execute the 'cleanup' task for testing
+cleanup_task = schedule.tasks['cleanup']
+# RSpec syntax just as a demo
+expect { cleanup_task.execute }.not_to raise_error
 ```
 
 ## Warranties
@@ -245,6 +326,10 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 - **Cron Syntax**: The cron syntax must be valid and recognized by the fugit gem, which powers the scheduling mechanism.
 
 - **Task Uniqueness**: Task IDs must be unique within a schedule version to avoid conflicts.
+
+- **Precision and Frequency Drift**: Karafka runs the scheduler every 15 seconds by default, with the next run starting 15 seconds after the previous one finishes. This can cause small timing drifts, especially if tasks take longer to complete. The interval is configurable.
+
+- **Oversaturation Lags**: If the scheduler runs alongside other topic assignments and all workers are occupied, the scheduler may experience lags. By default, the scheduler is not prioritized over other consumers, which can lead to delays in task execution when system resources are constrained.
 
 ## Example Use-Cases
 
