@@ -145,6 +145,10 @@ If you do not use Declarative Topics, please make sure to create those topics ma
 
 To define recurring tasks, use the `Karafka::Pro::RecurringTasks.define` method. This method allows you to specify the version of the schedule and define one or more tasks with their cron schedule and corresponding execution block.
 
+!!! Tip "Task ID Naming Convention"
+
+    The `id` field used in defining tasks must comply with the following regular expression: `/\A[a-zA-Z0-9_-]{1,}\z/`. This means that the `id` must consist only of alphanumeric characters, underscores (`_`), or hyphens (`-`). No spaces or special characters are allowed; it must be at least one character long.
+
 ```ruby
 Karafka::Pro::RecurringTasks.define('1.0.0') do
   schedule(id: 'daily_report', cron: '0 0 * * *') do
@@ -395,6 +399,8 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 - **Precision and Frequency Drift**: Karafka runs the scheduler every 15 seconds by default, with the next run starting 15 seconds after the previous one finishes. This can cause small timing drifts, especially if tasks take longer to complete. The interval is configurable.
 
 - **Oversaturation Lags**: If the scheduler runs alongside other topic assignments and all workers are occupied, the scheduler may experience lags. By default, the scheduler is not prioritized over other consumers, which can lead to delays in task execution when system resources are constrained.
+
+- **Expected Lag Reporting**: Due to how Recurring Tasks manage their offsets, their assignments always report a lag of at least 1. This is expected and normal but may initially seem surprising when viewed in the Web UI.
 
 ## Example Use-Cases
 
