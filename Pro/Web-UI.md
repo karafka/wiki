@@ -72,6 +72,16 @@ The "Web UI Explorer" in Karafka Pro Web UI provides detailed insights and analy
 
 The Search feature is part of the Karafka Web UI Explorer, but due to its complexity, it has its dedicated section that can be found [here](https://karafka.io/docs/Pro-Web-UI-Search/).
 
+## Recurring Tasks
+
+In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](https://karafka.io/docs/Pro-Recurring-Tasks/) with ease:
+
+- **Inspect Tasks**: View detailed information on each task, including status, next execution, and last execution result.
+- **Control Tasks**: Enable, disable, or trigger tasks directly from the UI.
+- **View Logs**: Access and explore execution logs to track task performance and troubleshoot issues.
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/recurring-tasks.png)
+
 ## Errors
 
 Enhanced Web UI errors provide a few enhancements:
