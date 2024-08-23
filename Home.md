@@ -148,6 +148,7 @@
     * [Explorer](Pro-Web-UI#explorer)
     * [Policies](Pro-Web-UI-Policies)
     * [Search](Pro-Web-UI-Search)
+    * [Recurring Tasks](Pro-Web-UI#recurring-tasks)
     * [Topics Insights](Pro-Web-UI-Topics-Insights)
     * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)

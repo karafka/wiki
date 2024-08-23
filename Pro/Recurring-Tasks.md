@@ -303,6 +303,16 @@ messages.each do |message|
 end
 ```
 
+## Web UI Management
+
+The Karafka Web UI provides comprehensive tools for managing and monitoring recurring tasks:
+
+- **Inspect and Control Tasks**: You can view, enable, disable, and trigger recurring tasks directly from the Web UI. This allows for real-time management and ensures tasks run as expected.
+  
+- **Execution Logs**: The Web UI enables you to explore the logs of task executions, offering insights into when tasks were executed, their outcomes, and whether any issues occurred.
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/recurring-tasks.png)
+
 ## Error Handling and Retries
 
 An important aspect of the Recurring Tasks feature is how it handles errors during task execution:
