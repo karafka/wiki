@@ -227,6 +227,8 @@ end
 
 - **Error Handling**: Ensure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it’s crucial to catch and manage potential errors within the matcher.
 
+- **Network Traffic**: Searches retrieve all messages within the specified range, which can increase network traffic, especially with Kafka vendors that charge based on usage. If live polling is enabled, it will re-trigger searches every 5 seconds by default, further increasing data transfer and potentially raising costs. Consider disabling or adjusting live-polling intervals to manage these costs effectively if you use a Kafka vendor that charges for the network traffic.
+
 ## Summary
 
 By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, ensuring that only the necessary matchers are applied to each topic, optimizing performance and relevance.
