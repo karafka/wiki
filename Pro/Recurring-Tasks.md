@@ -1,7 +1,3 @@
-!!! warning "Feature Under Development"
-
-    Please note that this feature is under development and has yet to be released. Stay tuned for updates.
-
 This feature provides a mechanism for scheduling and managing recurring tasks within Kafka-based applications. It allows you to define tasks that run at specified intervals, using cron-like syntax, ensuring that essential tasks are executed at the right time without manual intervention. This feature uses Kafka as the state store, so no extra database or third-party components are needed.
 
 ```ruby
