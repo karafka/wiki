@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+* [Under the Hood: Enhancing Karafka’s CPU and Memory Efficiency](https://mensfeld.pl/2024/08/under-the-hood-enhancing-karafkas-cpu-and-memory-efficiency/)
 * [The librdkafka Supply Chain Breakdown: rdkafka-ruby’s Darkest Hour](https://mensfeld.pl/2024/07/the-librdkafka-supply-chain-breakdown-rdkafka-rubys-darkest-hour/)
 * [From Sleep to Speed: Making Rdkafka Sync Operations 16 Times Faster](https://mensfeld.pl/2024/05/from-sleep-to-speed-making-rdkafka-sync-operations-16-times-faster/)
 * [Karafka 2.4 Release Announcement: Advancing Kafka Processing for Ruby and Rails](https://mensfeld.pl/2024/04/karafka-2-4-release-announcement-advancing-kafka-processing-for-ruby-and-rails/)
