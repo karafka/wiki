@@ -69,7 +69,12 @@ class KarafkaApp < Karafka::App
   end
 
   routes.draw do
-    recurring_tasks(true)
+    recurring_tasks(true) do |schedules_topic, logs_topic|
+      # Optional block allowing for reconfiguration of attributes when needed
+      # You can also reconfigure other things when needed
+      schedules_topic.config.replication_factor = 3
+      logs_topic.config.replication_factor = 2
+    end
   end
 end
 ```
@@ -136,6 +141,29 @@ If you do not use Declarative Topics, please make sure to create those topics ma
     </tr>
   </tbody>
 </table>
+
+#### Replication Factor Configuration for the Production Environment
+
+Setting the replication factor for Kafka topics used by the recurring tasks feature to more than 1 in production environments is crucial. The replication factor determines how many copies of the data are stored across different Kafka brokers. Having a replication factor greater than 1 ensures that the data is highly available and fault-tolerant, even in the case of broker failures.
+
+For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, ensuring that your recurring tasks continue to operate without interruption.
+
+Here's an example of how to reconfigure the Recurring Tasks topics so they have replication factor of 3:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    recurring_tasks(true) do |schedules_topic, logs_topic|
+      schedules_topic.config.replication_factor = 2
+      logs_topic.config.replication_factor = 2
+    end
+  end
+end
+```
 
 ### Defining a Schedule
 
