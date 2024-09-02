@@ -4,7 +4,40 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.5.3 (2024-09-02)
+
+librdkafka v2.5.3 is a feature release.
+
+* Fix an assert being triggered during push telemetry call when no metrics matched on the client side. (#4826)
+
+### Fixes
+
+#### Telemetry fixes
+
+* Issue: #4833
+Fix a regression introduced with [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) support in which an assert is triggered during **PushTelemetry** call. This happens when no metric is matched on the client side among those requested by broker subscription.
+Happening since 2.5.0 (#4826).
+
+### Checksums
+Release asset checksums:
+ * v2.5.3.zip SHA256 `5b058006fcd403bc23fc1fcc14fe985641203f342c5715794af51023bcd047f9`
+ * v2.5.3.tar.gz SHA256 `eaa1213fdddf9c43e28834d9a832d9dd732377d35121e42f875966305f52b8ff`
+
+*Note: there were no v2.5.1 and v2.5.2 librdkafka releases*
+
 ## 2.5.0 (2024-07-10)
+
+> [!WARNING]
+This version has introduced a regression in which an assert is triggered during **PushTelemetry** call. This happens when no metric is matched on the client side among those requested by broker subscription. 
+>
+> You won't face any problem if:
+> * Broker doesn't support [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability).
+> * [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) feature is disabled on the broker side.
+> * [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) feature is disabled on the client side. This is enabled by default. Set configuration `enable.metrics.push` to `false`.
+> * If [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) is enabled on the broker side and there is no subscription configured there.
+> * If [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) is enabled on the broker side with subscriptions that match the [KIP-714](https://cwiki.apache.org/confluence/display/KAFKA/KIP-714%3A+Client+metrics+and+observability) metrics defined on the client.
+> 
+> Having said this, we strongly recommend using `v2.5.3` and above to not face this regression at all.
 
 librdkafka v2.5.0 is a feature release.
 
@@ -1993,17 +2026,3 @@ New configuration properties:
 Release asset checksums:
  * v1.1.0.zip SHA256 `70279676ed863c984f9e088db124ac84a080e644c38d4d239f9ebd3e3c405e84`
  * v1.1.0.tar.gz SHA256 `123b47404c16bcde194b4bd1221c21fdce832ad12912bd8074f88f64b2b86f2b`
-
-
-## 1.0.1 (2019-05-28)
-
-# librdkafka v1.0.1 release
-
-v1.0.1 is a maintenance release with the following fixes:
-
- * Fix consumer stall when broker connection goes down (issue #2266 introduced in v1.0.0)
- * Fix AdminAPI memory leak when broker does not support request (@souradeep100, #2314)
- * Update/fix protocol error response codes (@benesch)
- * Treat ECONNRESET as standard Disconnects (#2291)
-
-
