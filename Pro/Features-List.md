@@ -42,6 +42,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, ensuring consistent and reliable execution.
 
+- [Scheduled Messages](Pro-Scheduled-Messages) - Allows the scheduling of Kafka messages for future processing, allowing users to control precise timing for message delivery.
+
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, ensuring resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
