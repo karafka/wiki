@@ -160,17 +160,94 @@ TBA
 
 ## Scheduling Messages
 
-TBA
+To schedule a message, you must wrap your regular message content and additional scheduling information. This is done using the `Karafka::Pro::ScheduledMessages.schedule` method. This method requires you to prepare the message just as you would for a standard Kafka message, but instead of sending it directly to a producer, you wrap it to include scheduling details.
 
-### Message Key Uniqueness Management
+Below, you can find exact details on how to do this:
 
-TBA
+1. **Prepare Your Message**: Construct your message payload and any associated headers as usual for a Kafka message.
+
+```ruby
+message = {
+  topic: 'events',
+  payload: { type: 'inserted', count: 123 }.to_json
+}
+```
+
+2. **Define the Delivery Time**: Determine when the message should be dispatched. This time is specified as a Unix epoch timestamp and passed as the epoch parameter.
+
+```ruby
+# Make sure to use a Unix timestamp format
+future_unix_epoch_time = 15.minutes.from_now.to_i
+```
+
+3. **Wrap the Message**: Use the schedule method to wrap your message with the scheduling details:
+
+```ruby
+enveloped = Karafka::Pro::ScheduledMessages.schedule(
+  message: message,
+  epoch: future_unix_epoch_time,
+  envelope: {
+    # The Kafka topic designated for scheduled messages
+    # Please read other sections on the envelope details available
+    topic: 'scheduled_messages_topic'
+  }
+)
+```
+
+4. **Dispatch the Wrapped Message**: Once the message is wrapped with all required scheduling details, the resulting hash represents a fully prepared scheduled message. This message can then be dispatched like any other message in Karafka:
+
+```ruby
+Karafka.producer.produce_async(enveloped)
+```
+
+This call places the wrapped message into the designated scheduling topic, which remains until the specified epoch time is reached. At that time, Karafka's internal scheduling mechanism automatically processes and dispatches the message to its intended destination.
+
+### Message Key Uniqueness and Ordering Management
+
+When using this feature, it is crucial to understand dispatched messages keys and their uniqueness operations. Each message sent to the scheduler must have a distinct key within its partition to ensure accurate scheduling and prevent any potential overlaps or errors during the dispatch process.
+
+By default, Karafka generates a unique key for each scheduled message envelope. This key is a combination of the topic to which the message will eventually be dispatched and a UUID. The formula used is something akin to: "{target_topic}-{UUID}". This key is then assigned to the `:key` field in the envelope, ensuring that each message is uniquely identified within the scheduling system.
+
+This generated key serves multiple purposes:
+
+- **Uniqueness**: Guarantees that each message can be uniquely identified and retrieved.
+
+- **Management**: Facilitates updating or canceling the scheduled dispatch of the message.
+
+Suppose the original message contains `partition_key` or a direct `partition` reference. In that case, Karafka will also attempt to use any of those values as the envelope `partition_key` to ensure that consecutive messages with the same details are always dispatched to the same partition and later sent to a target topic in order.
+
+If you prefer to use your key instead of relying on the auto-generated key, you can provide your chosen key directly in the envelope. When you specify your key this way, Karafka will use it without generating a new one. This approach allows you to maintain consistency or alignment with other systems or data structures you might be using:
+
+```ruby
+enveloped = Karafka::Pro::ScheduledMessages.schedule(
+  message: message,
+  epoch: future_unix_epoch_time,
+  envelope: {
+    topic: 'scheduled_messages_topic',
+    # You can set key
+    key: 'anything you want',
+    # As well as the partition key
+    partition_key: 'anything'
+  }
+)
+```
+
+!!! Warning "Ensure Unique Custom Keys"
+
+     The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
+
+If you must ensure that particular messages are dispatched in a specific order, you can utilize the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key ensures that:
+
+- All related messages (sharing the same raw message key) are dispatched to the same partition.
+- The order of messages is preserved as per the sequence of their scheduling.
+
+This strategy leverages Kafka's partitioning mechanism, providing a predictable processing order. Messages with the same `partition_key` are guaranteed to be sent to the same partition and thus processed in the order they were sent:
 
 ### Cancelling Messages
 
 TBA
 
-### Updated Scheduled Message Prior to Its Dispatch
+### Updating Scheduled Message Prior to Its Dispatch
 
 TBA
 
@@ -194,8 +271,11 @@ TBA
 
 TBA
 
-
 ## Limitations
+
+TBA
+
+### Dispatch Order and Race-Conditions
 
 TBA
 
