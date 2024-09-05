@@ -243,11 +243,11 @@ If you must ensure that particular messages are dispatched in a specific order, 
 
 This strategy leverages Kafka's partitioning mechanism, providing a predictable processing order. Messages with the same `partition_key` are guaranteed to be sent to the same partition and thus processed in the order they were sent:
 
-### Cancelling Messages
+### Cancelling Scheduled Messages
 
 TBA
 
-### Updating Scheduled Message Prior to Its Dispatch
+### Updating Scheduled Messages
 
 TBA
 

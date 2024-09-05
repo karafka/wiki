@@ -271,7 +271,7 @@ end
 
 ## Kafka Scope Configuration Reuse
 
-Karafka uses the' inherit' flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
+Karafka uses the `inherit` flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
 
 This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By leveraging the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
 
@@ -314,6 +314,10 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+!!! Warning "Kafka Scope Config Reuse Without `inherit`"
+
+    When using Kafka scope configuration at the topic level, be aware that **without** the `inherit` setting, there is no automatic inheritance of Kafka settings from the root-level configuration. This means you must **duplicate** all Kafka scope configurations for each topic. Failure to do so can result in default settings being applied instead of the intended configuration, which might lead to unexpected behavior or inconsistent setup across your topics.
 
 ## Modular Monolith Approach
 
