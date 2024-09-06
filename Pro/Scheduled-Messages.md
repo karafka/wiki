@@ -360,13 +360,56 @@ TBA
 
 When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](https://karafka.io/docs/Pro-Delayed-Topics/) and [Piping](https://karafka.io/docs/Pro-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
 
-### Delayed Processing
+### Delayed Topics
 
-TBA
+Delayed Topics in Karafka provide a mechanism to delay message consumption from specific topics for a set period of time. This is useful when you need to delay message processing globally for a topic without scheduling each message individually.
+
+- **How It Works**: By setting a delay on a topic, Karafka pauses consumption for a specified time before processing the messages. Other topics and partitions are unaffected, allowing for efficient resource utilization.
+
+- **Use Cases**: Delayed Processing is ideal for scenarios like retry mechanisms, buffer periods for additional processing or validation, or temporary postponement during peak traffic.
+
+**Pros**:
+
+- Simple to set up using the `delay_by` option on topics.
+- Causes no global lag since only the designated topic is delayed.
+- Particularly useful when messages need consistent delays across the entire topic.
+
+**Cons**:
+
+- Delay applies to all messages in the topic uniformly.
+- Lack of fine-grained control for scheduling individual messages at specific times.
 
 ### Delayed Piping
 
-TBA
+[Piping](https://karafka.io/docs/Pro-Piping/) with [Delayed Topics](https://karafka.io/docs/Pro-Delayed-Topics/) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
+
+Use Cases:
+
+- **Batch Processing**: When processing time-sensitive data that needs to be delayed by different amounts of time (e.g., 5 minutes, 30 minutes, 1 hour) before final processing, using time buckets is an efficient approach.
+
+- **Time-Windowed Actions**: Triggering actions based on elapsed time (e.g., after 30 minutes or 1 hour) can be easily orchestrated with delayed topics and piping.
+
+- **Throttling or Rate Limiting**: You can effectively manage load or rate-limit processes by distributing messages into time buckets over different periods.
+
+**Pros**:
+
+- Flexibility to create multiple time delays for different types of messages.
+- Allows you to group delayed messages into "buckets" based on their time requirements.
+- Seamless integration of delayed processing with piping ensures that messages are forwarded to their final destination once their delay expires.
+- Simplifies complex workflows that require messages to be processed after various time intervals.
+
+**Cons**:
+
+- More configuration is required, as you need to manage multiple topics for different time delays.
+- Timing is still dependent on topic-level delays, so more sophisticated scheduling might be required to fine-tune control over individual messages (beyond the bucket-level delay).
+
+### Choosing Between Alternatives
+
+- **Scheduled Messages**: Best for cases where you need precise control over the exact dispatch time for individual messages.
+
+- **Delayed Processing**: The right choice when you need to delay the processing of all messages in a topic by a uniform time period, providing a sense of reassurance and organization.
+
+- **Piping with Delayed Topics**: Ideal when you need time-bucketed delays for messages (e.g., 5 minutes, 30 minutes, 1 hour) and want messages to be forwarded to a final destination after their respective delays.
 
 ## Example Use-Cases
 
