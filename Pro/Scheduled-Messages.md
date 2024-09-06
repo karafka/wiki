@@ -343,7 +343,43 @@ Karafka.producer.produce_async(updated_message)
 
 ## Monitoring and Metrics
 
-TBA
+Karafka's Scheduled Messages feature integrates with standard monitoring tools provided by Karafka and its Web UI, allowing for visibility into the system's performance and behavior. It is, however, important to understand how this feature consumer may deviate from the standard consumer behaviors.
+
+Karafka treats scheduled messages like any other messages within its ecosystem:
+
+- **Message Consumption Tracking**: Karafka marks messages as consumed in the scheduling topics as they arrive. This standard practice allows monitoring systems to track the progress and detect if there are delays or backlogs in message processing.
+
+- **Visibility in Karafka Web UI**: The Karafka Web UI provides a straightforward way to view message consumption status, including any system lag. This is particularly useful for quickly diagnosing issues or confirming that scheduled messages are being processed as expected.
+
+Due to the nature of how scheduled messages are managed:
+
+- **Daily Reloads**: Around midnight, when Karafka reloads the daily schedules, there are expected spikes in activity within the scheduled messages topics. This behavior is normal and should be accounted for in performance metrics and monitoring setups.
+
+- **Message Throughput**: Monitoring systems should be configured to differentiate between regular message throughput and the spikes caused by these reloads. Understanding this distinction will help in accurately assessing system performance without raising false alarms during expected spikes.
+
+Karafka enhances monitoring capabilities by publishing regular messages to a states topic, which contains crucial data about scheduled operations:
+
+- **Daily Schedules**: Messages sent to the states topic include data on the number of messages scheduled for dispatch on a given day. This provides a clear metric to gauge the volume of upcoming message dispatches and prepare for potential load increases.
+
+- **Consumer State Reporting**: Each message in the state topic also reports the current state of the consumer handling a given partition. 
+
+The states can be:
+
+- `loading`: Indicates that the consumer is currently refreshing the data during the daily reload or after a rebalance.
+
+- `loaded`: Signifies that all scheduled data is in memory and that dispatches proceed uninterrupted.
+
+These state updates are vital for understanding the message scheduling system's real-time status, providing insights into both routine operations and any issues that may arise.
+
+### Consumer Data and Error Reporting
+
+Aside from the periodic state updates sent to the states topic, the error reporting and data handling for consumers of scheduled messages do not differ from other Karafka consumers:
+
+- **Error Handling**: Any errors encountered by the scheduled message consumers are handled and reported like other consumers within the Karafka system.
+
+- **Metrics Collection**: Metrics for error rates, processing times, and other key performance indicators are collected and can be viewed in the Karafka Web UI or through integrated monitoring tools.
+
+This consistent monitoring and error reporting approach ensures that administrators and developers can use familiar tools and processes to manage and troubleshoot scheduled message consumers, simplifying system maintenance and oversight.
 
 ## Web UI Management
 
