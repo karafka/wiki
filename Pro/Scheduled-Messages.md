@@ -330,7 +330,31 @@ TBA
 
 ## Error Handling and Retries
 
-TBA
+This feature is designed to ensure robust error handling and efficient retry mechanisms, minimizing the potential impact of errors on scheduled message dispatches. Here's an overview of how error handling and retries are managed:
+
+**Key Points on Error Handling:**
+
+- **No Deserialization of Payload**: Karafka does not deserialize the payload of scheduled messages; it passes the raw data through. This approach eliminates serialization errors, common sources of faults in message processing systems.
+
+- **Raw Values for Keys and Headers**: Similarly to the payload, Karafka uses raw values for keys and headers. This ensures that the data integrity is maintained without introducing serialization or format errors during the handling process.
+
+- **No Default DLQ (Dead Letter Queue) Strategies**: By default, Karafka does not implement any Dead Letter Queue strategies for intermediate message topics used in scheduling. Any blocking errors may require manual intervention.
+
+**Retry Policies:**
+
+- **Default User Configuration**: Karafka relies on the default retry policies specified in the user's configuration settings. This means that delivery errors and other operational errors will trigger retries according to the predefined rules in the configuration.
+
+- **Handling Dispatch Errors**: While dispatch errors and other issues may cause messages to be dispatched more than once, the system is designed to ensure that no messages are skipped.
+
+**Schema Compatibility and System Upgrades:**
+
+- **Schema Incompatibilities**: When changes to the Karafka schema affect the scheduled messages feature, the system is built to detect these incompatibilities and halt dispatching. This behavior is crucial to prevent issues arising from processing messages with an outdated schema version.
+
+- **Halting Dispatch During Upgrades**: When schema changes are detected, the dispatching process will stop, and it will not resume until the affected components of the system are upgraded to the compatible version. This approach mirrors how critical updates are managed in systems like Karafka's Web UI, ensuring stability and consistency during upgrades.
+
+- **Rolling Deployments**: The halt-on-incompatibility feature supports rolling deployments by allowing parts of a system to be updated incrementally. During this process, message dispatching is safely paused until all components are confirmed to be compatible, minimizing downtime and disruption.
+
+This feature's error handling and retry strategies ensure that the system remains resilient and reliable, even in the face of operational challenges. Its approach to managing dispatch errors, retries, and schema changes ensures that messages are handled appropriately under all circumstances, supporting continuous and dependable operations.
 
 ## Warranties
 
