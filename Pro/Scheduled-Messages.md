@@ -1,6 +1,6 @@
-!!! warning "Feature Under Development"
+!!! Warning "Documentation Under Development"
 
-    Please note that this feature is under development and has yet to be released. Stay tuned for updates.
+    The documentation for updating scheduled messages is still under development. Details may be added or refined as the feature evolves. Please check back for the most up-to-date information.
 
 Karafka's Scheduled Messages feature allows users to designate specific times for messages to be sent to particular Kafka topics. This capability ensures that messages are delivered at predetermined times, optimizing workflows and allowing for precise processing and message handling timing in case a message should not arrive immediately.
 
@@ -288,7 +288,37 @@ If the message was scheduled with a `partition_key` to maintain a specific order
 
 ### Updating Scheduled Messages
 
-TBA
+Karafka's Scheduled Messages feature allows updating messages that have already been scheduled but not yet dispatched. This functionality is crucial when a scheduled message's content, timing, or conditions need to be modified before its dispatch.
+
+Updating a scheduled message in Karafka involves a straightforward process similar to scheduling a new message, with a key distinction: you must use the same unique envelope key used for the original scheduling. This ensures that the new message parameters overwrite the old ones in the scheduling system.
+
+To update the scheduled message:
+
+1. **Identify the Original Envelope Key**: Use the same envelope key that was assigned during the initial scheduling of the message. This key is crucial for targeting the correct message for updates.
+
+1. **Prepare the Updated Message**: Create the new message payload as you would for any Kafka message. Include any changes to the message content or any additional headers needed.
+
+1. **Set the New Dispatch Time**: If the timing needs to be changed, determine the new dispatch time. This time should be specified as a Unix epoch timestamp.
+
+1. **Use the `schedule` Method**: Employ the `schedule` method to wrap your updated message with the scheduling details, using the same key and specifying the new or unchanged dispatch time:
+
+```ruby
+updated_message = Karafka::Pro::ScheduledMessages.schedule(
+  message: new_message_to_replace_old,
+  epoch: new_future_unix_epoch_time,
+  envelope: {
+    topic: 'scheduled_messages_topic',
+    # Same key as the original message
+    key: original_envelope_key
+  }
+)
+```
+
+1. **Dispatch the Updated Message**: Send the updated message using Karafka’s producer. This step replaces the original scheduled message with the new content and timing in the scheduling system:
+
+```ruby
+Karafka.producer.produce_async(updated_message)
+```
 
 ## Monitoring and Metrics
 
@@ -328,7 +358,7 @@ TBA
 
 ## Alternatives
 
-TBA
+When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](https://karafka.io/docs/Pro-Delayed-Topics/) and [Piping](https://karafka.io/docs/Pro-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
 
 ### Delayed Processing
 
