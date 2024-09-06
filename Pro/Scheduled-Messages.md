@@ -247,7 +247,44 @@ This strategy leverages Kafka's partitioning mechanism, providing a predictable 
 
 ### Cancelling Scheduled Messages
 
-TBA
+Karafka provides a straightforward mechanism to cancel scheduled messages before they are dispatched. This capability is essential for scenarios where conditions change after a message has been scheduled and the message is no longer required or needs to be replaced.
+
+To cancel a scheduled message, you will utilize the `#cancel` method provided by Karafka's Scheduled Messages feature. This method lets you specify the unique key of the message you want to cancel. This key should be the same as the one used in the message envelope when the message was originally scheduled.
+
+To cancel a scheduled message:
+
+1. **Identify the Message Key**: Locate the unique key of the message you intend to cancel. This is the key that was specified or generated when the message was initially scheduled.
+
+2. **Specify the Topic**: Provide the topic where the scheduled message resides. This is essential because Karafka can handle multiple scheduling topics, and specifying the correct topic ensures the message is accurately identified and targeted for cancellation.
+
+3. **Invoke the `cancel` Method**: Use the `cancel` method to create a cancellation request for the scheduled message. This method requires the unique key and the topic to formulate the cancellation command properly.
+
+```ruby
+cancellation_message = Karafka::Pro::ScheduledMessages.cancel(
+  key: 'your_message_key',
+  envelope: { topic: 'your_scheduled_messages_topic' }
+)
+```
+
+4. **Dispatch the Cancellation Message**: After generating the cancellation message, it must be dispatched using Karafka's producer to ensure the cancellation is processed. This step finalizes the cancellation by publishing the tombstone message to the scheduling topic.
+
+```ruby
+Karafka.producer.produce_sync(cancellation_message)
+```
+
+The unique key is critical in the cancellation process for several reasons:
+
+- **Targeting the Correct Message**: It ensures that the exact message intended for cancellation is correctly identified.
+
+- **Avoiding Conflicts**: By maintaining unique keys for each message, you prevent potential issues where multiple messages might be inadvertently affected by a single cancellation command.
+
+!!! Hint "Custom Keys and Automatic Key Generation"
+
+    When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, it's important to use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and ensures that the correct message is targeted for cancellation.
+
+!!! Hint "Handling Cancellations with `partition_key`"
+
+If the message was scheduled with a `partition_key` to maintain a specific order or partition consistency, it is advisable to use the same `partition_key` during cancellation. This practice helps manage related messages within the same partition effectively and maintains the order and integrity of operations within that partition.
 
 ### Updating Scheduled Messages
 
