@@ -413,6 +413,12 @@ While Scheduled Messages offer powerful message scheduling and dispatch capabili
 
 1. **Independent Deployment and Management of Scheduler Consumers**: Due to how Karafka reloads schedules daily and during restarts or rebalances, it is advisable to deploy and manage Karafka consumer processes that handle scheduled messages independently from regular consumer processes. Frequent redeployments or rebalancing of these scheduler consumers can lead to excessive schedule loading from Kafka, increasing network traffic and introducing delays in message scheduling and potential increases in operational costs.
 
+1. **Limited Accuracy of Future State Reporting**: While the state reporting for the current day's scheduled messages is accurate, the accuracy of state reporting for future days is more limited and primarily based on estimates. This estimation can lead to discrepancies, particularly regarding message cancellations:
+
+    - **Estimate Nature**: The state information for future days includes all messages scheduled up to the last system check. However, it may not accurately reflect cancellations or other modifications to these messages until the schedules are fully reloaded the following day.
+
+    - **Reliance on Daily Reloads**: This limitation is due to the system's design, which relies on daily reloads to update and confirm the accuracy of the scheduled messages. Until this reload occurs, any cancellations made after the last update won't be reflected in the state reports.
+
 ## Production Deployment
 
 TBA but mention deploy stability and the fact that it's better to have it long-running and separated from other processes because of its data-loading patterns.
