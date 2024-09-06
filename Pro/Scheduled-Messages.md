@@ -158,7 +158,28 @@ end
 
 ### Advanced Configuration
 
-TBA
+Karafka’s Scheduled Messages feature is designed to be highly configurable to meet diverse application requirements and optimize operational performance. The configuration phase allows you to tailor various aspects of handling scheduled messages, including dispatch frequency, message batching, and producer specifications.
+
+During the initial setup of the Karafka application, you have the opportunity to adjust settings that affect the behavior of scheduled messages, such as:
+
+- **Dispatch Interval**: The frequency with which Karafka checks for and dispatches messages.
+
+- **Batch Size**: The number of messages dispatched in a single batch. This is crucial for systems with high message volumes or limited resources, where managing load is essential for maintaining performance.
+
+- **Producer Customization**: You can specify which producer Karafka should use for scheduled messages. This allows the integration of custom logic, such as specific partitioning strategies or the usage of a transactional producer.
+
+- **Topic Naming**: The naming of topics used for message states can be customized to fit naming conventions or organizational policies, providing clarity and consistency in resource management.
+
+```ruby
+Karafka.setup do |config|
+  # Dispatch checks every 5 seconds
+  config.scheduled_messages.interval = 5_000
+  # Dispatch up to 200 messages per batch
+  config.scheduled_messages.flush_batch_size = 200
+end
+```
+
+Please refer to the code sources for more details.
 
 ## Scheduling Messages
 
@@ -366,15 +387,35 @@ TBA
 
 ## Limitations
 
-TBA
+While Scheduled Messages offer powerful message scheduling and dispatch capabilities, users should be aware of inherent limitations when integrating this feature into their systems. Understanding these limitations can help you plan and optimize scheduled messages usage within your applications.
 
-### Dispatch Order and Race-Conditions
+1. **Single Delivery Point**: Scheduled messages are designed to be delivered to a specific topic at a predetermined time. Once a message is scheduled, redirecting it to a different topic at runtime is not supported. Message dispatch can be canceled, though.
 
-TBA
+1. **Lack of Built-In Dead Letter Queue**: Karafka does not provide a built-in Dead Letter Queue (DLQ) mechanism for messages that fail to be processed after all retry attempts. Users must implement their own DLQ handling to manage undeliverable messages systematically.
+
+1. **Dependency on System Clock**: The scheduling mechanism depends on the accuracy and synchronization of system clocks across the Kafka cluster. Time discrepancies between servers can lead to delays in message delivery.
+
+1. **Storage Overhead**: Scheduled messages are stored until their dispatch time arrives. This can lead to increased storage usage on Kafka brokers, especially if large volumes of messages are scheduled far in advance or message payloads are large.
+
+1. **No Real-Time Cancellation Feedback**: When a scheduled message is canceled, there is no immediate feedback or confirmation that the message has been successfully removed from the schedule.
+
+1. **Message Duplication Risks**: Due to the nature of Kafka and the possibility of retries in the event of critical delivery errors, message duplication is a risk unless a transactional producer is used. While Karafka ensures that messages are not lost, duplicate messages may be delivered under certain failure scenarios.
+
+1. **No Priority Queueing**: Karafka does not support priority queueing for scheduled messages. Messages are dispatched in the order they are due, without any mechanism to prioritize specific messages over others, regardless of urgency.
+
+1. **Memory Overhead**: Karafka manages daily schedules by loading them into memory, which means the Karafka process handling these schedules may consume more memory than a regular Karafka consumer. This increase in memory usage can be significant depending on the volume and complexity of the scheduled tasks, requiring careful resource management.
+
+1. **Dispatch Frequency**: The dispatch frequency for scheduled messages is set by default to every 15 seconds, which can introduce inaccuracy to the exact moment of message delivery. While this interval is configurable, the nature of batch processing may not meet the needs of applications requiring precise second-by-second scheduling.
+
+1. **Daily Schedule Management**: Karafka manages schedules daily, which means that after midnight, it refetches all the data to build a new daily schedule. Messages scheduled right after midnight each day until the loading phase is done may be scheduled a bit later due to this data loading. This could introduce delays in message dispatch that are critical for time-sensitive tasks.
+
+1. **High Egress Network Traffic**: Because Karafka rescans all partitions of the scheduling topic after midnight to build daily schedules, this can cause increased egress network traffic. This might result in higher costs when using a Kafka provider that charges for network traffic.
+
+1. **Independent Deployment and Management of Scheduler Consumers**: Due to how Karafka reloads schedules daily and during restarts or rebalances, it is advisable to deploy and manage Karafka consumer processes that handle scheduled messages independently from regular consumer processes. Frequent redeployments or rebalancing of these scheduler consumers can lead to excessive schedule loading from Kafka, increasing network traffic and introducing delays in message scheduling and potential increases in operational costs.
 
 ## Production Deployment
 
-TBA
+TBA but mention deploy stability and the fact that it's better to have it long-running and separated from other processes because of its data-loading patterns.
 
 ## External Producers Support
 
