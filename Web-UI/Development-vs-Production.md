@@ -2,26 +2,44 @@
 
 Karafka Web UI can operate in production mode. It is, however, essential to understand how it works and its limitations.
 
-To materialize and prepare the data for the Web UI, Karafka Web adds an additional consumer group to the routes. This is ok for a development environment as you usually run one or two `karafka server` instances in this mode.
+## Dedicated Web UI Processes
 
-It may not be, however, desirable to do this in production, mainly because it would be a waste of resources. Each Karafka server instance would subscribe to the reports topic, and all except one would do nothing.
+To materialize and prepare data for the Karafka Web UI, Karafka adds an additional consumer group to your routes responsible for consuming internal Karafka Web UI topics. In a development environment, this setup works fine because you typically run a small number of `karafka server` instances, and resource contention is minimal.
 
-For a production setup, we recommend you run one or two karafka server instances dedicated to the Web UI alongside your regular Karafka consumers and exclude the Web consumer group from the rest.
+However, in a production environment, things can get more complex. The Web UI consumer that processes and materializes data does not have any priority over other consumers running within the same Karafka process. This means that unless the Web UI has dedicated resources, the consumption, and materialization of data for the UI could be delayed if other consumers are processing large volumes of messages or if there are significant lags on other topics. Essentially, the Web UI will compete for resources (CPU, memory, I/O) with other consumers in the same process, which can lead to slow or laggy UI performance, especially in cases where other consumer topics have higher processing loads.
 
-You can use the `--exclude-consumer-groups karafka_web` flag to start consumer processes that run only your consumer groups. Then, you can use the `--include-consumer-groups karafka_web` to start Karafka Web UI dedicated consumer instances. 
+### Performance and Resource Management in Production
+
+In larger or more complex production environments, especially when dealing with multi-app setups or large-scale message flows, running the Web UI consumer group in its own dedicated Karafka process is recommended. This way, the Web UI will not be affected by lags or resource bottlenecks from other consumers, ensuring smoother performance and faster data availability in the UI.
+
+
+To achieve this, you can either:
+
+1. **Use `config.processing.active`**: In the Karafka configuration, you can set `config.processing.active` to `false` for all processes that should exclude the Web UI consumer group. This will ensure that only dedicated processes handle Web UI topics while the rest focus on your application's primary consumers.
+
+2. **Use the `--include` and `--exclude` flags**: Alternatively, you can explicitly control which consumer groups run on each Karafka server instance using the `--include-consumer-groups` and `--exclude-consumer-groups` flags. This method provides more flexibility for explicitly including or excluding the Web UI consumer group in certain processes without modifying the global configuration.
 
 ```bash
-# Run below to start a consumer instance dedicated only to karafka_web operations
+# Use the --include-consumer-groups flag to start a dedicated Web UI process
 bundle exec karafka server --include-consumer-groups karafka_web
 
-# Run below to start a consumer instance without the extra web consumer group
+# Use the --exclude-consumer-groups flag to start processes without the Web UI consumer group
 bundle exec karafka server --exclude-consumer-groups karafka_web
 ```
 
-It is also worth pointing out certain other limitations of the Web UI:
+For a production environment, the ideal setup would involve:
 
-- Karafka Web UI may be slow if you have more than 1 000 active consumer processes running. If you encounter this, please get in touch with us so we can work with you to optimize this case.
-- Karafka explorer can be slow when listing old messages from heavily compacted topics.
+- Running one or more Karafka server instances dedicated **solely** to the Web UI consumer group. These processes should only handle the Web UI topics and not process any other consumer groups.
+
+- For the remaining Karafka server instances that handle your application's consumers, either:
+    - Set `config.processing.active` to `false` to exclude the Web UI consumer group, or
+    - Use the `--exclude-consumer-groups karafka_web` flag to ensure these instances ignore the Web UI consumer group.
+
+This approach ensures that the Web UI can consume and display data efficiently without being affected by the load on other consumers.
+
+!!! Tip "Alternative Setup: Using Embedded Mode for Karafka Web UI"
+
+    Alternatively, Karafka Web UI consumer can be used in [Embedded Mode](https://karafka.io/docs/Embedding/), which runs inside a Puma process. This setup can be convenient as it allows the Web UI consumer to share resources with the Puma web server. However, this approach is only recommended when the Web UI application is **not** part of a larger, world-facing application and the Puma process is **dedicated exclusively** to the Web UI. Sharing a Puma process with other production web services may lead to performance issues, so a dedicated Puma process for the Web UI ensures it operates smoothly without competing for resources.
 
 ## Web UI topics replication factor
 
