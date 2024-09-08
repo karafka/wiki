@@ -305,7 +305,7 @@ The unique key is critical in the cancellation process for several reasons:
 
 !!! Hint "Handling Cancellations with `partition_key`"
 
-If the message was scheduled with a `partition_key` to maintain a specific order or partition consistency, it is advisable to use the same `partition_key` during cancellation. This practice helps manage related messages within the same partition effectively and maintains the order and integrity of operations within that partition.
+    If the message was scheduled with a `partition_key` to maintain a specific order or partition consistency, it is advisable to use the same `partition_key` during cancellation. This practice helps manage related messages within the same partition effectively and maintains the order and integrity of operations within that partition.
 
 ### Updating Scheduled Messages
 
@@ -457,7 +457,23 @@ While Scheduled Messages offer powerful message scheduling and dispatch capabili
 
 ## Production Deployment
 
-TBA but mention deploy stability and the fact that it's better to have it long-running and separated from other processes because of its data-loading patterns.
+Given this feature's unique operational characteristics, particularly its data-loading patterns, it is advisable to deploy it in a manner that ensures long-running stability and isolates it from other processes.
+
+- **Long-Running Stability**: Scheduled messages are designed to operate in a continuous, long-running manner. This setup is crucial because the feature involves daily reloading of schedules based on predefined times (midnight). Ensuring these processes are not interrupted by deployments or other operational changes is key to maintaining their reliability.
+
+- **Isolation from Other Processes**: Due to the significant resource consumption during data loading phases—both in terms of memory and network bandwidth—it's beneficial to isolate the scheduled messages handling from other processes. This separation helps prevent any potential performance degradation in different parts of your system due to the intensive data-loading activities in scheduled message processing.
+
+### Best Practices
+
+- **Dedicated Instances**: Consider deploying the scheduled messages feature on dedicated instances or containers. This approach allows for tailored resource allocation, such as CPU, memory, and network bandwidth, which can be adjusted based on the specific demands of the scheduling tasks without affecting other services.
+
+- **Monitoring and Scaling**: Implement robust monitoring to track the performance and resource utilization of the scheduled messages feature. This monitoring should focus on memory usage, CPU load, and network traffic metrics. Based on these metrics, apply auto-scaling policies where feasible to handle variations in load, especially those that are predictable based on the scheduling patterns.
+
+- **Avoid Frequent Redeploys**: Minimize the frequency of redeployments for the components handling scheduled messages. Frequent restarts can disrupt the scheduling process, especially if they occur during daily data reloads.
+
+- **Update and Maintenance Windows**: If possible, schedule maintenance and updates during off-peak hours. Choose times when the impact on scheduled message processing would be minimal, ideally when there are fewer critical tasks scheduled.
+
+- **Disaster Recovery and High Availability**: Ensure that your deployment strategy includes provisions for disaster recovery and high availability. This could involve replicating the scheduling components across multiple data centers or using cloud services that provide built-in redundancy and failover capabilities.
 
 ## External Producers Support
 
