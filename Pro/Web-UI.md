@@ -82,6 +82,18 @@ In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](https://
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/recurring-tasks.png)
 
+## Scheduled Messages
+
+Karafka Pro's Enhanced Web UI provides detailed insights into scheduled messages, enabling efficient management and monitoring:
+
+- **Daily Dispatch Estimates**: View estimates of messages scheduled for dispatch across partitions, aiding in operational planning.
+- **Loading State Monitoring**: Monitor the loading state of partitions to ensure readiness, especially after nightly reloads.
+- **Message Exploration**: Access detailed information about messages, queued for future dispatch, including scheduled times and payload details.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
+</p>
+
 ## Errors
 
 Enhanced Web UI errors provide a few enhancements:
