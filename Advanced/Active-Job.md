@@ -63,7 +63,7 @@ end
 
 !!! note ""
 
-    [Pro Enhanced ActiveJob](Pro-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, and other Pro features.
+    [Pro Enhanced ActiveJob](Pro-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
 
 ## Usage
 

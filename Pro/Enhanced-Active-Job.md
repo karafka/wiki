@@ -46,6 +46,38 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
   </small>
 </p>
 
+## Scheduled Jobs
+
+Karafka supports job scheduling via the [Scheduled Messages](https://karafka.io/docs/Pro-Scheduled-Messages/) feature, providing a robust framework for setting future execution times for tasks, akin to capabilities seen in other Rails Active Job adapters. This feature integrates seamlessly with Karafka's infrastructure, allowing users to schedule and manage tasks directly within the Kafka ecosystem.
+
+To utilize the Scheduled Jobs functionality in Karafka, you must:
+
+1. **Configure the Scheduled Messages Feature**: Ensure the Scheduled Messages feature is properly [configured](https://karafka.io/docs/Pro-Scheduled-Messages/#enabling-scheduled-messages) within your Karafka setup. This involves setting up the necessary Kafka topics and ensuring Karafka knows these configurations.
+
+2. **Configure the Job Class**: Each job class that requires scheduling must have the scheduled_messages_topic configured. This setting informs Karafka about the specific Kafka topic that serves as the proxy for handling the scheduling of these messages.
+
+```ruby
+class ExampleJob < ActiveJob::Base
+  queue_as :default
+
+  karafka_options(
+    scheduled_messages_topic: 'scheduled_jobs_topic'
+  )
+
+  def perform(*args)
+    # Job execution logic here
+  end
+end
+```
+
+3. **Schedule Jobs**: After these configurations are in place, jobs can be scheduled using the standard ActiveJob APIs by specifying the execution time:
+
+```ruby
+ExampleJob.set(wait_until: Date.tomorrow.noon).perform_later(user_id)
+```
+
+This integration not only simplifies the management of timed tasks but also enhances the reliability and scalability of job execution, making Karafka an ideal platform for complex, time-sensitive job scheduling needs in large-scale applications.
+
 ## Custom Producer/Variant Usage
 
 When using ActiveJob with Karafka, you can customize the dispatch of Active Jobs by leveraging custom producers or [producer variants](https://karafka.io/docs/WaterDrop-Variants/). This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
