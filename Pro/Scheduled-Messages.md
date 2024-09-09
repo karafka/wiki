@@ -1,7 +1,3 @@
-!!! Warning "Documentation Under Development"
-
-    The documentation for updating scheduled messages is still under development. Details may be added or refined as the feature evolves. Please check back for the most up-to-date information.
-
 Karafka's Scheduled Messages feature allows users to designate specific times for messages to be sent to particular Kafka topics. This capability ensures that messages are delivered at predetermined times, optimizing workflows and allowing for precise processing and message handling timing in case a message should not arrive immediately.
 
 Conceptually, it works in a similar way to the [ETF1 Kafka Message Scheduler](https://github.com/etf1/kafka-message-scheduler/).
@@ -383,7 +379,13 @@ This consistent monitoring and error reporting approach ensures that administrat
 
 ## Web UI Management
 
-TBA
+Karafka's Web UI displays daily dispatch estimates and the current loading state of partitions involved in scheduled messaging. This visibility is crucial after midnight reloads, allowing administrators to detect operational delays or issues quickly.
+
+Additionally, the Web UI offers a detailed exploration of scheduled messages, showing specific information about each message queued for future dispatch. Users can view scheduled times, payload content, and other relevant metadata, aiding in monitoring and verifying the scheduling system's effectiveness.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
+</p>
 
 ## Error Handling and Retries
 
@@ -415,11 +417,25 @@ This feature's error handling and retry strategies ensure that the system remain
 
 ## Warranties
 
-TBA
+Karafka's Scheduled Messages feature offers a set of warranties designed to ensure robust functionality and reliability within production environments. Here's a summary of the key guarantees and limitations:
+
+- **Message Delivery Guarantee**: Karafka ensures that all scheduled messages will be delivered at least once, minimizing the risk of message loss. However, messages might be delivered multiple times under certain circumstances like network or Kafka cluster disruptions.
+
+- **Timeliness of Message Dispatch**: While Karafka aims to dispatch messages close to their scheduled times, there is a flexibility window influenced by the dispatch frequency (default is every 15 seconds). This means that exact second-by-second scheduling might see slight deviations.
+
+- **System Stability**: Karafka is built to maintain Stability under varying loads and manage daily schedule reloads without significant disruptions. Stability can be affected by external factors such as network performance and server capacity.
+
+  - **Application-Level Failures**: Karafka does not cover failures due to issues in consumer application logic or other external application errors.
+
+  - **Configuration Dependence**: The warranties assume optimal and correct configuration settings. Misconfigurations or inappropriate settings that impact performance and reliability are not covered.
+
+  - **External Dependencies**: Issues caused by external factors, including Kafka cluster performance, network latency, and hardware failures, are outside the scope of these warranties.
 
 ### Transactional Support
 
-TBA
+Karafka's Scheduled Messages feature provides transactional support to ensure exactly-once delivery of messages when used with a transactional WaterDrop producer. This support hinges on the proper configuration and execution of message batching and transaction handling within the Karafka ecosystem.
+
+When using a transactional WaterDrop producer, the Scheduled Messages feature can achieve exactly once delivery by including the dispatched message to the target topic and the corresponding tombstone message in a single transaction batch. This approach ensures that both sending the message and marking it as dispatched (via the tombstone) are atomically committed to Kafka, thus preventing any duplication or message loss during processing.
 
 ## Limitations
 
@@ -477,7 +493,27 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 ## External Producers Support
 
-TBA
+Karafka's Scheduled Messages feature is designed with flexibility, allowing integration with external producers beyond Karafka and WaterDrop. This enables scheduled messages to be dispatched from various technologies, including Go, JavaScript, or any other language and framework that supports Kafka producers.
+
+When using external producers to schedule messages, it's crucial to follow a specific header format to ensure Karafka's scheduled message consumer can recognize and correctly process these messages. The required headers are as follows:
+
+- `schedule_schema_version`: Indicates the version of the scheduling schema used, which helps manage compatibility. For current implementations, this should be set to 1.0.0.
+
+- `schedule_target_epoch`: Specifies the Unix epoch time when the message should be dispatched. This timestamp determines when the message will be processed and sent to its target topic.
+
+- `schedule_source_type`: This should always be set to `schedule` to indicate that the message is a scheduled type.
+
+- `schedule_target_topic`: Defines the Kafka topic to which the message should be dispatched when its scheduled time arrives.
+
+- `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
+
+Additional optional headers can include:
+
+- `schedule_target_partition`: If specified, directs the message to a particular partition within the target topic. This can be crucial for maintaining order or handling specific partitioning strategies.
+
+- `schedule_target_partition_key`: Used to determine the partition to which the message will be routed within the target topic based on Kafka's partitioning algorithm.
+
+When implementing an external producer to schedule messages for Karafka, ensure that the message conforms to the required header format and includes all necessary scheduling information.
 
 ## Alternatives
 
