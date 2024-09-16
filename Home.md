@@ -121,6 +121,7 @@
 * [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)
+* [Adaptive Iterator](Pro-Adaptive-Iterator)
 * [Periodic Jobs](Pro-Periodic-Jobs)
 * [Expiring Messages](Pro-Expiring-Messages)
 * [Routing Patterns](Pro-Routing-Patterns)

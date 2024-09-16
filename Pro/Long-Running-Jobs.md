@@ -24,7 +24,8 @@ To mitigate this, you can do a few things:
 1. Extend the `max.poll.interval.ms`.
 2. Decrease `max_messages`.
 3. Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work further.
-4. Use [Long-Running Jobs](Pro-Long-Running-Jobs) and not worry about that.
+4. Use [Adaptive Iterator](Pro-Adaptive-Iterator) to mitigate occasional spikes in processing time.
+5. Use [Long-Running Jobs](Pro-Long-Running-Jobs) and not worry about that.
 
 The strategy you want to go with heavily depends on your data and processing patterns. If you encounter this issue while maintaining a sane number of messages and decent `max.poll.interval.ms`, you should further parallelize the processing or enable this feature.
 
