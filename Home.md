@@ -155,6 +155,7 @@
     * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)
     * [DLQ / Dead](Pro-Web-UI#dlq-dead)
+    * [Branding](Pro-Web-UI#branding)
 
 ## Librdkafka
 

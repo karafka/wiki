@@ -52,7 +52,7 @@ This feature offers users a detailed look into each process's current state repo
 
 ### Commanding
 
-This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Commanding).
+This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Commanding).
 
 ## Health
 
@@ -126,3 +126,11 @@ DLQ dispatched messages view:
 DLQ dispatched per message view:
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq2.png)
+
+## Branding
+
+This feature allows you to set an environment-specific notice and a menu label to distinguish between different environments like production, development, and staging. This helps prevent confusion and mistakes when managing various environments.
+
+This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Branding).
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/branding1.png)
