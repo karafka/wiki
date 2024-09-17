@@ -151,6 +151,7 @@
     * [Policies](Pro-Web-UI-Policies)
     * [Search](Pro-Web-UI-Search)
     * [Recurring Tasks](Pro-Web-UI#recurring-tasks)
+    * [Scheduled Messages](Pro-Web-UI#scheduled-messages)
     * [Topics Insights](Pro-Web-UI-Topics-Insights)
     * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)

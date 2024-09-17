@@ -228,6 +228,37 @@ end
 
 Please note that when using `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
 
+## Initial State Setup
+
+Karafka consumers provide a special `#initialized` method called automatically after the consumer instance is fully prepared and initialized.
+
+This method can be used to set up any additional state, resources, or connections your consumer may need during its lifecycle. Karafka's consumer instance is not entirely bootstrapped during the `#initialize` method. This means crucial details, like routing information, topic details, and more, may not yet be available. Using `#initialize` to set up dependencies might result in incomplete or incorrect configurations. On the other hand, `#initialized` is executed once the consumer is fully ready and contains all the details it might need. By default, `#initialized` does nothing. Still, you can override it to include custom setup logic for your consumer:
+
+```ruby
+class EventsConsumer < ApplicationConsumer
+  def initialized
+    # Any setup logic you want to perform once the consumer is fully ready
+    @connection = establish_db_connection
+    puts "Consumer is initialized with topic: #{topic.name}"
+  end
+
+  def consume
+    messages.each do |message|
+      # Process messages using the setup done in #initialized
+      puts message.payload
+    end
+  end
+
+  private
+
+  def establish_db_connection
+    # Custom logic to establish a database connection
+  end
+end
+```
+
+Using `#initialized` allows access to the full context of the consumer, as it is called when the consumer has been fully set up. This provides several benefits, such as establishing database connections, setting up loggers, or initializing API clients that require topic-specific information. By deferring resource setup to `#initialized`, you avoid potential issues arising when certain resources or states are unavailable during the construction phase.
+
 ## `enable.partition.eof` Early Yield
 
 In typical Karafka consumption scenarios, when a consumer reaches the end of a partition, it might still wait for new messages to arrive. This behavior is governed by settings such as `max_wait_time` or `max_messages`, which dictate how long a consumer should wait for new data before timing out or moving on. While this can benefit continuous data streams, it may introduce unnecessary latency in scenarios where real-time data processing and responsiveness are critical.
