@@ -1,4 +1,4 @@
-Karafka Pro offers powerful capabilities for directly managing consumer processes. These management features, accessible via the Web UI, allow administrators to interact with the consumer processes in real time to maintain optimal performance and address issues swiftly. Commanding includes probing consumers for detailed state information, quieting consumers to reduce activity, and stopping them when necessary.
+Karafka Pro offers powerful capabilities for directly managing consumer processes. These management features, accessible via the Web UI, allow administrators to interact with the consumer processes in real time to maintain optimal performance and address issues swiftly. Commanding includes tracing consumers for detailed state information, quieting consumers to reduce activity, and stopping them when necessary.
 
 !!! Hint "Quiet and Stop Commands Limitation"
 
@@ -6,7 +6,7 @@ Karafka Pro offers powerful capabilities for directly managing consumer processe
 
 ## Configuration
 
-Commanding is **turned on by default**. During each consumer process startup, it initiates a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and probing consumers for backtraces.
+Commanding is **turned on by default**. During each consumer process startup, it initiates a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and tracing consumers for backtraces.
 
 To disable this feature, you can set the `config.commanding.active` configuration option to `false`. Disabling commanding removes the extra Kafka connection dedicated to these administrative tasks. Consequently, it also disables the ability to execute these commands from the Web UI.
 
@@ -38,7 +38,7 @@ The "Controls" tab is primarily focused on direct consumer process management. I
 
 Alongside these details, the "Controls" tab also provides actionable commands that can be issued for each consumer process. These commands include options such as:
 
-- **Probing**: Requesting backtraces and other runtime information from the consumer to diagnose issues or assess performance.
+- **Tracing**: Requesting backtraces and other runtime information from the consumer to diagnose issues or assess performance.
 
 - **Quieting**: Reducing the consumer's activity level to manage load or prepare for maintenance without stopping the process entirely.
 
@@ -52,13 +52,13 @@ This tab serves as the operational center for managing consumers, allowing admin
 
 ### Commands Tab
 
-The "Commands" tab offers a historical view of the commands issued through the Web UI and results received from the consumer processes. This tab lists recent commands along with detailed outcomes, such as the success or failure of each command and the diagnostic data returned from probing actions.
+The "Commands" tab offers a historical view of the commands issued through the Web UI and results received from the consumer processes. This tab lists recent commands along with detailed outcomes, such as the success or failure of each command and the diagnostic data returned from tracing actions.
 
 The functionality of the "Commands" tab is crucial for several reasons:
 
 - **Tracking and Auditing**: It provides a log of all commands issued, which is essential for auditing and tracking the administrative actions taken over time.
 
-- **Result Verification**: Administrators can verify the outcomes of issued commands, particularly the backtraces and diagnostic information returned by probing commands. This helps confirm diagnostic efforts' effectiveness and understand consumer processes' current state.
+- **Result Verification**: Administrators can verify the outcomes of issued commands, particularly the backtraces and diagnostic information returned by the tracing command. This helps confirm diagnostic efforts' effectiveness and understand consumer processes' current state.
 
 **Historical Analysis**: This tab records past commands and their results, aiding in identifying trends or recurring issues across consumer processes. This information can inform future improvements or adjustments in system configuration.
 
@@ -66,14 +66,14 @@ The functionality of the "Commands" tab is crucial for several reasons:
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-commanding-commands.png" />
 </p>
 
-## Probing
+## Tracing
 
-Probing is a diagnostic feature that allows administrators to request backtraces from active consumer processes. This command is useful for identifying the internal state and tracing the execution path of a consumer at any given moment without stopping or disrupting its operations. By invoking the probing command via the Web UI, administrators can gain insights into the call stack and other runtime details, which are crucial for debugging complex issues in consumer behavior.
+Tracing is a diagnostic feature that allows administrators to request backtraces from active consumer processes. This command is useful for identifying the internal state and tracing the execution path of a consumer at any given moment without stopping or disrupting its operations. By invoking the tracing command via the Web UI, administrators can gain insights into the call stack and other runtime details, which are crucial for debugging complex issues in consumer behavior.
 
-A special command message is dispatched to the targeted consumer when the "Probe" button is pressed in the Web UI. Upon receiving this message, the consumer iterates over all Ruby threads currently running within the process and records the backtrace of each thread. These backtraces provide a snapshot of the execution stack for each thread, which can be invaluable for debugging and understanding the consumer's behavior at a particular moment. After collecting the backtraces, the consumer compiles these into a special result message that is published back to Kafka. This result message is accessible for inspection, providing real-time diagnostic information about the consumer's state.
+A special command message is dispatched to the targeted consumer when the "Trace" button is pressed in the Web UI. Upon receiving this message, the consumer iterates over all Ruby threads currently running within the process and records the backtrace of each thread. These backtraces provide a snapshot of the execution stack for each thread, which can be invaluable for debugging and understanding the consumer's behavior at a particular moment. After collecting the backtraces, the consumer compiles these into a special result message that is published back to Kafka. This result message is accessible for inspection, providing real-time diagnostic information about the consumer's state.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-commanding-probe.png" />
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-commanding-trace.png" />
 </p>
 
 ### Use Cases
