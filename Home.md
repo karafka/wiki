@@ -107,6 +107,7 @@
 * [Pro FAQ](Pro-FAQ)
 * [Pro Support](Pro-Support)
 * [Security](Pro-Security)
+* [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support)
 * [Enterprise](Pro-Enterprise)
 * [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session)
 * [Enterprise License Setup](https://karafka.io/docs/Pro-Enterprise-License-Setup)

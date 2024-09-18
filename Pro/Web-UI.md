@@ -134,3 +134,9 @@ This feature allows you to set an environment-specific notice and a menu label t
 This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Branding).
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/branding1.png)
+
+## Policies
+
+Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
+
+This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Policies/).
