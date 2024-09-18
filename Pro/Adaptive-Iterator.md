@@ -14,10 +14,6 @@ Do not use the Adaptive Iterator if:
 - Your application consistently handles long-running jobs. In that case, use the [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature.
 - Your consumer requires strict control over offset management outside the default provided by the Adaptive Iterator.
 
-!!! Tip "Handling Consistent Long-Running Jobs"
-
-    Consider using Karafka's [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/adaptive_iterator/flow.svg" />
 </p>
@@ -25,6 +21,10 @@ Do not use the Adaptive Iterator if:
   <small>*Illustration presenting how Adaptive Iterator work.
   </small>
 </p>
+
+!!! Tip "Handling Consistent Long-Running Jobs"
+
+    Consider using Karafka's [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
 
 ## Benefits of Adaptive Iterator
 
