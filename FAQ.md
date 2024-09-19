@@ -200,6 +200,9 @@
 200. [Is it worth pursuing transactions for a low throughput but high-importance topic?](#is-it-worth-pursuing-transactions-for-a-low-throughput-but-high-importance-topic)
 201. [Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?](#does-the-waterdrop-producer-retry-to-deliver-messages-after-errors-such-as-librdkafkaerror-and-librdkafkadispatch_error-or-are-the-messages-lost)
 202. [In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?](#in-a-rails-request-can-i-publish-a-message-asynchronously-continue-the-request-and-block-at-the-end-to-wait-for-the-publish-to-finish)
+203. [Why am I getting the error: "No provider for SASL mechanism GSSAPI: recompile librdkafka with libsasl2 or openssl support"?](#why-am-i-getting-the-error-no-provider-for-sasl-mechanism-gssapi-recompile-librdkafka-with-libsasl2-or-openssl-support)
+204. [How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?](#how-can-i-check-if-librdkafka-was-compiled-with-ssl-and-sasl-support-in-karafka)
+205. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2543,3 +2546,61 @@ It depends on the type of error. Waterdrop will retry the delivery for intermedi
 ## In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?
 
 Yes, you can publish a message asynchronously using Waterdrop. You can get the handler for the async publish and wait on it before the response is returned. This approach ensures that the request continues while the publish happens in parallel. It blocks only at the end to ensure the publish is complete.
+
+## Why am I getting the error: "No provider for SASL mechanism GSSAPI: recompile librdkafka with libsasl2 or openssl support"?
+
+This error:
+
+```bash
+No provider for SASL mechanism GSSAPI:
+  recompile librdkafka with libsasl2 or openssl support.
+  Current build options: PLAIN SASL_SCRAM OAUTHBEARER (Rdkafka::Config::ClientCreationError)
+```
+
+indicates that `librdkafka` was not built with support for GSSAPI (Kerberos). This often occurs when the necessary development packages (`libsasl2-dev`, `libssl-dev` and `libkrb5-dev`) were not available during the `librdkafka` build process. To fix this, make sure to install these packages before compiling librdkafka. On a Debian-based system, use:
+
+```bash
+sudo apt-get update && sudo apt-get install -y libsasl2-dev libssl-dev libkrb5-dev
+```
+
+## How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?
+
+You can check if `librdkafka` has SSL and SASL support by running the following code in an interactive Ruby session (`irb`):
+
+```ruby
+require 'rdkafka'
+
+config = {
+  :"bootstrap.servers" => "localhost:9092",
+  :"group.id" => "ruby-test",
+  debug: 'all'
+}
+
+consumer = Rdkafka::Config.new(config).consumer
+consumer.subscribe("ruby-test-topic")
+consumer.close
+```
+
+This will generate logs. Look for lines containing `builtin.features` that list `ssl` and `sasl_scram`:
+
+```bash
+rdkafka#consumer-1 initialized (builtin.features gzip,snappy,ssl,sasl,regex,lz4, \
+  sasl_gssapi,sasl_plain,sasl_scram,plugins,zstd,sasl_oauthbearer,http,oidc, GCC \
+  GXX PKGCONFIG INSTALL GNULD LDS C11THREADS LIBDL PLUGINS ZLIB SSL SASL_CYRUS \
+  ZSTD CURL HDRHISTOGRAM LZ4_EXT SYSLOG SNAPPY SOCKEM SASL_SCRAM SASL_OAUTHBEARER \
+  OAUTHBEARER_OIDC CRC32C_HW, debug 0xfffff)
+```
+
+## Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?
+
+There are a couple of reasons `librdkafka` might lose SSL and SASL support in a multi-stage Docker build:
+
+1. **Removing Essential Build Dependencies Too Early**: In multi-stage builds, it's common to install libraries and development tools in an earlier stage and then copy the built software into a slimmer final stage to reduce the image size. However, if the necessary packages (like `libssl-dev` and `libsasl2-dev`) are removed or not available during the initial build stage, librdkafka will compile without SSL and SASL support.
+
+**Solution**: Ensure that `libssl-dev`, `libsasl2-dev`, and other required libraries are installed in the stage where you build librdkafka. Only clean up or remove these libraries after the build is complete.
+
+2. **Build Layers Removal During Docker Image Creation**:
+
+During the process of building Docker images, each command in the Dockerfile creates a new layer. When a layer is removed, all the changes made in that layer (including installed libraries) are also discarded. If the layers containing the installation of `libssl-dev`, `libsasl2-dev`, or other dependencies are removed before librdkafka is fully built and linked, then the resulting image will lack SSL and SASL support.
+
+**Solution**: To avoid this issue, ensure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
