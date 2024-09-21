@@ -48,6 +48,7 @@
 * [Labeling](WaterDrop-Labeling)
 * [Variants](WaterDrop-Variants)
 * [Custom Partitioners](WaterDrop-Custom-Partitioners)
+* [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements)
 
 ## Production Usage
 
