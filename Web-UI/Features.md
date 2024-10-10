@@ -107,10 +107,6 @@ The Search feature is a tool that enables users to search and filter messages ef
 
 ## Errors
 
-!!! Info "Additional Error Features in Pro"
-
-    More backtrace and high-scale features are available in our Pro offering.
-
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`. It includes the following information:
 
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
