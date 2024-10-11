@@ -74,7 +74,7 @@ The below example illustrates the usage of the `migrate` command to align the nu
   </span>
 </div>
 
-## Defining topic configuration
+## Defining Topic Configuration
 
 All the configuration for a given topic needs to be defined using the topic scope `#config` method.
 
@@ -114,7 +114,7 @@ config(
 )
 ```
 
-## Excluding topics from the topics management
+## Excluding Topics from the Topics Management
 
 If you want to manage only part of your topics using Karafka, you can set the `active` flag for a given topic configuration to false.
 
@@ -153,7 +153,7 @@ end
 
 Setting such as above will allow Karafka to manage the topic while instructing Karafka not to try to consume it. A configuration like this is helpful in a multi-app environment where you want Karafka to manage topics, but their consumption belongs to other applications.
 
-## Production usage
+## Production Usage
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
@@ -177,7 +177,27 @@ end
 
 With this setting enabled, Karafka will fail to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy.
 
-## Limitations and other info
+## Detailed Exit Codes
+
+When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode` option can be configured. This option alters the exit codes based on the operation's result. This option provides more granular information, making integrating Karafka's topic management into automated systems like CI/CD pipelines easier. 
+
+When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes will work as follows:
+
+- `0`: No changes were made. This means that all topics are already aligned with the desired state, and no operations were required.
+- `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing.
+- `2`: Changes were either present or successfully applied. This code is returned when topics were created, updated, or deleted as part of the operation.
+
+This behavior allows you to differentiate between successful operations with no changes, successful operations with changes, and errors, providing more control over how you handle Karafka's CLI topic management results.
+
+You can enable this functionality by passing the `--detailed-exitcode` flag when invoking any topic-related command:
+
+```bash
+karafka topics plan --detailed-exitcode
+```
+
+This will ensure the correct exit code is returned based on the operation's outcome, enabling better automation and monitoring of topic changes.
+
+## Limitations and Other Info
 
 - Topics management is enabled by default but will not be used unless any CLI commands are invoked.
 - `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
