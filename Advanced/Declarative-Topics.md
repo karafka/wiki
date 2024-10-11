@@ -159,6 +159,24 @@ The topics management CLI **never** performs any destructive actions except the 
 
 Please keep in mind that opics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
+## Strict Declarative Topics Validation
+
+Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that ensures all topics, including Dead Letter Queue (DLQ), are declared via the definitions of the declarative topics. When set to `true`, this flag enforces validation during routing to confirm that all topics are properly defined as declarative topics, even if they are inactive.
+
+This setting is particularly useful if you want to ensure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
+
+You can enable this validation by adding the following to your `karafka.rb`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.strict_declarative_topics = true
+  end
+end
+```
+
+With this setting enabled, Karafka will fail to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy.
+
 ## Limitations and other info
 
 - Topics management is enabled by default but will not be used unless any CLI commands are invoked.
@@ -170,3 +188,4 @@ Please keep in mind that opics management API does **not** provide any means of 
 - Topics commands **are** idempotent. Broken set of operations can be retried after fixes without worry.
 - Karafka will **never** alter any topics that are not defined in the routing.
 - `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
+- `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.

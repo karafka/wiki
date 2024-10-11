@@ -603,6 +603,25 @@ The provided liveness listener is a generic implementation designed to handle co
 
 By using the provided listener as a starting point, you can have the flexibility to build your liveness probe that accommodates your unique needs. This can involve adding additional checks, implementing custom logic, or integrating with other monitoring systems to create a more comprehensive and sophisticated liveness solution.
 
+#### Extending Liveness with `#healthy?`
+
+The `#healthy?` method in the liveness listener is a public method that can be expanded to include additional application-specific health checks. By default, this method verifies whether the Karafka process operates as expected. However, you can override or extend it to include custom checks tailored to your application's requirements.
+
+For example, if your application depends on external services (like a database or an API), you can extend the `#healthy?` method to ensure these services are also reachable. If any of these checks fail, you can return a `500` status, prompting Kubernetes to restart the container, thereby increasing the resilience of your deployment.
+
+This flexibility allows you to go beyond the default liveness check, adding layers of health verification specific to your application's architecture and dependencies.
+
+```ruby
+class LivenessListener < ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener
+  # Fail if redis that is required is down
+  def healthy?
+    return false unless super
+    return false unless redis_alive?
+
+    true
+  end
+end
+```
 
 ### Liveness In the Swarm Mode
 
