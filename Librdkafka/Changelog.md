@@ -4,9 +4,40 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.6.0 (2024-10-10)
+
+librdkafka v2.6.0 is a feature release:
+
+ * [KIP-460](https://cwiki.apache.org/confluence/display/KAFKA/KIP-460%3A+Admin+Leader+Election+RPC) Admin Leader Election RPC (#4845)
+ * [KIP-714] Complete consumer metrics support (#4808).
+ * [KIP-714] Produce latency average and maximum metrics support for parity with Java client (#4847).
+ * [KIP-848] ListConsumerGroups Admin API now has an optional filter to return only groups
+   of given types.
+ * Added Transactional id resource type for ACL operations (@JohnPreston, #4856).
+ * Fix for permanent fetch errors when using a newer Fetch RPC version with an older
+   inter broker protocol (#4806).
+
+
+### Fixes
+
+#### Consumer fixes
+
+ * Issues: #4806
+   Fix for permanent fetch errors when brokers support a Fetch RPC version greater than 12 
+   but cluster is configured to use an inter broker protocol that is less than 2.8.
+   In this case returned topic ids are zero valued and Fetch has to fall back
+   to version 12, using topic names.
+   Happening since v2.5.0 (#4806)
+
+
+### Checksums
+Release asset checksums:
+ * v2.6.0.zip SHA256 `e9eb7faedb24da3a19d5f056e08630fc2dae112d958f9b714ec6e35cd87c032e`
+ * v2.6.0.tar.gz SHA256 `abe0212ecd3e7ed3c4818a4f2baf7bf916e845e902bb15ae48834ca2d36ac745`
+
 ## 2.5.3 (2024-09-02)
 
-librdkafka v2.5.3 is a feature release.
+librdkafka v2.5.3 is a maintenance release.
 
 * Fix an assert being triggered during push telemetry call when no metrics matched on the client side. (#4826)
 
@@ -1972,57 +2003,3 @@ Release asset checksums:
  * v1.2.0.zip SHA256 `6e57f09c28e9a65abb886b84ff638b2562b8ad71572de15cf58578f3f9bc45ec`
  * v1.2.0.tar.gz SHA256 `eedde1c96104e4ac2d22a4230e34f35dd60d53976ae2563e3dd7c27190a96859`
 
-## 1.1.0 (2019-07-05)
-
-# librdkafka v1.1.0 release
-
-v1.1.0 is a security-focused feature release:
-
- * SASL OAUTHBEARER support (by @rondagostino at StateStreet)
- * In-memory SSL certificates (PEM, DER, PKCS#12) support (by @noahdav at Microsoft)
- * Pluggable broker SSL certificate verification callback (by @noahdav at Microsoft)
- * Use Windows Root/CA SSL Certificate Store (by @noahdav at Microsoft)
- * `ssl.endpoint.identification.algorithm=https` (off by default) to validate the broker hostname matches the certificate. Requires OpenSSL >= 1.0.2.
- * Improved GSSAPI/Kerberos ticket refresh
-
-
-### Upgrade considerations
-
- * Windows SSL users will no longer need to specify a CA certificate file/directory (`ssl.ca.location`), librdkafka will load the CA certs by default from the Windows Root Certificate Store.
- * SSL peer (broker) certificate verification is now enabled by default (disable with `enable.ssl.certificate.verification=false`)
- * `%{broker.name}` is no longer supported in `sasl.kerberos.kinit.cmd` since kinit refresh is no longer executed per broker, but per client instance.
-
-### SSL
-
-New configuration properties:
-
- * `ssl.key.pem` - client's private key as a string in PEM format
- * `ssl.certificate.pem` - client's public key as a string in PEM format
- * `enable.ssl.certificate.verification` - enable(default)/disable OpenSSL's builtin broker certificate verification.
- * `enable.ssl.endpoint.identification.algorithm` - to verify the broker's hostname with its certificate (disabled by default).
- * Add new `rd_kafka_conf_set_ssl_cert()` to pass PKCS#12, DER or PEM certs in (binary) memory form to the configuration object.
- * The private key data is now securely cleared from memory after last use.
-
-
-### Enhancements
-
- * configure: Improve library checking
- * Added `rd_kafka_conf()` to retrieve the client's configuration object
- * Bump `message.timeout.ms` max value from 15 minutes to 24 days (@sarkanyi, workaround for #2015)
-
-
-### Fixes
-
- * SASL GSSAPI/Kerberos: Don't run kinit refresh for each broker, just per client instance.
- * SASL GSSAPI/Kerberos: Changed `sasl.kerberos.kinit.cmd` to first attempt ticket refresh, then acquire.
- * SASL: Proper locking on broker name acquisition.
- * Consumer: `max.poll.interval.ms` now correctly handles blocking poll calls, allowing a longer poll timeout than the max poll interval.
- * configure: Fix libzstd static lib detection
- * rdkafka_performance: Fix for Misleading "All messages delivered!" message (@solar_coder)
- * Windows build and CMake fixes (@myd7349)
-
-
-### Checksums
-Release asset checksums:
- * v1.1.0.zip SHA256 `70279676ed863c984f9e088db124ac84a080e644c38d4d239f9ebd3e3c405e84`
- * v1.1.0.tar.gz SHA256 `123b47404c16bcde194b4bd1221c21fdce832ad12912bd8074f88f64b2b86f2b`
