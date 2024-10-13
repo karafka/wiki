@@ -334,6 +334,16 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+!!! Warning "Risks of Async DLQ Dispatch"
+
+    When configuring the Dead Letter Queue (DLQ) in Karafka with asynchronous dispatch (`dispatch_method: :produce_async`), messages are immediately moved to a background queue and considered dispatched as soon as the action is triggered. This can create a potential risk where the application assumes a message has been delivered to the DLQ when, in reality, it may still be pending dispatch or could fail. In this case:
+
+    - **Edge Case:** If there's an error in the background dispatch (e.g., network failure or broker downtime), the application won't be aware immediately, and retry mechanisms might not handle the failed message correctly.
+
+    - **Risk:** This can lead to undetected message loss or delayed delivery to the DLQ, causing inconsistency in how failures are handled.
+
+    For critical systems where message integrity is essential, it's recommended to use synchronous dispatch (`dispatch_method: :produce_sync`), ensuring the DLQ message is successfully acknowledged by Kafka before continuing.
+
 ## DLQ Topic Configuration Management
 
 The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. Managing their configuration requires separate route definitions with specific configuration settings. Paying attention to these details is crucial as they allow you to fully control and customize the DLQ topics to suit your needs.
