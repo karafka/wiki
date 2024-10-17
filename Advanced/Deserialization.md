@@ -227,6 +227,58 @@ end
 
 By properly managing tombstone messages in your Kafka consumers, you can ensure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka’s log compaction feature.
 
+## Dynamic Deserialization Based on Topic or Message Metadata
+
+In scenarios where messages originate from various topics and no explicit consumers are set up, you may want to dynamically resolve the deserializer based on some condition, like the topic name or metadata. 
+
+Instead of explicitly defining a deserializer for every topic, Karafka allows you to configure a "smarter" default deserializer that adapts dynamically.
+
+You can implement a custom deserializer that evaluates each message and applies the appropriate deserialization strategy based on the message's topic or other metadata (e.g., headers). Karafka will then use this dynamic deserializer when using the [Admin API](https://karafka.io/docs/Admin-API/), [Iterator API](https://karafka.io/docs/Pro-Iterator-API/), and the [Web UI Explorer](https://karafka.io/docs/Pro-Web-UI-Explorer/).
+
+Here's an example of a dynamic deserializer setup:
+
+```ruby
+# Dynamic deserializer that decides what format to use
+# based on the topic name
+class DynamicDeserializer
+  def call(message)
+    case message.topic
+    when 'producers'
+      JSON.parse(message.raw_payload)
+    else
+      Xml.parse(message.raw_payload)
+    end
+  end
+end
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    # Set a dynamic resolver for all the payloads of all the topics even
+    # when they are not defined in the routing explicitly
+    defaults do
+      deserializers(
+        payload: DynamicDeserializer.new
+      )
+    end
+
+    topic :example do
+      consumer ExampleConsumer
+      # Since dynamic defaults are used, for topics that require explicit
+      # deserializer, you need to set it yourself
+      deserializers(
+        payload: JsonDeserializer.new
+      )
+    end
+  end
+end
+```
+
+This approach simplifies the management of topics and makes the deserialization process more flexible without requiring configuration for each topic that will not be consumed.
+
 ## Apache Avro
 
 [Apache Avro](https://avro.apache.org/) is a data serialization system developed by the Apache Foundation, used widely in the Big Data and cloud computing field. It provides a compact, fast, binary data format with rich data structures. Its schema evolution capability allows for flexibility in data reading and writing, with old software being able to read new data and vice versa. This language-agnostic system aids efficient data interchange between programs and supports a seamless and efficient way of data storage, encoding, and decoding.
