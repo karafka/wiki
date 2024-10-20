@@ -1,10 +1,10 @@
 !!! Info "This License Applies Only to Wiki Content"
 
-  Please note that this license applies exclusively to the Wiki's content and does not apply to any specific Karafka ecosystem components.
+    Please note that this license applies exclusively to the Wiki's content and does not apply to any specific Karafka ecosystem components.
 
-  Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
+    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
 
-  This license is intended solely to govern the use of the Wiki content, ensuring proper restrictions and permitted non-commercial use as specified above.
+    This license is intended solely to govern the use of the Wiki content, ensuring proper restrictions and permitted non-commercial use as specified above.
 
 # All Rights Reserved
 
