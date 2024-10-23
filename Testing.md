@@ -4,7 +4,9 @@ It is important to note that the scope of `karafka-testing` is limited to mockin
 
 !!! Tip "Limited Testing Scope of `karafka-testing`"
 
-    `karafka-testing` enables testing of Karafka producers and consumers without a live Kafka server, but be aware that its scope is limited. While it effectively mocks client connections to Kafka for consumer and producer operations, it does not support testing of all Kafka functionalities. Specifically, `karafka-testing` does not facilitate testing of Admin API or any web UI interactions. This library is focused solely on consumer and producer functionalities.
+    `karafka-testing` enables testing of Karafka producers and consumers without a live Kafka server, but be aware that its scope is limited. While it effectively mocks client connections to Kafka for consumer and producer operations, it does not support testing of all Kafka functionalities.
+
+    Specifically, `karafka-testing` does not facilitate testing of Admin API or any web UI interactions. This library is focused solely on consumer and producer functionalities. Additionally, testing consumers does not trigger instrumentation events, so any instrumentation-based logging or monitoring will not be covered during tests.
 
 ## Usage with RSpec
 
