@@ -16,6 +16,7 @@ However, it is crucial to understand that the OSS support does **not** extend to
 8. Integration problems with other services or databases.
 9. Design and architecture questions about your specific application.
 10. Language-specific issues are unrelated to Karafka or librdkafka.
+11. Lack of support for outdated versions of the software or dependencies when newer versions are available.
 
 We acknowledge that understanding your specific applications and their configuration is essential, but due to the time and resource demands, this goes beyond the scope of our OSS support.
 
