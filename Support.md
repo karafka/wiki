@@ -50,7 +50,7 @@ Please include as many of the following details as possible to help me understan
     <td>Provide your entire <code>karafka.rb</code> file, excluding sensitive details. To properly assess most issues, including all details in the <code>karafka.rb</code> file is essential.</td>
   </tr>
   <tr>
-    <td class="nowrap">Karafka Ecosystem Components Details</td>
+    <td class="nowrap">Ecosystem Components Details</td>
     <td>Provide versions of any Karafka ecosystem components you are using, such as <code>karafka-core</code>, <code>waterdrop</code>, <code>karafka-rdkafka</code>, and <code>karafka-web</code>.</td>
   </tr>
   <tr>
@@ -62,7 +62,7 @@ Please include as many of the following details as possible to help me understan
     <td>The version of Apache Kafka you are connecting to.</td>
   </tr>
   <tr>
-    <td class="nowrap">Karafka Configuration</td>
+    <td class="nowrap">Configuration Details</td>
     <td>Relevant configuration details from your <code>karafka.rb</code> and other configuration files.</td>
   </tr>
   <tr>
@@ -94,12 +94,12 @@ Please include as many of the following details as possible to help me understan
     <td>Specify the Kafka vendor you use (e.g., Confluent, MSK, self-hosted, etc.). Additionally, indicate whether the Karafka processes are running in the same availability zone as your Kafka brokers.</td>
   </tr>
   <tr>
-    <td class="nowrap">Karafka Installation Method</td>
-    <td>How you installed Karafka (e.g., using Bundler, manually from source).</td>
+    <td class="nowrap">Installation Method</td>
+    <td>How you installed Karafka or its components (e.g., using Bundler, manually from source).</td>
   </tr>
   <tr>
-    <td class="nowrap">Karafka Environment</td>
-    <td>The environment in which Karafka runs (e.g., development, production).</td>
+    <td class="nowrap">Environment</td>
+    <td>The environment in which the errors occur (e.g., development, production).</td>
   </tr>
   <tr>
     <td class="nowrap">Kafka Cluster Setup</td>

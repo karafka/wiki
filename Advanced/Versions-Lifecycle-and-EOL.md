@@ -12,9 +12,9 @@ Karafka and its components utilize a versioning strategy that does not strictly 
 
 This versioning system is designed to provide clarity and predictability, ensuring developers can understand the impact of upgrading Karafka and its components. By informing you about the nature of each release, we aim to help you make informed decisions regarding when and how to update your versions.
 
-## Karafka and Web UI Versions Support
+## Karafka Components Support
 
-Karafka and its Web UI versions or release series are categorized below into the following phases:
+Karafka and its components versions or release series are categorized below into the following phases:
 
 - **Active**: Branch receives general bug fixes, security fixes, and improvements.
 - **Maintenance**: Only security and critical bug fixes are backported to this branch.
