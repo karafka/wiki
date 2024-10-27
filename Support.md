@@ -28,13 +28,13 @@ We acknowledge that understanding your specific applications and their configura
 
 ## Issue Reporting Guide
 
-When reporting an issue with Karafka, providing detailed information is crucial for diagnosing and resolving the problem efficiently. 
+When reporting an issue within the Karafka ecosystem, providing detailed information is crucial for diagnosing and resolving the problem efficiently. 
 
 !!! Warning "Complete Information Required"
 
-    Failing to provide the below information may result in the issue being closed without assessment.
+    Failing to provide the below information may result in the issue **being closed** without assessment.
 
-Please include the following details to help me understand and address the issue:
+Please include as many of the following details as possible to help me understand and address the issue:
 
 <table>
   <tr>
@@ -70,8 +70,8 @@ Please include the following details to help me understand and address the issue
     <td>The exact error messages or <strong>full</strong> stack traces you encounter.</td>
   </tr>
   <tr>
-    <td class="nowrap">Karafka and librdkafka Logs</td>
-    <td>All Karafka debug logs including debug logs from librdkafka.</td>
+    <td class="nowrap">Debug Logs</td>
+    <td>All <a href="/docs/Problems%2C-Troubleshooting-and-Debugging/#enabling-extensive-logging">debug logs</a> including debug logs from librdkafka.</td>
   </tr>
   <tr>
     <td class="nowrap">Reproduction Steps</td>

@@ -47,6 +47,16 @@ Karafka and its Web UI versions or release series are categorized below into the
 | 0.2     | EOL         | 2023-05-01 |
 | 0.1     | EOL         | 2023-04-01 |
 
+### WaterDrop
+
+| Version | Status      | EOL date   |
+|---------|-------------|------------|
+| 2.8     | Active      | N/A        |
+| 2.7     | Maintenance | 2025-02-01 |
+| 2.6     | EOL         | 2024-09-31 |
+| 2.x     | EOL         | 2024-05-01 |
+| 1.x     | EOL         | 2023-02-01 |
+
 ## Ruby Versions Support
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
