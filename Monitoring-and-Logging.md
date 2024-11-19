@@ -505,6 +505,43 @@ end
 
     Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
 
+## Monitor Wrapping and Replacement
+
+Karafka's monitor can be replaced or wrapped to add custom instrumentation while preserving core functionality. This allows distributed tracing, custom metrics, or enhanced error tracking to be added in case async tracing is not available.
+
+```ruby
+class CustomMonitor < ::Karafka::Instrumentation::Monitor
+  # Events where we want custom handling
+  INTERCEPTED_EVENTS = %w[
+    consumer.consumed
+    consumer.heartbeat
+    consumer.polling.started
+  ].freeze
+
+  def instrument(event_id, payload = EMPTY_HASH, &block)
+    return super unless INTERCEPTED_EVENTS.include?(event_id)
+
+    # Pre-processing
+    MyLogger.info("Starting #{event_id}")
+    
+    # Maintain core functionality
+    super
+  ensure 
+    # Post-processing (runs even after errors)
+    MyMetrics.increment("karafka.#{event_id}")
+  end
+end
+
+# Use custom monitor
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.monitor = CustomMonitor.new
+  end
+end
+```
+
+Such a custom monitor will intercept specific events while delegating to the parent monitor to maintain framework functionality. This pattern enables proper error handling, cleanup, and integration with external monitoring systems that require execution to be wrapped in a block.
+
 ## Implications of Broken Instrumentation listeners/listeners Causing Errors
 
 Instrumentation and monitoring listeners are essential components in Karafka-based applications as they provide insight into the app's performance and behavior. They are critical in collecting metrics, measuring response times, and tracking other performance data. When functioning correctly, they enable efficient identification of issues and performance optimization. However, their malfunctioning could lead to several challenges and problems.
