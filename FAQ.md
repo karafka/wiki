@@ -203,6 +203,7 @@
 203. [Why am I getting the error: "No provider for SASL mechanism GSSAPI: recompile librdkafka with libsasl2 or openssl support"?](#why-am-i-getting-the-error-no-provider-for-sasl-mechanism-gssapi-recompile-librdkafka-with-libsasl2-or-openssl-support)
 204. [How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?](#how-can-i-check-if-librdkafka-was-compiled-with-ssl-and-sasl-support-in-karafka)
 205. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
+206. [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2604,3 +2605,34 @@ There are a couple of reasons `librdkafka` might lose SSL and SASL support in a 
 During the process of building Docker images, each command in the Dockerfile creates a new layer. When a layer is removed, all the changes made in that layer (including installed libraries) are also discarded. If the layers containing the installation of `libssl-dev`, `libsasl2-dev`, or other dependencies are removed before librdkafka is fully built and linked, then the resulting image will lack SSL and SASL support.
 
 **Solution**: To avoid this issue, ensure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
+
+## Why do I see WaterDrop error events but no raised exceptions in sync producer?
+
+This behavior is by design and relates to WaterDrop's sophisticated error handling model. Here's why this happens:
+
+1. Retryable vs. Fatal Errors
+
+- WaterDrop distinguishes between intermediate retryable errors and fatal errors
+- Many errors (like network glitches) are considered retryable
+- These errors are logged but don't necessarily cause the operation to fail
+
+2. Recovery Process
+
+- As long as a message isn't purged from dispatch, WaterDrop will attempt to deliver it
+- If WaterDrop can recover before the message purge time, the produce_sync operation will still succeed
+- Background errors are emitted to inform you about these recovery attempts
+
+3. Why This Matters
+
+- You want to know about intermediate issues (like socket disconnects) as they might indicate underlying cluster problems
+- However, if WaterDrop successfully recovers and delivers the message, there's no need to raise an exception
+- The operation ultimately succeeded from the user's perspective
+
+For example, if there's a temporary network disconnection:
+
+1. The error event is emitted and logged
+2. WaterDrop reestablishes the connection
+3. The message is successfully delivered
+4. No exception is raised because the operation ultimately succeeded
+
+For more detailed information about WaterDrop's error handling model, refer to [this](https://karafka.io/docs/WaterDrop-Error-Handling/) documentation.
