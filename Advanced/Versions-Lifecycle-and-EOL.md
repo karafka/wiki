@@ -100,3 +100,62 @@ Karafka and its components are designed to maintain compatibility with all Kafka
 - **Message Format**: Karafka mandates the use of Message Format v2 or later. This ensures efficient message handling and leverages the capabilities introduced in this format.
 
 By adhering to these compatibility conditions, Karafka ensures its users receive a stable, reliable, and up-to-date experience when integrating with Kafka ecosystems.
+
+### Kafka Ecosystem Coverage
+
+<p>The following table outlines Kafka-compatible platforms that have been reported to work with Karafka:</p>
+
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Platform</th>
+      <th>Compatibility</th>
+      <th>Integration Tests</th>
+      <th>Production Usage</th>
+      <th>Verified</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Apache Kafka</td>
+      <td>Complete</td>
+      <td>Yes</td>
+      <td>High</td>
+      <td>Yes</td>
+      <td>Primary development platform with comprehensive testing across all features including transactions.</td>
+    </tr>
+    <tr>
+      <td>Redpanda</td>
+      <td>High</td>
+      <td>No</td>
+      <td>Medium</td>
+      <td>Yes</td>
+      <td>Most features work as expected; verified through manual testing and users usage.</td>
+    </tr>
+    <tr>
+      <td>WarpStream</td>
+      <td>Basic</td>
+      <td>No</td>
+      <td>Low</td>
+      <td>No</td>
+      <td>Basic operations reported to work but not extensively tested</td>
+    </tr>
+  </tbody>
+</table>
+
+!!! Info "Compatibility Status Explanation"
+    This table reflects our current knowledge about compatibility with different Kafka-compatible platforms. "Verified" indicates whether the Karafka users have independently confirmed compatibility. "Production Usage" reflects reported usage by the community.
+
+#### Compatibility Levels
+
+- **Complete:** All features work as expected
+- **High:** Most features work with minor limitations
+- **Basic:** Core features work but advanced features may not be tested
+
+#### Production Usage
+
+- **High:** Widely reported usage in production environments
+- **Medium:** Several known production deployments
+- **Low:** Limited or no known production deployments
