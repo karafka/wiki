@@ -103,10 +103,9 @@ By adhering to these compatibility conditions, Karafka ensures its users receive
 
 ### Kafka Ecosystem Coverage
 
-<p>The following table outlines Kafka-compatible platforms that have been reported to work with Karafka:</p>
+The following table outlines Kafka-compatible platforms that have been reported to work with Karafka:
 
-
-<table class="table table-bordered">
+<table>
   <thead>
     <tr>
       <th>Platform</th>
