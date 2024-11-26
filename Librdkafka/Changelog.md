@@ -4,6 +4,80 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.6.1 (2024-11-18)
+
+librdkafka v2.6.1 is a maintenance release:
+
+* Fix for a Fetch regression when connecting to Apache Kafka < 2.7 (#4871).
+* Fix for an infinite loop happening with cooperative-sticky assignor
+  under some particular conditions (#4800).
+* Fix for retrieving offset commit metadata when it contains
+  zeros and configured with `strndup` (#4876)
+* Fix for a loop of ListOffset requests, happening in a Fetch From Follower
+  scenario, if such request is made to the follower (#4616, #4754, @kphelps).
+* Fix to remove fetch queue messages that blocked the destroy of rdkafka
+  instances (#4724)
+* Upgrade Linux dependencies: OpenSSL 3.0.15, CURL 8.10.1 (#4875).
+* Upgrade Windows dependencies: MSVC runtime to 14.40.338160.0,
+  zstd 1.5.6, zlib 1.3.1, OpenSSL 3.3.2, CURL 8.10.1 (#4872).
+* SASL/SCRAM authentication fix: avoid concatenating
+  client side nonce once more, as it's already prepended in server sent nonce (#4895).
+* Allow retrying for status code 429 ('Too Many Requests') in HTTP requests for
+  OAUTHBEARER OIDC (#4902).
+
+
+### Fixes
+
+#### General fixes
+
+* SASL/SCRAM authentication fix: avoid concatenating
+  client side nonce once more, as it's already prepended in 
+  server sent nonce.
+  librdkafka was incorrectly concatenating the client side nonce again, leading to [this fix](https://github.com/apache/kafka/commit/0a004562b8475d48a9961d6dab3a6aa24021c47f) being made on AK side, released with 3.8.1, with `endsWith` instead of `equals`.
+  Happening since v0.0.99 (#4895).
+
+#### Consumer fixes
+
+* Issues: #4870
+  Fix for a Fetch regression when connecting to Apache Kafka < 2.7, causing
+  fetches to fail.
+  Happening since v2.6.0 (#4871)
+* Issues: #4783.
+  A consumer configured with the `cooperative-sticky` partition assignment
+  strategy could get stuck in an infinite loop, with corresponding spike of
+  main thread CPU usage.
+  That happened with some particular orders of members and potential 
+  assignable partitions.
+  Solved by removing the infinite loop cause.
+  Happening since: 1.6.0 (#4800).
+* Issues: #4649.
+  When retrieving offset metadata, if the binary value contained zeros
+  and librdkafka was configured with `strndup`, part of
+  the buffer after first zero contained uninitialized data
+  instead of rest of metadata. Solved by avoiding to use
+  `strndup` for copying metadata.
+  Happening since: 0.9.0 (#4876).
+* Issues: #4616
+  When an out of range on a follower caused an offset reset, the corresponding
+  ListOffsets request is made to the follower, causing a repeated
+  "Not leader for partition" error. Fixed by sending the request always
+  to the leader.
+  Happening since 1.5.0 (tested version) or previous ones (#4616, #4754, @kphelps).
+* Issues:
+  Fix to remove fetch queue messages that blocked the destroy of rdkafka
+  instances. Circular dependencies from a partition fetch queue message to
+  the same partition blocked the destroy of an instance, that happened
+  in case the partition was removed from the cluster while it was being
+  consumed. Solved by purging internal partition queue, after being stopped
+  and removed, to allow reference count to reach zero and trigger a destroy.
+  Happening since 2.0.2 (#4724).
+  
+
+### Checksums
+Release asset checksums:
+ * v2.6.1.zip SHA256 `b575811865d9c0439040ccb2972ae6af963bc58ca39d433243900dddfdda79cf`
+ * v2.6.1.tar.gz SHA256 `0ddf205ad8d36af0bc72a2fec20639ea02e1d583e353163bf7f4683d949e901b`
+
 ## 2.6.0 (2024-10-10)
 
 librdkafka v2.6.0 is a feature release:
@@ -1924,82 +1998,4 @@ v1.2.1 is a maintenance release:
 Release asset checksums:
  * v1.2.1.zip SHA256 `8b5e95318b190f40cbcd4a86d6a59dbe57b54a920d8fdf64d9c850bdf05002ca`
  * v1.2.1.tar.gz SHA256 `f6be27772babfdacbbf2e4c5432ea46c57ef5b7d82e52a81b885e7b804781fd6`
-
-## 1.2.0 (2019-09-19)
-
-# librdkafka v1.2.0 release
-
-**WARNING: There is an issue with SASL GSSAPI authentication on Windows with this release. Upgrade directly to v1.2.1 which fixes the issue.**
-
-v1.2.0 is a feature release making the consumer transaction aware.
-
-
- * Transaction aware consumer (`isolation.level=read_committed`) implemented by @mhowlett.
- * Sub-millisecond  buffering (`linger.ms`) on the producer.
- * Improved authentication errors ([KIP-152](https://cwiki.apache.org/confluence/display/KAFKA/KIP-152+-+Improve+diagnostics+for+SASL+authentication+failures))
-
-### Consumer-side transaction support
-
-This release adds consumer-side support for transactions.
-In previous releases, the consumer always delivered all messages to the application, even those in aborted or not yet committed transactions. In this release, the consumer will by default skip messages in aborted transactions.
-This is controlled through the new `isolation.level` configuration property which
-defaults to `read_committed` (only read committed messages, filter out aborted and not-yet committed transactions), to consume all messages, including for aborted transactions, you may set this property to `read_uncommitted` to get the behaviour of previous releases.
-For consumers in `read_committed` mode, the end of a partition is now defined to be the offset of the last message of a successfully committed transaction (referred to as the 'Last Stable Offset').
-For non-transactional messages there is no change from previous releases, they will always be read, but a consumer will not advance into a not yet committed transaction on the partition.
-
-### Upgrade considerations
-
- * `linger.ms` default was changed from 0 to 0.5 ms to promote some level of batching even with default settings.
-
-
-### New configuration properties
-
- * Consumer property `isolation.level=read_committed` ensures the consumer will only read messages from successfully committed producer transactions. Default is `read_committed`. To get the previous behaviour, set the property to `read_uncommitted`, which will read all messages produced to a topic, regardless if the message was part of an aborted or not yet committed transaction.
-
-### Enhancements
-
- * Offset commit metadata (arbitrary application-specified data) is now returned by `rd_kafka_committed()` and `rd_kafka_offsets_for_times()` (@damour, #2393)
- * C++: Added `Conf::c_ptr*()` to retrieve the underlying C config object.
- * Added `on_thread_start()` and `on_thread_exit()` interceptors.
- * Increase `queue.buffering.max.kbytes` max to INT_MAX.
- * Optimize varint decoding, increasing consume performance by **~15%**.
-
-### Fixes
-
-General:
- * Rate limit IO-based queue wakeups to `linger.ms`, this reduces CPU load and lock contention for high throughput producer applications. (#2509)
- * Reduce memory allocations done by `rd_kafka_topic_partition_list_new()`.
- * Fix socket recv error handling on MSVC (by Jinsu Lee).
- * Avoid 1s stalls in some scenarios when broker wakeup-fd is triggered.
- * SSL: Use only hostname (not port) when valid broker hostname (by Hunter Jacksson)
- * SSL: Ignore OpenSSL cert verification results if `enable.ssl.certificate.verification=false` (@salisbury-espinosa, #2433)
- * rdkafka_example_cpp: fix metadata listing mode (@njzcx)
- * SASL Kerberos/GSSAPI: don't treat kinit ECHILD errors as errors (@hannip, #2421)
- * Fix compare overflows (#2443)
- * configure: Add option to disable automagic dependency on zstd (by Thomas Deutschmann)
- * Documentation updates and fixes by Cedric Cellier and @ngrandem
- * Set thread name on MacOS X (by Nikhil Benesch)
- * C++: Fix memory leak in `Headers` (by Vladimir Sakharuk)
- * Fix UBSan (undefined behaviour errors) (@PlacidBox, #2417)
- * CONFIGURATION.md: escape `||` inside markdown table (@mhowlett)
- * Refresh broker list metadata even if no topics to refresh (#2476)
-
-Consumer:
- * Make `rd_kafka_pause|resume_partitions()` synchronous, making sure that a subsequent `consumer_poll()` will not return messages for the paused partitions (#2455).
- * Fix incorrect toppar destroy in OffsetRequest (@binary85, #2379)
- * Fix message version 1 offset calculation (by Martin Ivanov)
- * Defer commit in transport error to avoid consumer_close hang.
-
-
-Producer:
- * Messages were not timed out for leader-less partitions (.NET issue [#1027](https://github.com/confluentinc/confluent-kafka-dotnet/issues/1027)).
- * Improve message timeout granularity to millisecond precision (the smallest ffective message timeout will still be 1000ms).
- * `message.timeout.ms=0` is now accepted even if `linger.ms` > 0 (by Jeff Snyder)
- * Don't track `max.poll.interval.ms` unless in Consumer mode, this saves quite a few memory barries for high-performance Producers.
- * Optimization: avoid atomic fatal error code check when idempotence is disabled.
-
-### Checksums
-Release asset checksums:
- * v1.2.0.zip SHA256 `6e57f09c28e9a65abb886b84ff638b2562b8ad71572de15cf58578f3f9bc45ec`
- * v1.2.0.tar.gz SHA256 `eedde1c96104e4ac2d22a4230e34f35dd60d53976ae2563e3dd7c27190a96859`
 
