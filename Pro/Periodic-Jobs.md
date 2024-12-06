@@ -99,7 +99,7 @@ class Consumer < Karafka::BaseConsumer
   def consume; end
 
   def tick
-   puts "Look, mom, I'm periodic!"
+    puts "Look, mom, I'm periodic!"
   end
 end
 ```

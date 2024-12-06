@@ -204,6 +204,7 @@
 204. [How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?](#how-can-i-check-if-librdkafka-was-compiled-with-ssl-and-sasl-support-in-karafka)
 205. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
 206. [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
+207. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2636,3 +2637,11 @@ For example, if there's a temporary network disconnection:
 4. No exception is raised because the operation ultimately succeeded
 
 For more detailed information about WaterDrop's error handling model, refer to [this](https://karafka.io/docs/WaterDrop-Error-Handling/) documentation.
+
+## When does EOF (End of File) handling occur in Karafka, and how does it work?
+
+EOF handling in Karafka only occurs when it is explicitly enabled. However, it's important to understand that EOF execution may not always trigger when the end of a partition is reached during message processing.
+
+When messages are present in the final batch that reaches the end of a partition, Karafka will execute a regular consumption run with the `#eofed?` flag set to `true`, rather than triggering the EOF handling logic.
+
+This is because the primary purpose of EOF handling is to deal with scenarios where there are no more messages to process, rather than handling the last message batch. The EOF handling can be useful for executing cleanup or maintenance tasks when a partition has been fully consumed, but it should not be relied upon as a guaranteed trigger for end-of-partition processing logic. If you need guaranteed processing for the last message or batch in a partition, you should implement that logic within your regular message consumption flow using the `#eofed?` check.

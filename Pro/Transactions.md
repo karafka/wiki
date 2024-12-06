@@ -18,6 +18,21 @@ Karafka transactions provide Exactly-Once Semantics by ensuring that producing t
 
     Please note that **this document concentrates solely on the consumer-related aspects of Karafka's transactions**. For a comprehensive understanding of transactions and to ensure a well-rounded mastery of Karafka's transactional capabilities, delving into the [WaterDrop transactions documentation](https://karafka.io/docs/WaterDrop-Transactions/) is imperative.
 
+!!! Warning "Avoid Mixing Transactional and Non-Transactional Offset Committing"
+
+    Mixing transactional offset committing with non-transactional offset committing is strongly discouraged. When these two modes are combined, it can lead to unpredictable behavior and compromise the integrity of your data processing.
+
+    In such scenarios, Kafka will issue warnings in its logs, which may look like this:
+
+    ```
+      WARN [GroupMetadataManager brokerId=1]
+      group: ID with leader: LEADER-ID has received offset commits from consumers as well as transactional producers.
+      Mixing both types of offset commits will generally result in surprises and should be avoided.
+      (kafka.coordinator.group.GroupMetadataManager)
+    ```
+
+    To ensure reliable and predictable processing, always commit offsets using the mode within your consumer. If transactional processing is enabled, all offset commits should be part of a transaction. If you're processing offsets non-transactionally, do not mix this with transactional operations.
+
 Before using transactions, you need to configure your producer to be transactional. This is done by setting `transactional.id` in the kafka settings scope:
 
 ```ruby

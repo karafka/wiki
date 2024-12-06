@@ -99,7 +99,7 @@ end
 
 ## Consuming From Earliest or Latest Offset
 
-Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value:
+Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value as a default:
 
 
 ```ruby
@@ -114,6 +114,26 @@ end
 class KarafkaApp < Karafka::App
   setup do |config|
     config.initial_offset = 'latest'
+  end
+end
+```
+
+or on a per-topic basis:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :events do
+      consumer EventsConsumer
+      # Start from earliest for this specific topic
+      initial_offset 'earliest'
+    end
+
+    topic :notifications do
+      consumer NotificationsConsumer
+      # Start from latest for this specific topic
+      initial_offset 'latest'
+    end
   end
 end
 ```
