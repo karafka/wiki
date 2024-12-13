@@ -326,8 +326,6 @@ Specific scenarios, like partition revocation, can introduce complexities that m
 
 1. **Handling Assignment Loss During Transactions**: If the assignment is lost while a transaction is in progress, the transaction is automatically rolled back, and an error is raised. This rollback is crucial to maintaining the atomicity and integrity of transactions, ensuring that partial or inconsistent states do not persist in the system.
 
-1. **Retry Mechanism**: In cases where an `AssignmentLostError` occurs or a transaction is rolled back due to assignment loss, Karafka, by default, retries the processing of the given batch after a back-off period. This automatic retry mechanism ensures that temporary issues, such as network partitions or rebalances, do not lead to message loss or processing failures. However, this behavior can be configured based on your application's specific needs and characteristics.
-
 In summary, Karafka's transaction handling after revocation is designed to maintain the integrity and consistency of message processing. By allowing message production to continue post-revocation and ensuring that consumption marking is tightly controlled, Karafka provides a robust framework for managing transactions, even in the face of complex distributed system behaviors like partition revocation.
 
 ### Transactions in the Dead-Letter Queue
