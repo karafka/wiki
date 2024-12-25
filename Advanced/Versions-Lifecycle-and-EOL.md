@@ -67,7 +67,7 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 3.4     | Upcoming    | 2028-09-31 |
+| 3.4     | Active      | 2028-09-31 |
 | 3.3     | Active      | 2027-09-31 |
 | 3.2     | Active      | 2026-09-31 |
 | 3.1     | Active      | 2025-09-31 |
