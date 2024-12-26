@@ -205,6 +205,7 @@
 205. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
 206. [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
 207. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
+208. [How can I determine if a message is a retry or a new message?](#tba)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2645,3 +2646,17 @@ EOF handling in Karafka only occurs when it is explicitly enabled. However, it's
 When messages are present in the final batch that reaches the end of a partition, Karafka will execute a regular consumption run with the `#eofed?` flag set to `true`, rather than triggering the EOF handling logic.
 
 This is because the primary purpose of EOF handling is to deal with scenarios where there are no more messages to process, rather than handling the last message batch. The EOF handling can be useful for executing cleanup or maintenance tasks when a partition has been fully consumed, but it should not be relied upon as a guaranteed trigger for end-of-partition processing logic. If you need guaranteed processing for the last message or batch in a partition, you should implement that logic within your regular message consumption flow using the `#eofed?` check.
+
+## How can I determine if a message is a retry or a new message?
+
+You can use:
+
+- `#attempt` - shows retry attempt number  
+- `#retrying?` - boolean indicating if message is being retried
+
+Note that:
+
+1. This works per offset location, not per individual message, unless you mark each message as consumed
+1. The error causing the retry may differ between retry attempts
+
+You can find more details about this [here](https://karafka.io/docs/Error-handling-and-back-off-policy/#altering-the-consumer-behaviour-upon-reprocessing).
