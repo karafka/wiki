@@ -161,7 +161,7 @@ Karafka's `#transaction` method is designed to handle complex message processing
 def consume
   # Use a dedicated transactional producer instead of
   # default faster one for this type of operations
-  transaction(TRANSACTIONAL_PRODUCER) do
+  transaction do
     result = Aggregator.merge(messages.payloads)
 
     produce_async(topic: :aggregations_stream, payload: result.to_json)
@@ -169,30 +169,64 @@ def consume
     mark_as_consumed(batch.last)
   end
 end
+
+# @param _action_name [Symbol] name of action like :consume, :revoked, etc
+def wrap(_action_name)
+  default = self.producer
+  self.producer = TRANSACTIONAL_PRODUCER
+
+  yield
+
+  self.producer = default
+end
 ```
 
 - **Connection Pool of Producers**: In high-traffic systems where throughput is vital, efficiently managing producer instances becomes essential. Using different producer instances with the `#transaction` method enables you to set up a pool of producers. This pool allows your system to handle multiple transactions simultaneously by providing an available producer for each transaction, optimizing resource use, and maintaining system performance.
 
 ```ruby
 def consume
-  PRODUCERS.with do |producer|
-    # Use a producer taken from a pool
-    transaction(producer) do
-      result = Aggregator.merge(messages.payloads)
+  transaction do
+    result = Aggregator.merge(messages.payloads)
 
-      produce_async(topic: :aggregations_stream, payload: result.to_json)
+    produce_async(topic: :aggregations_stream, payload: result.to_json)
 
-      mark_as_consumed(batch.last)
-    end
+    mark_as_consumed(batch.last)
+  end
+end
+
+# The `#wrap` allows you to wrap the actions with a custom block that can be used to assign the
+# selected producer from the pool
+#
+# @param _action_name [Symbol] name of action like :consume, :revoked, etc
+def wrap(_action_name)
+  # Store the original producer
+  default = producer
+
+  PRODUCERS.with do |selected_producer|
+    # Assign the transactional producer
+    self.producer = selected_producer
+
+    yield
+
+    # Restore the original producer so the one from the pool does not leak out
+    self.producer = default
   end
 end
 ```
 
 The importance of having a pool of producers is highlighted by how transactions lock producers in Karafka. When a transaction starts, it locks its producer to the current thread, making the producer unavailable for other operations until the transaction is completed or rolled back. In a high-traffic system, this could lead to performance issues if multiple transactions are waiting for the same producer.
 
-With a producers' connection pool, this challenge is mitigated. When a transaction begins, it picks an available producer from the pool, allowing other operations to proceed in parallel with their producers. After the transaction ends, the producer is released back to the pool, ready to be used for new transactions.
+With a producers' connection pool, this challenge is mitigated. When a transaction begins, it picks the assigned producer from the pool, allowing other operations to proceed in parallel with their producers. After the transaction ends, the producer is released back to the pool, ready to be used for new transactions.
 
 In essence, with support for dedicated transactional producers, Karafka's `#transaction` method offers a structured and efficient way to manage message transactions in highly-traffic systems.
+
+!!! Warning "Direct Transactional Producer Usage Is Not Recommended"
+
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
+
+    In these scenarios, the Karafka framework might invoke the transactional producer after the main consumption logic completes. This implicit usage could lead to unintended transactional behavior or conflicts, undermining the integrity of your processing logic.
+
+    The recommended approach is to utilize the `#wrap` method when customizing the producer. This ensures that the transactional producer is seamlessly managed across the entire lifecycle of the action, including any framework-level operations that occur after your custom logic. By adhering to this practice, you maintain consistency, avoid unexpected issues, and fully leverage the robustness of Karafka's transactional processing capabilities.
 
 ### Risks of Early Exiting Transactional Block
 
@@ -269,15 +303,13 @@ It's crucial to understand the implications of this producer reassignment:
 # that ongoing transaction and revocation get their respective dedicated producers
 class LrjOperableConsumer
   def consume
-    PRODUCERS.with do |producer|
-      # Use a producer taken from a pool
-      transaction(producer) do
-        result = Aggregator.merge(messages.payloads)
+    # Uses the default transactional producer taken from a pool assigned via `#wrap`
+    transaction do
+      result = Aggregator.merge(messages.payloads)
 
-        produce_async(topic: :aggregations_stream, payload: result.to_json)
+      produce_async(topic: :aggregations_stream, payload: result.to_json)
 
-        mark_as_consumed(batch.last)
-      end
+      mark_as_consumed(batch.last)
     end
   end
 
@@ -286,6 +318,25 @@ class LrjOperableConsumer
     # different producer instance
     PRODUCERS.with do |producer|
       producer.produce_async(topic: :revokactions, payload: @state.to_json)
+    end
+  end
+
+  def wrap(action_name)
+    # since for LRJ revoked can run in parallel with `#consume` we do not reassign the consumer but
+    # rather we opt for explicit producer selection
+    return yield if action_name == :revoked
+
+    # Store the original producer
+    default = producer
+
+    PRODUCERS.with do |selected_producer|
+      # Assign the transactional producer
+      self.producer = selected_producer
+
+      yield
+
+      # Restore the original producer so the one from the pool does not leak out
+      self.producer = default
     end
   end
 end
