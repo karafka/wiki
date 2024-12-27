@@ -522,3 +522,4 @@ class CustomConsumer < ApplicationConsumer
     end
   end
 end
+```
