@@ -228,6 +228,12 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
     The recommended approach is to utilize the `#wrap` method when customizing the producer. This ensures that the transactional producer is seamlessly managed across the entire lifecycle of the action, including any framework-level operations that occur after your custom logic. By adhering to this practice, you maintain consistency, avoid unexpected issues, and fully leverage the robustness of Karafka's transactional processing capabilities.
 
+!!! Warning "Ensure `#wrap` Always Calls `yield`"
+
+    It is critical to ensure that the `#wrap` method always calls `yield`, even if operations like selecting a producer from a pool fail. The `yield` statement in `#wrap` executes the entire operational flow within Karafka, including not only your custom logic but also essential framework-level synchronization and processing code.
+
+    You can read more about this requirement [here](https://karafka.io/docs/Consuming-Messages/#wrapping-the-execution-flow).
+
 ### Risks of Early Exiting Transactional Block
 
 In all versions of Karafka, using `return`, `break`, or `throw` to exit a transactional block early is **not allowed**.

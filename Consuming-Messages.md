@@ -478,3 +478,47 @@ Knowing when a partition has reached EOF can be helpful in several scenarios:
 - **Logging and Monitoring**: Logging EOF events can be useful for monitoring data consumption and detecting when there are no more messages to process, which can help debugging and performance tuning.
 
 - **Triggering Downstream Processes**: EOF can be a signal to trigger downstream processes that depend on the completion of data consumption, ensuring that subsequent operations only start once all relevant data has been processed.
+
+## Wrapping the Execution Flow
+
+Karafka's design includes the ability to "wrap" the execution flow, which allows to execute custom logic before and after the message processing cycle. This functionality is particularly valuable for scenarios where additional setup, teardown, or contextual operations (such as selecting a transactional producer from a pool) are needed.
+
+The `#wrap` method surrounds the entire operational flow of the consumer, not just the user's business logic. This includes:
+
+1. **User-Defined Logic**: The custom message processing logic implemented in all the actions such as `#consume`, `#revoked`, etc. methods.
+2. **Framework-Level Operations**: Core functionalities such as offset management, message acknowledgment, and internal state synchronization.
+3. **Error Handling and Recovery**: Ensures proper transactional rollbacks or retries in case of failures.
+
+To implement `#wrap`, override it in your consumer class. The method should ensure that `yield` is **always** invoked, regardless of any failures or conditions. This is critical because skipping `yield` can disrupt Karafka's ability to execute its internal processes, leading to inconsistencies or data loss.
+
+Here's an example of a `#wrap` implementation:
+
+```ruby
+class CustomConsumer < ApplicationConsumer
+  def consume
+    # This will cause a backoff if no producer was available
+    raise ProducerUnavailableError if @no_producer
+
+    # Your logic here
+  end
+
+  def wrap(_action_name)
+    default_producer = producer
+
+    begin
+      # Attempt to select a producer from the pool
+      PRODUCERS.with do |transactional_producer|
+        self.producer = transactional_producer
+        yield
+      end
+    rescue ProducerUnavailableError
+      # Handle scenarios where a producer isn't available
+      @no_producer = true
+      yield # Ensure framework operations still execute
+    ensure
+      @no_producer = false
+      # Restore the original producer after execution
+      self.producer = default_producer
+    end
+  end
+end
