@@ -79,6 +79,11 @@ It's crucial to understand how Karafka handles retries for different methods in 
       <td>No</td>
       <td>This method is triggered when the end of a partition is reached. Since it's a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
     </tr>
+    <tr>
+      <td><code>#wrap</code></td>
+      <td>No</td>
+      <td>Wraps the entire consumption lifecycle, including framework-level operations and user-defined logic. Must <strong>always</strong> call <code>yield</code> to ensure that all processing, synchronization, and cleanup actions are executed, even in error scenarios.</td>
+    </tr>
   </tbody>
 </table>
 

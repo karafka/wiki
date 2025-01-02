@@ -497,7 +497,7 @@ Here's an example of a `#wrap` implementation:
 class CustomConsumer < ApplicationConsumer
   def consume
     # This will cause a backoff if no producer was available
-    raise ProducerUnavailableError if @no_producer
+    raise @wrap_error if @wrap_error
 
     # Your logic here
   end
@@ -511,12 +511,12 @@ class CustomConsumer < ApplicationConsumer
         self.producer = transactional_producer
         yield
       end
-    rescue ProducerUnavailableError
+    rescue ProducerUnavailableError => e
       # Handle scenarios where a producer isn't available
-      @no_producer = true
+      @wrap_error = e
       yield # Ensure framework operations still execute
     ensure
-      @no_producer = false
+      @wrap_error = false
       # Restore the original producer after execution
       self.producer = default_producer
     end

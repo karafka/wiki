@@ -185,6 +185,10 @@ end
 
 ```ruby
 def consume
+  # If there were issues during wrapping (producer selection, etc), re-raise it so a backff
+  # policy can be applied
+  raise @wrap_error if @wrap_error
+
   transaction do
     result = Aggregator.merge(messages.payloads)
 
@@ -211,6 +215,14 @@ def wrap(_action_name)
     # Restore the original producer so the one from the pool does not leak out
     self.producer = default
   end
+# Ensure yield is called even in case of any errors
+# This error is just an example error
+rescue NoProducerAvailableError => e
+  @wrap_error = e
+
+  yield
+ensure
+  @wrap_error = false
 end
 ```
 
@@ -309,6 +321,9 @@ It's crucial to understand the implications of this producer reassignment:
 # that ongoing transaction and revocation get their respective dedicated producers
 class LrjOperableConsumer
   def consume
+    # Re-raise wrap error (if any)
+    raise @wrap_error if @wrap_error
+
     # Uses the default transactional producer taken from a pool assigned via `#wrap`
     transaction do
       result = Aggregator.merge(messages.payloads)
@@ -344,6 +359,10 @@ class LrjOperableConsumer
       # Restore the original producer so the one from the pool does not leak out
       self.producer = default
     end
+  # yield needs to be called always, even in case of wrap errors
+  rescue NoProducerAvailableError => e
+    @wrap_error = e
+    yield
   end
 end
 ```
