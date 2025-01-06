@@ -37,7 +37,7 @@ Karafka and its components versions or release series are categorized below into
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 0.10    | Active      | N/A        |
-| 0.9     | Maintenance | 2024-12-31 |
+| 0.9     | EOL         | 2024-12-31 |
 | 0.8     | EOL         | 2024-08-31 |
 | 0.7     | EOL         | 2024-05-01 |
 | 0.6     | EOL         | 2023-12-01 |
@@ -84,8 +84,8 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 | 8.0     | Active      | N/A        |
 | 7.2     | Active      | 2026-09-30 |
 | 7.1     | Active      | 2025-11-31 |
-| 7.0     | Active      | 2025-05-31 |
-| 6.1     | Maintenance | 2024-12-31 |
+| 7.0     | Maintenance | 2025-05-31 |
+| 6.1     | EOL         | 2024-12-31 |
 | 5.2     | EOL         | 2023-12-31 |
 | 4.2     | EOL         | 2021-05-01 |
 
