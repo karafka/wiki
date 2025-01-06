@@ -116,7 +116,6 @@ end
 
 ### Automatic Offset Management in Transactions
 
-
 Karafka operates with a default mode that employs automatic offset management. This efficient approach commits offsets after the successful processing of each batch, streamlining the message-handling process:
 
 ```ruby
@@ -150,6 +149,38 @@ end
 Karafka's design capitalizes on Kafka's transactional mechanisms, intricately linking the consumption of messages with the output of subsequent messages within a singular, indivisible operation. 
 
 Consequently, if a transaction is prematurely aborted or encounters a failure, the offsets of the consumed messages remain uncommitted. As a result, the same batch of messages is queued for reprocessing, effectively nullifying data loss and strictly adhering to the principles of exactly-once processing semantics. Thus, the integration of automatic offset management with transactions is seamless and devoid of risk, ensuring the integrity and consistency of message processing.
+
+### Manual Offset Management in Transactions
+
+!!! Warning "Direct Transactional Producer Usage Is Not Recommended"
+
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
+
+When using Manual Offset Management, you can provide a custom producer to the `#transaction` method as its first argument. This allows for greater flexibility in managing transactions, particularly in scenarios requiring advanced control over producers and offsets.
+
+In such cases, you do not have to use the `#wrap` API and you can embed selection of the consumer into your transactional flow directly:
+
+```ruby
+def consume
+  PRODUCERS.with do |transactional_producer|
+    # Use this only when fully managing offsets yourself
+    transaction(transactional_producer) do
+      messages.each do |message|
+        # Custom processing logic
+        process_message(message)
+
+        mark_as_consumed(message)
+      end
+    end
+  end
+end
+```
+
+!!! Hint "Using `#wrap` with Manual Offset Management and Custom Producers"
+
+    When providing a custom producer directly to the `#transaction` method while using manual offset management, you must ensure that no Karafka features that automatically manage and store offsets are used in your consumer. Any inadvertent offset management by Karafka could interfere with the integrity of your manual offset strategy.
+
+    In many cases, it may be a better idea to leverage the `#wrap` API, even when using manual offset management. The `#wrap` API allows you to handle custom producer assignment and lifecycle management seamlessly, while still ensuring that the overall Karafka consumption flow - including synchronization and framework-level operations—executes correctly. This approach reduces the risk of inconsistencies and simplifies producer handling in complex scenarios.
 
 ### Using a Dedicated Transactional Producer
 
