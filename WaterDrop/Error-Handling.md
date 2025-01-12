@@ -20,21 +20,21 @@ WaterDrop provides three distinct APIs, each with unique error-handling behavior
 
 In WaterDrop, errors encountered during the message-handling process can be categorized into five distinct types. Each type represents a specific stage or aspect of the message delivery lifecycle, highlighting the diverse issues in a message queuing system.
 
-- **Inline Errors**: These errors occur at the initial stage of message production, preventing the creation of a delivery handle. Inline errors indicate the message has not been sent to the message queue. A typical example of this type of error is the `:queue_full`, which occurs when the message cannot be queued due to a lack of available buffer space. This type of error is immediate and directly related to the message production process and indicates a dispatch failure.
+- **Pre-Handle Inline Errors**: These errors occur at the initial stage of message production, preventing the creation of a delivery handle. Inline errors indicate the message has not been sent to the message queue. A typical example of this type of error is the `:queue_full`, which occurs when the message cannot be queued due to a lack of available buffer space. This type of error is immediate and directly related to the message production process and indicates a dispatch failure.
 
-- **Wait Timeout Error**: This error arises when there is an exception during the invocation of the `#wait` method on a delivery handle. This can happen either directly or when producing messages synchronously, especially if the maximum wait time is reached. Notably, a wait error does not necessarily mean that the message will not be delivered; it primarily indicates that the allotted wait time for the message to be processed was exceeded. Please know that `#wait` can raise additional errors, indicating final delivery failure. With the default configuration where `max_wait_timeout` exceeds other message delivery timeouts, the `#wait` raised error should always be final.
+- **Wait Timeout Errors**: This error arises when there is an exception during the invocation of the `#wait` method on a delivery handle. This can happen either when calling `#wait` directly after `#produce_async`, or when producing messages synchronously, especially if the maximum wait time is reached. Notably, a wait error does not necessarily mean that the message will not be delivered; it primarily indicates that the allotted wait time for the message to be processed was exceeded. Please know that `#wait` can raise additional errors, indicating final delivery failure. With the default configuration where `max_wait_timeout` exceeds other message delivery timeouts, the `#wait` raised error should always be final.
 
 - **Intermediate Errors**: These errors can occur anytime, are not necessarily linked to producing specific messages, do not happen inline, and are published via the `error.occurred` notifications channel. They usually signify operational problems within the system and are often temporary. Intermediate errors might indicate issues such as network interruptions or temporary system malfunctions. They are not directly tied to the fate of individual messages but rather to the overall health and functioning of the messaging system.
 
 - **Delivery Failures**: This type of error is specifically related to the non-delivery of a message. A delivery failure occurs when a message, identifiable by its label, is retried several times but ultimately fails to be delivered. After a certain period, WaterDrop determines that it is no longer feasible to continue attempting delivery. This error signifies a definitive failure in the message delivery process, marking the end of the message's lifecycle with a non-delivery status.
 
-- **ProduceMany** Errors: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` method with appropriate delivery handles for successfully enqueuing messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
+- **ProduceMany Errors**: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` method with appropriate delivery handles for successfully enqueued messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
 
-- Transactional **ProduceMany** Errors: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
+- **Transactional ProduceMany Errors**: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
 
 Each error type plays a crucial role in understanding and managing the complexities of message handling in WaterDrop, providing precise categorization for troubleshooting and system optimization.
 
-## Errors Impact on the Delivery
+## Errors' Impact on the Delivery
 
 <table border="1">
     <thead>
@@ -51,9 +51,9 @@ Each error type plays a crucial role in understanding and managing the complexit
             <td>Errors occurring before delivery confirmation suggest non-delivery. For non-transactional batches, partial delivery may occur. <code>ProduceManyError</code> is raised, detailing messages via <code>#dispatched</code> for successful sends, while <code>#cause</code> reveals the original error.</td>
         </tr>
         <tr>
-            <td><code>Rdkafka::Producer::WaitTimeoutError</code></td>
+            <td>Wait Timeout Errors</td>
             <td>No</td>
-            <td>This error occurs when the <code>#wait</code> exceeds its limit without receiving a delivery report. It implies prolonged waiting, not necessarily message non-delivery.</td>
+            <td>The <code>Rdkafka::Producer::WaitTimeoutError</code> occurs when the <code>#wait</code> exceeds its limit without receiving a delivery report. It implies prolonged waiting, not necessarily message non-delivery.</td>
         </tr>
         <tr>
             <td>Intermediate Errors on <code>error.occurred</code></td>
@@ -66,21 +66,21 @@ Each error type plays a crucial role in understanding and managing the complexit
             <td>Errors from <code>#wait</code> other than <code>WaitTimeoutError</code> signify an available delivery report with errors. In <code>ProduceManyError</code> cases, delivery may be partial; check <code>#dispatched</code> for success and <code>#cause</code> for error origins.</td>
         </tr>
         <tr>
-            <td><code>WaterDrop::Errors::ProduceManyError</code></td>
+            <td>ProduceMany Errors</td>
             <td>Partially Yes</td>
-            <td>Raised during batch dispatches with full queues. Some messages may be sent successfully (see <code>#dispatched</code> for details), while others fail. The <code>#cause</code> method provides the specific error reason.</td>
+            <td><code>WaterDrop::Errors::ProduceManyError</code>s are raised during batch dispatches with full queues. Some messages may be sent successfully (see <code>#dispatched</code> for details), while others fail. The <code>#cause</code> method provides the specific error reason.</td>
         </tr>
         <tr>
-            <td>Transactional <code>WaterDrop::Errors::ProduceManyError</code></td>
+            <td>Transactional ProduceMany Errors</td>
             <td>Yes</td>
-            <td>Raised during transactional batch dispatches. If a failure occurs, no messages are sent, and a rollback is performed. The <code>#dispatched</code> method will be empty, as either all messages are successfully enqueued, or none are. The <code>#cause</code> method provides the specific error reason.</td>
+            <td><code>WaterDrop::Errors::ProduceManyError</code>s raised during transactional batch dispatches. If a failure occurs, no messages are sent, and a rollback is performed. The <code>#dispatched</code> method will be empty, as either all messages are successfully enqueued, or none are. The <code>#cause</code> method provides the specific error reason.</td>
         </tr>
     </tbody>
 </table>
 
 ## Tracking Deliveries and Errors
 
-Due to WaterDrop's asynchronous nature, we recommend either using a transactional producer with its inline collective error handling and delivery warranties or using the async API and using the `error.occurred` notifications to detect and recognize messages that were not successfully delivered with inline error tracking for issues that would arise before the message had a chance to be enqueued for the delivery.
+Due to WaterDrop's asynchronous nature, we recommend either using a transactional producer with its inline collective error handling and delivery warranties or using the async API and using the `error.occurred` notifications to detect and recognize messages that were not successfully delivered with inline error tracking for issues that would arise before the message had a chance to be enqueued for delivery.
 
 Every event published to `error.occurred` contains a type, and if the type is not `librdkafka.dispatch_error`, the error is intermediate or partial. It is worth logging but does not indicate that the dispatched message was not delivered. Events with the type set to `librdkafka.dispatch_error` will always contain a full delivery report for each enqueued message with exact details on why a message was not delivered.
 
@@ -88,7 +88,7 @@ In general, we recommend following a similar flow to the one below:
 
 ### Single Message Dispatch
 
-All the potential errors will relate to a single dispatched message:
+All the potential errors that will relate to a single dispatched message:
 
 ```ruby
 begin
@@ -96,13 +96,13 @@ begin
   producer.produce_async(...)
 rescue => e
   case e
-  # This will never happen for async
-  when Rdkafka::Producer::WaitTimeoutError
-    puts 'Will not wait any longer but messages may still be delivered'
-    puts "This dispatch may reach Kafka depending on the delivery report"
-  when Rdkafka::RdkafkaError
-    puts "Something went wrong and we did not get the delivery handle"
-    puts "This dispatch for sure will not reach Kafka"
+  when WaterDrop::Errors::MessageInvalidError
+    puts "Message is invalid and was not sent"
+    raise e
+  when WaterDrop::Errors::ProduceError
+    puts "Final error instrumeted as error.occurred so we don't need to re-raise it"
+    puts "WaterDrop has already retried `Rdkafka::RdkafkaError`s due to :queue_full if wait_on_queue_full was enabled, and the wait time did not exceed wait_timeout_on_queue_full. This means we did not get the delivery handle and this dispatch will for sure not reach Kafka"
+    puts "If the underlying cause was a Rdkafka::Producer::DeliveryHandle::WaitTimeoutError (for #produce_sync only), the message could still reach Kafka"
   else
     # Any other errors. This should not happen and indicates trouble.
     puts "Something else have happened. Read the error for details"
@@ -115,7 +115,7 @@ end
 ```ruby
 producer.monitor.subscribe('error.occurred') do |event|
   case event[:type]
-  # Every single message that received a handler is delivered or fails event 
+  # Every single message that received a handler is either delivered or fails 
   when 'librdkafka.dispatch_error'
     puts "Message with label: #{event[:delivery_report].label} failed to be delivered"
     ErrorsTracker.track(event[:error])
