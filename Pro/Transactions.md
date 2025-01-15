@@ -476,7 +476,25 @@ Here's how Karafka's delivery warranties manifest in transactions:
 
 ## Instrumentation
 
-Transactions Instrumentation is directly tied to the producer handling the transaction. To effectively monitor transaction behavior, it's essential to integrate your instrumentation with the transactional producers. This ensures accurate tracking and analysis of transactional activities, enhancing system monitoring and reliability. Refer to the [WaterDrop Transactions Instrumentation](https://karafka.io/docs/WaterDrop-Transactions/#instrumentation) section for a comprehensive approach to transaction instrumentation.
+Transactions Instrumentation is directly tied to the **producer** handling the transaction. To effectively monitor transaction behavior, it's essential to integrate your instrumentation with the transactional producers. This ensures accurate tracking and analysis of transactional activities, enhancing system monitoring and reliability. Refer to the [WaterDrop Transactions Instrumentation](https://karafka.io/docs/WaterDrop-Transactions/#instrumentation) section for a comprehensive approach to transaction instrumentation.
+
+However, it's important to know that **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
+
+!!! Warning "Consumer Lag Monitoring"
+
+    It's essential to be aware that **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
+
+### Karafka Web UI
+
+Karafka Web UI compensates for the lack of lag reporting in the `statistics.emitted` and **tracks offsets that are updated post-transaction**. In the Web UI, you'll see lag that is "more or less" accurate - though you might notice small `+1/-1` discrepancies due to offset reporting nuances.
+
+### Custom Instrumentation
+
+If you've built **custom instrumentation** around consumer lag or offsets, you'll need to compensate manually. Because the consumer doesn't store the offsets, you can't rely on the usual consumer statistics to get the lag. You'll need to base your metrics on **post-transaction offsets** or handle offset tracking in your own way.
+
+### Transaction Event Notification
+
+For advanced monitoring or custom integrations, remember that the Karafka consumer publishes a `consumer.consuming.transaction` notification event after each successful transaction. This event can be used to hook into transaction completions and incorporate transaction-aware logic in your instrumentation or metrics gathering.
 
 ## Performace Implications
 
