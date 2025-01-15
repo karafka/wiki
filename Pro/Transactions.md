@@ -490,11 +490,15 @@ Karafka Web UI compensates for the lack of lag reporting in the `statistics.emit
 
 ### Custom Instrumentation
 
-If you've built **custom instrumentation** around consumer lag or offsets, you'll need to compensate manually. Because the consumer doesn't store the offsets, you can't rely on the usual consumer statistics to get the lag. You'll need to base your metrics on **post-transaction offsets** or handle offset tracking in your own way.
+If you've built custom instrumentation around consumer lag or offsets, you'll need to compensate manually. Because the consumer doesn't store the offsets, you can't rely on the usual consumer statistics to get the lag. You'll need to base your metrics on **post-transaction offsets** or handle offset tracking in your own way.
 
 ### Transaction Event Notification
 
 For advanced monitoring or custom integrations, remember that the Karafka consumer publishes a `consumer.consuming.transaction` notification event after each successful transaction. This event can be used to hook into transaction completions and incorporate transaction-aware logic in your instrumentation or metrics gathering.
+
+!!! Hint "`consumer.consuming.transaction` Instrumentation Event"
+
+    The `consumer.consuming.transaction` instrumentation event is triggered after each successful transaction. Importantly, if you raise `WaterDrop::AbortTransaction` to abort a transaction, this event will still be triggered. Similar to how ActiveRecord transactions handle rollbacks internally, the abort, in this case, does not bubble up as an exception. Instead, the transaction is cleanly rolled back, and the event is published, allowing you to track transaction completions even in cases where they were aborted.
 
 ## Performace Implications
 
