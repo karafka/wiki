@@ -293,7 +293,7 @@ Karafka Web UI relies on a few operating system commands to function correctly a
 </table>
 
 
-!!! note ""
+!!! Hint "System Requirements"
 
     The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
 

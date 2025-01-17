@@ -206,6 +206,7 @@
 206. [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
 207. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
 208. [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
+209. [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2660,3 +2661,22 @@ Note that:
 1. The error causing the retry may differ between retry attempts
 
 You can find more details about this [here](https://karafka.io/docs/Error-handling-and-back-off-policy/#altering-the-consumer-behaviour-upon-reprocessing).
+
+## Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?
+
+Recent changes in the official Ruby slim and alpine Docker images removed several system dependencies, including the `procps` package that provides the `ps` command. The `ps` command is required by Karafka Web UI for process management and monitoring.
+
+
+To resolve this issue, you need to explicitly add the `procps` package to your Dockerfile. For Debian-based images (slim), add:
+
+```bash
+RUN apt-get update && apt-get install -y procps
+```
+
+For Alpine-based images, add:
+
+```bash
+RUN apk add --no-cache procps
+```
+
+You can find the complete list of required system commands in our [Getting Started documentation](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
