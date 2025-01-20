@@ -4,6 +4,82 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.8.0 (2025-01-07)
+
+librdkafka v2.8.0 is a maintenance release:
+
+* Socket options are now all set before connection (#4893).
+* Client certificate chain is now sent when using `ssl.certificate.pem`
+  or `ssl_certificate` or `ssl.keystore.location` (#4894).
+* Avoid sending client certificates whose chain doesn't match with broker
+  trusted root certificates (#4900).
+* Fixes to allow to migrate partitions to leaders with same leader epoch,
+  or NULL leader epoch (#4901).
+* Support versions of OpenSSL without the ENGINE component (Chris Novakovic, #3535
+  and @remicollet, #4911).
+
+
+### Fixes
+
+#### General fixes
+
+* Socket options are now all set before connection, as [documentation](https://man7.org/linux/man-pages/man7/tcp.7.html)
+  says it's needed for socket buffers to take effect, even if in some
+  cases they could have effect even after connection.
+  Happening since v0.9.0 (#4893).
+* Issues: #3225.
+  Client certificate chain is now sent when using `ssl.certificate.pem`
+  or `ssl_certificate` or `ssl.keystore.location`.
+  Without that, broker must explicitly add any intermediate certification
+  authority certificate to its truststore to be able to accept client
+  certificate.
+  Happens since: 1.x (#4894).
+
+#### Consumer fixes
+
+* Issues: #4796.
+  Fix to allow to migrate partitions to leaders with NULL leader epoch.
+  NULL leader epoch can happen during a cluster roll with an upgrade to a
+  version supporting KIP-320.
+  Happening since v2.1.0 (#4901).
+* Issues: #4804.
+  Fix to allow to migrate partitions to leaders with same leader epoch.
+  Same leader epoch can happen when partition is
+  temporarily migrated to the internal broker (#4804), or if broker implementation
+  never bumps it, as it's not needed to validate the offsets.
+  Happening since v2.4.0 (#4901).
+
+
+*Note: there was no v2.7.0 librdkafka release*
+
+### Checksums
+Release asset checksums:
+ * v2.8.0.zip SHA256 `5525efaad154e277e6ce30ab78bb00dbd882b5eeda6c69c9eeee69b7abee11a4`
+ * v2.8.0.tar.gz SHA256 `5bd1c46f63265f31c6bfcedcde78703f77d28238eadf23821c2b43fc30be3e25`
+
+## 2.2.1 (2025-01-13)
+
+*Note: given this patch version contains only a single fix, it's suggested to upgrade to latest backward compatible release instead, as it contains all the issued fixes.
+Following [semver 2.0](https://semver.org/), all our patch and minor releases are backward compatible and our minor releases may also contain fixes.
+Please note that 2.x versions of librdkafka are also backward compatible with 1.x as the major version release was only for the upgrade to OpenSSL 3.x.*
+
+librdkafka v2.2.1 is a maintenance release backporting:
+
+* Fix for idempotent producer fatal errors, triggered after a possibly persisted message state (#4438).
+* Update bundled lz4 (used when `./configure --disable-lz4-ext`) to
+      [v1.9.4](https://github.com/lz4/lz4/releases/tag/v1.9.4), which contains
+      bugfixes and performance improvements (#4726).
+* Upgrade OpenSSL to v3.0.13 (while building from source) with various security fixes,
+     check the [release notes](https://www.openssl.org/news/cl30.txt)
+     (@janjwerner-confluent, #4690).
+* Upgrade zstd to v1.5.6, zlib to v1.3.1, and curl to v8.8.0 (@janjwerner-confluent, #4690).
+* Upgrade Linux dependencies: OpenSSL 3.0.15, CURL 8.10.1 (#4875).
+
+### Checksums
+Release asset checksums:
+ * v2.2.1.zip SHA256 `2d7fdb54b17be8442b61649916b94eda1744c21d2325795d92f9ad6dec4e5621`
+ * v2.2.1.tar.gz SHA256 `c6f0ccea730ce8f67333e75cc785cce28a8941d5abf041d7a9b8fef91d4778e8`
+
 ## 2.6.1 (2024-11-18)
 
 librdkafka v2.6.1 is a maintenance release:
@@ -1943,59 +2019,4 @@ This is a feature release adding support for KIP-392 Fetch from follower, allowi
 Release asset checksums:
  * v1.3.0.zip SHA256 `bd3373c462c250ecebea9043fb94597a11bd6e0871d3cde19019433d3f74a99e`
  * v1.3.0.tar.gz SHA256 `465cab533ebc5b9ca8d97c90ab69e0093460665ebaf38623209cf343653c76d2`
-
-## 1.2.2 (2019-11-12)
-
-# librdkafka v1.2.2 release
-
-**v1.2.2 fixes the producer performance regression introduced in v1.2.1 which may affect high-throughput producer applications.**
-
-### Fixes
-
- * Fix producer insert msgq regression in v1.2.1 (#2450).
- * Upgrade builtin lz4 to 1.9.2 (CVE-2019-17543, #2598).
- * Don't trigger error when broker hostname changes (#2591).
- * Less strict message.max.bytes check for individual messages (#993).
- * Don't call timespec_get() on OSX (since it was removed in recent XCode) by @maparent .
- * configure: add --runstatedir for compatibility with autoconf.
- * LZ4 is available from ProduceRequest 0, not 3 (fixes assert in #2480).
- * Address 12 code issues identified by Coverity static code analysis.
-
-### Enhancements
-
- * Add warnings for inconsistent security configuration.
- * Optimizations to hdr histogram (stats) rollover.
- * Reorganized examples and added a cleaner consumer example, added minimal C++ producer example.
- * Print compression type per message-set when `debug=msg`
-
-### Checksums
-Release asset checksums:
- * v1.2.2.zip SHA256 `7557b37e5133ed4c9b0cbbc3fd721c51be8e934d350d298bd050fcfbc738e551`
- * v1.2.2.tar.gz SHA256 `c5d6eb6ce080431f2996ee7e8e1f4b8f6c61455a1011b922e325e28e88d01b53`
-
-
-
-## 1.2.1 (2019-10-09)
-
-# librdkafka v1.2.1 release
-
-**Warning**: v1.2.1 has a producer performance regression which may affect high-throughput producer applications. We recommend such users to upgrade to v1.3.0
-
-v1.2.1 is a maintenance release:
-
- * Properly handle new Kafka-framed SASL GSSAPI frame semantics on Windows (#2542).
-   **This bug was introduced in v1.2.0 and broke GSSAPI authentication on Windows.**
- *  Fix msgq (re)insertion code to avoid O(N^2) insert sort operations on retry (#2508)
-    The msgq insert code now properly handles interleaved and overlapping
-    message range inserts, which may occur during Producer retries for
-    high-throughput applications.
- * configure: added `--disable-c11threads` to avoid using libc-provided C11 threads.
- * configure: added more autoconf compatibility options to ignore
-
-
-
-### Checksums
-Release asset checksums:
- * v1.2.1.zip SHA256 `8b5e95318b190f40cbcd4a86d6a59dbe57b54a920d8fdf64d9c850bdf05002ca`
- * v1.2.1.tar.gz SHA256 `f6be27772babfdacbbf2e4c5432ea46c57ef5b7d82e52a81b885e7b804781fd6`
 
