@@ -261,6 +261,84 @@ producer.close!
 
 While `#close!` can be helpful when you want to finalize your application quickly, be aware that it may result in messages not being successfully delivered or acknowledged, potentially leading to data loss. Therefore, use `#close!` with caution and only when you understand the implications of potentially losing undelivered messages.
 
+### Closing Producer Used in Karafka
+
+When you shut down Karafka consumer, the `Karafka.producer` WaterDrop instance automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+
+### Closing Producer Used in Puma (Single Mode)
+
+```ruby
+# config/puma.rb 
+
+# There is no `on_worker_shutdown` equivalent for single mode
+@config.options[:events].on_stopped do
+  MY_PRODUCER.close
+end
+```
+
+### Closing Producer Used in Puma (Cluster Mode)
+
+```ruby
+# config/puma.rb 
+
+on_worker_shutdown do
+  MY_PRODUCER.close
+end
+```
+
+### Closing Producer Used in Sidekiq
+
+```ruby
+# config/initializers/sidekiq.rb
+
+Sidekiq.configure_server do |config|
+  config.on(:shutdown) do
+    MY_PRODUCER.close
+  end
+end
+```
+
+### Closing Producer Used in Passenger
+
+```ruby
+PhusionPassenger.on_event(:stopping_worker_process) do
+  MY_PRODUCER.close
+end
+```
+
+### Closing Producer Used in a Rake Task
+
+In case of rake tasks, just invoke `MY_PRODUCER.close` at the end of your rake task:
+
+```ruby
+desc 'My example rake task that sends all users data to Kafka'
+task send_users: :environment do
+  User.find_each do |user|
+    MY_PRODUCER.producer.produce_async(
+      topic: 'users',
+      payload: user.to_json,
+      key: user.id
+    )
+  end
+
+  # Make sure, that the producer is always closed before finishing
+  # any rake task
+  MY_PRODUCER.close
+end
+```
+
+### Closing Producer in any Ruby Process
+
+While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+
+However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a WaterDrop producer:
+
+```ruby
+at_exit do
+  MY_PRODUCER.close
+end
+```
+
 ## Forking and Potential Memory Problems
 
 If you work with forked processes, make sure you **don't** use the producer before the fork. You can easily configure the producer and then fork and use it.
