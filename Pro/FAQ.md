@@ -37,6 +37,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
 32. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
 33. [Where can I find a list of OSS components that the Karafka ecosystem uses?](#where-can-i-find-a-list-of-oss-components-that-the-karafka-ecosystem-uses)
+34. [Can I use one Karafka license across multiple companies within a corporate group?](#can-i-use-one-karafka-license-across-multiple-companies-within-a-corporate-group)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -253,6 +254,16 @@ Please note that our software is provided "as is." We recommend utilizing the tr
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 
 Karafka maintains a [documentation page](https://karafka.io/docs/SBOM/) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
+
+## Can I use one Karafka license across multiple companies within a corporate group?
+
+Both Pro and Enterprise licenses ares limited to a single legal entity that purchased it. Using the license across multiple companies, even if they are part of your group or owned by your organization, requires either:
+
+1. Each company purchasing its own license, or
+2. Upgrading to an Appliance license ($12,995/yr), or
+3. Requesting a custom group companies amendment that explicitly permits usage across affiliated companies with defined ownership threshold.
+
+Contact us to discuss group licensing options.
 
 ## Ethics, Privacy, and Information Usage
 
