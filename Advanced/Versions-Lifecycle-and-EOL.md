@@ -52,7 +52,7 @@ Karafka and its components versions or release series are categorized below into
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 2.8     | Active      | N/A        |
-| 2.7     | Maintenance | 2025-02-01 |
+| 2.7     | EOL         | 2025-02-01 |
 | 2.6     | EOL         | 2024-09-31 |
 | 2.x     | EOL         | 2024-05-01 |
 | 1.x     | EOL         | 2023-02-01 |
