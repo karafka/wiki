@@ -502,6 +502,39 @@ Karafka's scalability and workload management strategies include Swarm Mode, mul
 
 Each strategy offers unique advantages for Karafka application optimization. Swarm Mode and multi-threading address CPU-intensive and I/O-bound workloads, respectively, while virtual partitions and multiplexing overcome Kafka partition scalability limits. Selecting the appropriate strategy depends on your workload's characteristics and scalability goals.
 
+## Transactional Producer Handling in Swarm Mode
+
+When operating in Swarm Mode, each forked node inherits the Karafka producer configuration from the parent process. This inheritance mechanism helps maintain consistency across nodes while reducing configuration overhead. However, special consideration is needed when working with transactional producers, as certain configuration parameters require unique values per node to ensure proper operation.
+
+The transactional.id configuration parameter requires special attention in Swarm Mode. While other configuration parameters can be safely inherited, using the same `transactional.id` across multiple producer instances will cause transaction fencing issues. When a producer instance begins a transaction, it receives an epoch number from the transaction coordinator. If another producer instance with the same `transactional.id` starts a transaction, it will receive a higher epoch number and fence off (invalidate) the previous producer instance.
+
+To prevent fencing issues, you must ensure each node's producer has a unique `transactional.id`. Here's an example of how to properly configure transactional producers in Swarm Mode:
+
+```ruby
+# In your karafka.rb after all other setup
+
+Karafka.monitor.subscribe('swarm.node.after_fork') do
+  # Assign fresh instance that takes all the configuration details except the transactional.id
+  Karafka::App.config.producer = ::WaterDrop::Producer.new do |p_config|
+    p_config.logger = Karafka::App.config.logger
+
+    p_config.kafka = ::Karafka::Setup::AttributesMap.producer(Karafka::App.config.kafka.dup)
+    # Use a unique transactional.id and do not re-use the parent one
+    p_config.kafka[:'transactional.id'] = SecureRandom.uuid
+  end
+end
+```
+
+This approach will ensure that:
+
+1. Each node gets a unique `transactional.id`
+1. Transactions from different nodes won't interfere with each other
+1. The producer can maintain proper transaction isolation and exactly once semantics
+
+!!! Warning "Transactional ID Conflicts"
+
+    Failing to set unique `transactional.id` values for each node will result in producers fencing each other off, leading to failed transactions and potential data consistency issues. Always ensure each node's producer has a unique transactional ID.
+
 ## Example Use Cases
 
 Here are some use cases from various industries where Karafka's Swarm Mode can be beneficial:
