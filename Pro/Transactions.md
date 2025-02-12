@@ -500,6 +500,10 @@ For advanced monitoring or custom integrations, remember that the Karafka consum
 
     The `consumer.consuming.transaction` instrumentation event is triggered after each successful transaction. Importantly, if you raise `WaterDrop::AbortTransaction` to abort a transaction, this event will still be triggered. Similar to how ActiveRecord transactions handle rollbacks internally, the abort, in this case, does not bubble up as an exception. Instead, the transaction is cleanly rolled back, and the event is published, allowing you to track transaction completions even in cases where they were aborted.
 
+## Transactions in Swarm Mode
+
+For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/#transactional-producer-handling-in-swarm-mode).
+
 ## Performace Implications
 
 While Kafka transactions in Karafka provide strong consistency guarantees and data integrity, they have specific performance implications crucial to understanding system architecture and design. Here are the key considerations:
