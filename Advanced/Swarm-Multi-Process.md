@@ -502,6 +502,44 @@ Karafka's scalability and workload management strategies include Swarm Mode, mul
 
 Each strategy offers unique advantages for Karafka application optimization. Swarm Mode and multi-threading address CPU-intensive and I/O-bound workloads, respectively, while virtual partitions and multiplexing overcome Kafka partition scalability limits. Selecting the appropriate strategy depends on your workload's characteristics and scalability goals.
 
+## Producer Full Reconfiguration
+
+When operating in Swarm Mode, each forked node automatically inherits most of the producer configuration from the parent process. However, to ensure proper functionality and avoid potential conflicts, it's crucial to understand how to fully reconfigure producers post-fork.
+
+By default, while Karafka takes care of most internal reconfigurations automatically, there are cases where you might want to fully reconfigure the producer with your settings or modify specific configuration parameters. This is particularly important when dealing with producer-specific identifiers or when you need to customize the producer behavior for different nodes.
+
+Here's an example of how to fully reconfigure a producer after forking:
+
+```ruby
+# In your karafka.rb after all other setup
+
+Karafka.monitor.subscribe('swarm.node.after_fork') do
+  # Create a fresh producer instance that inherits all the core configuration
+  Karafka::App.config.producer = ::WaterDrop::Producer.new do |p_config|
+    p_config.logger = Karafka::App.config.logger
+    # Copy and map all the Kafka configuration or replace with your own
+    p_config.kafka = ::Karafka::Setup::AttributesMap.producer(Karafka::App.config.kafka.dup)
+    
+    # Add any node-specific configurations here
+    p_config.kafka[:'client.id'] = "#{Karafka::App.config.client_id}-#{Process.pid}"
+  end
+end
+```
+
+This approach ensures that:
+
+1. Each node gets a fresh producer instance
+1. All core configurations are properly configured
+1. Node-specific settings can be customized as needed
+1. The producer is properly initialized within the forked process context
+
+Note that complete reconfiguration is significant when:
+
+1. You need to set node-specific client IDs
+1. You're using transactional producers (which require unique transactional IDs)
+1. You want to customize producer behavior based on node characteristics
+1. You need to modify connection or authentication settings per node
+
 ## Transactional Producer Handling in Swarm Mode
 
 When operating in Swarm Mode, each forked node inherits the Karafka producer configuration from the parent process. This inheritance mechanism helps maintain consistency across nodes while reducing configuration overhead. However, special consideration is needed when working with transactional producers, as certain configuration parameters require unique values per node to ensure proper operation.
