@@ -52,13 +52,28 @@ If case of such scenarios, we recommend running second-stage filtering to ensure
 
 ## Expiring Messages vs. using `log.retention.ms`
 
-The Karafka Expiring Messages feature and Kafka `log.retention.ms` setting serve different purposes in managing data retention. While both provide mechanisms to "exclude" messages, their scope, and implications differ.
+The Karafka Expiring Messages feature and Kafka `log.retention.ms` setting serve different purposes in managing data retention. While both provide mechanisms to "exclude" messages, their scope and implications differ significantly.
 
 Karafka's Expiring Messages feature allows you to set a maximum age for a message to be processable. If a message exceeds the time limit, it is excluded from being processed by the consumer. However, it remains in Kafka, where it can be consumed by other consumers or applications that might still find it relevant. This feature enables the processing of new data without getting stuck on old messages that might no longer be relevant to the specific consumer.
 
 On the other hand, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka. This setting specifies the maximum time a message can remain in a Kafka topic before being removed. Once the retention time has passed, Kafka deletes the messages from the topic, freeing up space for new data. This setting is useful in scenarios where the data has a limited lifetime and is no longer needed after a certain period.
 
-In summary, Karafka's Expiring Messages feature excludes messages from being processed by consumers. However, it does not remove them from Kafka, so other consumers or applications can still use information that is relevant to them. In contrast, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka.
+However, it's important to understand the limitations and behavior of `log.retention.ms`:
+
+1. Cleanup Interval: Kafka's log retention cleanup doesn't run continuously. By default, the `log.cleanup.interval.ms` is set to 5 minutes (300000 ms). Even if you set a short retention period, the cleanup thread will only check and delete eligible messages every 5 minutes.
+
+2. Deletion Conditions: The actual deletion process is subject to several conditions:
+
+   - Kafka won't delete segments that are currently active (being written to)
+   - There must be at least one segment remaining after deletion
+   - The segment file must be fully rolled before it can be considered for deletion
+
+For scenarios requiring precise message expiration control, especially with short periods, Karafka's Expiring Messages feature is more suitable as it provides immediate control over message processing. Properly tuned `log.retention.ms` settings can be used to manage topic storage for long-term data retention management.
+
+In summary, while both features deal with message lifecycle management, they operate at different levels:
+
+- Karafka's Expiring Messages feature controls message processing at the consumer level
+- Kafka's `log.retention.ms` manages physical storage cleanup at the broker level
 
 ## Example Use Cases
 
