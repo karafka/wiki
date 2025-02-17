@@ -2,7 +2,7 @@
 
 Karafka Pro includes a commercial-friendly license, priority support, architecture consultations, high throughput data processing-related features, and more.
 
-**10%** of the income will be distributed back to other OSS projects that Karafka uses under the hood.
+A portion of the income is distributed back to other OSS projects that Karafka relies on under the hood.
 
 Help us provide high-quality open-source software.
 
