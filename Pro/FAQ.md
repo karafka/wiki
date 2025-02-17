@@ -88,7 +88,7 @@ The standard license is only appropriate for SaaS usage as it does **not** allow
 
 ## Can I use Karafka Pro in my public project?
 
-By default, the Karafka Pro license does not allow for usage in publicly accessible source code, whether it's an open-source project or a commercial project with public repositories. This restriction applies to both open-source initiatives and commercial projects that maintain public codebases. This is because the Pro license is designed for commercial use within a single organization and includes restrictions on redistribution and public sharing of the codebase.
+By default, neither the Karafka Pro license nor the Appliance license allows for usage in publicly accessible source code, whether it's an open-source project or a commercial project with public repositories. This restriction applies to both open-source initiatives and commercial projects that maintain public codebases. This is because both licenses are designed for commercial use within defined organizational boundaries and include restrictions on redistribution and public sharing of the codebase.
 
 However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, please contact us at contact@karafka.io to discuss your use case. We can explore potential custom agreements that could include:
 
