@@ -4,40 +4,41 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 
 1. [To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?](#to-become-a-karafka-pro-user-do-i-need-to-follow-the-license-comm-terms)
 1. [Is there a trial version?](#is-there-a-trial-version)
-2. [What is the license?](#what-is-the-license)
-3. [How does Pro licensing work?](#how-does-pro-licensing-work)
-4. [Do I require to change source of the package?](#do-i-require-to-change-source-of-the-package)
-5. [What happens if my subscription lapses?](#what-happens-if-my-subscription-lapses)
-6. [Do I need to replace the license for my running processes?](#do-i-need-to-replace-the-license-for-my-running-processes)
-7. [How do I buy Karafka Pro?](#how-do-i-buy-karafka-pro)
-8. [Can I distribute Karafka Pro to my customers?](#can-i-distribute-karafka-pro-to-my-customers)
-9. [Can you transfer a license?](#can-you-transfer-a-license)
-10. [Do I have to share the credentials with all of my developers?](#do-i-have-to-share-the-credentials-with-all-of-my-developers)
-11. [Can I get a refund?](#can-i-get-a-refund)
-12. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
-13. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
-14. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
-15. [Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?](#do-you-require-any-personal-information-financial-data-confidentialsensitive-data-government-data-etc)
-16. [How do you ensure the security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
-17. [What is Karafka Data Collection and GDPR Policy?](#what-is-karafka-data-collection-and-gdpr-policy)
-18. [Does Karafka Pro stores, processes or transmits Personal Health Information?](#does-karafka-pro-stores-processes-or-transmits-personal-health-information)
-19. [Does Karafka Pro stores, processes or transmits Personally Identifiable Information?](#does-karafka-pro-stores-processes-or-transmits-personally-identifiable-information)
-20. [Will Karafka store, process, or transmit company confidential information and data?](#will-karafka-store-process-or-transmit-company-confidential-information-and-data)
-20. [How do you store, process, or transmit Payment Cardholder Information?](#how-do-you-store-process-or-transmit-payment-cardholder-information)
-21. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
-22. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
-23. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
-24. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
-25. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
-26. [Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?](#does-the-pro-license-require-me-to-use-the-source-url-in-my-gemfile-to-fetch-the-license)
-27. [Can I use Karafka Pro with a private gem server / private registry?](#can-i-use-karafka-pro-with-a-private-gem-server-private-registry)
-28. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
-29. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
-30. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
-31. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
-32. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
-33. [Where can I find a list of OSS components that the Karafka ecosystem uses?](#where-can-i-find-a-list-of-oss-components-that-the-karafka-ecosystem-uses)
-34. [Can I use one Karafka license across multiple companies within a corporate group?](#can-i-use-one-karafka-license-across-multiple-companies-within-a-corporate-group)
+1. [What is the license?](#what-is-the-license)
+1. [How does Pro licensing work?](#how-does-pro-licensing-work)
+1. [Do I require to change source of the package?](#do-i-require-to-change-source-of-the-package)
+1. [What happens if my subscription lapses?](#what-happens-if-my-subscription-lapses)
+1. [Do I need to replace the license for my running processes?](#do-i-need-to-replace-the-license-for-my-running-processes)
+1. [How do I buy Karafka Pro?](#how-do-i-buy-karafka-pro)
+1. [Can I distribute Karafka Pro to my customers?](#can-i-distribute-karafka-pro-to-my-customers)
+1. [Can I use Karafka Pro in my public project?](#can-i-use-karafka-pro-in-my-public-project)
+1. [Can you transfer a license?](#can-you-transfer-a-license)
+1. [Do I have to share the credentials with all of my developers?](#do-i-have-to-share-the-credentials-with-all-of-my-developers)
+1. [Can I get a refund?](#can-i-get-a-refund)
+1. [Can I accidentally use Pro because it is in the same repository?](#can-i-accidentally-use-pro-because-it-is-in-the-same-repository)
+1. [Why do I see a "Bad username or password" message when trying to bundle install?](#why-do-i-see-a-bad-username-or-password-message-when-trying-to-bundle-install)
+1. [Where can I find my license credentials page URL?](#where-can-i-find-my-license-credentials-page-url)
+1. [Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?](#do-you-require-any-personal-information-financial-data-confidentialsensitive-data-government-data-etc)
+1. [How do you ensure the security of your gem server?](#how-do-you-ensure-the-security-of-your-gem-server)
+1. [What is Karafka Data Collection and GDPR Policy?](#what-is-karafka-data-collection-and-gdpr-policy)
+1. [Does Karafka Pro stores, processes or transmits Personal Health Information?](#does-karafka-pro-stores-processes-or-transmits-personal-health-information)
+1. [Does Karafka Pro stores, processes or transmits Personally Identifiable Information?](#does-karafka-pro-stores-processes-or-transmits-personally-identifiable-information)
+1. [Will Karafka store, process, or transmit company confidential information and data?](#will-karafka-store-process-or-transmit-company-confidential-information-and-data)
+1. [How do you store, process, or transmit Payment Cardholder Information?](#how-do-you-store-process-or-transmit-payment-cardholder-information)
+1. [What specific PHI, PII, PCI data fields, or company confidential information and data do you collect?](#what-specific-phi-pii-pci-data-fields-or-company-confidential-information-and-data-do-you-collect)
+1. [Where is the hosting infrastructure located?](#where-is-the-hosting-infrastructure-located)
+1. [Can I use Karafka Pro with an offline license without using the Karafka gem server?](#can-i-use-karafka-pro-with-an-offline-license-without-using-the-karafka-gem-server)
+1. [How can I change the email associated with my subscription?](#how-can-i-change-the-email-associated-with-my-subscription)
+1. [How can I change the credit card associated with my subscription?](#how-can-i-change-the-credit-card-associated-with-my-subscription)
+1. [Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?](#does-the-pro-license-require-me-to-use-the-source-url-in-my-gemfile-to-fetch-the-license)
+1. [Can I use Karafka Pro with a private gem server / private registry?](#can-i-use-karafka-pro-with-a-private-gem-server-private-registry)
+1. [Can I pay via invoice and purchase order?](#can-i-pay-via-invoice-and-purchase-order)
+1. [Can you fill out my security or compliance documentation?](#can-you-fill-out-my-security-or-compliance-documentation)
+1. [Can I request a change to the license terms?](#can-i-request-a-change-to-the-license-terms)
+1. [Are there any feature related differences in between Karafka Pro and Enterprise?](#are-there-any-feature-related-differences-in-between-karafka-pro-and-enterprise)
+1. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
+1. [Where can I find a list of OSS components that the Karafka ecosystem uses?](#where-can-i-find-a-list-of-oss-components-that-the-karafka-ecosystem-uses)
+1. [Can I use one Karafka license across multiple companies within a corporate group?](#can-i-use-one-karafka-license-across-multiple-companies-within-a-corporate-group)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -84,6 +85,19 @@ Follow the instructions on our [website](https://karafka.io/#become-pro).
 This is a common requirement for "on-site installs" or "appliances" sold to large corporations.
 
 The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $12,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
+
+## Can I use Karafka Pro in my public project?
+
+By default, the Karafka Pro license does not allow for usage in publicly accessible source code, whether it's an open-source project or a commercial project with public repositories. This restriction applies to both open-source initiatives and commercial projects that maintain public codebases. This is because the Pro license is designed for commercial use within a single organization and includes restrictions on redistribution and public sharing of the codebase.
+
+However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, please contact us at contact@karafka.io to discuss your use case. We can explore potential custom agreements that could include:
+
+- Limited usage rights for specific Pro features
+- Special licensing terms for public source code integration
+- Custom arrangements for commercial projects with public repositories
+- Collaborative opportunities that benefit both the project and the Karafka community
+
+Each case will be evaluated individually, considering factors such as the project's scope, impact on the community, alignment with Karafka's goals, and potential business implications. We need to carefully assess each case to ensure proper license key management and mitigate possible risks of the public codebase being used to bypass Karafka Pro licensing requirements. While we're open to supporting meaningful public source initiatives, whether open-source or commercial, we must maintain appropriate controls to prevent misuse of our commercial features through public code access.
 
 ## Can you transfer a license?
 
