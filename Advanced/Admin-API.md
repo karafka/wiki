@@ -95,6 +95,57 @@ topic_name = 'my_cool_topic'
 Karafka::Admin.delete_topic(topic_name)
 ```
 
+## Altering a Topic
+
+Karafka provides two distinct approaches for managing and altering topic configurations:
+
+- [Declarative Topics](https://karafka.io/docs/Declarative-Topics/) (Recommended for most cases)
+- [Admin Configs API](https://karafka.io/docs/Admin-Configs-API/) (For lower-level control)
+
+### Declarative Topics Approach
+
+The Declarative Topics feature provides a high-level, code-based way to manage topic configurations. This approach is recommended for most users as it offers:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ... other config ...
+  end
+
+  routes.draw do
+    topic :orders do
+      config(
+        partitions: 6,
+        replication_factor: 3,
+        'cleanup.policy': 'compact',
+        'retention.ms': 604_800_000 # 7 days
+      )
+    end
+  end
+end
+```
+
+Apply changes using:
+
+```bash
+bundle exec karafka topics migrate
+```
+
+### Admin Configs API Approach
+
+For cases requiring more granular control, you can use the Admin Configs API to directly manage topic configurations:
+
+```ruby
+# Describe current topic configuration
+resource = Karafka::Admin::Configs::Resource.new(type: :topic, name: 'orders')
+topics = Karafka::Admin::Configs.describe(resource)
+
+# Alter topic configuration
+resource = Karafka::Admin::Configs::Resource.new(type: :topic, name: 'orders')
+resource.set('retention.ms', '7200000')  # Set retention to 2 hours
+Karafka::Admin::Configs.alter(resource)
+```
+
 ## Getting Cluster Info
 
 ```ruby
