@@ -14,7 +14,7 @@ Karafka filters need to inherit from the `Karafka::Pro::Processing::Filters::Bas
 If you plan to implement action-altering filters, you need to define two additional methods:
 
 - `action` - that needs to respond with `:skip`, `:pause` or `:seek` to inform Karafka what action to take after the batch processing.
-- `timeout` - `0` in case of non-pause actions or pause time in milliseconds.
+- `timeout` - `nil` in case of non-pause actions or pause time in milliseconds.
 
 It is essential to remember that post-processing actions may also be applied when no data is left after filtering.
 
