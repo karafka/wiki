@@ -16,6 +16,14 @@ If you plan to implement action-altering filters, you need to define two additio
 - `action` - that needs to respond with `:skip`, `:pause` or `:seek` to inform Karafka what action to take after the batch processing.
 - `timeout` - `nil` in case of non-pause actions or pause time in milliseconds.
 
+!!! Warning "Timeout Should Always Return `nil` for Non-Pause Actions"
+
+    When implementing filters with action-altering capabilities, ensure that the `#timeout` method **always returns `nil`** for non-`:pause` actions. 
+
+    **Do not set `0` as a default value for `#timeout`**, as this may interfere with the behavior of other filters when multiple filters are in use. Returning `nil` explicitly prevents unintended interactions between filters and ensures the correct application of pause logic in scenarios where multiple filters contribute to action selection.
+
+    Always validate your filters to confirm that `#timeout` behaves as expected to avoid unexpected delays or conflicts.
+
 It is essential to remember that post-processing actions may also be applied when no data is left after filtering.
 
 Below is an example implementation of a filter that continuously removes messages with odd offsets. This filter sets the `@applied` in case even one message has been removed. 
