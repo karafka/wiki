@@ -12,7 +12,6 @@ However, in a production environment, things can get more complex. The Web UI co
 
 In larger or more complex production environments, especially when dealing with multi-app setups or large-scale message flows, running the Web UI consumer group in its own dedicated Karafka process is recommended. This way, the Web UI will not be affected by lags or resource bottlenecks from other consumers, ensuring smoother performance and faster data availability in the UI.
 
-
 To achieve this, you can either:
 
 1. **Use `config.processing.active`**: In the Karafka configuration, you can set `config.processing.active` to `false` for all processes that should exclude the Web UI consumer group. This will ensure that only dedicated processes handle Web UI topics while the rest focus on your application's primary consumers.
@@ -37,11 +36,64 @@ For a production environment, the ideal setup would involve:
 
 This approach ensures that the Web UI can consume and display data efficiently without being affected by the load on other consumers.
 
-!!! Tip "Alternative Setup: Using Embedded Mode for Karafka Web UI"
+3. **Dedicate a Swarm Node solely to the Web UI**: Configure your Karafka swarm to reserve a specific node exclusively for Web UI processing, completely isolating it from your application's consumer workloads.
 
-    Alternatively, Karafka Web UI consumer can be used in [Embedded Mode](https://karafka.io/docs/Embedding/), which runs inside a Puma process. This setup can be convenient as it allows the Web UI consumer to share resources with the Puma web server. However, this approach is only recommended when the Web UI application is **not** part of a larger, world-facing application and the Puma process is **dedicated exclusively** to the Web UI. Sharing a Puma process with other production web services may lead to performance issues, so a dedicated Puma process for the Web UI ensures it operates smoothly without competing for resources.
+4. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](https://karafka.io/docs/Embedding/) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
 
-## Web UI topics replication factor
+### Dedicated Web UI Swarm Node
+
+When operating Karafka in a swarm configuration with multiple nodes, you can dedicate a specific node exclusively to the Web UI consumer group. This approach provides several benefits:
+
+1. Improved resource isolation between your application consumers and the Web UI
+1. Better performance for both your main application and the Web UI interface
+1. Easier monitoring and debugging of Web UI-specific processes
+
+To configure a dedicated node for the Web UI, follow these steps:
+
+1. First, define your total number of swarm nodes in your configuration:
+
+```ruby
+config.swarm.nodes = 4
+```
+
+2. Configure your default routes to use only the first three nodes, reserving the last one for Web UI:
+
+```ruby
+# You can also do this on a per-topic basis for granular configuration
+routes.draw do
+  defaults do
+    swarm(nodes: [0, 1, 2])
+  end
+
+  # consumer groups and topics definitions...
+end
+```
+
+3. Enable Karafka Web UI:
+
+```ruby
+Karafka::Web.enable!
+```
+
+4. After enabling the Web UI, assign the dedicated node to the Web UI consumer group's topics. Since the Web UI routes are injected after your application routes, you need to locate and modify them:
+
+```ruby
+Karafka::App
+  .routes
+  .last
+  .topics
+  .find('karafka_consumers_reports')
+  .swarm
+  .nodes = [3]
+```
+
+This configuration ensures that node `3` (the fourth node, as indexing starts at `0`) is exclusively dedicated to processing the Web UI consumer topics, while nodes `0`, `1`, and `2` handle your application's regular workload.
+
+The key benefit of this setup is that the Web UI's performance remains consistent regardless of the load on your main application consumers. By isolating the Web UI to a dedicated node, you prevent resource contention that could otherwise impact the UI's responsiveness during high-traffic periods.
+
+Remember that this approach requires at least one additional node in your swarm configuration. Consider using the other approaches mentioned in the previous sections if you have a smaller setup with fewer nodes.
+
+## Web UI Topics Replication Factor
 
 When running `bundle exec karafka-web install`, Karafka Web will create needed topics with the replication factor of `2` as long as there are at least two brokers available. Such a value may not be desirable in a larger production environment.
 
@@ -88,7 +140,7 @@ When using Heroku Kafka in MultiTenant mode, it's important to know that the def
 
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Deployment#heroku).
 
-## Upgrade recommendations
+## Upgrade Recommendations
 
 Upgrading your Karafka Web UI to a newer version is a three-step operation. You must be diligent about the order of operations to avoid unexpected errors. The process is as follows:
 
