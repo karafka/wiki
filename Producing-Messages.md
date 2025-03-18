@@ -81,7 +81,9 @@ end
 # config/initializers/sidekiq.rb
 
 Sidekiq.configure_server do |config|
-  config.on(:shutdown) do
+  # You can use :shutdown for older Sidekiq versions if
+  # :exit is not available
+  config.on(:exit) do
     ::Karafka.producer.close
   end
 end
