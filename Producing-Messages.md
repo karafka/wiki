@@ -89,6 +89,23 @@ Sidekiq.configure_server do |config|
 end
 ```
 
+### Closing Producer Used in Solid Queue
+
+```ruby
+# config/initializers/solid_queue.rb
+
+# This code will close the producer in each worker process
+SolidQueue.on_worker_exit do
+  ::Karafka.producer.close
+end
+
+# Below is optional - useful only when publishing events to Kafka
+# from the supervisor process
+SolidQueue.on_exit do
+  ::Karafka.producer.close
+end
+```
+
 ### Closing Producer Used in Passenger
 
 ```ruby
