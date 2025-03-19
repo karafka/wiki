@@ -207,6 +207,7 @@
 207. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
 208. [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
 209. [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
+210. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2680,3 +2681,21 @@ RUN apk add --no-cache procps
 ```
 
 You can find the complete list of required system commands in our [Getting Started documentation](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
+
+## Why does installing `karafka-web` take exceptionally long?
+
+When installing `karafka` and `karafka-web`, especially in Docker environments like `ruby:3.4.2-slim`, you might notice installation appears exceptionally slow. However, this delay is typically **not** caused by `karafka` itself.
+
+Instead, the slowdown usually results from compiling native extensions for other gems - most commonly `grpc`. Bundler's parallel installation can mislead you into thinking that `karafka-web` is slow, as the log messages for other gems (like `grpc`) may appear after the message indicating `karafka-web` installation, giving a false impression of delay.
+
+Karafka itself includes native extensions via the `karafka-rdkafka` gem, but its compilation typically completes quickly (usually within 1-2 minutes).
+
+On the other hand, compiling `grpc` from source can take significantly longer (up to 20 minutes or more), particularly in resource-constrained CI environments.
+
+You can verify the bottleneck by running:
+
+```bash
+bundle install --jobs=1
+```
+
+This command disables parallel installation, clearly showing compilation times per gem.
