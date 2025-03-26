@@ -12,7 +12,7 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/cleaner_api/flow.svg" />
 </p>
 
-!!! note ""
+!!! note "Cleaner API and Kafka Message Immutability"
 
     The data stored in Kafka remains unaltered and intact, regardless of any actions taken using the Cleaner API. The Cleaner API is exclusively designed to manage and optimize the memory utilization of the running process. When the API removes a message's payload, it only clears that data from the application's active memory. This operation does not, in any manner, affect the original message data residing in Kafka.
 
@@ -22,9 +22,11 @@ When utilizing the Cleaner API, it is paramount to understand the implications o
 
 Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
 
-### Cleaning one message at a time
+### Cleaning One Message at a Time
 
-After processing a message, you can explicitly call the #clean! method on that message. This allows you to have granular control over which messages are cleaned from memory.
+After processing a message, you can explicitly call the `#clean!` method on that message. This allows you to have granular control over which messages are cleaned from memory.
+
+By default, both the payload and metadata (headers and key) are removed. If you want to retain the metadata while discarding only the payload and raw payload, you can pass `metadata: false`.
 
 ```ruby
 def consume
@@ -35,10 +37,17 @@ def consume
     # in case you are using the Dead Letter Queue
     mark_as_consumed(message)
 
-    message.clean!
+    # Clean only the payload, keep headers and key
+    # Defaults to cleaning also metadata
+    message.clean!(metadata: false)
   end
 end
 ```
+
+!!! note "Metadata Cleaning Behavior"
+
+    By default, the Cleaner API removes both the message’s payload and its metadata (`headers`, `key`).  
+    If you only want to clean the payload and keep the metadata available, use `message.clean!(metadata: false)`.
 
 ### Automatic Cleaning with `#each`
 
