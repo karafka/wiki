@@ -84,7 +84,7 @@ The table below contains options the `#dead_letter_queue` routing method accepts
     </tr>
     <tr>
       <td><code>dispatch_method</code></td>
-      <td>Symbol (<code>:produce_async</code> or <code>:produce_async</code>)</td>
+      <td>Symbol (<code>:produce_async</code> or <code>:produce_sync</code>)</td>
       <td>Describes whether dispatch on dlq should be sync or async (async by default).</td>
     </tr>
     <tr>
