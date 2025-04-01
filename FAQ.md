@@ -210,6 +210,7 @@
 210. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
 211. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
 212. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
+213. [What's the difference between key and partition_key in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2771,3 +2772,44 @@ This deliberate architectural decision provides several significant benefits:
 6. **Flexibility for complex setups**: The separate routing layer provides much better organization and clarity for advanced Kafka deployments with many topics and consumers.
 
 This approach follows established software architecture principles and provides significantly more flexibility when working with complex Kafka-based systems, especially as your application grows.
+
+## What's the difference between key and partition_key in WaterDrop?
+
+When producing messages with WaterDrop, you have the option to specify both a `key` and a `partition_key`:
+
+```ruby
+# Using both key and partition_key
+producer.produce_async(
+  topic: 'orders',
+  payload: order.to_json,
+  key: order.id.to_s,
+  partition_key: order.customer_id.to_s
+)
+```
+
+These two parameters serve different purposes:
+
+### Key
+The `key` parameter sets the actual Kafka message key stored with the message. This key:
+
+- Is used by Kafka for log compaction (if enabled on the topic)
+- Can be accessed by consumers when processing the message
+- Is included in the message payload that gets stored in Kafka
+
+### Partition Key
+
+The `partition_key` parameter is only used to determine which partition the message should be sent to. It:
+
+- Is used solely for the partitioning algorithm
+- Is not stored with the message in Kafka
+- Allows you to control message distribution across partitions without affecting the message key
+
+When only `key` is provided, WaterDrop uses it for both purposes - as the stored message key and for partition determination. When both are specified, `partition_key` precedes partition selection, while `key` is still stored with the message.
+
+This separation is particularly useful when:
+
+- You need messages with different keys to end up in the same partition (for ordering)
+- You want to use a different attribute for partition selection than what makes sense as a logical message key
+- You need to change how messages are partitioned without affecting downstream consumers that rely on the message key
+
+Remember that messages with the same `partition_key` (or `key` if no `partition_key` is specified) will always be routed to the same partition, ensuring ordered processing within that data subset.
