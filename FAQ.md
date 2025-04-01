@@ -210,7 +210,7 @@
 210. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
 211. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
 212. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
-213. [What's the difference between key and partition_key in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
+213. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2773,7 +2773,7 @@ This deliberate architectural decision provides several significant benefits:
 
 This approach follows established software architecture principles and provides significantly more flexibility when working with complex Kafka-based systems, especially as your application grows.
 
-## What's the difference between key and partition_key in WaterDrop?
+## What's the difference between `key` and `partition_key` in WaterDrop?
 
 When producing messages with WaterDrop, you have the option to specify both a `key` and a `partition_key`:
 
@@ -2790,6 +2790,7 @@ producer.produce_async(
 These two parameters serve different purposes:
 
 ### Key
+
 The `key` parameter sets the actual Kafka message key stored with the message. This key:
 
 - Is used by Kafka for log compaction (if enabled on the topic)
