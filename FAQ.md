@@ -209,6 +209,7 @@
 209. [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
 210. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
 211. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
+212. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2728,3 +2729,45 @@ This design decision offers several important benefits:
 1. **Configuration integration**: Class-based routing allows Karafka to apply configuration and middleware to the class before instantiation.
 
 This pattern follows the principle of Inversion of Control (IoC), where the framework controls object creation rather than the application code. It's similar to how other Ruby frameworks (like Rails) reference controllers by class in routes, not by instances.
+
+## Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?
+
+Unlike frameworks such as Sidekiq or Racecar, where message-processing destinations are defined directly within classes, Karafka uses a separate routing layer that maps topics to consumer classes:
+
+```ruby
+# Karafka approach - separate routing definition
+App.routes.draw do
+  topic :orders do
+    consumer OrdersConsumer
+  end
+  
+  topic :notifications do
+    consumer NotificationsConsumer
+  end
+end
+
+# vs. embedded approach (not used in Karafka)
+class OrdersConsumer
+  subscribes_to :orders
+  # ...
+end
+```
+
+This deliberate architectural decision provides several significant benefits:
+
+1. **Consumer reusability**: The same consumer class can be used with multiple topics without modification. This enables powerful patterns where a single processing implementation can handle data from various sources.
+
+2. **Multi-level configuration**: Karafka's routing system allows configuration at different levels of abstraction:
+   - Consumer group level
+   - Subscription group level
+   - Topic level
+
+3. **Separation of concerns**: Routing (what to consume) is separated from consumption logic (how to process). This creates cleaner, more maintainable code.
+
+4. **Dynamic routing capabilities**: The routing layer can be extended with logic that determines routes based on runtime conditions.
+
+5. **Enhanced testing**: Consumers can be tested independently from their routing configuration, improving unit test isolation.
+
+6. **Flexibility for complex setups**: The separate routing layer provides much better organization and clarity for advanced Kafka deployments with many topics and consumers.
+
+This approach follows established software architecture principles and provides significantly more flexibility when working with complex Kafka-based systems, especially as your application grows.
