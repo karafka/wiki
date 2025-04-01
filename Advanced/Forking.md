@@ -21,9 +21,24 @@ Forking on macOS, particularly from macOS High Sierra (10.13) onwards, introduce
 
 These errors indicate processes in the middle of certain operations during a fork, which macOS now handles differently.
 
-For developers using macOS and Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. To mitigate these issues, we recommend to establish a short-lived connection to a local development Kafka instance when Spring boots. This can be done using `Karafka::Admin.cluster_info` to ensure all necessary libraries are loaded and initialized correctly before Spring forks the process.
+### Solutions for macOS Forking Issues
 
-Additionally, you can also try setting the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`. This is another strategy to consider, as it might help manage the initialization issues related to forking in macOS environments. This variable specifically targets Objective-C initialization safety mechanisms that can interfere with the forking process, making it a potentially useful fix for developers facing related issues.
+1. **Pre-load `rdkafka` before forking**: Ensure `rdkafka` is loaded in the parent process before any fork occurs. For Puma web server users, add this line to your `puma.rb` configuration file:
+
+```ruby
+require 'rdkafka'
+```
+
+This ensures that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
+
+2. **Environment Variable**: You can set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to help manage initialization issues related to forking in macOS environments.
+
+3. **Rails Spring Strategy**: For developers using Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. Consider one of these approaches:
+
+    - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
+    - Disable Spring in development if you're encountering persistent issues
+
+Note that forking issues typically occur when the required dependencies aren't loaded in the parent process prior to forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
 For more detailed information on macOS forking issues and solutions, see [Phusion's blog on Ruby app servers and macOS High Sierra](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/).
 
