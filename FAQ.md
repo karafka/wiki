@@ -208,6 +208,7 @@
 208. [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
 209. [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
 210. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
+211. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2699,3 +2700,31 @@ bundle install --jobs=1
 ```
 
 This command disables parallel installation, clearly showing compilation times per gem.
+
+## Why does Karafka routing accept consumer classes rather than instances?
+
+Karafka routing requires that you provide a consumer class reference rather than a consumer instance:
+
+```ruby
+# Correct approach
+topic :topic_name do
+  consumer ConsumerClass
+end
+
+# Incorrect approach
+topic :topic_name do
+  consumer ConsumerClass.new  # This will not work
+end
+```
+
+This design decision offers several important benefits:
+
+1. **Instance lifecycle management**: Karafka needs to control when and how consumer instances are created to properly manage the message processing lifecycle.
+
+1. **Resource management**: By controlling instantiation, Karafka ensures proper resource cleanup after message processing is complete.
+
+1. **Concurrency considerations**: When running with multiple threads or processes, Karafka creates separate consumer instances for each concurrent execution unit to maintain thread safety.
+
+1. **Configuration integration**: Class-based routing allows Karafka to apply configuration and middleware to the class before instantiation.
+
+This pattern follows the principle of Inversion of Control (IoC), where the framework controls object creation rather than the application code. It's similar to how other Ruby frameworks (like Rails) reference controllers by class in routes, not by instances.
