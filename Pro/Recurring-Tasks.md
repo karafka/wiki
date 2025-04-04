@@ -30,8 +30,6 @@ Karafka, with its unique approach, stores the state of each recurring task, incl
 
 One key advantage of Recurring Tasks is its independence from external databases for managing task schedules. All necessary information is stored in Kafka, simplifying deployment and maintenance.
 
-One key advantage of Recurring Tasks is its independence from external databases for managing task schedules. All necessary information is stored in Kafka, simplifying deployment and maintenance.
-
 Karafka ensures that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes don't run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
 
 In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and seamless task execution continuity, even during unexpected failures.
