@@ -192,7 +192,7 @@ class EventsConsumer < ApplicationConsumer
   # Flush every 1000 messages
   MAX_BUFFER_SIZE = 1_000
 
-  def initialize
+  def initialized
     @buffer = []
   end
 
@@ -226,7 +226,7 @@ Karafka consumer, aside from the `#consume` method, allows you to define two add
 
 ```ruby
 class LogsConsumer < ApplicationConsumer
-  def initialize
+  def initialized
     @log = File.open('log.txt', 'a')
   end
 

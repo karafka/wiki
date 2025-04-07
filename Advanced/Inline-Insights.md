@@ -39,8 +39,7 @@ class LogEventsConsumer < ApplicationConsumer
   # Sets the minimum buffer size before flush. under lag
   FLUSH_THRESHOLD = 20_000
 
-  def initialize
-    super
+  def initialized
     @buffer = InMemoryDbFlushingBuffer.new
   end
 

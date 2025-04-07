@@ -1558,7 +1558,7 @@ We prioritize bugs and critical performance improvements to ensure optimal user 
 
 - You have the flexibility to modify the `#initialize` method. However, there are some nuances to note:
 
-- You can redefine the `#initialize` but not define it with arguments, i.e., `def initialize(args)` is not allowed.
+- You can redefine the `#initialized` but not define it with arguments, i.e., `def initialized(args)` is not allowed.
 
 - If you redefine `#initialize`, you **need** to call `super`.
 
