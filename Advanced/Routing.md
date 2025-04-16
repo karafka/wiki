@@ -4,7 +4,7 @@ Due to the dynamic nature of Kafka, you can use multiple configuration options; 
 
 ## Routing DSL Organization
 
-Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it too as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
+Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it to as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
 
 * settings level - root settings that will be used everywhere
 * topic level - options that need to be set on a per topic level or overrides to options set on a root level
