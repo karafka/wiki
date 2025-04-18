@@ -51,6 +51,63 @@ Here are all the things you can provide in the message hash:
 
 Keep in mind, that message you want to send should be either binary or stringified (to_s, to_json, etc).
 
+## Headers
+
+Kafka headers allow you to attach key-value metadata to messages, which can be helpful for routing, filtering, tracing, and more. WaterDrop supports headers via the `headers:` key in message hashes.
+
+### Format
+
+Kafka headers are optional and must be provided as a `Hash`. According to [KIP-82](https://cwiki.apache.org/confluence/display/KAFKA/KIP-82+-+Add+Record+Headers), each header key must be a string, and each value must be either:
+
+- a **string**, or
+- an **array of strings**.
+
+This means WaterDrop supports both forms:
+
+```ruby
+# Single value per header
+headers: {
+  'request-id' => '123abc',
+  'source' => 'payment-service'
+}
+```
+
+```ruby
+# Multiple values per header key (KIP-82-compliant)
+headers: {
+  'flags' => ['internal', 'async'],
+  'source' => ['payment-service']
+}
+```
+
+### Example Usage
+
+#### Sync with headers
+
+```ruby
+producer.produce_sync(
+  topic: 'my-topic',
+  payload: 'payload-with-headers',
+  headers: {
+    'request-id' => 'abc-123',
+    'tags' => ['blue', 'fast']
+  }
+)
+```
+
+#### Async with headers
+
+```ruby
+producer.produce_async(
+  topic: 'my-topic',
+  payload: 'payload-with-headers',
+  headers: {
+    'tenant-id' => 'tenant-42',
+    'features' => ['beta', 'test']
+  }
+)
+```
+
 ## Delivery Results
 
 When dispatching messages using WaterDrop, you can choose between receiving a delivery report or a delivery handle, depending on whether you perform synchronous or asynchronous dispatches.

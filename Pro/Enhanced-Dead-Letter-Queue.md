@@ -356,3 +356,37 @@ When implementing a custom DLQ strategy in Karafka, the `#call` method is expect
     </tr>
   </tbody>
 </table>
+
+## Dynamic DLQ Target Topic
+
+Karafka Pro also supports the dynamic determination of the DLQ target topic. This feature is useful when the target DLQ topic may vary depending on runtime conditions or message metadata.
+
+To enable dynamic DLQ target topics, set the `topic:` option to `:strategy` in your routing configuration. Your strategy class's `#call` method should then return an array instead of a single symbol:
+
+- The first element is the symbol representing the action (`:retry`, `:dispatch`, `:skip`).
+- The second element specifies the dynamically determined target DLQ topic.
+
+```ruby
+class DynamicDlqStrategy
+  def call(errors_tracker, attempt)
+    if errors_tracker.last.is_a?(SpecialError)
+      [:dispatch, 'dlq_topic_for_specials']
+    else
+      [:dispatch, 'dlq_topic_for_anything_else']
+    end
+  end
+end
+
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: :strategy,
+        strategy: DynamicDlqStrategy.new
+      )
+    end
+  end
+end
+```

@@ -181,3 +181,24 @@ Karafka provides an advanced operation mode known as Swarm, designed to optimize
 In Swarm Mode, Karafka forks multiple independent processes, each capable of running concurrently. This approach allows the framework to manage and supervise these processes effectively, ensuring high availability and resilience. By doing so, Karafka can better distribute the workload across available CPU cores, minimizing bottlenecks and maximizing processing speed.
 
 Swarm has its own section. You can read about it [here](Swarm-Multi-Process).
+
+## Setting Thread Priority
+
+Karafka supports explicit thread priority configuration. Adjusting thread priorities can mitigate performance issues caused by mixed workloads, particularly by reducing latency when running IO-bound and CPU-bound tasks concurrently.
+
+Karafka processing threads have a default priority set to `-1`. Lowering this priority further can significantly reduce tail latency for IO-bound tasks, ensuring more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Lower worker thread priority to prevent CPU-bound tasks from starving IO-bound threads
+    config.worker_thread_priority = -3
+  end
+end
+```
+
+Lowering thread priority (e.g., negative values like `-1`, `-3`) can significantly reduce tail latency for IO-bound tasks. This ensures more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
+
+!!! tip "Thread Priority and GVL"
+
+    Ruby employs a Global VM Lock (GVL) that ensures only one thread executes Ruby code at a time. The Ruby VM switches threads roughly every 100ms (thread quantum) unless explicitly released (such as during IO operations). CPU-intensive tasks holding the GVL for the entire quantum period can significantly increase latency for other threads, especially those performing quick IO tasks. Adjusting thread priority mitigates this issue by influencing the scheduling decisions and allowing shorter, IO-bound threads more frequent access to the CPU.

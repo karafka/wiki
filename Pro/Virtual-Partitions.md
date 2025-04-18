@@ -82,12 +82,27 @@ Below is a list of arguments the `#virtual_partitions` topic method accepts.
       <td><code>#call</code></td>
       <td>Reducer for VPs key. It allows for a custom reducer to achieve enhanced parallelization when the default reducer is insufficient.</td>
     </tr>
+    <tr>
+      <td><code>distribution</code></td>
+      <td>Symbol</td>
+      <td>
+        Strategy used to distribute messages across virtual partitions:
+        <ul style="margin-top: 10px;">
+          <li>
+            <code>:consistent</code> (default) ensures messages with the same key always go to the same virtual partition, maintaining consistency across batches.
+          </li>
+          <li>
+            <code>:balanced</code> distributes work evenly across workers while preserving message order within key groups, improving utilization by up to 50% for uneven workloads.
+          </li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
 
 ## Messages Distribution
 
-Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `max_partitions` setting defined within the `virtual_partitions` method.
+Message distribution is based on the outcome of the `virtual_partitions` settings. Karafka will make sure to distribute work into jobs with a similar number of messages in them (as long as possible). It will also take into consideration the current `concurrency` setting and the `max_partitions` setting defined within the `virtual_partitions` method and will take into consideration appropriate `:strategy`.
 
 Below is a diagram illustrating an example partitioning flow of a single partition data. Each job will be picked by a separate worker and executed in parallel (or concurrently when IO is involved).
 
@@ -186,6 +201,127 @@ routes.draw do
   end
 end
 ```
+
+### Distribution Strategies
+
+Karafka's Virtual Partitions feature provides two distribution strategies to determine how messages are allocated across consumer instances:
+
+- `:consistent` (default)
+- `:balanced`.
+
+These strategies give you flexibility in optimizing message distribution based on your specific workload characteristics and processing approach.
+
+#### Consistent Distribution (Default)
+
+By default, Karafka uses a consistent distribution strategy that ensures messages with the same partitioner result are always assigned to the same virtual partition consumer. This provides predictable and stable message routing, particularly important for stateful processing or when message order within a key group must be preserved across multiple batches.
+
+```ruby
+routes.draw do
+ topic :orders_states do
+   consumer OrdersStatesConsumer
+
+   virtual_partitions(
+     partitioner: ->(message) { message.headers['order_id'] },
+     # Default - each key always gets routed to the same virtual partition
+     # This provides consistent multi-batch distribution
+     distribution: :consistent
+   )
+ end
+end
+```
+
+The consistent distribution strategy ensures that:
+
+1. The same virtual partition always processes messages with the same partitioner outcome
+2. Distribution remains stable between batches
+3. Per-key ordering is strictly maintained
+
+However, consistent distribution can sometimes lead to suboptimal resource utilization when certain keys contain significantly more messages than others, potentially leaving some worker threads idle while others are overloaded.
+
+#### Balanced Distribution
+
+Karafka also supports a balanced distribution strategy that dynamically distributes workloads across available workers, potentially improving resource utilization by up to 50%. This strategy prioritizes even work distribution while maintaining message order within each key group.
+
+```ruby
+routes.draw do
+ topic :orders_states do
+   consumer OrdersStatesConsumer
+
+   virtual_partitions(
+     partitioner: ->(message) { message.headers['order_id'] },
+     # Balanced distribution for more even workload distribution
+     distribution: :balanced
+   )
+ end
+end
+```
+
+The balanced distribution strategy operates as follows:
+
+1. Messages are grouped by their partition key (as determined by the partitioner)
+2. Key groups are sorted by size (number of messages) in descending order
+3. Each key group is assigned to the worker with the least current workload
+4. Messages within each group maintain their offset order
+
+This approach ensures that:
+
+- Larger message groups are processed first
+- Work is distributed more evenly across available workers
+- Message order within each key group is preserved within a single batch
+- All available worker threads are utilized effectively
+
+##### Important Considerations for Balanced Distribution
+
+When using the balanced distribution strategy, keep in mind:
+
+- **Cross-batch assignment is not guaranteed** - Unlike consistent distribution, the same key may be assigned to different virtual partitions across different batches
+- **Stateful processing considerations** - If your consumer maintains state for specific keys across multiple batches, consistent distribution may still be more appropriate
+- **Messages with the same key are never split** - While keys may be assigned to different virtual partitions in different batches, all messages with the same key in a single batch will be processed together
+
+#### Choosing the Right Distribution Strategy
+
+Consider these factors when selecting a distribution strategy:
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Use <code>:consistent</code> when:</th>
+      <th>Use <code>:balanced</code> when:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Processing requires stable assignment of keys to workers across batches</td>
+      <td>Processing is stateless or state is managed externally</td>
+    </tr>
+    <tr>
+      <td>You're implementing window-based aggregations spanning multiple polls</td>
+      <td>Maximizing worker thread utilization is a priority</td>
+    </tr>
+    <tr>
+      <td>Predictable routing is more important than even utilization</td>
+      <td>Message keys have highly variable message counts</td>
+    </tr>
+    <tr>
+      <td>Keys have relatively similar message counts</td>
+      <td>You want to optimize for throughput with uneven workloads</td>
+    </tr>
+  </tbody>
+</table>
+
+#### Performance Comparison
+
+The balanced distribution strategy can significantly improve resource utilization in high-throughput scenarios with uneven message distribution. Internal benchmarks show improvements of up to 50% in throughput for workloads where:
+
+- Message keys have highly variable message counts
+- Processing is IO-bound (such as database operations)
+- Worker threads would otherwise be underutilized with consistent distribution
+
+The performance gains are most significant when:
+
+1. Some keys contain many more messages than others
+2. The total number of keys is greater than the number of available worker threads
+3. Message processing involves IO operations that can benefit from concurrent execution
 
 ## Managing Number of Virtual Partitions
 

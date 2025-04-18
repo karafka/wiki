@@ -348,7 +348,7 @@ iterator = ::Karafka::Pro::Iterator.new(
 )
 
 iterator.each do |message|
-  # Cast to integer because headers are always string
+  # Cast to integer because headers are always strings or arrays of strings
   next unless message.headers['user-id'].to_i == 5
 
   user_5_events << message

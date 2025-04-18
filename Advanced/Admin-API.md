@@ -389,7 +389,7 @@ end
 
 ## Renaming a Consumer Group
 
-!!! Warning "Never rename active consumer groups"
+!!! Warning "Never Rename Active Consumer Groups"
 
     This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
 
@@ -409,9 +409,41 @@ When using `rename_consumer_group`, the method ensures that offsets from the old
 
     If the new consumer group already exists, the offsets from the old group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
+## Copying a Consumer Group
+
+!!! warning "Never Copy Active Consumer Groups"
+
+  This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
+
+The `#copy_consumer_group` method in Karafka Admin API allows you to copy offsets from an existing consumer group to another while preserving its consumption state for specific topics. This functionality is useful when creating a duplicate consumer group with the same consumption progress as an existing one.
+
+```ruby
+Karafka::Admin.copy_consumer_group(
+  'source_group_name',
+  'target_group_name',
+  ['topic1', 'topic2']
+)
+```
+
+When using `#copy_consumer_group`, the method ensures that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
+
+!!! Tip "Offset Merger with Existing Consumer Groups"
+
+    If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
+
+The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group doesn't exist or has no committed offsets for the specified topics).
+
+This functionality is particularly useful for:
+
+- Creating backup consumer groups before making significant changes
+- Testing new consumer configurations with the same consumption progress
+- Setting up disaster recovery scenarios
+
+Unlike `#rename_consumer_group`, this method preserves the source consumer group, allowing both groups to exist simultaneously.
+
 ## Deleting a Consumer Group
 
-!!! warning "Never delete active consumer groups"
+!!! warning "Never Delete Active Consumer Groups"
 
     This method should only be used for consumer groups **not** actively used. Deleting a consumer group that is currently in use (running) can lead to data loss, inconsistencies, or unexpected behavior in your Kafka cluster.
 
@@ -425,7 +457,7 @@ Karafka::Admin.delete_consumer_group('your_consumer_group_name')
 
 ## Changing an Offset of a Consumer Group
 
-!!! warning "Never alter active consumer groups"
+!!! warning "Never Alter Active Consumer Groups"
 
     This method should only be used for consumer groups **not** actively used. Altering a consumer group that is currently in use (running) can lead to data loss, inconsistencies, or unexpected behavior in your Kafka cluster.
 
