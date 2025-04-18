@@ -122,6 +122,7 @@
 * [Transactions](Pro-Transactions)
 * [Offset Metadata Storage](Pro-Offset-Metadata-Storage)
 * [Virtual Partitions](Pro-Virtual-Partitions)
+* [Parallel Segments](Pro-Parallel-Segments)
 * [Delayed Topics](Pro-Delayed-Topics)
 * [Long-Running Jobs](Pro-Long-Running-Jobs)
 * [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)
