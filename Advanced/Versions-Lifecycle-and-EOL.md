@@ -26,7 +26,7 @@ Karafka and its components versions or release series are categorized below into
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 2.5     | Preview     | N/A        |
-| 2.4     | Active      | N/A        |
+| 2.4     | Active      | 2025-10-31 |
 | 2.3     | EOL         | 2025-03-01 |
 | 2.2     | EOL         | 2024-09-31 |
 | 2.1     | EOL         | 2024-05-01 |
@@ -38,7 +38,7 @@ Karafka and its components versions or release series are categorized below into
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 0.11    | Preview     | N/A        |
-| 0.10    | Active      | N/A        |
+| 0.10    | Active      | 2025-10-31 |
 | 0.9     | EOL         | 2024-12-31 |
 | 0.8     | EOL         | 2024-08-31 |
 | 0.7     | EOL         | 2024-05-01 |
@@ -72,7 +72,7 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 | 3.4     | Active      | 2028-09-31 |
 | 3.3     | Active      | 2027-09-31 |
 | 3.2     | Active      | 2026-09-31 |
-| 3.1     | Active      | 2025-09-31 |
+| 3.1     | Maintenance | 2025-09-31 |
 | 3.0     | EOL         | 2024-09-31 |
 | 2.7     | EOL         | 2024-05-30 |
 | 2.6     | EOL         | 2022-04-12 |
