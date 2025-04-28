@@ -43,13 +43,12 @@ These errors are prefixed with two underscores (`__`) in their full error code n
 
 <tr><td><code>-199</code></td><td><code>:bad_msg</code></td><td><code>RD_KAFKA_RESP_ERR__BAD_MSG</code></td><td>Local: Bad message format</td></tr>
 <tr><td><code>-198</code></td><td><code>:bad_compression</code></td><td><code>RD_KAFKA_RESP_ERR__BAD_COMPRESSION</code></td><td>Local: Invalid compressed data</td></tr>
-<tr><td><code>-197</code></td><td><code>:destroy</code></td><td><code>RD_KAFKA_RESP_ERR__DESTROY</code></td><td>Local: Broker handle destroyed</td></tr>
+<tr><td><code>-197</code></td><td><code>:destroy</code></td><td><code>RD_KAFKA_RESP_ERR__DESTROY</code></td><td>Local: Broker handle destroyed for termination</td></tr>
 <tr><td><code>-196</code></td><td><code>:fail</code></td><td><code>RD_KAFKA_RESP_ERR__FAIL</code></td><td>Local: Communication failure with broker</td></tr>
 <tr><td><code>-195</code></td><td><code>:transport</code></td><td><code>RD_KAFKA_RESP_ERR__TRANSPORT</code></td><td>Local: Broker transport failure</td></tr>
 <tr><td><code>-194</code></td><td><code>:crit_sys_resource</code></td><td><code>RD_KAFKA_RESP_ERR__CRIT_SYS_RESOURCE</code></td><td>Local: Critical system resource failure</td></tr>
 <tr><td><code>-193</code></td><td><code>:resolve</code></td><td><code>RD_KAFKA_RESP_ERR__RESOLVE</code></td><td>Local: Host resolution failure</td></tr>
 <tr><td><code>-192</code></td><td><code>:msg_timed_out</code></td><td><code>RD_KAFKA_RESP_ERR__MSG_TIMED_OUT</code></td><td>Local: Message timed out</td></tr>
-<tr><td><code>-191</code></td><td><code>:partition_eof</code></td><td><code>RD_KAFKA_RESP_ERR__PARTITION_EOF</code></td><td>Broker: No more messages</td></tr>
 <tr><td><code>-190</code></td><td><code>:unknown_partition</code></td><td><code>RD_KAFKA_RESP_ERR__UNKNOWN_PARTITION</code></td><td>Local: Unknown partition</td></tr>
 <tr><td><code>-189</code></td><td><code>:fs</code></td><td><code>RD_KAFKA_RESP_ERR__FS</code></td><td>Local: File or filesystem error</td></tr>
 <tr><td><code>-188</code></td><td><code>:unknown_topic</code></td><td><code>RD_KAFKA_RESP_ERR__UNKNOWN_TOPIC</code></td><td>Local: Unknown topic</td></tr>
@@ -102,6 +101,8 @@ These errors are prefixed with two underscores (`__`) in their full error code n
 <tr><td><code>-141</code></td><td><code>:noop</code></td><td><code>RD_KAFKA_RESP_ERR__NOOP</code></td><td>Local: No operation performed</td></tr>
 <tr><td><code>-140</code></td><td><code>:auto_offset_reset</code></td><td><code>RD_KAFKA_RESP_ERR__AUTO_OFFSET_RESET</code></td><td>Local: No offset to automatically reset to</td></tr>
 <tr><td><code>-139</code></td><td><code>:log_truncation</code></td><td><code>RD_KAFKA_RESP_ERR__LOG_TRUNCATION</code></td><td>Local: Partition log truncation detected</td></tr>
+<tr><td><code>-138</code></td><td><code>:invalid_different_record</code></td><td><code>RD_KAFKA_RESP_ERR__INVALID_DIFFERENT_RECORD</code></td><td>Local: an invalid record in the same batch caused the failure of this message too</td></tr>
+<tr><td><code>-137</code></td><td><code>:destroy_broker</code></td><td><code>RD_KAFKA_RESP_ERR__DESTROY_BROKER</code></td><td>Local: Broker handle destroyed without termination</td></tr>
 </table>
 
 ## Broker Errors
@@ -119,6 +120,7 @@ These errors are prefixed with a single underscore (`_`) in their error code nam
     <th>Description</th>
   </tr>
 
+<tr><td><code>-191</code></td><td><code>:partition_eof</code></td><td><code>RD_KAFKA_RESP_ERR__PARTITION_EOF</code></td><td>Broker: No more messages</td></tr>
 <tr><td><code>1</code></td><td><code>:offset_out_of_range</code></td><td><code>RD_KAFKA_RESP_ERR_OFFSET_OUT_OF_RANGE</code></td><td>Broker: Offset out of range</td></tr>
 <tr><td><code>2</code></td><td><code>:invalid_msg</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_MSG</code></td><td>Broker: Invalid message</td></tr>
 <tr><td><code>3</code></td><td><code>:unknown_topic_or_part</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_TOPIC_OR_PART</code></td><td>Broker: Unknown topic or partition</td></tr>
@@ -216,4 +218,12 @@ These errors are prefixed with a single underscore (`_`) in their error code nam
 <tr><td><code>95</code></td><td><code>:invalid_update_version</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_UPDATE_VERSION</code></td><td>Broker: Invalid update version</td></tr>
 <tr><td><code>96</code></td><td><code>:feature_update_failed</code></td><td><code>RD_KAFKA_RESP_ERR_FEATURE_UPDATE_FAILED</code></td><td>Broker: Unable to update finalized features due to server error</td></tr>
 <tr><td><code>97</code></td><td><code>:principal_deserialization_failure</code></td><td><code>RD_KAFKA_RESP_ERR_PRINCIPAL_DESERIALIZATION_FAILURE</code></td><td>Broker: Request principal deserialization failed during forwarding</td></tr>
+<tr><td><code>100</code></td><td><code>:unknown_topic_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_TOPIC_ID</code></td><td>Broker: Unknown topic id</td></tr>
+<tr><td><code>110</code></td><td><code>:fenced_member_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_FENCED_MEMBER_EPOCH</code></td><td>Broker: The member epoch is fenced by the group coordinator</td></tr>
+<tr><td><code>111</code></td><td><code>:unreleased_instance_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNRELEASED_INSTANCE_ID</code></td><td>Broker: The instance ID is still used by another member in the consumer group</td></tr>
+<tr><td><code>112</code></td><td><code>:unsupported_assignor</code></td><td><code>RD_KAFKA_RESP_ERR_UNSUPPORTED_ASSIGNOR</code></td><td>Broker: The assignor or its version range is not supported by the consumer group</td></tr>
+<tr><td><code>113</code></td><td><code>:stale_member_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_STALE_MEMBER_EPOCH</code></td><td>Broker: The member epoch is stale</td></tr>
+<tr><td><code>117</code></td><td><code>:unknown_subscription_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_SUBSCRIPTION_ID</code></td><td>Broker: Client sent a push telemetry request with an invalid or outdated subscription ID</td></tr>
+<tr><td><code>118</code></td><td><code>:telemetry_too_large</code></td><td><code>RD_KAFKA_RESP_ERR_TELEMETRY_TOO_LARGE</code></td><td>Broker: Client sent a push telemetry request larger than the maximum size the broker will accept</td></tr>
+<tr><td><code>129</code></td><td><code>:rebootstrap_required</code></td><td><code>RD_KAFKA_RESP_ERR_REBOOTSTRAP_REQUIRED</code></td><td>Broker: Client metadata is stale, client should rebootstrap to obtain new metadata.</td></tr>
 </table>
