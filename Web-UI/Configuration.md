@@ -103,13 +103,13 @@ For those who require a different cache duration, perhaps due to more frequent c
 ```ruby
 Karafka::Web.setup do |config|
   # Lower the cache to 1 minute
-  config.ui.cache = Karafka::Web::Ui::Lib::TtlCache.new(60_000)
+  config.ui.cache = Karafka::Web::Ui::Lib::Cache.new(60_000)
 end
 ```
 
 ### Cache Refresh
 
-One of the features to note is that whenever the Cluster view is accessed, the cache gets invalidated and refreshed. This ensures that users get the most recent and accurate cluster information when they visit this view.
+One of the features to note is that whenever the Status view is accessed, the cache gets invalidated and refreshed. This ensures that users get the most recent and accurate information when they visit this view.
 
 ### Consideration for Multiple Processes Deployment
 

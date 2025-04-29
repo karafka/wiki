@@ -180,6 +180,8 @@
 
 It is recommended to do one major upgrade at a time.
 
+### Karafka
+
 * [Upgrading to 2.5](Upgrades-2.5)
 * [Upgrading to 2.4](Upgrades-2.4)
 * [Upgrading to 2.3](Upgrades-2.3)
@@ -190,6 +192,25 @@ It is recommended to do one major upgrade at a time.
 * [Upgrading to 1.3](https://mensfeld.pl/2019/09/karafka-framework-1-3-0-release-notes-ruby-kafka/#changes-features-incompatibilities-etc)
 * [Upgrading to 1.2](https://mensfeld.pl/2018/03/karafka-framework-1-2-0-release-notes-ruby-kafka/#upgrade-guide)
 * [Upgrading to 1.1](https://mensfeld.pl/2017/11/karafka-ruby-kafka-framework-1-1-0-release-notes/#incompatibilities-and-breaking-changes)
+
+### Web UI
+
+* [Upgrading to 0.11](Upgrades-Web-UI-0.11)
+* [Upgrading to 0.10](Upgrades-Web-UI-0.10)
+* [Upgrading to 0.9](Upgrades-Web-UI-0.9)
+* [Upgrading to 0.8](Upgrades-Web-UI-0.8)
+* [Upgrading to 0.7](Upgrades-Web-UI-0.7)
+* [Upgrading to 0.6](Upgrades-Web-UI-0.6)
+* [Upgrading to 0.5](Upgrades-Web-UI-0.5)
+* [Upgrading to 0.4](Upgrades-Web-UI-0.4)
+* [Upgrading to 0.3](Upgrades-Web-UI-0.3)
+
+### WaterDrop
+
+* [Upgrading to 2.8](Upgrades-WaterDrop-2.8)
+* [Upgrading to 2.7](Upgrades-WaterDrop-2.7)
+* [Upgrading to 2.6](Upgrades-WaterDrop-2.6)
+* [Upgrading to 2.5](Upgrades-WaterDrop-2.5)
 
 ## Changelogs
 
