@@ -253,49 +253,20 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 
 ## External Shell/OS Required Commands
 
-Karafka Web UI relies on a few operating system commands to function correctly and collect OS data. The table below lists these commands according to the relevant operating systems:
+Karafka Web UI has reduced dependencies on external operating system commands. Only macOS (Darwin) environments require specific shell commands, while Linux systems no longer have these dependencies.
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>OS Command</th>
-            <th>Linux</th>
-            <th>macOS</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>ps</td>
-            <td>✓</td>
-            <td>✓</td>
-        </tr>
-        <tr>
-            <td>grep</td>
-            <td>✓</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>sysctl</td>
-            <td></td>
-            <td>✓</td>
-        </tr>
-        <tr>
-            <td>w</td>
-            <td>✓</td>
-            <td>✓</td>
-        </tr>
-        <tr>
-            <td>head</td>
-            <td>✓</td>
-            <td>✓</td>
-        </tr>
-    </tbody>
-</table>
+### macOS-Only Required Commands
 
+- `ps` - For process statistics collection
+- `sysctl` - For system statistics and CPU information
+- `w` - For load average statistics
+- `head` - For file content reading
 
-!!! Hint "System Requirements"
+### Linux Systems
 
-    The required commands may not be pre-installed when using minimal Docker images. Install them in your Docker image to allow Karafka Web UI to work correctly.
+On Linux systems (Debian, Alpine, Wolfi), external shell commands are not required, as the code now uses native Ruby methods or alternative approaches to gathering the same information.
+
+This makes deployments on Linux systems (especially in containers) simpler and more reliable by eliminating dependencies on external tools.
 
 ## Zero-Downtime Deployment
 

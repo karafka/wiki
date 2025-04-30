@@ -95,10 +95,6 @@ You can read more about this issue [here](https://karafka.io/docs/Pro-Routing-Pa
 
 When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
 
-## Adaptive Iterator + Virtual Partitions
-
-TBA
-
 ## Adaptive Iterator + Long-Running Jobs
 
-TBA
+Adaptive Iterator should not be used with Long-Running Jobs because their operating principles are fundamentally incompatible. Long-Running Jobs have their own resource lifecycle management, while Adaptive Iterator dynamically adjusts batch sizes based on processing speed. This combination leads to conflicting resource allocation, disrupted timeout mechanisms, and inconsistent offset commitment patterns.

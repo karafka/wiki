@@ -26,11 +26,17 @@ end
   WaterDrop
   Upgrades
 ].each do |namespace|
-  Dir["#{Dir.pwd}/#{namespace}/**.md"].each do |file|
-    basename = File.basename(file)
-    target = "#{Dir.pwd}/gh/#{namespace}-#{basename}"
+  # Find all markdown files in the namespace, including those in subdirectories
+  Dir["#{Dir.pwd}/#{namespace}/**/*.md"].each do |file|
+    relative_path = file.sub("#{Dir.pwd}/#{namespace}/", "")
+
+    path_parts = relative_path.split(File::SEPARATOR)
+    target_basename = path_parts.join("-")
+
+    target = "#{Dir.pwd}/gh/#{namespace}-#{target_basename}"
 
     FileUtils.cp(file, target)
+    puts "Copied #{file} to #{target}" # Optional logging
   end
 end
 
@@ -62,7 +68,7 @@ Dir["#{Dir.pwd}/gh/**.md"].each do |file|
   next if basename.start_with?('_')
 
   rd = IO.read(file)
-  IO.write file, HEADER_TEMPLATE_CONTENT + "\n" + rd
+  IO.write file, HEADER_TEMPLATE_CONTENT.gsub('PAGE_NAME', basename[0..-4]) + "\n" + rd
 end
 
 system!('cd gh/ && git add ./')
