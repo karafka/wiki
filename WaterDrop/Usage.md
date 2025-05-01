@@ -386,6 +386,24 @@ task send_users: :environment do
 end
 ```
 
+### Closing Custom Producer Used in Karafka
+
+!!! Tip "Custom Producers Only"
+
+    Please note that this should be used only for custom producers and not for `Karafka.producer` that is closed automatically.
+
+When using custom WaterDrop producers within a Karafka application, it's important to properly close them before the application shuts down. It's recommended to use the `app.stopped` event as it signifies that Karafka has completed all processing, flushed all buffers, and is ready for final cleanup operations. At this point, no more messages will be processed, making it the ideal time to safely close your custom producers. Here's how you can do this:
+
+```ruby
+# Create producer in Rails initializer or other place suitable within your app
+YOUR_CUSTOM_PRODUCER = WaterDrop::Producer.new
+
+# Then subscribe to the `app.stopped` event and close your producer there
+Karafka::App.monitor.subscribe('app.stopped') do
+  YOUR_CUSTOM_PRODUCER.close
+end
+```
+
 ### Closing Producer in any Ruby Process
 
 While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
@@ -397,6 +415,153 @@ at_exit do
   MY_PRODUCER.close
 end
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Managing Multiple Topic Delivery Requirements
+
+In complex applications, you may need different delivery settings for different topics or message categories. For example, some messages might require immediate delivery with minimal latency, while others benefit from batching for higher throughput. This section explores strategies for managing these diverse requirements effectively.
+
+### Understanding Delivery Requirements Differences
+
+When designing your Kafka message production architecture, you may encounter various requirements:
+
+- **Varying Latency Needs**: Some critical messages need immediate dispatch while others can tolerate delays
+- **Different Throughput Optimization**: High-volume topics may benefit from batching and compression
+- **Reliability Variations**: Mission-critical data may require more acknowledgments than less important messages
+- **Resource Utilization**: Efficiently managing TCP connections while meeting diverse requirements
+
+### Using Multiple Producers for Different Requirements
+
+The most flexible solution for handling diverse delivery requirements is creating separate WaterDrop producer instances, each configured for specific needs. This approach offers maximum configuration control but requires careful management of TCP connections.
+
+#### Key Configuration Differences That Require Separate Producers
+
+Several core settings cannot be modified through variants and require distinct producer instances:
+
+- `queue.buffering.max.ms` - Controls batching frequency
+- `queue.buffering.max.messages` - Affects memory usage and batching behavior
+- `socket.timeout.ms` - Impacts how producers handle network issues 
+- `queue.buffering.max.ms` - Controls artificial delays added for improved batching
+- `delivery.timeout.ms` - May need different timeouts for different message priorities
+
+#### Implementation Example
+
+```ruby
+# Producer optimized for high-throughput, less time-sensitive data
+BATCH_PRODUCER = WaterDrop::Producer.new
+
+BATCH_PRODUCER.setup do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'queue.buffering.max.ms': 1000, # Longer buffering for better batching
+    'batch.size': 64_000,           # Larger batches
+    'compression.type': 'snappy'    # Compression for efficiency
+  }
+end
+
+# Producer optimized for low-latency, time-sensitive messages
+REALTIME_PRODUCER = WaterDrop::Producer.new
+
+REALTIME_PRODUCER.setup do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'queue.buffering.max.ms': 50, # Quick flushing
+    'compression.type': 'none'    # No compression overhead
+  }
+end
+
+# Usage based on message category
+def send_message(topic, payload, category)
+  case category
+  when :critical
+    REALTIME_PRODUCER.produce_sync(topic: topic, payload: payload)
+  when :analytical
+    BATCH_PRODUCER.produce_async(topic: topic, payload: payload)
+  end
+end
+
+# Example using at_exit for simple scripts, but application frameworks
+# usually need different approaches
+at_exit do
+  BATCH_PRODUCER.close
+  REALTIME_PRODUCER.close
+end
+```
+
+!!! Hint "Proper Producer Shutdown"
+
+    The `at_exit` example above is simplified and may not be appropriate for all environments. The correct shutdown method depends on your application framework (Rails, Puma, Sidekiq, etc.). For comprehensive guidance on properly shutting down producers in different environments, refer to the [Shutdown](#shutdown) section in this documentation.
+
+### TCP Connection Considerations
+
+Each WaterDrop producer maintains its own set of TCP connections to Kafka brokers, which has important implications:
+
+1. **Resource Usage**: Multiple producers increase the number of TCP connections, consuming more system resources.
+
+2. **Connection Establishment**: Each new producer requires the overhead of establishing connections.
+
+3. **System Limits**: Be mindful of connection limits in high-scale applications with many producers.
+
+4. **Operational Complexity**: More producers mean more connections to monitor and manage.
+
+### When to Consider Variants Instead
+
+[WaterDrop Variants](https://karafka.io/docs/WaterDrop-Variants/) may be sufficient for simpler differences in delivery requirements. Variants share TCP connections while allowing customization of certain topic-specific settings. Consider variants when differences are limited to:
+
+- `acks` settings (acknowledgment levels)
+- `compression.type` (compression algorithm selection)
+- `message.timeout.ms` (message delivery timeout)
+
+Variants work well when reliability or compression needs to be adjusted per topic but not when fundamentally different buffering or latency characteristics are required.
+
+```ruby
+# Initialize producer with default settings
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'acks': '1'  # Default acknowledgment setting
+  }
+end
+
+# Create variants for specific requirements
+critical_variant = producer.with(topic_config: { acks: 'all' })
+bulk_variant = producer.with(topic_config: { 
+  compression.type: 'snappy', 
+  message.timeout.ms: 300_000 
+})
+
+# Use variants based on message characteristics
+critical_variant.produce_sync(topic: 'alerts', payload: alert_data.to_json)
+bulk_variant.produce_async(topic: 'analytics', payload: large_data.to_json)
+```
+
+### Best Practices for Managing Multiple Delivery Requirements
+
+1. **Group Similar Requirements**: Minimize the number of producers by grouping similar delivery requirements.
+
+2. **Monitor TCP Connections**: Regularly check connection counts to detect potential issues.
+
+3. **Implement Proper Shutdown**: Always close all producers when finishing to release resources.
+
+4. **Combine Approaches**: Use variants for topics with similar base requirements that differ only in topic-specific settings and separate producers for fundamentally different delivery patterns.
+
+5. **Document Configuration Decisions**: Clearly document why each producer exists and which topics it handles to avoid configuration drift.
+
+### Conclusion
+
+Managing multiple topic delivery requirements in WaterDrop often requires a combination of approaches. Use separate producer instances when fundamental differences in buffering, latency, or resource allocation are needed. Use variants when differences are limited to topic-specific settings like acknowledgments or compression.
 
 ## Forking and Potential Memory Problems
 
