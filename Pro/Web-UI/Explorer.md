@@ -34,6 +34,12 @@ Dive deeper into each partition and scroll through the data using offset-based p
 
 Ever wanted to see a message generated at a particular moment? This feature facilitates precisely that. You can navigate to messages produced at specific times by performing time-based offset lookups. This functionality is particularly advantageous for debugging, allowing for precise tracking and resolution.
 
+### Timestamp-Based Offset Lookups
+
+Need to investigate messages from a specific moment in time? Karafka Web UI provides Kafka messages timestamp-based offset lookups that enable you to jump directly to messages produced at exact Unix timestamps. This feature is invaluable for incident analysis, allowing you to correlate message production with system events or errors. Enter the timestamp, and the Explorer will navigate to the corresponding offset, making historical data exploration efficient and precise.
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_timestamp_input.png)
+
 ### Real-Time Display of the Recent Message
 
 Stay updated with the latest information. The explorer can display the most recent message from a given topic partition in real time and even supports an auto-refresh feature, ensuring you always have the current data at your fingertips.

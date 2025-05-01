@@ -158,10 +158,11 @@
     * [Recurring Tasks](Pro-Web-UI#recurring-tasks)
     * [Scheduled Messages](Pro-Web-UI#scheduled-messages)
     * [Topics Insights](Pro-Web-UI-Topics-Insights)
-    * [Commanding](Pro-Web-UI-Commanding)
     * [Errors](Pro-Web-UI#errors)
     * [DLQ / Dead](Pro-Web-UI#dlq-dead)
     * [Branding](Pro-Web-UI#branding)
+    * [Custom Styling](Pro-Web-UI#custom-styling)
+    * [Topics Management](Pro-Web-UI-Topics-Management)
 
 ## Librdkafka
 

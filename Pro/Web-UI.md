@@ -140,3 +140,72 @@ This feature has its own dedicated documentation that you can access [here](http
 Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
 This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Policies/).
+
+## Custom Styling
+
+Web UI supports the ability to customize the appearance and behavior of the interface through custom CSS and JavaScript. This feature allows you to adapt the Web UI to match your organization's branding, enhance usability for specific use cases, or add visual indicators for different environments.
+
+Custom styling can be configured using two settings in the Web UI configuration:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Custom CSS configuration
+  config.ui.custom_css = '/path/to/your/custom.css'
+  # or inline CSS
+  config.ui.custom_css = '.dashboard { background-color: #f5f5f5; }'
+  
+  # Custom JavaScript configuration
+  config.ui.custom_js = '/path/to/your/custom.js'
+  # or inline JavaScript
+  config.ui.custom_js = 'document.addEventListener("DOMContentLoaded", () => { console.log("JS loaded"); });'
+end
+```
+
+Both `custom_css` and `custom_js` settings accept either:
+
+- A file path to a CSS or JavaScript file
+- A string containing inline CSS or JavaScript code
+- `false` to disable custom styling (default)
+
+### CSS Targeting by Controller and Action
+
+To facilitate more granular styling, the Web UI automatically adds special CSS classes to the `<body>` element:
+
+- `.controller-NAME` - Contains the current controller name (e.g., `controller-dashboard`)
+- `.action-NAME` - Contains the current action name (e.g., `action-index`)
+
+These classes allow you to target specific pages or views with your custom CSS:
+
+```css
+/* Style only the dashboard page */
+body.controller-dashboard {
+  background-color: #f8f9fa;
+}
+
+/* Style a specific action within a controller */
+body.controller-consumers.action-show .stats-card {
+  border-left: 4px solid #28a745;
+}
+
+/* Style error pages differently */
+body.controller-errors {
+  background-color: #fff8f8;
+}
+```
+
+### Compatibility Notes
+
+- Custom CSS and JavaScript are loaded after the default styles and scripts
+- The custom styling feature respects the Web UI's dark mode settings
+- Custom assets are properly cached by the browser for optimal performance
+- Custom styling is applied to all pages, including error pages
+
+When used in combination with the Branding feature, custom styling provides a comprehensive way to tailor the Karafka Web UI to your organization's needs.
+
+## Topics Management
+
+The "Topics Management" feature in Karafka Web UI allows you to create, delete, configure, and manage Kafka topics directly from the web interface without command-line tools. You can create topics with custom settings, safely remove unused topics, adjust configurations, and scale throughput by increasing partition counts.
+
+This feature has dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Topics-Management/).
+
+![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-configuration.png)
