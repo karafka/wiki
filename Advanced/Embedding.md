@@ -142,3 +142,62 @@ Always ensure you account for this behavior when integrating Karafka in an Embed
 ### Web UI Limitations in Embedding Mode
 
 When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To leverage the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
+
+### Thread Priority Management
+
+When embedding Karafka within other processes like Puma or Sidekiq, thread priorities are crucial in balancing CPU time between Karafka's background processing and the host application's primary responsibilities. Unlike the pure priority concept, where threads with different priorities must compete for CPU time, Ruby's thread priority controls the thread scheduling quantum - how much GVL (Global VM Lock) time a thread gets before yielding to others.
+
+Ruby's thread priority is calculated as bit shifts of the default 100ms quantum:
+
+- priority 0 = 100ms
+- priority -1 = 50ms
+- priority -2 = 25ms
+- priority -3 = 12.5ms
+
+This mechanism determines how frequently a thread releases the GVL, which is critical when mixing CPU-bound background processing with IO-bound request handling.
+
+When a background processing thread has normal priority (0), it holds the GVL for 100ms between network I/O operations. Meanwhile, request handler threads waiting to serve quick operations (like cached value lookups) must wait for these 100ms slices to complete. This can transform a 10ms request into a much longer operation, explaining the importance of proper priority tuning in embedded mode:
+
+```ruby
+Karafka.setup do |config|
+  # Worker thread priority (default: -1 = 50ms quantum)
+  config.worker_thread_priority = -2  # 25ms quantum for embedded mode
+  
+  # Listener thread priority remains internal
+  # config.internal.connection.listener_thread_priority = 0
+end
+```
+
+The default worker thread priority is -1 (50ms quantum) to prevent CPU-intensive message processing from dominating the GVL. For embedded environments, lowering to -2 or -3 allows web requests to interleave more frequently with Kafka message processing, reducing tail latency while having minimal impact on background processing throughput.
+
+Here's the recommended configuration for different scenarios:
+
+```ruby
+# Puma configuration
+on_worker_boot do
+  Karafka.setup do |config|
+    # Lower quantum for better request responsiveness
+    config.worker_thread_priority = -2
+  end
+  
+  ::Karafka::Embedded.start
+end
+
+# Sidekiq configuration  
+Sidekiq.configure_server do |config|
+  config.on(:startup) do
+    Karafka.setup do |config|
+      # Sidekiq's own processing may benefit from less aggressive priority
+      config.worker_thread_priority = -1
+    end
+    
+    ::Karafka::Embedded.start
+  end
+end
+```
+
+The listener thread priority (internal setting `internal.connection.listener_thread_priority`, default 0) should not be modified unless necessary. Listener threads efficiently release the GVL while waiting for poll results, making the standard 100ms quantum appropriate for their workload.
+
+!!! Warning "Performance Trade-offs"
+
+    Lower priorities reduce GVL time per quantum, which can slightly increase message processing latency. However, this trade-off usually improves overall system responsiveness. Monitor your specific workload and adjust priorities accordingly - the practical range is -3 to 3, with -3 providing the minimum 20ms quantum in practice due to Ruby's internal tick system.
