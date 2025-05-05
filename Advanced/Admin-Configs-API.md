@@ -1,5 +1,9 @@
 The Karafka Admin Configs API provides tools for managing configuration settings for Kafka brokers and topics. This API supports retrieving configuration details (`describe`) and incremental alterations (`alter`) to these configurations. The operations are designed to be flexible, supporting both individual and batch operations.
 
+!!! Tip "Asynchronous Operation Propagation"
+
+    Many Kafka administrative operations (ACLs, configs, topics) are asynchronous in nature. When an API call returns successfully, this means the controller has accepted the request, not that the change has been fully propagated across the cluster. Configuration changes, ACL updates, and topic modifications may take several seconds to be applied on all brokers, depending on cluster size and network conditions. Always allow time for propagation and verify changes are applied across your cluster before proceeding with dependent operations.
+
 !!! Tip "Declarative Topics Feature For Topics Management"
 
     The Admin Configs API provides low-level access for managing Kafka topics and broker configurations. While powerful, it requires detailed knowledge and careful management of individual settings. For a more streamlined and error-resistant approach, consider using the high-level [declarative topics](https://karafka.io/docs/Declarative-Topics/) feature provided by Karafka. This feature allows for easier and more declarative management of topic configurations, making it a superior choice for most use cases.

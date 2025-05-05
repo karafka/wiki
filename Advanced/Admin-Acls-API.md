@@ -6,6 +6,10 @@ The Karafka Admin ACLs API provides a structured and easy-to-use interface for m
 
 This documentation provides an overview of Kafka ACLs, how to use the ACLs with Karafka, primary use cases, and code samples to get you started.
 
+!!! Tip "Asynchronous Operation Propagation"
+
+    Many Kafka administrative operations (ACLs, configs, topics) are asynchronous in nature. When an API call returns successfully, this means the controller has accepted the request, not that the change has been fully propagated across the cluster. Configuration changes, ACL updates, and topic modifications may take several seconds to be applied on all brokers, depending on cluster size and network conditions. Always allow time for propagation and verify changes are applied across your cluster before proceeding with dependent operations.
+
 ## What are Kafka ACLs?
 
 Kafka ACLs are rules that determine how users and applications can interact with Kafka resources, such as topics, consumer groups, and brokers. Each ACL entry specifies the allowed or denied operations for a particular principal (user or client) on a given resource. Operations can include reading from a topic, writing to a topic, or creating a consumer group.
