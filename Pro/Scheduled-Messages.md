@@ -177,6 +177,75 @@ end
 
 Please refer to the code sources for more details.
 
+## Multi-Application Deployments
+
+When deploying Karafka's Scheduled Messages feature across multiple applications within the same Kafka cluster, it's **essential** to ensure proper isolation and prevent conflicts between applications. This section covers configuration for managing scheduled messages in multi-application environments.
+
+### Consumer Group Isolation
+
+The most critical aspect of running scheduled messages across multiple applications is ensuring that each application uses a unique consumer group ID and dedicated schedule topics. This prevents applications from interfering with each other's message processing and ensures that scheduled messages are handled correctly by their intended applications.
+
+```ruby
+# Application 1 - "orders_app"
+class OrdersApp < Karafka::App
+ setup do |config|
+   config.client_id = 'orders_app'
+   # Unique group ID for this application
+   config.consumer_group_id = 'orders_app_schedules_group'
+   # Other config here...
+ end
+
+ routes.draw do
+   scheduled_messages('scheduled_messages_orders')
+ end
+end
+
+# Application 2 - "billing_app"
+class BillingApp < Karafka::App
+ setup do |config|
+   config.client_id = 'billing_app'
+   # Different group ID for this application
+   config.consumer_group_id = 'billing_app_schedules_group'
+   # Other config here...
+ end
+
+ routes.draw do
+   scheduled_messages('scheduled_messages_billing')
+ end
+end
+```
+
+### Dedicated Topic Strategy
+
+Each application **needs** to use its own dedicated topics for scheduled messages:
+
+<table border="1">
+ <thead>
+   <tr>
+     <th>Application</th>
+     <th>Scheduled Messages Topic</th>
+     <th>States Topic</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td>Orders App</td>
+     <td><code>scheduled_messages_orders</code></td>
+     <td><code>scheduled_messages_orders_states</code></td>
+   </tr>
+   <tr>
+     <td>Billing App</td>
+     <td><code>scheduled_messages_billing</code></td>
+     <td><code>scheduled_messages_billing_states</code></td>
+   </tr>
+   <tr>
+     <td>Inventory App</td>
+     <td><code>scheduled_messages_inventory</code></td>
+     <td><code>scheduled_messages_inventory_states</code></td>
+   </tr>
+ </tbody>
+</table>
+
 ## Scheduling Messages
 
 To schedule a message, you must wrap your regular message content and additional scheduling information. This is done using the `Karafka::Pro::ScheduledMessages.schedule` method. This method requires you to prepare the message just as you would for a standard Kafka message, but instead of sending it directly to a producer, you wrap it to include scheduling details.
