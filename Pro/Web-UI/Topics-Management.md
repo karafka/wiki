@@ -1,5 +1,9 @@
 Karafka Web UI Pro provides topic management capabilities, allowing you to create, configure, delete, and manage topics and partitions directly from the web interface. These features eliminate the need for command-line tools or separate admin interfaces, streamlining your Kafka administration workflow.
 
+!!! info "Changes Visibility in Web UI"
+
+    When administrative operations (creating/deleting topics, modifying configurations, adding partitions) are submitted through the Web UI, they are immediately accepted by Kafka. However, due to the refresh interval and cluster synchronization timing, the Web UI display may take several seconds to reflect these changes. Additionally, while changes become effective immediately in Kafka, they may take time to propagate across all brokers in the cluster fully. If changes don't appear immediately in the UI, wait at least 15-30 seconds, refresh the page, or navigate to another section and back to see the updated state.
+
 ## Creating Topics
 
 The topic creation feature allows you to easily create new Kafka topics with customizable configurations directly from the Web UI.
