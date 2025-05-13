@@ -1,5 +1,9 @@
 # OSS Support Policy
 
+!!! Tip "The 5-Minute Support Promise"
+
+    I have a simple 5-minute rule for OSS support: If I can reply and provide solutions within 5 minutes, I will always help without requiring payment or subscription. This applies to quick troubleshooting and guidance within my OSS support scope. My goal is to make the Karafka experience as smooth as possible while respecting everyone's time and resources.
+
 ## Terms And Conditions
 
 Karafka's Open Source Software (OSS) support primarily revolves around assisting users with issues related to the Karafka and librdkafka ecosystems. This involves troubleshooting and providing solutions for problems originating from Karafka or its related subcomponents.
@@ -19,6 +23,12 @@ However, it is crucial to understand that the OSS support does **not** extend to
 11. Issues related to usage of outdated ecosystem libraries versions.
 
 We acknowledge that understanding your specific applications and their configuration is essential, but due to the time and resource demands, this goes beyond the scope of our OSS support.
+
+!!! Info "No ETAs or Timelines in OSS"
+
+    Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there won't be one. Please do not ask for timelines unless I've already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
+
+    If a bug affects your business operations and you need prioritized support, please consider supporting Karafka by upgrading to the Pro offering. This allows me to prioritize issues differently and consider your business needs.
 
 !!! Hint "Enhance Your Karafka Experience with Pro Support"
 
