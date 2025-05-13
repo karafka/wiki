@@ -35,6 +35,8 @@ This page exists because of our commitment to security, compliance, and transpar
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-LGPL">LGPL-3.0-only</a>
+      or
+      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>
@@ -73,7 +75,9 @@ This page exists because of our commitment to security, compliance, and transpar
       All
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka-core/blob/master/MIT-LICENSE">MIT</a>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-LGPL">LGPL-3.0-only</a>
+      or
+      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>
