@@ -211,6 +211,7 @@
 211. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
 212. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
 213. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
+214. [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2814,3 +2815,40 @@ This separation is particularly useful when:
 - You need to change how messages are partitioned without affecting downstream consumers that rely on the message key
 
 Remember that messages with the same `partition_key` (or `key` if no `partition_key` is specified) will always be routed to the same partition, ensuring ordered processing within that data subset.
+
+## Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?
+
+Yes, you can selectively disable logging for Karafka Web UI consumer operations by subclassing the `LoggerListener` and filtering based on the consumer type.
+
+By default, Karafka logs all consumer operations, including those from the Web UI, because this information can be valuable for debugging overloaded processes or understanding system behavior. However, if you want to reduce log noise, especially in development, you can create a custom logger listener:
+
+```ruby
+class MyLogger < Karafka::Instrumentation::LoggerListener
+  def on_worker_process(event)
+    job = event[:job]
+    consumer = job.executor.topic.consumer
+
+    return if consumer == Karafka::Web::Processing::Consumer
+
+    super
+  end
+
+  def on_worker_processed(event)
+    job = event[:job]
+    consumer = job.executor.topic.consumer
+
+    return if consumer == Karafka::Web::Processing::Consumer
+
+    super
+  end
+end
+```
+
+Then replace the default logger listener with your custom one in your `karafka.rb`:
+
+```ruby
+# Remove the default logger listener and add your custom one
+Karafka.monitor.subscribe(MyLogger.new)
+```
+
+This approach allows you to maintain detailed logging for your application consumers while filtering out the Web UI consumer logs that may flood your development logs. The same pattern can be extended to filter other types of operations as needed.
