@@ -14,7 +14,7 @@ A complete list of the supported events can be found [here](https://github.com/k
 
 !!! Warning "Handle Instrumentation Listener Errors Carefully"
 
-    Instrumentation listeners in Karafka must not generate errors as they can cause severe disruptions, including forcing the framework into recovery mode or even shutting down processes. Errors within worker threads can lead to improper message acknowledgment, resulting in message loss or duplication. Always thoroughly test your instrumentation code and incorporate robust internal error handling to prevent any impact on the stability and functionality of your Karafka application.
+    Instrumentation listeners in Karafka must not generate errors as they can cause severe disruptions, including forcing the framework into a recovery mode or even shutting down processes. Errors within worker threads can lead to improper message acknowledgment, resulting in message loss or duplication. Always thoroughly test your instrumentation code and incorporate robust internal error handling to prevent any impact on the stability and functionality of your Karafka application.
 
 ## Subscribing to the instrumentation events
 
@@ -280,13 +280,13 @@ end
 Karafka.monitor.subscribe(dd_listener)
 ```
 
-You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import DataDog dashboard configuration file that you can use to monitor your consumers.
+You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import Datadog dashboard configuration file that you can use to monitor your consumers.
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
-### Tracing Consumers using DataDog Logger Listener
+### Tracing Consumers using Datadog Logger Listener
 
-If you are interested in tracing your consumers' work with DataDog, you can use our DataDog logger listener:
+If you are interested in tracing your consumers' work with Datadog, you can use our Datadog logger listener:
 
 ```ruby
 # you need to add ddtrace to your Gemfile
@@ -550,7 +550,7 @@ Such a custom monitor will intercept specific events while delegating to the par
 
 Instrumentation and monitoring listeners are essential components in Karafka-based applications as they provide insight into the app's performance and behavior. They are critical in collecting metrics, measuring response times, and tracking other performance data. When functioning correctly, they enable efficient identification of issues and performance optimization. However, their malfunctioning could lead to several challenges and problems.
 
-The first significant impact of broken instrumentation and monitoring listeners is the loss of visibility into the application's internal workings. This obscures your understanding of its performance and makes debugging more difficult. Such listeners are instrumental in spotting errors, bottlenecks, and irregular behaviors in your Karafka applications. Their malfunctioning can thus complicate identifying the root causes of issues and effective debugging.
+The first significant impact of broken instrumentation and monitoring listeners is the loss of visibility into the application's internal workings. This obscures your understanding of its performance and makes debugging more difficult. Such listeners are instrumental in spotting errors, bottlenecks, and irregular behaviors in your Karafka applications. Their malfunctioning can thus complicate the identifying of the root causes of issues and effective debugging.
 
 Secondly, faulty listeners can adversely affect your Karafka application's performance. Their roles include collecting metrics and measuring response times, among other performance-related tasks. Any malfunctioning might result in missing essential performance bottlenecks, leading to performance degradation like decreased throughput and increased latency.
 

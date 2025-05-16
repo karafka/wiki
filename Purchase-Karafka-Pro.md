@@ -6,7 +6,7 @@ A portion of the income is distributed back to other OSS projects that Karafka r
 
 Help us provide high-quality open-source software.
 
-If you want to purchase or trial Karafka Pro (there is 14 days trial without any commitment requirements), please go to [our website](https://karafka.io/#become-pro) and follow the instructions there.
+If you want to purchase or trial Karafka Pro (there is a 14-day trial without any commitment requirements), please go to [our website](https://karafka.io/#become-pro) and follow the instructions there.
 
 [Purchase or trial Karafka Enterprise](https://karafka.io/#become-ent)
 

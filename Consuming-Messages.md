@@ -444,7 +444,7 @@ end
 
 #### Handling EOF in `#consume` Method
 
-If EOF is signaled together with messages, the `#eofed` method will not be triggered. In such cases, does Karafka provide a `#eofed?` method that can be used to detect that EOF has been signaled alongside the messages.
+If EOF is signaled together with messages, the `#eofed` method will not be triggered. In such cases, Karafka provides a `#eofed?` method that can be used to detect that EOF has been signaled alongside the messages.
 
 The `#eofed?` method allows you to detect EOF within the `#consume` method:
 

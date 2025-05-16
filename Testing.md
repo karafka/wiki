@@ -166,7 +166,7 @@ Therefore, when you're writing tests for producer transactions in Karafka, you c
 
 2. Simulate an aborted transaction and ensure that no messages reach the buffers.
 
-This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handels as expected in both successful and aborted transaction scenarios.
+This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handed as expected in both successful and aborted transaction scenarios.
 
 ```ruby
 class UsersBuilder
@@ -202,7 +202,7 @@ end
 
 ### Testing Consumer Groups and Topics Structure
 
-Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.routes``` array and check everything you need. Here's an example of a Rspec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.routes do

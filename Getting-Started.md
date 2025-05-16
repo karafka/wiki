@@ -54,7 +54,7 @@ Here's the demo of the installation process:
 
 ## Example applications
 
-If you have any problems settings things up or want a ready application to play around with, then the best idea is just to clone our examples repository:
+If you have any problems setting things up or want a ready application to play around with, then the best idea is just to clone our examples repository:
 
 ```bash
 git clone https://github.com/karafka/example-apps ./example_apps

@@ -1,6 +1,6 @@
 ## Signals
 
-Karafka responds to few signals. On a Unix machine, you can use the `kill` binary or the `Process.kill` API in Ruby, e.g.
+Karafka responds to a few signals. On a Unix machine, you can use the `kill` binary or the `Process.kill` API in Ruby, e.g.
 
 ```
 kill -TTIN pid

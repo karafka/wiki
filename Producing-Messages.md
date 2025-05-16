@@ -9,7 +9,7 @@ Karafka.producer.produce_async(
 )
 ```
 
-WaterDrop is thread-safe and operates well in scale.
+WaterDrop is thread-safe and operates well at scale.
 
 If you're looking to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including `#producer`, `#produce_sync`, `#produce_async`, `#produce_many_sync`, and `#produce_many_async`. Here's how you might use them:
 
@@ -48,11 +48,11 @@ In addition, calling `#close` also releases any resources held by the producer, 
 
 Overall, calling `#close` on the Karafka producer is a best practice that helps ensure reliable and efficient message delivery to Kafka while promoting your application's stability and scalability.
 
-Below you can find an example how to `#close` the producer used in various Ruby processes. Please note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
+Below you can find an example of how to `#close` the producer used in various Ruby processes. Please note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
 
 ### Closing Producer Used in Karafka
 
-When you shut down Karafka consumer, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+When you shut down the Karafka consumer, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
 
 ### Closing Producer Used in Puma (Single Mode)
 
@@ -129,7 +129,7 @@ task send_users: :environment do
     )
   end
 
-  # Make sure, that the producer is always closed before finishing
+  # Make sure that the producer is always closed before finishing
   # any rake task
   ::Karafka.producer.close
 end
@@ -151,7 +151,7 @@ end
 
 Karafka, by default, provides a producer that sends messages to a specified Kafka cluster. If you don't configure it otherwise, this producer will always produce messages to the default cluster that you've configured Karafka to work with. If you only specify one Kafka cluster in your configuration, all produced messages will be sent to this cluster. This is the out-of-the-box behavior and works well for many setups with a single cluster.
 
-However, if you have a more complex setup where you'd like to produce messages to different Kafka clusters based on certain logic or conditions, you need a more customized setup. In such cases, you must configure a producer for each cluster you want to produce. This means you'll have separate producer configurations tailored to each cluster, allowing you to produce to any of them as required.
+However, if you have a more complex setup where you'd like to produce messages to different Kafka clusters based on certain logic or conditions, you need a more customized setup. In such cases, you must configure a producer for each cluster to which you want to produce. This means you'll have separate producer configurations tailored to each cluster, allowing you to produce to any of them as required.
 
 In scenarios where you want to decide which cluster to produce to based on the consumer logic or the consumed message, you can override the `#producer` method in your consumer. By overriding this method, you can specify a dedicated cluster-aware producer instance depending on your application's logic.
 
