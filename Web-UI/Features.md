@@ -24,7 +24,7 @@ The dashboard provides an all-encompassing insight into your Karafka operations.
 
 ## Consumers
 
-!!! Info ""Enhanced Consumer Metrics in Pro"
+!!! Info "Enhanced Consumer Metrics in Pro"
 
     More metrics and detailed consumers inspection are available only in our Pro offering.
 

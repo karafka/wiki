@@ -1,6 +1,6 @@
 Karafka is a framework for producing and consuming messages using Kafka. It is built out of a few components:
 
-- [Karafka](https://github.com/karafka/karafka) (Consumer) - responsible for consumption messages from Kafka
+- [Karafka](https://github.com/karafka/karafka) (Consumer) - responsible for consuming messages from Kafka
 - [WaterDrop](https://github.com/karafka/waterdrop) (Producer) - messages producer integrated with Karafka out of the box
 - [Karafka-Web](https://github.com/karafka/karafka-web) (UI) - User interface for the Karafka framework
 - [Karafka-Rdkafka](https://github.com/karafka/karafka-rdkafka) (Driver) - A customized fork of `rdkafka-ruby` providing additional functionalities and extended stability

@@ -88,7 +88,7 @@ class KarafkaApp < Karafka::App
       config(
         partitions: 6,
         replication_factor: 3,
-        'min.insync.replicas'
+        'min.insync.replicas': 2
       )
 
       consumer ConsumerA

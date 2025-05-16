@@ -16,7 +16,7 @@ The choice is between an entire interaction with Kafka or a simulated, in-memory
 
 ## End-to-End
 
-When developing applications that interact with Kafka, one common approach for testing is to set up an actual Kafka cluster and conduct end-to-end integration tests. This method ensures that every part of the message production process is.
+When developing applications that interact with Kafka, one common approach for testing is to set up an actual Kafka cluster and conduct end-to-end integration tests. This method ensures that every part of the message production process is tested.
 
 However, setting up and managing a Kafka cluster for testing can introduce several complexities:
 

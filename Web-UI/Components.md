@@ -18,4 +18,4 @@ Below you can find the diagram of the whole data flow:
 
 !!! note ""
 
-    Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when one `karafka server` process running.
+    Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when there is one `karafka server` process running.

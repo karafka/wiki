@@ -120,7 +120,7 @@ There are three primary parameters to consider:
 
 1. **WaterDrop `max_payload_size`**: this value checks only the payload size during client-side message validation.
 
-2. **librdkafka `message.max.bytes`**: This is a configuration value determining the maximum size of a message. Maximum Kafka protocol request message size. Due to differing framing overhead between protocol versions, the producer cannot reliably enforce a strict max message limit at production time and may exceed the maximum size by one message in protocol `ProduceRequests`. The broker will enforce the the topic's `max.message.bytes` limit automatically.
+2. **librdkafka `message.max.bytes`**: This is a configuration value determining the maximum size of a message. Maximum Kafka protocol request message size. Due to differing framing overhead between protocol versions, the producer cannot reliably enforce a strict max message limit at production time and may exceed the maximum size by one message in protocol `ProduceRequests`. The broker will enforce the topic's `max.message.bytes` limit automatically.
 
 3. **Broker max.message.bytes**: is a broker-level configuration in Apache Kafka that determines the maximum size of a message the broker will accept. If a producer attempts to send a message larger than this specified size, the broker will reject it. 
 

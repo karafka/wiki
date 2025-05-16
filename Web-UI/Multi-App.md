@@ -101,7 +101,7 @@ end
 
 ## DLQ Routing Awareness
 
-To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references all **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
+To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
 
 Karafka applications leverage the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
 

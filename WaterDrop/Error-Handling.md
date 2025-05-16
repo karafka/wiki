@@ -100,7 +100,7 @@ rescue => e
     puts "Message is invalid and was not sent"
     raise e
   when WaterDrop::Errors::ProduceError
-    puts "Final error instrumeted as error.occurred so we don't need to re-raise it"
+    puts "Final error instrumented as error.occurred so we don't need to re-raise it"
     puts "WaterDrop has already retried `Rdkafka::RdkafkaError`s due to :queue_full if wait_on_queue_full was enabled, and the wait time did not exceed wait_timeout_on_queue_full. This means we did not get the delivery handle and this dispatch will for sure not reach Kafka"
     puts "If the underlying cause was a Rdkafka::Producer::DeliveryHandle::WaitTimeoutError (for #produce_sync only), the message could still reach Kafka"
   else
