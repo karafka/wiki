@@ -157,7 +157,7 @@ Setting such as above will allow Karafka to manage the topic while instructing K
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
-Please keep in mind that opics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
+Please keep in mind that topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
 ## Strict Declarative Topics Validation
 
