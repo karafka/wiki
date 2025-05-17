@@ -40,7 +40,7 @@ The easiest way to subscribe to a topic or few is by providing their names. In a
 You can either provide a topic name or array with all the topics you want to subscribe to:
 
 ```ruby
-iterator = Karafka::Pro::Iterator.new(['my_topic1' 'my_topic2'])
+iterator = Karafka::Pro::Iterator.new(['my_topic1', 'my_topic2'])
 
 iterator.each do |message|
   puts message.payload

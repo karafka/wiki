@@ -21,7 +21,7 @@ To create a new topic:
     - Topic name cannot be changed after creation
     - Number of partitions can only be increased, never decreased
     - Additional settings can be configured from the topic configuration page
-    - It may take Kafka up to few minutes to fully synchronize the new topic
+    - It may take Kafka up to a few minutes to fully synchronize the new topic
     - Consumers may require additional time to discover the topic, depending on their metadata refresh frequency
 
 4. Fill in the required fields:

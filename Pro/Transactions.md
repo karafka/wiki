@@ -316,7 +316,7 @@ MAX = 10
 
 def consume
   transaction do
-    # This will be ok, sice it is not directly in the transaction block
+    # This will be ok, since it is not directly in the transaction block
     produce_with_limits(messages)
   end
 end
@@ -504,7 +504,7 @@ For advanced monitoring or custom integrations, remember that the Karafka consum
 
 For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/#transactional-producer-handling-in-swarm-mode).
 
-## Performace Implications
+## Performance Implications
 
 While Kafka transactions in Karafka provide strong consistency guarantees and data integrity, they have specific performance implications crucial to understanding system architecture and design. Here are the key considerations:
 

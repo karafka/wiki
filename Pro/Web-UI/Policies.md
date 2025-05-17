@@ -59,7 +59,7 @@ Each messages policy requires six methods to be present:
 1. `#payload?` - should the payload be visible
 1. `#download?` - should it be allowed to download this message raw payload
 1. `#export?` - should it be allowed to download the deserialized and sanitized payload as JSON
-1. `#republish?` - should it be allowed to repuliblish the message back to Kafka
+1. `#republish?` - should it be allowed to republish the message back to Kafka
 
 Each method receives a message (of type `::Karafka::Messages::Message`) as a parameter and returns a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible.
 

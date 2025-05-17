@@ -44,7 +44,7 @@ class KarafkaApp < Karafka::App
         interval: 100,
         # When paused (for any reason) run
         during_pause: true,
-        # When consumption error occured and we back-off and wait, do not run
+        # When consumption error occurred and we back-off and wait, do not run
         during_retry: false
       )
     end

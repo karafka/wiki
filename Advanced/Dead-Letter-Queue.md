@@ -255,7 +255,7 @@ If skipping batches is something you would utilize, please get in touch with us 
 
 ## Compacting Limitations
 
-Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older once when the log compaction process kicks in.
+Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older ones when the log compaction process kicks in.
 
 Karafka Pro sets the `key` value based on the errored message partition to ensure the same partition delivery for consecutive errors from the same original partition.
 

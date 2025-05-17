@@ -28,7 +28,7 @@ Karafka and its components versions or release series are categorized below into
 | 2.5     | Preview     | N/A        |
 | 2.4     | Active      | 2025-10-31 |
 | 2.3     | EOL         | 2025-03-01 |
-| 2.2     | EOL         | 2024-09-31 |
+| 2.2     | EOL         | 2024-09-30 |
 | 2.1     | EOL         | 2024-05-01 |
 | 2.0     | EOL         | 2024-02-01 |
 | 1.x     | EOL         | 2023-02-01 |
@@ -55,7 +55,7 @@ Karafka and its components versions or release series are categorized below into
 |---------|-------------|------------|
 | 2.8     | Active      | N/A        |
 | 2.7     | EOL         | 2025-02-01 |
-| 2.6     | EOL         | 2024-09-31 |
+| 2.6     | EOL         | 2024-09-30 |
 | 2.x     | EOL         | 2024-05-01 |
 | 1.x     | EOL         | 2023-02-01 |
 
@@ -69,11 +69,11 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 3.4     | Active      | 2028-09-31 |
-| 3.3     | Active      | 2027-09-31 |
-| 3.2     | Active      | 2026-09-31 |
-| 3.1     | Maintenance | 2025-09-31 |
-| 3.0     | EOL         | 2024-09-31 |
+| 3.4     | Active      | 2028-09-30 |
+| 3.3     | Active      | 2027-09-30 |
+| 3.2     | Active      | 2026-09-30 |
+| 3.1     | Maintenance | 2025-09-30 |
+| 3.0     | EOL         | 2024-09-30 |
 | 2.7     | EOL         | 2024-05-30 |
 | 2.6     | EOL         | 2022-04-12 |
 
@@ -85,7 +85,7 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 |---------|-------------|------------|
 | 8.0     | Active      | N/A        |
 | 7.2     | Active      | 2026-09-30 |
-| 7.1     | Active      | 2025-11-31 |
+| 7.1     | Active      | 2025-11-30 |
 | 7.0     | Maintenance | 2025-05-31 |
 | 6.1     | EOL         | 2024-12-31 |
 | 5.2     | EOL         | 2023-12-31 |

@@ -37,7 +37,7 @@ Using multiple threads for IO intense work can bring great performance improveme
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/workers-performance.png" />
 </p>
 <p align="center">
-  <small>*This example illustrates performace difference for IO intense jobs.</small>
+  <small>*This example illustrates performance difference for IO intense jobs.</small>
 </p>
 
 Example of work distribution amongst two workers:

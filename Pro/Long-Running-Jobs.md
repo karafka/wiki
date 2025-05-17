@@ -170,7 +170,7 @@ class KarafkaApp < Karafka::App
     end
 
     topic :deliveries_states do
-      consumer DeliviersStatesConsumer
+      consumer DeliveriesStatesConsumer
     end
   end
 end

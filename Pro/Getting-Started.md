@@ -141,10 +141,10 @@ To use it:
 
 2. Set the `KARAFKA_PRO_USERNAME`, `KARAFKA_PRO_PASSWORD`, `KARAFKA_PRO_LICENSE_ID` and `KARAFKA_PRO_LICENSE_CHECKSUM` based on data provided to you in the license issuing email or set those values as your CI/CD ENV variables.
 
-4. Run `MODE=before bin/verify_karafka_license_checksum` as part of your CI/CD **before** running `bundle install`.
+3. Run `MODE=before bin/verify_karafka_license_checksum` as part of your CI/CD **before** running `bundle install`.
 
-5. Run `bundle install`
+4. Run `bundle install`
 
-6. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
+5. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
 In case the verification fails, script will exit with the exit code `1`.

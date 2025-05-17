@@ -1,4 +1,4 @@
-Staying informed and adjusting to real-time changes is critical in the dynamic data processing world. Karafka's Inline Insights provides way to enhance your data processing capabilities by allowing your consumers to adjust their actions based on real-time metrics. Whether dealing with lag or responding to specific partition data changes, Inline Insights empowers developers to have a more hands-on and responsive approach. By tapping into this feature, you can ensure your system runs efficiently and adapts swiftly to any incoming data fluctuations.
+Staying informed and adjusting to real-time changes is critical in the dynamic data processing world. Karafka's Inline Insights provides a way to enhance your data processing capabilities by allowing your consumers to adjust their actions based on real-time metrics. Whether dealing with lag or responding to specific partition data changes, Inline Insights empowers developers to have a more hands-on and responsive approach. By tapping into this feature, you can ensure your system runs efficiently and adapts swiftly to any incoming data fluctuations.
 
 ## Using Inline Insights
 

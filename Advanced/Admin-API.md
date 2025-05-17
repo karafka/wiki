@@ -491,7 +491,7 @@ Karafka::Admin.seek_consumer_group(
 )
 ```
 
-### Changing an Offset for a Particular Partiton
+### Changing an Offset for a Particular Partition
 
 Alternatively, you can always move offset on specific partitions by specifying them directly:
 

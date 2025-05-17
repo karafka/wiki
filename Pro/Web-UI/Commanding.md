@@ -260,7 +260,7 @@ The commanding feature in Karafka Pro utilizes the Pro Iterator to establish a p
 
 Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
 
-This dedicated subscription, while not 'mission-critical,' is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
+This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
 
 Key points include:
 

@@ -10,7 +10,7 @@ To do so:
 
 2. Press the "Rotate credentials" button.
 
-3. Read the disclamers.
+3. Read the disclaimers.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/gems_rotate_page.png" />

@@ -146,7 +146,7 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
         </tr>
         <tr>
             <td><code>#clear</code></td>
-            <td>Id of the subscription group for which the underling client is being reset.</td>
+            <td>Id of the subscription group for which the underlying client is being reset.</td>
             <td>No</td>
             <td>Executed on critical crashes when Karafka needs to reset the underlying client connecting with Kafka. It should be used for the removal of jobs that are no longer associated with a client. The default implementation of this method assumes a stateless scheduler and does nothing.</td>
         </tr>
@@ -228,7 +228,7 @@ end
 Below is an example scheduler that locks all jobs and ensures that only one job can run at a time. While this particular scheduler is probably not what you aim for, it illustrates healthy usage of locking, scheduling jobs, and storing jobs in an intermediate buffer before they are scheduled for execution.
 
 ```ruby
-# This scheduler witholds processing of jobs all except one.
+# This scheduler withholds processing of jobs all except one.
 # It makes sure only one job can run, despite of the concurrency level
 # Such scheduler instance operates on all subscription groups but this API is thread-safe so each
 # of the methods is automatically wrapped with a mutex.

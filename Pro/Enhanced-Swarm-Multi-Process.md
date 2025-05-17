@@ -10,7 +10,7 @@ Please refer to the [Swarm](Swarm-Multi-Process) documentation for more details 
 
 The Pro Liveness Listener is a significant enhancement in Karafka Pro, designed to ensure the highest system health and efficiency level. This feature goes beyond traditional liveness checks by allowing developers to specify the maximum memory allowed for each node and the criteria for processing and polling liveness. The supervisor will gracefully restart the misbehaving swarm node if a node exceeds memory limits or fails to meet processing or polling criteria.
 
-This listenener provides following benefits:
+This listener provides following benefits:
 
 - **System Stability**: Memory leaks or prolonged processing times can lead to system instability or degradation. The Pro Liveness Listener proactively addresses these issues, ensuring nodes operate within defined parameters.
 

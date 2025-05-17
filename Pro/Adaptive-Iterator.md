@@ -56,7 +56,7 @@ class KarafkaApp < Karafka::App
 
       adaptive_iterator(
         active: true,
-        safety_margin: 15 # 15% of time,
+        safety_margin: 15, # 15% of time
         clean_after_yielding: true
       )
     end

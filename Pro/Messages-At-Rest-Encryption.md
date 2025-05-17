@@ -115,7 +115,7 @@ end
 
 ## Messages Fingerprinting
 
-In Ruby, decrypting a message with an incorrect but semantically valid key may complete the decryption process successfully but result in nonsensical data. This behavior poses a significant risk in systems lacking stringent consistency checks, as they might inadvertently persist corrupted data to database, assuming the decryption was successful.
+In Ruby, decrypting a message with an incorrect but semantically valid key may complete the decryption process successfully but result in nonsensical data. This behavior poses a significant risk in systems lacking stringent consistency checks, as they might inadvertently persist corrupted data to a database, assuming the decryption was successful.
 
 This situation can arise during key rotation processes or when encryption keys are changed. Karafka introduces a feature for enhancing message integrity through fingerprinting to mitigate such risks. By setting the `fingerprinter` option to an object that responds to the `#hexdigest` method, Karafka appends an additional `encryption_fingerprint` header to each message before sending. This fingerprint is then used after decrypting the message to verify its integrity. If the integrity check fails, indicating that the message was not decrypted with the correct key or was tampered with, Karafka will raise an error, preventing corrupted data from being processed further.
 
