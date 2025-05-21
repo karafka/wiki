@@ -65,7 +65,7 @@ end
 
 ## Using a Shared Kafka Cluster for Multiple Karafka Application Environments
 
-You can configure Karafka to use a single Kafka cluster across multiple environments. This can be beneficial for scenarios such as when you have different stages of development, including development, testing, staging, and production, all needing isolated data sets within the same Kafka cluster.
+You can configure Karafka to use a single Kafka cluster across multiple environments or applications. This can be beneficial for scenarios such as when you have different stages of development, including development, testing, staging, and production, all needing isolated data sets within the same Kafka cluster.
 
 To achieve this, each environment must maintain its unique set of Web-UI internal topics. This is accomplished by appending the environment's name to the base topic name for each Web-UI internal topic.
 Here is how you can configure it in your Karafka setup:
@@ -73,6 +73,8 @@ Here is how you can configure it in your Karafka setup:
 ```ruby
 Karafka::Web.setup do |config|
   env_suffix = Rails.env.to_s
+
+  config.group_id = "karafka_web_#{env_suffix}"
 
   config.topics.errors = "karafka_errors_#{env_suffix}"
   config.topics.consumers.reports = "karafka_consumers_reports_#{env_suffix}"
