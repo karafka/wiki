@@ -136,6 +136,111 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+## Negative Matching and Exclusion Patterns
+
+Sometimes, you may need to route messages from topics that match a pattern but with specific exclusions. A common use case is when you want to handle one specific topic differently from others that follow a similar naming pattern.
+
+### Excluding Specific Topic Prefixes
+
+When working with topic naming conventions like `[app_name].data_results`, you might want to process most topics matching this pattern with one consumer while directing a specific topic (e.g., `activities.data_results`) to a different consumer.
+
+Since POSIX regular expressions used by `librdkafka` don't support negative lookahead assertions (`?!`) available in Ruby's regex engine, you'll need to use alternative approaches for exclusion patterns.
+
+One effective method is to use character-by-character negative matching to exclude specific prefixes:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    # Special consumer for activities.data_results
+    topic 'activities.data_results' do
+      consumer ActivitiesConsumer
+    end
+
+    # It has to be one-line to work with librdkafka
+    negative_matching = <<~PATTERN.gsub(/\s+/, '')
+      ^(
+        [^a]|
+        a[^c]|
+        ac[^t]|
+        act[^i]|
+        acti[^v]|
+        activ[^i]|
+        activi[^t]|
+        activit[^i]|
+        activiti[^e]|
+        activitie[^s]|
+        activities[^.]
+      )
+    PATTERN
+
+    exclusion_regex = Regexp.new(negative_matching + ".*data_results$")
+
+    # All other app_name.data_results topics
+    pattern(exclusion_regex) do
+      consumer GenericConsumer
+    end
+  end
+end
+```
+
+While this pattern looks complex, it works by explicitly matching any string that doesn't start with "activities" followed by a period. The regex checks each character's position and ensures it either doesn't match the expected character in "activities" or, if it does match that far, it diverges afterward.
+
+### Testing Exclusion Patterns
+
+Given the complexity of these patterns and the differences between Ruby and POSIX regex engines, it's crucial to test your exclusion patterns thoroughly:
+
+```ruby
+# The regex pattern that excludes "activities.data_results"
+negative_matching = <<~PATTERN.gsub(/\s+/, '')
+  ^(
+    [^a]|
+    a[^c]|
+    ac[^t]|
+    act[^i]|
+    acti[^v]|
+    activ[^i]|
+    activi[^t]|
+    activit[^i]|
+    activiti[^e]|
+    activitie[^s]|
+    activities[^.]
+  )
+PATTERN
+
+exclusion_regex = Regexp.new(negative_matching + ".*data_results$")
+
+# Topics that should match (be processed by GenericConsumer)
+should_match = [
+  'users.data_results',
+  'orders.data_results',
+  'metrics.data_results',
+  'active.data_results'  # Note: this is not "activities"
+]
+
+# Topics that should NOT match (be processed by ActivitiesConsumer)
+should_not_match = [
+  'activities.data_results'
+]
+
+should_match.each do |topic|
+  assert ruby_posix_regexp_same?(topic, exclusion_regex), 
+         "Expected '#{topic}' to match in both Ruby and POSIX"
+end
+
+should_not_match.each do |topic|
+  assert !ruby_posix_regexp_same?(topic, exclusion_regex), 
+         "Expected '#{topic}' to NOT match in both Ruby and POSIX"
+end
+```
+
+### When to Use Exclusion Patterns
+
+While exclusion patterns provide a powerful way to route messages, they should be used carefully:
+
+- They're ideal when you need different Karafka-level configurations (like virtual partitions or specific error handling) for different topics
+- They simplify routing logic by keeping it at the configuration level instead of embedding it in consumer code
+- They're most maintainable when the exclusion list is small and stable
+
 ### Limiting Patterns used per process
 
 Karafka's named and anonymous patterns are associated with a specific matcher topic name. This uniform naming system allows more flexibility when using the Karafka Command Line Interface (CLI). As with standard topics, you can include or exclude matcher topics when running Karafka processes by referencing their name.

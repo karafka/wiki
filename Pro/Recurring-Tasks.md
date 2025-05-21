@@ -160,8 +160,8 @@ class KarafkaApp < Karafka::App
 
   routes.draw do
     recurring_tasks(true) do |schedules_topic, logs_topic|
-      schedules_topic.config.replication_factor = 2
-      logs_topic.config.replication_factor = 2
+      schedules_topic.config.replication_factor = 3
+      logs_topic.config.replication_factor = 3
     end
   end
 end
