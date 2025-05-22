@@ -120,11 +120,57 @@ def consume
   messages.each do |message|
     results << Processor.call(message.payload)
   end
-  
+
   return if results.all? { |result| result == true }
 
   # Get back by an hour of data and reprocess all
   seek(Time.now.utc - 60 * 60)
+end
+```
+
+### Seeking the Earliest and Latest Positions
+
+Karafka provides convenient symbols to seek to special positions within a partition without needing to know specific offsets or timestamps. These symbols allow you to jump to the beginning or end of a partition's message log.
+
+#### Seeking to `:earliest`
+
+The `:earliest` symbol moves the consumer to the very beginning of the partition, starting from the first available message. This is particularly useful when you must reprocess all available data from the start of the topic's retention period.
+
+```ruby
+def consume
+  # Process current batch of messages
+  messages.each do |message|
+    result = ProcessMessage.call(message)
+
+    # If we detect data corruption or need full reprocessing
+    if result.requires_full_reprocess?
+      # Start from the very beginning of the partition
+      seek(:earliest)
+      return
+    end
+  end
+end
+```
+
+#### Seeking to `:latest`
+
+The `:latest` symbol is more nuanced than it might initially appear. It **does not** seek to the last (most recent) available message in the partition. Instead, it seeks to the **high water mark offset**, which represents the position where the **next new message** will be written.
+
+This means that after seeking to `:latest`, the consumer will wait for new messages to arrive rather than processing existing ones. The high water mark is essentially the "end" of the current log, pointing to a message that doesn't exist yet but will be the first to arrive after seeking.
+
+```ruby
+def consume
+  messages.each do |message|
+    # Check if we're processing stale data
+    if message.timestamp < 1.hour.ago
+      # Skip all existing messages and wait for new ones
+      # This moves to the high water mark, not the last available message
+      seek(:latest)
+      return
+    end
+
+    ProcessRealtimeMessage.call(message)
+  end
 end
 ```
 
