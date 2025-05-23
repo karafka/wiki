@@ -97,7 +97,7 @@ producer.monitor.subscribe('error.occurred') do |event|
     report = event[:delivery_report]
 
     # Only process errors from async messages
-    if report.label&.dig(:type) == :async
+    if report.label[:type] == :async
       # This is an async error that needs special handling
       logger.error("Async producer error: #{event[:error]}")
       handle_async_error(event[:error])
@@ -138,7 +138,7 @@ producer.monitor.subscribe('error.occurred') do |event|
   if event[:type] == 'librdkafka.dispatch_error'
     report = event[:delivery_report]
 
-    if report.label&.dig(:type) == :async
+    if report.label[:type] == :async
       # Handle async batch errors
       logger.error("Async batch message error: #{event[:error]}")
       handle_async_error(event[:error])
