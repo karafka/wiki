@@ -212,6 +212,7 @@
 212. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
 213. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 214. [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
+215. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2850,3 +2851,7 @@ Karafka.monitor.subscribe(MyLogger.new)
 ```
 
 This approach allows you to maintain detailed logging for your application consumers while filtering out the Web UI consumer logs that may flood your development logs. The same pattern can be extended to filter other types of operations as needed.
+
+## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
+
+Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](https://karafka.io/docs/WaterDrop-Labeling/) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](https://karafka.io/docs/WaterDrop-Labeling/#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
