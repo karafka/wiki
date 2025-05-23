@@ -18,7 +18,7 @@ On top of that, to ensure the stability and security of the system:
 - We monitor the integrity of all the licenses using automated tools to ensure they are not compromised.
 - Our license packages **do not** include any code beyond the code needed to read the version and the license files.
 - Unless explicitly contacted by us, your license id should **never** change and should be locked in the Gemfile.
-- **All** Karafka components released to RubyGems are digitally signed and published from an account with 2FA enabled.
+- **All** Karafka components released to RubyGems are either digitally signed and published from an account with 2FA enabled or published using the RubyGems [Trusted Publishing](https://guides.rubygems.org/trusted-publishing/) feature.
 - Karafka Pro provides [script](Pro-Getting-Started#license-gem-integrity-verification) you can include in your CI/CD pipeline to ensure license integrity.
 - Every release of every Karafka component is announced on our [Slack](https://slack.karafka.io).
 
