@@ -193,6 +193,7 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Testing](Changelog-Karafka-Testing)
 * [Karafka-Core](Changelog-Karafka-Core)
 * [Karafka-Rdkafka](Changelog-Karafka-Rdkafka)
+* [Rdkafka](Changelog-Rdkafka)
 * [Librdkafka](Librdkafka-Changelog)
 
 ## Code Docs
@@ -202,4 +203,5 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Web](https://karafka.io/docs/code/karafka-web)
 * [Karafka-Testing](https://karafka.io/docs/code/karafka-testing)
 * [Karafka-Core](https://karafka.io/docs/code/karafka-core)
-* [Rdkafka-Ruby](https://karafka.io/docs/code/rdkafka-ruby)
+* [Karafka-Rdkafka](https://karafka.io/docs/code/karafka-rdkafka)
+* [Rdkafka](https://karafka.io/docs/code/rdkafka)
