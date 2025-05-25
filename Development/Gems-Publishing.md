@@ -25,8 +25,6 @@ Trusted publishing uses OpenID Connect (OIDC) to establish trust between GitHub 
 3. If validation passes, RubyGems allows the gem to be published
 4. The token expires automatically after the workflow completes
 
-*[Image placeholder: Trusted publishing flow diagram]*
-
 ### Configuration
 
 The trusted publishing configuration is already set up in the Karafka GitHub environments and RubyGems settings. Each gem has:
@@ -58,21 +56,33 @@ The trusted publishing configuration is already set up in the Karafka GitHub env
 **Important**: Only proceed after the version PR has been merged to the master/main branch.
 
 1. **Navigate to Releases**: Go to the repository's "Releases" section
-   
-   *[Image placeholder: GitHub releases page screenshot]*
 
-2. **Create New Release**: Click "Create a new release"
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/releases.png"
+    style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
+  />
+</p>
+
+2. **Create New Release**: Click "Draft a new release"
 
 3. **Set Tag**: Create a new tag that **exactly matches** your version branch name (e.g., `v1.2.3`, `v2.0.0.beta.1`)
+
    - **Critical**: The tag must start with `v` to trigger the workflow
    - The tag should match the version you just merged
 
 4. **Fill Release Details**:
-   - **Release title**: Usually the same as the tag (e.g., "v1.2.3")
-   - **Description**: Copy relevant sections from the updated changelog
-   - **Pre-release**: Check if this is a pre-release version
 
-   *[Image placeholder: GitHub release creation form]*
+- **Release title**: Usually the same as the tag (e.g., "v1.2.3")
+- **Description**: Copy relevant sections from the updated changelog
+- **Pre-release**: Check if this is a pre-release version
+
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/releasing.png"
+    style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
+  />
+</p>
 
 5. **Publish Release**: Click "Publish release" - this will trigger the push workflow
 
@@ -82,7 +92,12 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 1. **Check Actions Tab**: Immediately navigate to the "Actions" tab in the repository
 
-   *[Image placeholder: GitHub Actions tab screenshot]*
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/workflows.png"
+    style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
+  />
+</p>
 
 2. **Find Workflow Run**: Look for the newly triggered "Push Gem" workflow run that corresponds to your release tag
 
@@ -92,14 +107,24 @@ After publishing the GitHub release, the push workflow will be triggered and req
    - Select the "deployment" environment
    - Click "Approve and deploy"
 
-   *[Image placeholder: Workflow approval screenshot]*
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/approval.png"
+    style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
+  />
+</p>
 
 4. **Monitor Execution**: Watch the workflow execution in real-time
    - Monitor each step for successful completion
    - Check logs if any step fails
    - The entire process should take a few minutes
 
-   *[Image placeholder: Workflow execution logs screenshot]*
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/logs.png"
+    style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
+  />
+</p>
 
 ### Step 4: Verify Release
 
@@ -112,21 +137,25 @@ After publishing the GitHub release, the push workflow will be triggered and req
 ### Common Issues
 
 **Workflow doesn't trigger**:
+
 - Ensure tag starts with `v`
 - Check that the tag was created properly
 - Verify you have push access to the repository
 - Check if the run was approved
 
 **Trusted publisher error**:
+
 - Verify the GitHub environment name matches RubyGems configuration
 - Check that the workflow path is correct in RubyGems settings
 - Ensure the repository name matches exactly
 
 **Permission denied**:
+
 - Confirm you have release permissions for the repository
 - Verify the `github.repository_owner == 'karafka'` condition
 
 **Gem already exists**:
+
 - Check if the version was already released
 - Ensure the version was properly bumped before creating the release
 - Consider using a patch version if needed
