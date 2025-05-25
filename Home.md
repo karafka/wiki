@@ -205,3 +205,7 @@ It is recommended to do one major upgrade at a time.
 * [Karafka-Core](https://karafka.io/docs/code/karafka-core)
 * [Karafka-Rdkafka](https://karafka.io/docs/code/karafka-rdkafka)
 * [Rdkafka](https://karafka.io/docs/code/rdkafka)
+
+## Development
+
+* [Gems Publishing](Development-Gems-Publishing)
