@@ -37,7 +37,7 @@ The trusted publishing configuration is already set up in the Karafka GitHub env
 
 ### Step 1: Prepare the Release
 
-1. **Create version branch**: Create a new branch with the naming pattern `v"VERSION"` (e.g., `v1.2.3`, `v2.0.0-beta.1`)
+1. **Create version branch**: Create a new branch with the naming pattern `v"VERSION"` (e.g., `v1.2.3`, `v2.0.0.beta.1`)
 
 2. **Update version files**: Update the gem version in the appropriate files (usually `lib/*/version.rb`)
 
