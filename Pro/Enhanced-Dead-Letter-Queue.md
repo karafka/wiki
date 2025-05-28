@@ -273,6 +273,57 @@ end
 
 When using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it ensures that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
 
+## Accessing Error Context in DLQ Message Enhancement
+
+When customizing DLQ messages using the `#enhance_dlq_message` method, you may want to include information about the specific error that caused the message to be dispatched to the DLQ. This can be particularly useful for debugging, monitoring, or implementing error-specific recovery strategies.
+
+You can access the error information through the `#errors_tracker` method within your `#enhance_dlq_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
+
+Here's an example of how to add error information to your DLQ messages:
+
+```ruby
+class MyConsumer
+  def consume
+    # some code that can raise an error...
+    raise StandardError, "Database connection failed"
+  end
+
+  private
+
+  def enhance_dlq_message(dlq_message, skippable_message)
+    # Add error class information to headers
+    dlq_message[:headers]['error_class'] = errors_tracker.last.class.to_s
+
+    # Add the number of processing attempts
+    dlq_message[:headers]['attempt_count'] = errors_tracker.size.to_s
+
+    # You can also enhance the payload with error context
+    enhanced_payload = {
+      original_payload: skippable_message.raw_payload,
+      error_details: {
+        class: errors_tracker.last.class.to_s,
+        message: errors_tracker.last.message,
+        backtrace: errors_tracker.last.backtrace&.first(5), # First 5 lines of stack trace
+        total_attempts: errors_tracker.size
+      }
+    }
+
+    dlq_message[:payload] = enhanced_payload.to_json
+  end
+end
+```
+
+This approach enables you to:
+
+- **Debug failures more effectively** by having immediate access to error details when processing DLQ messages
+- **Implement error-specific recovery logic** in your DLQ consumer based on the error type
+- **Monitor and alert** on specific types of errors by examining DLQ message headers
+- **Track processing attempts** to identify messages that consistently fail
+
+!!! Hint "Header Value Type Conversion"
+
+    Remember that Kafka header values are always strings, so ensure any non-string values are converted appropriately when adding them to headers.
+
 ## Custom Context-Aware Recovery Strategies
 
 Karafka allows for implementing custom DLQ handling and recovery strategies, leveraging the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
