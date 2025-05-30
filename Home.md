@@ -209,3 +209,4 @@ It is recommended to do one major upgrade at a time.
 ## Development
 
 * [Gems Publishing](Development-Gems-Publishing)
+* [Precompilation](Development-Precompilation)
