@@ -1,5 +1,9 @@
 # OSS Support Policy
 
+!!! Warning "No Direct Contact for OSS Support"
+
+    **Do NOT** contact Karafka or rdkafka gem maintainers directly via email, personal messages, or other private channels for OSS support reasons. Use GitHub Issues for bug reports and feature requests, or join the Slack community for general questions and discussions. Direct contact attempts will be ignored and not responded to.
+
 !!! Tip "The 5-Minute Support Promise"
 
     I have a simple 5-minute rule for OSS support: If I can reply and provide solutions within 5 minutes, I will always help without requiring payment or subscription. This applies to quick troubleshooting and guidance within my OSS support scope. My goal is to make the Karafka experience as smooth as possible while respecting everyone's time and resources.
