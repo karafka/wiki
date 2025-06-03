@@ -2,7 +2,7 @@
 
 !!! Warning "No Direct Contact for OSS Support"
 
-    **Do NOT** contact Karafka or rdkafka gem maintainers directly via email, personal messages, or other private channels for OSS support reasons. Use GitHub Issues for bug reports and feature requests, or join the Slack community for general questions and discussions. Direct contact attempts will be ignored and not responded to.
+    **Do NOT** contact Karafka or rdkafka gem maintainers directly via email, personal messages, or other private channels for OSS support reasons. Use [GitHub Issues](https://github.com/karafka/karafka/issues) for bug reports and feature requests, or join the [Slack community](https://slack.karafka.io) for general questions and discussions. Direct contact attempts will be ignored and not responded to.
 
 !!! Tip "The 5-Minute Support Promise"
 
