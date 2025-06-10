@@ -1,11 +1,5 @@
 # Karafka Naming Conventions
 
-!!! Info "Convention Migration in Progress"
-  
-    The Karafka ecosystem is currently in the process of adopting these naming conventions. You may encounter inconsistencies in existing documentation, code examples, or library implementations that haven't been updated yet.
-
-    If you notice any naming inconsistencies in the documentation, code examples, or Karafka codebase that don't follow these conventions, please [open an issue](https://github.com/karafka/karafka/issues) with details. Your feedback helps us maintain consistency across the entire ecosystem.
-
 This document establishes comprehensive naming conventions for the Karafka ecosystem. Consistent naming improves code readability, maintainability, and team collaboration while ensuring alignment with broader Kafka community practices.
 
 ## Overview
