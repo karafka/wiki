@@ -554,7 +554,7 @@ Overall, when deploying Karafka consumers using Kubernetes, it's important to co
 
 There are many ways to define a liveness probe for a Kubernetes deployment, and the best approach depends on the application's specific requirements. We recommend using the HTTP liveness probe, as this is the most common type of liveness probe, which checks if the container is alive by sending an HTTP request to a specific endpoint. Karafka provides a base listener that starts a minimal HTTP server exposing basic health information about the running process using following HTTP codes:
 
-- `204` - Everything works as expected.
+- `200` - Everything works as expected, with detailed JSON status information.
 - `500` - Karafka process is not behaving as expected and should be restarted.
 
 Karafka Kubernetes liveness listener can be initialized with two important thresholds: `consuming_ttl` and `polling_ttl`. These thresholds are used to determine if Karafka or the user code consuming from Kafka hangs for an extended time.
@@ -603,6 +603,43 @@ The provided liveness listener is a generic implementation designed to handle co
 
 By using the provided listener as a starting point, you can have the flexibility to build your liveness probe that accommodates your unique needs. This can involve adding additional checks, implementing custom logic, or integrating with other monitoring systems to create a more comprehensive and sophisticated liveness solution.
 
+#### Response Format
+
+The liveness listener returns detailed health information in JSON format:
+
+**Healthy Response (200 OK):**
+
+```json
+{
+  "status": "healthy",
+  "timestamp": 1717251446,
+  "port": 3000,
+  "process_id": 12345,
+  "errors": {
+    "polling_ttl_exceeded": false,
+    "consumption_ttl_exceeded": false,
+    "unrecoverable": false
+  }
+}
+
+**Unhealthy Response (500 Internal Server Error):**
+
+```json
+{
+  "status": "unhealthy",
+  "timestamp": 1717251500,
+  "port": 3000,
+  "process_id": 12345,
+  "errors": {
+    "polling_ttl_exceeded": true,
+    "consumption_ttl_exceeded": false,
+    "unrecoverable": false
+  }
+}
+```
+
+This response format allows for more granular monitoring and debugging while maintaining compatibility with existing Kubernetes liveness probe configurations that check for HTTP 2xx status codes.
+
 #### Extending Liveness with `#healthy?`
 
 The `#healthy?` method in the liveness listener is a public method that can be expanded to include additional application-specific health checks. By default, this method verifies whether the Karafka process operates as expected. However, you can override or extend it to include custom checks tailored to your application's requirements.
@@ -632,7 +669,7 @@ The `SwarmLivenessListener` is tailored to supervise the health of the Karafka s
 - **Controlling TTL**: A configurable time-to-live (TTL) for supervising thread activity, ensuring the supervisor actively manages child nodes. Set this with consideration for normal and shutdown states to avoid false positives.
 
 - **Minimal HTTP Server**: Similar to the standard listener, it runs an HTTP server for health checks, responding with:
-  - `204`: The supervisor is active and controlling, as expected.
+  - `200`: The supervisor is active and controlling, as expected, with detailed JSON status information.
   - `500`: Supervisor activity is below the controlling_ttl, indicating potential issues.
 
 To integrate the `SwarmLivenessListener` into your Karafka application, follow these steps:
