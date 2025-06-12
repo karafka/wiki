@@ -251,9 +251,16 @@ end
 
 ## Datadog and StatsD integration
 
-!!! note ""
+!!! info "Two DataDog Integration Options Available"
+
+    Karafka offers two DataDog integration options: a native Karafka-maintained instrumentation (documented below) and DataDog's own Ruby APM integration. **You cannot use both simultaneously as they may conflict with each other.** The native Karafka integration provides Kafka-specific metrics and is maintained by us to ensure timely updates and compatibility with new Karafka releases, independent of DataDog's release cycles. DataDog's APM offers broader Ruby application monitoring. Choose the one that best fits your monitoring needs.
+
+!!! note "Enable WaterDrop Instrumentation Separately"
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
+
+
+### Karafka Native DataDog Integration
 
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
@@ -284,7 +291,7 @@ You can also find [here](https://github.com/karafka/karafka/blob/master/lib/kara
 
 ![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
 
-### Tracing Consumers using Datadog Logger Listener
+#### Tracing Consumers using Datadog Logger Listener
 
 If you are interested in tracing your consumers' work with Datadog, you can use our Datadog logger listener:
 
@@ -308,7 +315,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
     Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
-#### Async Producer Tracing With The Consumption Context
+##### Async Producer Tracing With The Consumption Context
 
 Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
 
@@ -386,6 +393,14 @@ end
 In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, ensuring that the span is marked with the error and then finished.
 
 By leveraging these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
+
+### DataDog Ruby APM Integration
+
+DataDog also provides their own Ruby APM integration that can automatically instrument Karafka applications. 
+
+This integration offers broader Ruby application monitoring capabilities beyond just Kafka metrics. However, since this instrumentation is maintained by DataDog, we do not control its release cycles or compatibility updates with new Karafka versions.
+
+For setup instructions and configuration details, refer to the [DataDog Ruby APM documentation](https://docs.datadoghq.com/tracing/setup_overview/setup/ruby/).
 
 ## Kubernetes
 
