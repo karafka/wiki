@@ -402,6 +402,10 @@ This integration offers broader Ruby application monitoring capabilities beyond 
 
 For setup instructions and configuration details, refer to the [DataDog Ruby APM documentation](https://docs.datadoghq.com/tracing/setup_overview/setup/ruby/).
 
+!!! warning "Do Not Use Both Integrations Simultaneously"
+
+    Do not use this integration alongside the native Karafka DataDog integration as they may conflict with each other. Choose the one that best fits your monitoring needs.
+
 ## Kubernetes
 
 Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](https://karafka.io/docs/Deployment/#kubernetes).
