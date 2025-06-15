@@ -63,6 +63,52 @@ Karafka::Web.setup do |config|
 end
 ```
 
+## Reconfiguring Web UI Topics for Various Kafka Providers
+
+Karafka Web UI ships with sensible default configurations for its internal topics, but these defaults may not be compatible with all Kafka providers. Managed services like Amazon MSK, Confluent Cloud, and other cloud-based Kafka offerings often have specific requirements or restrictions that can conflict with the default topic configurations.
+
+Karafka Web UI allows you to override the default topic configurations for each internal topic to address these compatibility issues. You can customize these settings using the `.config` method on individual topic configurations:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Other config...
+
+  # Configure the errors topic for your cluster compatibility
+  config.topics.errors.config = {
+    'retention.ms' => '604800000',  # 7 days
+    'segment.ms' => '86400000'      # 1 day
+  }
+  
+  # Configure consumers reports topic
+  config.topics.consumers.reports.config = {
+    'retention.ms' => '259200000',  # 3 days
+    'min.compaction.lag.ms' => '3600000'  # 1 hour
+  }
+  
+  # Configure consumers states topic
+  config.topics.consumers.states.config = {
+    'segment.ms' => '3600000',      # 1 hour
+    'min.compaction.lag.ms' => '1800000'  # 30 minutes
+  }
+  
+  # Configure consumers metrics topic
+  config.topics.consumers.metrics.config = {
+    'retention.ms' => '172800000',  # 2 days
+    'segment.ms' => '43200000'      # 12 hours
+  }
+  
+  # Configure consumers commands topic
+  config.topics.consumers.commands.config = {
+    'retention.ms' => '86400000',   # 1 day
+    'segment.ms' => '21600000'      # 6 hours
+  }
+end
+```
+
+!!! warning "Avoid Changing Cleanup Policies"
+
+    We strongly recommend against modifying the `cleanup.policy` setting for Web UI topics. Each topic's cleanup policy is carefully aligned with its purpose and data usage patterns. Changing these policies may result in data loss, performance degradation, or unexpected behavior in the Web UI functionality.
+
 ## Using a Shared Kafka Cluster for Multiple Karafka Application Environments
 
 You can configure Karafka to use a single Kafka cluster across multiple environments or applications. This can be beneficial for scenarios such as when you have different stages of development, including development, testing, staging, and production, all needing isolated data sets within the same Kafka cluster.
