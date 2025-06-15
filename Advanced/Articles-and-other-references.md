@@ -20,6 +20,7 @@
 * [Under the Hood: Enhancing Karafka’s CPU and Memory Efficiency](https://mensfeld.pl/2024/08/under-the-hood-enhancing-karafkas-cpu-and-memory-efficiency/)
 * [The librdkafka Supply Chain Breakdown: rdkafka-ruby’s Darkest Hour](https://mensfeld.pl/2024/07/the-librdkafka-supply-chain-breakdown-rdkafka-rubys-darkest-hour/)
 * [From Sleep to Speed: Making Rdkafka Sync Operations 16 Times Faster](https://mensfeld.pl/2024/05/from-sleep-to-speed-making-rdkafka-sync-operations-16-times-faster/)
+* [Karafka 2.5 and Web UI 0.11: Next-Gen Consumer Control and Operational Excellence](https://mensfeld.pl/2025/06/karafka-2-5-and-web-ui-0-11-next-gen-consumer-control-and-operational-excellence/)
 * [Karafka 2.4 Release Announcement: Advancing Kafka Processing for Ruby and Rails](https://mensfeld.pl/2024/04/karafka-2-4-release-announcement-advancing-kafka-processing-for-ruby-and-rails/)
 * [Refactoring in Practice (Using Kafka and Karafka)](https://remimercier.com/refactoring-in-practice/)
 * [Karafka Framework 2.3 + Web UI 0.8 Release Announcement](https://mensfeld.pl/2024/01/karafka-framework-2-3-web-ui-0-8-release-announcement/)
