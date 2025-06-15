@@ -4,6 +4,86 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.10.1 (2025-06-11)
+
+librdkafka v2.10.1 is a maintenance release:
+
+* Fix to add locks when updating the metadata cache for the consumer 
+  after no broker connection is available (@marcin-krystianc, #5066).
+* Fix to the re-bootstrap case when `bootstrap.servers` is `NULL` and
+  brokers were added manually through `rd_kafka_brokers_add` (#5067).
+* Fix an issue where the first message to any topic produced via `producev` or
+  `produceva` was delivered late (by up to 1 second) (#5032).
+* Fix for a loop of re-bootstrap sequences in case the client reaches the
+  `all brokers down` state (#5086).
+* Fix for frequent disconnections on push telemetry requests
+  with particular metric configurations (#4912).
+* Avoid copy outside boundaries when reading metric names in telemetry
+  subscription (#5105)
+* Metrics aren't duplicated when multiple prefixes match them (#5104)
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #5088.
+  Fix for a loop of re-bootstrap sequences in case the client reaches the
+  `all brokers down` state. The client continues to select the
+  bootstrap brokers given they have no connection attempt and doesn't
+  re-connect to the learned ones. In case it happens a broker restart
+  can break the loop for the clients using the affected version.
+  Fixed by giving a higher chance to connect to the learned brokers
+  even if there are new ones that never tried to connect.
+  Happens since 2.10.0 (#5086).
+* Issues: #5057.
+  Fix to the re-bootstrap case when `bootstrap.servers` is `NULL` and
+  brokers were added manually through `rd_kafka_brokers_add`.
+  Avoids a segmentation fault in this case.
+  Happens since 2.10.0 (#5067).
+
+#### Producer fixes
+
+* In case of `producev` or `produceva`, the producer did not enqueue a leader
+  query metadata request immediately, and rather, waited for the 1 second
+  timer to kick in. This could cause delays in the sending of the first message
+  by up to 1 second.
+  Happens since 1.x (#5032).
+
+#### Consumer fixes
+
+* Issues: #5051.
+  Fix to add locks when updating the metadata cache for the consumer.
+  It can cause memory corruption or use-after-free in case
+  there's no broker connection and the consumer
+  group metadata needs to be updated.
+  Happens since 2.10.0 (#5066).
+
+#### Telemetry fixes
+
+* Issues: #5106.
+  Fix for frequent disconnections on push telemetry requests
+  with particular metric configurations.
+  A `NULL` payload is sent in a push telemetry request when
+  an empty one is needed. This causes disconnections every time the
+  push is sent, only when metrics are requested and
+  some metrics are matching the producer but none the consumer
+  or the other way around.
+  Happens since 2.5.0 (#4912).
+* Issues: #5102.
+  Avoid copy outside boundaries when reading metric names in telemetry
+  subscription. It can cause that some metrics aren't matched.
+  Happens since 2.5.0 (#5105).
+* Issues: #5103.
+  Telemetry metrics aren't duplicated when multiple prefixes match them.
+  Fixed by keeping track of the metrics that already matched.
+  Happens since 2.5.0 (#5104).
+
+### Checksums
+Release asset checksums:
+ * v2.10.1.zip SHA256 `7cb72c4f3d162f50d30d81fd7f7ba0f3d9e8ecd09d9b4c5af7933314e24dd0ba`
+ * v2.10.1.tar.gz SHA256 `75f59a2d948276504afb25bcb5713a943785a413b84f9099d324d26b2021f758`
+
 ## 2.10.0 (2025-04-17)
 
 librdkafka v2.10.0 is a feature release:
@@ -186,8 +266,8 @@ librdkafka v2.10.0 is a feature release:
 
 ### Checksums
 Release asset checksums:
- * v2.10.0.zip SHA256 `d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed`
- * v2.10.0.tar.gz SHA256 `d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed`
+ * v2.10.0.zip SHA256 `e30944f39b353ee06e70861348011abfc32d9ab6ac850225b0666e9d97b9090d`
+ * v2.10.0.tar.gz SHA256 `004b1cc2685d1d6d416b90b426a0a9d27327a214c6b807df6f9ea5887346ba3a`
 
 ## 2.8.0 (2025-01-07)
 
@@ -2108,79 +2188,4 @@ Release asset checksums:
  * v1.4.2.zip SHA256 `ac50da08be69365988bad3d0c46cd87eced9381509d80d3d0b4b50b2fe9b9fa9`
  * v1.4.2.tar.gz SHA256 `3b99a36c082a67ef6295eabd4fb3e32ab0bff7c6b0d397d6352697335f4e57eb`
 
-
-## 1.4.0 (2020-04-02)
-
-# librdkafka v1.4.0
-
-v1.4.0 is a feature release:
-
- * [KIP-98](https://cwiki.apache.org/confluence/display/KAFKA/KIP-98+-+Exactly+Once+Delivery+and+Transactional+Messaging): Transactional Producer API
- * [KIP-345](https://cwiki.apache.org/confluence/display/KAFKA/KIP-345%3A+Introduce+static+membership+protocol+to+reduce+consumer+rebalances): Static consumer group membership (by @rnpridgeon)
- * [KIP-511](https://cwiki.apache.org/confluence/display/KAFKA/KIP-511%3A+Collect+and+Expose+Client%27s+Name+and+Version+in+the+Brokers): Report client software name and version to broker
-
-### Transactional Producer API
-
-librdkafka now has complete Exactly-Once-Semantics (EOS) functionality, supporting the idempotent producer (since v1.0.0), a transaction-aware consumer (since v1.2.0) and full producer transaction support (in this release).
-This enables developers to create Exactly-Once applications with Apache Kafka.
-
-See the [Transactions in Apache Kafka](https://www.confluent.io/blog/transactions-apache-kafka/) page for an introduction and check the librdkafka [transactions example](examples/transactions.c) for a complete transactional application example.
-
-
-### Security fixes
-
-Two security issues have been identified in the SASL SCRAM protocol handler:
- * The client nonce, which is expected to be a random string, was a static string.
- * If `sasl.username` and `sasl.password` contained characters that needed escaping, a buffer overflow and heap corruption would occur. This was protected, but too late, by an assertion.
-
-Both of these issues are fixed in this release.
-
-
-### Enhancements
- * Add FNV-1a partitioner (by @Manicben, #2724).
-   The new `fnv1a_random` partitioner is compatible with Sarama's `NewHashPartitioner` partition, easing transition from Sarama to librdkafka-based clients such as [confluent-kafka-go](https://github.com/confluentinc/confluent-kafka-go).
- * Added `rd_kafka_error_t` / `RdKafka::Error` complex error type which provides error attributes such as indicating if an error is retriable.
- * The builtin mock broker now supports balanced consumer groups.
- * Support finding headers in nonstandard directories in CMake (@benesch)
- * Improved static library bundles which can now contain most dependencies.
- * Documentation, licenses, etc, is now installed by `make install`
- * Bump OpenSSL to v1.0.2u (when auto-building dependencies)
-
-### Fixes
-
-General:
- * Correct statistics names in docs (@TimWSpence, #2754)
- * Wake up broker thread based on next request retry.
-   Prior to this fix the next wakeup could be delayed up to 1 second regardless of next retry.
- * Treat SSL peer resets as usual Disconnects, making log.connection.close work
- * Reset buffer corrid on connection close to honour ApiVers and Sasl request priorities (@xzxxzx401, #2666)
- * Cleanup conf object if failing to creat producer or consumer (@fboranek)
- * Fix build of rdkafka_example project for windows, when using building it using Visual Studio 2017/2019 (by @Eliyahu-Machluf)
- * Minor fix to rdkafka_example usage: add lz4 and zstd compression codec to usage (by @Eliyahu-Machluf)
- * Let broker nodename updates propagate as `ERR__TRANSPORT` rather than `ERR__NODE_UPDATE` to avoid an extra error code for the application to handle.
- * Fix erroneous refcount assert in enq_once_del_source (e.g., on admin operation timeout)
- * Producers could get stuck in INIT state after a disconnect until a to-be-retried request timed out or the connection was needed for other purposes (metadata discovery, etc), this is now fixed.
-
-
-Producer:
- * `flush()` now works with `RD_KAFKA_EVENT_DR`
- * Fix race condition when finding EOS-supporting broker
-
-
-Consumer:
- * Consumers could get stuck after rebalance if assignment was empty
- * Enforce `session.timeout.ms` in the consumer itself (#2631)
- * `max.poll.interval.ms` is now only enforced when using `subscribe()`
- * Fix `consumer_lag` calculation for transactional topics
- * Show fetch/no-fetch reason in `topic` debugging
- * Properly propagate commit errors per partition
- * Don't send heartbeats after `max.poll.interval.ms` is exceeded.
- * Honour array size in `rd_kafka_event_message_array()` to avoid overflow (#2773)
-
-
-### Checksums
-
-Release asset checksums:
- * v1.4.0.zip SHA256 `eaf954e3b8a2ed98360b2c76f55048ee911964de8aefd8a9e1133418ec9f48dd`
- * v1.4.0.tar.gz SHA256 `ae27ea3f3d0d32d29004e7f709efbba2666c5383a107cc45b3a1949486b2eb84`
 
