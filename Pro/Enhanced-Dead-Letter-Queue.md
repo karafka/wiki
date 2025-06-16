@@ -102,9 +102,9 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `source_offset` - offset of the transferred message
 - `source_key` - key of the transferred message
 - `source_consumer_group` - id of the consumer group that was consuming this message
-- `source_trace_id` - TBA
+- `source_trace_id` - distributed tracing identifier from the original message processing. Can be used to correlate dispatches with errors visible in the Web UI
 
-!!! note ""
+!!! note "String Headers"
 
     Karafka headers values are **always** strings.
 
