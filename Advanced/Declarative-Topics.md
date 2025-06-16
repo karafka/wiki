@@ -1,7 +1,8 @@
-Karafka allows you to manage your topics in two ways:
+Karafka allows you to manage your topics in three ways:
 
 - Using the built-in [Declarative Topics](Declarative-Topics) routing + CLI functionality (recommended)
 - Directly via the [Admin API](Admin-API)
+- From the Pro Web UI via the [Topics Management feature](https://karafka.io/docs/Pro-Web-UI-Topics-Management/)
 
 Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
