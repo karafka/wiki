@@ -97,11 +97,12 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
 
 Karafka Pro, upon transferring the message to the DLQ topic, aside from preserving the `payload`, and the `headers` will add a few additional headers that allow for increased traceability of broken messages:
 
-- `original_topic` - topic from which the message came
-- `original_partition` - partition from which the message came
-- `original_offset` - offset of the transferred message
-- `original_key` - key of the transferred message
-- `original_consumer_group` - id of the consumer group that was consuming this message
+- `source_topic` - topic from which the message came
+- `source_partition` - partition from which the message came
+- `source_offset` - offset of the transferred message
+- `source_key` - key of the transferred message
+- `source_consumer_group` - id of the consumer group that was consuming this message
+- `source_trace_id` - TBA
 
 !!! note ""
 
@@ -113,26 +114,26 @@ This can be used for debugging or for example when you want to have a single DLQ
 class DlqConsumer
   def consume
     messages.each do |broken_message|
-      original_topic = broken_message.headers['original_topic']
-      original_partition = broken_message.headers['original_partition'].to_i
-      original_offset = broken_message.headers['original_offset'].to_i
+      source_topic = broken_message.headers['source_topic']
+      source_partition = broken_message.headers['source_partition'].to_i
+      source_offset = broken_message.headers['source_offset'].to_i
       payload = broken_message.raw_payload
 
-      case original_topic
+      case source_topic
       when 'orders_events'
         BrokenOrders.create!(
           payload: payload,
-          source_partition: original_partition,
-          source_offset: original_offset
+          source_partition: source_partition,
+          source_offset: source_offset
         )
       when 'users_events'
         NotifyDevTeam.call(
           payload: payload,
-          source_partition: original_partition,
-          source_offset: original_offset
+          source_partition: source_partition,
+          source_offset: source_offset
         )
       else
-        raise StandardError, "Unsupported original topic: #{original_topic}"
+        raise StandardError, "Unsupported original topic: #{source_topic}"
       end
 
       mark_as_consumed(broken_message)
@@ -166,7 +167,7 @@ class MyConsumer
     #
     # Note that payload here needs to be a string
     dlq_message[:payload] = {
-      original_raw_payload: skippable_message.raw_payload,
+      source_raw_payload: skippable_message.raw_payload,
       process_pid: Process.pid
     }.to_json
 
@@ -299,7 +300,7 @@ class MyConsumer
 
     # You can also enhance the payload with error context
     enhanced_payload = {
-      original_payload: skippable_message.raw_payload,
+      source_payload: skippable_message.raw_payload,
       error_details: {
         class: errors_tracker.last.class.to_s,
         message: errors_tracker.last.message,
