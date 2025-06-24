@@ -231,7 +231,7 @@ Add this gem to your Gemfile in the `test` group:
 ```ruby
 group :test do
   gem 'karafka-testing'
-  gem 'rspec'
+  gem 'minitest'
 end
 ```
 
