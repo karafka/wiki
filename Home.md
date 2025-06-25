@@ -210,4 +210,5 @@ It is recommended to do one major upgrade at a time.
 
 * [Gems Publishing](Development-Gems-Publishing)
 * [Precompilation](Development-Precompilation)
+* [Native Extensions](Development-Native-Extensions)
 * [Naming Conventions](Development-Naming-Conventions)

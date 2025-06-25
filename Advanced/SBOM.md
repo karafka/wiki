@@ -400,7 +400,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.4.0</td>
+    <td>2.8.0</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
@@ -568,5 +568,41 @@ This page exists because of our commitment to security, compliance, and transpar
     </td>
   </tr>
 
-    </tbody>
+  <tr>
+    <td>OpenSSL</td>
+    <td>3.0.16</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/openssl/openssl/blob/master/LICENSE.txt">Apache-2.0</a></td>
+    <td>The OpenSSL Project</td>
+  </tr>
+
+  <tr>
+    <td>Cyrus SASL</td>
+    <td>2.1.28</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/cyrusimap/cyrus-sasl/blob/master/COPYING">BSD-4-Clause-UC</a></td>
+    <td>Carnegie Mellon University</td>
+  </tr>
+
+  <tr>
+    <td>MIT Kerberos (krb5)</td>
+    <td>1.21.3</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/krb5/krb5/blob/master/NOTICE">MIT</a></td>
+    <td>
+      Massachusetts Institute of Technology
+    </td>
+  </tr>
+
+  <tr>
+    <td>zlib</td>
+    <td>1.3.1</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/madler/zlib/blob/master/LICENSE">Zlib</a></td>
+    <td>Jean-loup Gailly and Mark Adler</td>
+  </tr>
+
+  <tr>
+    <td>Zstandard (zstd)</td>
+    <td>1.5.7</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/facebook/zstd/blob/dev/LICENSE">BSD-3-Clause OR GPL-2.0</a></td>
+    <td>Meta Platforms, Inc. and affiliates</td>
+  </tr>
+  </tbody>
 </table>
