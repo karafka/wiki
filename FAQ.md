@@ -772,14 +772,15 @@ broker certificate could not be verified, verify that ssl.ca.location is correct
 root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
 ```
 
-Please set `ssl.endpoint.identification.algorithm` to `false` in your configuration:
+Please disable the SSL verification in your configuration:
 
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
       # Other settings...
-      'ssl.endpoint.identification.algorithm': false
+      'enable.ssl.certificate.verification': false,
+      'ssl.endpoint.identification.algorithm': 'none'
     }
   end
 end
