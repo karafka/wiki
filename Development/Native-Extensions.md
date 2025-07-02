@@ -17,8 +17,8 @@ Native extensions are platform-specific compiled binaries that contain:
 
 rdkafka-ruby ships native extensions for the following platforms:
 
-- **Linux**: `x86_64-linux-gnu`, `aarch64-linux-gnu`, `arm-linux-gnu`
-- **macOS**: `x86_64-darwin`, `arm64-darwin` (Apple Silicon)
+- **Linux**: `x86_64-linux-gnu`, `x86_64-linux-musl`
+- **macOS**: `arm64-darwin` (Apple Silicon)
 
 To check if your platform is supported, run:
 

@@ -40,6 +40,7 @@ Supporting precompiled gems properly required:
 - **Ruby versions**: All actively maintained versions
 - **Primary platforms**: 
     - x86_64-linux-gnu (Ubuntu/Debian/RHEL)
+    - x86_64-linux-musl (Alpine)
     - arm64-darwin (Apple Silicon Mac)
 
 ### Security Considerations
