@@ -12,6 +12,10 @@ Virtual Partitions solve this problem by providing you with the means to further
   </small>
 </p>
 
+!!! Hint "Alternative Scaling Approach"
+
+    For CPU-intensive workloads or scenarios where data clustering makes Virtual Partitions less effective, consider [Parallel Segments](Pro-Parallel-Segments), which operate at the consumer group level.
+
 ## Using Virtual Partitions
 
 The only thing you need to add to your setup is the `virtual_partitions` definition for topics for which you want to enable it:
@@ -650,9 +654,9 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/shutdown.svg" />
 </p>
 
-## Virtual Partitions vs. Increasing Number of Partitions
+## Virtual Partitions vs. Increasing Number of Partitions vs. Parallel Segments
 
-When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision: Should you increase the number of physical partitions or leverage the power of Virtual Partitions? Both strategies aim to parallelize work to boost processing speed but offer different advantages and considerations. This section delves into the differences between these two methods and provides insights to help you make an informed decision.
+When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, leverage Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
 
 ### Conceptual Differences
 
@@ -660,11 +664,15 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 - **Virtual Partitions**: VPs are a feature provided by Karafka. They allow for further parallelization of work within a physical partition. Using VPs, multiple workers can simultaneously process different chunks of data from the same physical partition.
 
+- **Parallel Segments**: Parallel Segments create multiple independent consumer groups that each process filtered subsets of messages from the same topic partition, optimized for CPU-intensive workloads and scenarios where Virtual Partitions may be inefficient.
+
 ### Work Distribution
 
 - **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you're constrained by the fact that only one consumer can read from a partition at a given time.
 
 - **Virtual Partitions**: VPs enable multiple workers to process data from a single partition. This is useful when data within a partition can be divided into independent logical chunks. The result is better work distribution and utilization of worker threads, especially in heavy-load scenarios.
+
+- **Parallel Segments**: PSs create multiple independent consumer groups that each download all messages from the same partition but filter and process only their assigned subset. This approach excels when batches contain large groups of related messages (e.g., many messages with the same `user_id`) that cannot be effectively split by Virtual Partitions, making it particularly effective for CPU-intensive workloads.
 
 ### Polling Characteristics
 
@@ -672,21 +680,31 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 - **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
 
-Virtual partitions in a Kafka context serve as a mechanism to enhance parallel processing without directly influencing the underlying partition-polling mechanism. When consumers poll data from Kafka, they rely on the actual partitions. The introduction of virtual partitions keeps this fundamental process the same. Instead, the true benefit of virtual partitions arises from the ability to distribute and parallelize work across multiple consumer threads or instances, allowing for improved scalability and performance without necessitating changes to the core Kafka infrastructure or the way data is polled.
+- **Parallel Segments**: PSs handle uneven polling differently - each consumer group polls and downloads all messages from the partition, then filters to process only their assigned subset. This approach provides consistent workload distribution across segments regardless of polling patterns, but at the cost of increased network bandwidth usage since each segment downloads the full message set.
+
+Virtual Partitions and Parallel Segments both serve as mechanisms to enhance parallel processing without directly influencing the underlying partition-polling mechanism. When consumers poll data from Kafka, they rely on the actual partitions. The introduction of these features keeps this fundamental process the same. Instead, the true benefit arises from the ability to distribute and parallelize work across multiple consumer threads (Virtual Partitions) or multiple consumer groups (Parallel Segments), allowing for improved scalability and performance without necessitating changes to the core Kafka infrastructure or the way data is polled.
 
 ### Comparative Scenario
 
-Consider a single-topic scenario where IO is involved, and data can be further partitioned into Virtual Partitions:
+Consider a single-topic scenario where IO is involved, and data can be further partitioned:
 
 - Scenario #1: 200 partitions with 20 Karafka consumer processes and a concurrency of 10 results in 200 total worker threads.
 
 - Scenario #2: 100 partitions, 20 Karafka consumer processes with a concurrency of 10, and Virtual Partitions enabled, also results in 200 total worker threads.
 
-In both scenarios, the number of worker threads remains the same. However, with VPs (Scenario #2), Karafka will perform better due to a more effective distribution of work among worker threads. This enhanced performance is especially pronounced when messages are uneven across topic partitions or batches polled from Kafka contain data from a few or even one topic partition.
+- Scenario #3: 10 partitions with 5 parallel segments each, 20 Karafka consumer processes with a concurrency of 10, resulting in 200 total worker threads across 50 consumer groups.
+
+In all scenarios, the number of worker threads remains the same. However, with VPs (Scenario #2), Karafka will perform better than Scenario #1 due to a more effective distribution of work among worker threads. This enhanced performance is especially pronounced when messages are uneven across topic partitions or batches polled from Kafka contain data from a few or even one topic partition.
+
+Parallel Segments (Scenario #3) excel when batches contain large groups of related messages that cannot be effectively distributed by Virtual Partitions, such as when most messages in a batch share the same `user_id`. The difference is in the work distribution as sub-parts of each topic partition will be processed independently across multiple consumer groups. The trade-off is increased network bandwidth usage, as each segment downloads all messages before filtering to process only their assigned subset.
 
 ### Conclusion
 
-While increasing the number of Kafka partitions offers a more native way to parallelize data processing, VPs provide a more efficient, flexible, and Karafka-optimized approach. Your choice should be based on your application's specific needs, the nature of your data, and the load you anticipate. However, when aiming for maximum throughput and efficient resource utilization, especially under heavy load, Virtual Partitions together with well-partitioned topics are a more favorable choice.
+While increasing the number of Kafka partitions offers a more native way to parallelize data processing, both Virtual Partitions and Parallel Segments provide more efficient, flexible, and Karafka-optimized approaches. Your choice should be based on your application's specific needs, the nature of your data, and the load you anticipate. 
+
+Virtual Partitions are ideal for IO-bound workloads and scenarios where messages can be evenly distributed within a single consumer group. Parallel Segments excel for CPU-intensive processing and situations where batches contain large groups of related messages that need to be processed together but can be filtered at the consumer group level.
+
+When aiming for maximum throughput and efficient resource utilization, especially under heavy load, Virtual Partitions or Parallel Segments together with well-partitioned topics are more favorable choices than simply increasing partition count.
 
 ### Scalability Constraints
 

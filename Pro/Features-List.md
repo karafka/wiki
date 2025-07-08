@@ -12,6 +12,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Virtual Partitions](Pro-Virtual-Partitions) - Virtual Partitions allow you to parallelize data processing from a single partition. This can drastically increase throughput when IO operations are involved.
 
+- [Parallel Segments](Pro-Parallel-Segments) - Parallel Segments enable processing data from a single topic partition across multiple independent processes simultaneously. This approach allows for horizontal scaling by filtering and distributing messages at the consumer group level, making it particularly effective when data clustering renders Virtual Partitions ineffective.
+
 - [Delayed Topics](Pro-Delayed-Topics) - Delayed Topics feature allows for arbitrary delay in processing messages from specified topics without impacting the processing of other topics.
 
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Long-Running Jobs are jobs that run continuously and handle messages from a Kafka topic over an extended time beyond `max.poll.interval.ms`. These jobs are designed to handle tasks requiring longer execution times, such as data processing, transformation, and analysis.

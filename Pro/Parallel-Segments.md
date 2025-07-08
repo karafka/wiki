@@ -1,6 +1,6 @@
 # Parallel Segments
 
-Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads that cannot be effectively parallelized using Virtual Partitions alone.
+Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads that cannot be effectively parallelized using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/) alone.
 
 Unlike Virtual Partitions, which operate within a single consumer group and are optimized for IO-bound operations, Parallel Segments create multiple independent consumer groups that each process a subset of messages from the same topic partition. This makes it particularly effective for CPU-intensive processing scenarios where the computational overhead is the primary bottleneck, as well as in cases where data clustering makes Virtual Partitions ineffective.
 
@@ -18,6 +18,14 @@ Parallel Segments are most beneficial in the following scenarios:
 - **Complex Computations**: For workloads involving heavy mathematical calculations, data transformations, or algorithms that require significant CPU resources
 - **High-Volume Processing**: When you need to process large volumes of messages and have multiple CPU cores or machines available
 - **Grouped Message Processing**: When your batches contain large groups of messages with the same key (e.g., `user_id`, `session_id`) that cannot be effectively distributed via Virtual Partitions. Parallel Segments excel at filtering and processing these grouped messages at the consumer group level
+
+!!! note "Independent Error Handling Across Segments"
+
+   Since Parallel Segments distribute processing across multiple independent consumer groups, an error affecting one segment will not impact the processing of other segments. While one segment pauses and retries due to an error, the remaining segments will continue processing their assigned messages normally.
+
+   This behavior differs from Virtual Partitions, where an error in any virtual partition affects the entire processing. Whether this independent error handling is desirable depends on your use case - it can provide better fault isolation. Still, it may also lead to processing lag between segments if errors are frequent in specific segments.
+
+   Consider this characteristic when designing your error handling strategy and monitoring approach.
 
 ## Basic Configuration
 
