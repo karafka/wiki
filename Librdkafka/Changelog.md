@@ -4,6 +4,53 @@
 
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.11.0 (2025-07-03)
+
+librdkafka v2.11.0 is a feature release:
+
+* [KIP-1102](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1102%3A+Enable+clients+to+rebootstrap+based+on+timeout+or+error+code) Enable clients to rebootstrap based on timeout or error code (#4981).
+* [KIP-1139](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1139%3A+Add+support+for+OAuth+jwt-bearer+grant+type) Add support for OAuth jwt-bearer grant type (#4978).
+* Fix for poll ratio calculation in case the queues are forwarded (#5017).
+* Fix data race when buffer queues are being reset instead of being
+  initialized (#4718).
+* Features BROKER_BALANCED_CONSUMER and SASL_GSSAPI don't depend on
+  JoinGroup v0 anymore, missing in AK 4.0 and CP 8.0 (#5131).
+* Improve HTTPS CA certificates configuration by probing several paths
+  when OpenSSL is statically linked and providing a way to customize their location
+  or value (#5133).
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #4522.
+  A data race happened when emptying buffers of a failing broker, in its thread,
+  with the statistics callback in main thread gathering the buffer counts.
+  Solved by resetting the atomic counters instead of initializing them.
+  Happening since 1.x (#4718).
+* Issues: #4948
+  Features BROKER_BALANCED_CONSUMER and SASL_GSSAPI don't depend on
+  JoinGroup v0 anymore, missing in AK 4.0 and CP 8.0. This PR partially
+  fixes the linked issue, a complete fix for all features will follow.
+  Rest of fixes are necessary only for a subsequent Apache Kafka major
+  version (e.g. AK 5.x).
+  Happening since 1.x (#5131).
+
+#### Telemetry fixes
+
+* Issues: #5109
+  Fix for poll ratio calculation in case the queues are forwarded.
+  Poll ratio is now calculated per-queue instead of per-instance and
+  it allows to avoid calculation problems linked to using the same
+  field.
+  Happens since 2.6.0 (#5017).
+
+### Checksums
+Release asset checksums:
+ * v2.11.0.zip SHA256 `9e76a408f0ed346f21be5e2df58b672d07ff9c561a5027f16780d1b26ef24683`
+ * v2.11.0.tar.gz SHA256 `592a823dc7c09ad4ded1bc8f700da6d4e0c88ffaf267815c6f25e7450b9395ca`
+
 ## 2.10.1 (2025-06-11)
 
 librdkafka v2.10.1 is a maintenance release:
@@ -2153,39 +2200,3 @@ v1.4.4 is a maintenance release with the following fixes and enhancements:
  * Added RTT/delay simulation to mock brokers.
 
 *Note: there was no v1.4.3 librdkafka release*
-
-
-
-## 1.4.2 (2020-05-06)
-
-# librdkafka v1.4.2
-
-v1.4.2 is a maintenance release with the following fixes and enhancements:
-
- * Fix produce/consume hang after partition goes away and comes back,
-   such as when a topic is deleted and re-created (regression in v1.3.0).
- * Consumer: Reset the stored offset when partitions are un-assign()ed (fixes #2782).
-    This fixes the case where a manual offset-less commit() or the auto-committer
-    would commit a stored offset from a previous assignment before
-    a new message was consumed by the application.
- * Probe known CA cert paths and set default `ssl.ca.location` accordingly
-   if OpenSSL is statically linked or `ssl.ca.location` is set to `probe`.
- * Per-partition OffsetCommit errors were unhandled (fixes #2791)
- * Seed the PRNG (random number generator) by default, allow application to override with `enable.random.seed=false` (#2795)
- * Fix stack overwrite (of 1 byte) when SaslHandshake MechCnt is zero
- * Align bundled c11 threads (tinycthreads) constants to glibc and musl (#2681)
- * Fix return value of rd_kafka_test_fatal_error() (by @ckb42)
- * Ensure CMake sets disabled defines to zero on Windows (@benesch)
- * librdkafka's build tooling **now requires Python 3.x** (the python3 interpreter).
-
-*Note: there was no v1.4.1 librdkafka release*
-
-
-
-### Checksums
-
-Release asset checksums:
- * v1.4.2.zip SHA256 `ac50da08be69365988bad3d0c46cd87eced9381509d80d3d0b4b50b2fe9b9fa9`
- * v1.4.2.tar.gz SHA256 `3b99a36c082a67ef6295eabd4fb3e32ab0bff7c6b0d397d6352697335f4e57eb`
-
-
