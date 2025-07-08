@@ -8,7 +8,7 @@ Unlike Virtual Partitions, which operate within a single consumer group and are 
 
 Parallel Segments operate by splitting a single consumer group into multiple sub-groups, each identified by a unique segment ID. Each sub-group processes only the messages assigned to it based on a partitioning strategy you define. This allows multiple processes to work on different segments of the same partition's data simultaneously.
 
-The key difference from Virtual Partitions is that each consumer group in the Parallel Segments setup maintains its own connection to Kafka and downloads all messages from the topic partition. A filtering mechanism then determines which messages each segment should process based on your partitioning logic. 
+The key difference from Virtual Partitions is that each consumer group in the Parallel Segments setup maintains its connection to Kafka and downloads all messages from the topic partition. A filtering mechanism then determines which messages each segment should process based on your partitioning logic. 
 
 ## When to Use Parallel Segments
 
@@ -91,9 +91,150 @@ The `parallel_segments` method accepts the following options:
 
 ## Partitioning Strategies
 
-The effectiveness of Parallel Segments depends heavily on your partitioning strategy. Here are several approaches you can use:
+The effectiveness of Parallel Segments depends heavily on your partitioning strategy. Since Parallel Segments work by filtering messages at the consumer group level prior to work delegation, choosing an optimal partitioner is crucial for both performance and proper data distribution.
 
-TBA
+!!! warning "All-at-Once Deployment Required for Partitioner/Reducer Changes"
+
+   Any modifications to the `partitioner` or `reducer` configuration **must** be deployed using a non-rolling (full restart) deployment strategy. These components are critical to message routing logic, and changing them during a rolling deployment can lead to serious data consistency issues.
+
+   **Potential Issues with Rolling Deployments:**
+
+   - **Double Processing**: Messages may be processed by both old and new segment assignments
+   - **Missing Data**: Some messages may not be processed by any segment during the transition
+   - **Inconsistent State**: Different consumer instances using different routing logic simultaneously
+
+   **Safe Deployment Process:**
+
+   1. Stop all consumer processes for the affected consumer group
+   1. Wait for all in-flight processing to complete
+   1. Deploy the updated partitioner/reducer configuration
+   1. Start all consumer processes with the new configuration
+
+   This ensures all parallel segments use consistent message routing logic from the moment processing resumes.
+
+### Performance Considerations
+
+Parallel Segments work the best, when messages can be filtered prior to deserialization, which minimizes CPU overhead during the filtering process. To maximize this benefit, your partitioner should ideally use data that doesn't require payload deserialization.
+
+#### Using Message Headers (Recommended)
+
+The most efficient approach is to use Kafka message headers, which are available without triggering Karafka's lazy deserialization:
+
+```ruby
+consumer_group :user_analytics do
+  parallel_segments(
+    count: 4,
+    # Efficient - uses headers, no deserialization required
+    partitioner: ->(message) { message.headers['user_id'] }
+  )
+
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+end
+```
+
+#### Using Message Key
+
+The message key is another efficient option as it's readily available:
+
+```ruby
+consumer_group :order_processing do
+  parallel_segments(
+    count: 3,
+    # Efficient - message key is immediately available
+    partitioner: ->(message) { message.key }
+  )
+
+  topic :orders do
+    consumer OrderProcessor
+  end
+end
+```
+
+#### Avoiding Payload-Based Partitioning
+
+While possible, using the message payload for partitioning defeats part of the performance benefits of Parallel Segments since it forces deserialization in the main thread:
+
+```ruby
+consumer_group :analytics do
+  parallel_segments(
+    count: 4,
+    # Inefficient - forces deserialization before filtering
+    partitioner: ->(message) { message.payload['user_id'] }
+  )
+
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+end
+```
+
+### Testing and Validating Distribution
+
+It's crucial to test your partitioning strategy because the combination of your partitioner and the reducer may not distribute data evenly.
+
+#### Understanding the Default Reducer
+
+Parallel Segments use a two-step process:
+
+1. **Partitioner**: Extracts a partition key from each message
+2. **Reducer**: Maps the partition key to a segment ID (0 to count-1)
+
+The default reducer is: `->(partition_key) { partition_key.to_s.sum % count }`
+
+This can lead to sub-optimal behaviours where different partition keys map to the same segment.
+
+#### Example of Reducer Collision
+
+```ruby
+# With segment count = 5, the default reducer may cause collisions:
+consumer_group :analytics do
+  parallel_segments(
+    count: 5,
+    partitioner: ->(message) { message.headers['user_id'] }
+  )
+
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+end
+
+# User IDs and their segment assignments with default reducer:
+# user_id "0" -> "0".sum = 48 -> 48 % 5 = 3 (segment 3)
+# user_id "5" -> "5".sum = 53 -> 53 % 5 = 3 (segment 3) ← collision!
+# user_id "14" -> "14".sum = 101 -> 101 % 5 = 1 (segment 1)
+# user_id "23" -> "23".sum = 101 -> 101 % 5 = 1 (segment 1) ← collision!
+```
+
+This means that despite configuring 5 segments, the data will only utilize 2 segments, leaving the remaining 3 segments idle as long as no other user IDs are present.
+
+#### Custom Reducer for Better Distribution
+
+If the default reducer doesn't provide good distribution, implement a custom one:
+
+```ruby
+consumer_group :analytics do
+  parallel_segments(
+    count: 5,
+    partitioner: ->(message) { message.headers['user_id'] },
+    # Custom reducer using hash for better distribution
+    reducer: ->(partition_key) { Digest::MD5.hexdigest(partition_key.to_s).to_i(16) % 5 }
+  )
+
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+end
+```
+
+### Best Practices
+
+1. **Prefer Headers Over Payload**: Always use message headers or keys when possible to avoid forced deserialization
+2. **Test Distribution**: Validate that your partitioner and reducer combination provides even distribution
+3. **Consider Data Relationships**: Ensure related messages are routed to the same segment
+4. **Monitor Segment Load**: Use logging to verify segments are receiving balanced workloads
+5. **Start Simple**: Begin with straightforward partitioning strategies and optimize based on observed performance
 
 ## Partitioning Error Handling
 
@@ -105,8 +246,7 @@ If your partitioner or reducer throws an exception, Karafka will:
 2. Assign the problematic message to a fallback segment (typically segment 0)
 3. Continue processing other messages
 
-
-TBA: mention that if user does not want this behaviour, he needs catch errors.
+If you do not want this automatic error recovery behavior, you need to catch and handle exceptions within your partitioner or reducer code. By handling errors yourself, you can control whether to fail fast, use alternative logic, or implement custom fallback strategies instead of relying on Karafka's default error handling.
 
 ## Consumer Group Naming
 
@@ -120,6 +260,7 @@ end
 ```
 
 This creates three consumer groups:
+
 - `analytics-parallel-0`
 - `analytics-parallel-1`
 - `analytics-parallel-2`
@@ -176,22 +317,38 @@ This combination allows you to handle both grouped message scenarios and achieve
 
 ## CLI
 
-Karafka Pro provides CLI commands to help you manage Parallel Segments consumer groups, particularly when migrating from regular consumer groups or when you need to collapse segments back to a single group.
+Karafka provides CLI commands to help you manage Parallel Segments consumer groups, particularly when migrating from regular consumer groups or when you need to collapse segments back to a single group.
 
 ### Available Commands
 
 The Parallel Segments CLI provides three main commands:
 
-```bash
-# Distribute offsets from original consumer group to parallel segments
-karafka parallel_segments distribute
-
-# Collapse parallel segments back to original consumer group
-karafka parallel_segments collapse
-
-# Reset (collapse then distribute) parallel segments
-karafka parallel_segments reset
-```
+<table>
+ <thead>
+   <tr>
+     <th>Command</th>
+     <th>Description</th>
+     <th>Use Case</th>
+   </tr>
+ </thead>
+ <tbody>
+   <tr>
+     <td><code>karafka parallel_segments distribute</code></td>
+     <td>Distribute offsets from original consumer group to parallel segments</td>
+     <td>Initial setup to enable parallel processing<br>• Moving from single consumer group to multiple segments<br>• Starting parallel processing for the first time</td>
+   </tr>
+   <tr>
+     <td><code>karafka parallel_segments collapse</code></td>
+     <td>Collapse parallel segments back to original consumer group</td>
+     <td>Shutting down parallel processing<br>• Consolidating back to single consumer group<br>• Maintenance or troubleshooting scenarios</td>
+   </tr>
+   <tr>
+     <td><code>karafka parallel_segments reset</code></td>
+     <td>Reset (collapse then distribute) parallel segments</td>
+     <td>Restarting parallel processing from scratch<br>• Fixing offset inconsistencies<br>• Reconfiguring segment distribution</td>
+   </tr>
+ </tbody>
+</table>
 
 ### Command Options
 
@@ -446,89 +603,10 @@ consumer_group :resilient_processing do
 end
 ```
 
-
-DO SPRAWDZENIA:
-
-## Troubleshooting
-
-### Common Issues
-
-**Uneven Load Distribution**
-- Check your partitioner logic for balanced distribution
-- Monitor message counts per segment
-- Consider using a different partitioning strategy
-
-**High Network Usage**
-- Evaluate if Parallel Segments is the right approach
-- Consider Virtual Partitions for IO-bound workloads
-- Optimize message sizes if possible
-
-**Memory Pressure**
-- Monitor memory usage across all consumer groups
-- Adjust batch sizes if necessary
-- Consider reducing segment count
-
-**Processing Delays**
-- Ensure adequate CPU resources
-- Check for bottlenecks in your processing logic
-- Monitor queue depths and processing times
-
-### Debug Logging
-
-Enable debug logging to troubleshoot partitioning issues:
-
-```ruby
-class MyConsumer < ApplicationConsumer
-  def consume
-    messages.each do |message|
-      # Log partitioning information
-      partition_key = extract_partition_key(message)
-      segment_id = consumer_group.segment_id
-      
-      Karafka.logger.debug(
-        "Message with key '#{partition_key}' assigned to segment #{segment_id}"
-      )
-      
-      process_message(message)
-    end
-  end
-end
-```
-
-### CLI Troubleshooting
-
-**Command Not Found**
-```bash
-# Ensure you're using Karafka Pro
-karafka --version
-
-# Check available commands
-karafka --help
-```
-
-**Consumer Group Not Found**
-```bash
-# List all consumer groups with parallel segments
-karafka parallel_segments distribute --groups nonexistent_group
-
-# Error: Consumer group nonexistent_group was not found
-```
-
-**Offset Conflicts**
-```bash
-# Check current offsets before running commands
-karafka console # Use Karafka console to inspect offsets
-
-# Or use force flag to override
-karafka parallel_segments distribute --force
-```
-
 ## Conclusion
 
-Parallel Segments provide a powerful way to scale CPU-intensive message processing in Karafka. By distributing work across multiple consumer groups, you can achieve horizontal scaling for computationally heavy workloads while maintaining message ordering guarantees within each segment.
+Parallel Segments provide a way to scale CPU-intensive message processing in Karafka. By distributing work across multiple consumer groups, you can achieve horizontal scaling for computationally heavy workloads while maintaining message ordering guarantees within each segment.
 
-The key to successful implementation lies in choosing the right partitioning strategy, properly sizing your segments, and monitoring performance characteristics. The included CLI tools make it easy to migrate from regular consumer groups and manage parallel segments throughout their lifecycle.
-
-While the trade-off in network bandwidth usage is important to consider, the performance gains for CPU-bound workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and comprehensive monitoring, Parallel Segments offer a robust solution for high-throughput, CPU-intensive message processing scenarios.
+While the trade-off in network bandwidth usage is important to consider, the performance gains for certain workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and monitoring, Parallel Segments offer a robust solution for high-throughput, CPU-intensive message processing scenarios.
 
 Remember to leverage the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
