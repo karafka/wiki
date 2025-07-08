@@ -10,6 +10,8 @@ Parallel Segments operate by splitting a single consumer group into multiple sub
 
 The key difference from Virtual Partitions is that each consumer group in the Parallel Segments setup maintains its connection to Kafka and downloads all messages from the topic partition. A filtering mechanism then determines which messages each segment should process based on your partitioning logic. 
 
+Below is a diagram illustrating an example partitioning flow of a single partition of data. Work will be distributed among three parallel segment consumer groups.
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/parallel_segments/partitioning.svg" />
 </p>
