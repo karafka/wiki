@@ -10,6 +10,10 @@ Parallel Segments operate by splitting a single consumer group into multiple sub
 
 The key difference from Virtual Partitions is that each consumer group in the Parallel Segments setup maintains its connection to Kafka and downloads all messages from the topic partition. A filtering mechanism then determines which messages each segment should process based on your partitioning logic. 
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/parallel_segments/partitioning.svg" />
+</p>
+
 ## When to Use Parallel Segments
 
 Parallel Segments are most beneficial in the following scenarios:
@@ -175,22 +179,22 @@ The effectiveness of Parallel Segments depends heavily on your partitioning stra
 
 !!! warning "All-at-Once Deployment Required for Partitioner/Reducer Changes"
 
-   Any modifications to the `partitioner` or `reducer` configuration **must** be deployed using a non-rolling (full restart) deployment strategy. These components are critical to message routing logic, and changing them during a rolling deployment can lead to serious data consistency issues.
+    Any modifications to the `partitioner` or `reducer` configuration **must** be deployed using a non-rolling (full restart) deployment strategy. These components are critical to message routing logic, and changing them during a rolling deployment can lead to serious data consistency issues.
 
-   **Potential Issues with Rolling Deployments:**
+    **Potential Issues with Rolling Deployments:**
 
-   - **Double Processing**: Messages may be processed by both old and new segment assignments
-   - **Missing Data**: Some messages may not be processed by any segment during the transition
-   - **Inconsistent State**: Different consumer instances using different routing logic simultaneously
+    - **Double Processing**: Messages may be processed by both old and new segment assignments
+    - **Missing Data**: Some messages may not be processed by any segment during the transition
+    - **Inconsistent State**: Different consumer instances using different routing logic simultaneously
 
-   **Safe Deployment Process:**
+    **Safe Deployment Process:**
 
-   1. Stop all consumer processes for the affected consumer group
-   1. Wait for all in-flight processing to complete
-   1. Deploy the updated partitioner/reducer configuration
-   1. Start all consumer processes with the new configuration
+    1. Stop all consumer processes for the affected consumer group
+    1. Wait for all in-flight processing to complete
+    1. Deploy the updated partitioner/reducer configuration
+    1. Start all consumer processes with the new configuration
 
-   This ensures all parallel segments use consistent message routing logic from the moment processing resumes.
+    This ensures all parallel segments use consistent message routing logic from the moment processing resumes.
 
 ### Performance Considerations
 
