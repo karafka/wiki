@@ -17,7 +17,7 @@ Parallel Segments are most beneficial in the following scenarios:
 - **CPU-Intensive Processing**: When your message processing is primarily CPU-bound rather than IO-bound, and you need to distribute computational load across multiple processes
 - **Complex Computations**: For workloads involving heavy mathematical calculations, data transformations, or algorithms that require significant CPU resources
 - **High-Volume Processing**: When you need to process large volumes of messages and have multiple CPU cores or machines available
-- **Grouped Message Processing**: When your batches contain large groups of messages with the same key (e.g., `user_id`, `session_id`) that cannot be effectively distributed via Virtual Partitions. Parallel Segments excel at filtering and processing these grouped messages at the consumer group level
+- **Grouped Message Processing**: When your batches contain large groups of messages with the same key (e.g., `user_id`, `session_id`) that cannot be effectively distributed via Virtual Partitions.
 
 !!! note "Independent Error Handling Across Segments"
 
@@ -25,7 +25,7 @@ Parallel Segments are most beneficial in the following scenarios:
 
     This behavior differs from Virtual Partitions, where an error in any virtual partition affects the entire processing. Whether this independent error handling is desirable depends on your use case - it can provide better fault isolation. Still, it may also lead to processing lag between segments if errors are frequent in specific segments.
 
-   Consider this characteristic when designing your error handling strategy and monitoring approach.
+    Consider this characteristic when designing your error handling strategy and monitoring approach.
 
 ## Basic Configuration
 
@@ -96,6 +96,78 @@ The `parallel_segments` method accepts the following options:
         <td>The string used to generate unique consumer group names for each segment.</td>
     </tr>
 </table>
+
+### Multi-Topic Consumer Groups
+
+Since the `parallel_segments` configuration applies at the consumer group level, when your consumer group contains multiple topics, you must implement a partitioner that can distinguish between topics. Use `message#topic` to route different topics using different partitioning strategies:
+
+```ruby
+consumer_group :analytics do
+  parallel_segments(
+    count: 4,
+    partitioner: ->(message) {
+      case message.topic
+      when 'user_events'
+        message.headers['user_id']
+      when 'order_events'
+        message.headers['order_id']
+      else
+        message.key
+      end
+    }
+  )
+
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+
+  topic :order_events do
+    consumer OrderEventsConsumer
+  end
+end
+```
+
+Without topic-aware partitioning, all topics in the consumer group would use the same partitioning logic, which may not be appropriate for different data types. This approach ensures that each topic can use its own optimal partitioning strategy while still benefiting from the parallel processing capabilities of Parallel Segments.
+
+For more complex scenarios, you can also extract the partitioning logic into a dedicated class:
+
+```ruby
+class MultiTopicPartitioner
+  def call(message)
+    case message.topic
+    when 'user_events'
+      message.headers['user_id']
+    when 'order_events'
+      message.headers['order_id']
+    when 'session_events'
+      message.headers['session_id']
+    else
+      # Fallback strategy for unknown topics
+      message.key || message.offset
+    end
+  end
+end
+
+consumer_group :analytics do
+  parallel_segments(
+    count: 4,
+    partitioner: MultiTopicPartitioner.new
+  )
+
+  # Multiple topics using the same partitioner
+  topic :user_events do
+    consumer UserEventsConsumer
+  end
+
+  topic :order_events do
+    consumer OrderEventsConsumer
+  end
+
+  topic :session_events do
+    consumer SessionEventsConsumer
+  end
+end
+```
 
 ## Partitioning Strategies
 
