@@ -213,6 +213,9 @@
 213. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 214. [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
 215. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
+216. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
+
+---
 
 ## Does Karafka require Ruby on Rails?
 
@@ -2856,3 +2859,17 @@ This approach allows you to maintain detailed logging for your application consu
 ## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
 
 Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](https://karafka.io/docs/WaterDrop-Labeling/) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](https://karafka.io/docs/WaterDrop-Labeling/#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
+
+## Why am I getting "could not obtain a connection from the pool" errors?
+
+This error occurs when your database connection pool is smaller than your concurrency setting.
+
+If you have `concurrency` in Karafka set to `10` but your Rails database pool is set to the default of 5, you'll get connection pool timeouts because one database connection may be needed per worker thread.
+
+To fix this, increase your database pool size to at least match your concurrency setting:
+
+```ruby
+# database.yml
+production:
+ pool: <%= ENV.fetch("DB_POOL", 15) %>  # Set higher than your concurrency
+```
