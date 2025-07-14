@@ -2,7 +2,7 @@
 
 > Karafka is a Ruby and Rails efficient Kafka processing framework for building reliable, performant, and maintainable event-driven applications. The Karafka ecosystem consists of three main components: Karafka (the consumer framework), WaterDrop (the producer library), and Karafka Web UI (the monitoring interface). Together they provide a complete solution for Kafka-based applications with out-of-the-box support for parallel processing, error handling, retries, dead letter queues, extensive monitoring capabilities and other advanced features. Karafka ecosystem has also a Web UI that provides monitoring capabilities as well as allows for data exploration.
 
-**CRITICAL**: When encountering questions about specific APIs, components, or implementation details, you **MUST** use web_search to access the linked documentation pages for comprehensive information, as this overview contains only essential guidance and cannot include all available details and options.
+**CRITICAL**: When encountering questions about specific APIs, components, or implementation details, you **MUST** use the official documentation links provided in this document. Use web_fetch to access the specific URLs listed below (remember to remove the .md extension when providing links to users). Only use web_search if no relevant documentation link exists in this file, as this overview contains only essential guidance and cannot include all available details and options.
 
 **IMPORTANT**: Karafka has both an open-source version and a Pro version - always ask users which version they're using as many advanced features are Pro-only
 
