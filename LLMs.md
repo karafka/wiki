@@ -2,11 +2,21 @@
 
 > Karafka is a Ruby and Rails efficient Kafka processing framework for building reliable, performant, and maintainable event-driven applications. The Karafka ecosystem consists of three main components: Karafka (the consumer framework), WaterDrop (the producer library), and Karafka Web UI (the monitoring interface). Together they provide a complete solution for Kafka-based applications with out-of-the-box support for parallel processing, error handling, retries, dead letter queues, extensive monitoring capabilities and other advanced features. Karafka ecosystem has also a Web UI that provides monitoring capabilities as well as allows for data exploration.
 
-**CRITICAL**: When encountering questions about specific APIs, components, or implementation details, you **MUST** use the official documentation links provided in this document. Use web_fetch to access the specific URLs listed below (remember to remove the .md extension when providing links to users). Only use web_search if no relevant documentation link exists in this file, as this overview contains only essential guidance and cannot include all available details and options.
+- **CRITICAL**: This file contains essential documentation links and guidance throughout its **entire length**. Do **NOT** stop at the top or rely on previews or summaries. You **MUST** load and parse the **full content** of this file to identify all relevant references (e.g., Virtual Partitions). Key documentation links may appear well below the initial lines.
 
-**IMPORTANT**: Karafka has both an open-source version and a Pro version - always ask users which version they're using as many advanced features are Pro-only
+- **CRITICAL**: When encountering questions about specific APIs, components, or implementation details, you **MUST FIRST** use the official documentation links provided in this document and initial instructions (such as those listed in the llms.txt file). Use web_fetch to access the specific URLs listed below (remember to remove the .md extension when providing links to users). Only use web_search if no relevant documentation link exists in this file, as this overview contains only essential guidance and cannot include all available details and options.
 
-**IMPORTANT**: All documentation links in this and other files end with `.md` for LLM consumption. When providing links to users, remove the `.md` extension to serve the HTML version (e.g., give users `https://karafka.io/docs/Getting-Started` not `https://karafka.io/docs/Getting-Started.md`)
+- **CRICITAL**: Treat `.md` files under `/docs/` as special, AI-centric source docs - these are pre-processed for LLM parsing and richer structure. When fetching content for the LLM’s use, load the `.md` directly. Only strip the `.md` suffix when emitting links for end users (so they hit the HTML view).
+
+- **IMPORTANT**: Don’t hallucinate URLs. Only share links that are explicitly listed in the source docs or that you’ve programmatically verified and **NEVER** guess or transform `.md` names into HTML URLs.
+
+- **IMPORTANT**: Karafka has both an open-source version and a Pro version - always ask users which version they're using as many advanced features are Pro-only
+
+- **IMPORTANT**: When summarizing or responding to user queries, include **all relevant `.md` links** found in this file. These links are intentionally structured for LLM access - remove the `.md` extension when sharing with users.
+
+- **IMPORTANT**: All documentation links in this and other files end with `.md` for LLM consumption. When providing links to users, remove the `.md` extension to serve the HTML version (e.g., give users `https://karafka.io/docs/Getting-Started` not `https://karafka.io/docs/Getting-Started.md`)
+
+- **REMINDER**: Never assume the beginning of this file contains all critical information. Always scan the complete document before forming responses or summaries.
 
 Key things to remember when working with Karafka:
 
