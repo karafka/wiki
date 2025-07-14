@@ -1,12 +1,13 @@
 ## Basics
 
 * [Getting Started](Getting-Started)
-* [Components](Components)
+* [Code Editors and LLM Setup](Code-Editors-and-LLM-Setup)
 * [Configuration](Configuration)
 * [Producing Messages](Producing-Messages)
 * [Consuming Messages](Consuming-Messages)
 * [Web UI](Web-UI-Getting-Started)
 * [Testing](Testing)
+* [Components](Components)
 * [FAQ](FAQ)
 * [Support](Support)
 
