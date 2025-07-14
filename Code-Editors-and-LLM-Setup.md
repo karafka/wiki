@@ -167,3 +167,20 @@ Karafka's AI-optimized documentation includes guidance about both Karafka OSS an
 - **Production considerations** - Test recommendations in staging
 - **Security implications** - Review security-related suggestions carefully
 - **Performance claims** - Benchmark in your environment
+
+## Automatic LLM Optimization
+
+Karafka's documentation automatically detects AI services (OpenAI, Anthropic, GitHub Copilot, Perplexity, etc.) through User-Agent detection and intelligently routes them to optimized content.
+
+**Smart Content Routing:**
+
+- **LLM Request**: `/docs/Consuming-Messages/` → redirected to `/docs/Consuming-Messages.md` (special markdown)
+- **Human Request**: `/docs/Consuming-Messages.md` → redirected to `/docs/Consuming-Messages/` (formatted HTML)
+
+This bidirectional routing provides the best possible experience for both regular users and machines:
+
+- **40-65% token reduction** - No HTML tags, CSS classes, or JavaScript noise
+- **Direct processing** - LLMs receive clean, semantic content without parsing overhead
+- **Better context understanding** - More actual documentation fits within AI context windows
+
+The result is more accurate, framework-specific guidance when you reference Karafka documentation URLs in AI conversations. The optimization happens transparently - just use regular documentation URLs and the system handles the rest automatically.
