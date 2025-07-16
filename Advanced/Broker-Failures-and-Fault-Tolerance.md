@@ -59,8 +59,7 @@ When network partitions isolate brokers, complex scenarios emerge:
 **Modern librdkafka (2.0.0+) Improvements**:
 
 - Enhanced detection of network partition scenarios
-- Better handling of `FENCED_LEADER_EPOCH` errors
-- Improved coordination between producer and consumer metadata views
+- Better handling of `fenced_leader_epoch` errors
 
 #### Edge Case 4: Rapid Successive Failures
 
@@ -96,13 +95,13 @@ Most Kafka operations follow a rolling pattern:
 - Partition leadership is reassigned to other brokers
 - The broker is updated/maintained, and brought back online
 - The process continues with the next broker
-- Update time typically ranges from 10-15 minutes per broker
+- Update time typically ranges from 5-15 minutes per broker
 
 ### Expected Duration and Impact
 
 During rolling operations:
 
-- Individual brokers may be offline for 10-15 minutes
+- Individual brokers may be offline for 5-15 minutes
 - Partition leadership changes occur automatically
 - Overall, the cluster remains available and functional
 - Client connections may experience temporary disruptions
@@ -111,7 +110,7 @@ During rolling operations:
 
 ### Continuous Reconnection Strategy
 
-The core philosophy of librdkafka is to hide all gory Kafka communication details from the application. Having one or all brokers down might be a permanent error, but it may also be a temporary failure (incomplete routing, firewall rules, cluster not yet started, etc.). Instead of librdkafka bailing out, it will quietly sit on whatever messages the application has tried to produce until the cluster comes back to life.
+The core philosophy of librdkafka is to hide all complex Kafka communication details from the application. Having one or all brokers down might be a permanent error, but it may also be a temporary failure (incomplete routing, firewall rules, cluster not yet started, etc.). Instead of librdkafka bailing out, it will quietly sit on whatever messages the application has tried to produce until the cluster comes back to life.
 
 ### Connection Refused Handling
 
@@ -119,7 +118,7 @@ When you see `Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused`, t
 
 ### Message Timeout Behavior
 
-This waiting time is governed by the `message.timeout.ms` setting in the `kafka` scope configuration. This setting determines how long the librdkafka library should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 50 seconds. Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering messages until after the default timeout period of 5 minutes has elapsed.
+This waiting time is governed by the `message.timeout.ms` setting in the `kafka` scope configuration. This setting determines how long the producer should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 50 seconds. Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering messages until after the default timeout period of 50 seconds has elapsed.
 
 ## Karafka-Specific Behavior During Broker Failures
 
@@ -148,8 +147,8 @@ For message production during failures:
 Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused (after 0ms in state CONNECT)
 ```
 
-**Meaning**: librdkafka is attempting to connect to a broker that is currently unavailable.
-**Action**: No action required - this is expected during rolling updates.
+- **Meaning**: librdkafka is attempting to connect to a broker that is currently unavailable.
+- **Action**: No action required - this is expected during rolling updates.
 
 #### All Brokers Down
 
@@ -157,8 +156,8 @@ Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused (after 0ms in sta
 Local: All broker connections are down (all_brokers_down)
 ```
 
-**Meaning**: Friendly indication that currently there are no brokers available to communicate with.
-**Action**: Monitor for recovery - should resolve automatically when brokers come back online.
+- **Meaning**: Friendly indication that currently there are no brokers available to communicate with.
+- **Action**: Monitor for recovery - should resolve automatically when brokers come back online.
 
 #### Network Disconnect
 
@@ -166,8 +165,8 @@ Local: All broker connections are down (all_brokers_down)
 Producer clientId=producer-1] Got error produce response with correlation id X on topic-partition Y, retrying. Error: NETWORK_EXCEPTION
 ```
 
-**Meaning**: Temporary network disconnection during broker transition.
-**Action**: Normal during rolling updates - librdkafka will retry automatically.
+- **Meaning**: Temporary network disconnection during broker transition.
+- **Action**: Normal during rolling updates - librdkafka will retry automatically.
 
 #### Metadata-Related Errors During Transitions
 
@@ -177,9 +176,9 @@ Producer clientId=producer-1] Got error produce response with correlation id X o
 Broker: Leader not available (`leader_not_available`)
 ```
 
-**Context**: Common during leadership transitions when the cluster is electing a new leader
-**Duration**: Typically resolves within seconds as new leader is elected
-**Action**: Normal during broker failover - librdkafka will retry automatically
+- **Context**: Common during leadership transitions when the cluster is electing a new leader
+- **Duration**: Typically resolves within seconds as new leader is elected
+- **Action**: Normal during broker failover - librdkafka will retry automatically
 
 ##### `not_leader_for_partition` (Requires Metadata Refresh)
 
@@ -187,9 +186,9 @@ Broker: Leader not available (`leader_not_available`)
 Broker: Not leader for partition (`not_leader_for_partition`)
 ```
 
-**Context**: Producer/consumer is talking to a broker that is no longer the leader for this partition
-**Trigger**: Automatic metadata refresh in librdkafka
-**Recovery**: Usually resolves within 1-3 metadata refresh cycles
+- **Context**: Producer/consumer is talking to a broker that is no longer the leader for this partition
+- **Trigger**: Automatic metadata refresh in librdkafka
+- **Recovery**: Usually resolves within 1-3 metadata refresh cycles
 
 ##### `fenced_leader_epoch` (Advanced Error Handling)
 
@@ -197,9 +196,9 @@ Broker: Not leader for partition (`not_leader_for_partition`)
 Broker: Leader epoch is older than broker epoch (`fenced_leader_epoch`)
 ```
 
-**Context**: Advanced error indicating leadership conflicts during complex failure scenarios
-**Handling**: librdkafka automatically refreshes metadata and revalidates leadership
-**Version**: Better handling in librdkafka 1.4.0+ with improved epoch tracking
+- **Context**: Advanced error indicating leadership conflicts during complex failure scenarios
+- **Handling**: librdkafka automatically refreshes metadata and revalidates leadership
+- **Version**: Better handling in librdkafka 1.4.0+ with improved epoch tracking
 
 ## Critical Configuration: Replication Factor and `min.insync.replicas`
 
@@ -235,7 +234,7 @@ Topic Configuration:
 
 **Risk**: If the single broker hosting the partition goes down:
 
-- **Producers**: Will receive `NOT_ENOUGH_REPLICAS` errors and cannot produce
+- **Producers**: Will receive `not_enough_replicas` errors and cannot produce
 - **Consumers**: Cannot read from the partition until broker recovers
 - **Data Loss**: Potential permanent data loss if broker storage is corrupted
 
@@ -249,7 +248,7 @@ Topic Configuration:
 
 **Risk**: If one broker goes down:
 
-- **Producers**: Will receive `NOT_ENOUGH_REPLICAS_AFTER_APPEND` errors
+- **Producers**: Will receive `not_enough_replicas_after_append` errors
 - **Consumers**: Can still read from available replica
 - **During Maintenance**: Cannot produce during rolling updates
 
@@ -263,7 +262,7 @@ Topic Configuration:
 
 **Risk**: If any broker goes down:
 
-- **Producers**: Will fail with `NOT_ENOUGH_REPLICAS_AFTER_APPEND`
+- **Producers**: Will fail with `not_enough_replicas_after_append`
 - **Consumers**: Can still read from available replicas
 - **During Maintenance**: Production halts when any broker is offline
 
@@ -315,54 +314,80 @@ end
 
 ### Error Messages You'll See
 
-#### NOT_ENOUGH_REPLICAS (Error Code 19)
+#### `not_enough_replicas` (Error Code 19)
 
 ```
 Broker: Not enough in-sync replicas (not_enough_replicas)
 ```
 
-**Cause**: Trying to produce with `acks=all` but insufficient replicas available
-**Solution**: Check broker health, reduce min.insync.replicas temporarily, or wait for brokers to recover
+- **Cause**: Trying to produce with `acks=all` but insufficient replicas available
+- **Solution**: Check broker health, reduce min.insync.replicas temporarily, or wait for brokers to recover
 
-#### NOT_ENOUGH_REPLICAS_AFTER_APPEND (Error Code 20)
+#### `not_enough_replicas_after_append` (Error Code 20)
 
 ```
 Broker: Messages are rejected since there are fewer in-sync replicas than required
 ```
 
-**Cause**: Message was written to leader but couldn't be replicated to enough followers
-**Solution**: Same as above
+- **Cause**: Message was written to leader but couldn't be replicated to enough followers
+- **Solution**: Same as above
 
 ### Configuration Commands
 
 #### Check Current Topic Configuration
 
-```bash
-kafka-topics.sh --bootstrap-server localhost:9092 \
-  --describe --topic your-topic
+You can obtain relevant details about your topics by using the following combination of the [Admin](https://karafka.io/docs/Admin-API/#getting-cluster-info) and [Configs](https://karafka.io/docs/Admin-Configs-API) APIs:
+
+```ruby
+topic_name = 'YOUR_TOPIC_NAME'
+
+topic_info = Karafka::Admin.cluster_info.topics.find do |t|
+  t[:topic_name] == topic_name
+end
+
+replica_counts = []
+in_sync_brokers = []
+
+topic_info[:partitions].map do |partition|
+  replica_counts << partition[:replica_count]
+  in_sync_brokers << partition[:in_sync_replica_brokers]
+end
+
+resource = Karafka::Admin::Configs::Resource.new(type: :topic, name: topic_name)
+min_insync_replicas_config = -1
+
+Karafka::Admin::Configs.describe(resource).each do |topic_config|
+  topic_config.configs.each do |config|
+    next unless config.name == 'min.insync.replicas'
+    min_insync_replicas_config = config.value.to_i
+  end
+end
+
+puts "  Replica Count: #{replica_counts.min}"
+puts "  Min In Sync Replicas (config): #{min_insync_replicas_config}"
+puts "  Current Sync Replicas (min per partition): #{in_sync_brokers.min}"
 ```
 
 #### Update Topic Configuration
 
-```bash
-# Set safe configuration
-kafka-configs.sh --bootstrap-server localhost:9092 \
-  --entity-type topics --entity-name your-topic \
-  --alter --add-config min.insync.replicas=2
+Topic configurations can be updated through multiple approaches in Karafka. The `min.insync.replicas` configuration can be modified using the Admin Configs API or through the Web UI interface. However, updating the replication factor requires using the standard Kafka CLI tools as it involves partition reassignment.
 
-# Update replication factor (requires partition reassignment)
+```bash
+# Update replication factor using Kafka CLI (requires partition reassignment)
 kafka-reassign-partitions.sh --bootstrap-server localhost:9092 \
   --reassignment-json-file increase-replication.json --execute
 ```
 
-### Monitoring Key Metrics
+```ruby
+# Update min.insync.replicas programmatically
+resource = Karafka::Admin::Configs::Resource.new(type: :topic, name: 'your-topic')
+resource.set('min.insync.replicas', '2')
+Karafka::Admin::Configs.alter(resource)
+```
 
-During broker failures, monitor:
+**Via Web UI:**
 
-- **UnderReplicatedPartitions**: Should be temporary during maintenance
-- **OfflinePartitionsCount**: Should remain 0 with proper configuration
-- **ProduceRequestsFailedRate**: Should not increase with 3/2 configuration
-- **ConsumerLag**: May increase temporarily, but should not spike dramatically
+The topic configuration management feature allows you to view and modify the configuration settings of existing Kafka topics with a user-friendly interface in Karafka Pro. You can update `min.insync.replicas` and other topic settings directly through the Web UI's Topics Management interface.
 
 ## Best Practices for Kafka Cluster Maintenance
 
@@ -389,7 +414,7 @@ Monitor these metrics during cluster maintenance:
 
 Alert on these conditions:
 
-- **Extended Downtime**: If errors persist >5 minutes after maintenance completion
+- **Extended Downtime**: If errors persist > 15 minutes after maintenance completion
 - **Message Loss**: If consumer lag increases permanently
 - **Application Errors**: If business logic fails due to connectivity issues
 
@@ -399,14 +424,6 @@ Alert on these conditions:
 2. **Review Configurations**: Ensure topic replication factor ≥ 3
 3. **Monitor Metrics**: Watch for recovery in consumer lag and error rates
 4. **Application Restart**: As a last resort, restart Karafka processes
-
-### Network Configuration Verification
-
-If you have a Kafka application that is unable to communicate successfully with a Kafka cluster, start by performing connectivity tests:
-```bash
-telnet <broker-address> 9092  # For non-TLS
-telnet <broker-address> 9094  # For TLS (if configured)
-```
 
 ## Conclusion
 
