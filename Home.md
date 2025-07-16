@@ -96,6 +96,7 @@
 * [Resources Management](Resources-Management)
 * [Latency and Throughput](Latency-and-Throughput)
 * [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance)
+* [Topic Auto Creation](Topic-Auto-Creation)
 * [Articles and other references](Articles-and-other-references)
 * [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 * [Problems and Troubleshooting](Problems-and-Troubleshooting)
