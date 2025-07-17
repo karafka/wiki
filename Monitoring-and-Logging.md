@@ -89,6 +89,101 @@ end
 Karafka.monitor.subscribe(AppEventsListener.new)
 ```
 
+## Custom Uptime/Liveness Log-Based Listeners
+
+For monitoring and alerting systems that track Karafka server uptime, you can create custom listeners that log specific events at the desired log levels. This is particularly useful for production environments where you need to monitor polling activity or other critical events at the `info` level, rather than the default `debug` level.
+
+Rather than modifying Karafka's default logger behavior, the recommended approach is to create custom listeners that subscribe to specific instrumentation events and log them at your desired level. This maintains complete isolation between Karafka's internal logging and your custom monitoring requirements.
+
+### Creating a Simple Uptime Listener
+
+Here's a basic example that logs polling activity at the `info` level:
+
+```ruby
+class UptimeListener
+  def on_connection_listener_fetch_loop(event)
+    listener_id = event[:caller].id
+    Rails.logger.info "[#{listener_id}] Polling messages..."
+  end
+end
+
+Karafka.monitor.subscribe UptimeListener.new
+```
+
+You can also use the block-based subscription approach for simpler cases:
+
+```ruby
+Karafka.monitor.subscribe 'connection.listener.fetch_loop' do |event|
+  listener_id = event[:caller].id
+  Rails.logger.info "[#{listener_id}] Polling messages..."
+end
+```
+
+### Advanced Uptime Monitoring
+
+For more comprehensive uptime monitoring, you can subscribe to multiple events and create structured logs:
+
+```ruby
+class ComprehensiveUptimeListener
+  def on_connection_listener_fetch_loop(event)
+    listener_id = event[:caller].id
+    Rails.logger.info "[UptimeMonitor] #{listener_id} - Polling messages..."
+  end
+
+  def on_connection_listener_fetched(event)
+    listener_id = event[:caller].id
+    messages_count = event[:messages_buffer].size
+    Rails.logger.info "[UptimeMonitor] #{listener_id} - Polled #{messages_count} messages"
+  end
+
+  def on_error_occurred(event)
+    Rails.logger.error "[UptimeMonitor] Error occurred: #{event[:error]}"
+  end
+end
+
+Karafka.monitor.subscribe ComprehensiveUptimeListener.new
+```
+
+### Integration with Monitoring Systems
+
+For automated alerting systems like CloudWatch or Splunk, you can structure your logs to be easily parseable:
+
+```ruby
+Karafka.monitor.subscribe 'connection.listener.fetch_loop' do |event|
+  listener_id = event[:caller].id
+  timestamp = Time.current.iso8601
+  
+  # Structured log for monitoring systems
+  Rails.logger.info({
+    timestamp: timestamp,
+    service: 'karafka',
+    event: 'polling_heartbeat',
+    listener_id: listener_id,
+    status: 'active'
+  }.to_json)
+end
+```
+
+### Recommended Setup Location
+
+Place your custom uptime listeners in your `karafka.rb` file after the configuration block, ensuring they're loaded when Karafka starts:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Your configuration here
+  end
+end
+
+# Subscribe to uptime monitoring events
+Karafka.monitor.subscribe 'connection.listener.fetch_loop' do |event|
+  listener_id = event[:caller].id
+  Rails.logger.info "[UptimeMonitor] #{listener_id} - Karafka is alive and polling..."
+end
+```
+
+This approach provides clean separation between Karafka's internal logging and your monitoring requirements, making it easy to maintain and debug both systems independently.
+
 ### Use Cases for Custom Events
 
 Here are some examples where instrumenting custom events can be beneficial:
