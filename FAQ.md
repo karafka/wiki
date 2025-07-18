@@ -214,6 +214,7 @@
 214. [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
 215. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 216. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
+217. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
 
 ---
 
@@ -2873,3 +2874,26 @@ To fix this, increase your database pool size to at least match your concurrency
 production:
  pool: <%= ENV.fetch("DB_POOL", 15) %>  # Set higher than your concurrency
 ```
+
+## Does Karafka Pro support Apache Avro?
+
+**Yes**, Karafka supports Apache Avro serialization through the `avro` gem, though this gem is maintained independently:
+
+**Current Status:**
+
+- **Active Support**: The `avro` gem is currently well-maintained and actively supported
+- **Full Integration**: Karafka works seamlessly with Avro serialization for both producers and consumers
+- **Production Ready**: Many Karafka users successfully use Avro in production environments
+
+**Contingency Planning:**
+
+- **Adoption Commitment**: If the `avro` gem becomes unmaintained, we will adopt and maintain it to ensure continued support
+- **Alternative Solutions**: We monitor alternative Avro libraries and can recommend migrations if needed
+- **Enterprise Priority**: Enterprise customers using Avro receive priority support for any Avro-related issues
+
+**Implementation Support:**
+
+- Detailed documentation for Avro integration
+- Examples and best practices for Avro usage with Karafka
+- Support for complex Avro schemas and schema evolution
+- Performance optimization guidance for Avro serialization
