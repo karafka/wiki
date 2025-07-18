@@ -15,16 +15,71 @@ Native extensions are platform-specific compiled binaries that contain:
 
 ## Supported Platforms
 
-rdkafka-ruby ships native extensions for the following platforms:
+`rdkafka-ruby` ships native extensions for the following platforms:
 
-- **Linux**: `x86_64-linux-gnu`, `x86_64-linux-musl`
-- **macOS**: `arm64-darwin` (Apple Silicon)
+<table>
+<tr>
+<th>Platform</th>
+<th>Architecture</th>
+<th>Minimum Version</th>
+<th>glibc/musl</th>
+<th>Compatible Distributions</th>
+</tr>
+<tr>
+<td><strong>Linux (glibc)</strong></td>
+<td>x86_64</td>
+<td>Ubuntu 22.04 LTS</td>
+<td>glibc 2.35+</td>
+<td>Ubuntu 22.04+, CentOS 9+, RHEL 9+, Debian 12+, Fedora 36+</td>
+</tr>
+<tr>
+<td><strong>Linux (musl)</strong></td>
+<td>x86_64</td>
+<td>Alpine 3.18+</td>
+<td>musl 1.2.4+</td>
+<td>Alpine 3.18+, and other musl-based distributions</td>
+</tr>
+<tr>
+<td><strong>macOS</strong></td>
+<td>arm64</td>
+<td>macOS 14+</td>
+<td>N/A</td>
+<td>Apple Silicon Macs (M1, M2, M3+)</td>
+</tr>
+</table>
 
-To check if your platform is supported, run:
+### Checking Platform Support
+
+To check if your platform is supported:
 
 ```bash
+# Check your platform
 ruby -e 'puts Gem::Platform.local.to_s'
 ```
+
+**Expected output examples:**
+
+- `x86_64-linux-gnu` (Ubuntu/CentOS/RHEL)
+- `x86_64-linux-musl` (Alpine Linux)
+- `arm64-darwin` (Apple Silicon Mac)
+
+### Checking Library Versions
+
+**For glibc-based systems:**
+
+```bash
+# Check glibc version
+ldd --version
+```
+
+**For musl-based systems:**
+
+```bash
+# Check musl version
+ldd 2>&1 | head -1
+```
+
+If your platform isn't supported or doesn't meet the minimum requirements, `rdkafka-ruby` will automatically fall back to source compilation.
 
 ## Installation Benefits
 
