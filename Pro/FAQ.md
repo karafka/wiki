@@ -39,6 +39,10 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
 1. [Where can I find a list of OSS components that the Karafka ecosystem uses?](#where-can-i-find-a-list-of-oss-components-that-the-karafka-ecosystem-uses)
 1. [Can I use one Karafka license across multiple companies within a corporate group?](#can-i-use-one-karafka-license-across-multiple-companies-within-a-corporate-group)
+1. [Do you provide hard commitments on feature development for Karafka Pro?](#do-you-provide-hard-commitments-on-feature-development-for-karafka-pro)
+1. [Do you provide consulting or contracting services?](#do-you-provide-consulting-or-contracting-services)
+1. [How reliable is Karafka as a long-term solution?](#how-reliable-is-karafka-as-a-long-term-solution)
+1. [What happens if the maintainer becomes unavailable?](#what-happens-if-the-maintainer-becomes-unavailable)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -278,6 +282,77 @@ Both Pro and Enterprise licenses ares limited to a single legal entity that purc
 3. Requesting a custom group companies amendment that explicitly permits usage across affiliated companies with defined ownership threshold.
 
 Contact us to discuss group licensing options.
+
+## Do you provide hard commitments on feature development for Karafka Pro?
+
+**No**, I do not provide hard commitments on specific features or delivery timelines. However, Karafka commercial subscribers have significant influence over the development roadmap through several channels:
+
+- **Priority Support**: Pro subscribers can request features and improvements that are prioritized in our development pipeline
+- **Direct Communication**: Customers have direct access to discuss their specific needs and requirements
+- **Community Influence**: Active community members' feedback heavily influences feature prioritization
+- **Custom Development**: For Enterprise customers, I can discuss custom development arrangements on a case-by-case basis, though never as a contracting service.
+
+The open-source nature of Karafka means that development is driven by community needs and practical use cases rather than contractual obligations. This approach has proven effective over nearly a decade of development, ensuring that features are thoroughly tested and genuinely valuable to the community.
+
+## Do you provide consulting or contracting services?
+
+No, I do not provide traditional consulting or contracting services. However, Karafka Pro includes comprehensive support that covers:
+
+**What IS provided:**
+
+- **Integration Support**: Help with Karafka and WaterDrop integration into your existing systems
+- **Debugging Assistance**: Troubleshooting complex issues with your Kafka setup
+- **Performance Optimization**: Guidance on optimizing your Karafka configuration for your specific use case
+- **Architecture Review**: Recommendations on best practices for your Kafka-based architecture
+- **Migration Support**: Help with migrating from other Kafka libraries to Karafka
+
+**What is NOT provided:**
+
+- Custom software development for your specific business logic
+- On-site consulting engagements
+- Long-term contracting arrangements
+- Project management services
+- Infrastructure setup and management
+
+Karafka's support model is designed to help you successfully implement and maintain Karafka in your environment, while keeping costs reasonable and maintaining a focus on core framework development.
+
+## How reliable is Karafka as a long-term solution?
+
+Karafka has been in continuous development and production use for nearly 10 years, demonstrating strong reliability and longevity:
+
+**Track Record:**
+
+- **Production Proven**: Used by thousands of applications in production environments
+- **Consistent Development**: Regular releases with continuous improvements since 2015
+- **Community Support**: Active community with extensive documentation and examples
+- **Kafka Expertise**: Deep understanding of Kafka internals and Ruby integration challenges
+
+**Reliability Indicators:**
+
+- Comprehensive test coverage with real Kafka cluster testing
+- Versioning with clear upgrade paths
+- Extensive documentation and migration guides
+- Active issue resolution and community support
+
+## What happens if the maintainer becomes unavailable?
+
+Several contingency measures are implemented to ensure continuity:
+
+**Enterprise Contingency Options:**
+
+- **Extended Warranties**: Enterprise subscriptions include contingency warranties that provide extended support and maintenance commitments
+- **Custom Agreements**: Enterprise customers can negotiate specific contingency arrangements based on their needs
+- **Source Code Access**: All code remains open-source and public-source, ensuring no vendor lock-in
+- **Community Governance**: The project structure allows for community maintenance if needed
+
+**Built-in Continuity:**
+
+- **Open Source Foundation**: The entire codebase is public-source and can be maintained by the community if needed
+- **Documentation**: Comprehensive documentation enables other developers to understand and maintain the codebase
+- **Standard Ruby Practices**: Code follows Ruby community standards, making it accessible to Ruby developers
+- **Modular Architecture**: Components can be maintained independently if needed
+
+For Enterprise customers concerned about long-term continuity, we offer custom agreements that can include additional guarantees and contingency planning.
 
 ## Ethics, Privacy, and Information Usage
 
