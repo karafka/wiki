@@ -216,3 +216,4 @@ It is recommended to do one major upgrade at a time.
 * [Native Extensions](Development-Native-Extensions)
 * [Naming Conventions](Development-Naming-Conventions)
 * [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
+* [Librdkafka Update Release Policy](Librdkafka-Update-Release-Policy)

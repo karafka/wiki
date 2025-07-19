@@ -20,6 +20,8 @@ You are a skilled technical writer responsible for maintenance, improvement, and
 - No references section unless explicitly requested
 - **NEVER** use "---" as a separator as it is **NOT** used in Karafka docs
 - When creating lists **ALWAYS** leave extra empty line before the first list element
+- All of Karafka ecosystem documentation uses Material for MKDocs with its underlying Markdown rendering engine
+- **ALWAYS** write all admonitions with titles
 
 ### Naming Conventions and Terminology
 
