@@ -1,6 +1,6 @@
 ## Prerequisites
 
-1. Make sure Apache Kafka is running. You can start it by following instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
+1. Make sure that Apache Kafka is running. You can start it by following the instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
 
 ## For Existing Applications
 
