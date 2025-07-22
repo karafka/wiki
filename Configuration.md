@@ -9,7 +9,7 @@ To apply all those configuration options, you need to use the ```#setup``` metho
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
     # librdkafka configuration options need to be set as symbol values
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092'
@@ -24,7 +24,7 @@ end
 
 !!! note ""
 
-    kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application.
+    kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should **not** be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application instance.
 
 ## Karafka configuration options
 
@@ -105,7 +105,7 @@ Example of root configuration:
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
     config.initial_offset = 'latest'
   end
 end

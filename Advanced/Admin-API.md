@@ -21,7 +21,7 @@ If you wish to reconfigure `Karafka::Admin`, you may alter the `config.admin` sc
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092'
@@ -48,7 +48,7 @@ Karafka allows you to manage multiple Kafka clusters using the `KARAFKA_BOOT_FIL
 
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     config.kafka = {
       'bootstrap.servers': '192.168.1.2:9092'
@@ -62,7 +62,7 @@ end
 
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     config.kafka = {
       'bootstrap.servers': '192.168.1.10:9092'

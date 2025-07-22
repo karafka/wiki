@@ -343,7 +343,7 @@ You need to define them comma-separated under `kafka` `bootstrap.servers` config
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     # This value needs to be a string string with comma separated servers
     config.kafka = {
@@ -386,7 +386,7 @@ It is possible to postpone the definition of the Karafka app and do it manually 
 
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
     ...
   end
 end
@@ -562,9 +562,9 @@ end
 
 ## What is Karafka `client_id` used for?
 
-Karafka `client_id` is, by default, used for populating kafka `client.id` value.
+Karafka `client_id` is, by default, used for populating the Kafka `client.id` value.
 
-kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging.
+Kafka `client.id` is a string passed to the server when making requests. This allows the server to track the source of requests beyond just IP/port by including a logical application identifier in server-side request logging. The `client.id` should be unique for each application instance to enable effective debugging and operational monitoring.
 
 ## How can I increase Kafka and Karafka max message size?
 
@@ -1053,7 +1053,7 @@ Setting `log.connection.close` to false will suppress these log messages and pre
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     config.kafka = {
       # other settings...

@@ -6,7 +6,7 @@ Due to consumers persistence in Karafka (long-living consumer instances), in ord
 class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = { 'bootstrap.servers': '127.0.0.1:9092' }
-    config.client_id = 'example_app'
+    config.client_id = "example_app-#{Process.pid}-#{Socket.gethostname}"
     config.concurrency = 2
     # Recreate consumers with each batch. This will allow Rails code reload to work in the
     # development mode. Otherwise Karafka process would not be aware of code changes

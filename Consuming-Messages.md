@@ -306,7 +306,7 @@ The `enable.partition.eof` is one of the `kafka` scoped options and can be set f
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.client_id = 'my_application'
+    config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
 
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092',

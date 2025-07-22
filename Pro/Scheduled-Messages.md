@@ -189,7 +189,8 @@ The most critical aspect of running scheduled messages across multiple applicati
 # Application 1 - "orders_app"
 class OrdersApp < Karafka::App
  setup do |config|
-   config.client_id = 'orders_app'
+   config.client_id = "orders_app-#{Process.pid}-#{Socket.gethostname}"
+
    # Unique group ID for this application
    config.consumer_group_id = 'orders_app_schedules_group'
    # Other config here...
@@ -203,7 +204,7 @@ end
 # Application 2 - "billing_app"
 class BillingApp < Karafka::App
  setup do |config|
-   config.client_id = 'billing_app'
+   config.client_id = "billing_app-#{Process.pid}-#{Socket.gethostname}"
    # Different group ID for this application
    config.consumer_group_id = 'billing_app_schedules_group'
    # Other config here...

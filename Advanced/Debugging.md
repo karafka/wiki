@@ -484,7 +484,7 @@ rdkafka: [thrd:127.0.0.1:9092/bootstrap]: 127.0.0.1:9092/bootstrap: Broker chang
 rdkafka: [thrd:127.0.0.1:9092/bootstrap]: Broadcasting state change
 rdkafka: [thrd:app]: librdkafka v2.3.0 (0x20300ff) example_app#producer-1 initialized
 rdkafka: [thrd:app]: Client configuration:
-rdkafka: [thrd:app]:   client.id = example_app
+rdkafka: [thrd:app]:   client.id = example_app-13131
 rdkafka: [thrd:app]:   client.software.version = 2.3.0
 rdkafka: [thrd:app]:   metadata.broker.list = 127.0.0.1:9092
 rdkafka: [thrd:app]:   topic.metadata.refresh.interval.ms = 5000
