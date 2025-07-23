@@ -10,7 +10,6 @@ Running the Web UI of Karafka involves costs for data transfer and storage. Belo
 
 Several factors influence the cost of running the Karafka Web UI. Understanding these factors can help in managing and optimizing operational expenses. Here is a detailed list of the key cost factors.
 
-
 !!! Info "Setup Specificity"
 
     Depending on your specific setup, additional factors may affect costs, or some of the listed factors may not apply.
@@ -209,7 +208,6 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
     </tbody>
 </table>
-
 
 !!! Info "Simplification Notice"
 

@@ -266,7 +266,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Does Karafka restart dead PG connections?
 
-Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found here(https://karafka.io/docs/Active-Record-Connections-Management/#dealing-with-dead-database-connections).
+Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](https://karafka.io/docs/Active-Record-Connections-Management/#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
@@ -280,7 +280,6 @@ Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be requi
 
 **No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
 
-
 ## Why Karafka process does not pick up newly created topics until restarted?
 
 - Karafka in the `development` mode will refresh cluster metadata every 5 seconds. It means that it will detect topic changes fairly fast.
@@ -291,7 +290,6 @@ The frequency of cluster metadata refreshes can be changed via `topic.metadata.r
 ## Why is Karafka not doing work in parallel when I started two processes?
 
 Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
-
 
 ## Can I remove a topic while the Karafka server is running?
 
@@ -372,6 +370,7 @@ Moreover, despite the same code base, some processes (`rails s`, `rails db:migra
 The problem is presented in [this](https://github.com/karafka/example-apps/pull/190) example app PR.
 
 To mitigate this, you can create an empty karafka bootfile. With a file structure like this:
+
 ```
 +-- karafka_root_dir
 |   +-- karafka.rb     # default bootfile (empty file)
@@ -438,7 +437,7 @@ It may mean one of four things:
 3. Low probability: Slow network connection.
 4. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
-WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the ` queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
+WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
 
 Additionally, you may also:
 
@@ -704,7 +703,6 @@ $stdout.sync = true
 
 You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync).
 
-
 ## Why is increasing `concurrency` not helping upon a sudden burst of messages?
 
 Karafka uses multiple threads to process messages from multiple partitions or topics in parallel. If your consumer process has a single topic partition assigned, increasing `concurrency` will not help because there is no work that could be parallelized.
@@ -764,7 +762,6 @@ The general rule is that if you want to ensure all of your current work finishes
 If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
 
 If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor if using the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
-
 
 ## Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?
 
@@ -1026,7 +1023,6 @@ You can read more about this topic [here](https://github.com/confluentinc/librdk
 
 Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](https://karafka.io/docs/Env-Variables/).
 
-
 ## How can I configure WaterDrop with SCRAM?
 
 You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
@@ -1268,7 +1264,7 @@ There are a few nuances to be aware of, which are often seen as "edge cases." On
 
 Another noteworthy point is that if you set `message.max.bytes` to a low yet acceptable value, it could affect the batching process of librdkafka. Specifically, librdkafka might not be able to build larger message batches, leading to data being sent in much smaller batches, sometimes even as small as a single message. This could consequently limit the throughput.
 
-A detailed discussion on this topic can be found on this GitHub thread: https://github.com/confluentinc/librdkafka/issues/3246. Please note that this discussion remains open, indicating this topic's complexity and continuous exploration.
+A detailed discussion on this topic can be found on this [GitHub thread](https://github.com/confluentinc/librdkafka/issues/3246). Please note that this discussion remains open, indicating this topic's complexity and continuous exploration.
 
 Lastly, while the term `message.max.bytes` may not be intuitively understandable, its role in managing message size within the Kafka ecosystem is crucial.
 
@@ -1714,6 +1710,7 @@ The error `ArgumentError: undefined class/module YAML::Syck` you're seeing when 
 Instead, this error is a manifestation of a known bug within the Bundler and the Ruby gems ecosystem. During the installation of `karafka-license`, other gems may also be installed or rebuilt, triggering this issue.
 
 To address and potentially resolve this problem, you can update your system gems to the most recent version, which doesn't have this bug. You can do this by running:
+
 ```bash
 gem update --system
 ```
@@ -2674,7 +2671,6 @@ You can find more details about this [here](https://karafka.io/docs/Error-handli
 ## Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?
 
 Recent changes in the official Ruby slim and alpine Docker images removed several system dependencies, including the `procps` package that provides the `ps` command. The `ps` command is required by Karafka Web UI for process management and monitoring.
-
 
 To resolve this issue, you need to explicitly add the `procps` package to your Dockerfile. For Debian-based images (slim), add:
 

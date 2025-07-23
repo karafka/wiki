@@ -503,11 +503,11 @@ Karafka's Scheduled Messages feature offers a set of warranties designed to ensu
 
 - **System Stability**: Karafka is built to maintain Stability under varying loads and manage daily schedule reloads without significant disruptions. Stability can be affected by external factors such as network performance and server capacity.
 
-  - **Application-Level Failures**: Karafka does not cover failures due to issues in consumer application logic or other external application errors.
+- **Application-Level Failures**: Karafka does not cover failures due to issues in consumer application logic or other external application errors.
 
-  - **Configuration Dependence**: The warranties assume optimal and correct configuration settings. Misconfigurations or inappropriate settings that impact performance and reliability are not covered.
+- **Configuration Dependence**: The warranties assume optimal and correct configuration settings. Misconfigurations or inappropriate settings that impact performance and reliability are not covered.
 
-  - **External Dependencies**: Issues caused by external factors, including Kafka cluster performance, network latency, and hardware failures, are outside the scope of these warranties.
+- **External Dependencies**: Issues caused by external factors, including Kafka cluster performance, network latency, and hardware failures, are outside the scope of these warranties.
 
 ### Transactional Support
 

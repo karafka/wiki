@@ -307,7 +307,6 @@ Karafka.producer.monitor.subscribe(appsignal_errors_listener)
 
 ![Example Karafka AppSignal Errors dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_appsignal_dashboard_errors_example.png)
 
-
 ### Metrics Instrumentation
 
 The AppSignal integration offers comprehensive instrumentation, ensuring that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
@@ -353,7 +352,6 @@ end
 !!! note "Enable WaterDrop Instrumentation Separately"
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
-
 
 ### Karafka Native DataDog Integration
 

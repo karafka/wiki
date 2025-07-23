@@ -26,9 +26,9 @@ To create a new topic:
 
 4. Fill in the required fields:
 
-   - **Topic Name**: Only alphanumeric characters, dots, underscores, and hyphens are allowed
-   - **Number of Partitions**: Minimum 1 partition (cannot be decreased after creation)
-   - **Replication Factor**: Number of replicas for each partition (minimum 1, recommended 3 for production)
+- **Topic Name**: Only alphanumeric characters, dots, underscores, and hyphens are allowed
+- **Number of Partitions**: Minimum 1 partition (cannot be decreased after creation)
+- **Replication Factor**: Number of replicas for each partition (minimum 1, recommended 3 for production)
 
 5. Click the submit button to create your topic
 
@@ -125,9 +125,9 @@ To modify a specific configuration parameter:
 
 5. You'll see:
 
-   - The property name (e.g., `cleanup.policy`)
-   - Current value (e.g., `delete`)
-   - A field to enter the new value
+- The property name (e.g., `cleanup.policy`)
+- Current value (e.g., `delete`)
+- A field to enter the new value
 
 6. Enter the new value and submit the change
 
@@ -165,8 +165,8 @@ To increase the number of partitions:
 
 4. You'll see:
 
-   - Current partition count (e.g., `1`)
-   - A field to enter the new partition count (must be greater than the current count)
+- Current partition count (e.g., `1`)
+- A field to enter the new partition count (must be greater than the current count)
 
 5. Enter the new partition count and submit the change
 

@@ -2,7 +2,6 @@
 
 Before we combine Kafka with Ruby, it would be good to have a workable local Kafka process. The easiest way to do that is by using our `docker-compose.yml` present in Karafka:
 
-
 ```bash
 git clone git@github.com:karafka/karafka.git
 cd karafka

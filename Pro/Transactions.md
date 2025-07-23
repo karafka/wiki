@@ -441,8 +441,7 @@ This section explains how transactions interact with the DLQ and the implication
 
 1. **Consistent Transaction Behavior**: From the user's perspective, transactions in Karafka behave consistently, whether or not the DLQ is utilized. This means the practice of wrapping your message processing code within transactions remains unchanged, providing a consistent development experience.
 
-1. **Transactional Dead-Letter Queue Operations**: In scenarios involving persistent errors - where messages need to be moved to the DLQ - Karafka, by default, uses transactions to perform two critical operations atomically: moving the message to the DLQ and committing the offset (when necessary). This ensures that the message relocation to the DLQ and the acknowledgment of message processing (offset commit) are treated as a single atomic operation, maintaining consistency.
-
+2. **Transactional Dead-Letter Queue Operations**: In scenarios involving persistent errors - where messages need to be moved to the DLQ - Karafka, by default, uses transactions to perform two critical operations atomically: moving the message to the DLQ and committing the offset (when necessary). This ensures that the message relocation to the DLQ and the acknowledgment of message processing (offset commit) are treated as a single atomic operation, maintaining consistency.
 
 !!! Notice "Disabling Transactions During DLQ Dispatches"
 
@@ -450,8 +449,8 @@ This section explains how transactions interact with the DLQ and the implication
 
 3. **Error Handling and Retries**: If an error occurs during the DLQ operation, such as partition revocation or networking issues, Karafka's default behavior is to retry processing the same batch. This retry mechanism ensures that transient failures don't lead to message loss or unacknowledged message consumption. The system attempts to process the batch again, allowing the operation to succeed.
 
-4. **Considerations for DLQ Dispatching**: In certain situations, particularly under specific configurations or system constraints, DLQ dispatches might not be possible. For instance, if network issues prevent communication with the DLQ topic or transactional integrity can't be maintained due to partition revocations, the DLQ operations might not proceed as expected.<br>
-<br>
+4. **Considerations for DLQ Dispatching**: In certain situations, particularly under specific configurations or system constraints, DLQ dispatches might not be possible. For instance, if network issues prevent communication with the DLQ topic or transactional integrity can't be maintained due to partition revocations, the DLQ operations might not proceed as expected.
+
 In such cases, it's important to understand that the DLQ might not operate, meaning that messages that fail processing persistently might not be moved to the DLQ. This situation underscores the importance of monitoring and potentially adjusting the system configuration or handling mechanisms to ensure that messages are either processed successfully or reliably moved to the DLQ.
 
 In conclusion, while transactions in Karafka provide a robust mechanism for processing messages consistently and atomically, their interaction with the DLQ introduces specific behaviors and considerations.

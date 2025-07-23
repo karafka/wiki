@@ -217,8 +217,10 @@ If you're currently using source compilation:
 
 1. **Remove build dependencies** from your Dockerfile/CI
 2. **Update Gemfile** to allow native extensions:
+
    ```ruby
    # Remove platform restrictions
    gem 'rdkafka'  # Will automatically use native extensions
    ```
+
 3. **Rebuild** your containers - they'll be much faster!

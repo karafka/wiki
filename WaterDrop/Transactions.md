@@ -93,7 +93,6 @@ producer.produce_many_async(messages)
 
 Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This ensures that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
 
-
 Below, you can find an example that ensures that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka:
 
 ```ruby
@@ -267,7 +266,6 @@ Errors encapsulated as `Rdkafka::RdkafkaError` offer insight into their nature, 
 - **fatal**: These errors signify issues from which there's no recovery, irrespective of the number of retry attempts. An example is being fenced out of a transaction. When encountering fatal errors, it's recommended to investigate the root cause, as they might indicate underlying severe problems.
 
 - **abortable**: Errors in this category aren't recoverable in the current context of the ongoing transaction. While the error might not be fatal to the system, it does necessitate the abortion of the present transaction to maintain data integrity and consistency.
-
 
 Below, you can find an example monitor that will print only transaction-related errors with extra status info:
 

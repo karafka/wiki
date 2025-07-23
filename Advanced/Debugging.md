@@ -116,7 +116,7 @@ end
 
 ### Unhandled Exceptions in Consumer Code
 
-Runtime errors in your consumer logic are a very common cause of double-processing. Karafka has built-in retry/backoff behavior: if your consume method raises an exception, Karafka will not commit the offsets for that batch (since it didn't complete successfully) and will retry the message(s) after a pause​ from the last committed offset. This is by design: it prevents data loss but means the failed message (and potentially others in the same batch) will be processed again.
+Runtime errors in your consumer logic are a very common cause of double-processing. Karafka has built-in retry/backoff behavior: if your consume method raises an exception, Karafka will not commit the offsets for that batch (since it didn't complete successfully) and will retry the message(s) after a pause from the last committed offset. This is by design: it prevents data loss but means the failed message (and potentially others in the same batch) will be processed again.
 
 #### Exceptions on Individual Messages With Automatic Marking
 
@@ -194,7 +194,6 @@ class OrdersConsumer < ApplicationConsumer
 end
 ```
 
-
 ### Thread/Worker Mismanagement and Concurrency Settings
 
 This category is related to thread safety but involves how you configure and deploy Karafka.
@@ -256,7 +255,6 @@ end
 ### Kafka Rebalancing Side Effects (Slow Consumers, Timeouts)
 
 Kafka's consumer group **rebalancing** can cause message reprocessing if not managed correctly. Rebalancing happens whenever consumers join or leave the group (e.g. scaling up/down or a crash) or occasionally due to coordinator decisions. During a rebalance, partitions may move between consumers. Karafka tries to handle this gracefully.
-
 
 #### Graceful Rebalances
 
@@ -359,8 +357,8 @@ Karafka is designed to be efficient with memory, but many factors can contribute
 
 If you have followed these steps and still believe there is a memory leak in Karafka, please report it through one of the following channels:
 
-* [The Karafka official Slack channel](https://slack.karafka.io)
-* [Open a GitHub issue](https://github.com/karafka/karafka/issues/new)
+- [The Karafka official Slack channel](https://slack.karafka.io)
+- [Open a GitHub issue](https://github.com/karafka/karafka/issues/new)
 
 ### Recommendations for Managing Memory in Karafka
 

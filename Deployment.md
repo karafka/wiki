@@ -1,12 +1,12 @@
 Karafka is currently being used in production with the following deployment methods:
 
-  - [systemd (+ Capistrano)](#systemd-capistrano)
-  - [Docker](#docker)
-  - [AWS + MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
-  - [Heroku](#heroku)
-  - [Kubernetes](#kubernetes)
-  - [Confluent Cloud](#confluent-cloud)
-  - [Custom OAuth Token Providers](#custom-oauth-token-providers)
+- [systemd (+ Capistrano)](#systemd-capistrano)
+- [Docker](#docker)
+- [AWS + MSK (Fully Managed Apache Kafka)](#aws-msk-fully-managed-apache-kafka)
+- [Heroku](#heroku)
+- [Kubernetes](#kubernetes)
+- [Confluent Cloud](#confluent-cloud)
+- [Custom OAuth Token Providers](#custom-oauth-token-providers)
 
 Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
 
@@ -149,6 +149,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 </p>
 
 11. Log in to any of your machines and run a `telnet` session to any of the brokers:
+
 ```bash
 telnet your-broker.kafka.us-east-1.amazonaws.com 9096
 
@@ -669,8 +670,8 @@ The `SwarmLivenessListener` is tailored to supervise the health of the Karafka s
 - **Controlling TTL**: A configurable time-to-live (TTL) for supervising thread activity, ensuring the supervisor actively manages child nodes. Set this with consideration for normal and shutdown states to avoid false positives.
 
 - **Minimal HTTP Server**: Similar to the standard listener, it runs an HTTP server for health checks, responding with:
-  - `200`: The supervisor is active and controlling, as expected, with detailed JSON status information.
-  - `500`: Supervisor activity is below the controlling_ttl, indicating potential issues.
+    - `200`: The supervisor is active and controlling, as expected, with detailed JSON status information.
+    - `500`: Supervisor activity is below the controlling_ttl, indicating potential issues.
 
 To integrate the `SwarmLivenessListener` into your Karafka application, follow these steps:
 

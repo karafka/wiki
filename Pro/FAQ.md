@@ -88,13 +88,13 @@ Follow the instructions on our [website](https://karafka.io/#become-pro).
 
 This is a common requirement for "on-site installs" or "appliances" sold to large corporations.
 
-The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $12,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email contact@karafka.io to purchase.
+The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $12,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email `contact@karafka.io` to purchase.
 
 ## Can I use Karafka Pro in my public project?
 
 By default, **neither** the Karafka Pro license nor the Appliance license allows for usage in publicly accessible source code, whether it's an open-source project or a commercial project with public repositories. This restriction applies to **both** open-source initiatives and commercial projects that maintain public codebases. This is because both licenses are designed for commercial use within defined organizational boundaries and include restrictions on redistribution and public sharing of the codebase.
 
-However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, please contact us at contact@karafka.io to discuss your use case. We can explore potential custom agreements that could include:
+However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, please contact us at `contact@karafka.io` to discuss your use case. We can explore potential custom agreements that could include:
 
 - Limited usage rights for specific Pro features
 - Special licensing terms for public source code integration
@@ -198,7 +198,7 @@ Upon agreement, we will provide the license gem sources with installation instru
 
 If you need to change the email associated with your subscription, you have two ways to proceed:
 
-1. **Email**: You can send us a direct request by emailing us at contact@karafka.io. Ensure to include your current email address, the new one you want to use, and any relevant information about your subscription.
+1. **Email**: You can send us a direct request by emailing us at `contact@karafka.io`. Ensure to include your current email address, the new one you want to use, and any relevant information about your subscription.
 
 2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request. Just write a message explaining that you want to change the email associated with your subscription. Include your current email address and the new one you want to use.
 
@@ -206,7 +206,7 @@ If you need to change the email associated with your subscription, you have two 
 
 If you need to update the credit card associated with your subscription, you have two ways to request it:
 
-1. **Email**: You can send us a direct request by emailing us at contact@karafka.io.
+1. **Email**: You can send us a direct request by emailing us at `contact@karafka.io`.
 
 2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request.
 After receiving your request, we will generate a temporary link for you to update your payment method. This link will be generated through Stripe, our payment processor.
@@ -235,7 +235,7 @@ Once the Enterprise agreement is made, you'll be given offline access to the lic
 
 Karafka Pro is credit card only, no exceptions.
 
-Karafka Enterprise can be purchased via invoice and purchase order if needed. Email contact@karafka.io for more details.
+Karafka Enterprise can be purchased via invoice and purchase order if needed. Email `contact@karafka.io` for more details.
 
 ## Can you fill out my security or compliance documentation?
 

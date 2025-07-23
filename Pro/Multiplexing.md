@@ -240,7 +240,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Benefits of the Dynamic Approach:
+### Benefits of the Dynamic Approach
 
 - **Efficiency and Performance**: By optimizing resource use and ensuring each connection has a balanced share of partitions, Karafka maintains high efficiency and performance even as data volumes and structures change.
 

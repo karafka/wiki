@@ -19,6 +19,6 @@ Your code changes will be applied after processing of current messages batch.
 
 Keep in mind, though, that there are a couple of limitations to it:
 
-* Changes in the routing are **not** reflected. This would require reconnections and would drastically complicate reloading.
-* Any background work you run outside the Karafka framework but within the process might not be caught in the reloading.
-* If you use in-memory consumer data buffering that spans multiple batches, it **won't** work as code reload means re-initializing consumer instances. In cases like that, you will be better off not using the reload mode.
+- Changes in the routing are **not** reflected. This would require reconnections and would drastically complicate reloading.
+- Any background work you run outside the Karafka framework but within the process might not be caught in the reloading.
+- If you use in-memory consumer data buffering that spans multiple batches, it **won't** work as code reload means re-initializing consumer instances. In cases like that, you will be better off not using the reload mode.

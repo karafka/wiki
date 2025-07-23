@@ -26,7 +26,6 @@ end
 
 3. Use it as follows:
 
-
 ```ruby
 # And use it
 producer.produce_sync(topic: 'my-topic', payload: 'my message')

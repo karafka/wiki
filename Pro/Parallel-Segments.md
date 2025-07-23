@@ -514,6 +514,7 @@ karafka parallel_segments distribute --groups analytics
 ```
 
 This will:
+
 - Create consumer groups: `analytics-parallel-0`, `analytics-parallel-1`, `analytics-parallel-2`, `analytics-parallel-3`
 - Set their offsets to match the original `analytics` consumer group
 - Allow seamless continuation of processing from where the original group left off

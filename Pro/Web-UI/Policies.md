@@ -22,7 +22,6 @@ The Requests Policies feature in Karafka's Web UI provides a mechanism for contr
 
 To utilize the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
 
-
 Below is an example of how to define and configure a custom Requests Policy:
 
 ```ruby

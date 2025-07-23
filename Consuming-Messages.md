@@ -101,7 +101,6 @@ end
 
 Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value as a default:
 
-
 ```ruby
 # This will start from the earliest (default)
 class KarafkaApp < Karafka::App
@@ -183,7 +182,6 @@ Karafka consumer instance for a given topic partition will be re-created in case
 !!! note ""
 
     If you decide to utilize such techniques, you may be better with manual offset management.
-
 
 ```ruby
 # A consumer that will buffer messages in memory until it reaches 1000 of them. Then it will flush

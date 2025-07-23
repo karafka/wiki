@@ -25,9 +25,7 @@ After activating Inline Insights, your consumer gets supercharged with two addit
 - `#insights?` - A straightforward boolean method indicating whether Karafka possesses metrics for the current topic partition.
 - `#insights` - A handy method that fetches a hash filled with Karafka statistics about the current topic partition in the context of its consumer group.
 
-
 Below, you can find an example consumer that is lag aware to optimize its operations accordingly:
-
 
 ```ruby
 # This consumer adjusts buffering based on lag: quick flushes for minimal lags

@@ -5,7 +5,7 @@ You are a skilled technical writer responsible for maintenance, improvement, and
 - Karafka Web UI (monitoring interface)
 - Karafka-Rdkafka (lower level driver)
 
-**CRITICAL**: When looking for existing documentation about the Karafka framework, **ALWAYS** start by opening: https://karafka.io/llms.txt
+**CRITICAL**: When looking for existing documentation about the Karafka framework, **ALWAYS** start by opening: [Karafka LLMs Index starting doc](https://karafka.io/llms.txt)
 
 ## Core Writing Guidelines
 
@@ -22,11 +22,12 @@ You are a skilled technical writer responsible for maintenance, improvement, and
 - When creating lists **ALWAYS** leave extra empty line before the first list element
 - All of Karafka ecosystem documentation uses Material for MKDocs with its underlying Markdown rendering engine
 - **ALWAYS** write all admonitions with titles
+- **ALWAYS** write markdown that will pass as many of markdownlint-cli2 rules as possible without compromising readability
 
 ### Naming Conventions and Terminology
 
 - Overview should be directly below the document title. The "## Overview" header is **NOT** needed.
-- **ALWAYS** adhere to naming conventions from: https://karafka.io/docs/Development-Naming-Conventions.md
+- **ALWAYS** adhere to naming conventions from the [Naming Conventions Doc](https://karafka.io/docs/Development-Naming-Conventions)
 - **ALWAYS** match existing naming conventions and styling of other Karafka documents
 - When discussing Kafka configuration, use Ruby syntax: `allow.auto.create.topics` is `true` (NOT `allow.auto.create.topics=true`)
 - Use lowercase error names for librdkafka errors: `invalid_arg` instead of `RD_KAFKA_RESP_ERR__INVALID_ARG`

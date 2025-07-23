@@ -58,15 +58,6 @@ end
 
     Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, ensuring efficient resource utilization and streamlined data consumption across clusters.
 
-
-
-
-
-
-
-
-
-
 ### Producer Settings
 
 While the consumption settings ensure Karafka knows where to pull messages from, the production settings dictate where Karafka sends the outbound messages. An extra setup is essential when producing messages to multiple clusters to ensure that the messages are directed to the correct location.

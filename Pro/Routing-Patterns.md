@@ -267,7 +267,6 @@ end
 
 You can limit the process operations to only specific patterns:
 
-
 ```bash
 # This code will not run topics and patterns other than `dlqs_pattern`
 #
@@ -431,7 +430,6 @@ This comparative testing method offers a straightforward way to ensure your regu
 1. **Error and Debug Topics**: Special topics created for debugging or error tracking, like `errors_critical`, `debug_minor`, can be consumed automatically using patterns.
 
 1. **Dedicated DLQ (Dead Letter Queue) Topics**: Handling erroneous or unprocessable messages becomes crucial as applications scale. Systems can isolate and address these problematic messages by employing dedicated Kafka topics for DLQ, such as `dlq_orders`, `dlq_notifications`. Karafka's Routing Patterns can be leveraged to automatically detect and route messages to these DLQ topics, ensuring efficient monitoring and subsequent troubleshooting.
-
 
 ## Summary
 

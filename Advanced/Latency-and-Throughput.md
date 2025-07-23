@@ -26,7 +26,7 @@ The `queue.buffering.max.ms` parameter defines the maximum waiting time for addi
 
 Below are logs from dispatches with `queue.buffering.max.ms` set to `5` ms compared to `queue.buffering.max.ms` set to 0 in a local Kafka setup:
 
-```bash
+```text
 # buffer for 5ms and produce sync
 
 [waterdrop-80ad817ceb09] Sync producing (...) took 5.458219051361084 ms
@@ -43,7 +43,7 @@ Below are logs from dispatches with `queue.buffering.max.ms` set to `5` ms compa
 
 vs.
 
-```bash
+```text
 # dispatch immediately
 
 [waterdrop-e2c291b6b0f3] Sync producing (...) took 0.2399919033050537 ms
@@ -325,7 +325,6 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
   </tr>
 </table>
 
-
 Below is an example latency impact of enabling `enable.partition.eof` and lowering `fetch.wait.max.ms` to `100`ms, compared to the default values, on a low-traffic topic (1 message per second). In both cases, `max_wait_time` was set to `2000`ms (less is better).
 
 <p align="center">
@@ -491,7 +490,6 @@ Karafka is designed to prefetch data from Kafka while previously obtained messag
 
 Under normal operations, when there are no significant lags, Karafka prefetches some data from each assigned topic partition. This is because there is little data ahead to process. For example, if 200 messages are available for processing from 10 partitions, Karafka might prefetch these messages in small batches, resulting in 10 independent jobs with 20 messages each.
 
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/latency_and_throughput/regular_work_distribution.svg" />
 </p>
@@ -567,4 +565,3 @@ External factors, such as infrastructure setup, network conditions, and data pro
 Optimization strategies, including multiple subscription groups, connection multiplexing, and virtual partitions, help balance workloads and enhance parallel processing. Each use case demands a unique configuration, underscoring the need for a thorough understanding of the framework and application requirements.
 
 In conclusion, effective consumer management in Karafka requires considering various factors and regular adjustments to maintain efficiency and responsiveness.
-

@@ -128,7 +128,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 ### Step 4: Verify Release
 
-1. **Check RubyGems**: Visit the gem's page on https://rubygems.org to confirm the new version is published
+1. **Check RubyGems**: Visit the gem's page on [RubyGems](https://rubygems.org) to confirm the new version is published
 2. **Test Installation**: Try installing the gem locally: `gem install gem_name -v new_version`
 3. **Automatic Dependencies Update**: There is no need for manual dependency updating since Renovate will do it automatically within 24 hours.
 

@@ -10,14 +10,14 @@ The search modal includes several fields and options to refine your search:
 
 - **Phrase**: Enter the phrase you want to search for within the selected messages. This is the string that the search will look for according to the matcher criteria.
 
--  **Partitions**: Choose which partitions to include in the search. You can select all partitions or specify individual ones. This allows you to narrow down your search to specific parts of your Kafka topic.
+- **Partitions**: Choose which partitions to include in the search. You can select all partitions or specify individual ones. This allows you to narrow down your search to specific parts of your Kafka topic.
 
--  **Offset**: Define the starting point for the search. You have three options:
+- **Offset**: Define the starting point for the search. You have three options:
     - **Latest**: Start searching from the most recent messages.
     - **Offset**: Specify an exact offset to start from.
     - **Timestamp**: Provide a timestamp (in milliseconds) to start the search from a specific point in time.
 
--  **Messages**: Select the limit on the number of messages to scan. The available options ensure the search operation remains efficient and does not overload the system.
+- **Messages**: Select the limit on the number of messages to scan. The available options ensure the search operation remains efficient and does not overload the system.
 
 Once you have configured your search parameters, click the "Search" button to initiate the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
 
@@ -139,6 +139,7 @@ The Search Metadata Details are highly useful for several reasons:
 1. **Temporal Analysis**: The lookup range provides insights into the temporal scope of the search, which helps analyze data trends over time.
 
 ## Custom Matchers
+
 Creating custom matchers allows you to tailor the search functionality to meet your needs. Matchers define how messages are searched and can be customized to handle different data types or search criteria. Additionally, matchers can be configured to be available only for the topics that are relevant to them, ensuring that they are applied appropriately and efficiently.
 
 ### Why Create Custom Matchers?

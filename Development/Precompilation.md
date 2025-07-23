@@ -1,4 +1,4 @@
-# Precompilation of Rdkafka - Mission Accomplished!
+# Precompilation of Rdkafka - Mission Accomplished
 
 As of 2025, **native extensions (precompiled binaries) are now available** for the rdkafka gem! This page documents the successful completion of one of the most challenging tasks in the Karafka ecosystem.
 

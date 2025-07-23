@@ -6,8 +6,8 @@ Due to the dynamic nature of Kafka, you can use multiple configuration options; 
 
 Karafka uses consumer groups to subscribe to topics. Each consumer group needs to be subscribed to at least one topic (but you can subscribe with it to as many topics as you want). To replicate this concept in our routing DSL, Karafka allows you to configure settings on two levels:
 
-* settings level - root settings that will be used everywhere
-* topic level - options that need to be set on a per topic level or overrides to options set on a root level
+- settings level - root settings that will be used everywhere
+- topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
 !!! note ""
 
@@ -80,7 +80,6 @@ All the subscription groups define within a single consumer group will operate w
 !!! note "Pro Subscription Group Multiplexing"
 
     Karafka's Open Source version supports one connection per subscription group without ability to subscribe to the same topic multiple times from the same process. If you want to establish many connections to the same topic from a single process, upgrade to Karafka Pro. [Multiplexing](Pro-Multiplexing) allows multiple connections to the same topic within a single subscription group, enhancing performance and parallel processing.
-
 
 ```ruby
 class KarafkaApp < Karafka::App

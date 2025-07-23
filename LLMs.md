@@ -58,4 +58,3 @@ Usage Rules:
 - **WaterDrop Transactions**: Use for exactly-once semantics; couple consuming and producing operations atomically; requires `enable.idempotence: true`
 - **Web UI Setup**: Requires `bundle exec karafka-web install` before first use; run `karafka-web migrate` for each environment; needs system commands like `ps`, `sysctl` (install `procps` in Docker)
 - **Web UI Authentication**: Implement secure authentication with timing attack protection; use proper session secrets; can integrate with Rails authentication systems
-

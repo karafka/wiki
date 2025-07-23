@@ -43,11 +43,11 @@ After the initial 2-week observation period, the upgrade process begins with the
 - Deploy the updated rdkafka gem in the dedicated integration environment
 - Execute the full Karafka end-to-end integration suite continuously for 2 weeks
 - Monitor for:
-  - Performance regressions
-  - Memory usage changes
-  - Behavioral deviations from expected patterns
-  - Edge case handling differences
-  - Consumer/producer stability under various load conditions
+    - Performance regressions
+    - Memory usage changes
+    - Behavioral deviations from expected patterns
+    - Edge case handling differences
+    - Consumer/producer stability under various load conditions
 
 ## Version Numbering Strategy
 

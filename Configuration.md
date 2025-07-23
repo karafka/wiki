@@ -1,8 +1,8 @@
 Karafka contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
 
-* root `karafka` options - options directly related to the Karafka framework and its components.
+- root `karafka` options - options directly related to the Karafka framework and its components.
 
-* kafka scoped `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
+- kafka scoped `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
 
 To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
 

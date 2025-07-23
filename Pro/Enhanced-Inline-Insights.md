@@ -2,7 +2,6 @@ Inline Insights is a feature of Karafka that provides a way to enhance your data
 
 Not all applications and services need insights at all times. However, for critical applications, these insights can be crucial. With the `required` option, developers can ensure that their consumers only process the data when the associated insights metrics are available.
 
-
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|

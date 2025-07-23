@@ -126,7 +126,6 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to ensure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
 
-
 ## CPU Usage
 
 Karafka is designed to efficiently handle high-throughput message processing, leveraging modern CPU architectures to optimize performance. Here are the key aspects of CPU usage in Karafka:

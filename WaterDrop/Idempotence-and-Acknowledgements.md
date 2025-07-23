@@ -152,7 +152,6 @@ In this scenario:
   </tbody>
 </table>
 
-
 ## Best Practices
 
 - Enable idempotence: Always enable producer idempotence for critical data to avoid duplicate messages during retries.

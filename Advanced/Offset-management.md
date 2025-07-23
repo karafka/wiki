@@ -32,6 +32,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
 ### Marking messages as consumed and committing offsets
 
 To mark a certain message as consumed (so in case of a crash or restart, it won't be consumed again), you can use one of two marking methods:

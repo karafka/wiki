@@ -24,7 +24,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-
 ## Partial Reconfiguration
 
 There are scenarios where you want only partially to overwrite the configuration and change one or two attributes. In cases like this, to not duplicate the Kafka cluster configuration, you can use the `Karafka::Setup::AttributesMap`. For example, you may want to disable dispatch to Kafka altogether in `test` env:

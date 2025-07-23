@@ -128,21 +128,21 @@ There are three primary parameters to consider:
 
 1. **WaterDrop Client-Side Validation**:
 
-  - Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to ensure the message payload is within permissible limits.
+- Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to ensure the message payload is within permissible limits.
 
-  - It's worth noting that this validation only concerns the payload and not additional elements like metadata, headers, and key.
+- It's worth noting that this validation only concerns the payload and not additional elements like metadata, headers, and key.
 
 2. **librdkafka Validation**:
 
-  - librdkafka, before publishing, validates the **uncompressed** size of the message.
+- librdkafka, before publishing, validates the **uncompressed** size of the message.
 
-  - This check ensures that the message size adheres to configured standards even before compression.
+- This check ensures that the message size adheres to configured standards even before compression.
 
 3. **Broker-Side Validation**:
 
-  - After the message is dispatched, the broker then validates the **compressed** size.
+- After the message is dispatched, the broker then validates the **compressed** size.
 
-  - The distinction between compressed and uncompressed size is essential because of the potential compression ratios achievable with different compression algorithms.
+- The distinction between compressed and uncompressed size is essential because of the potential compression ratios achievable with different compression algorithms.
 
 Below you can find examples where each of the validations layers fails:
 
@@ -212,17 +212,17 @@ Karafka.producer.produce_sync(
 
 1. **Disabling max_payload_size**:
 
-  - If you don't use dummy or buffered clients for testing, it's possible to turn off `max_payload_size`.
+- If you don't use dummy or buffered clients for testing, it's possible to turn off `max_payload_size`.
 
-  - This can be done by setting it to a high value and bypassing this validation step.
+- This can be done by setting it to a high value and bypassing this validation step.
 
-  - However, librdkafka will still validate the uncompressed size of the entire message, including headers, metadata, and key.
+- However, librdkafka will still validate the uncompressed size of the entire message, including headers, metadata, and key.
 
 2. **Interpreting Validation Errors**:
 
-  - A discrepancy between `max_payload_size` and `message.max.bytes` may arise due to the additional size from metadata, headers, and keys.
+- A discrepancy between `max_payload_size` and `message.max.bytes` may arise due to the additional size from metadata, headers, and keys.
 
-  - Hence, it's possible to bypass WaterDrop's validation but fail on librdkafka's end.
+- Hence, it's possible to bypass WaterDrop's validation but fail on librdkafka's end.
 
 ### Conclusion
 

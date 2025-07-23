@@ -143,7 +143,6 @@ This feature is especially critical in industries subject to stringent regulatio
 
     The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It's essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
 
-
 ## Example Use Cases
 
 - Healthcare: In the healthcare industry, patient data like medical history, diagnoses, and prescriptions are stored in Kafka. At-rest encryption can help ensure the confidentiality and integrity of this sensitive information, helping to meet regulatory requirements like HIPAA and GDPR.

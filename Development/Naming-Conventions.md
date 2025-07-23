@@ -129,6 +129,7 @@ large-topic-[0-99]     # For topics with many consecutive partitions
 When showing assignments across multiple topics, use consistent formatting for each topic.
 
 **Examples:**
+
 ```
 orders-[0,1,2], payments-[0,1], notifications-[0]
 events-[0-9], metrics-[0-4], logs-[0]
@@ -139,6 +140,7 @@ events-[0-9], metrics-[0-4], logs-[0]
 When partition information isn't relevant, use simple topic names.
 
 **Examples:**
+
 ```
 Topics: orders, payments, notifications
 Subscribed to: events, metrics, logs
@@ -194,6 +196,7 @@ orders-2           | 18,765         | 1
 Use appropriate format based on context - dash for specific references, brackets for assignments.
 
 **Error Message Examples:**
+
 ```ruby
 # Specific partition error
 logger.error "Failed to process message from orders-3"

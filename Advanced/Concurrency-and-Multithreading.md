@@ -1,7 +1,7 @@
 Karafka uses native Ruby threads to achieve concurrent processing in four scenarios:
 
 - for concurrent processing of messages from different topics partitions.
-- for concurrent processing of messages from same topic different partitions (via [Multiplexing](Pro-Multiplexing) or [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)). 
+- for concurrent processing of messages from same topic different partitions (via [Multiplexing](Pro-Multiplexing) or [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)).
 - for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Virtual-Partitions) feature.
 - to handle consumer groups management (each consumer group defined will be managed by a separate thread).
 
