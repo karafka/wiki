@@ -17,7 +17,7 @@ bundle add karafka --version ">= 2.5.0"
 bundle exec karafka install
 ```
 
-*Result*: All necessary files and directories are generated:
+**Result**: All necessary files and directories are generated:
 
 - `karafka.rb` - main file where you configure Karafka and where you define which consumers should consume what topics.
 - `app/consumers/example_consumer.rb` - example consumer.
