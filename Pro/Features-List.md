@@ -20,7 +20,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-Blocking Jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, ensuring efficient and timely data handling.
 
-- [Adaptive Iterator](Pro-Adaptive-Iterator) - TBA
+- [Adaptive Iterator](Pro-Adaptive-Iterator) - Monitors message processing times to prevent exceeding Kafka's `max.poll.interval.ms` by stopping and seeking back when time runs low, ideal for handling sporadic processing spikes while maintaining consumer stability.
 
 - [Periodic Jobs](Pro-Periodic-Jobs) - Periodic Jobs enable consumers to perform operations at regular intervals, even without new data. This feature allows for advanced window-based operations and ensures consumers remain active and ready, facilitating consistent processing capabilities regardless of data inflow.
 
