@@ -185,8 +185,29 @@
 It is recommended to do one major upgrade at a time.
 
 - [Karafka](Upgrades-Karafka)
+    - [2.5](Upgrades-Karafka-2.5)
+    - [2.4](Upgrades-Karafka-2.4)
+    - [2.3](Upgrades-Karafka-2.3)
+    - [2.2](Upgrades-Karafka-2.2)
+    - [2.1](Upgrades-Karafka-2.1)
+    - [2.0](Upgrades-Karafka-2.0)
+
 - [Web UI](Upgrades-Web-UI)
+    - [0.11](Upgrades-Web-UI-0.11)
+    - [0.10](Upgrades-Web-UI-0.10)
+    - [0.9](Upgrades-Web-UI-0.9)
+    - [0.8](Upgrades-Web-UI-0.8)
+    - [0.7](Upgrades-Web-UI-0.7)
+    - [0.6](Upgrades-Web-UI-0.6)
+    - [0.5](Upgrades-Web-UI-0.5)
+    - [0.4](Upgrades-Web-UI-0.4)
+    - [0.3](Upgrades-Web-UI-0.3)
+
 - [WaterDrop](Upgrades-WaterDrop)
+    - [2.8](Upgrades-WaterDrop-2.8)
+    - [2.7](Upgrades-WaterDrop-2.7)
+    - [2.6](Upgrades-WaterDrop-2.6)
+    - [2.5](Upgrades-WaterDrop-2.5)
 
 ## Changelogs
 

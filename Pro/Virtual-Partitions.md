@@ -429,7 +429,7 @@ This behavior is advantageous in scenarios where message processing involves ext
 
 ## Behaviour on Errors
 
-For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](/docs/Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
+For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/error_handling.svg" />

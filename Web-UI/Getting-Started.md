@@ -4,7 +4,7 @@ Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-
 
 To use it:
 
-1. Make sure Apache Kafka is running. You can start it by following instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
+1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Kafka-Setting-Up).
 
 2. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
 
@@ -249,7 +249,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 
 !!! note ""
 
-    Karafka Web UI topics are **not** managed via the [Declarative topics API](/docs/Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
+    Karafka Web UI topics are **not** managed via the [Declarative topics API](Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
 ## External Shell/OS Required Commands
 
@@ -366,7 +366,7 @@ Before reporting an issue, please make sure that:
 - Use `bundle exec karafka-web migrate` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
-- You have granted correct ACL permissions to the `CLIENT_ID_karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error. You can find more about admin consumer group [here](https://karafka.io/docs/Admin-API/#configuration).
+- You have granted correct ACL permissions to the `CLIENT_ID_karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error. You can find more about admin consumer group [here](Admin-API#configuration).
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist.
 

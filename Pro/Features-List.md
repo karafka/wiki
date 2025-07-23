@@ -58,4 +58,4 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Reliability](Pro-Enhanced-Reliability) - Enhanced Reliability provides improvements to achieve better performance and stability, especially on jobs that perform IO operations.
 
-- [Commercial Friendly License](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) - Besides its useful functionalities, buying Karafka Pro grants your organization a Karafka commercial license instead of the GNU LGPL, avoiding any legal issues your lawyers might raise. Please see the [Pro FAQ](/docs/Pro-FAQ) for further licensing details, including options for distributing Karafka Pro with your products.
+- [Commercial Friendly License](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) - Besides its useful functionalities, buying Karafka Pro grants your organization a Karafka commercial license instead of the GNU LGPL, avoiding any legal issues your lawyers might raise. Please see the [Pro FAQ](Pro-FAQ) for further licensing details, including options for distributing Karafka Pro with your products.

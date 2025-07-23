@@ -251,7 +251,7 @@ Karafka Web UI is a user interface for the [Karafka framework](https://github.co
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
-You can read more about its features [here](/docs/Web-UI-Features), and the installation documentation can be found [here](Web-UI-Getting-Started).
+You can read more about its features [here](Web-UI-Features), and the installation documentation can be found [here](Web-UI-Getting-Started).
 
 ## AppSignal Metrics and Error Tracking
 
