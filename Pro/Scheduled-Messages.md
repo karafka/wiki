@@ -48,7 +48,7 @@ This approach simplifies setting up scheduled messages, making them accessible w
 
 ### Creating Required Kafka Topics
 
-When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](https://karafka.io/docs/Declarative-Topics/). This means that all you need to do is to run the:
+When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
 
 ```bash
 bundle exec karafka topics migrate
@@ -595,7 +595,7 @@ When implementing an external producer to schedule messages for Karafka, ensure 
 
 ## Alternatives
 
-When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](https://karafka.io/docs/Pro-Delayed-Topics/) and [Piping](https://karafka.io/docs/Pro-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
+When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](Pro-Delayed-Topics) and [Piping](Pro-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
 
 ### Delayed Topics
 
@@ -618,7 +618,7 @@ Delayed Topics in Karafka provide a mechanism to delay message consumption from 
 
 ### Delayed Piping
 
-[Piping](https://karafka.io/docs/Pro-Piping/) with [Delayed Topics](https://karafka.io/docs/Pro-Delayed-Topics/) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
+[Piping](Pro-Piping) with [Delayed Topics](Pro-Delayed-Topics) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
 
 Use Cases:
 

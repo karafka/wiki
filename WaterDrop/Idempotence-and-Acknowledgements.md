@@ -39,7 +39,7 @@ Acknowledgements (`acks`) dictate how the producer and the broker agree that a m
 
     WaterDrop Variants support configuring acknowledgements on a **per-topic basis** while using the **same producer instance**. This flexibility allows different topics to have custom acknowledgement settings depending on the reliability and performance needs of the specific topic. 
 
-    It is recommended to check the [WaterDrop Variants documentation](https://karafka.io/docs/WaterDrop-Variants/) for more details on how to configure this.
+    It is recommended to check the [WaterDrop Variants documentation](WaterDrop-Variants) for more details on how to configure this.
 
 ### Interaction with `min.insync.replicas`
 
@@ -54,7 +54,7 @@ For example:
 - A replication factor of 3 means that Kafka will store three copies of each partition across different brokers.
 - If one broker fails, the remaining brokers will have the data.
 
-The replication factor is set at the topic level when the topic is created. You can define it using the [Declarative Topics](https://karafka.io/docs/Declarative-Topics/) feature:
+The replication factor is set at the topic level when the topic is created. You can define it using the [Declarative Topics](Declarative-Topics) feature:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -79,7 +79,7 @@ end
 
     If the number of in-sync replicas falls below this threshold (e.g., due to broker failure), Kafka will reject writes until the required number of replicas is back online.
 
-To configure `min.insync.replicas` at the topic level you can use the [Declarative Topics](https://karafka.io/docs/Declarative-Topics/):
+To configure `min.insync.replicas` at the topic level you can use the [Declarative Topics](Declarative-Topics):
 
 ```ruby
 class KarafkaApp < Karafka::App

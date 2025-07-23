@@ -1,6 +1,6 @@
 # Parallel Segments
 
-Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads and those that cannot be effectively parallelized using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/) alone.
+Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads and those that cannot be effectively parallelized using [Virtual Partitions](Pro-Virtual-Partitions) alone.
 
 Unlike Virtual Partitions, which operate within a single consumer group and are optimized for IO-bound operations, Parallel Segments create multiple independent consumer groups that each process a subset of messages from the same topic partition. This makes it particularly effective for CPU-intensive processing scenarios where the computational overhead is the primary bottleneck, as well as in cases where data clustering makes Virtual Partitions ineffective.
 

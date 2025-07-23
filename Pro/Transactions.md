@@ -16,7 +16,7 @@ Karafka transactions provide Exactly-Once Semantics by ensuring that producing t
 
 !!! tip "Scope of WaterDrop Transactions"
 
-    Please note that **this document concentrates solely on the consumer-related aspects of Karafka's transactions**. For a comprehensive understanding of transactions and to ensure a well-rounded mastery of Karafka's transactional capabilities, delving into the [WaterDrop transactions documentation](https://karafka.io/docs/WaterDrop-Transactions/) is imperative.
+    Please note that **this document concentrates solely on the consumer-related aspects of Karafka's transactions**. For a comprehensive understanding of transactions and to ensure a well-rounded mastery of Karafka's transactional capabilities, delving into the [WaterDrop transactions documentation](WaterDrop-Transactions) is imperative.
 
 !!! Warning "Avoid Mixing Transactional and Non-Transactional Offset Committing"
 
@@ -275,7 +275,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
     It is critical to ensure that the `#wrap` method always calls `yield`, even if operations like selecting a producer from a pool fail. The `yield` statement in `#wrap` executes the entire operational flow within Karafka, including not only your custom logic but also essential framework-level synchronization and processing code.
 
-    You can read more about this requirement [here](https://karafka.io/docs/Consuming-Messages/#wrapping-the-execution-flow).
+    You can read more about this requirement [here](Consuming-Messages#wrapping-the-execution-flow).
 
 ### Risks of Early Exiting Transactional Block
 
@@ -336,7 +336,7 @@ end
 
 ### Balancing Transactions and Long-Running Jobs
 
-Providing a custom producer to the `#transaction` method temporarily overwrites the default producer for that specific consumer instance. This behavior is relevant in scenarios involving [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) that execute alongside the message consumption process, such as handling `#revoked` under Long Running Jobs (LRJ).
+Providing a custom producer to the `#transaction` method temporarily overwrites the default producer for that specific consumer instance. This behavior is relevant in scenarios involving [Long-Running Jobs](Pro-Long-Running-Jobs) that execute alongside the message consumption process, such as handling `#revoked` under Long Running Jobs (LRJ).
 
 It's crucial to understand the implications of this producer reassignment:
 
@@ -400,7 +400,7 @@ end
 
 ### Offset Metadata Storage
 
-The [Offset Metadata Storage](https://karafka.io/docs/Pro-Offset-Metadata-Storage/) feature allows you to attach custom metadata to message offsets, enhancing the traceability and context of message processing. Crucially, this metadata can be included when you use the `#mark_as_consumed` method within transactions, ensuring the metadata is committed alongside the successful transaction. This feature is fully functional within and outside of transactional contexts, providing a consistent and flexible approach to enriching your message with valuable contextual data.
+The [Offset Metadata Storage](Pro-Offset-Metadata-Storage) feature allows you to attach custom metadata to message offsets, enhancing the traceability and context of message processing. Crucially, this metadata can be included when you use the `#mark_as_consumed` method within transactions, ensuring the metadata is committed alongside the successful transaction. This feature is fully functional within and outside of transactional contexts, providing a consistent and flexible approach to enriching your message with valuable contextual data.
 
 ```ruby
 def consume
@@ -445,7 +445,7 @@ This section explains how transactions interact with the DLQ and the implication
 
 !!! Notice "Disabling Transactions During DLQ Dispatches"
 
-    It's worth noting that this behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/#disabling-transactions-during-dlq-dispatches).
+    It's worth noting that this behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](Pro-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
 3. **Error Handling and Retries**: If an error occurs during the DLQ operation, such as partition revocation or networking issues, Karafka's default behavior is to retry processing the same batch. This retry mechanism ensures that transient failures don't lead to message loss or unacknowledged message consumption. The system attempts to process the batch again, allowing the operation to succeed.
 
@@ -475,7 +475,7 @@ Here's how Karafka's delivery warranties manifest in transactions:
 
 ## Instrumentation
 
-Transactions Instrumentation is directly tied to the **producer** handling the transaction. To effectively monitor transaction behavior, it's essential to integrate your instrumentation with the transactional producers. This ensures accurate tracking and analysis of transactional activities, enhancing system monitoring and reliability. Refer to the [WaterDrop Transactions Instrumentation](https://karafka.io/docs/WaterDrop-Transactions/#instrumentation) section for a comprehensive approach to transaction instrumentation.
+Transactions Instrumentation is directly tied to the **producer** handling the transaction. To effectively monitor transaction behavior, it's essential to integrate your instrumentation with the transactional producers. This ensures accurate tracking and analysis of transactional activities, enhancing system monitoring and reliability. Refer to the [WaterDrop Transactions Instrumentation](WaterDrop-Transactions#instrumentation) section for a comprehensive approach to transaction instrumentation.
 
 However, it's important to know that **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
 
@@ -501,7 +501,7 @@ For advanced monitoring or custom integrations, remember that the Karafka consum
 
 ## Using Transactions in Swarm Mode
 
-For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/#transactional-producer-handling-in-swarm-mode).
+For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](Swarm-Multi-Process#transactional-producer-handling-in-swarm-mode).
 
 ## Performance Implications
 

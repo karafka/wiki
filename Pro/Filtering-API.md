@@ -66,7 +66,7 @@ Filter instance is created when Karafka encounters a given topic partition for t
 
     Using `#seek` and `#pause` within a Filter requires a clear understanding of their implications. Misuse can result in unexpected behavior and performance issues.
 
-    For full details and best practices, refer to the [pausing and seeking](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/) documentation. Ensure you're informed before integrating these operations.
+    For full details and best practices, refer to the [pausing and seeking](Pausing-Seeking-and-Rate-Limiting) documentation. Ensure you're informed before integrating these operations.
 
 By default, filters applied to messages do not alter the execution or polling behavior of Karafka. This means that even if a message is filtered out, Karafka will continue to poll for messages at the same rate. However, it is possible to alter this behavior by overwriting the `#action` method in a custom consumer. This method is responsible for executing the logic of a given message. By overwriting it, developers can modify the behavior of their Karafka application based on the result of the filtering. For example, they might choose to pause processing or resume from a particular message.
 

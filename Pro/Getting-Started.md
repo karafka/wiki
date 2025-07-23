@@ -33,7 +33,7 @@ gem 'karafka'
 
 !!! Info "Checksum Verification in Enterprise Mode Not Needed"
 
-    When using Karafka with an offline [Enterprise](https://karafka.io/docs/Pro-Enterprise/) license, license gem checksum verification is not required. The Enterprise license is fully offline and not subject to change. It is also not being fetched from the Karafka gem server, thus making the checksum verification pointless.
+    When using Karafka with an offline [Enterprise](Pro-Enterprise) license, license gem checksum verification is not required. The Enterprise license is fully offline and not subject to change. It is also not being fetched from the Karafka gem server, thus making the checksum verification pointless.
 
 !!! Warning " Checksum Not Available on Web UI"
 

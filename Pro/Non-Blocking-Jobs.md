@@ -28,4 +28,4 @@ Non-Blocking Jobs are Long-Running Jobs, and `#non_blocking_job` is just an alia
 - Make informed decisions about system architecture based on the job's nature.
 - Maintain a self-documenting codebase that is easier to understand and manage.
 
-Please refer to the [Long-Running Jobs documentation](https://karafka.io/docs/Pro-Long-Running-Jobs/) to better understand this feature.
+Please refer to the [Long-Running Jobs documentation](Pro-Long-Running-Jobs) to better understand this feature.

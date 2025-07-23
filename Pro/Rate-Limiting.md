@@ -27,7 +27,7 @@ end
 
 !!! Warning "Rate Limiting Impact on Internal Queues"
 
-    When using Rate Limiting, be aware it uses `#pause`, which will purge your internal message queue. This occurs because `#pause` is a fencing mechanism, invalidating all messages in the queue. To mitigate excessive network traffic due to re-fetching of messages, consider lowering the `queued.max.messages.kbytes` value. You can read more about this [here](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/#pause-and-seek-usage-potential-networking-impact).
+    When using Rate Limiting, be aware it uses `#pause`, which will purge your internal message queue. This occurs because `#pause` is a fencing mechanism, invalidating all messages in the queue. To mitigate excessive network traffic due to re-fetching of messages, consider lowering the `queued.max.messages.kbytes` value. You can read more about this [here](Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
 
 ## Behaviour on errors
 
@@ -39,7 +39,7 @@ During this retry interval, the message is not counted towards the rate limiting
 
 While a powerful tool, the Rate Limiting API in Karafka has a few limitations and nuances worth knowing:
 
-- Due to its reliance on the `#pause` method, especially for short durations, usage of the Rate Limiting API can inadvertently lead to significant network traffic. This arises because Karafka tries to replenish its internal buffer after resuming from a pause. When this behavior is frequent, it results in redundant fetching of the same data repeatedly, creating unnecessary network load. For a more detailed explanation of the impact of the `#pause` method on networking and its potential consequences, you can read more [here](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/#pause-and-seek-usage-potential-networking-impact).
+- Due to its reliance on the `#pause` method, especially for short durations, usage of the Rate Limiting API can inadvertently lead to significant network traffic. This arises because Karafka tries to replenish its internal buffer after resuming from a pause. When this behavior is frequent, it results in redundant fetching of the same data repeatedly, creating unnecessary network load. For a more detailed explanation of the impact of the `#pause` method on networking and its potential consequences, you can read more [here](Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
 
 - Rebalance in the Kafka cluster will reset the Rate Limiting mechanism in Karafka. This happens because rebalancing can cause a redistribution of partitions between the consumer group members, affecting the consumption rate. However, Karafka provides an advanced filtering API that allows extending the throttler to prevent reset on rebalancing as long as the same process will receive the same assignment back. This feature can be helpful in scenarios where the consumer group members are frequently rebalanced, and the Rate Limiting mechanism needs to maintain its state across rebalances.
 

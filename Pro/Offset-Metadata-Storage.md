@@ -177,7 +177,7 @@ One crucial aspect is that the `#offset_metadata` method may return `false` if t
 
 ## Offset Metadata Usage From Within Filters
 
-Offset Metadata Storage in Karafka enhances consumer instances' capability to manage and utilize message offsets and extends this functionality beyond the scope of a single consumer. This feature is particularly beneficial when you need to access offset metadata from different application components, such as within the [Filtering API](https://karafka.io/docs/Pro-Filtering-API/), to make more context-aware decisions based on the metadata associated with specific offsets.
+Offset Metadata Storage in Karafka enhances consumer instances' capability to manage and utilize message offsets and extends this functionality beyond the scope of a single consumer. This feature is particularly beneficial when you need to access offset metadata from different application components, such as within the [Filtering API](Pro-Filtering-API), to make more context-aware decisions based on the metadata associated with specific offsets.
 
 In scenarios where you need to retrieve offset metadata outside of the consumer instance, for instance, within Filters, to leverage the Filtering API, Karafka provides a flexible solution. This is especially useful when your processing logic requires insight into the message offsets' metadata at different stages or components of your application, not just within the consumer itself.
 

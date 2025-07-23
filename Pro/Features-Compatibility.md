@@ -83,13 +83,13 @@ end
 
 ## Virtual Partitions + Offset Metadata Storage
 
-In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configurable during routing, dictates whether the system should use the most recent (`:current`) or the exact (`:exact`) metadata associated with a materialized offset, a choice crucial for aligning processing logic with data consistency requirements. For detailed usage and configuration, refer to [this](https://karafka.io/docs/Pro-Offset-Metadata-Storage/#interaction-with-virtual-partitions) Karafka documentation section.
+In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configurable during routing, dictates whether the system should use the most recent (`:current`) or the exact (`:exact`) metadata associated with a materialized offset, a choice crucial for aligning processing logic with data consistency requirements. For detailed usage and configuration, refer to [this](Pro-Offset-Metadata-Storage#interaction-with-virtual-partitions) Karafka documentation section.
 
 ## Routing Patterns + Dead Letter Queue
 
 While Karafka's Routing Patterns feature integrates seamlessly with the Dead Letter Queue (DLQ) mechanism, developers are advised to exercise caution. Specifically, there's a potential issue where an imprecisely crafted regular expression could inadvertently match both primary and DLQ topics. This misconfiguration might result in messages from the DLQ being consumed in an unexpected loop, especially if the DLQ topic isn't explicitly targeted for consumption.
 
-You can read more about this issue [here](https://karafka.io/docs/Pro-Routing-Patterns/#dlq-accidental-auto-consumption).
+You can read more about this issue [here](Pro-Routing-Patterns#dlq-accidental-auto-consumption).
 
 ## Messages At Rest Encryption + Custom Headers Deserializer and Encryption
 

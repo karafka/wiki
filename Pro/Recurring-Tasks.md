@@ -83,9 +83,9 @@ This will automatically create a special consumer group dedicated to the consump
 
 !!! Tip "Review Replication Factor Configuration"
 
-    Before deploying to production, it is crucial to read the [Replication Factor Configuration for the Production Environment](https://karafka.io/docs/Pro-Recurring-Tasks/#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
+    Before deploying to production, it is crucial to read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
 
-When `recurring_tasks(true)` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](https://karafka.io/docs/Declarative-Topics/). This means that all you need to do is to run the:
+When `recurring_tasks(true)` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
 
 ```bash
 bundle exec karafka topics migrate

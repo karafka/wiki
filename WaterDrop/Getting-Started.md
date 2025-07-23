@@ -2,7 +2,7 @@
 
 !!! info ""
 
-    If you want to both produce and consume messages, please use [Karafka](https://karafka.io/docs/Getting-Started/). It integrates WaterDrop automatically.
+    If you want to both produce and consume messages, please use [Karafka](Getting-Started). It integrates WaterDrop automatically.
 
 To get started with WaterDrop:
 
@@ -52,4 +52,4 @@ producer.produce_many_async(
 
 !!! info ""
 
-    For additional WaterDrop usage examples, please refer to the [Usage](https://karafka.io/docs/WaterDrop-Usage/) section of this documentation.
+    For additional WaterDrop usage examples, please refer to the [Usage](WaterDrop-Usage) section of this documentation.

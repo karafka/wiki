@@ -24,7 +24,7 @@ producer.close
 
 ## Karafka Web-UI
 
-Karafka [Web UI](https://karafka.io/docs/Web-UI-Getting-Started/) is a user interface for the Karafka framework. The Web UI provides a convenient way for monitor all producers related errors out of the box.
+Karafka [Web UI](Web-UI-Getting-Started) is a user interface for the Karafka framework. The Web UI provides a convenient way for monitor all producers related errors out of the box.
 
 ![Example producer errors in Karafka Web-UI](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/errors-producer.png)
 
@@ -61,7 +61,7 @@ producer.produce_sync(topic: 'my.topic', payload: 'my.message')
 
 WaterDrop is configured to emit internal `librdkafka` metrics every five seconds. You can change this by setting the `kafka` `statistics.interval.ms` configuration property to a value greater than of equal `0`. Emitted statistics are available after subscribing to the `statistics.emitted` publisher event. If set to `0`, metrics will not be published.
 
-The statistics include all of the metrics from `librdkafka` (complete list [here](https://karafka.io/docs/Librdkafka-Statistics/)) as well as the diff of those against the previously emitted values.
+The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
 !!! note ""
 
@@ -154,7 +154,7 @@ end
 
 !!! note ""
 
-    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](https://karafka.io/docs/WaterDrop-Transactions) documentation.
+    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](WaterDrop-Transactions) documentation.
 
 ## Acknowledgment Notifications
 
@@ -187,7 +187,7 @@ end
 
 ## Labeling API
 
-Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](https://karafka.io/docs/WaterDrop-Labeling/) section.
+Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
 
 ## Datadog and StatsD Integration
 
@@ -265,7 +265,7 @@ end
 producer.monitor.subscribe(listener)
 ```
 
-The structure and details about the librdkafka statistical metrics can be found [here](https://karafka.io/docs/Librdkafka-Statistics/).
+The structure and details about the librdkafka statistical metrics can be found [here](Librdkafka-Statistics).
 
 !!! hint "Mixing Approaches"
 

@@ -261,7 +261,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 6. You can request a 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka
 
-You can read more about those differences [here](https://karafka.io/docs/Pro-Enterprise/).
+You can read more about those differences [here](Pro-Enterprise).
 
 ## What is the response and resolution time for priority support with Karafka?
 
@@ -271,7 +271,7 @@ Please note that our software is provided "as is." We recommend utilizing the tr
 
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 
-Karafka maintains a [documentation page](https://karafka.io/docs/SBOM/) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
+Karafka maintains a [documentation page](SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
 
 ## Can I use one Karafka license across multiple companies within a corporate group?
 

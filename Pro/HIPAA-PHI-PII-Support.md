@@ -30,7 +30,7 @@ Karafka and Karafka Web UI come equipped with a set of features designed to faci
 
 #### At-Rest Data Encryption
 
-Karafka supports [data encryption at rest](https://karafka.io/docs/Pro-Messages-At-Rest-Encryption/), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
+Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -69,7 +69,7 @@ class MyCustomRequestsPolicy
 end
 ```
 
-You can learn more about the Polices [here](https://karafka.io/docs/Pro-Web-UI-Policies/).
+You can learn more about the Polices [here](Pro-Web-UI-Policies).
 
 #### Integration with Authentication Providers
 
@@ -81,7 +81,7 @@ Additionally, the provided code APIs enable you to define custom access policies
 
 One of the core privacy principles under HIPAA and other privacy regulations is to minimize the exposure of sensitive information. Karafka Web UI enables administrators to define which data fields are displayed and how they are presented. To protect their content, sensitive fields, such as patient identifiers or personal data, can be masked or redacted. This granular control over data presentation prevents unauthorized viewing of sensitive information and aligns with the requirements for data minimization.
 
-You can learn more about the Partial Payload Sanitization [here](https://karafka.io/docs/Pro-Web-UI-Policies/#partial-payload-sanitization).
+You can learn more about the Partial Payload Sanitization [here](Pro-Web-UI-Policies#partial-payload-sanitization).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />

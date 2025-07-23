@@ -1,6 +1,6 @@
 !!! Hint "Recommendation: Related Regulatory Documentation"
 
-    If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](https://karafka.io/docs/Pro-HIPAA-PHI-PII-Support/) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
+    If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
 
 Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secure operations in environments that require adherence to Federal Information Processing Standards. This documentation outlines how Karafka supports FIPS requirements.
 
@@ -49,7 +49,7 @@ These algorithms are implemented through FIPS-validated cryptographic modules, e
 
 ## Messages At Rest Encryption
 
-Karafka Pro provides transparent encryption of message payloads, ensuring sensitive data at rest in Kafka cannot be accessed by unauthorized parties. This is crucial for meeting FIPS requirements. You can read more about the at-rest encryption [here](https://karafka.io/docs/Pro-Messages-At-Rest-Encryption/).
+Karafka Pro provides transparent encryption of message payloads, ensuring sensitive data at rest in Kafka cannot be accessed by unauthorized parties. This is crucial for meeting FIPS requirements. You can read more about the at-rest encryption [here](Pro-Messages-At-Rest-Encryption).
 
 ### Custom Headers Deserializer and Encryption
 
@@ -64,9 +64,9 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](https://karafka.io/docs/SBOM/).
+All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](SBOM).
 
-For more comprehensive information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](https://karafka.io/docs/Pro-Security/).
+For more comprehensive information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
 
 ## librdkafka FIPS Support
 

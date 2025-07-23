@@ -2,7 +2,7 @@ Understanding WaterDrop error handling mechanisms is crucial for developing robu
 
 !!! notice ""
 
-    This document focuses on error handling for the Standard Producer (non-transactional). For information regarding the error behavior of the Transactional Producer, it is highly recommended to refer to the [Transactional Producer](https://karafka.io/docs/WaterDrop-Transactions) documentation.
+    This document focuses on error handling for the Standard Producer (non-transactional). For information regarding the error behavior of the Transactional Producer, it is highly recommended to refer to the [Transactional Producer](WaterDrop-Transactions) documentation.
 
 WaterDrop operates with a fully asynchronous architecture, maintaining a memory buffer for efficiently handling messages. This buffer stores messages waiting to be dispatched or already in the delivery process. Following the delivery of a message or the occurrence of an error after reaching the maximum retry limit, WaterDrop enqueues a delivery event into an internal event queue. This event includes the relevant delivery outcome, ensuring that each message's status is accurately tracked and managed within the system.
 

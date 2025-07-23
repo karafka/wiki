@@ -18,4 +18,4 @@ It:
 - Works with Kafka `1.0+` and Ruby `2.7+`
 - Works with and without Karafka
 
-Please visit the [Getting Started](https://karafka.io/docs/WaterDrop-Getting-Started/) page for instructions on installing, configuring, and using WaterDrop.
+Please visit the [Getting Started](WaterDrop-Getting-Started) page for instructions on installing, configuring, and using WaterDrop.

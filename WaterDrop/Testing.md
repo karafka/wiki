@@ -2,7 +2,7 @@
 
 !!! note ""
 
-    If you're using WaterDrop with Karafka, consider the `karafka-testing` gem for RSpec integration. Detailed documentation on its usage can be found [here](https://karafka.io/docs/Testing/).
+    If you're using WaterDrop with Karafka, consider the `karafka-testing` gem for RSpec integration. Detailed documentation on its usage can be found [here](Testing).
 
 Testing is a crucial component of any software development cycle. Ensuring that message production behaves as expected is essential when working with Kafka. Thankfully, WaterDrop provides a robust testing mechanism for its producers.
 

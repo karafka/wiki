@@ -8,7 +8,7 @@ Process-level commanding includes tracing consumers for detailed state informati
 
 !!! Hint "Quiet and Stop Commands Limitation"
 
-    Quiet and Stop commands do not function with Karafka processes operating in [Embedded](https://karafka.io/docs/Embedding/) or [Swarm](https://karafka.io/docs/Swarm-Multi-Process/) mode. This limitation arises because, in these modes, the Karafka process itself is not directly responsible for its state management.
+    Quiet and Stop commands do not function with Karafka processes operating in [Embedded](Embedding) or [Swarm](Swarm-Multi-Process) mode. This limitation arises because, in these modes, the Karafka process itself is not directly responsible for its state management.
 
 ### Configuration
 

@@ -165,7 +165,7 @@ This flexibility in handling delivery reports and delivery handles in both synch
 
 ## Labeling
 
-Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and utilizing labeling, please visit [this](https://karafka.io/docs/WaterDrop-Labeling) dedicated wiki page.
+Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and utilizing labeling, please visit [this](WaterDrop-Labeling) dedicated wiki page.
 
 ## Error Handling
 
@@ -173,7 +173,7 @@ WaterDrop's error handling is a complex feature with its dedicated documentation
 
 ## Transactions
 
-Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Please refer to [this](https://karafka.io/docs/WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
+Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Please refer to [this](WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
 
 ## Usage Across the Application and with Ruby on Rails
 
@@ -505,7 +505,7 @@ Each WaterDrop producer maintains its own set of TCP connections to Kafka broker
 
 ### When to Consider Variants Instead
 
-[WaterDrop Variants](https://karafka.io/docs/WaterDrop-Variants/) may be sufficient for simpler differences in delivery requirements. Variants share TCP connections while allowing customization of certain topic-specific settings. Consider variants when differences are limited to:
+[WaterDrop Variants](WaterDrop-Variants) may be sufficient for simpler differences in delivery requirements. Variants share TCP connections while allowing customization of certain topic-specific settings. Consider variants when differences are limited to:
 
 - `acks` settings (acknowledgment levels)
 - `compression.type` (compression algorithm selection)

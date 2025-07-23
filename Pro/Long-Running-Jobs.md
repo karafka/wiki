@@ -45,7 +45,7 @@ This feature is great for scenarios where your processing may last for a longer 
 
 !!! Tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
 
-    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](https://karafka.io/docs/Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
+    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
 
 ## Using Long-Running Jobs
 
@@ -69,7 +69,7 @@ end
 
 !!! warning "Long-Running Job Impact on Internal Queues"
 
-    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/#pause-and-seek-usage-potential-networking-impact).
+    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
 
 ## Processing during revocation
 

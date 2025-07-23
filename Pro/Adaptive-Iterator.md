@@ -10,8 +10,8 @@ Do not use the Adaptive Iterator if:
 
 - Your processing cost of a single message can exceed the `max.poll.interval.ms`.
 - You are processing messages in batches instead of one after another, as the Adaptive Iterator is designed for individual message processing.
-- You are using the [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/) feature, as it is not compatible with the Adaptive Iterator.
-- Your application consistently handles long-running jobs. In that case, use the [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature.
+- You are using the [Virtual Partitions](Pro-Virtual-Partitions) feature, as it is not compatible with the Adaptive Iterator.
+- Your application consistently handles long-running jobs. In that case, use the [Long-Running Jobs](Pro-Long-Running-Jobs) feature.
 - Your consumer requires strict control over offset management outside the default provided by the Adaptive Iterator.
 
 <p align="center">
@@ -24,7 +24,7 @@ Do not use the Adaptive Iterator if:
 
 !!! Tip "Handling Consistent Long-Running Jobs"
 
-    Consider using Karafka's [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
+    Consider using Karafka's [Long-Running Jobs](Pro-Long-Running-Jobs) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
 
 ## Benefits of Adaptive Iterator
 
@@ -69,7 +69,7 @@ In this example, the Adaptive Iterator is activated with specific parameters. Th
 - `active`: Set this to true to enable the Adaptive Iterator for the topic.
 - `safety_margin`: Defines the percentage of the total poll interval to reserve as a buffer. For instance, setting this to 15 leaves 15% of the time for post-processing, stopping further processing when 85% of the poll interval is used. The default is 10.
 - `marking_method`: Specifies how messages are marked as consumed. The default method is `:mark_as_consumed`, but you can set it to `:mark_as_consumed!`.
-- `clean_after_yielding`: Indicates whether to clean up after processing each message using the [Cleaner API](https://karafka.io/docs/Pro-Cleaner-API/). Set this to true if you want automatic cleanup after yielding.
+- `clean_after_yielding`: Indicates whether to clean up after processing each message using the [Cleaner API](Pro-Cleaner-API). Set this to true if you want automatic cleanup after yielding.
 
 ### Processing Messages with the Adaptive Iterator
 

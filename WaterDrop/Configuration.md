@@ -55,7 +55,7 @@ Some of the options are:
 
 ## Kafka configuration options
 
-You can create producers with different `kafka` settings. Full list of the Kafka configuration options is available [here](https://karafka.io/docs/Librdkafka-Configuration/).
+You can create producers with different `kafka` settings. Full list of the Kafka configuration options is available [here](Librdkafka-Configuration).
 
 ## Idempotence
 
@@ -81,7 +81,7 @@ The following Kafka configuration properties are adjusted automatically (if not 
 
 The idempotent producer ensures that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system ensures that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
 
-You can read more about idempotence and acknowledgements settings [here](https://karafka.io/docs/WaterDrop-Idempotence-and-Acknowledgements/).
+You can read more about idempotence and acknowledgements settings [here](WaterDrop-Idempotence-and-Acknowledgements).
 
 ## Compression
 

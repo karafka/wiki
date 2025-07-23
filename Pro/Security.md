@@ -24,4 +24,4 @@ On top of that, to ensure the stability and security of the system:
 
 !!! note ""
 
-    If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate [Enterprise](https://karafka.io/docs/Pro-Enterprise/) agreement with us. Please [contact us](https://karafka.io#support) for more details.
+    If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate [Enterprise](Pro-Enterprise) agreement with us. Please [contact us](https://karafka.io#support) for more details.

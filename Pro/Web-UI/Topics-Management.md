@@ -183,7 +183,7 @@ When managing topics through the Karafka Web UI Pro, consider these best practic
 1. **Replication Factor**: Use a replication factor of at least 3 for production topics
 1. **Configuration Tuning**: Adjust retention and segment settings based on data volume and access patterns
 1. **Caution with Deletion**: Always double-check before deleting topics, as this action cannot be undone
-1. **Permission Control**: Use the [Policies feature](https://karafka.io/docs/Pro-Web-UI-Policies/) to control who can manage topics
+1. **Permission Control**: Use the [Policies feature](Pro-Web-UI-Policies) to control who can manage topics
 1. **Change Documentation**: Document significant topic changes for team awareness
 1. **Testing**: Test configuration changes in non-production environments when possible
 1. **Monitoring**: Monitor topic metrics after making changes to ensure desired behavior
@@ -201,4 +201,4 @@ When managing topics through the Karafka Web UI Pro, consider these best practic
 
 The topic management features in Karafka Web UI Pro provide a comprehensive solution for administering your Kafka topics without leaving the web interface. With intuitive interfaces for creating topics, modifying configurations, and managing partitions, these tools streamline common administrative tasks and provide a user-friendly alternative to command-line tools.
 
-Combined with other Karafka Pro features like [Data Explorer](https://karafka.io/docs/Pro-Web-UI-Explorer/), [Topics Insights](https://karafka.io/docs/Pro-Web-UI-Topics-Insights), and [Search](https://karafka.io/docs/Pro-Web-UI-Search/), topic management completes the toolset needed for efficient Kafka operations and maintenance.
+Combined with other Karafka Pro features like [Data Explorer](Pro-Web-UI-Explorer), [Topics Insights](Pro-Web-UI-Topics-Insights), and [Search](Pro-Web-UI-Search), topic management completes the toolset needed for efficient Kafka operations and maintenance.

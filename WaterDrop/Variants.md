@@ -112,7 +112,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 !!! Info "Additional Configuration Attributes Details"
 
-    For a more comprehensive list of configuration settings supported by librdkafka, please visit the [Librdkafka Configuration](https://karafka.io/docs/Librdkafka-Configuration/) page.
+    For a more comprehensive list of configuration settings supported by librdkafka, please visit the [Librdkafka Configuration](Librdkafka-Configuration) page.
 
 ## Edge-Cases and Details
 
@@ -120,7 +120,7 @@ When using variants in WaterDrop, there are specific edge cases and operational 
 
 - **Buffering Behavior Across Variants**: It is crucial to understand that while `topic_config` specific settings are preserved per message, the `max_wait_timeout` applied during the flush operation will correspond to the variant that initiates the flushing. This means that messages from other variants that were buffered may be dispatched using the `max_wait_timeout` of the variant currently flushing the data. Since variants share a single producer buffer, this can affect how messages are processed.
 
-- **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. For a deeper understanding of this issue and how it might affect your Kafka operations, refer to the [Error Handling](https://karafka.io/docs/WaterDrop-Error-Handling/) documentation.
+- **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. For a deeper understanding of this issue and how it might affect your Kafka operations, refer to the [Error Handling](WaterDrop-Error-Handling) documentation.
 
 - **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, it is important to note that the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as ensuring exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
 

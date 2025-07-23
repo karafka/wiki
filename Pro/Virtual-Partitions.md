@@ -491,7 +491,7 @@ end
 
 !!! hint "DLQ independent mode usage with Virtual Partitions"
 
-    The [`independent` DLQ flag](https://karafka.io/docs/Dead-Letter-Queue/#independent-error-counting) in Karafka can be used with the Virtual Partitions. When an error occurs in virtual partitions, pause, retry, and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties, meaning that the `independent` flag can operate in the same fashion as if virtual partitions were not used.
+    The [`independent` DLQ flag](Dead-Letter-Queue#independent-error-counting) in Karafka can be used with the Virtual Partitions. When an error occurs in virtual partitions, pause, retry, and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties, meaning that the `independent` flag can operate in the same fashion as if virtual partitions were not used.
 
 ## Manual Collapsing
 

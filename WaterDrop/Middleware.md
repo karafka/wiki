@@ -141,7 +141,7 @@ MY_PRODUCER.produce_async(
 
 ## Example Use Cases
 
-- **Custom Partitioners**: By implementing [custom partitioning logic](https://karafka.io/docs/WaterDrop-Custom-Partitioners/) within middleware, you gain precise control over how messages are distributed across Kafka partitions. This approach is invaluable for scenarios demanding specific distribution patterns, such as grouping related messages in the same partition to maintain the sequence of events.
+- **Custom Partitioners**: By implementing [custom partitioning logic](WaterDrop-Custom-Partitioners) within middleware, you gain precise control over how messages are distributed across Kafka partitions. This approach is invaluable for scenarios demanding specific distribution patterns, such as grouping related messages in the same partition to maintain the sequence of events.
 
 - **Automatic Data Serialization**: Middleware can automatically transform complex data structures into a standardized format like JSON or Avro, streamlining the serialization process. This ensures consistent data formatting across messages and keeps serialization logic neatly encapsulated and separate from core business logic.
 

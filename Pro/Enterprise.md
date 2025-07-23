@@ -8,7 +8,7 @@ Additionally, the offline/embedded mode available in the Enterprise version is s
 
 ### Workshop Session
 
-Our Enterprise Subscription includes a remote 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka. This session provides a comprehensive dive into the event-driven architecture, Kafka and Karafka. This live, interactive session dedicated to both novice and seasoned developers will provide you with the knowledge needed to quickly kick-start your projects, sidestep common pitfalls, and truly harness the full power of the Karafka framework. You can read more about this workshop [here](https://karafka.io/docs/Pro-Enterprise-Workshop-Session).
+Our Enterprise Subscription includes a remote 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka. This session provides a comprehensive dive into the event-driven architecture, Kafka and Karafka. This live, interactive session dedicated to both novice and seasoned developers will provide you with the knowledge needed to quickly kick-start your projects, sidestep common pitfalls, and truly harness the full power of the Karafka framework. You can read more about this workshop [here](Pro-Enterprise-Workshop-Session).
 
 ### Extended Contingent Rights
 

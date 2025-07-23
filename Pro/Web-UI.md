@@ -52,29 +52,29 @@ This feature offers users a detailed look into each process's current state repo
 
 ### Commanding
 
-This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Commanding).
+This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Commanding).
 
 ## Health
 
 This dashboard views show Karafka consumers' groups' health states with their lag aggregated information and basic trends.
 
-[Here](https://karafka.io/docs/Pro-Web-UI-Health) you can learn more about the health information available in this dashboard view.
+[Here](Pro-Web-UI-Health) you can learn more about the health information available in this dashboard view.
 
 ## Topics Insights
 
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](https://karafka.io/docs/Pro-Web-UI-Topics-Insights).
+The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](Pro-Web-UI-Topics-Insights).
 
 ## Explorer
 
-The "Web UI Explorer" in Karafka Pro Web UI provides detailed insights and analytics about Kafka messages. Essential for developers, it helps monitor, debug, and optimize Kafka applications. Learn more [here](https://karafka.io/docs/Pro-Web-UI-Explorer/)
+The "Web UI Explorer" in Karafka Pro Web UI provides detailed insights and analytics about Kafka messages. Essential for developers, it helps monitor, debug, and optimize Kafka applications. Learn more [here](Pro-Web-UI-Explorer)
 
 ## Search
 
-The Search feature is part of the Karafka Web UI Explorer, but due to its complexity, it has its dedicated section that can be found [here](https://karafka.io/docs/Pro-Web-UI-Search/).
+The Search feature is part of the Karafka Web UI Explorer, but due to its complexity, it has its dedicated section that can be found [here](Pro-Web-UI-Search).
 
 ## Recurring Tasks
 
-In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](https://karafka.io/docs/Pro-Recurring-Tasks/) with ease:
+In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](Pro-Recurring-Tasks) with ease:
 
 - **Inspect Tasks**: View detailed information on each task, including status, next execution, and last execution result.
 - **Control Tasks**: Enable, disable, or trigger tasks directly from the UI.
@@ -131,7 +131,7 @@ DLQ dispatched per message view:
 
 This feature allows you to set an environment-specific notice and a menu label to distinguish between different environments like production, development, and staging. This helps prevent confusion and mistakes when managing various environments.
 
-This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Branding).
+This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Branding).
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/branding1.png)
 
@@ -139,7 +139,7 @@ This feature has its own dedicated documentation that you can access [here](http
 
 Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
-This feature has its own dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Policies/).
+This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Policies).
 
 ## Custom Styling
 
@@ -206,6 +206,6 @@ When used in combination with the Branding feature, custom styling provides a co
 
 The "Topics Management" feature in Karafka Web UI allows you to create, delete, configure, and manage Kafka topics directly from the web interface without command-line tools. You can create topics with custom settings, safely remove unused topics, adjust configurations, and scale throughput by increasing partition counts.
 
-This feature has dedicated documentation that you can access [here](https://karafka.io/docs/Pro-Web-UI-Topics-Management/).
+This feature has dedicated documentation that you can access [here](Pro-Web-UI-Topics-Management).
 
 ![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-configuration.png)
