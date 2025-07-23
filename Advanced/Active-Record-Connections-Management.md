@@ -58,7 +58,7 @@ end
 
 !!! Tip "Rails Reaper and Connection Verification Intervals"
 
-    Rails reaper checks and verifies connections at fixed intervals (`reaping_frequency`). If many connections become dead, more than verifying the used one may be needed, as retries might pick another dead connection before the reaper runs. Implementing [granular backoffs](https://karafka.io/docs/Pro-Granular-Backoffs/), which wait longer than the reaping frequency, can help ensure successful retries.
+    Rails reaper checks and verifies connections at fixed intervals (`reaping_frequency`). If many connections become dead, more than verifying the used one may be needed, as retries might pick another dead connection before the reaper runs. Implementing [granular backoffs](Pro-Granular-Backoffs), which wait longer than the reaping frequency, can help ensure successful retries.
 
 ## Conclusion
 

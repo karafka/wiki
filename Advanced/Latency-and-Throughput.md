@@ -86,7 +86,7 @@ Choosing the right acks setting depends on your application's requirements:
 
 !!! Tip "Fine-Tuning `acks` with WaterDrop Variants"
 
-    Using [variants](https://karafka.io/docs/WaterDrop-Variants/), you can customize `request.required.acks` within the same producer instance. This feature allows different configuration settings per topic while sharing TCP connections, optimizing producer efficiency.
+    Using [variants](WaterDrop-Variants), you can customize `request.required.acks` within the same producer instance. This feature allows different configuration settings per topic while sharing TCP connections, optimizing producer efficiency.
 
 #### `socket.nagle.disable`
 
@@ -176,15 +176,15 @@ The strategy and methods selected for consumer management can vary significantly
 
 To effectively understand Karafka consumer processes latency and the topics discussed in this document, it is essential to be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
 
-- [Routing DSL](https://karafka.io/docs/Routing/) including multi-consumer group and multi-subscription group operations.
-- [Concurrency and Multithreading](https://karafka.io/docs/Concurrency-and-Multithreading/) design of the framework.
-- [Error Handling](https://karafka.io/docs/Error-handling-and-back-off-policy/) (Especially Backoff Policies)
-- [Offset Management Strategies](https://karafka.io/docs/Offset-management/)
-- [Monitoring and Logging](https://karafka.io/docs/Monitoring-and-Logging/) basics.
-- [Web UI Usage](https://karafka.io/docs/Web-UI-Getting-Started/) for monitoring.
-- [Swarm/Multi-Process Mode](https://karafka.io/docs/Swarm-Multi-Process/)
-- [Connection Multiplexing](https://karafka.io/docs/Pro-Multiplexing/)
-- [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)
+- [Routing DSL](Routing) including multi-consumer group and multi-subscription group operations.
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) design of the framework.
+- [Error Handling](Error-handling-and-back-off-policy) (Especially Backoff Policies)
+- [Offset Management Strategies](Offset-management)
+- [Monitoring and Logging](Monitoring-and-Logging) basics.
+- [Web UI Usage](Web-UI-Getting-Started) for monitoring.
+- [Swarm/Multi-Process Mode](Swarm-Multi-Process)
+- [Connection Multiplexing](Pro-Multiplexing)
+- [Virtual Partitions](Pro-Virtual-Partitions)
 
 ### Latency Types
 
@@ -526,7 +526,7 @@ To mitigate the impact of large batch prefetching under lag conditions and to en
 
 #### Prefetching with Single Partition Assignments
 
-If a Karafka consumer process is assigned only one topic partition, the prefetching behavior is straightforward and consistently fetches data from that single partition. In such cases, there are no concerns about parallelism or the need to distribute the processing load across multiple partitions or subscription groups. Your processing can still greatly benefit by using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/).
+If a Karafka consumer process is assigned only one topic partition, the prefetching behavior is straightforward and consistently fetches data from that single partition. In such cases, there are no concerns about parallelism or the need to distribute the processing load across multiple partitions or subscription groups. Your processing can still greatly benefit by using [Virtual Partitions](Pro-Virtual-Partitions).
 
 #### Conclusion
 

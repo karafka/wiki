@@ -266,7 +266,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Does Karafka restart dead PG connections?
 
-Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](https://karafka.io/docs/Active-Record-Connections-Management/#dealing-with-dead-database-connections).
+Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Active-Record-Connections-Management#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
@@ -328,11 +328,11 @@ No. IAM is a custom authentication engine that is not a part of the Kafka protoc
 Karafka supports following methods that work with AWS MSK:
 
 - [Standard SASL + SSL mechanisms](Deployment#aws-msk-cluster-setup).
-- [Custom OAuth Token Providers](https://karafka.io/docs/Deployment/#custom-oauth-token-providers) flow.
+- [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers) flow.
 
 ## Why can't I connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](https://karafka.io/docs/Kafka-Setting-Up/#connecting-to-kafka-from-other-docker-containers).
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setting-Up#connecting-to-kafka-from-other-docker-containers).
 
 ## How can I configure multiple bootstrap servers?
 
@@ -524,7 +524,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](https://karafka.io/docs/Producing-Messages#producing-to-multiple-clusters).
+Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Producing-Messages#producing-to-multiple-clusters).
 
 ## Why Karafka uses `karafka-rdkafka` instead of `rdkafka` directly?
 
@@ -633,7 +633,7 @@ When working with Karafka, you also need to take into consideration things that 
 - Number of processes within a given consumer group.
 - To how many topics and partitions a particular process is subscribed to.
 
-Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](/docs/Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
+Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
 You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-Multithreading).
 
@@ -643,7 +643,7 @@ Remember that the optimal number of threads may change as the workload and syste
 
 ## Can I use several producers with different configurations with Karafka?
 
-**Yes**. You can create as many producers as you want using [WaterDrop API](https://karafka.io/docs/WaterDrop-Getting-Started/) directly:
+**Yes**. You can create as many producers as you want using [WaterDrop API](WaterDrop-Getting-Started) directly:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -924,7 +924,7 @@ This is because the `karafka-web install` command ensures that the topics are cr
 
 Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
-If you need to create them manually, please include the settings listed [here](https://karafka.io/docs/Web-UI-Getting-Started/).
+If you need to create them manually, please include the settings listed [here](Web-UI-Getting-Started).
 
 ## Can I consume messages from a Rake task?
 
@@ -950,7 +950,7 @@ Karafka and librdkafka are not designed to work over unstable and slow network c
 
 When a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
 
-To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](https://karafka.io/docs/Monitoring-and-logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
+To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](Monitoring-and-Logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
 
 ## Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?
 
@@ -1003,11 +1003,11 @@ You can find the `SpecProducerClient` API [here](https://karafka.io/docs/code/ka
 
 When a message is produced to a Kafka topic, it is stored in Kafka until it expires based on the retention policy of the topic. The retention policy determines how long messages are kept in Kafka before they are deleted.
 
-Karafka's [Expiring Messages](https://karafka.io/docs/Pro-Expiring-Messages) functionality removes messages from Karafka's internal processing queue after a specified amount of time has passed since the message was produced. This functionality is useful when processing messages with a limited lifetime, such as messages with time-sensitive data or messages that should not be processed after a certain amount of time has passed.
+Karafka's [Expiring Messages](Pro-Expiring-Messages) functionality removes messages from Karafka's internal processing queue after a specified amount of time has passed since the message was produced. This functionality is useful when processing messages with a limited lifetime, such as messages with time-sensitive data or messages that should not be processed after a certain amount of time has passed.
 
 However, it's important to note that Karafka's Expiring Messages functionality does not remove messages from Kafka itself, and it only removes messages from Karafka's internal processing queue. Therefore, the retention policy of the Kafka topic will still apply, and the message will remain in Kafka until it expires based on the topic's retention policy.
 
-To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](https://karafka.io/docs/Declarative-Topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
+To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](Declarative-Topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
 
 ## Can you actively ping the cluster from Karafka to check the cluster availability?
 
@@ -1021,11 +1021,11 @@ You can read more about this topic [here](https://github.com/confluentinc/librdk
 
 ## How do I specify Karafka's environment?
 
-Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](https://karafka.io/docs/Env-Variables/).
+Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](Env-Variables).
 
 ## How can I configure WaterDrop with SCRAM?
 
-You can use the same setup as the one used by Karafka, described [here](https://karafka.io/docs/Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can use the same setup as the one used by Karafka, described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?
 
@@ -1084,7 +1084,7 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 
 ## How can I set up WaterDrop with SCRAM?
 
-You can configure it the same way as Karafka support for SCRAM described [here](https://karafka.io/docs/Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can configure it the same way as Karafka support for SCRAM described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Is there a way to mark messages as consumed in bulk?
 
@@ -1110,11 +1110,11 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 !!! note ""
 
-    When using Karafka [Virtual Partitions](/docs/Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](https://karafka.io/docs/Pro-Virtual-Partitions#virtual-offset-management) works.
+    When using Karafka [Virtual Partitions](Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
-Karafka has an Iterator API for that. You can read about it [here](https://karafka.io/docs/Pro-Iterator-API/).
+Karafka has an Iterator API for that. You can read about it [here](Pro-Iterator-API).
 
 ## What does `Broker: Invalid message (invalid_msg)` error mean?
 
@@ -1144,8 +1144,8 @@ Yes.
 
 There are a few ways to do that:
 
-1. Use the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) to run a one-time job alongside your regular Karafka consumption.
-2. Use the `#seek` consumer method in combination with [Admin watermark API](https://karafka.io/docs/Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+1. Use the [Iterator API](Pro-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
+2. Use the `#seek` consumer method in combination with [Admin watermark API](Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 3. Create a new consumer group that will start from the beginning.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
@@ -1176,7 +1176,7 @@ If you aim for maximum performance in your Karafka application, you can disable 
 
 Instead of relying on `at_exit`, it is generally better to handle the cleanup and proper closing of the WaterDrop producer explicitly in your code. For example, you can use signal handlers from other Ruby libraries like Sidekiq or Puma.
 
-You can read more about this [here](https://karafka.io/docs/Producing-Messages/#producer-shutdown).
+You can read more about this [here](Producing-Messages#producer-shutdown).
 
 ## Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?
 
@@ -1363,7 +1363,7 @@ sleep(30)
 
 ## Can extra information be added to the messages dispatched to the DLQ?
 
-**Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/#adding-custom-details-to-the-dlq-message).
+**Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](Pro-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message).
 
 ## Why does WaterDrop hang when I attempt to close it?
 
@@ -1444,7 +1444,7 @@ Karafka.producer.monitor.subscribe(
 
 **Yes**, you can password-protect the Karafka Web UI, and it is highly recommended. Adding a layer of password protection adds a level of security to the interface, reducing the risk of unauthorized access to your data, configurations, and system settings.
 
-Karafka provides ways to implement password protection, and you can find detailed steps and guidelines [here](https://karafka.io/docs/Web-UI-Getting-Started/#authentication).
+Karafka provides ways to implement password protection, and you can find detailed steps and guidelines [here](Web-UI-Getting-Started#authentication).
 
 ## Can I use a Karafka producer without setting up a consumer?
 
@@ -1458,7 +1458,7 @@ Remember, if you're using Karafka without a consumer and encounter errors, ensur
 
 ## What will happen when a message is dispatched to a dead letter queue topic that does not exist?
 
-When a message is dispatched to a [dead letter queue](https://karafka.io/docs/Dead-Letter-Queue/) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
+When a message is dispatched to a [dead letter queue](Dead-Letter-Queue) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled. 
 
@@ -1466,7 +1466,7 @@ On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will 
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 
-For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](https://karafka.io/docs/Declarative-Topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
+For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](Declarative-Topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
 
 Below you can find an example routing that includes a DLQ declaration as well as a declarative definition of the target DLQ topic:
 
@@ -1571,11 +1571,11 @@ Furthermore, with no arguments in the initialize method, this API structure is d
 
 ## Where can I find producer idempotence settings?
 
-They are located in the WaterDrop wiki [idempotence section](https://karafka.io/docs/WaterDrop-Configuration/#idempotence).
+They are located in the WaterDrop wiki [idempotence section](WaterDrop-Configuration#idempotence).
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
-Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](https://karafka.io/docs/Concurrency-and-Multithreading/#database-connections-usage).
+Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](Concurrency-and-Multithreading#database-connections-usage).
 
 ## Why is my Karafka application consuming more memory than expected?
 
@@ -1587,11 +1587,11 @@ Several factors may lead to increased memory consumption:
 
 - **Memory Leaks**: There might be memory leaks in your application or the libraries you use.
 
-If your problems originate from batch and message sizes, we recommend looking into our [Pro Cleaner API](https://karafka.io/docs/Pro-Cleaner-API/).
+If your problems originate from batch and message sizes, we recommend looking into our [Pro Cleaner API](Pro-Cleaner-API).
 
 ## How can I optimize memory usage in Karafka?
 
-- **Use Cleaner API**: The [Cleaner API](https://karafka.io/docs/Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and ensuring a steadier memory usage pattern.
+- **Use Cleaner API**: The [Cleaner API](Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and ensuring a steadier memory usage pattern.
 
 - **Adjust `librdkafka` Memory Settings**: The underlying library, `librdkafka`, has configurations related to memory usage. Tuning these settings according to your application's needs can optimize the memory footprint. Amongst others you may be interested in looking into the following settings: `fetch.message.max.bytes`, `queued.min.messages`, `queued.max.messages.kbytes` and `receive.message.max.bytes`
 
@@ -1637,11 +1637,11 @@ it typically indicates that the Karafka Web UI is trying to execute the `ps` com
 
 - **Restricted Permissions**: It could be a permission issue. The process/user running the Web UI may not have the necessary permissions to execute the `ps` command.
 
-Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
+Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
 
 ## Can I retrieve all records produced in a single topic using Karafka?
 
-Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](https://karafka.io/docs/Pro-Iterator-API). 
+Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Iterator-API). 
 
 If your primary aim is to get the count of messages, you might have to maintain a counter as you consume the messages.
 
@@ -1676,7 +1676,7 @@ Karafka::Admin
   end
 ```
 
-2. Using the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) and counting all the messages:
+2. Using the [Iterator API](Pro-Iterator-API) and counting all the messages:
 
 ```ruby
 iterator = Karafka::Pro::Iterator.new('my_topic_name')
@@ -1693,7 +1693,7 @@ The first approach offers rapid results, especially for topics with substantial 
 
 If you are seeing the following error
 
-```bash
+```text
 Broker: Group authorization failed (group_authorization_failed)
 ```
 
@@ -1719,7 +1719,7 @@ Once you've done this, attempt to install the `karafka-license` gem again. If th
 
 ## Are Virtual Partitions effective in case of not having IO or not having a lot of data?
 
-Karafka's [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there's minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there's a data buildup due to processing delays.
+Karafka's [Virtual Partitions](Pro-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there's minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there's a data buildup due to processing delays.
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
@@ -1727,7 +1727,7 @@ Having one process per one topic partition in Kafka is a solid recommendation, e
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations – database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
-Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
+Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
 
 In summary, while the "one process per partition" recommendation is sound for CPU-intensive tasks when IO operations are the predominant factor, Karafka's multi-threaded design combined with the capability of Virtual Partitions can offer a more efficient processing strategy.
 
@@ -1741,7 +1741,7 @@ We recommend using `#mark_as_consumed` for most cases because of its non-blockin
 
 ## Does it make sense to have multiple worker threads when operating on one partition in Karafka?
 
-Yes, but only when you employ [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions).
+Yes, but only when you employ [Virtual Partitions](Pro-Virtual-Partitions).
 
 Without utilizing Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you're operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
 
@@ -1753,7 +1753,7 @@ In summary, while operating on a single partition typically uses just one worker
 
 ## Why don't Virtual Partitions provide me with any performance benefits?
 
-[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/) in Karafka are primarily designed to increase parallelism when processing messages, which can significantly improve throughput in the right circumstances. However, there are several scenarios where the benefits of Virtual Partitions might not be evident:
+[Virtual Partitions](Pro-Virtual-Partitions) in Karafka are primarily designed to increase parallelism when processing messages, which can significantly improve throughput in the right circumstances. However, there are several scenarios where the benefits of Virtual Partitions might not be evident:
 
 1. **Not Enough Messages in Batches**: If there aren't many messages within the batches you're processing, splitting these already-small batches among multiple virtual partitions won't yield noticeable performance gains. There needs to be more work to be shared among the virtual partitions, leading to underutilization.
 
@@ -1769,7 +1769,7 @@ In conclusion, while Virtual Partitions can be a potent tool for improving throu
 
 Despite its name, "Long Running Jobs" doesn't refer to the longevity of the underlying Ruby process (like a typical long-running Linux process). Instead, it denotes the duration of message processing. The term "Long Running Jobs" was chosen due to its popularity, even though a more accurate name might have been "Long Running Consumers".
 
-The [Long Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs) feature adheres to the strategy recommended by Confluent. It involves "pausing" a given partition during message processing and then "resuming" the processing of that partition once the task is completed. This ensures that as long as no rebalances occur (which would result in the partition being revoked), the `poll()` command can happen within the confines of the `max.poll.interval.ms`, preventing unwanted rebalances and errors.
+The [Long Running Jobs](Pro-Long-Running-Jobs) feature adheres to the strategy recommended by Confluent. It involves "pausing" a given partition during message processing and then "resuming" the processing of that partition once the task is completed. This ensures that as long as no rebalances occur (which would result in the partition being revoked), the `poll()` command can happen within the confines of the `max.poll.interval.ms`, preventing unwanted rebalances and errors.
 
 However, it's essential to use this feature properly. If your regular workloads don't push the limits of `max.poll.interval.ms`, enabling Long Running Jobs might degrade performance. This is because pausing the partition prevents data polling, which can lead to inefficiencies in situations where message processing is typically fast.
 
@@ -1801,11 +1801,11 @@ The overhead of unused worker threads is minimal because they are blocked on pop
 
 ## How can you effectively scale Karafka during busy periods?
 
-If you plan to auto-scale for busy periods, be aware that increasing scale might lead to reduced concurrency, especially if you are IO-intensive. With Karafka, how data is polled from Kafka can be a critical factor. For instance, thread utilization might be at most 50% even if you process two partitions in parallel because the batches you are getting consist primarily of data from a single partition. For handling of such cases, we recommend using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions).
+If you plan to auto-scale for busy periods, be aware that increasing scale might lead to reduced concurrency, especially if you are IO-intensive. With Karafka, how data is polled from Kafka can be a critical factor. For instance, thread utilization might be at most 50% even if you process two partitions in parallel because the batches you are getting consist primarily of data from a single partition. For handling of such cases, we recommend using [Virtual Partitions](Pro-Virtual-Partitions).
 
 ## What are the benefits of using Virtual Partitions (VPs) in Karafka?
 
-[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
+[Virtual Partitions](Pro-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
 
 ## What's the difference between increasing topic partition count and using VPs in terms of concurrency?
 
@@ -1813,7 +1813,7 @@ Increasing topic partition count and Karafka concurrency (so that total worker t
 
 ## How do Virtual Partitions compare to multiple subscription groups regarding performance?
 
-Using [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
+Using [Virtual Partitions](Pro-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
 
 ## What is the principle of strong ordering in Kafka and its implications?
 
@@ -1834,7 +1834,7 @@ It indicates that you're attempting an online/rolling migration between two diff
 
 In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
-You can read more about this process [here](https://karafka.io/docs/Development-vs-Production/#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
+You can read more about this process [here](Development-vs-Production#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
 
 ## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
 
@@ -1854,10 +1854,10 @@ The `Broker: Policy violation (policy_violation)` error in Karafka is typically 
 
 In Karafka, this error might surface during two scenarios:
 
-- When upgrading the [Web UI](https://karafka.io/docs/Web-UI-Getting-Started) using the command `karafka-web migrate`.
-- When employing the [Declarative Topics](https://karafka.io/docs/Declarative-Topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
+- When upgrading the [Web UI](Web-UI-Getting-Started) using the command `karafka-web migrate`.
+- When employing the [Declarative Topics](Declarative-Topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
 
-Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
 On the other hand, if this error appears while using Declarative Topics, kindly review your current configuration. Ensure that it's in harmony with the broker's policies and limitations.
 
@@ -1925,7 +1925,7 @@ While the binary/Unicode representation in the Karafka Web UI topics might seem 
 
 ## Can I use same Karafka Web UI topics for multiple environments like production and staging?
 
-**No**. More details about that can be found [here](https://karafka.io/docs/Web-UI-Multi-App/#limitations).
+**No**. More details about that can be found [here](Web-UI-Multi-App#limitations).
 
 ## Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?
 
@@ -1964,7 +1964,7 @@ def consume
 end
 ```
 
-2. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue/) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
+2. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](Pro-Enhanced-Dead-Letter-Queue) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -1995,13 +1995,13 @@ class OrdersStatesConsumer < ApplicationConsumer
 end
 ```
 
-However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](https://karafka.io/docs/Pausing-Seeking-and-Rate-Limiting/) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
 ## We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?
 
 If the SSL certificates failed on the producer side, the data might not have been produced to Kafka in the first place. If your data is still present and not compacted due to the retention policy, then you should be able to read it.
 
-You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) or Web UI [Explorer](https://karafka.io/docs/Web-UI-Features/#explorer) to view those messages.
+You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
 
 ## How can the retention policy of Kafka affect the data sent during the downtime?
 
@@ -2009,11 +2009,11 @@ If your data retention policy has compacted the data, then the data from the dow
 
 ## Is it possible to fetch messages per topic based on a specific time period in Karafka?
 
-Yes, in newer versions of Karafka, you can use the [Iterator API](https://karafka.io/docs/Pro-Iterator-API/) or the [Enhanced Web UI](https://karafka.io/docs/Web-UI-Features/#explorer) to perform time-based offset lookups.
+Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Iterator-API) or the [Enhanced Web UI](Web-UI-Features#explorer) to perform time-based offset lookups.
 
 ## Where can I find details on troubleshooting and debugging for Karafka?
 
-You can refer to [this](https://karafka.io/docs/Problems%2C-Troubleshooting-and-Debugging) documentation page.
+You can refer to [this](Problems-and-Troubleshooting) documentation page.
 
 ## Does the open-source (OSS) version of Karafka offer time-based offset lookup features?
 
@@ -2041,7 +2041,7 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 
 ## What is the purpose of the `karafka_consumers_reports` topic?
 
-The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](https://karafka.io/docs/Web-UI-About/). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
+The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
 
 ## Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?
 
@@ -2103,7 +2103,7 @@ Checking the `event[:type]` and recognizing the role of the `event[:caller]` wil
 
 This issue is likely due to the `offsets.retention.minutes` setting in Kafka. Kafka deletes the saved offsets if a consumer is stopped for longer than this set retention period (like your 2-week downtime). Without these offsets, the consumer restarts from the beginning. However, the offsets are still available for shorter downtimes (like your 15-minute test), allowing the consumer to resume from where it left off.
 
-You can read more about this behavior [here](https://karafka.io/docs/Development-vs-Production/#configure-your-brokers-offsetsretentionminutes-policy).
+You can read more about this behavior [here](Development-vs-Production#configure-your-brokers-offsetsretentionminutes-policy).
 
 ## Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?
 
@@ -2157,11 +2157,11 @@ It is worth pointing out that this is not a Karafka-specific issue. While the is
 
 ## How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?
 
-Karafka Pro's Routing Patterns feature allows for flexible routing using regular expressions, automatically adapting to dynamically created Kafka topics. This means Karafka can instantly recognize and consume messages from new topics without extra configuration, streamlining the management of topic routes. For optimal use and implementation details, consulting the their [documentation](https://karafka.io/docs/Pro-Routing-Patterns/) is highly recommended.
+Karafka Pro's Routing Patterns feature allows for flexible routing using regular expressions, automatically adapting to dynamically created Kafka topics. This means Karafka can instantly recognize and consume messages from new topics without extra configuration, streamlining the management of topic routes. For optimal use and implementation details, consulting the their [documentation](Pro-Routing-Patterns) is highly recommended.
 
 ## What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?
 
-In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be utilized. This feature allows a message to be retried several times before it's moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](https://karafka.io/docs/Dead-Letter-Queue/).
+In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be utilized. This feature allows a message to be retried several times before it's moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Dead-Letter-Queue).
 
 ## What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?
 
@@ -2171,7 +2171,7 @@ The `initial_offset` setting in Karafka is relevant only during the initial star
 
 If the "Dead" tab in your Karafka Web UI is empty, especially within a multi-app setup, there are two primary reasons to consider based on the DLQ routing awareness section:
 
-1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](https://karafka.io/docs/Web-UI-Multi-App/#dlq-routing-awareness).
+1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
 
 2. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
 
@@ -2225,7 +2225,7 @@ Karafka.monitor.subscribe(
 
 ## How can I namespace messages for producing in Karafka?
 
-You can namespace messages topics for producing automatically in Karafka by leveraging the [middleware in WaterDrop](https://karafka.io/docs/WaterDrop-Middleware/) to transform the destination topics.
+You can namespace messages topics for producing automatically in Karafka by leveraging the [middleware in WaterDrop](WaterDrop-Middleware) to transform the destination topics.
 
 ## Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?
 
@@ -2385,7 +2385,7 @@ In the Karafka framework, the worker contains a consumer that handles the offset
 
 ## Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?
 
-**No**. The `on_idle` and `handle_idle` methods are part of Karafka's internal API and are not editable. Internal components use these methods for periodic jobs within the Karafka framework. They are not intended for user modification or are not part of the official public API. If you need to execute a specific method when the consumer is idle or when the last message from the topic has been consumed, you should use Karafka's [periodic jobs](https://karafka.io/docs/Pro-Periodic-Jobs/) feature. This feature is designed to handle such use cases effectively.
+**No**. The `on_idle` and `handle_idle` methods are part of Karafka's internal API and are not editable. Internal components use these methods for periodic jobs within the Karafka framework. They are not intended for user modification or are not part of the official public API. If you need to execute a specific method when the consumer is idle or when the last message from the topic has been consumed, you should use Karafka's [periodic jobs](Pro-Periodic-Jobs) feature. This feature is designed to handle such use cases effectively.
 
 ## Is Multiplexing an alternative to running multiple Karafka processes but using Threads?
 
@@ -2393,7 +2393,7 @@ No, multiplexing serves a different use case. It's primarily for handling IO-bou
 
 ## Is it possible to get watermark offsets from inside a consumer class without using Admin?
 
-You can get watermark offsets and other metrics directly from within a consumer class using Karafka's Inline Insights. This feature provides a range of metrics, including watermark offsets, without using the Admin API. For more details, refer to the [Inline Insights](https://karafka.io/docs/Inline-Insights/) documentation.
+You can get watermark offsets and other metrics directly from within a consumer class using Karafka's Inline Insights. This feature provides a range of metrics, including watermark offsets, without using the Admin API. For more details, refer to the [Inline Insights](Inline-Insights) documentation.
 
 ## Why are message and batch numbers increasing even though I haven't sent any messages?
 
@@ -2413,7 +2413,7 @@ Since you have your own authentication, this configuration becomes secondary, th
 
 Due to the complexity of the data flow, there are only a few middleware layers for consuming messages in Karafka, but several layers can function similarly. These are referred to as "strategies" in Karafka, and there are around 80 different combinations available.
 
-Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](https://karafka.io/docs/Pro-Filtering-API/), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
+Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](Pro-Filtering-API), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
 
 One of the key strengths of Karafka is its support for pluggable components. These components can be tailored to meet your specific requirements, offering a high degree of customization. Detailed information about these components and their configurations can be found in the Karafka documentation.
 
@@ -2423,13 +2423,13 @@ Yes, you can change the name of Karafka's internal topic for the Web UI.
 
 For instance, if you need to prepend a unique combination before the topic's name, such as `12303-karafka_consumers_states`, this is feasible.
 
-Detailed instructions on how to configure this can be found in the Karafka documentation under [this](https://karafka.io/docs/Web-UI-Configuration/#using-a-shared-kafka-cluster-for-multiple-karafka-application-environments) section.
+Detailed instructions on how to configure this can be found in the Karafka documentation under [this](Web-UI-Configuration#using-a-shared-kafka-cluster-for-multiple-karafka-application-environments) section.
 
 ## Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?
 
 Yes. Karafka provides an API for visibility filtering, which allows you to decide what to display, and whether options to download payloads and JSON versions should be usable. Additionally, you can sanitize certain fields from being presented.
 
-For detailed information, refer to the [Pro Enhanced Web UI Policies documentation](https://karafka.io/docs/Pro-Web-UI-Policies/).
+For detailed information, refer to the [Pro Enhanced Web UI Policies documentation](Pro-Web-UI-Policies).
 
 ## What does the `strict_topics_namespacing` configuration setting control?
 
@@ -2461,7 +2461,7 @@ This behavior can be aligned by changing appropriate configuration settings.
 
 ## How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
 
-If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](https://karafka.io/docs/Dead-Letter-Queue/), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
+If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Dead-Letter-Queue), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
 
 In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This ensures that specific methods are not used outside their intended context, maintaining a clean and safe API.
 
@@ -2644,7 +2644,7 @@ For example, if there's a temporary network disconnection:
 3. The message is successfully delivered
 4. No exception is raised because the operation ultimately succeeded
 
-For more detailed information about WaterDrop's error handling model, refer to [this](https://karafka.io/docs/WaterDrop-Error-Handling/) documentation.
+For more detailed information about WaterDrop's error handling model, refer to [this](WaterDrop-Error-Handling) documentation.
 
 ## When does EOF (End of File) handling occur in Karafka, and how does it work?
 
@@ -2666,7 +2666,7 @@ Note that:
 1. This works per offset location, not per individual message, unless you mark each message as consumed
 1. The error causing the retry may differ between retry attempts
 
-You can find more details about this [here](https://karafka.io/docs/Error-handling-and-back-off-policy/#altering-the-consumer-behaviour-upon-reprocessing).
+You can find more details about this [here](Error-handling-and-back-off-policy#altering-the-consumer-behaviour-upon-reprocessing).
 
 ## Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?
 
@@ -2684,7 +2684,7 @@ For Alpine-based images, add:
 RUN apk add --no-cache procps
 ```
 
-You can find the complete list of required system commands in our [Getting Started documentation](https://karafka.io/docs/Web-UI-Getting-Started/#external-shellos-required-commands).
+You can find the complete list of required system commands in our [Getting Started documentation](Web-UI-Getting-Started#external-shellos-required-commands).
 
 ## Why does installing `karafka-web` take exceptionally long?
 
@@ -2855,7 +2855,7 @@ This approach allows you to maintain detailed logging for your application consu
 
 ## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
 
-Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](https://karafka.io/docs/WaterDrop-Labeling/) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](https://karafka.io/docs/WaterDrop-Labeling/#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
+Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](WaterDrop-Labeling) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](WaterDrop-Labeling#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
 
 ## Why am I getting "could not obtain a connection from the pool" errors?
 

@@ -233,7 +233,7 @@ In scenarios where messages originate from various topics and no explicit consum
 
 Instead of explicitly defining a deserializer for every topic, Karafka allows you to configure a "smarter" default deserializer that adapts dynamically.
 
-You can implement a custom deserializer that evaluates each message and applies the appropriate deserialization strategy based on the message's topic or other metadata (e.g., headers). Karafka will then use this dynamic deserializer when using the [Admin API](https://karafka.io/docs/Admin-API/), [Iterator API](https://karafka.io/docs/Pro-Iterator-API/), and the [Web UI Explorer](https://karafka.io/docs/Pro-Web-UI-Explorer/).
+You can implement a custom deserializer that evaluates each message and applies the appropriate deserialization strategy based on the message's topic or other metadata (e.g., headers). Karafka will then use this dynamic deserializer when using the [Admin API](Admin-API), [Iterator API](Pro-Iterator-API), and the [Web UI Explorer](Pro-Web-UI-Explorer).
 
 Here's an example of a dynamic deserializer setup:
 

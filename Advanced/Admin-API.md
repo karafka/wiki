@@ -103,8 +103,8 @@ Karafka::Admin.delete_topic(topic_name)
 
 Karafka provides two distinct approaches for managing and altering topic configurations:
 
-- [Declarative Topics](https://karafka.io/docs/Declarative-Topics/) (Recommended for most cases)
-- [Admin Configs API](https://karafka.io/docs/Admin-Configs-API/) (For lower-level control)
+- [Declarative Topics](Declarative-Topics) (Recommended for most cases)
+- [Admin Configs API](Admin-Configs-API) (For lower-level control)
 
 ### Declarative Topics Approach
 

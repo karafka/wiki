@@ -64,7 +64,7 @@ While the consumption settings ensure Karafka knows where to pull messages from,
 
 Remember, a correct configuration is crucial for the efficient and error-free operation of Karafka when working with multiple Kafka clusters.
 
-If you want to configure the primary `Karafka.producer` to write messages to a cluster different than the default one, please refer to [this](https://karafka.io/docs/WaterDrop-reconfiguration/) documentation section.
+If you want to configure the primary `Karafka.producer` to write messages to a cluster different than the default one, please refer to [this](WaterDrop-reconfiguration) documentation section.
 
 To produce data across multiple clusters, set up individual producers for each targeted cluster. However, it's essential to manually integrate instrumentation and error tracking, as these producers won't be monitored by the default Karafka Web UI.
 

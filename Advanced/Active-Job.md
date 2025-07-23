@@ -172,7 +172,7 @@ Please keep in mind that **as long as** the error persists, **no** other jobs fr
 
 ## Usage With the Dead Letter Queue
 
-The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](https://karafka.io/docs/Dead-Letter-Queue/) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
+The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](Dead-Letter-Queue) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
 
 ```ruby
 class KarafkaApp < Karafka::App

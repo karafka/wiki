@@ -48,7 +48,7 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 !!! Tip "Advanced DLQ Management in Karafka Pro"
 
-    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](https://karafka.io/docs/Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
+    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
 
 !!! Warning "Default Behavior with `manual_offset_management`"
 
@@ -303,7 +303,7 @@ class ClusterXConsumer
 end
 ```
 
-You can read more about producing to multiple clusters [here](https://karafka.io/docs/Producing-Messages#producing-to-multiple-clusters).
+You can read more about producing to multiple clusters [here](Producing-Messages#producing-to-multiple-clusters).
 
 ## Dispatch and Marking Warranties
 

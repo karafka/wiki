@@ -269,7 +269,7 @@ If a rebalance occurs while a consumer is still processing a batch (maybe a long
 
 #### Session Timeouts and Max Poll Interval
 
-The Kafka broker uses a `session.timeout.ms` (and `max.poll.interval.ms` for polling heartbeat) to decide if a consumer is dead or stuck. Suppose your consumer takes longer than this timeout to process a batch without polling Kafka. In that case, the broker assumes it's down and will trigger a rebalance, assigning its partitions to another consumer. Karafka uses an internal heartbeat thread (via librdkafka) to keep the session alive during long processing. However, if the processing exceeds `max.poll.interval.ms`, Kafka will still consider it failed. If your processing logic takes a lot of time, consider looking into Karafka's [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature.
+The Kafka broker uses a `session.timeout.ms` (and `max.poll.interval.ms` for polling heartbeat) to decide if a consumer is dead or stuck. Suppose your consumer takes longer than this timeout to process a batch without polling Kafka. In that case, the broker assumes it's down and will trigger a rebalance, assigning its partitions to another consumer. Karafka uses an internal heartbeat thread (via librdkafka) to keep the session alive during long processing. However, if the processing exceeds `max.poll.interval.ms`, Kafka will still consider it failed. If your processing logic takes a lot of time, consider looking into Karafka's [Long-Running Jobs](Pro-Long-Running-Jobs) feature.
 
 For example, if `max.poll.interval.ms` is 300 seconds (default for Kafka clients) and your consumer takes 600 seconds to handle a huge batch or a slow operation, Kafka may kick it out. Then, another consumer (or a newly started instance) will take over that partition and re-read from the last committed offset (which was before the long batch). Now, those messages will be processed again on the new consumer. This looks like a mysterious duplicate: two processes handled the same messages. It's one message, two different consumers, due to a timeout.
 
@@ -281,7 +281,7 @@ In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller b
 
 - Make sure Kafka's timeouts are higher than the worst-case processing time.
 - Use strategies to break the work into smaller pieces.
-- Consider using the [Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/) feature.
+- Consider using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature.
 
 ## Memory Usage / Memory Leaks
 
@@ -579,7 +579,7 @@ Look for:
 
 ### Consider Pro Support
 
-If after following all the steps above, you're still unable to isolate or resolve the issue, or if you're dealing with a production-critical incident and need deeper Kafka/Ruby insight, consider reaching out for [Pro](https://karafka.io/docs/Pro-Support/) assistance.
+If after following all the steps above, you're still unable to isolate or resolve the issue, or if you're dealing with a production-critical incident and need deeper Kafka/Ruby insight, consider reaching out for [Pro](Pro-Support) assistance.
 
 Karafka Pro offers:
 

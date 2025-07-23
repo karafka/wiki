@@ -116,7 +116,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **No Known Memory Leaks**: Karafka has no known memory leaks within its components as of the latest updates.
 
-- **Batch Processing and Memory Release**: By default, Karafka retains the memory occupied by messages and their payload until an entire batch is processed. Karafka makes no assumptions about the nature of the processing. While this ensures flexibility in handling complex workflows, it can also increase memory usage during high-throughput operations. For those looking to optimize memory management and release message memory more proactively, Karafka Pro offers a [Cleaner API](https://karafka.io/docs/Pro-Cleaner-API/).
+- **Batch Processing and Memory Release**: By default, Karafka retains the memory occupied by messages and their payload until an entire batch is processed. Karafka makes no assumptions about the nature of the processing. While this ensures flexibility in handling complex workflows, it can also increase memory usage during high-throughput operations. For those looking to optimize memory management and release message memory more proactively, Karafka Pro offers a [Cleaner API](Pro-Cleaner-API).
 
 - **Ruby Version Considerations**: It's important to note that external factors such as Ruby versions can affect memory usage. For instance, Ruby `3.3.0` has been observed to have memory leak issues due to bugs introduced in that version.
 

@@ -9,7 +9,7 @@ Additionally, Karafka supports [Swarm Mode](Swarm-Multi-Process) for enhanced co
 
 !!! Tip "Separate Resources Management Documentation"
 
-    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](https://karafka.io/docs/Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
+    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
 
 ## Parallel Messages Processing
 
@@ -148,9 +148,9 @@ Recognizing the potential challenge of job saturation, Karafka provides monitori
 
 There are a few ways to measure the saturation in Karafka:
 
-- You can look at the `Enqueued` value in the [Web-UI](https://karafka.io/docs/Web-UI-Getting-Started/). This value indicates the total number of jobs waiting in the internal queues of all the Karafka processes. The high value there indicates increased saturation.
+- You can look at the `Enqueued` value in the [Web-UI](Web-UI-Getting-Started). This value indicates the total number of jobs waiting in the internal queues of all the Karafka processes. The high value there indicates increased saturation.
 - You can log the `messages.metadata.processing_lag` value, which describes how long a batch had to wait before it was picked up by one of the workers.
-- If you are using our [Datadog](https://karafka.io/docs/Monitoring-and-logging/#datadog-and-statsd-integration) integration, it contains the `processing_lag` metrics.
+- If you are using our [Datadog](Monitoring-and-Logging#datadog-and-statsd-integration) integration, it contains the `processing_lag` metrics.
 
 Job saturation in Karafka isn't inherently critical, but it may lead to increased consumption lag, resulting in potential delays in processing tasks. This is because when the system is overloaded with jobs, it takes longer to consume and process new incoming data. Moreover, heavily saturated processes can create an additional issue; they may exceed the max.poll.interval.ms configuration parameter. This parameter sets the maximum delay allowed before the Kafka broker considers the consumer unresponsive and reassigns its partitions. In such a scenario, maintaining an optimal balance in job saturation becomes crucial for ensuring efficient message processing.
 

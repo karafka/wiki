@@ -336,7 +336,7 @@ Broker: Messages are rejected since there are fewer in-sync replicas than requir
 
 #### Check Current Topic Configuration
 
-You can obtain relevant details about your topics by using the following combination of the [Admin](https://karafka.io/docs/Admin-API/#getting-cluster-info) and [Configs](https://karafka.io/docs/Admin-Configs-API) APIs:
+You can obtain relevant details about your topics by using the following combination of the [Admin](Admin-API#getting-cluster-info) and [Configs](Admin-Configs-API) APIs:
 
 ```ruby
 topic_name = 'YOUR_TOPIC_NAME'
