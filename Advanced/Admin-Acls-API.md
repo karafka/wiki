@@ -1,4 +1,4 @@
-# Admin ACLs (Access Control Lists) API 
+# Admin ACLs (Access Control Lists) API
 
 Apache Kafka ACLs (Access Control Lists) provide a robust mechanism to control permissions and access rights for Kafka resources. They are crucial for ensuring data security, managing consumer and producer interactions, and maintaining overall cluster integrity. Karafka extends these capabilities with a simplified, Ruby-friendly API.
 
@@ -259,7 +259,7 @@ acl = Karafka::Admin::Acl.new(
 )
 
 Karafka::Admin::Acl.delete(acl)
-``` 
+```
 
 ### Describing ACLs
 

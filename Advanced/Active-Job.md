@@ -13,7 +13,7 @@ end
 
 We can use the generator to create a new job:
 
-```
+```bash
 rails generate job Example
 ```
 

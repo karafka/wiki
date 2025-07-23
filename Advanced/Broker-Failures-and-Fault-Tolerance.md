@@ -143,7 +143,7 @@ For message production during failures:
 
 #### Connection Refused Errors
 
-```
+```text
 Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused (after 0ms in state CONNECT)
 ```
 
@@ -152,7 +152,7 @@ Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused (after 0ms in sta
 
 #### All Brokers Down
 
-```
+```text
 Local: All broker connections are down (all_brokers_down)
 ```
 
@@ -161,7 +161,7 @@ Local: All broker connections are down (all_brokers_down)
 
 #### Network Disconnect
 
-```
+```text
 Producer clientId=producer-1] Got error produce response with correlation id X on topic-partition Y, retrying. Error: NETWORK_EXCEPTION
 ```
 

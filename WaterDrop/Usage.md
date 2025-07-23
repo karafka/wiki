@@ -416,19 +416,6 @@ at_exit do
 end
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Managing Multiple Topic Delivery Requirements
 
 In complex applications, you may need different delivery settings for different topics or message categories. For example, some messages might require immediate delivery with minimal latency, while others benefit from batching for higher throughput. This section explores strategies for managing these diverse requirements effectively.
