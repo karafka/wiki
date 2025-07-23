@@ -1,6 +1,6 @@
 ## Prerequisites
 
-1. Make sure that Apache Kafka is running. You can start it by following the instructions from [here](https://karafka.io/docs/Kafka-Setting-Up/).
+1. Verify that Apache Kafka is running. To set up Kafka, see the Instructions provided [here](https://karafka.io/docs/Kafka-Setting-Up/).
 
 ## For Existing Applications
 
@@ -11,19 +11,19 @@
 bundle add karafka --version ">= 2.5.0"
 ```
 
-2. Install Karafka (works for both Rails and standalone applications) by running:
+2. To install Karafka for both Rails and standalone applications, run the following command:
 
 ```bash
 bundle exec karafka install
 ```
 
-the above command will create all the necessary files and directories to get you started:
+*Result*: All ecessary files and directories are generated:
 
 - `karafka.rb` - main file where you configure Karafka and where you define which consumers should consume what topics.
 - `app/consumers/example_consumer.rb` - example consumer.
 - `app/consumers/application_consumer.rb` - base consumer from which all consumers should inherit.
 
-3. After that, you can run a development console to produce messages to this example topic:
+3. To produce test messages, open the development console and enter:
 
 ```ruby
 # Works from any place in your code and is thread-safe
@@ -31,7 +31,7 @@ the above command will create all the necessary files and directories to get you
 Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
 
-4. Run the karafka server to start consuming messages:
+4. To start consuming messages, run the Karafka server:
 
 ```
 bundle exec karafka server
@@ -44,7 +44,7 @@ bundle exec karafka server
 [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
 ```
 
-Here's the demo of the installation process:
+Below is the demo of the installation process:
 
 <div class="asciinema" data-cols="100" data-rows="14" data-cast="getting-started">
   <span style="display: none;">
@@ -54,13 +54,11 @@ Here's the demo of the installation process:
   </span>
 </div>
 
-5. (Optionally) Install and configure the Web UI by following [this](Web-UI-Getting-Started) documentation section.
+5. (Optional) To install and configure the Web UI, follow [this](Web-UI-Getting-Started) documentation section.
 
 ## For New Applications (Starting From Scratch)
 
-If you're starting with an empty directory:
-
-1. First create a `Gemfile`:
+1. Create a `Gemfile`:
 
 ```ruby
 # Gemfile
@@ -71,7 +69,7 @@ gem "karafka", ">= 2.5.0"
 
 2. Run: `bundle install`
 
-3. Install Karafka (works for both Rails and standalone applications) by running:
+3. To install Karafka for both Rails and standalone applications, run the following command:
 
 ```bash
 bundle exec karafka install
@@ -91,7 +89,7 @@ the above command will create all the necessary files and directories to get you
 Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
 
-5. Run the karafka server to start consuming messages:
+5. To start consuming messages, run the karafka server:
 
 ```
 bundle exec karafka server
@@ -106,14 +104,14 @@ bundle exec karafka server
 
 ## Example applications
 
-If you have any problems setting things up or want a ready application to play around with, then the best idea is just to clone our examples repository:
+If you have any problems setting up Karafka or want a ready application to play with, clone our examples repository:
 
 ```bash
 git clone https://github.com/karafka/example-apps ./example_apps
 ```
 
-and follow the instructions from the [example apps Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
+and follow the instructions from [example apps Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
 
-## Use-cases, edge-cases, and usage examples
+## Use cases, edge cases, and usage examples
 
-Karafka ships with a full integration test suite that illustrates various use-cases and edge-cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository to see them.
+Karafka ships with a full integration test suite that illustrates various use cases and edge cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository.
