@@ -98,10 +98,10 @@ First of all, it is worth pointing out that Karafka, similar to librdkafka does 
 
 Karafka **does**, however, support:
 
-- [Standard SASL + SSL mechanisms](https://karafka.io/docs/Deployment/#aws-msk-cluster-setup).
-- [Custom OAuth Token Providers](https://karafka.io/docs/Deployment/#custom-oauth-token-providers) flow.
+- [Standard SASL + SSL mechanisms](Deployment#aws-msk-cluster-setup).
+- [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers) flow.
 
-Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](https://karafka.io/docs/Deployment/#custom-oauth-token-providers) section.
+Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](Deployment#custom-oauth-token-providers) section.
 
 !!! Info "AWS Integration with Custom OAuth Token Providers"
 
@@ -460,7 +460,7 @@ end
 
 ### Heroku Retention Policy Impact on the Web UI
 
-Heroku's one-day default retention policy for Kafka may affect Karafka Web UI's functionality and reliability, leading to a lack of data and operational issues. The Web UI depends on continuous data flow and requires access to historical data for analytics. A one-day policy is insufficient for Web UI topics. To improve stability and reliability, we recommend configuring your Web UI topics according to our recommended defaults, which can be found [here](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+Heroku's one-day default retention policy for Kafka may affect Karafka Web UI's functionality and reliability, leading to a lack of data and operational issues. The Web UI depends on continuous data flow and requires access to historical data for analytics. A one-day policy is insufficient for Web UI topics. To improve stability and reliability, we recommend configuring your Web UI topics according to our recommended defaults, which can be found [here](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
 ### Troubleshooting
 
@@ -507,7 +507,7 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 
 #### Missing Information or "Initial Consumers State Missing" Notice After a While
 
-Please read the [Heroku Retention Policy Impact on the Web UI](https://karafka.io/docs/Deployment/#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
+Please read the [Heroku Retention Policy Impact on the Web UI](Deployment#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
 
 ## Kubernetes
 
@@ -757,7 +757,7 @@ Begin by registering for a Confluent Cloud account at Confluent.io. After regist
 
 Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
 
-The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](https://karafka.io/docs/Web-UI-Getting-Started/#manual-web-ui-topics-management).
+The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
 5. **Integration with Karafka**
 

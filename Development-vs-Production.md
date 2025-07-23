@@ -19,7 +19,7 @@ end
 
 ## Pre-create Necessary Topics in the Production Kafka Cluster
 
-Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](https://karafka.io/docs/Declarative-Topics) functionality for that.
+Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](Declarative-Topics) functionality for that.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -266,7 +266,7 @@ Forking processes on macOS, especially from macOS High Sierra (10.13) onwards, c
 
 - Segmentation faults similar to: `[BUG] Segmentation fault at 0x0000000000000110`
 
-You can find an extensive explanation of Karafka ecosystem components forking support [here](https://karafka.io/docs/Forking/).
+You can find an extensive explanation of Karafka ecosystem components forking support [here](Forking).
 
 ## Be Aware of WaterDrop Default Producer Middleware Modifications
 
@@ -403,6 +403,6 @@ end
 
 !!! Warning "Static Group Membership and Multiplexing in Dynamic Mode"
 
-    We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](https://karafka.io/docs/Pro-Multiplexing/#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
+    We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](Pro-Multiplexing#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
 
     However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.

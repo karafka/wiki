@@ -1,6 +1,6 @@
 ## Prerequisites
 
-1. Verify that Apache Kafka is running. To set up Kafka, see the Instructions provided [here](https://karafka.io/docs/Kafka-Setting-Up/).
+1. Verify that Apache Kafka is running. To set up Kafka, see the Instructions provided [here](Kafka-Setting-Up).
 
 ## For Existing Applications
 

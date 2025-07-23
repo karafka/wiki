@@ -32,11 +32,11 @@ class VisitsConsumer < ApplicationConsumer
 end
 ```
 
-Please follow the [WaterDrop documentation](https://karafka.io/docs/WaterDrop-Usage/) for more details on how to use it.
+Please follow the [WaterDrop documentation](WaterDrop-Usage) for more details on how to use it.
 
 ## Messages Piping
 
-If you are looking for seamless message piping in Kafka-based systems, we recommend checking out the [message piping](https://karafka.io/docs/Pro-Piping) feature in Karafka Pro. Exclusive to Karafka Pro, this feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+If you are looking for seamless message piping in Kafka-based systems, we recommend checking out the [message piping](Pro-Piping) feature in Karafka Pro. Exclusive to Karafka Pro, this feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
 
 ## Producer Shutdown
 

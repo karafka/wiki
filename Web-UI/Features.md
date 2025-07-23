@@ -10,7 +10,7 @@ Below you can find a comprehensive description of the most important features yo
 
 !!! Tip "Web UI Scope and Simplifications"
 
-    Karafka Web UI does not aim to be a full analytical platform for tracking and measuring all data from Kafka with extreme accuracy. Due to technical reasons, some simplifications have been made. Karafka offers [instrumentation API](https://karafka.io/docs/Monitoring-and-Logging/), allowing you to craft instrumentation matching your use cases. While certain graphs and metrics may not always be fully accurate, they should provide an overall understanding of the system state.
+    Karafka Web UI does not aim to be a full analytical platform for tracking and measuring all data from Kafka with extreme accuracy. Due to technical reasons, some simplifications have been made. Karafka offers [instrumentation API](Monitoring-and-Logging), allowing you to craft instrumentation matching your use cases. While certain graphs and metrics may not always be fully accurate, they should provide an overall understanding of the system state.
 
 ## Dashboard
 
@@ -63,7 +63,7 @@ This page provides a real-time view of the jobs that are currently being process
 
 This dashboard view shows Karafka consumers' groups' health state with their lag aggregated information and basic trends.
 
-[Here](https://karafka.io/docs/Pro-Web-UI-Health) you can learn more about the information available in this dashboard view.
+[Here](Pro-Web-UI-Health) you can learn more about the information available in this dashboard view.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/health.png" alt="karafka web health view" />
@@ -87,7 +87,7 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
     This functionality is available only in our Pro offering.
 
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](https://karafka.io/docs/Pro-Web-UI/#explorer).
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](Pro-Web-UI#explorer).
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />

@@ -216,7 +216,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event. By default this setting is set to 5 seconds.
 
-The statistics include all of the metrics from `librdkafka` (full list [here](https://karafka.io/docs/Librdkafka-Statistics/)) as well as the diff of those against the previously emitted values.
+The statistics include all of the metrics from `librdkafka` (full list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
 For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages received between statistics emitted events) and state changes, Karafka compares all the numeric values against previously available numbers enriching the original payload with following values:
 
@@ -412,7 +412,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
 
-One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](https://karafka.io/docs/WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
+One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
 
 Here's how you can modify the message payload to include trace context information:
 
@@ -501,7 +501,7 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
 ## Kubernetes
 
-Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](https://karafka.io/docs/Deployment/#kubernetes).
+Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Deployment#kubernetes).
 
 ## OpenTelemetry
 

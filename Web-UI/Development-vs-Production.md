@@ -38,7 +38,7 @@ This approach ensures that the Web UI can consume and display data efficiently w
 
 3. **Dedicate a Swarm Node solely to the Web UI**: Configure your Karafka swarm to reserve a specific node exclusively for Web UI processing, completely isolating it from your application's consumer workloads.
 
-4. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](https://karafka.io/docs/Embedding/) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
+4. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](Embedding) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
 
 ### Dedicated Web UI Swarm Node
 
@@ -136,7 +136,7 @@ end
 
 ### Heroku Multi-Tenant Retention Policy Impact
 
-When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](https://karafka.io/docs/Deployment/#heroku-retention-policy-impact-on-the-web-ui).
+When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Deployment#heroku-retention-policy-impact-on-the-web-ui).
 
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Deployment#heroku).
 

@@ -97,7 +97,7 @@ end
 
 ### Testing Messages Consumption of Routing Patterns
 
-Since each [Routing Pattern](https://karafka.io/docs/Pro-Routing-Patterns) has a name, you can test them like regular topics.
+Since each [Routing Pattern](Pro-Routing-Patterns) has a name, you can test them like regular topics.
 
 Giving a pattern with the name `visits`:
 

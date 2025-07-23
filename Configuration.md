@@ -2,7 +2,7 @@ Karafka contains multiple configuration options. To keep everything organized, a
 
 - root `karafka` options - options directly related to the Karafka framework and its components.
 
-- kafka scoped `librdkafka` options - options related to [librdkafka](https://karafka.io/docs/Librdkafka-Configuration)
+- kafka scoped `librdkafka` options - options related to [librdkafka](Librdkafka-Configuration)
 
 To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
 
@@ -32,7 +32,7 @@ A list of all the karafka configuration options with their details and defaults 
 
 ## librdkafka driver configuration options
 
-A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](https://karafka.io/docs/Librdkafka-Configuration).
+A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](Librdkafka-Configuration).
 
 ## External components configurators
 
@@ -150,4 +150,4 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 !!! Hint "Managing Topics Configuration with Declarative Topics API"
 
-    If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](https://karafka.io/docs/Declarative-Topics/).
+    If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Declarative-Topics).
