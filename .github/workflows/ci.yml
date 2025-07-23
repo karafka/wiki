@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+    paths:
+      - '**/*.md'
+      - '.github/workflows/ci.yml'
+      - '.markdownlint*'
+
+jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+    name: Lint Markdown files
+
+    steps:
+      - name: Checkout docs
+        uses: actions/checkout@v4
+
+      - name: Run markdownlint-cli2
+        uses: docker://davidanson/markdownlint-cli2:latest
