@@ -48,7 +48,7 @@ mkdocs_output=$(mkdocs build --strict 2>&1)
 build_exit_code=$?
 
 # Check for invalid anchor errors specifically
-anchor_errors=$(echo "$mkdocs_output" | grep "does not contain an anchor")
+anchor_errors=$(echo "$mkdocs_output" | grep "does not contain an anchor" || true)
 
 echo "$mkdocs_output"
 
