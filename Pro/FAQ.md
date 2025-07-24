@@ -2,6 +2,7 @@
 
 Karafka Pro is an enhanced version of the Karafka framework, adding more functionalities and providing additional customer support options.
 
+1. [Is Karafka suitable for production and enterprise use?](#is-karafka-suitable-for-production-and-enterprise-use)
 1. [To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?](#to-become-a-karafka-pro-user-do-i-need-to-follow-the-license-comm-terms)
 1. [Is there a trial version?](#is-there-a-trial-version)
 1. [What is the license?](#what-is-the-license)
@@ -45,6 +46,45 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [What happens if the maintainer becomes unavailable?](#what-happens-if-the-maintainer-becomes-unavailable)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
+
+## Is Karafka suitable for production and enterprise use?
+
+**Yes**, Karafka is safe for business-critical applications.
+
+Here's why:
+
+### **Proven Production Scale**
+
+Karafka runs in **tens of thousands of processes** across various organizations worldwide. This isn't theoretical - it's battle-tested at enterprise scale.
+
+### **Sustainable Commercial Backing**
+
+Unlike typical open-source projects that rely on volunteer maintenance, Karafka has a robust commercial model:
+
+- **Karafka Pro** provides commercial licenses, priority support, and architecture consultations
+- Pro subscriptions directly fund ongoing research and development
+- Revenue creates a virtuous cycle where commercial success drives open-source improvements
+- This model ensures long-term sustainability and continuous innovation
+
+### **Active Development & Maintenance**
+
+- Frequent releases
+- Major feature releases like Karafka 2.5 with live consumer management capabilities
+- Continuous performance improvements and optimizations
+
+### **Enterprise-Grade Features**
+
+- Built-in Web UI for monitoring and management
+- Live consumer management (pause/resume partitions in real-time)
+- Comprehensive error handling and Dead Letter Queue functionality
+- Rails integration and ActiveJob backend support
+- Professional monitoring integrations (AppSignal, StatsD/DataDog)
+
+### **Long-Term Commitment**
+
+The combination of commercial success, proven scale, and active development creates a self-reinforcing cycle that makes Karafka a safer bet than many corporate-backed or fully open-source projects that can be abandoned when business priorities shift.
+
+**Bottom Line:** Karafka offers the reliability of enterprise software with the innovation speed of well-funded open source. It's designed for businesses that need both stability and growth capability.
 
 ## To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?
 
