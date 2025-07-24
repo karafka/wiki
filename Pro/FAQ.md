@@ -55,7 +55,7 @@ Here's why:
 
 ### **Proven Production Scale**
 
-Karafka runs in **tens of thousands of processes** across various organizations worldwide. This isn't theoretical - it's battle-tested at enterprise scale.
+Karafka is widely deployed across various organizations worldwide, including industries such as finance, e-commerce, and healthcare. It has been battle-tested at enterprise scale, with some deployments running thousands of processes in production environments.
 
 ### **Sustainable Commercial Backing**
 
