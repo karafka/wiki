@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+
+# A script that aligns the structure and references of the documents in a way that aligns with our
+# material for mkdocs expectations.
+#
+# This alignment also allows us to connect cross-document linting as part of the CI
+
+require 'fileutils'
+
+target_dir = ARGV[0] || raise(ArgumentError, 'Missing docs path')
+
+# Change to the target directory
+Dir.chdir(target_dir)
+puts "Working in directory: #{Dir.pwd}"
+
+# Flatten namespaced directories with prefix
+%w[
+  Pro
+  Web-UI
+  WaterDrop
+  Librdkafka
+  Kafka
+  Upgrades
+  Development
+  Changelog
+].each do |namespace|
+  Dir["#{namespace}/**/*.md"].each do |file|
+    relative_path = file.sub("#{namespace}/", "")
+
+    # Replace directory separators with hyphens for the target filename
+    # Example: "Web-UI/0.3.md" becomes "Web-UI-0.3.md"
+    path_parts = relative_path.split(File::SEPARATOR)
+    target_basename = path_parts.join("-")
+
+    target = "#{namespace}-#{target_basename}"
+    FileUtils.mv(file, target)
+  end
+end
+
+# Special case for Pro/Web-UI (nested namespace)
+Dir["Pro/Web-UI/**/*.md"].each do |file|
+  basename = File.basename(file)
+  target = "Pro-Web-UI-#{basename}"
+  FileUtils.mv(file, target)
+end
+
+# Advanced namespace - copy without prefix (just flatten)
+%w[
+  Advanced
+].each do |namespace|
+  Dir["#{namespace}/**/*.md"].each do |file|
+    basename = File.basename(file)
+    target = basename
+    FileUtils.mv(file, target)
+  end
+end
+
+# After flattening, fix all local links by adding .md extension so document references are detected
+# correctly as .md references.
+Dir.glob("*.md").each do |file|
+  file_content = File.read(file)
+
+  file_content.gsub!(/\]\(([^)]+)\)/) do |match|
+    link_url = $1
+
+    # Skip if it's already a .md file, external link, or anchor
+    next match if link_url.include?('.md')
+    next match if link_url.include?('http:') || link_url.include?('https:')
+    next match if link_url.start_with?('#')
+
+    # Add .md extension and preserve any anchor
+    parts = link_url.split('#')
+    parts[0] = "#{parts[0]}.md"
+    "](#{parts.join('#')})"
+  end
+
+  File.write(file, file_content)
+end

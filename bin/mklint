@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e  # Exit on any error
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}🏗️  Setting up build directory...${NC}"
+rm -rf .lint/
+mkdir -p .lint/docs
+
+echo -e "${BLUE}📁 Copying docs content to .lint/docs/...${NC}"
+rsync -av --exclude='.lint/' --exclude='gh/' --exclude='.git/' ./ ./.lint/docs/ || {
+    echo -e "${RED}❌ Failed to copy files${NC}"
+    exit 1
+}
+
+echo -e "${BLUE}🗑️  Additional cleanup (gh/ should already be excluded)...${NC}"
+rm -rf ./.lint/docs/gh/
+
+echo -e "${BLUE}🔧 Aligning documentation...${NC}"
+./bin/align_structure ./.lint/docs/
+
+echo -e "${BLUE}📝 Creating minimal mkdocs config...${NC}"
+cat > .lint/mkdocs.yml << 'EOF'
+site_name: CI run
+edit_uri: ""
+docs_dir: 'docs'
+site_dir: 'site'
+plugins:
+  - awesome-pages
+theme:
+  name: material
+EOF
+
+echo -e "${BLUE}📚 Building documentation with strict mode...${NC}"
+cd ./.lint
+mkdocs build --strict
+
+echo -e "${GREEN}✅ Build completed successfully!${NC}"
+echo -e "${GREEN}📦 Output available in: $(pwd)/site/${NC}"

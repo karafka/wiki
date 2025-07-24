@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+# Scripts that downloads the dynamic changelogs for components
+
+require 'fileutils'
+
+# Configuration for changelog sources
+CHANGELOGS = {
+  'Karafka' => "https://raw.githubusercontent.com/karafka/karafka/master/CHANGELOG.md",
+  'WaterDrop' => "https://raw.githubusercontent.com/karafka/waterdrop/master/CHANGELOG.md",
+  'Karafka-Web-UI' => "https://raw.githubusercontent.com/karafka/karafka-web/master/CHANGELOG.md",
+  'Karafka-Testing' => "https://raw.githubusercontent.com/karafka/karafka-testing/master/CHANGELOG.md",
+  'Karafka-Core' => "https://raw.githubusercontent.com/karafka/karafka-core/master/CHANGELOG.md",
+  'Karafka-Rdkafka' => "https://raw.githubusercontent.com/karafka/karafka-rdkafka/master/CHANGELOG.md",
+  'Rdkafka' => "https://raw.githubusercontent.com/karafka/rdkafka-ruby/master/CHANGELOG.md"
+}
+
+# Default output directory - can be overridden via command line
+DEFAULT_OUTPUT_DIR = '.'
+
+class ChangelogFetcher
+  def initialize(output_dir = DEFAULT_OUTPUT_DIR)
+    @output_dir = output_dir
+    ensure_output_directory
+  end
+
+  def fetch_all
+    puts "Fetching changelogs to #{@output_dir}..."
+
+    CHANGELOGS.each do |name, url|
+      fetch_changelog(name, url)
+    end
+
+    puts "Done! Fetched #{CHANGELOGS.size} changelogs."
+  end
+
+  private
+
+  def ensure_output_directory
+    FileUtils.mkdir_p(@output_dir) unless Dir.exist?(@output_dir)
+  end
+
+  def fetch_changelog(name, url)
+    output_file = File.join(@output_dir, "Changelog/#{name}.md")
+
+    puts "Fetching #{name} changelog..."
+
+    system("curl -H 'Accept-Encoding: deflate' -o '#{output_file}' '#{url}'")
+
+    if $?.success?
+      puts "  ✓ Saved to #{output_file}"
+    else
+      puts "  ✗ Failed to fetch #{name} changelog"
+    end
+  end
+end
+
+# Script execution
+if __FILE__ == $0
+  output_dir = ARGV[0] || DEFAULT_OUTPUT_DIR
+
+  fetcher = ChangelogFetcher.new(output_dir)
+  fetcher.fetch_all
+end
