@@ -2,7 +2,7 @@
   "globs": [
     "**/*.md",
     "!Librdkafka/Changelog.md",
-    "!gh/**",
+    "!.gh/**",
   ],
   "config": {
     "default": true,

@@ -1,7 +1,6 @@
 # Librdkafka Changelog
 
 !!! note ""
-
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
 ## 2.11.0 (2025-07-03)
@@ -2200,3 +2199,6 @@ v1.4.4 is a maintenance release with the following fixes and enhancements:
  * Added RTT/delay simulation to mock brokers.
 
 *Note: there was no v1.4.3 librdkafka release*
+
+
+
