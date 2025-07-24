@@ -2,6 +2,8 @@
   "globs": [
     "**/*.md",
     "!Librdkafka/Changelog.md",
+    "!Librdkafka/Errors.md",
+    "!Changelog/*.md",
     "!.gh/**",
   ],
   "config": {
