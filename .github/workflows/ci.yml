@@ -9,15 +9,37 @@ on:
       - '**/*.md'
       - '.github/workflows/ci.yml'
       - '.markdownlint*'
+      - 'bin/**'
 
 jobs:
   markdown-lint:
     runs-on: ubuntu-latest
     name: Lint Markdown files
-
     steps:
       - name: Checkout docs
         uses: actions/checkout@v4
 
       - name: Run markdownlint-cli2
         uses: docker://davidanson/markdownlint-cli2:latest
+
+  mkdocs-lint:
+    runs-on: ubuntu-latest
+    name: Lint documentation structure and references
+    steps:
+      - name: Checkout docs
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install MkDocs and plugins
+        run: |
+          pip install --upgrade pip
+          pip install mkdocs
+          pip install mkdocs-material
+          pip install mkdocs-awesome-pages-plugin
+
+      - name: Run mklint
+        run: ./bin/mklint

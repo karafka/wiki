@@ -38,6 +38,10 @@ EOF
 
 echo -e "${BLUE}📚 Building documentation with strict mode...${NC}"
 cd ./.lint
+
+# Auto-generated files should not be linted but since we have references to them instead of
+# removing it, we just empty them
+echo '' > docs/Librdkafka-Changelog.md
 mkdocs build --strict
 
 echo -e "${GREEN}✅ Build completed successfully!${NC}"
