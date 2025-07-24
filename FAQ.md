@@ -1575,7 +1575,7 @@ They are located in the WaterDrop wiki [idempotence section](WaterDrop-Configura
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
-Karafka, by itself, does not manage PostgreSQL or any other database connections directly. More details about that are available [here](Concurrency-and-Multithreading#database-connections-usage).
+Karafka, by itself, does not manage PostgreSQL or any other database connections directly.
 
 ## Why is my Karafka application consuming more memory than expected?
 

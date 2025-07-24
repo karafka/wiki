@@ -24,7 +24,7 @@ jobs:
 
   mkdocs-lint:
     runs-on: ubuntu-latest
-    name: Lint documentation structure and references
+    name: Lint structure and references
     steps:
       - name: Checkout docs
         uses: actions/checkout@v4

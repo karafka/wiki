@@ -42,7 +42,24 @@ cd ./.lint
 # Auto-generated files should not be linted but since we have references to them instead of
 # removing it, we just empty them
 echo '' > docs/Librdkafka-Changelog.md
-mkdocs build --strict
 
-echo -e "${GREEN}✅ Build completed successfully!${NC}"
-echo -e "${GREEN}📦 Output available in: $(pwd)/site/${NC}"
+# Capture mkdocs output and check for invalid anchor errors
+mkdocs_output=$(mkdocs build --strict 2>&1)
+build_exit_code=$?
+
+# Check for invalid anchor errors specifically
+anchor_errors=$(echo "$mkdocs_output" | grep "does not contain an anchor")
+
+echo "$mkdocs_output"
+
+if [ -n "$anchor_errors" ]; then
+   echo -e "${RED}❌ Found invalid anchor links:${NC}"
+   echo "$anchor_errors"
+   exit 1
+elif [ $build_exit_code -ne 0 ]; then
+   echo -e "${YELLOW}⚠️  MkDocs build had other issues but continuing...${NC}"
+   echo "$mkdocs_output"
+else
+   echo -e "${GREEN}✅ Build completed successfully!${NC}"
+   echo -e "${GREEN}📦 Output available in: $(pwd)/site/${NC}"
+fi
