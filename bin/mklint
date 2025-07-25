@@ -42,6 +42,8 @@ cd ./.lint
 # Auto-generated files should not be linted but since we have references to them instead of
 # removing it, we just empty them
 echo '' > docs/Librdkafka-Changelog.md
+# This is Github repo readme and should not be deployed and checked. Serves as docs repo readme.
+rm docs/README.md
 
 # Capture mkdocs output and check for invalid anchor errors
 mkdocs_output=$(mkdocs build --strict 2>&1)
