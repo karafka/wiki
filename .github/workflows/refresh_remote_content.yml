@@ -1,11 +1,13 @@
 name: Refresh Remote Content
 
 on:
-  # Run daily at 6 AM UTC
+  repository_dispatch:
+    types: [gem-release]
+
   schedule:
     - cron: '0 6 * * *'
+    - cron: '0 18 * * *'
 
-  # Allow manual triggering for testing
   workflow_dispatch:
 
 permissions:
