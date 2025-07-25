@@ -1110,7 +1110,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 !!! note ""
 
-    When using Karafka [Virtual Partitions](Pro-Virtual-Partitions/), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Virtual-Partitions#virtual-offset-management) works.
+    When using Karafka [Virtual Partitions](Pro-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 

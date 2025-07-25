@@ -32,8 +32,6 @@ docs_dir: 'docs'
 site_dir: 'site'
 plugins:
   - awesome-pages
-theme:
-  name: material
 EOF
 
 echo -e "${BLUE}📚 Building documentation with strict mode...${NC}"
@@ -46,16 +44,18 @@ echo '' > docs/Librdkafka-Changelog.md
 rm docs/README.md
 
 # Capture mkdocs output and check for invalid anchor errors
+set +e
 mkdocs_output=$(mkdocs build --strict 2>&1)
 build_exit_code=$?
+set -e
 
 # Check for invalid anchor errors specifically
-anchor_errors=$(echo "$mkdocs_output" | grep "does not contain an anchor" || true)
+anchor_errors=$(echo "$mkdocs_output" | grep -E "(does not contain an anchor|contains an unrecognized relative)" || true)
 
 echo "$mkdocs_output"
 
 if [ -n "$anchor_errors" ]; then
-   echo -e "${RED}❌ Found invalid anchor links:${NC}"
+   echo -e "${RED}❌ Found invalid anchor/link errors:${NC}"
    echo "$anchor_errors"
    exit 1
 elif [ $build_exit_code -ne 0 ]; then
