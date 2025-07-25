@@ -32,8 +32,11 @@ jobs:
 
     - name: Fetch remote content
       run: |
-        chmod +x bin/refresh_automatic_content
-        ruby bin/refresh_remove_content
+        bin/refresh_remove_content
+
+    - name: Refresh librdkafka errors
+      run: |
+        bin/refresh_librdkafka_errors
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
