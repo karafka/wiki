@@ -3,6 +3,7 @@
     "**/*.md",
     "!Librdkafka/Changelog.md",
     "!Librdkafka/Errors.md",
+    "!Librdkafka/Statistics.md",
     "!Changelog/*.md",
     "!.gh/**",
   ],
