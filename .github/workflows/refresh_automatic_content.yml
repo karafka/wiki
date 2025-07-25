@@ -32,7 +32,7 @@ jobs:
 
     - name: Fetch remote content
       run: |
-        bin/refresh_remove_content
+        bin/refresh_remote_content
 
     - name: Refresh librdkafka errors
       run: |
