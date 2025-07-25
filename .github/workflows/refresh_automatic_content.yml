@@ -1,4 +1,4 @@
-name: Refresh Remote Content
+name: Refresh Automatic Content
 
 on:
   repository_dispatch:
@@ -15,9 +15,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  refresh-remote-content:
+  refresh-automatic-content:
     runs-on: ubuntu-latest
-    environment: remote-content-refresh
+    environment: automatic-content-refresh
 
     steps:
     - name: Checkout repository
@@ -32,14 +32,14 @@ jobs:
 
     - name: Run changelog fetcher
       run: |
-        chmod +x bin/refresh_remote_content
-        ruby bin/refresh_remote_content
+        chmod +x bin/refresh_automatic_content
+        ruby bin/refresh_automatic_content
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
-        commit-message: 'chore: refresh remote content'
-        title: 'Remote content updates'
-        body: 'Automated update of remote content'
-        branch: automated/remote-content-updates
+        commit-message: 'chore: refresh automatic content'
+        title: 'Automatic content updates'
+        body: 'Automated update of automatic content'
+        branch: automated/automatic-content-updates
         base: master
