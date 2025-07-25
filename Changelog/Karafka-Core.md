@@ -4,6 +4,7 @@
 # Karafka Core Changelog
 
 ## 2.5.2 (2025-06-11)
+- test
 - [Enhancement] Support `#unsubscribe`.
 - [Enhancement] Allow for providing a root scope path for error keys.
 - [Fix] Fix a bug where on no errors the result would be an array instead of a hash.
