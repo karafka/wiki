@@ -4,6 +4,7 @@
     "!Librdkafka/Changelog.md",
     "!Librdkafka/Errors.md",
     "!Librdkafka/Statistics.md",
+    "!Librdkafka/Configuration.md",
     "!Changelog/*.md",
     "!.gh/**",
   ],
