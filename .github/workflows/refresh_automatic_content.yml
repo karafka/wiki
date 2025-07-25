@@ -30,9 +30,13 @@ jobs:
       with:
         ruby-version: '3.4'
 
-    - name: Fetch remote content
+    - name: Fetch remote changelogs
       run: |
-        bin/refresh_remote_content
+        bin/refresh_changelogs
+
+    - name: Fetch librdkafka releases
+      run: |
+        bin/refresh_librdkafka_releases
 
     - name: Refresh librdkafka errors
       run: |

@@ -22,8 +22,8 @@ The repository automatically fetches and updates dynamic content twice daily (6:
 
 Located in the `bin/` directory:
 
-- `refresh_remote_content` - Downloads changelogs from component repositories and librdkafka releases
-- `refresh_librdkafka_errors` - Generates librdkafka error documentation dynamically using the rdkafka gem
+- `refresh_changelogs` - Downloads changelogs from component repositories
+- `refresh_librdkafka_releases` - Generates librdkafka error documentation dynamically using the rdkafka gem
 - `align_structure` - Flattens nested documentation structure and fixes cross-references for MkDocs compatibility
 - `mklint` - Validates documentation structure, references, and builds using MkDocs in strict mode
 - `sync_gh` - Synchronizes content with GitHub Karafka main repo
