@@ -17,11 +17,13 @@ The **original content** of this wiki, including but not limited to text, images
 ## Third-Party Content
 
 This wiki may contain content sourced from third-party resources, including but not limited to:
+
 - librdkafka documentation
 - Kafka documentation
 - Other open-source project documentation
 
 Such third-party content:
+
 1. **Retains its original licensing terms** as specified by the respective copyright holders
 2. **Is not subject to the restrictions** of this license
 3. **Should be attributed** to its original source when clearly identifiable
