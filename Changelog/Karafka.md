@@ -4,6 +4,7 @@
 # Karafka Framework Changelog
 
 ## 2.5.1 (Unreleased)
+- test
 - [Enhancement] Support past `dispatch_at` times with `jitter: 0` in the OSS Karafka to support ActiveJob continuation.
 - [Enhancement] Use direct topic dispatches when `dispatch_at` is used for past times to bypass Scheduled Messages flow.
 - [Enhancement] Support immediate error raising with `auto.offset.reset` set to `error`.
