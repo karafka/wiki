@@ -1,11 +1,13 @@
 name: Refresh Remote Content
 
 on:
-  # Run daily at 6 AM UTC
+  repository_dispatch:
+    types: [gem-release]
+
   schedule:
     - cron: '0 6 * * *'
+    - cron: '0 18 * * *'
 
-  # Allow manual triggering for testing
   workflow_dispatch:
 
 permissions:
@@ -34,7 +36,7 @@ jobs:
         ruby bin/refresh_remote_content
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
       with:
         commit-message: 'chore: refresh remote content'
         title: 'Remote content updates'
