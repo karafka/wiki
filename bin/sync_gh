@@ -68,7 +68,11 @@ Dir["#{Dir.pwd}/.gh/**.md"].each do |file|
   next if basename.start_with?('_')
 
   rd = IO.read(file)
-  IO.write file, HEADER_TEMPLATE_CONTENT.gsub('PAGE_NAME', basename[0..-4]) + "\n" + rd
+
+  name = basename[0..-4]
+  target_name = name == 'Home' ? '' : name
+
+  IO.write file, HEADER_TEMPLATE_CONTENT.gsub('PAGE_NAME', target_name) + "\n" + rd
 end
 
 system!('cd .gh/ && git add ./')
