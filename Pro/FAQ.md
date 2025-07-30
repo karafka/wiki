@@ -44,6 +44,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [Do you provide consulting or contracting services?](#do-you-provide-consulting-or-contracting-services)
 1. [How reliable is Karafka as a long-term solution?](#how-reliable-is-karafka-as-a-long-term-solution)
 1. [What happens if the maintainer becomes unavailable?](#what-happens-if-the-maintainer-becomes-unavailable)
+1. [Can I have multiple trials for my company?](#can-i-have-multiple-trials-for-my-company)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -393,6 +394,24 @@ Several contingency measures are implemented to ensure continuity:
 - **Modular Architecture**: Components can be maintained independently if needed
 
 For Enterprise customers concerned about long-term continuity, we offer custom agreements that can include additional guarantees and contingency planning.
+
+## Can I have multiple trials for my company?
+
+Generally, we provide one trial per company. This policy ensures fair access to trial resources while maintaining the integrity of our evaluation process.
+
+### Standard Trial Policy
+
+- Each company is eligible for one 2-week trial period
+- The initial trial can be extended to 4 weeks upon request (one extension per company)
+- Multiple trials from the same organization are typically blocked
+
+### Why This Policy Exists
+
+This approach was implemented because multiple trials were previously abused, with some users repeatedly requesting new trial periods instead of making purchasing decisions.
+
+Rather than extended trial periods, consider that Karafka Pro's monthly subscription is competitively priced and designed to be accessible for businesses of all sizes. A monthly Pro subscription often provides better value than prolonged evaluation periods, allowing you to fully integrate Pro features into your production workflow while receiving complete support.
+
+For trial requests and extensions, reach out through the standard support channels with details about your use case and evaluation timeline.
 
 ## Ethics, Privacy, and Information Usage
 
