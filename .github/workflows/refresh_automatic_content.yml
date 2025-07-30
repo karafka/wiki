@@ -2,7 +2,7 @@ name: Refresh Automatic Content
 
 on:
   repository_dispatch:
-    types: [gem-release]
+    types: [sync-trigger]
   schedule:
     - cron: '0 6 * * *'
   workflow_dispatch:
