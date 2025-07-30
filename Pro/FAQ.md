@@ -46,7 +46,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [What happens if the maintainer becomes unavailable?](#what-happens-if-the-maintainer-becomes-unavailable)
 1. [Can I have multiple trials for my company?](#can-i-have-multiple-trials-for-my-company)
 1. [What happens if my payment fails or my credit card cannot be charged?](#what-happens-if-my-payment-fails-or-my-credit-card-cannot-be-charged)
-1. [Will Karafka Pro prices increase in the future?Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
+1. [Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
