@@ -45,6 +45,8 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [How reliable is Karafka as a long-term solution?](#how-reliable-is-karafka-as-a-long-term-solution)
 1. [What happens if the maintainer becomes unavailable?](#what-happens-if-the-maintainer-becomes-unavailable)
 1. [Can I have multiple trials for my company?](#can-i-have-multiple-trials-for-my-company)
+1. [What happens if my payment fails or my credit card cannot be charged?](#what-happens-if-my-payment-fails-or-my-credit-card-cannot-be-charged)
+1. [Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
 100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 101. [Contact Info](#contact-info)
 
@@ -412,6 +414,34 @@ This approach was implemented because multiple trials were previously abused, wi
 Rather than extended trial periods, consider that Karafka Pro's monthly subscription is competitively priced and designed to be accessible for businesses of all sizes. A monthly Pro subscription often provides better value than prolonged evaluation periods, allowing you to fully integrate Pro features into your production workflow while receiving complete support.
 
 For trial requests and extensions, reach out through the standard support channels with details about your use case and evaluation timeline.
+
+## What happens if my payment fails or my credit card cannot be charged?
+
+Payment issues can occur due to various reasons such as expired cards, insufficient funds, or banking restrictions. When a payment cannot be processed, a **one-month grace period** is provided to resolve the issue.
+
+- Several attempts will be made to contact you through multiple channels during this period
+- You'll receive email notifications about the payment failure
+- We will do our best to work with you to resolve any billing issues
+- Your license remains active during this grace period
+
+### License Termination
+
+Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach ensures that temporary payment problems don't immediately disrupt your production systems.
+
+If you experience any billing issues, please contact us immediately to avoid any service interruption.
+
+## Will Karafka Pro prices increase in the future?
+
+We are committed to transparent and predictable pricing for our customers. While we cannot guarantee that prices will never change, we maintain a customer-friendly approach to any pricing adjustments.
+
+- All price increases will be communicated openly with **at least 3 months' advance notice**
+- No surprise price changes or sudden adjustments
+- Clear communication about reasons for any pricing changes
+- Existing customers receive priority consideration during pricing transitions
+
+We believe in building long-term relationships with our customers, which means maintaining fair and predictable pricing practices. Any pricing decisions are made carefully, considering both customer impact and the continued development of Karafka features.
+
+You'll always have sufficient time to plan and budget for any potential changes to your Karafka subscription costs.
 
 ## Ethics, Privacy, and Information Usage
 
