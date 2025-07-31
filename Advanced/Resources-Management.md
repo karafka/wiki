@@ -75,6 +75,7 @@ Consumer: partition leader for topics being fetched from. Producer: partition le
 **Connection Types for Consumers**:
 
 For consumer group operations, librdkafka typically establishes connections to:
+
 1. **Group Coordinator**: For consumer group management, join/sync operations, and offset commits
 2. **Partition Leaders**: For fetching messages from specific partitions
 3. **Metadata Broker**: For cluster metadata updates (may be shared with other connection types)
