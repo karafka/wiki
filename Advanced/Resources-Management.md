@@ -83,7 +83,7 @@ For consumer group operations, librdkafka typically establishes connections to:
 **Important Considerations**:
 
 - librdkafka maintains **one connection per broker** that it needs to communicate with, not one connection per partition
-- 1 connection to every broker that is a leader of the test partition (if the topic test has 60 partitions uniformly spread across 10 brokers, this adds up to 10 connections)
+- 1 connection to every broker that is a leader of the partition (if the topic has 60 partitions uniformly spread across 10 brokers, this adds up to 10 connections)
 - The number of connections depends on which brokers are partition leaders for the topics being consumed and which broker serves as the group coordinator
 - To avoid redundant connections, make sure that the `bootstrap.server` hostnames and ports exactly match the broker's `advertised.listeners`
 
