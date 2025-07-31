@@ -58,23 +58,74 @@ Karafka's efficient management of TCP connections is substantially powered by li
 
 Karafka uses one librdkafka client per subscription group.
 
-To calculate the estimated TCP usage for a single Karafka consumer process, excluding producer and other TCP connections, use the formula:
+#### How librdkafka Manages Consumer TCP Connections
+
+Understanding librdkafka's TCP connection management is crucial for accurately estimating resource usage. librdkafka creates 1 main thread and one thread per broker, for each client instance and follows specific connection patterns:
+
+**Connection Strategy**:
+
+- librdkafka will only attempt to connect to the brokers it needs to communicate with, one of the `bootstrap.servers`, the partition leaders, group and transaction coordinator, etc.
+- Upon the first connection, the broker will be queried for the full list of brokers in the cluster. This is called a Metadata request, and librdkafka will maintain a cache of all brokers in the cluster so it knows, based on the broker node ID, where to connect to perform its operation.
+- The initial bootstrap broker connections will only be used for Metadata queries, unless the hostname and port of a bootstrap broker exactly matches the hostname and port of a broker returned in the Metadata response (this is the `advertised.listeners` broker configuration property), in which case the bootstrap broker connection will be associated with that broker's broker id and used for the full protocol set (such as producing or consuming).
+
+**Dependency-Based Connections**:
+
+Consumer: partition leader for topics being fetched from. Producer: partition leader for topics being produced to. These dependencies are discovered and maintained automatically, marking matching brokers as persistent, which will make the client maintain connections to these brokers at all times, reconnecting as necessary.
+
+**Connection Types for Consumers**:
+
+For consumer group operations, librdkafka typically establishes connections to:
+
+1. **Group Coordinator**: For consumer group management, join/sync operations, and offset commits
+2. **Partition Leaders**: For fetching messages from specific partitions
+3. **Metadata Broker**: For cluster metadata updates (may be shared with other connection types)
+
+**Important Considerations**:
+
+- librdkafka maintains **one connection per broker** that it needs to communicate with, not one connection per partition
+- 1 connection to every broker that is a leader of the partition (if the topic has 60 partitions uniformly spread across 10 brokers, this adds up to 10 connections)
+- The number of connections depends on which brokers are partition leaders for the topics being consumed and which broker serves as the group coordinator
+- To avoid redundant connections, make sure that the `bootstrap.server` hostnames and ports exactly match the broker's `advertised.listeners`
+
+#### TCP Connection Formula
+
+To calculate the estimated TCP usage for a single Karafka consumer process, the formula should reflect the actual connection pattern:
 
 ```ruby
-# Number of effective subscription groups
+# Number of subscription groups
 sub_groups_count = 5
 
-# Number of brokers
+# Number of unique brokers that serve as either:
+# - Partition leaders for consumed topics
+# - Group coordinators for consumer groups
+# - Metadata brokers (often overlaps with above)
+unique_brokers_needed = 3  # This varies based on partition distribution and coordinator assignment
 
-brokers_count = 3
+# Each subscription group connects to the brokers it needs
+# In most cases, this will be all brokers that are partition leaders for the consumed topics
+# plus the group coordinator (which may be one of the same brokers)
+total = sub_groups_count * unique_brokers_needed
 
-# Extra one is for a metadata connection
-total = sub_groups_count * (brokers_count + 1)
-
-puts total #=> 20 
+puts total #=> 15
 ```
 
-This accounts for each subscription group's connections to all brokers, plus one additional connection for metadata queries.
+**Key Points**:
+
+- The number of connections per subscription group depends on **which specific brokers** are needed, not the total number of brokers in the cluster
+- If all partitions for a topic are on the same broker, only one connection to that broker is needed per subscription group
+- If partitions are spread across multiple brokers, connections to each relevant broker are established
+- The group coordinator connection may be to a broker that's already connected to for partition leadership
+
+**Practical Example**:
+
+Consider a scenario with:
+
+- 5 subscription groups
+- 10 brokers in the cluster
+- Topics with partitions distributed across 4 brokers
+- Group coordinators assigned to 2 of those same brokers
+
+In this case, each subscription group would establish connections to 4 brokers (the partition leaders), resulting in `5 × 4 = 20` total connections.
 
 ### Producer
 
@@ -122,7 +173,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **Impact of High Throughput**: Karafka's design to handle tens of thousands of messages per second means that any memory leaks in other gems or the application code can be more problematic than in traditional web applications. The high message throughput can quickly escalate minor leaks into significant issues, affecting system stability and performance.
 
-- **Multi-threaded Environment**: Karafka's use of multiple threads to process tasks in parallel can lead to a larger memory footprint than single-threaded applications. Each thread consumes memory for its stack and may duplicate particular objects, leading to higher overall memory usage.
+- **Multithreaded Environment**: Karafka's use of multiple threads to process tasks in parallel can lead to a larger memory footprint than single-threaded applications. Each thread consumes memory for its stack and may duplicate particular objects, leading to higher overall memory usage.
 
 - **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to ensure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
 
@@ -132,10 +183,10 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 
 - **Asynchronous Operations**: Karafka employs asynchronous operations wherever possible, using Global VM Lock (GVL) releasing locks rather than standard sleep operations. This approach reduces idle CPU time and maximizes resource usage efficiency, allowing Karafka to perform more operations concurrently without unnecessary delays.
 
-- **Multi-threaded Nature**: The multi-threaded design of Karafka, despite the constraints imposed by the Ruby GVL, enables efficient parallel data processing. This architecture is particularly effective in environments where quick handling of large volumes of data is crucial. By distributing tasks across multiple threads, Karafka can leverage the CPU more effectively.
+- **Multithreaded Nature**: The multithreaded design of Karafka, despite the constraints imposed by the Ruby GVL, enables efficient parallel data processing. This architecture is particularly effective in environments where quick handling of large volumes of data is crucial. By distributing tasks across multiple threads, Karafka can leverage the CPU more effectively.
 
 - **Swarm Mode for Intensive Workloads**: Karafka offers a Swarm mode for CPU-intensive tasks, which spawns multiple processes under a supervisor. This model is designed to fully utilize multiple CPUs or cores, effectively scaling the processing capabilities across the available hardware resources. Swarm mode is especially beneficial for applications requiring significant computational power, as it helps to distribute the load and prevent any single process from becoming a bottleneck.
 
-- **Underlying librdkafka Multithreading**: The librdkafka library, which underpins Karafka's interaction with Kafka, is multi-threaded. It can efficiently utilize multiple cores available on modern machines, enhancing the capability to manage multiple connections and perform various network and I/O operations concurrently.
+- **Underlying librdkafka Multithreading**: The librdkafka library, which underpins Karafka's interaction with Kafka, is multithreaded. It can efficiently utilize multiple cores available on modern machines, enhancing the capability to manage multiple connections and perform various network and I/O operations concurrently.
 
-- **Optimization Opportunities**: Given its multi-threaded nature and efficient asynchronous techniques, Karafka allows for significant optimization opportunities regarding CPU usage. Developers can fine-tune the number of threads and the operational parameters of Karafka to match the specific performance and resource requirements.
+- **Optimization Opportunities**: Given its multithreaded nature and efficient asynchronous techniques, Karafka allows for significant optimization opportunities regarding CPU usage. Developers can fine-tune the number of threads and the operational parameters of Karafka to match the specific performance and resource requirements.
