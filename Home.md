@@ -238,3 +238,4 @@ It is recommended to do one major upgrade at a time.
 - [Naming Conventions](Development-Naming-Conventions)
 - [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
+- [Integration Tests Catalog](Development-Integration-Tests-Catalog)
