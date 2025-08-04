@@ -28,6 +28,9 @@ jobs:
       uses: ruby/setup-ruby@a9bfc2ecf3dd40734a9418f89a7e9d484c32b990 # v1.248.0
       with:
         ruby-version: '3.4'
+    - name: Refresh Karafka integrations catalog
+      run: |
+        bin/refresh_karafka_integrations_catalog
     - name: Fetch remote changelogs
       run: |
         bin/refresh_changelogs
