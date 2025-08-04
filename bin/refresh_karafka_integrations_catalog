@@ -177,18 +177,18 @@ class KarafkaTestDocGenerator
     It provides an overview of all integration tests and their purposes to help developers understand the framework's testing coverage and find relevant test examples.
 
 !!! warning "Karafka Framework Integration Tests Only"
-   This catalog exclusively covers **Karafka framework integration tests** and does not include tests from other components in the ecosystem such as:
+    This catalog exclusively covers **Karafka framework integration tests** and does not include tests from other components in the ecosystem such as:
 
-   - **karafka-rdkafka** (Ruby bindings for librdkafka)
-   - **WaterDrop** (Kafka producer library)
-   - **Karafka Web UI** (monitoring and management interface)
-   - **Other supporting libraries**
+    - **karafka-rdkafka** (Ruby bindings for librdkafka)
+    - **WaterDrop** (Kafka producer library)
+    - **Karafka Web UI** (monitoring and management interface)
+    - **Other supporting libraries**
 
-   Each component maintains its own separate test suite with different testing approaches and structures.
-   This page serves as a **Karafka-specific reference** to help developers understand the framework's capabilities, use cases, and edge case handling through real integration scenarios.
+    Each component maintains its own separate test suite with different testing approaches and structures.
+    This page serves as a **Karafka-specific reference** to help developers understand the framework's capabilities, use cases, and edge case handling through real integration scenarios.
 
-   These integration tests are particularly valuable because they demonstrate **user-facing APIs and workflows** rather than internal implementation details, making them excellent examples for understanding how to work with Karafka in practice.
-   For comprehensive testing documentation of other components, please refer to their respective repositories and documentation.
+    These integration tests are particularly valuable because they demonstrate **user-facing APIs and workflows** rather than internal implementation details, making them excellent examples for understanding how to work with Karafka in practice.
+    For comprehensive testing documentation of other components, please refer to their respective repositories and documentation.
 
 | File Path | Description |
 |-----------|-------------|
