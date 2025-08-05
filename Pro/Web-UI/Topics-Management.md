@@ -33,7 +33,7 @@ To create a new topic:
 5. Click the submit button to create your topic
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-create.png" alt="Karafka Web UI topic creation interface" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-create.png" alt="Karafka Web UI topic creation interface" />
 </p>
 
 ## Deleting Topics
@@ -66,7 +66,7 @@ To delete a topic:
 5. Confirm the deletion
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-delete.png" alt="Karafka Web UI topic deletion interface" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-delete.png" alt="Karafka Web UI topic deletion interface" />
 </p>
 
 ## Managing Topic Configuration
@@ -99,7 +99,7 @@ The configuration table includes all standard Kafka topic settings, such as:
 - And many more
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-configuration.png" alt="Karafka Web UI topic configuration interface" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-configuration.png" alt="Karafka Web UI topic configuration interface" />
 </p>
 
 ### Modifying Topic Configuration
@@ -132,7 +132,7 @@ To modify a specific configuration parameter:
 6. Enter the new value and submit the change
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-edit.png" alt="Karafka Web UI topic configuration interface" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-edit.png" alt="Karafka Web UI topic configuration interface" />
 </p>
 
 ## Managing Topic Partitions
@@ -171,7 +171,7 @@ To increase the number of partitions:
 5. Enter the new partition count and submit the change
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-increase.png" alt="Karafka Web UI partition management interface" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-increase.png" alt="Karafka Web UI partition management interface" />
 </p>
 
 ## Best Practices

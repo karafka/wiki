@@ -11,7 +11,7 @@ There are a few things worth keeping in mind if you work with transactional data
     Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
 
     <p align="center">
-      <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
     </p>
 
 - **Limitations with "Recent" Feature**: Given the offset-based nature of the Karafka Explorer, the "Recent" feature, which typically displays the latest entries, might encounter difficulties if the first ten pages predominantly consist of aborted messages and system entries.

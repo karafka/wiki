@@ -5,7 +5,7 @@ Multiplexing in Karafka enables more effective data handling and improves perfor
 Multiplexing increases throughput and significantly enhances processing capabilities in scenarios with multi-partition lags. When a single process subscribes to multiple partitions, it can swiftly address lags in any of them, ensuring more consistent performance across your system. This advantage becomes particularly prominent in IO-intensive workloads where efficient data handling and processing are crucial.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/multiplexing/500k_lag.png" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/multiplexing/500k_lag.png" />
 </p>
 <p align="center">
   <small>*This example illustrates the performance difference for IO intense work, where the IO cost of processing a single message is 1ms and a total lag of 500 000 messages in five partitions.
@@ -173,7 +173,7 @@ Here's a breakdown of how it operates when the dynamic mode is enabled:
 Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs. It scales down to conserve resources when the load is low but remains ready to scale up as soon as the demand increases. This balance ensures that resources are used efficiently without compromising the system's ability to handle incoming data effectively. 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/multiplexing/flow.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/multiplexing/flow.svg" />
 </p>
 <p align="center">
   <small>*This diagram illustrates the upscaling and downscaling flow for dynamic multiplexing. 

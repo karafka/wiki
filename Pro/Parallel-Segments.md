@@ -13,7 +13,7 @@ The key difference from Virtual Partitions is that each consumer group in the Pa
 Below is a diagram illustrating an example partitioning flow of a single partition of data. Work will be distributed among three parallel segment consumer groups.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/parallel_segments/partitioning.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/parallel_segments/partitioning.svg" />
 </p>
 
 ## When to Use Parallel Segments

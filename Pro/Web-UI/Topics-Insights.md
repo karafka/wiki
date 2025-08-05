@@ -13,7 +13,7 @@ The first tab under Topics Insights is the Configuration Explorer, where users c
 This detailed breakdown helps quickly understand how each topic is configured, making it easier to manage Kafka's behavior and ensure compliance with security and operational standards.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-configuration.png" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-configuration.png" />
 </p>
 
 ## Replication
@@ -28,7 +28,7 @@ The Replication tab provides insights into the replication dynamics of each topi
 This tab is essential for monitoring the health and integrity of topic replication. It helps users identify potential issues like under-replicated partitions or uneven distribution of leader roles.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-replication.png" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-replication.png" />
 </p>
 
 ## Distribution
@@ -43,7 +43,7 @@ The Distribution tab offers a visual and analytical perspective on the message d
 Moreover, the Distribution tab features a graph that visually represents the distribution of messages across partitions. This graphical insight can be instrumental in quickly identifying disparities in message load, guiding administrators in practical tasks such as rebalancing partitions or adjusting producer configurations to achieve a more even distribution.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-distribution.png" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-distribution.png" />
 </p>
 
 ### Benefits of Distribution Insights
@@ -64,7 +64,7 @@ Understanding offsets is useful in several scenarios:
 - **Distribution Monitoring**: Provides insights into how messages are distributed across partitions, helping identify imbalances and optimize resource allocation.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-offsets.png" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-offsets.png" />
 </p>
 
 ## Summary

@@ -2036,7 +2036,7 @@ Remember to make sure that the timeout value you set is suitable for your use ca
 In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind. 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
 </p>
 
 ## What is the purpose of the `karafka_consumers_reports` topic?

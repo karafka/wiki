@@ -9,7 +9,7 @@ Karafka's Swarm Mode allows for the efficient CPU-intensive processing of Kafka 
 Karafka's Swarm Mode is based on the "Supervisor-Worker" architectural pattern. It utilizes a controller process for supervision and multiple independent child processes for parallel execution. This setup enhances Kafka message processing for CPU-intensive tasks by leveraging multi-process execution. Each child process periodically reports its status to the supervisory master, ensuring system health and efficiency.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/architecture.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/swarm/architecture.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the relationship between the supervisor and the nodes.
@@ -202,7 +202,7 @@ Following a node's shutdown - graceful or forceful - Karafka imposes a mandatory
 Karafka's Swarm Mode ensures robust process management through these meticulous supervision strategies, promoting system stability and resilience.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/supervisor-flow.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/swarm/supervisor-flow.svg" />
 </p>
 <p align="center">
   <small>*Diagram illustrating flow of supervision of a swarm node.
@@ -288,7 +288,7 @@ By carefully preparing for and executing the warmup phase, you ensure your Karaf
 Below, you can compare memory usage when running 3 independent processes versus Swarm with 3 nodes and a supervisor. In this case, Swarm uses around 50% less memory than independent processes.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/shared-memory.png" alt="Karafka Swarm mode vs. Shared Memory"/>
+  <img src="https://cdn.karafka.io/assets/misc/charts/swarm/shared-memory.png" alt="Karafka Swarm mode vs. Shared Memory"/>
 </p>
 <p align="center">
   <small>*Diagram illustrating memory usage with and without Swarm with the same number of consumers. Less is better.
@@ -471,7 +471,7 @@ If, after the `shutdown_timeout` period, any nodes have not shut down (indicatin
 This forceful termination step is crucial for preventing resource leaks and ensuring the system remains clean and ready for a potential restart or to end operation without impacting the underlying environment.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/swarm/shutdown.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/swarm/shutdown.svg" />
 </p>
 <p align="center">
   <small>*Diagram illustrating the shutdown flow and interactions between supervisor and child nodes.
@@ -486,7 +486,7 @@ In Swarm Mode, the Web UI distinguishes each node as a separate process. However
 
 Due to librdkafka's fork-safety limitations, the supervisor process does not appear directly in the Web UI because it cannot hold open connections to Kafka. However, The supervisor's presence is inferred through the PPID label of swarm nodes. Since all nodes share the same supervisor PID as their PPID, you can indirectly identify the supervisor process that way.
 
-<img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/swarm-ppids.png" alt="karafka web dashboard view ppids" />
+<img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/swarm-ppids.png" alt="karafka web dashboard view ppids" />
 
 ## Swarm vs. Multi-Threading and Virtual Partitions
 

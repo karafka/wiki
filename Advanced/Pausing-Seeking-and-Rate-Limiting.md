@@ -264,7 +264,7 @@ The challenge arises here: If you use the `#pause` or `#seek` method frequently 
 It's crucial to be aware, especially if you're using a third-party Kafka provider that charges based on the number of messages sent, that frequent pausing and resuming can inflate costs. This is due to the aforementioned frequent prefetching of the same data, which can result in the same messages being counted multiple times for billing purposes. Always ensure alignment and configuration are optimized to prevent unnecessary financial implications.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/seek-impact.png" alt="karafka seek misuse impact" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/seek-impact.png" alt="karafka seek misuse impact" />
 </p>
 <p align="center">
   <small>

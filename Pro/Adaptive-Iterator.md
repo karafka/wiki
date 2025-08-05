@@ -15,7 +15,7 @@ Do not use the Adaptive Iterator if:
 - Your consumer requires strict control over offset management outside the default provided by the Adaptive Iterator.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/adaptive_iterator/flow.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/adaptive_iterator/flow.svg" />
 </p>
 <p align="center">
   <small>*Illustration presenting how Adaptive Iterator work.

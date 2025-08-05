@@ -84,7 +84,7 @@ One of the core privacy principles under HIPAA and other privacy regulations is 
 You can learn more about the Partial Payload Sanitization [here](Pro-Web-UI-Policies#partial-payload-sanitization).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
 </p>
 
 ### 4. Logging and Auditing
