@@ -289,11 +289,11 @@ Your Web UI topics configuration should look as follows:
 
 ```ruby
 Karafka::Web.setup do |config|
-  config.topics.errors = "my_prefix.karafka_errors"
-  config.topics.consumers.reports = "my_prefix.karafka_consumers_reports"
-  config.topics.consumers.states = "my_prefix.karafka_consumers_states"
-  config.topics.consumers.metrics = "my_prefix.karafka_consumers_metrics"
-  config.topics.consumers.commands = "my_prefix.karafka_consumers_commands"
+  config.topics.errors.name = "my_prefix.karafka_errors"
+  config.topics.consumers.reports.name = "my_prefix.karafka_consumers_reports"
+  config.topics.consumers.states.name = "my_prefix.karafka_consumers_states"
+  config.topics.consumers.metrics.name = "my_prefix.karafka_consumers_metrics"
+  config.topics.consumers.commands.name = "my_prefix.karafka_consumers_commands"
 end
 ```
 
