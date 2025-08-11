@@ -194,7 +194,7 @@ If native extensions don't work for your platform:
 gem install rdkafka --platform=ruby
 
 # Or in Gemfile
-gem 'rdkafka', platforms: [:ruby]
+gem 'rdkafka', force_ruby_platform: true
 ```
 
 ## Source Compilation (Fallback)
@@ -208,7 +208,7 @@ If you need to use source compilation instead of native extensions (e.g., for cu
 gem install rdkafka --platform=ruby
 
 # Or in Gemfile
-gem 'rdkafka', platforms: [:ruby]
+gem 'rdkafka', force_ruby_platform: true
 ```
 
 ## Migration from Source Compilation
