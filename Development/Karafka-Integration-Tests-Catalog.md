@@ -275,6 +275,7 @@
 | `instrumentation/app_status_lifecycle_flow_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages States changes that are published |
 | `instrumentation/assignment_and_revocation_logs_spec.rb` | Karafka should have the info level logging of assigned and revoked partitions |
 | `instrumentation/before_schedule_jobs_tracking_spec.rb` | Karafka should instrument prior to each consumer being scheduled |
+| `instrumentation/cg_info_on_maximum_poll_interval_exceeded_spec.rb` | When we exceed max.poll.interval the error should contain CG name |
 | `instrumentation/consumer_seeking_spec.rb` | We should be able to instrument seeking |
 | `instrumentation/consumers_runtime_tagging_spec.rb` | Karafka should allow us to tag consumers runtime operations and should allow us to track those tags whenever we need from any external location. |
 | `instrumentation/consumption_event_vs_processing_spec.rb` | Karafka should publish same number of consumed events as batches consumed We also should track the assignments correctly |
