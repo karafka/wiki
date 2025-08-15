@@ -50,6 +50,7 @@
 - [Variants](WaterDrop-Variants)
 - [Custom Partitioners](WaterDrop-Custom-Partitioners)
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements)
+- [Async Ecosystem Integration](WaterDrop-Async-Integration)
 
 ## Production Usage
 
