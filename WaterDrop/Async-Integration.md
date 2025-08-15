@@ -4,11 +4,11 @@ WaterDrop seamlessly integrates with Ruby's async ecosystem and fiber scheduler,
 
 ## Fiber Yielding During Blocking Operations
 
-When using `produce_sync` or `produce_many_sync`, WaterDrop automatically yields control to the fiber scheduler during Kafka operations that may block, allowing other fibers to execute concurrently. This behavior is crucial for maintaining performance in async applications where multiple operations need to run concurrently.
+When using `#produce_sync` or `#produce_many_sync`, WaterDrop automatically yields control to the fiber scheduler during Kafka operations that may block, allowing other fibers to execute concurrently. This behavior is crucial for maintaining performance in async applications where multiple operations need to run concurrently.
 
 ### How It Works
 
-WaterDrop leverages Ruby's fiber-yielding mechanisms to ensure that when `produce_sync` or `produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
+WaterDrop leverages Ruby's fiber-yielding mechanisms to ensure that when `#produce_sync` or `#produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
 
 **Key behaviors:**
 
