@@ -10,6 +10,7 @@
 - [Components](Components)
 - [FAQ](FAQ)
 - [Support](Support)
+- [Status](Status)
 
 ## Web UI
 
