@@ -214,6 +214,7 @@
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
 1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
+1. [What value should I provide for `lifetime_ms` in the OAuth token provider listener?](#what-value-should-i-provide-for-lifetime_ms-in-the-oauth-token-provider-listener)
 
 ---
 
@@ -2888,3 +2889,9 @@ production:
 - Examples and best practices for Avro usage with Karafka
 - Support for complex Avro schemas and schema evolution
 - Performance optimization guidance for Avro serialization
+
+## What value should I provide for `lifetime_ms` in the OAuth token provider listener?
+
+The `lifetime_ms` parameter in the `on_oauthbearer_token_refresh` method expects the **absolute expiration timestamp** in milliseconds since the Unix epoch, **not** the token's validity duration.
+
+Despite its name suggesting a duration, `lifetime_ms` should be set to when the token expires as a timestamp. The underlying librdkafka library expects "when the token expires, in terms of the number of milliseconds since the epoch."
