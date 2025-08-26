@@ -1311,3 +1311,4 @@
 | `web/incompatible_version_pristine_0.7/console_with_rails_spec.rb` | Karafka 2.4.0+ should not work with Web UI version 0.9.0 lower than 0.9.0 |
 | `web/with_errors_spec.rb` | Karafka should be able to recover from non-critical errors and web tracking instrumentation should not break anything and should not crash |
 | `web/with_request_without_rails_pristine/install_and_run_spec.rb` | Karafka 2.4+ should work ok with 0.9.0+ |
+| `web/without_web_ui_topics_spec.rb` | Karafka should be able to consume and web tracking should not interfere even when web ui topics are not created |
