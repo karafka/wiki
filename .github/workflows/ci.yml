@@ -12,14 +12,7 @@ on:
 
 jobs:
   markdown-lint:
-    runs-on: >-
-      ${{
-        (github.event_name != 'pull_request' ||
-         github.event.pull_request.head.repo.full_name == github.repository)
-        && fromJSON('["self-hosted", "linux", "x64", "qemu"]')
-        || 'ubuntu-latest'
-      }}
-
+    runs-on: ubuntu-latest
     name: Lint Markdown files
     steps:
       - name: Checkout docs
@@ -29,14 +22,7 @@ jobs:
         uses: docker://davidanson/markdownlint-cli2:latest@sha256:173cb697a255a8a985f2c6a83b4f7a8b3c98f4fb382c71c45f1c52e4d4fed63a
 
   mkdocs-lint:
-    runs-on: >-
-      ${{
-        (github.event_name != 'pull_request' ||
-         github.event.pull_request.head.repo.full_name == github.repository)
-        && fromJSON('["self-hosted", "linux", "x64", "qemu"]')
-        || 'ubuntu-latest'
-      }}
-
+    runs-on: ubuntu-latest
     name: Lint structure and references
     steps:
       - name: Checkout docs
