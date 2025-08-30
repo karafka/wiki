@@ -12,7 +12,8 @@
   "customRules": [
     ".markdownlint/rules/admonition-valid-types.js",
     ".markdownlint/rules/admonition-no-empty-title.js",
-    ".markdownlint/rules/bundle-exec-shell-type.js"
+    ".markdownlint/rules/bundle-exec-shell-type.js",
+    ".markdownlint/rules/shell-language-standardization.js"
   ],
   "config": {
     "default": true,
@@ -42,6 +43,7 @@
     },
     "admonition-valid-types": true,
     "admonition-no-empty-title": true,
-    "bundle-exec-shell-type": true
+    "bundle-exec-shell-type": true,
+    "shell-language-standardization": true
   }
 }

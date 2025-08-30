@@ -19,8 +19,8 @@ module.exports = {
           const nextLine = lines[lineIndex + 1].trim();
           
           if (nextLine.startsWith('bundle exec')) {
-            // Check if language is not shell, sh, or bash
-            if (langSpec !== '' && langSpec !== 'shell' && langSpec !== 'sh' && langSpec !== 'bash') {
+            // Check if language is not shell (only shell is allowed for standardization)
+            if (langSpec !== '' && langSpec !== 'shell') {
               onError({
                 lineNumber: lineIndex + 1,
                 detail: `Code block with "bundle exec" should use shell language type (found: "${langSpec || 'none'}")`,
