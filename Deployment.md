@@ -690,7 +690,7 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::SwarmLivenessListene
 )
 
 Karafka.monitor.subscribe(listener)
-```text
+```
 
 2. Adjust your deployment spec to include the liveness probe, targeting the listener's port and path.
 
@@ -702,7 +702,7 @@ livenessProbe:
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
-```text
+```
 
 By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
@@ -718,7 +718,7 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new
 )
 
 Karafka.monitor.subscribe(listener)
-```xml
+```
 
 ## Confluent Cloud
 
@@ -778,7 +778,7 @@ class KarafkaApp < Karafka::App
     # Other settings...
   end
 end
-```text
+```
 
 ## Custom OAuth Token Providers
 
