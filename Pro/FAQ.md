@@ -166,7 +166,7 @@ In general, **yes**. The credentials are required to download the gems and your 
 
 If you are seeing the following error when trying to `bundle install`:
 
-```
+```text
 Fetching source index from https://gems.karafka.io/
 
 Bad username or password for https://LOGIN@gems.karafka.io/.
@@ -451,7 +451,7 @@ The Karafka software runs on your servers. Karafka never has access to any priva
 
 ## Contact Info
 
-```
+```text
 Maciej Mensfeld, Karafka.io
 Sikorskiego 31/12
 34-400 Nowy Targ

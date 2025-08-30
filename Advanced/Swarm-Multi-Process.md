@@ -58,7 +58,7 @@ However, using the Pidfd API comes with a specific requirement: it is only avail
 
 The startup command deviates slightly from the traditional server start command to activate Swarm Mode. Instead of starting your Karafka application with the usual `bundle exec karafka server`, you will invoke Swarm Mode using:
 
-```
+```ruby
 bundle exec karafka swarm
 ```
 

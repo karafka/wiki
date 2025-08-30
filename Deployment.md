@@ -218,7 +218,7 @@ After that, you should be good to go.
 
 #### Local: Authentication failure
 
-```
+```text
 ERROR -- : rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
 sasl_ssl://broker1.us-east-1.amazonaws.com:9096/bootstrap: SASL authentication error:
 Authentication failed during authentication due to invalid credentials with SASL mechanism SCRAM-SHA-512
@@ -235,7 +235,7 @@ It may mean two things:
 
 #### Connection setup timed out in state CONNECT
 
-```
+```text
 rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
 sasl_ssl://broker1.us-east-1.amazonaws.com:9092/bootstrap:
 Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
@@ -468,7 +468,7 @@ There are few problems you may encounter when configuring things for Heroku:
 
 #### Unsupported protocol "KAFKA+SSL"
 
-```
+```text
 parse error: unsupported protocol "KAFKA+SSL"
 ```
 
@@ -476,7 +476,7 @@ parse error: unsupported protocol "KAFKA+SSL"
 
 #### Disconnected while requesting ApiVersion
 
-```
+```text
 Disconnected while requesting ApiVersion: might be caused by incorrect security.protocol configuration
 (connecting to a SSL listener?)
 ```
@@ -485,7 +485,7 @@ Disconnected while requesting ApiVersion: might be caused by incorrect security.
 
 #### Topic authorization failed
 
-```
+```text
 Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::RdkafkaError)
 ```
 
@@ -493,7 +493,7 @@ Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::Rdkafk
 
 #### Messages are not being consumed
 
-```
+```text
 DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 DEBUG -- : [3732873c8a74] Polling messages...
 DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
@@ -637,7 +637,7 @@ The liveness listener returns detailed health information in JSON format:
     "unrecoverable": false
   }
 }
-```
+```text
 
 This response format allows for more granular monitoring and debugging while maintaining compatibility with existing Kubernetes liveness probe configurations that check for HTTP 2xx status codes.
 
@@ -659,7 +659,7 @@ class LivenessListener < ::Karafka::Instrumentation::Vendors::Kubernetes::Livene
     true
   end
 end
-```
+```text
 
 ### Liveness In the Swarm Mode
 
@@ -690,7 +690,7 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::SwarmLivenessListene
 )
 
 Karafka.monitor.subscribe(listener)
-```
+```text
 
 2. Adjust your deployment spec to include the liveness probe, targeting the listener's port and path.
 
@@ -702,7 +702,7 @@ livenessProbe:
   initialDelaySeconds: 30
   periodSeconds: 10
   timeoutSeconds: 5
-```
+```text
 
 By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
@@ -718,7 +718,7 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new
 )
 
 Karafka.monitor.subscribe(listener)
-```
+```xml
 
 ## Confluent Cloud
 
@@ -778,7 +778,7 @@ class KarafkaApp < Karafka::App
     # Other settings...
   end
 end
-```
+```text
 
 ## Custom OAuth Token Providers
 

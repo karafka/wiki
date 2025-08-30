@@ -33,7 +33,7 @@ Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to
 
 4. To start consuming messages, run the Karafka server:
 
-```
+```ruby
 bundle exec karafka server
 
 # example outcome
@@ -91,7 +91,7 @@ Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to
 
 5. To start consuming messages, run the karafka server:
 
-```
+```ruby
 bundle exec karafka server
 
 # example outcome

@@ -468,7 +468,7 @@ When debug mode is configured correctly, Karafka will generate detailed logs to 
 
 Below is an example of what these debug logs might look like:
 
-```
+```text
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Enabled low-latency ops queue wake-ups
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Added new broker with NodeId -1
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Selected for cluster connection: bootstrap servers added (broker has 0 connection attempt(s))

@@ -4,7 +4,7 @@ It is the maximum delay between invocations of `poll()` commands. This places an
 
 After exceeding this time, an error will be raised, the process will be removed from the group, and you may notice the following message:
 
-```
+```text
 Maximum poll interval (300000ms) exceeded by 255ms 
 (adjust max.poll.interval.ms for long-running message processing): leaving group
 ```

@@ -294,7 +294,7 @@ Please make sure your topic contains more than one partition. Only then Karafka 
 
 **Not recommended**. You may encounter the following errors if you decide to do so:
 
-```
+```text
 ERROR -- : librdkafka internal error occurred: Local: Unknown partition (unknown_partition)
 ERROR -- : 
 INFO -- : rdkafka: [thrd:main]: Topic extractor partition count changed from 1 to 0
@@ -370,7 +370,7 @@ The problem is presented in [this](https://github.com/karafka/example-apps/pull/
 
 To mitigate this, you can create an empty karafka bootfile. With a file structure like this:
 
-```
+```text
 +-- karafka_root_dir
 |   +-- karafka.rb     # default bootfile (empty file)
 |   +-- karafka_app.rb # real bootfile with Karafka::App definition and other stuff
@@ -951,7 +951,7 @@ To ensure a smoother monitoring experience, we recommend enabling [Karafka Datad
 
 If you encounter the following error:
 
-```
+```text
 ========================================================================
 env: can't execute 'bash': No such file or directory
 ========================================================================
@@ -1026,7 +1026,7 @@ You can use the same setup as the one used by Karafka, described [here](Deployme
 
 If you are seeing following or similar error:
 
-```
+```text
 rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
 librdkafka internal error occurred: Local: Broker transport failure (transport)
 ```
@@ -1064,7 +1064,7 @@ When you see both the `Disconnected` error and the `all_brokers_down` error, it 
 
 Please read the explanation of the previous question to understand the reasons and get tips on mitigating this issue.
 
-```
+```text
 rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
 librdkafka internal error occurred: Local: Broker transport failure (transport)
 Error occurred: Local: All broker connections are down (all_brokers_down) - librdkafka.error
@@ -1115,7 +1115,7 @@ Karafka has an Iterator API for that. You can read about it [here](Pro-Iterator-
 
 If you see the following error in your error tracking system:
 
-```
+```text
 ERROR -- : Listener fetch loop error: Broker: Invalid message (invalid_msg)
 ERROR -- : gems/karafka-rdkafka-0.12.1/lib/rdkafka/consumer.rb:432:in `poll'
 ERROR -- : gems/karafka-2.0.41/lib/karafka/connection/client.rb:368:in `poll'
@@ -1125,7 +1125,7 @@ It indicates that the broker contains a message that it cannot parse or understa
 
 It is advised to check the Kafka logs around the polling time, as it may be a Kafka issue. You may encounter the following or similar errors:
 
-```
+```text
 org.apache.kafka.common.errors.CorruptRecordException:
   Found record size 0 smaller than minimum record overhead (14)
   in file /var/lib/my_topic-0/00000000000019077350.log.
@@ -1271,7 +1271,7 @@ Consumer groups in Kafka are used to achieve parallel processing, high throughpu
 
 If you are seeing the following error when starting Karafka:
 
-```
+```json
 {:topics=>"all topic names within a single consumer group must be unique"}
 (Karafka::Errors::InvalidConfigurationError)
 ```
@@ -1858,7 +1858,7 @@ On the other hand, if this error appears while using Declarative Topics, kindly 
 
 ## Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?
 
-```
+```text
 Error querying watermark offsets for partition 0 of karafka_consumers_states
 Local: All broker connections are down (all_brokers_down)
 ```
@@ -2368,7 +2368,7 @@ Karafka.monitor.subscribe(MyTracingListener.new)
 
 No, your code does not stop executing when Karafka reaches the `max.poll.interval.ms` time, and the consumer is removed from the group. Karafka does not interrupt the execution of your code. Instead, it reports an error  indicating that the maximum poll interval has been exceeded, like this:
 
-```
+```text
 Data polling error occurred: Application maximum poll interval (300000ms) exceeded by 348ms
 ```
 

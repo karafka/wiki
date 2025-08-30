@@ -8,14 +8,14 @@ Karafka provides LLM-optimized documentation following the [llms.txt standard](h
 
 For LLMs with web browsing capabilities, you can simply provide the URL:
 
-```
+```text
 https://karafka.io/llms.txt
 
 I'm building a Rails app that processes user events from Kafka. 
 What's the best way to get started with Karafka?
 ```
 
-```
+```text
 Please read https://karafka.io/llms.txt and then help me implement 
 a Karafka consumer with error handling and retries.
 ```
@@ -74,7 +74,7 @@ Configure your code editor to use Karafka documentation as context:
 
 ### 1. **Be Specific About Your Setup**
 
-```
+```text
 Good: "I'm using Karafka OSS with Rails 7 in production"
 Better: "I'm using Karafka Pro with Rails 7, processing 10k msgs/minute"
 ```
@@ -91,7 +91,7 @@ Paste complete error messages and stack traces for faster troubleshooting.
 
 ### 4. **Ask for Code Examples**
 
-```
+```text
 "Show me how to implement a consumer that processes user events 
 with error handling and proper offset management"
 ```
@@ -100,28 +100,28 @@ with error handling and proper offset management"
 
 ### Development Planning
 
-```
+```text
 "I need to build an event-driven system for [description]. 
 What Karafka components should I use and how should I structure it?"
 ```
 
 ### Performance Optimization
 
-```
+```text
 "My Karafka consumers are falling behind. I'm processing 50k messages/hour 
 with current config: [paste config]. How can I optimize?"
 ```
 
 ### Production Troubleshooting
 
-```
+```text
 "I'm seeing these errors in production: [paste logs]. 
 My setup is [describe setup]. What's the likely cause and fix?"
 ```
 
 ### Architecture Review
 
-```
+```text
 "Review my Karafka setup: [describe architecture]. 
 Are there any anti-patterns or optimization opportunities?"
 ```

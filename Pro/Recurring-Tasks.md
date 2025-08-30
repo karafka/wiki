@@ -50,7 +50,7 @@ To start using Recurring Tasks, follow a few essential setup steps. These tasks 
 
 Fugit is a cron parsing library not included in Karafka's dependencies by default but is required for defining and managing recurring tasks. Add it to your Gemfile and run `bundle install`:
 
-```
+```ruby
 # Other dependencies..
 gem 'fugit'
 gem 'karafka'
@@ -370,7 +370,7 @@ By isolating the recurring tasks execution in its own consumer process, you ensu
 
 Karafka provides CLI flag to facilitate running only dedicated consumer groups:
 
-```
+```ruby
 bundle exec karafka server --include-consumer-groups karafka_web,karafka_recurring_tasks
 ```
 

@@ -2,7 +2,7 @@
 
 Karafka responds to a few signals. On a Unix machine, you can use the `kill` binary or the `Process.kill` API in Ruby, e.g.
 
-```
+```text
 kill -TTIN pid
 Process.kill("TTIN", pid)
 ```
@@ -11,7 +11,7 @@ Process.kill("TTIN", pid)
 
 Karafka will respond to `TTIN` by printing backtraces for all threads to the logger.  This is useful for debugging if you have a Karafka process that appears dead or stuck.
 
-```
+```text
 Thread TID-c70x
 processing/jobs_queue.rb:64:in `pop'
 processing/jobs_queue.rb:64:in `pop'
