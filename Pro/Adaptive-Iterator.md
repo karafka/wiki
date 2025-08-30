@@ -22,7 +22,7 @@ Do not use the Adaptive Iterator if:
   </small>
 </p>
 
-!!! Tip "Handling Consistent Long-Running Jobs"
+!!! tip "Handling Consistent Long-Running Jobs"
 
     Consider using Karafka's [Long-Running Jobs](Pro-Long-Running-Jobs) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
 
@@ -96,7 +96,7 @@ end
 
 In this example, the iterator is configured with a safety margin of 20%, allowing a buffer to handle post-processing without exceeding the poll interval. It automatically marks messages as consumed and cleans up after each message, depending on the configuration.
 
-!!! Warning "Correct Iteration Method for Adaptive Iterator"
+!!! warning "Correct Iteration Method for Adaptive Iterator"
 
     When using the Adaptive Iterator, always use the consumer's `#each` method directly, as shown in the example, instead of iterating over `messages#each`. The Adaptive Iterator wraps both the messages and the consumer context, allowing it to accurately monitor processing time and handle tasks like stopping, seeking, and offset marking. Using `messages#each` bypasses this wrapping, preventing the Adaptive Iterator from functioning.
 

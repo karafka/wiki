@@ -1,6 +1,6 @@
 # Single Process Setup
 
-!!! Info "Single Process Setup Limitation"
+!!! info "Single Process Setup Limitation"
 
     If you're embedding the Karafka Web UI directly into your Rails routes or Rackup, the Single Process Setup is not advisable. This approach is suited only for deploying the Web UI as a standalone dedicated process.
 
@@ -28,7 +28,7 @@ Single Process Setup provides few benefits over the default one:
 
 ## Configuration
 
-!!! Hint "Puma Configuration Depends on Node Mode"
+!!! tip "Puma Configuration Depends on Node Mode"
 
     Your `puma.rb` configuration depends on whether you run Puma in a single-node or cluster mode.
 

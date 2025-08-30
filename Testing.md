@@ -2,7 +2,7 @@ Karafka provides a dedicated testing library, [`karafka-testing`](https://github
 
 It is important to note that the scope of `karafka-testing` is limited to mocking consumer and producer user-facing behaviors. It does not cover testing other Kafka-related functionalities, such as Admin API or web UI features that might interact with Kafka. By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight and efficient solution for developers to ensure the integrity of message handling in their applications without the dependency on a live Kafka setup.
 
-!!! Tip "Limited Testing Scope of `karafka-testing`"
+!!! tip "Limited Testing Scope of `karafka-testing`"
 
     `karafka-testing` enables testing of Karafka producers and consumers without a live Kafka server, but be aware that its scope is limited. While it effectively mocks client connections to Kafka for consumer and producer operations, it does not support testing of all Kafka functionalities.
 
@@ -43,11 +43,11 @@ Once included in your RSpec setup, this library will provide you with a special 
 - `#produce` - "sends" message to the consumer instance.
 - `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
 
-!!! note ""
+!!! note
 
     Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer in case you want to test messages production.
 
-!!! note ""
+!!! note
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
 
@@ -246,11 +246,11 @@ Once included in your Minitest setup, this library will provide you with a speci
 - `#produce` - "sends" message to the consumer instance.
 - `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
 
-!!! note ""
+!!! note
 
     Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer if you want to test message production.
 
-!!! note ""
+!!! note
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
 
@@ -322,7 +322,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
 end
 ```
 
-!!! note ""
+!!! note
 
     If you're seeking guidance on testing transactions with Minitest, it's recommended to consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 

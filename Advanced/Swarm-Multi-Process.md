@@ -50,7 +50,7 @@ The Pidfd API provides a more reliable mechanism for process management by allow
 
 However, using the Pidfd API comes with a specific requirement: it is only available on Linux operating systems with a kernel version that supports Pidfd. To utilize Karafka's Swarm Mode, your Linux system must run a kernel version that supports the Pidfd API. This functionality was introduced in the Linux kernel 5.3 and has seen gradual improvements and enhancements in subsequent releases. Therefore, ensuring your system operates on Linux kernel 5.3 or later is essential for leveraging all the benefits of Swarm Mode.
 
-!!! Abstract "Linux Kernel 5.3+ Requirement for Karafka Swarm Mode due to Pidfd API Dependency"
+!!! abstract "Linux Kernel 5.3+ Requirement for Karafka Swarm Mode due to Pidfd API Dependency"
 
     Karafka's Swarm Mode requires a Linux OS with kernel version 5.3 or later due to its reliance on the Pidfd API for advanced process management. This ensures efficient and reliable supervision of worker processes in Swarm Mode, exclusive to Linux environments compatible with Pidfd.
 
@@ -177,7 +177,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! Abstract "Health Checks vs. `max_wait_time`"
+!!! abstract "Health Checks vs. `max_wait_time`"
 
     In Swarm Mode, ensure `max_wait_time` doesn't exceed the `node_report_timeout` interval (default 60 seconds). Setting it too high could prevent nodes from reporting their health promptly, affecting system monitoring and stability.
 
@@ -243,7 +243,7 @@ Preloading in the Swarm Mode, akin to Puma and Sidekiq Enterprise practices, off
 
 When the supervisor process forks a worker, the child inherits open file descriptors and potentially other resources like network connections. Inherited resources can cause unexpected behavior or resource leaks if not properly managed. To address this, Karafka, similar to Puma, provides hooks that allow for resource cleanup and reinitialization before and after forking:
 
-!!! Tip "Automatic Reconfiguration of Karafka Internals Post-Fork"
+!!! tip "Automatic Reconfiguration of Karafka Internals Post-Fork"
 
     All Karafka internal components, including the Karafka producer, will be automatically reconfigured post-fork, eliminating the need for manual reinitialization of these elements. Focus solely on reconfiguring any external components or connections your application relies on, such as databases or APIs, as these are not automatically reset. This automatic reconfiguration ensures that Karafka internals are immediately ready for use in each forked process, streamlining multi-process management.
 
@@ -569,7 +569,7 @@ This approach will ensure that:
 1. Transactions from different nodes won't interfere with each other
 1. The producer can maintain proper transaction isolation and exactly once semantics
 
-!!! Warning "Transactional ID Conflicts"
+!!! warning "Transactional ID Conflicts"
 
     Failing to set unique `transactional.id` values for each node will result in producers fencing each other off, leading to failed transactions and potential data consistency issues. Always ensure each node's producer has a unique transactional ID.
 

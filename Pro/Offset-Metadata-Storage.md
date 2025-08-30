@@ -136,7 +136,7 @@ def consume
 end
 ```
 
-!!! Warning "Automatic Application of Stored Offset Metadata"
+!!! warning "Automatic Application of Stored Offset Metadata"
 
     Please be aware that the Karafka system will apply the stored offset metadata to the next message offset marked as consumed, regardless of whether the marking is manual or automatic, including automatic dispatches to the Dead Letter Queue (DLQ). This behavior might lead to unexpected metadata associations with messages, particularly in high-throughput or automated processing scenarios. It is highly recommended to thoroughly test and fully understand the implications of storing offset metadata in your specific use case, ensuring its application aligns with your message processing logic and does not disrupt the intended flow.
 
@@ -196,7 +196,7 @@ offset_metadata = Karafka::Pro::Processing::OffsetMetadata::Fetcher.find(
 puts offset_metadata
 ```
 
-!!! Warning "Proper Arguments expectations for `Fetcher#find`"
+!!! warning "Proper Arguments expectations for `Fetcher#find`"
 
     When using the `Fetcher#find` method, passing a `Karafka::Routing::Topic` object is essential, not just a string name of the topic. This specificity is required because a single topic might be associated with multiple consumer groups, each holding distinct offset metadata. Providing a `Karafka::Routing::Topic` object ensures accurate metadata retrieval by uniquely identifying the topic within its consumer group context, preventing any mix-up in metadata due to topic name overlaps across different consumer groups.
 

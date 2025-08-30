@@ -22,11 +22,11 @@ bundle add karafka-web
 bundle exec karafka-web install
 ```
 
-!!! Warning "Karafka Web UI Installation Guidance"
+!!! warning "Karafka Web UI Installation Guidance"
 
     Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
-!!! Warning "Essential Environment Migration Step"
+!!! warning "Essential Environment Migration Step"
 
     After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
 
@@ -52,7 +52,7 @@ require_relative 'karafka.rb'
 run Karafka::Web::App
 ```
 
-!!! Tip "`config.ui.sessions.secret` Usage"
+!!! tip "`config.ui.sessions.secret` Usage"
 
     The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not utilized outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
 
@@ -247,7 +247,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 </tbody>
 </table>
 
-!!! note ""
+!!! note
 
     Karafka Web UI topics are **not** managed via the [Declarative topics API](Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
@@ -412,7 +412,7 @@ And that is all.
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
 
-!!! note ""
+!!! note
 
     Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 

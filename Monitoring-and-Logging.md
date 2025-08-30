@@ -12,7 +12,7 @@ The only thing you need to be aware of when developing your listeners is that th
 
 A complete list of the supported events can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/notifications.rb).
 
-!!! Warning "Handle Instrumentation Listener Errors Carefully"
+!!! warning "Handle Instrumentation Listener Errors Carefully"
 
     Instrumentation listeners in Karafka must not generate errors as they can cause severe disruptions, including forcing the framework into a recovery mode or even shutting down processes. Errors within worker threads can lead to improper message acknowledgment, resulting in message loss or duplication. Always thoroughly test your instrumentation code and incorporate robust internal error handling to prevent any impact on the stability and functionality of your Karafka application.
 
@@ -20,7 +20,7 @@ A complete list of the supported events can be found [here](https://github.com/k
 
 The best place to hook your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
 
-!!! note ""
+!!! note
 
     You should set up listeners **after** configuring the app because Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
 
@@ -210,7 +210,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
     When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking, as this runs every 5 seconds and during active processing. Long-running handlers can impede the polling process, affecting message consumption. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your consumption process.
 
-!!! note ""
+!!! note
   
     Karafka emits metrics every 5 seconds by default, governed by the Kafka setting `statistics.interval.ms`. Metrics are also published during processing and long polling. Whether you are processing data or waiting on more information being shipped from Kafka, metrics publishing will occur.
 
@@ -255,7 +255,7 @@ You can read more about its features [here](Web-UI-Features), and the installati
 
 ## AppSignal Metrics and Error Tracking
 
-!!! tip ""
+!!! tip
     [AppSignal](https://www.appsignal.com/) has had and continues to have, a **tremendous** impact on the Karafka ecosystem. Without their invaluable contributions and support, the progress and evolution of this ecosystem would not have been possible. For those searching for a top-notch monitoring system for Ruby and Rails applications, AppSignal stands out as a prime choice. Karafka officially recommends AppSignal as the supported integration for its community and users.
 
 Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a seamless solution for monitoring your Kafka-based applications.
@@ -274,7 +274,7 @@ Key Metrics Include:
 
 By using the Karafka AppSignal integration, you can proactively manage your Kafka-based applications, ensuring they operate smoothly and reliably.
 
-!!! note ""
+!!! note
 
     When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
 
@@ -404,7 +404,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ![Example Karafka DD dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
 
-!!! note ""
+!!! note
 
     Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
@@ -505,7 +505,7 @@ Kubernetes is an open-source platform for automating the deployment and manageme
 
 ## OpenTelemetry
 
-!!! note ""
+!!! note
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
 
@@ -613,7 +613,7 @@ ActiveSupport::Notifications.subscribe('consumed.consumer.karafka') do |event|
 end
 ```
 
-!!! note ""
+!!! note
 
     Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
 
@@ -654,7 +654,7 @@ end
 
 Such a custom monitor will intercept specific events while delegating to the parent monitor to maintain framework functionality. This pattern enables proper error handling, cleanup, and integration with external monitoring systems that require execution to be wrapped in a block.
 
-!!! Warning "Avoid Calling super Multiple Times in Custom Monitors"
+!!! warning "Avoid Calling super Multiple Times in Custom Monitors"
 
     When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it's crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
 

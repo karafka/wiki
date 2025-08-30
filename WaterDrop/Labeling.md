@@ -63,7 +63,7 @@ report = handle.wait
 report.label == message #=> true
 ```
 
-!!! Warning "Increased Memory Usage with Self-Referencing Labels"
+!!! warning "Increased Memory Usage with Self-Referencing Labels"
     Be cautious when self-referencing messages using labels, as this practice can lead to increased memory usage; the entire message will be retained in memory until its delivery succeeds or fails. This can significantly escalate memory consumption, particularly in scenarios where you're producing hundreds of thousands of messages.
 
 ## Distinguishing Between Sync and Async Producer Errors

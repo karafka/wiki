@@ -46,11 +46,11 @@ end
 
 Once enabled, after the defined number of retries, problematic messages will be moved to a separate topic unblocking the processing.
 
-!!! Tip "Advanced DLQ Management in Karafka Pro"
+!!! tip "Advanced DLQ Management in Karafka Pro"
 
     If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
 
-!!! Warning "Default Behavior with `manual_offset_management`"
+!!! warning "Default Behavior with `manual_offset_management`"
 
     When `manual_offset_management` is enabled, the `mark_after_dispatch` option is set to `false` by default. This means that messages moved to the Dead Letter Queue (DLQ) will not have their offsets automatically marked as consumed. You need to handle offset marking manually or set `mark_after_dispatch` to `true` explicitly to ensure proper message acknowledgment and avoid reprocessing the same message repeatedly.
 
@@ -202,7 +202,7 @@ This functionality is available in Karafka Pro, and you can read about it [here]
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
 
-!!! note ""
+!!! note
 
     The original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue).
 
@@ -271,7 +271,7 @@ When working with a DLQ pattern and using Karafka multi-cluster support, please 
 
 You can alter this by overriding the `#producer` consumer method and providing your cluster-specific producer instance.
 
-!!! note ""
+!!! note
 
     Do **not** create producer instances per consumer but one per cluster. Karafka producer is thread-safe and can operate from multiple consumers simultaneously.
 
@@ -334,7 +334,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! Warning "Risks of Async DLQ Dispatch"
+!!! warning "Risks of Async DLQ Dispatch"
 
     When configuring the Dead Letter Queue (DLQ) in Karafka with asynchronous dispatch (`dispatch_method: :produce_async`), messages are immediately moved to a background queue and considered dispatched as soon as the action is triggered. This can create a potential risk where the application assumes a message has been delivered to the DLQ when, in reality, it may still be pending dispatch or could fail. In this case:
 

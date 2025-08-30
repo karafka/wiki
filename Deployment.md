@@ -103,7 +103,7 @@ Karafka **does**, however, support:
 
 Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](Deployment#custom-oauth-token-providers) section.
 
-!!! Info "AWS Integration with Custom OAuth Token Providers"
+!!! info "AWS Integration with Custom OAuth Token Providers"
 
     While Karafka can be deployed on AWS using the Custom OAuth Token provider flow, additional code or gems may be required to fetch the tokens when necessary. This code is not included in the standard Karafka setup, so you must implement or integrate it based on your authentication provider's requirements.
 
@@ -286,7 +286,7 @@ You can also use this ACL command to give all operations access for the brokers 
   --group=*
 ```
 
-!!! note ""
+!!! note
 
     The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
 
@@ -306,7 +306,7 @@ Details about how Kafka for Heroku works can also be found here:
 
 ### Heroku Kafka Prefix Convention
 
-!!! note ""
+!!! note
 
     This section **only** applies to the Multi-Tenant add-on mode.
 
@@ -363,7 +363,7 @@ end
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 ```
 
-!!! note ""
+!!! note
 
     The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
 
@@ -432,7 +432,7 @@ heroku kafka:consumer-groups:create karafka-admin-extra
 heroku kafka:consumer-groups:create karafka-web-ui
 ```
 
-!!! note ""
+!!! note
 
     You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
@@ -564,7 +564,7 @@ If the `consuming_ttl` threshold is exceeded, it suggests that the user code con
 
 This configuration allows you to handle scenarios where Karafka hangs, or the user code consuming from Kafka becomes unresponsive. By setting appropriate values for `consuming_ttl` and `polling_ttl`, you can tailor the liveness probe to detect and handle these situations effectively.
 
-!!! Warning "Important Note on Liveness Probes in Swarm Mode"
+!!! warning "Important Note on Liveness Probes in Swarm Mode"
 
     The standard Karafka Kubernetes liveness listener is not suitable for Swarm Mode. In Swarm Mode, the default listener will cause Kubernetes to inaccurately mark the Karafka process as dead due to its inability to assess the health of individual swarm nodes correctly. Karafka offers a specialized liveness listener for Swarm Mode to ensure accurate health checks and prevent unnecessary restarts. Ensure you use the correct listener for Swarm Mode deployments to maintain your application's reliability in a Kubernetes environment.
 
@@ -735,7 +735,7 @@ Begin by registering for a Confluent Cloud account at Confluent.io. After regist
 - Select the appropriate cloud provider and region that fits your application needs.
 - Choose a Basic or Dedicated cluster plan depending on your scale requirements.
 
-!!! Tip "Region Selection"
+!!! tip "Region Selection"
 
     Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
 
@@ -791,7 +791,7 @@ Karafka and WaterDrop producers accept `config.oauth.token_provider_listener`, e
 - `#oauthbearer_set_token` with `:token`, `:lifetime_ms` and `:principal_name`.
 - `#oauthbearer_set_token_failure` with a string reason explaining why the token was not obtained.
 
-!!! Tip "Default Producer Auto-Configuration"
+!!! tip "Default Producer Auto-Configuration"
 
     The default Karafka producer (`Karafka.producer`) does not need a separate configuration as it inherits the Kafka settings directly from the Karafka application configuration. However, if you use custom-initialized WaterDrop producers, remember that they require individual configuration.
 

@@ -43,7 +43,7 @@ That way, as long as no rebalances occur during the processing that would cause 
 
 This feature is great for scenarios where your processing may last for a longer time period. For example, when you need to communicate with external systems, their performance periodically is not deterministic.
 
-!!! Tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
+!!! tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
 
     An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
 
@@ -79,11 +79,11 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 2. Partition is revoked and re-assigned to the same process.
 3. Partition is revoked and assigned to a different process.
 
-!!! note ""
+!!! note
 
     The `#revoked?` method value changes independently from the workers' occupation. This means that the revocation status will be updated even if all the workers are busy processing long-running jobs.
 
-!!! note ""
+!!! note
 
     Revocation jobs are also non-blocking for long-running jobs. If the internal workers' batch is full, they will not block polling.
 

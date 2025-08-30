@@ -89,7 +89,7 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
   </small>
 </p>
 
-!!! note ""
+!!! note
 
     The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
@@ -177,7 +177,7 @@ class MyConsumer
 end
 ```
 
-!!! note ""
+!!! note
 
     No routing changes are needed to make it work.
 
@@ -321,7 +321,7 @@ This approach enables you to:
 - **Monitor and alert** on specific types of errors by examining DLQ message headers
 - **Track processing attempts** to identify messages that consistently fail
 
-!!! Hint "Header Value Type Conversion"
+!!! tip "Header Value Type Conversion"
 
     Remember that Kafka header values are always strings, so ensure any non-string values are converted appropriately when adding them to headers.
 

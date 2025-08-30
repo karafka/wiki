@@ -1,14 +1,14 @@
-!!! Hint "Recommendation: Related Regulatory Documentation"
+!!! tip "Recommendation: Related Regulatory Documentation"
 
     If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
 
 Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secure operations in environments that require adherence to Federal Information Processing Standards. This documentation outlines how Karafka supports FIPS requirements.
 
-!!! Info "No Warranty"
+!!! info "No Warranty"
 
     While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, please contact us so we can enhance the codebase accordingly.
 
-!!! Warning "OSS Version Limitations"
+!!! warning "OSS Version Limitations"
 
     The open-source (OSS) version of Karafka lacks several advanced security features. It is **not** recommended for environments requiring FIPS compatibility. Karafka Pro or Enterprise editions should be used for regulatory needs.
 
@@ -59,7 +59,7 @@ When using Karafka's encryption features, be aware that encryption may not work 
 
 Karafka includes a fingerprinting feature that provides tamper resistance for messages to prevent the processing of incorrectly decrypted messages.
 
-!!! Hint "Use SHA-256 for Fingerprinting"
+!!! tip "Use SHA-256 for Fingerprinting"
     For FIPS compatibility, use SHA-256 as your fingerprinter algorithm instead of MD5, which is not FIPS-approved.
 
 ## Supply Chain Security

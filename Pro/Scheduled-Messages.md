@@ -125,7 +125,7 @@ If you do not use Declarative Topics, please make sure to create those topics ma
   </tbody>
 </table>
 
-!!! Warning "Topic Partition Consistency Required"
+!!! warning "Topic Partition Consistency Required"
 
     When manually creating or reconfiguring topics for scheduled messages, ensure that both topics have the **same** number of partitions. This consistency is crucial for maintaining the integrity and reliability of the message scheduling and state tracking processes.
 
@@ -321,7 +321,7 @@ enveloped = Karafka::Pro::ScheduledMessages.schedule(
 )
 ```
 
-!!! Warning "Ensure Unique Custom Keys"
+!!! warning "Ensure Unique Custom Keys"
 
      The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
 
@@ -365,11 +365,11 @@ The unique key is critical in the cancellation process for several reasons:
 
 - **Avoiding Conflicts**: By maintaining unique keys for each message, you prevent potential issues where multiple messages might be inadvertently affected by a single cancellation command.
 
-!!! Hint "Custom Keys and Automatic Key Generation"
+!!! tip "Custom Keys and Automatic Key Generation"
 
     When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, it's important to use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and ensures that the correct message is targeted for cancellation.
 
-!!! Hint "Handling Cancellations with `partition_key`"
+!!! tip "Handling Cancellations with `partition_key`"
 
     If the message was scheduled with a `partition_key` to maintain a specific order or partition consistency, it is advisable to use the same `partition_key` during cancellation. This practice helps manage related messages within the same partition effectively and maintains the order and integrity of operations within that partition.
 
@@ -457,7 +457,7 @@ Additionally, the Web UI offers a detailed exploration of scheduled messages, sh
   <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
 </p>
 
-!!! Warning "Future Day Cancellation Reporting Limitations"
+!!! warning "Future Day Cancellation Reporting Limitations"
 
     The Web UI scheduled messages reporting will not reflect cancellations of scheduled messages for days beyond the current day. This limitation is a performance optimization that allows the system to store statistics for upcoming days without having to maintain complete data for each future day.
     

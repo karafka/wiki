@@ -34,7 +34,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     Please keep in mind, that the delay time needs to be provided in milliseconds
 

@@ -1,4 +1,4 @@
-!!! Info "This License Applies Only to Original Wiki Content"
+!!! info "This License Applies Only to Original Wiki Content"
 
     Please note that this license applies exclusively to the Wiki's **original content** and does not apply to any specific Karafka ecosystem components or third-party sourced content.
 

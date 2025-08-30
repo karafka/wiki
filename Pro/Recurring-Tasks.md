@@ -81,7 +81,7 @@ This will automatically create a special consumer group dedicated to the consump
 
 ### Creating Required Kafka Topics
 
-!!! Tip "Review Replication Factor Configuration"
+!!! tip "Review Replication Factor Configuration"
 
     Before deploying to production, it is crucial to read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
 
@@ -171,7 +171,7 @@ end
 
 To define recurring tasks, use the `Karafka::Pro::RecurringTasks.define` method. This method allows you to specify the version of the schedule and define one or more tasks with their cron schedule and corresponding execution block.
 
-!!! Tip "Task ID Naming Convention"
+!!! tip "Task ID Naming Convention"
 
     The `id` field used in defining tasks must comply with the following regular expression: `/\A[a-zA-Z0-9_-]{1,}\z/`. This means that the `id` must consist only of alphanumeric characters, underscores (`_`), or hyphens (`-`). No spaces or special characters are allowed; it must be at least one character long.
 

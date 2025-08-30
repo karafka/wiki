@@ -30,7 +30,7 @@ When used correctly and under healthy conditions (no ungraceful termination), Ka
 
 ## Architecture And Lifecycle
 
-!!! Tip "Introductory Overview"
+!!! tip "Introductory Overview"
 
     This section provides a high-level introduction to Karafka's architecture and lifecycle. For more comprehensive details on Karafka's internal mechanisms, configuration options, and operational best practices, please refer to other sections of this documentation where these concepts are explored in greater depth.
 
@@ -136,7 +136,7 @@ class OrdersConsumer < ApplicationConsumer
 end
 ```
 
-!!! Tip "Use Karafka Monitoring Hooks to Debug Consumer Failures"
+!!! tip "Use Karafka Monitoring Hooks to Debug Consumer Failures"
     
     Use Karafka's monitoring hooks to debug these scenarios. Subscribe to the `error.occurred` event to get detailed info whenever a consumer error happens.
 
@@ -460,7 +460,7 @@ end
 
 Available debug flags include: `generic`, `broker`, `topic`, `metadata`, `feature`, `queue`, `msg`, `protocol`, `cgrp`, `security`, `fetch`, `interceptor`, `plugin`, `consumer`, `admin`, `eos`, `mock`, `assignor`, `conf`, `all`
 
-!!! Warning "Debug Mode Usage Caution"
+!!! warning "Debug Mode Usage Caution"
 
     Using debug mode extensively, especially in production, may impact performance and generate large log files. Ensure you revert to regular settings once your issue is resolved.
 

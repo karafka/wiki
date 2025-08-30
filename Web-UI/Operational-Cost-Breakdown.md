@@ -2,7 +2,7 @@
 
 Running the Web UI of Karafka involves costs for data transfer and storage. Below is an estimate to help you understand and plan for these expenses and see the impact of using the Web UI.
 
-!!! Info "Estimate Only"
+!!! info "Estimate Only"
 
     The following cost estimation is just an estimate and may differ depending on the Kafka vendor used versus self-hosted setups, among other factors.
 
@@ -10,7 +10,7 @@ Running the Web UI of Karafka involves costs for data transfer and storage. Belo
 
 Several factors influence the cost of running the Karafka Web UI. Understanding these factors can help in managing and optimizing operational expenses. Here is a detailed list of the key cost factors.
 
-!!! Info "Setup Specificity"
+!!! info "Setup Specificity"
 
     Depending on your specific setup, additional factors may affect costs, or some of the listed factors may not apply.
 
@@ -209,7 +209,7 @@ Below, you can find an example calculation that you can use to understand what f
     </tbody>
 </table>
 
-!!! Info "Simplification Notice"
+!!! info "Simplification Notice"
 
     The calculation above is a simplification, and there may be other factors impacting the cost. This estimate does not include the cost of maintaining a Kafka cluster but rather the additional cost of running the Web UI within an existing cluster.
 

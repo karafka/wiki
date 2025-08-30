@@ -18,7 +18,7 @@ producer.produce_async(topic: 'events', payload: 'data')
 producer.close
 ```
 
-!!! info ""
+!!! info
 
     See the `WaterDrop::Instrumentation::Notifications::EVENTS` for the list of all the supported events.
 
@@ -63,7 +63,7 @@ WaterDrop is configured to emit internal `librdkafka` metrics every five seconds
 
 The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
-!!! note ""
+!!! note
 
     In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
 
@@ -110,7 +110,7 @@ sleep(2)
 producer.close
 ```
 
-!!! note ""
+!!! note
 
     The metrics returned may not be completely consistent between brokers, toppars and totals, due to the internal asynchronous nature of librdkafka. E.g., the top level tx total may be less than the sum of the broker tx values which it represents.
 
@@ -148,11 +148,11 @@ end
 # WaterDrop error occurred: Local: Broker transport failure (transport)
 ```
 
-!!! note ""
+!!! note
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
-!!! note ""
+!!! note
 
     The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](WaterDrop-Transactions) documentation.
 
@@ -267,6 +267,6 @@ producer.monitor.subscribe(listener)
 
 The structure and details about the librdkafka statistical metrics can be found [here](Librdkafka-Statistics).
 
-!!! hint "Mixing Approaches"
+!!! tip "Mixing Approaches"
 
     Both notification hook enhanced reporting and altering librdkafka metrics can be combined to create a custom listener that fully suits your monitoring needs.

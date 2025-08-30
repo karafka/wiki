@@ -1,10 +1,10 @@
 Karafka provides application administrative functions via the built-in `Karafka::Admin` module, including topic and consumer group management, cluster administration, and more.
 
-!!! Tip "Asynchronous Operation Propagation"
+!!! tip "Asynchronous Operation Propagation"
 
     Many Kafka administrative operations (ACLs, configs, topics) are asynchronous in nature. When an API call returns successfully, this means the controller has accepted the request, not that the change has been fully propagated across the cluster. Configuration changes, ACL updates, and topic modifications may take several seconds to be applied on all brokers, depending on cluster size and network conditions. Always allow time for propagation and verify changes are applied across your cluster before proceeding with dependent operations.
 
-!!! Hint "Default Cluster Limitation"
+!!! tip "Default Cluster Limitation"
 
     All admin operations in Karafka always run on the default cluster. To run admin operations on multiple clusters, you need separate Karafka boot files for each cluster. For more details, visit the [Multi-Cluster Setup](#multi-cluster-setup) section.
 
@@ -163,11 +163,11 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
-!!! note ""
+!!! note
 
     While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
-!!! note ""
+!!! note
 
     When using the `#read_topic` method in the Karafka Admin API to retrieve messages from a topic partition, it's essential to understand that this method skips offsets of compacted messages and transactions-related messages. This means that these specific messages won't be fetched or displayed even if they exist in the topic partition. However, while these messages are skipped during retrieval, they are still included in the total counts for those in that partition.
 
@@ -393,7 +393,7 @@ end
 
 ## Renaming a Consumer Group
 
-!!! Warning "Never Rename Active Consumer Groups"
+!!! warning "Never Rename Active Consumer Groups"
 
     This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
 
@@ -409,7 +409,7 @@ Karafka::Admin.rename_consumer_group(
 
 When using `rename_consumer_group`, the method ensures that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
 
-!!! Tip "Offset Merger with Existing Consumer Groups"
+!!! tip "Offset Merger with Existing Consumer Groups"
 
     If the new consumer group already exists, the offsets from the old group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
@@ -431,7 +431,7 @@ Karafka::Admin.copy_consumer_group(
 
 When using `#copy_consumer_group`, the method ensures that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
 
-!!! Tip "Offset Merger with Existing Consumer Groups"
+!!! tip "Offset Merger with Existing Consumer Groups"
 
     If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
