@@ -92,15 +92,21 @@ Choosing the right acks setting depends on your application's requirements:
 
 The `socket.nagle.disable` parameter in librdkafka controls the use of the Nagle algorithm for Kafka broker connections. The Nagle algorithm is a TCP optimization that reduces the number of small packets sent over the network by combining them into larger packets. While this can improve network efficiency, it also introduces latency as small messages wait to be sent together.
 
-- `true`: Disables the Nagle algorithm, ensuring messages are sent immediately without waiting to combine them into larger packets. This setting can significantly reduce latency, particularly in scenarios with many small messages, but may increase network overhead due to more frequent transmissions.
+!!! Info "Default Behavior Changed"
+
+    Starting from **Karafka 2.5.1** and **WaterDrop 2.8.7**, the Nagle algorithm is **disabled by default** (`socket.nagle.disable: true`). This change was made to improve latency out of the box, ensuring messages are sent immediately without waiting to combine them into larger packets.
+    
+    **For older versions**: If you're using Karafka < 2.5.1 or WaterDrop < 2.8.7, the Nagle algorithm may still be enabled by default. It is **recommended** to explicitly disable it by setting `socket.nagle.disable: true` in your configuration to achieve better latency.
+
+- `true` (default since Karafka 2.5.1 and WaterDrop 2.8.7): Disables the Nagle algorithm, ensuring messages are sent immediately without waiting to combine them into larger packets. This setting significantly reduces latency, particularly in scenarios with many small messages, but may increase network overhead due to more frequent transmissions.
   
-- `false`: Enables the Nagle algorithm, which can reduce the number of packets sent by aggregating smaller messages. This setting may improve overall throughput by reducing network load but at the cost of slightly higher latency.
+- `false`: Enables the Nagle algorithm, which can reduce the number of packets sent by aggregating smaller messages. This setting may improve overall throughput by reducing network load but at the cost of higher latency.
 
 When configuring `socket.nagle.disable`, consider your application's priorities:
 
-- **Low Latency Needs**: Set `socket.nagle.disable` to `true` to minimize latency, ensuring that messages are sent as quickly as possible.
+- **Low Latency Needs** (default in newer versions): For Karafka >= 2.5.1 and WaterDrop >= 2.8.7, the Nagle algorithm is disabled by default. For older versions, explicitly set `socket.nagle.disable: true` to minimize latency.
   
-- **Throughput Optimization**: Set `socket.nagle.disable` to `false` to leverage the Nagle algorithm for reduced network traffic and improved throughput, if your application can tolerate the slight increase in latency.
+- **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to leverage the Nagle algorithm for reduced network traffic.
 
 Here's an example configuration:
 
@@ -109,7 +115,10 @@ class App < Karafka::App
   setup do |config|
     config.kafka = {
       'bootstrap.servers': 'localhost:9092',
-      'socket.nagle.disable': true
+      # For Karafka < 2.5.1 or WaterDrop < 2.8.7, explicitly disable Nagle for better latency
+      'socket.nagle.disable': true  # Recommended for older versions
+      # Or set to false if you want to enable Nagle algorithm for throughput optimization
+      # 'socket.nagle.disable': false
     }
 
     config.shutdown_timeout = 60_000
