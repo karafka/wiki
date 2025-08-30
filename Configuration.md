@@ -35,6 +35,7 @@ A comrehensive list of the karafka configuration options with their details and 
 A complete list of the configuration options related to `librdkafka` with their details and defaults can be found [here](Librdkafka-Configuration).
 
 ## Configuring External components
+
 The `app.initialized` event hook allows you to perform additional setup and configuration tasks for external components that depend on the internal settings of Karafka. This event is executed once per process, immediately after all framework components are ready, including dynamically built components.
 
 **Prerequisites**
