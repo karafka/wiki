@@ -10,7 +10,7 @@
     "!.gh/**",
   ],
   "customRules": [
-    "./utils/markdownlint-rules/mkdocs-material-admonitions.js"
+    "./bin/utils/markdownlint-rules/mkdocs-material-admonitions.js"
   ],
   "config": {
     "default": true,
