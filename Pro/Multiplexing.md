@@ -62,7 +62,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! notice "Proper Placement of `#multiplexing` configuration"
+!!! note "Proper Placement of `#multiplexing` configuration"
 
     The `#multiplexing` method must be used exclusively within a `#subscription_group` block. It is not suitable for routing without an explicit subscription group definition.
 

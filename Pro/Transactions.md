@@ -18,7 +18,7 @@ Karafka transactions provide Exactly-Once Semantics by ensuring that producing t
 
     Please note that **this document concentrates solely on the consumer-related aspects of Karafka's transactions**. For a comprehensive understanding of transactions and to ensure a well-rounded mastery of Karafka's transactional capabilities, delving into the [WaterDrop transactions documentation](WaterDrop-Transactions) is imperative.
 
-!!! Warning "Avoid Mixing Transactional and Non-Transactional Offset Committing"
+!!! warning "Avoid Mixing Transactional and Non-Transactional Offset Committing"
 
     Mixing transactional offset committing with non-transactional offset committing is strongly discouraged. When these two modes are combined, it can lead to unpredictable behavior and compromise the integrity of your data processing.
 
@@ -152,7 +152,7 @@ Consequently, if a transaction is prematurely aborted or encounters a failure, t
 
 ### Manual Offset Management in Transactions
 
-!!! Warning "Direct Transactional Producer Usage Is Not Recommended"
+!!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
     Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
 
@@ -176,7 +176,7 @@ def consume
 end
 ```
 
-!!! Hint "Using `#wrap` with Manual Offset Management and Custom Producers"
+!!! tip "Using `#wrap` with Manual Offset Management and Custom Producers"
 
     When providing a custom producer directly to the `#transaction` method while using manual offset management, you must ensure that no Karafka features that automatically manage and store offsets are used in your consumer. Any inadvertent offset management by Karafka could interfere with the integrity of your manual offset strategy.
 
@@ -263,7 +263,7 @@ With a producers' connection pool, this challenge is mitigated. When a transacti
 
 In essence, with support for dedicated transactional producers, Karafka's `#transaction` method offers a structured and efficient way to manage message transactions in highly-traffic systems.
 
-!!! Warning "Direct Transactional Producer Usage Is Not Recommended"
+!!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
     Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
 
@@ -271,7 +271,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
     The recommended approach is to utilize the `#wrap` method when customizing the producer. This ensures that the transactional producer is seamlessly managed across the entire lifecycle of the action, including any framework-level operations that occur after your custom logic. By adhering to this practice, you maintain consistency, avoid unexpected issues, and fully leverage the robustness of Karafka's transactional processing capabilities.
 
-!!! Warning "Ensure `#wrap` Always Calls `yield`"
+!!! warning "Ensure `#wrap` Always Calls `yield`"
 
     It is critical to ensure that the `#wrap` method always calls `yield`, even if operations like selecting a producer from a pool fail. The `yield` statement in `#wrap` executes the entire operational flow within Karafka, including not only your custom logic but also essential framework-level synchronization and processing code.
 
@@ -443,7 +443,7 @@ This section explains how transactions interact with the DLQ and the implication
 
 2. **Transactional Dead-Letter Queue Operations**: In scenarios involving persistent errors - where messages need to be moved to the DLQ - Karafka, by default, uses transactions to perform two critical operations atomically: moving the message to the DLQ and committing the offset (when necessary). This ensures that the message relocation to the DLQ and the acknowledgment of message processing (offset commit) are treated as a single atomic operation, maintaining consistency.
 
-!!! Notice "Disabling Transactions During DLQ Dispatches"
+!!! note "Disabling Transactions During DLQ Dispatches"
 
     It's worth noting that this behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](Pro-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
@@ -479,7 +479,7 @@ Transactions Instrumentation is directly tied to the **producer** handling the t
 
 However, it's important to know that **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
 
-!!! Warning "Consumer Lag Monitoring"
+!!! warning "Consumer Lag Monitoring"
 
     It's essential to be aware that **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
 
@@ -495,7 +495,7 @@ If you've built custom instrumentation around consumer lag or offsets, you'll ne
 
 For advanced monitoring or custom integrations, remember that the Karafka consumer publishes a `consumer.consuming.transaction` notification event after each successful transaction. This event can be used to hook into transaction completions and incorporate transaction-aware logic in your instrumentation or metrics gathering.
 
-!!! Hint "`consumer.consuming.transaction` Instrumentation Event"
+!!! tip "`consumer.consuming.transaction` Instrumentation Event"
 
     The `consumer.consuming.transaction` instrumentation event is triggered after each successful transaction. Importantly, if you raise `WaterDrop::AbortTransaction` to abort a transaction, this event will still be triggered. Similar to how ActiveRecord transactions handle rollbacks internally, the abort, in this case, does not bubble up as an exception. Instead, the transaction is cleanly rolled back, and the event is published, allowing you to track transaction completions even in cases where they were aborted.
 

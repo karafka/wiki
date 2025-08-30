@@ -6,7 +6,7 @@ Latency management is crucial for optimizing the performance of any Kafka-based 
 
 The producer and consumer sides of a Kafka system have distinct roles and,  consequently, require different strategies for latency management. For producers, the focus is often on optimizing the message batching and sending mechanisms to minimize delays. On the consumer side, the goal is to reduce the time it takes to fetch and process messages. This document will detail specific configurations and practices for producers and consumers to help you achieve the desired latency levels.
 
-!!! Info "Understanding the Complexity of Latency and Throughput Management"
+!!! info "Understanding the Complexity of Latency and Throughput Management"
 
     Latency management in Karafka is a complex and multifaceted topic. While this document provides a comprehensive overview of latency management techniques and best practices, it only covers some possible aspects. Many factors influence latency, including framework configuration, message types, scale, and the nature of your processing workload. These factors often extend beyond the scope of framework documentation.
 
@@ -84,7 +84,7 @@ Choosing the right acks setting depends on your application's requirements:
 
 - **High Durability Needs**: Use acks=-1 or acks=all for critical applications where data loss is unacceptable despite the higher latency and reduced throughput.
 
-!!! Tip "Fine-Tuning `acks` with WaterDrop Variants"
+!!! tip "Fine-Tuning `acks` with WaterDrop Variants"
 
     Using [variants](WaterDrop-Variants), you can customize `request.required.acks` within the same producer instance. This feature allows different configuration settings per topic while sharing TCP connections, optimizing producer efficiency.
 
@@ -92,7 +92,7 @@ Choosing the right acks setting depends on your application's requirements:
 
 The `socket.nagle.disable` parameter in librdkafka controls the use of the Nagle algorithm for Kafka broker connections. The Nagle algorithm is a TCP optimization that reduces the number of small packets sent over the network by combining them into larger packets. While this can improve network efficiency, it also introduces latency as small messages wait to be sent together.
 
-!!! Info "Default Behavior Changed"
+!!! info "Default Behavior Changed"
 
     Starting from **Karafka 2.5.1** and **WaterDrop 2.8.7**, the Nagle algorithm is **disabled by default** (`socket.nagle.disable: true`). This change was made to improve latency out of the box, ensuring messages are sent immediately without waiting to combine them into larger packets.
     
@@ -173,11 +173,11 @@ The strategy and methods selected for consumer management can vary significantly
 
 - **Prioritizing Latency**: This strategy, when low latency is the priority, is a swift approach that minimizes the time taken for each message to be processed and acknowledged. It involves reducing batch sizes, using faster data processing methods, and ensuring that the consumer system is highly responsive. Here, throughput might be sacrificed, but the assurance of quick message processing is maintained.
 
-!!! Info "No Silver Bullet for Latency and Throughput Tuning"
+!!! info "No Silver Bullet for Latency and Throughput Tuning"
 
     There is no one-size-fits-all solution when it comes to tuning latency and throughput. As mentioned above, achieving optimal performance requires deeply understanding your specific expectations and use cases.
 
-!!! Info "Scope of this Guide"
+!!! info "Scope of this Guide"
 
     This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, it's important to note that system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
 
@@ -213,7 +213,7 @@ You will most often focus on consumption latency, as it reflects the overall per
 
 Tuning consumer configurations in Karafka involves adjusting various settings that impact how messages are consumed and processed. These settings help balance latency, throughput, and resource utilization according to your requirements. Below are the primary settings within the Karafka configuration and important librdkafka-specific settings that you must consider.
 
-!!! Hint "Optimizing Data Fetching"
+!!! tip "Optimizing Data Fetching"
 
     Tuning the configurations below helps improve how fast or how much data Karafka can fetch from Kafka in a given time frame, as long as the consumer process is not blocked by processing or other factors. These are the primary ways to control latency and throughput when getting data from Kafka for the Ruby process.
 
@@ -392,7 +392,7 @@ end
 
 Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka leverages native Ruby threads and supports multiple concurrency features to handle processing efficiently.
 
-!!! Warning "Polling-Related Factors Affecting Parallel Processing"
+!!! warning "Polling-Related Factors Affecting Parallel Processing"
 
     Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It's important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
 

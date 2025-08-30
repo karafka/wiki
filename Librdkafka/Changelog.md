@@ -3,7 +3,7 @@
 
 # Librdkafka Changelog
 
-!!! note ""
+!!! note
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
 ## 2.11.1 (2025-08-18)

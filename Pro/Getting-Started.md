@@ -21,21 +21,21 @@ gem 'karafka'
 
 4. (Optionally) Enable Bundler native checksum verification by running: `bundle lock --add-checksums` or enabling it for all your projects via `bundle config lockfile_checksums true`.
 
-!!! Tip "Crucial Gemfile Tip for Karafka Pro Users"
+!!! tip "Crucial Gemfile Tip for Karafka Pro Users"
 
     You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
 
-!!! Warning "Enterprise License Required for Offline or Private Registry Setup"
+!!! warning "Enterprise License Required for Offline or Private Registry Setup"
 
     An Enterprise license is required if you are looking into hosting the license key offline within the app or via a private registry. This mode of operation allows you to use Karafka Pro without relying on our gem server. An Enterprise Agreement will grant you access to the license gem sources and installation instructions, ensuring you can proceed smoothly with your preferred setup.
 
 ## License Gem Integrity Verification
 
-!!! Info "Checksum Verification in Enterprise Mode Not Needed"
+!!! info "Checksum Verification in Enterprise Mode Not Needed"
 
     When using Karafka with an offline [Enterprise](Pro-Enterprise) license, license gem checksum verification is not required. The Enterprise license is fully offline and not subject to change. It is also not being fetched from the Karafka gem server, thus making the checksum verification pointless.
 
-!!! Warning " Checksum Not Available on Web UI"
+!!! warning " Checksum Not Available on Web UI"
 
     Due to security reasons, license checksum is not available through the license Web UI. It is only sent once via email.
 
@@ -81,7 +81,7 @@ When Bundler downloads a gem (or installs it from a local cache), it verifies th
 
 ### With Bundler 2.5 or Older (Deprecated)
 
-!!! Tip "Upgrade to Bundler 2.6+ for Hassle-Free Checksum Protection"
+!!! tip "Upgrade to Bundler 2.6+ for Hassle-Free Checksum Protection"
 
     We **highly recommend upgrading to Bundler 2.6 or higher** rather than implementing the manual checksum verification flow. Bundler 2.6 introduces native support for [gem checksum verification](https://bundler.io/blog/2024/12/19/bundler-v2-6.html) directly in the `Gemfile.lock`, making manual verification unnecessary.
 

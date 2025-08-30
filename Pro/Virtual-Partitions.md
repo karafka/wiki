@@ -12,7 +12,7 @@ Virtual Partitions solve this problem by providing you with the means to further
   </small>
 </p>
 
-!!! Hint "Alternative Scaling Approach"
+!!! tip "Alternative Scaling Approach"
 
     For CPU-intensive workloads or scenarios where data clustering makes Virtual Partitions less effective, consider [Parallel Segments](Pro-Parallel-Segments), which operate at the consumer group level.
 
@@ -49,7 +49,7 @@ The virtual `partitioner` requires to respond to a `#call` method, and it accept
 
 The return value of this partitioner needs to classify messages that should be grouped uniquely. We recommend using simple types like strings or integers.
 
-!!! Warning "User-Handled Errors in Partitioner"
+!!! warning "User-Handled Errors in Partitioner"
 
     Handling errors within the `partitioner` is primarily the user's responsibility. However, Karafka will catch partitioning errors. Suppose an error occurs even once for a given message in a batch. In that case, Karafka will emit an error via `error.occurred` and will proceed by assigning all messages from that batch to a single virtual partition. Despite this safeguard, users must manage and mitigate any exceptions or errors in their custom partitioning logic to ensure their application's smooth operation and prevent unexpected behavior and potential data processing issues.
 
@@ -149,7 +149,7 @@ routes.draw do
 end
 ```
 
-!!! Tip "Lazy Deserialization Advisory"
+!!! tip "Lazy Deserialization Advisory"
 
     Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
@@ -354,7 +354,7 @@ routes.draw do
 end
 ```
 
-!!! Tip "Virtual Partitions Workload Distribution"
+!!! tip "Virtual Partitions Workload Distribution"
 
     Virtual Partitions `max_partitions` setting applies per topic partition. In the case of processing multiple partitions, there may be a case where all the work happens on behalf of Virtual Partitions.
 
@@ -437,7 +437,7 @@ For a single partition-based Virtual Partitions group, offset management and ret
 
 If processing in all virtual partitions ends up successfully, Karafka will mark the last message from the underlying partition as consumed.
 
-!!! Info "Impact of Pausing on Message Count"
+!!! info "Impact of Pausing on Message Count"
 
     Since pausing happens in Kafka, the re-fetched data may contain more or fewer messages. This means that after retry, the number of messages and their partition distribution may differ. Despite that, all ordering warranties will be maintained.
 
@@ -489,7 +489,7 @@ routes.draw do
 end
 ```
 
-!!! hint "DLQ independent mode usage with Virtual Partitions"
+!!! tip "DLQ independent mode usage with Virtual Partitions"
 
     The [`independent` DLQ flag](Dead-Letter-Queue#independent-error-counting) in Karafka can be used with the Virtual Partitions. When an error occurs in virtual partitions, pause, retry, and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties, meaning that the `independent` flag can operate in the same fashion as if virtual partitions were not used.
 

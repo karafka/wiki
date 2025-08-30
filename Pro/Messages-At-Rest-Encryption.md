@@ -2,7 +2,7 @@ Specific industries have strong regulations around the storage of personal data.
 
 Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data.
 
-!!! Warning "Custom Headers Deserializer and Encryption"
+!!! warning "Custom Headers Deserializer and Encryption"
 
     When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
 
@@ -32,7 +32,7 @@ Once everything is configured, Karafka will automatically produce encrypted mess
 
 Karafka keeps messages encrypted until their deserialization.
 
-!!! note ""
+!!! note
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
 
@@ -109,7 +109,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     Such a pattern should only be used when working with trusted entities.
 
@@ -139,7 +139,7 @@ This mechanism of ensuring message integrity is distinct from the CRC (Cyclic Re
 
 This feature is especially critical in industries subject to stringent regulations around handling sensitive data, such as healthcare, finance, and government. By ensuring the integrity of decrypted messages, Karafka helps organizations maintain compliance with regulations like HIPAA and GDPR, which mandate strict controls over the confidentiality and integrity of sensitive information.
 
-!!! Warning "Selection of Fingerprinting Algorithm"
+!!! warning "Selection of Fingerprinting Algorithm"
 
     The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It's essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
 

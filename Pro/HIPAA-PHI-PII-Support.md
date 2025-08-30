@@ -1,6 +1,6 @@
 # HIPAA, PHI, PII Support
 
-!!! Info "OSS Version Limitations for Regulated Environments"
+!!! info "OSS Version Limitations for Regulated Environments"
 
     This document references several Pro features not available in the open-source (OSS) version of Karafka. Due to the lack of these advanced security and compliance features in the OSS version, its use is **not recommended** in environments governed by HIPAA, PHI, or PII regulations.
 

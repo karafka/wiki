@@ -35,7 +35,7 @@ Acknowledgements (`acks`) dictate how the producer and the broker agree that a m
 - `acks` `1`: The producer waits for acknowledgment from the leader broker only. If the leader broker fails after acknowledgment, data can be lost.
 - `acks` `all`: The producer waits for acknowledgment from all in-sync replicas (ISRs). This provides the highest durability but introduces higher latency.
 
-!!! Tip "Per-Topic Acknowledgement Configuration in WaterDrop Variants"
+!!! tip "Per-Topic Acknowledgement Configuration in WaterDrop Variants"
 
     WaterDrop Variants support configuring acknowledgements on a **per-topic basis** while using the **same producer instance**. This flexibility allows different topics to have custom acknowledgement settings depending on the reliability and performance needs of the specific topic. 
 
@@ -75,7 +75,7 @@ end
 
 `min.insync.replicas` is the minimum number of replicas that must be in sync with the leader for a message to be considered successfully written when `acks` set to `all` is used. This setting works with the `acks` set to `all` producer setting to enforce durability guarantees.
 
-!!! Tip "Maintaining Data Integrity During Broker Failures"
+!!! tip "Maintaining Data Integrity During Broker Failures"
 
     If the number of in-sync replicas falls below this threshold (e.g., due to broker failure), Kafka will reject writes until the required number of replicas is back online.
 

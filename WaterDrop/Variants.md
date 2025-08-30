@@ -110,7 +110,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
   </tbody>
 </table>
 
-!!! Info "Additional Configuration Attributes Details"
+!!! info "Additional Configuration Attributes Details"
 
     For a more comprehensive list of configuration settings supported by librdkafka, please visit the [Librdkafka Configuration](Librdkafka-Configuration) page.
 

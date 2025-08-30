@@ -63,7 +63,7 @@ Karafka and its components versions or release series are categorized below into
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
-!!! note ""
+!!! note
 
     If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
@@ -146,7 +146,7 @@ The following table outlines Kafka-compatible platforms that have been reported 
   </tbody>
 </table>
 
-!!! Info "Compatibility Status Explanation"
+!!! info "Compatibility Status Explanation"
     This table reflects our current knowledge about compatibility with different Kafka-compatible platforms. "Verified" indicates whether the Karafka users have independently confirmed compatibility. "Production Usage" reflects reported usage by the community.
 
 #### Compatibility Levels

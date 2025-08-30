@@ -123,7 +123,7 @@ When using the ActiveJob adapter with Virtual Partitions, upon any error in any 
 
 For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Active-Job#behaviour-on-errors).
 
-!!! note ""
+!!! note
 
     Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 

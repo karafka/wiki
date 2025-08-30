@@ -54,7 +54,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, ensuring efficient resource utilization and streamlined data consumption across clusters.
 
