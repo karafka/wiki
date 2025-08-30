@@ -163,7 +163,7 @@ Consumer 3: notifications-[0]
 
 Use bracket notation in rebalancing scenarios to show partition movements.
 
-```json
+```text
 [INFO] Rebalancing started
 [INFO] Revoking: orders-[0,2,4], payments-[0]
 [INFO] Assigning: orders-[1,3], payments-[1], notifications-[0]

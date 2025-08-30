@@ -370,7 +370,7 @@ By isolating the recurring tasks execution in its own consumer process, you ensu
 
 Karafka provides CLI flag to facilitate running only dedicated consumer groups:
 
-```ruby
+```shell
 bundle exec karafka server --include-consumer-groups karafka_web,karafka_recurring_tasks
 ```
 

@@ -1271,7 +1271,7 @@ Consumer groups in Kafka are used to achieve parallel processing, high throughpu
 
 If you are seeing the following error when starting Karafka:
 
-```json
+```shell
 {:topics=>"all topic names within a single consumer group must be unique"}
 (Karafka::Errors::InvalidConfigurationError)
 ```

@@ -31,7 +31,7 @@ The stats are provided as a JSON object string.
 
 All fields that contain sizes are in bytes unless otherwise noted.
 
-```json
+```text
 {
  <Top-level fields>
  "brokers": {
