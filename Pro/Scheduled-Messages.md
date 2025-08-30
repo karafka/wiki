@@ -50,7 +50,7 @@ This approach simplifies setting up scheduled messages, making them accessible w
 
 When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
 
-```bash
+```shell
 bundle exec karafka topics migrate
 ```
 

@@ -243,13 +243,13 @@ Karafka can also be embedded within another process so you do not need to run a 
 
 Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--include-consumer-groups``` server flag as follows:
 
-```bash
+```shell
 bundle exec karafka server --include-consumer-groups group_name1 group_name3
 ```
 
 You can also exclude particular groups the same way:
 
-```bash
+```shell
 bundle exec karafka server --exclude-consumer-groups group_name1 group_name3
 ```
 
@@ -294,7 +294,7 @@ Please make sure your topic contains more than one partition. Only then Karafka 
 
 **Not recommended**. You may encounter the following errors if you decide to do so:
 
-```
+```text
 ERROR -- : librdkafka internal error occurred: Local: Unknown partition (unknown_partition)
 ERROR -- : 
 INFO -- : rdkafka: [thrd:main]: Topic extractor partition count changed from 1 to 0
@@ -307,7 +307,7 @@ It is recommended to stop Karafka server instances and then remove and recreate 
 
 When you attempt to stop Karafka, you may notice the following information in your logs:
 
-```bash
+```shell
 Received SIGINT system signal
 Stopping Karafka server
 Forceful Karafka server stop
@@ -370,7 +370,7 @@ The problem is presented in [this](https://github.com/karafka/example-apps/pull/
 
 To mitigate this, you can create an empty karafka bootfile. With a file structure like this:
 
-```
+```text
 +-- karafka_root_dir
 |   +-- karafka.rb     # default bootfile (empty file)
 |   +-- karafka_app.rb # real bootfile with Karafka::App definition and other stuff
@@ -408,7 +408,7 @@ Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhan
 
 If you see such messages in your logs:
 
-```bash
+```shell
 Fatal error: Broker: Static consumer fenced by other consumer with same group.instance.id
 ```
 
@@ -527,7 +527,7 @@ Also, please remember that those settings apply to consumers **only**. `Karafka#
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
-```bash
+```shell
 [bc01b9e1535f] Consume job for ExampleConsumer on my_topic started
 Worker processing failed due to an error: Implement this in a subclass
 ```
@@ -663,7 +663,7 @@ There are a few things to keep in mind, though:
 
 If you are seeing the following error:
 
-```bash
+```shell
 `validate!':
 {:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
  OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
@@ -762,7 +762,7 @@ If you decide to do a full deployment, you can send `TSTP` to all the processes,
 
 If you are getting following error after upgrading `karafka` and `karafka-core`:
 
-```bash
+```shell
 SSL handshake failed: error:0A000086:SSL routines::certificate verify failed:  
 broker certificate could not be verified, verify that ssl.ca.location is correctly configured or  
 root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
@@ -951,7 +951,7 @@ To ensure a smoother monitoring experience, we recommend enabling [Karafka Datad
 
 If you encounter the following error:
 
-```
+```text
 ========================================================================
 env: can't execute 'bash': No such file or directory
 ========================================================================
@@ -963,7 +963,7 @@ Failed to complete configure task
 
 you need to make sure that your Alpine-based image includes bash. Alpine Linux Docker image by default does **not** include it. To add it, please make sure to add this line before you run the `bundle install` process:
 
-```bash
+```shell
 RUN apk update && apk add bash
 ```
 
@@ -1026,7 +1026,7 @@ You can use the same setup as the one used by Karafka, described [here](Deployme
 
 If you are seeing following or similar error:
 
-```
+```text
 rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
 librdkafka internal error occurred: Local: Broker transport failure (transport)
 ```
@@ -1064,7 +1064,7 @@ When you see both the `Disconnected` error and the `all_brokers_down` error, it 
 
 Please read the explanation of the previous question to understand the reasons and get tips on mitigating this issue.
 
-```
+```text
 rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
 librdkafka internal error occurred: Local: Broker transport failure (transport)
 Error occurred: Local: All broker connections are down (all_brokers_down) - librdkafka.error
@@ -1115,7 +1115,7 @@ Karafka has an Iterator API for that. You can read about it [here](Pro-Iterator-
 
 If you see the following error in your error tracking system:
 
-```
+```text
 ERROR -- : Listener fetch loop error: Broker: Invalid message (invalid_msg)
 ERROR -- : gems/karafka-rdkafka-0.12.1/lib/rdkafka/consumer.rb:432:in `poll'
 ERROR -- : gems/karafka-2.0.41/lib/karafka/connection/client.rb:368:in `poll'
@@ -1125,7 +1125,7 @@ It indicates that the broker contains a message that it cannot parse or understa
 
 It is advised to check the Kafka logs around the polling time, as it may be a Kafka issue. You may encounter the following or similar errors:
 
-```
+```text
 org.apache.kafka.common.errors.CorruptRecordException:
   Found record size 0 smaller than minimum record overhead (14)
   in file /var/lib/my_topic-0/00000000000019077350.log.
@@ -1271,7 +1271,7 @@ Consumer groups in Kafka are used to achieve parallel processing, high throughpu
 
 If you are seeing the following error when starting Karafka:
 
-```
+```shell
 {:topics=>"all topic names within a single consumer group must be unique"}
 (Karafka::Errors::InvalidConfigurationError)
 ```
@@ -1598,7 +1598,7 @@ While tuning these settings can help optimize memory usage, it's essential to re
 
 If you are seeing the following error:
 
-```bash
+```shell
 INFO pid=1 tid=gl9 Running Karafka 2.3.0 server
 #<Thread:0x0000aaab008cc9d0 karafka-2.3.0/lib/karafka/helpers/async.rb:25 run>
 # terminated with exception (report_on_exception is true):
@@ -1706,7 +1706,7 @@ Instead, this error is a manifestation of a known bug within the Bundler and the
 
 To address and potentially resolve this problem, you can update your system gems to the most recent version, which doesn't have this bug. You can do this by running:
 
-```bash
+```shell
 gem update --system
 ```
 
@@ -1818,7 +1818,7 @@ Strong ordering in Kafka means that records are strictly ordered in the partitio
 
 If you are seeing the following error:
 
-```bash
+```shell
 All partition.assignment.strategy (cooperative-sticky,range)
 assignors must have the same protocol type,
 online migration between assignors with different protocol types
@@ -1858,7 +1858,7 @@ On the other hand, if this error appears while using Declarative Topics, kindly 
 
 ## Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?
 
-```
+```text
 Error querying watermark offsets for partition 0 of karafka_consumers_states
 Local: All broker connections are down (all_brokers_down)
 ```
@@ -2368,7 +2368,7 @@ Karafka.monitor.subscribe(MyTracingListener.new)
 
 No, your code does not stop executing when Karafka reaches the `max.poll.interval.ms` time, and the consumer is removed from the group. Karafka does not interrupt the execution of your code. Instead, it reports an error  indicating that the maximum poll interval has been exceeded, like this:
 
-```
+```text
 Data polling error occurred: Application maximum poll interval (300000ms) exceeded by 348ms
 ```
 
@@ -2556,7 +2556,7 @@ Yes, you can publish a message asynchronously using Waterdrop. You can get the h
 
 This error:
 
-```bash
+```shell
 No provider for SASL mechanism GSSAPI:
   recompile librdkafka with libsasl2 or openssl support.
   Current build options: PLAIN SASL_SCRAM OAUTHBEARER (Rdkafka::Config::ClientCreationError)
@@ -2564,7 +2564,7 @@ No provider for SASL mechanism GSSAPI:
 
 indicates that `librdkafka` was not built with support for GSSAPI (Kerberos). This often occurs when the necessary development packages (`libsasl2-dev`, `libssl-dev` and `libkrb5-dev`) were not available during the `librdkafka` build process. To fix this, make sure to install these packages before compiling librdkafka. On a Debian-based system, use:
 
-```bash
+```shell
 sudo apt-get update && sudo apt-get install -y libsasl2-dev libssl-dev libkrb5-dev
 ```
 
@@ -2588,7 +2588,7 @@ consumer.close
 
 This will generate logs. Look for lines containing `builtin.features` that list `ssl` and `sasl_scram`:
 
-```bash
+```shell
 rdkafka#consumer-1 initialized (builtin.features gzip,snappy,ssl,sasl,regex,lz4, \
   sasl_gssapi,sasl_plain,sasl_scram,plugins,zstd,sasl_oauthbearer,http,oidc, GCC \
   GXX PKGCONFIG INSTALL GNULD LDS C11THREADS LIBDL PLUGINS ZLIB SSL SASL_CYRUS \
@@ -2669,13 +2669,13 @@ Recent changes in the official Ruby slim and alpine Docker images removed severa
 
 To resolve this issue, you need to explicitly add the `procps` package to your Dockerfile. For Debian-based images (slim), add:
 
-```bash
+```shell
 RUN apt-get update && apt-get install -y procps
 ```
 
 For Alpine-based images, add:
 
-```bash
+```shell
 RUN apk add --no-cache procps
 ```
 
@@ -2693,7 +2693,7 @@ On the other hand, compiling `grpc` from source can take significantly longer (u
 
 You can verify the bottleneck by running:
 
-```bash
+```shell
 bundle install --jobs=1
 ```
 

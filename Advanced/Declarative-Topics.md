@@ -192,7 +192,7 @@ This behavior allows you to differentiate between successful operations with no 
 
 You can enable this functionality by passing the `--detailed-exitcode` flag when invoking any topic-related command:
 
-```bash
+```shell
 karafka topics plan --detailed-exitcode
 ```
 

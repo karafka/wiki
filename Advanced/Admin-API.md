@@ -71,7 +71,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-```bash
+```shell
 # Access Karafka console to operate in cluster 1
 export KARAFKA_BOOT_FILE=cluster1.rb
 bundle exec karafka console
@@ -131,7 +131,7 @@ end
 
 Apply changes using:
 
-```bash
+```shell
 bundle exec karafka topics migrate
 ```
 

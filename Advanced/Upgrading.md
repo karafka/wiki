@@ -24,7 +24,7 @@ Considering these points, you'll be well-prepared for the upgrade process and ca
 
 3. **Upgrade Karafka and its dependencies**: To upgrade the Karafka ecosystem, run the following command:
 
-```bash
+```shell
 bundle update karafka karafka-rdkafka karafka-core waterdrop karafka-web karafka-testing
 ```
 

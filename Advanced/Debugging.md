@@ -364,13 +364,13 @@ If you have followed these steps and still believe there is a memory leak in Kar
 
 1. **Set `MALLOC_ARENA_MAX=2`**: This environment variable is the closest thing to a silver bullet if you are using Linux/glibc in production. Setting `MALLOC_ARENA_MAX=2` limits the number of memory arenas, which can significantly reduce memory fragmentation and overall memory usage.
 
-    ```sh
+    ```shell
     export MALLOC_ARENA_MAX=2
     ```
 
     On Heroku, you can set this configuration by running:
 
-    ```sh
+    ```shell
     heroku config:set MALLOC_ARENA_MAX=2
     ```
 
@@ -380,7 +380,7 @@ If you have followed these steps and still believe there is a memory leak in Kar
 
     To install `jemalloc`, follow these steps:
 
-    ```sh
+    ```shell
     sudo apt-get install libjemalloc-dev
     ```
 
@@ -468,7 +468,7 @@ When debug mode is configured correctly, Karafka will generate detailed logs to 
 
 Below is an example of what these debug logs might look like:
 
-```
+```text
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Enabled low-latency ops queue wake-ups
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Added new broker with NodeId -1
 rdkafka: [thrd:app]: 127.0.0.1:9092/bootstrap: Selected for cluster connection: bootstrap servers added (broker has 0 connection attempt(s))
@@ -534,7 +534,7 @@ If Karafka seems frozen or is not progressing:
 
 - This shows you what each thread is doing — e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
 
-```bash
+```shell
 kill -TTIN <karafka_pid>
 ```
 

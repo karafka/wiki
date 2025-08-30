@@ -42,7 +42,7 @@ Use the dash format when referring to a specific topic-partition pair as a uniqu
 
 **Examples:**
 
-```
+```text
 my-events-0
 user-activity-5
 order-updates-12
@@ -75,7 +75,7 @@ Use the bracket format when the context suggests this is part of a collection, e
 
 **Examples:**
 
-```
+```text
 my-events-[0]
 user-activity-[5]
 order-updates-[12]
@@ -89,7 +89,7 @@ Use square brackets with comma-separated partition numbers for multiple partitio
 
 **Examples:**
 
-```
+```text
 my-events-[0,1,2]
 user-activity-[0,1,2,3,4,5]
 order-updates-[0,1,2,3,4,5,6,7,8,9,10,11]
@@ -97,7 +97,7 @@ order-updates-[0,1,2,3,4,5,6,7,8,9,10,11]
 
 **UI Display Examples:**
 
-```
+```text
 Consumer Group: my-consumer-group
 ├── my-events-[0,1,2]
 ├── user-activity-[3,4,5]
@@ -110,7 +110,7 @@ For consecutive partition ranges, you may use range notation for brevity.
 
 **Examples:**
 
-```
+```text
 my-events-[0-2]        # Equivalent to my-events-[0,1,2]
 user-activity-[0-5]    # Equivalent to user-activity-[0,1,2,3,4,5]
 large-topic-[0-99]     # For topics with many consecutive partitions
@@ -130,7 +130,7 @@ When showing assignments across multiple topics, use consistent formatting for e
 
 **Examples:**
 
-```
+```text
 orders-[0,1,2], payments-[0,1], notifications-[0]
 events-[0-9], metrics-[0-4], logs-[0]
 ```
@@ -141,7 +141,7 @@ When partition information isn't relevant, use simple topic names.
 
 **Examples:**
 
-```
+```text
 Topics: orders, payments, notifications
 Subscribed to: events, metrics, logs
 ```
@@ -152,7 +152,7 @@ Subscribed to: events, metrics, logs
 
 Use bracket notation to clearly show which partitions each consumer is handling.
 
-```
+```text
 Consumer Group: order-processing-group
 Consumer 1: orders-[0,2,4], payments-[0]
 Consumer 2: orders-[1,3,5], payments-[1]
@@ -163,7 +163,7 @@ Consumer 3: notifications-[0]
 
 Use bracket notation in rebalancing scenarios to show partition movements.
 
-```
+```text
 [INFO] Rebalancing started
 [INFO] Revoking: orders-[0,2,4], payments-[0]
 [INFO] Assigning: orders-[1,3], payments-[1], notifications-[0]
@@ -176,7 +176,7 @@ Use dash notation for metric names and identifiers.
 
 **Metric Names:**
 
-```
+```text
 kafka.consumer.lag.orders-0
 kafka.consumer.lag.orders-1
 kafka.producer.rate.events-5
@@ -184,7 +184,7 @@ kafka.producer.rate.events-5
 
 **Monitoring Displays:**
 
-```
+```text
 Topic-Partition    | Current Offset | Lag
 orders-0           | 15,432         | 0
 orders-1           | 12,891         | 3
@@ -237,7 +237,7 @@ Use bracket format for displaying assignments. For structured data, nest partiti
 
 Use consistent naming for DLQ topic-partition references.
 
-```
+```text
 Original: orders-0
 DLQ: orders-dlq-0
 
@@ -249,7 +249,7 @@ DLQ: user-events-dlq-[0,1,2]
 
 Apply same conventions regardless of topic configuration.
 
-```
+```text
 user-profiles-0      # Single partition compacted topic
 user-profiles-[0,1,2] # Multi-partition compacted topic
 ```
@@ -258,7 +258,7 @@ user-profiles-[0,1,2] # Multi-partition compacted topic
 
 Use dash format for schema subject naming that includes partition info.
 
-```
+```text
 orders-0-value
 orders-0-key
 user-events-5-value

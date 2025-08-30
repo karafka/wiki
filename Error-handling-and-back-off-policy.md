@@ -19,7 +19,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-```bash
+```shell
 bundle exec karafka server
 bundler: failed to load command: karafka
 Karafka::Errors::InvalidConfiguration: {:client_id=>["must be filled"]}
