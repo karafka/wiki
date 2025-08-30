@@ -9,9 +9,6 @@
     "!Changelog/*.md",
     "!.gh/**",
   ],
-  "customRules": [
-    "./bin/utils/markdownlint-rules/mkdocs-material-admonitions.js"
-  ],
   "config": {
     "default": true,
     "MD009": false,
@@ -38,7 +35,6 @@
     },
     "MD024": {
       "siblings_only": true
-    },
-    "mkdocs-material-admonitions": true
+    }
   }
 }
