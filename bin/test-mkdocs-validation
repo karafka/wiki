@@ -6,7 +6,7 @@ echo
 
 # Test the standalone validator
 echo "📝 Testing standalone validator..."
-./utils/validate-mkdocs-compatibility
+./bin/validate-mkdocs-compatibility
 
 echo
 echo "📋 Testing markdownlint with custom rules..."
@@ -23,6 +23,6 @@ echo
 echo "✅ Validation tools test completed!"
 echo
 echo "💡 Usage tips:"
-echo "  - Run './utils/validate-mkdocs-compatibility' for full validation"
+echo "  - Run './bin/validate-mkdocs-compatibility' for full validation"
 echo "  - Run 'markdownlint-cli2' for linting with custom rules"
 echo "  - Add these to your CI/CD pipeline or git hooks"
