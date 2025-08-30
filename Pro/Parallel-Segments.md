@@ -466,7 +466,7 @@ All commands support the following options:
 
 The `distribute` command helps you migrate from a regular consumer group to parallel segments by distributing the original consumer group's offsets across the parallel segment consumer groups.
 
-```bash
+```shell
 # Distribute offsets for all parallel segments consumer groups
 karafka parallel_segments distribute
 
@@ -509,7 +509,7 @@ end
 
 After updating your configuration, run the distribution command:
 
-```bash
+```shell
 karafka parallel_segments distribute --groups analytics
 ```
 
@@ -523,7 +523,7 @@ This will:
 
 The `collapse` command consolidates parallel segments back to the original consumer group by taking the lowest committed offset from all segments.
 
-```bash
+```shell
 # Collapse all parallel segments consumer groups
 karafka parallel_segments collapse
 
@@ -551,14 +551,14 @@ karafka parallel_segments collapse --force
 
 The `reset` command performs a complete reset by first collapsing parallel segments and then redistributing offsets:
 
-```bash
+```shell
 # Reset parallel segments (collapse then distribute)
 karafka parallel_segments reset --groups analytics
 ```
 
 This is equivalent to running:
 
-```bash
+```shell
 karafka parallel_segments collapse --groups analytics
 karafka parallel_segments distribute --groups analytics
 ```
@@ -569,7 +569,7 @@ The CLI commands include several safety mechanisms:
 
 #### Offset Validation
 
-```bash
+```shell
 # This will fail if parallel segments already have offsets
 karafka parallel_segments distribute --groups analytics
 
@@ -579,7 +579,7 @@ karafka parallel_segments distribute --groups analytics
 
 #### Consistency Checks
 
-```bash
+```shell
 # This will fail if parallel segments have inconsistent offsets
 karafka parallel_segments collapse --groups analytics
 
@@ -592,7 +592,7 @@ karafka parallel_segments collapse --groups analytics
 
 Use `--force` to bypass safety checks:
 
-```bash
+```shell
 # Force distribution even with existing offsets
 karafka parallel_segments distribute --groups analytics --force
 
@@ -630,7 +630,7 @@ end
 
 After successful migration and operation, you may want to clean up:
 
-```bash
+```shell
 # Remove original consumer group (optional)
 # Note: This requires using Kafka's admin tools or Karafka's Admin API
 # The CLI does not automatically remove consumer groups

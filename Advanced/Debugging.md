@@ -534,7 +534,7 @@ If Karafka seems frozen or is not progressing:
 
 - This shows you what each thread is doing — e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
 
-```bash
+```shell
 kill -TTIN <karafka_pid>
 ```
 

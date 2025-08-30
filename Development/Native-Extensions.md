@@ -52,7 +52,7 @@ Native extensions are platform-specific compiled binaries that contain:
 
 To check if your platform is supported:
 
-```bash
+```shell
 # Check your platform
 ruby -e 'puts Gem::Platform.local.to_s'
 ```
@@ -67,14 +67,14 @@ ruby -e 'puts Gem::Platform.local.to_s'
 
 **For glibc-based systems:**
 
-```bash
+```shell
 # Check glibc version
 ldd --version
 ```
 
 **For musl-based systems:**
 
-```bash
+```shell
 # Check musl version
 ldd 2>&1 | head -1
 ```
@@ -93,7 +93,7 @@ If your platform isn't supported or doesn't meet the minimum requirements, `rdka
 
 ### Without Native Extensions (Fallback)
 
-```bash
+```shell
 $ gem install rdkafka --platform=ruby
 # Downloads source gem and compiles during installation
 # Requires: build tools, librdkafka, OpenSSL, SASL, Kerberos, etc.
@@ -118,7 +118,7 @@ Each native extension includes a self-contained librdkafka library with:
 
 All dependencies are verified with SHA256 checksums during the build process:
 
-```bash
+```shell
 # Example from build process
 [SECURITY] Verifying checksum for openssl-3.0.16.tar.gz...
 [SECURITY] ✅ Checksum verified for openssl-3.0.16.tar.gz
@@ -177,7 +177,7 @@ RUN gem install karafka  # 3-10 seconds
 
 ### Force Native Extension Installation
 
-```bash
+```shell
 # Explicitly request native extension
 gem install rdkafka --platform=x86_64-linux-gnu
 
@@ -189,7 +189,7 @@ gem 'rdkafka', platforms: [:x86_64_linux_gnu]
 
 If native extensions don't work for your platform:
 
-```bash
+```shell
 # Force source compilation
 gem install rdkafka --platform=ruby
 
@@ -203,7 +203,7 @@ If you need to use source compilation instead of native extensions (e.g., for cu
 
 ### Force Source Compilation
 
-```bash
+```shell
 # Force source compilation
 gem install rdkafka --platform=ruby
 

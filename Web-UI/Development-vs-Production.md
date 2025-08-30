@@ -18,7 +18,7 @@ To achieve this, you can either:
 
 2. **Use the `--include` and `--exclude` flags**: Alternatively, you can explicitly control which consumer groups run on each Karafka server instance using the `--include-consumer-groups` and `--exclude-consumer-groups` flags. This method provides more flexibility for explicitly including or excluding the Web UI consumer group in certain processes without modifying the global configuration.
 
-```bash
+```shell
 # Use the --include-consumer-groups flag to start a dedicated Web UI process
 bundle exec karafka server --include-consumer-groups karafka_web
 
@@ -99,7 +99,7 @@ When running `bundle exec karafka-web install`, Karafka Web will create needed t
 
 You can increase the replication factor by providing the `--replication-factor N` with `N` being the desired replication factor in your cluster:
 
-```bash
+```shell
 bundle exec karafka-web install --replication-factor 5
 ```
 

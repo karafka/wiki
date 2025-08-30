@@ -49,7 +49,7 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
 
 Run the following command to add a `CHECKSUMS` section to your `Gemfile.lock`:
 
-```bash
+```shell
 bundle lock --add-checksums
 ```
 
@@ -59,7 +59,7 @@ After running `bundle lock --add-checksums`, locate the checksum of the karafka-
 
 Use the following command to extract the checksum of the karafka-license gem from the Gemfile.lock:
 
-```bash
+```shell
 grep -A 1 "karafka-license" Gemfile.lock | grep sha256
 ```
 
@@ -67,7 +67,7 @@ grep -A 1 "karafka-license" Gemfile.lock | grep sha256
 
 If you want all new lockfiles to include checksum verification by default, run:
 
-```bash
+```shell
 bundle config lockfile_checksums true
 ```
 
@@ -91,7 +91,7 @@ Using Karafka Pro means we are part of your Open Source Supply Chain. We take th
 
 You can do it with the following script:
 
-```bash
+```shell
 #!/usr/bin/env bash
 
 set -e

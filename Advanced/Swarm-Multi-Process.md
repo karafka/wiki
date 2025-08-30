@@ -70,7 +70,7 @@ When starting your application in Swarm Mode using bundle exec karafka swarm, it
 
 The CLI options allow for the efficient limitation of topics, subscription groups, and consumer groups that should operate within the Swarm. You can start a Swarm Mode instance that focuses on processing specific parts of your Kafka infrastructure. For example, you might want to isolate certain consumer groups or topics to dedicated swarms for performance reasons or to manage resource allocation more effectively.
 
-```bash
+```shell
 # Run swarm and include only given consumer groups
 bundle exec karafka swarm --include-consumer-groups group_name1,group_name3
 
@@ -299,7 +299,7 @@ If you want to measure gains within your particular application under given cond
 
 This script calculates and displays memory usage details for processes matching a specified pattern (e.g., "karafka") on a Linux system, utilizing the `smem` tool. It retrieves the Proportional Set Size (PSS), Unique Set Size (USS), and Resident Set Size (RSS) for each process, which helps in understanding both individual and collective memory usage, including shared memory aspects.
 
-```bash
+```shell
 #!/bin/bash
 
 # Get USS, PSS, and RSS values for processes matching the pattern
@@ -352,7 +352,7 @@ echo "Total Memory Used: $TOTAL_PSS_MB MB"
 
 When executed, you will get similar output:
 
-```bash
+```shell
 ./rss.sh
 
 PID    | RSS Memory (MB) | PSS Memory (MB)

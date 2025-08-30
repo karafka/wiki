@@ -8,7 +8,7 @@ Karafka framework has a long-running server process responsible for fetching and
 
 To start the Karafka server process, use the following CLI command:
 
-```bash
+```shell
 bundle exec karafka server
 ```
 

@@ -87,7 +87,7 @@ This will automatically create a special consumer group dedicated to the consump
 
 When `recurring_tasks(true)` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
 
-```bash
+```shell
 bundle exec karafka topics migrate
 ```
 

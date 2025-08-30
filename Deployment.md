@@ -14,7 +14,7 @@ Since the only thing that is long-running is the Karafka server, it shouldn't be
 
 You can easily manage Karafka applications with `systemd`. Here's an example `.service` file that you can use.
 
-```bash
+```shell
 # Move to /lib/systemd/system/karafka.service
 # Run: systemctl enable karafka
 
@@ -87,7 +87,7 @@ If you need to run several processes of a given type, please refer to `template 
 
 Karafka can be dockerized as any other Ruby/Rails app. To execute ```karafka server``` command in your Docker container, just put this into your Dockerfile:
 
-```bash
+```shell
 ENV KARAFKA_ENV production
 CMD bundle exec karafka server
 ```
@@ -150,7 +150,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 
 11. Log in to any of your machines and run a `telnet` session to any of the brokers:
 
-```bash
+```shell
 telnet your-broker.kafka.us-east-1.amazonaws.com 9096
 
 Trying 172.31.22.230...
@@ -359,7 +359,7 @@ end
 
 3. Create all the consumer groups before using them via the Heroku CLI.
 
-```bash
+```shell
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 ```
 
@@ -369,7 +369,7 @@ heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 
 This means that the Heroku CLI command needs to look as follows:
 
-```bash
+```shell
 heroku kafka:consumer-groups:create app
 ```
 
@@ -418,7 +418,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-```bash
+```shell
 # Since both are set to karafka_admin by default, if you did not change those values,
 # you can just run:
 heroku kafka:consumer-groups:create karafka_admin

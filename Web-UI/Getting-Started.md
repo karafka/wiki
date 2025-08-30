@@ -10,7 +10,7 @@ To use it:
 
 3. Add Karafka Web UI to your `Gemfile`:
 
-```bash
+```shell
 bundle add karafka-web
 ```
 
