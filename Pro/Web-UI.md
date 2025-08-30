@@ -19,7 +19,7 @@ There are **no** extra steps needed unless you want to completely disable consum
 
 The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
 
-<img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-dashboard.png" alt="karafka web pro dashboard view" />
+<img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-dashboard.png" alt="karafka web pro dashboard view" />
 
 ## Consumers
 
@@ -36,19 +36,19 @@ Those metrics can allow you to identify bottlenecks (CPU vs. IO) in your Karafka
 
 Consumer process inspection view provides real-time visibility into the performance and behavior of a given consumer process and its Kafka subscriptions.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-subscriptions.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-consumer-subscriptions.png)
 
 ### Consumer Jobs Inspection
 
 The consumer jobs inspection view provides real-time visibility into the jobs running at the current moment on a given consumer instance.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-jobs.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-consumer-jobs.png)
 
 ### Consumer Details Inspection
 
 This feature offers users a detailed look into each process's current state report. It's a valuable tool for thorough debugging and precise per-process inspection.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-consumer-details.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-consumer-details.png)
 
 ### Commanding
 
@@ -80,7 +80,7 @@ In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](Pro-Recu
 - **Control Tasks**: Enable, disable, or trigger tasks directly from the UI.
 - **View Logs**: Access and explore execution logs to track task performance and troubleshoot issues.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/recurring-tasks.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/recurring-tasks.png)
 
 ## Scheduled Messages
 
@@ -91,7 +91,7 @@ Karafka Pro's Enhanced Web UI provides detailed insights into scheduled messages
 - **Message Exploration**: Access detailed information about messages, queued for future dispatch, including scheduled times and payload details.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
 </p>
 
 ## Errors
@@ -105,11 +105,11 @@ It allows for easier debuggability and error exploration, enabling users to perf
 
 Errors list:
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-errors1.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-errors1.png)
 
 Error details:
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-errors2.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-errors2.png)
 
 ## DLQ / Dead
 
@@ -121,11 +121,11 @@ Dead insights allowing to navigate through DLQ topics and messages that were dis
 
 DLQ dispatched messages view:
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-dead1.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-dead1.png)
 
 DLQ dispatched per message view:
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/dlq2.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/dlq2.png)
 
 ## Branding
 
@@ -133,7 +133,7 @@ This feature allows you to set an environment-specific notice and a menu label t
 
 This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Branding).
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/branding1.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/branding1.png)
 
 ## Policies
 
@@ -208,4 +208,4 @@ The "Topics Management" feature in Karafka Web UI allows you to create, delete, 
 
 This feature has dedicated documentation that you can access [here](Pro-Web-UI-Topics-Management).
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-topics-management-configuration.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-configuration.png)

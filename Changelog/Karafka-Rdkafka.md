@@ -3,13 +3,19 @@
 
 # Rdkafka Changelog
 
-## 0.21.0 (Unreleased)
-- [Enhancement] Bump librdkafka to 2.11.0
+## 0.21.0 (2025-08-18)
+- [Enhancement] Support explicit Debian testing due to lib issues.
+- [Enhancement] Support ARM64 Gnu precompilation.
+- [Enhancement] Bump librdkafka to 2.11.0.
+- [Enhancement] Improve what symbols are exposed outside of the precompiled extensions.
+- [Enhancement] Introduce an integration suite layer for non RSpec specs execution.
+- [Fix] Add `json` gem as a dependency (was missing but used).
 
 ## 0.20.1 (2025-07-17)
 - [Enhancement] Drastically increase number of platforms in the integration suite
 - [Fix] Support Ubuntu `22.04` and older Alpine precompiled versions
 - [Fix] FFI::DynamicLibrary.load_library': Could not open library
+- [Change] Add new CI action to trigger auto-doc refresh.
 
 ## 0.20.0 (2025-07-17)
 - **[Feature]** Add precompiled `x86_64-linux-gnu` setup.

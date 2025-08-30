@@ -59,7 +59,7 @@ The trusted publishing configuration is already set up in the Karafka GitHub env
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/releases.png"
+    src="https://cdn.karafka.io/assets/misc/printscreens/development/gems-publishing/releases.png"
     style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
   />
 </p>
@@ -79,7 +79,7 @@ The trusted publishing configuration is already set up in the Karafka GitHub env
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/releasing.png"
+    src="https://cdn.karafka.io/assets/misc/printscreens/development/gems-publishing/releasing.png"
     style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
   />
 </p>
@@ -94,7 +94,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/workflows.png"
+    src="https://cdn.karafka.io/assets/misc/printscreens/development/gems-publishing/workflows.png"
     style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
   />
 </p>
@@ -109,7 +109,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/approval.png"
+    src="https://cdn.karafka.io/assets/misc/printscreens/development/gems-publishing/approval.png"
     style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
   />
 </p>
@@ -121,7 +121,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 <p align="center">
   <img
-    src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/development/gems-publishing/logs.png"
+    src="https://cdn.karafka.io/assets/misc/printscreens/development/gems-publishing/logs.png"
     style="border: 1px solid #ddd; border-radius: 2px; padding: 10px;"
   />
 </p>

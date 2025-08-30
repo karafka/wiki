@@ -9,7 +9,7 @@ Karafka's Expiring Messages filtering process takes place before the virtual par
 By filtering messages before they are partitioned and dispatched, Karafka reduces the number of messages that need to be processed by each consumer. This approach ensures that only relevant and recent messages are dispatched to consumers, making it easier for them to process the data and reducing the overall processing load on the system. This optimization helps in improving the performance of the overall system and enables more efficient data processing.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/expiring_messages_flow.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/expiring_messages_flow.svg" />
 </p>
 <p align="center">
   <small>*Illustration presenting how Expiring Messages filter out too old messages.

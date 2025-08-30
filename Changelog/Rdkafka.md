@@ -3,10 +3,18 @@
 
 # Rdkafka Changelog
 
+## 0.22.3 (Unreleased)
+- [Enhancement] Support explicit Debian testing due to lib issues.
+- [Enhancement] Support ARM64 Gnu precompilation.
+- [Enhancement] Improve what symbols are exposed outside of the precompiled extensions.
+- [Enhancement] Introduce an integration suite layer for non RSpec specs execution.
+- [Fix] Add `json` gem as a dependency (was missing but used).
+
 ## 0.22.2 (2025-07-21)
 - [Enhancement] Drastically increase number of platforms in the integration suite
 - [Fix] Support Ubuntu `22.04` and older Alpine precompiled versions
 - [Fix] FFI::DynamicLibrary.load_library': Could not open library
+- [Change] Add new CI action to trigger auto-doc refresh.
 
 ## 0.22.1 (2025-07-17)
 - [Fix] Fix `Rakefile` being available in the precompiled versions causing build failures.

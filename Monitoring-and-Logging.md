@@ -248,7 +248,7 @@ end
 Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Karafka-based applications, without the need to use the command line or third party software. It does **not** require any additional database beyond Kafka itself.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
 You can read more about its features [here](Web-UI-Features), and the installation documentation can be found [here](Web-UI-Getting-Started).
@@ -260,7 +260,7 @@ You can read more about its features [here](Web-UI-Features), and the installati
 
 Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a seamless solution for monitoring your Kafka-based applications.
 
-![Example Karafka AppSignal dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_appsignal_dashboard_example.png)
+![Example Karafka AppSignal dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_example.png)
 
 The Karafka AppSignal integration provides an extensive set of metrics with both per-topic and per-partition resolution. This granularity allows you to drill down into specific aspects of your Kafka processing pipeline.
 
@@ -305,7 +305,7 @@ Karafka.producer.monitor.subscribe(appsignal_errors_listener)
 # setup the metrics listener here if you want
 ```
 
-![Example Karafka AppSignal Errors dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_appsignal_dashboard_errors_example.png)
+![Example Karafka AppSignal Errors dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_errors_example.png)
 
 ### Metrics Instrumentation
 
@@ -382,7 +382,7 @@ Karafka.monitor.subscribe(dd_listener)
 
 You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import Datadog dashboard configuration file that you can use to monitor your consumers.
 
-![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_dashboard_example.png)
+![Example Karafka DD dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_dd_dashboard_example.png)
 
 #### Tracing Consumers using Datadog Logger Listener
 
@@ -402,7 +402,7 @@ end
 Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?(Rails.env)
 ```
 
-![Example Karafka DD dashboard](https://raw.githubusercontent.com/karafka/misc/master/printscreens/karafka_dd_tracing.png)
+![Example Karafka DD dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
 
 !!! note ""
 

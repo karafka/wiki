@@ -10,6 +10,7 @@
 - [Components](Components)
 - [FAQ](FAQ)
 - [Support](Support)
+- [Status](Status)
 
 ## Web UI
 
@@ -50,6 +51,7 @@
 - [Variants](WaterDrop-Variants)
 - [Custom Partitioners](WaterDrop-Custom-Partitioners)
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements)
+- [Async Ecosystem Integration](WaterDrop-Async-Integration)
 
 ## Production Usage
 
@@ -238,3 +240,4 @@ It is recommended to do one major upgrade at a time.
 - [Naming Conventions](Development-Naming-Conventions)
 - [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
+- [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)

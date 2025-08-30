@@ -6,6 +6,47 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.11.1 (2025-08-18)
+
+librdkafka v2.11.1 is a maintenance release:
+
+* Made the conditions for enabling the features future proof (#5130).
+* Avoid returning an all brokers down error on planned disconnections (#5126).
+* An "all brokers down" error isn't returned when we haven't tried to connect
+  to all brokers since last successful connection (#5126).
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #4948, #4956.
+  Made the conditions for enabling the features future proof, allowing to
+  remove RPC versions in a subsequent Apache Kafka version without disabling
+  features. The existing checks were matching a single version instead of
+  a range and were failing if the older version was removed.
+  Happening since 1.x (#5130).
+
+* Issues: #5142.
+  Avoid returning an all brokers down error on planned disconnections.
+  This is done by avoiding to count planned disconnections, such as idle
+  disconnections, broker host change and similar as events that can cause
+  the client to reach the "all brokers down" state, returning an error and
+  since 2.10.0 possibly starting a re-bootstrap sequence.
+  Happening since 1.x (#5126).
+
+* Issues: #5142.
+  An "all brokers down" error isn't returned when we haven't tried to connect
+  to all brokers since last successful connection. It happened because the down
+  state is cached and can be stale when a connection isn't needed to that
+  particular broker. Solved by resetting the cached broker down state when any
+  broker successfully connects, so that broker needs to be tried again.
+  Happening since 1.x (#5126).
+  
+### Checksums
+Release asset checksums:
+ * v2.11.1.zip SHA256 `4a63e4422e5f5bbbb47f0ac1200e2ebd1f91b7b23f0de1bc625810c943fb870e`
+ * v2.11.1.tar.gz SHA256 `a2c87186b081e2705bb7d5338d5a01bc88d43273619b372ccb7bb0d264d0ca9f`
 ## 2.11.0 (2025-07-03)
 
 librdkafka v2.11.0 is a feature release:
@@ -2156,22 +2197,3 @@ librdkafka.
 Release asset checksums:
  * v1.5.0.zip SHA256 `76a1e83d643405dd1c0e3e62c7872b74e3a96c52be910233e8ec02d501fa33c8`
  * v1.5.0.tar.gz SHA256 `f7fee59fdbf1286ec23ef0b35b2dfb41031c8727c90ced6435b8cf576f23a656`
-## 1.4.4 (2020-06-20)
-
-# librdkafka v1.4.4
-
-v1.4.4 is a maintenance release with the following fixes and enhancements:
-
- * Transactional producer could crash on request timeout due to dereferencing
-   NULL pointer of non-existent response object.
- * Mark `rd_kafka_send_offsets_to_transaction()` CONCURRENT_TRANSACTION (et.al)
-   errors as retriable.
- * Fix crash on transactional coordinator FindCoordinator request failure.
- * Minimize broker re-connect delay when broker's connection is needed to
-   send requests.
- * `socket.timeout.ms` was ignored when `transactional.id` was set.
- * Added RTT/delay simulation to mock brokers.
-
-*Note: there was no v1.4.3 librdkafka release*
-
-

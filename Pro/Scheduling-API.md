@@ -45,7 +45,7 @@ The Listener and Worker threads in Karafka are central to its architecture, work
 Below, you can find a simplified illustration of the cooperation of Listener and Worker threads and their connection via the jobs queue.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/scheduling_api/listeners_and_workers.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/scheduling_api/listeners_and_workers.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how Listener and Worker threads cooperate via the jobs queue.

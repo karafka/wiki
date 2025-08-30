@@ -13,7 +13,7 @@ Karafka Web UI is an intuitive tool that visually represents the metrics related
 Below you can find the diagram of the whole data flow:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
+  <img src="https://cdn.karafka.io/assets/misc/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
 </p>
 
 !!! note ""

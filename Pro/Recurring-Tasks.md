@@ -341,7 +341,7 @@ The Karafka Web UI provides comprehensive tools for managing and monitoring recu
   
 - **Execution Logs**: The Web UI enables you to explore the logs of task executions, offering insights into when tasks were executed, their outcomes, and whether any issues occurred.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/recurring-tasks.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/recurring-tasks.png)
 
 ## Error Handling and Retries
 

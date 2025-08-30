@@ -34,7 +34,7 @@ Karafka uses multiple threads to process messages coming from different topics a
 Using multiple threads for IO intense work can bring great performance improvements to your system "for free."
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/workers-performance.png" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/workers-performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates performance difference for IO intense jobs.</small>
@@ -43,7 +43,7 @@ Using multiple threads for IO intense work can bring great performance improveme
 Example of work distribution amongst two workers:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/processing-workers.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/processing-workers.svg" />
 </p>
 
 !!! note ""
@@ -93,7 +93,7 @@ end
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/subscription_group_routing.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/subscription_group_routing.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how Karafka routing translates into subscription groups and their underlying connections to Kafka.
@@ -119,7 +119,7 @@ Karafka allows you to parallelize further processing of data from a single parti
 Virtual Partitions allow you to parallelize the processing of data from a single partition. This can drastically increase throughput when IO operations are involved.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/virtual_partitions/performance.png" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/virtual_partitions/performance.png" />
 </p>
 <p align="center">
   <small>*This example illustrates the throughput difference for IO intense work, where the IO cost of processing a single message is 1ms.

@@ -5,6 +5,7 @@
     "!Librdkafka/Errors.md",
     "!Librdkafka/Statistics.md",
     "!Librdkafka/Configuration.md",
+    "!Development/Karafka-Integration-Tests-Catalog.md",
     "!Changelog/*.md",
     "!.gh/**",
   ],

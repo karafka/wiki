@@ -21,7 +21,7 @@ The search modal includes several fields and options to refine your search:
 
 Once you have configured your search parameters, click the "Search" button to initiate the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search1.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-search1.png)
 
 ## Reconfiguration
 
@@ -106,7 +106,7 @@ The Search Metadata Details section provides detailed insights into the performa
 
 When you initiate a search, the results page contains a hidden detailed summary and partition-specific information, offering valuable insights into the search process. You can display it by clicking the stats icon above the search results.
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search2.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-search2.png)
 
 The summary table at the top of the Search Metadata Details section highlights three key metrics:
 
@@ -194,7 +194,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-![karafka web ui](https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui/pro-search3.png)
+![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-search3.png)
 
 The `.active?` method enables or disables matchers for specific topics. This can be useful if certain matchers are only relevant to particular types of data or topics. By default, matchers are always active.
 

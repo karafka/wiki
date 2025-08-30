@@ -115,11 +115,11 @@ Please keep in mind that in order for Karafka Web UI to work with Heroku Kafka M
 
 ```ruby
 Karafka::Web.setup do |config|
-  config.topics.errors = "#{ENV['KAFKA_PREFIX']}_karafka_errors"
-  config.topics.consumers.reports = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_reports"
-  config.topics.consumers.states = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_states"
-  config.topics.consumers.metrics = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_metrics"
-  config.topics.consumers.commands = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_commands"
+  config.topics.errors.name = "#{ENV['KAFKA_PREFIX']}_karafka_errors"
+  config.topics.consumers.reports.name = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_reports"
+  config.topics.consumers.states.name = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_states"
+  config.topics.consumers.metrics.name = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_metrics"
+  config.topics.consumers.commands.name = "#{ENV['KAFKA_PREFIX']}_karafka_consumers_commands"
 end
 ```
 

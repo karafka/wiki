@@ -63,7 +63,7 @@ run Karafka::Web::App
 If you do everything right, you should see this in your browser:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/printscreens/web-ui.png" alt="Karafka Web UI"/>
+  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
 ## Karafka Web CLI commands

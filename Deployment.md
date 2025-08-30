@@ -113,17 +113,17 @@ Please follow the below instructions for both cluster initialization and Karafka
 2. Select `Custom create` and `Provisioned` settings.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/creation_method.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/creation_method.png" />
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/provisioned2.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/provisioned2.png" />
 </p>
 
 3. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/broker-settings.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/broker-settings.png" />
 </p>
 
 4. Setup your VPC and networking details.
@@ -132,20 +132,20 @@ Please follow the below instructions for both cluster initialization and Karafka
 7. **Enable** `SASL/SCRAM authentication`
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/access-methods.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/access-methods.png" />
 </p>
 
 8. Provision your cluster.
 9. Make sure your cluster is accessible from your machines. You can test it by using the AWS VPC Reachability Analyzer.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/reachability.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/reachability.png" />
 </p>
 
 10. Visit your cluster `Properties` page and copy the `Endpoints` addresses.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/brokers-list.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/brokers-list.png" />
 </p>
 
 11. Log in to any of your machines and run a `telnet` session to any of the brokers:
@@ -164,19 +164,19 @@ If you can connect, your settings are correct, and your cluster is visible from 
 12. Go to the AWS Secret Manager and create a key starting with `AmazonMSK_` prefix. Select `Other type of secret` and `Plaintext` and provide the following value inside of the text field:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/secret_type2.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/secret_type2.png" />
 </p>
 
 13. In the `Encryption key` section, press the `Add new key`.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/add_new_key.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/add_new_key.png" />
 </p>
 
 14. Create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/keys.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/keys.png" />
 </p>
 
 15. Select your key in the `Encryption key` section and press `Next`.
@@ -186,13 +186,13 @@ If you can connect, your settings are correct, and your cluster is visible from 
 19. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/associate_secrets.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets.png" />
 </p>
 
 20. Press the `Choose secrets` and select the previously created secret.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/associate_secrets2.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets2.png" />
 </p>
 
 21. Press `Associate secrets`. It will take AWS a while to do it.
@@ -252,7 +252,7 @@ Please make sure that your instances can reach Kafka. Keep in mind that security
 Please make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/msk/brokers_count.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/brokers_count.png" />
 </p>
 
 ### Rdkafka::RdkafkaError: Broker: Topic authorization failed (topic_authorization_failed)
@@ -295,7 +295,7 @@ You can also use this ACL command to give all operations access for the brokers 
 Karafka works with the Heroku Kafka add-on, but it requires some extra configuration and understanding of how the Heroku Kafka add-on works.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/heroku/dyno.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/heroku/dyno.png" />
 </p>
 
 Details about how Kafka for Heroku works can also be found here:
@@ -744,13 +744,13 @@ Begin by registering for a Confluent Cloud account at Confluent.io. After regist
 - Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-select.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-select.png" />
 </p>
 
 - Set appropriate partitions and retention policies based on your expected workload and data retention needs.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/instructions/confluent/topics-new.png" />
+  <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-new.png" />
 </p>
 
 4. **Configure Web UI Topics**

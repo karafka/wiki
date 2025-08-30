@@ -3,6 +3,21 @@
 
 # Karafka Core Changelog
 
+## 2.5.6 (Unreleased)
+- [Change] Normalize how libs and dependencies are required (no functional change for the end user)
+
+## 2.5.5 (2025-08-04)
+- [Enhancement] Remove reliance on `Set` class.
+
+## 2.5.4 (2025-08-04)
+- [Fix] Fix old regression on misbehaviour when Object methods are overwritten.
+
+## 2.5.3 (2025-08-04)
+- [Enhancement] Optimize code to mitigate the Ruby performance warning from `Karafka::Core::Configurable::Node` (#208)
+- [Enhancement] Raise errors on detected Ruby warnings.
+- [Change] Remove unused Ruby 2.7 code.
+- [Change] Remove `funding_uri` from the gemspec to minimize double-funding info.
+
 ## 2.5.2 (2025-06-11)
 - [Enhancement] Support `#unsubscribe`.
 - [Enhancement] Allow for providing a root scope path for error keys.

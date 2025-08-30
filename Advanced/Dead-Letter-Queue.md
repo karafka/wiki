@@ -7,7 +7,7 @@ And this is where the Dead Letter Queue pattern shines.
 A Dead Letter Queue in Karafka is a feature that, when enabled, will transfer problematic messages into a separate topic allowing you to continue processing even upon errors.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/example_flow.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/dead_letter_queue/example_flow.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates a simple DLQ flow with a processing retry.
@@ -146,7 +146,7 @@ end
 The following diagrams compare DLQ flows in Karafka: the first without the independent flag and the second with it enabled, demonstrating the operational differences between these two settings.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/no_independent.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/dead_letter_queue/no_independent.svg" />
 </p>
 <p align="center">
   <small>*The diagram shows DLQ retry behavior without the independent flag: each error in a batch adds to the error counter until the DLQ dispatch takes place on the last erroneous message.
@@ -154,7 +154,7 @@ The following diagrams compare DLQ flows in Karafka: the first without the indep
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/karafka/misc/master/charts/dead_letter_queue/independent.svg" />
+  <img src="https://cdn.karafka.io/assets/misc/charts/dead_letter_queue/independent.svg" />
 </p>
 <p align="center">
   <small>*The diagram shows DLQ retry behavior with the independent flag active: the error counter resets after each message is successfully processed, avoiding DLQ dispatch if all messages recover.
