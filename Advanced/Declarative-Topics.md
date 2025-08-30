@@ -6,7 +6,7 @@ Karafka allows you to manage your topics in three ways:
 
 Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
-!!! Hint "Default Cluster Limitation"
+!!! tip "Default Cluster Limitation"
 
     All admin operations in Karafka always run on the default cluster. To run admin operations on multiple clusters, you need separate Karafka boot files for each cluster. For more details, visit the [Admin Multi-Cluster Setup](Admin-API#multi-cluster-setup) section.
 
@@ -131,7 +131,7 @@ end
 
 This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
 
-!!! note ""
+!!! note
 
     Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
 

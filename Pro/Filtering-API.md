@@ -16,7 +16,7 @@ If you plan to implement action-altering filters, you need to define two additio
 - `action` - that needs to respond with `:skip`, `:pause` or `:seek` to inform Karafka what action to take after the batch processing.
 - `timeout` - `nil` in case of non-pause actions or pause time in milliseconds.
 
-!!! Warning "Timeout Should Always Return `nil` for Non-Pause Actions"
+!!! warning "Timeout Should Always Return `nil` for Non-Pause Actions"
 
     When implementing filters with action-altering capabilities, ensure that the `#timeout` method **always returns `nil`** for non-`:pause` actions. 
 
@@ -85,7 +85,7 @@ For example, in case you want to pause the processing, you need to return the fo
 - number of milliseconds to pause under `#timeout`.
 - message containing the desired offset from which to start processing after un-pausing under `#cursor`.
 
-!!! note ""
+!!! note
 
     User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 
@@ -160,7 +160,7 @@ class MarkingFilter < Karafka::Pro::Processing::Filters::Base
 end
 ```
 
-!!! Hint "Marking Based on Applied Filters"
+!!! tip "Marking Based on Applied Filters"
 
     Only filters that have been applied will mark offsets as consumed when requested. Filters that were not applied will not be considered for offset marking.
 

@@ -49,7 +49,7 @@ Some of the options are:
 | `max_attempts_on_transaction_command` | How many times to retry a retryable transaction related error before giving up |
 | `instrument_on_wait_queue_full`       | Should we instrument when `queue_full` occurs                                  |
 
-!!! info ""
+!!! info
 
     Full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
@@ -196,7 +196,7 @@ Karafka.producer.produce_sync(
 #     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
 ```
 
-!!! note ""
+!!! note
 
     The `msg_size_too_large error` can arise from:
     

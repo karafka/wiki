@@ -117,7 +117,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! Warning "Per-Topic Deserializer Overrides"
+!!! warning "Per-Topic Deserializer Overrides"
 
     When you configure deserializers for a specific topic using the `#deserializers` method and do not include deserializers for all components (payload, key, headers), be aware that Karafka treats the `#deserializers` block as atomic. This means that for any component not explicitly defined within the topic's `#deserializers` block, Karafka will revert to using the framework's built-in defaults, **not** the overrides specified in the `#defaults` block.
 

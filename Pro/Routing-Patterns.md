@@ -18,7 +18,7 @@ Below, you can find a conceptual diagram of how the discovery process works:
 
 Upon detecting a new topic, Karafka seamlessly integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
 
-!!! Warning "Regexp Implementation Differences"
+!!! warning "Regexp Implementation Differences"
 
     The underlying `librdkafka` library utilizes a regexp engine from a `libc` library. It's crucial to note that this engine supports a POSIX-compatible regular expression format, which is not fully aligned with the regexp engine used by Ruby. Given these differences, it's highly advisable to conduct thorough testing of your regexp patterns to confirm that the dynamic topics you intend to match are not only visible within Karafka and the Karafka Web UI but are also being consumed as expected. The discrepancies between the regexp engines could lead to unexpected behaviors. You can read more about this topic in [this](Pro-Routing-Patterns#differences-in-regexp-evaluation-between-ruby-and-libc) section.
 

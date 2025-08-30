@@ -312,7 +312,7 @@ This behavior may impact you in the following ways:
 
 - **A Balancing Act**: Setting the correct value for `transaction.timeout.ms` requires a balance. If it's too short, legitimate transactions requiring more time might get prematurely aborted, leading to increased retries and system overhead. If it's too long, it might delay the detection and resolution of genuine issues.
 
-!!! Warning "Potential Exceedance of `max_wait_timeout` in WaterDrop Transactions"
+!!! warning "Potential Exceedance of `max_wait_timeout` in WaterDrop Transactions"
 
     When working with transactions in WaterDrop, especially in clusters experiencing connectivity issues or unavailability, be aware that the `max_wait_timeout` parameter may be exceeded. This behavior is due to the internal retry policies within WaterDrop, which are critical for maintaining system stability. Although this might result in longer wait times, it is an expected and necessary mechanism to ensure reliable message delivery and consistency across transactions. Therefore, this will not be addressed or altered in future updates.
 
@@ -419,7 +419,7 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 
 Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
-!!! Warning "Event Subscription with Multiple Producers"
+!!! warning "Event Subscription with Multiple Producers"
 
     In setups using a connection pool or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. Failure to subscribe to each can result in missing critical transaction-related events.
 

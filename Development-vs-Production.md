@@ -401,7 +401,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! Warning "Static Group Membership and Multiplexing in Dynamic Mode"
+!!! warning "Static Group Membership and Multiplexing in Dynamic Mode"
 
     We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](Pro-Multiplexing#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
 

@@ -80,7 +80,7 @@ end
 
 Below, you can find a detailed list of search capabilities' limitations from an end-user perspective. Understanding these limitations is important for effectively using the search functionality and managing expectations regarding its performance and scope.
 
-!!! Hint "Possibility Of Reconfiguration"
+!!! tip "Possibility Of Reconfiguration"
 
     Certain limitations of the search capabilities can be changed by reconfiguring the search defaults during the Web UI configuration. This includes adjusting the search timeout, modifying the limits on the number of messages, and customizing matchers to better fit specific use cases.
 

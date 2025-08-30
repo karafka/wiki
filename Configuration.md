@@ -18,11 +18,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
 
-!!! note ""
+!!! note
 
     kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should **not** be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application instance.
 
@@ -84,7 +84,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     In order to use `zstd`, you need to install `libzstd-dev`:
 
@@ -148,6 +148,6 @@ To put it in perspective, these configurations can be likened to those in a data
 
 These infrastructural settings are crucial for managing Kafka more efficiently. They ensure that the Kafka cluster is optimized for both performance and durability according to the needs of the applications it supports.
 
-!!! Hint "Managing Topics Configuration with Declarative Topics API"
+!!! tip "Managing Topics Configuration with Declarative Topics API"
 
     If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Declarative-Topics).

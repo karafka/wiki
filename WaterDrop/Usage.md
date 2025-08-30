@@ -388,7 +388,7 @@ end
 
 ### Closing Custom Producer Used in Karafka
 
-!!! Tip "Custom Producers Only"
+!!! tip "Custom Producers Only"
 
     Please note that this should be used only for custom producers and not for `Karafka.producer` that is closed automatically.
 
@@ -487,7 +487,7 @@ at_exit do
 end
 ```
 
-!!! Hint "Proper Producer Shutdown"
+!!! tip "Proper Producer Shutdown"
 
     The `at_exit` example above is simplified and may not be appropriate for all environments. The correct shutdown method depends on your application framework (Rails, Puma, Sidekiq, etc.). For comprehensive guidance on properly shutting down producers in different environments, refer to the [Shutdown](#shutdown) section in this documentation.
 

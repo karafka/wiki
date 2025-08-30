@@ -9,7 +9,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 - settings level - root settings that will be used everywhere
 - topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
-!!! note ""
+!!! note
 
     Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
 
@@ -314,7 +314,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! Warning "Kafka Scope Config Reuse Without `inherit`"
+!!! warning "Kafka Scope Config Reuse Without `inherit`"
 
     When using Kafka scope configuration at the topic level, be aware that **without** the `inherit` setting, there is no automatic inheritance of Kafka settings from the root-level configuration. This means you must **duplicate** all Kafka scope configurations for each topic. Failure to do so can result in default settings being applied instead of the intended configuration, which might lead to unexpected behavior or inconsistent setup across your topics.
 
