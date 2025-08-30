@@ -35,25 +35,40 @@ A comrehensive list of the karafka configuration options with their details and 
 A complete list of the configuration options related to `librdkafka` with their details and defaults can be found [here](Librdkafka-Configuration).
 
 ## Configuring External components
+The `app.initialized` event hook allows you to perform additional setup and configuration tasks for external components that depend on the internal settings of Karafka. This event is executed once per process, immediately after all framework components are ready, including dynamically built components.
 
-For additional setup and/or configuration tasks, use the `app.initialized` event hook. It is executed **once** per process, right after all framework components are ready (including those dynamically built). You can use it, for example, to configure external components that need to be based on the Karafka internal settings.
+**Prerequisites**
 
-Because of how the Karafka framework lifecycle works, this event is triggered after the `#setup` is done. You need to subscribe to this event before that happens, either from the `#setup` block or before.
+1. Initiate the Karafka application setup 
+1. Verify if the external components requiring configuration are available
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # All the config magic
+**Procedure**
 
-    # Once everything is configured and done, assign Karafka app logger as a MyComponent logger
-    # @note This example does not use config details, but you can use all the config values
-    #   to setup your external components
-    config.monitor.subscribe('app.initialized') do
-      MyComponent::Logging.logger = Karafka::App.logger
-    end
-  end
-end
-```
+1. Open your Karafka bootfile (karafka.rb).
+2. Find the setup block and add the event subscription inside your `setup` block
+3. Inside the event handler block, implement the configuration logic for your external components using available Karafka configuration values:
+   
+   ```ruby
+   class KarafkaApp < Karafka::App
+     setup do |config|
+       # All the config magic
+
+       # Once everything is configured and done, assign Karafka app logger as a MyComponent logger
+       # @note This example does not use config details, but you can use all the config values
+       #   to setup your external components
+       config.monitor.subscribe('app.initialized') do
+         MyComponent::Logging.logger = Karafka::App.logger
+       end
+     end
+   end
+   ```
+
+**Result**
+
+Your external components will be automatically configured once per process after Karafka completes its initialization sequence.
+
+!!! note "Note"
+    The configuration will have access to all finalized Karafka settings and can reliably use framework components like loggers, metrics, and other initialized resources.
 
 ## Environment variables settings
 
