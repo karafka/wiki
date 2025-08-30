@@ -439,7 +439,7 @@ If you encounter the `Broker: Not enough in-sync replicas` error, it typically m
 
   To fix this, it is recommended to run:
 
-```sh
+```shell
 bundle exec karafka-web reset --replication-factor=CORRECT_FACTOR
 ```
 
@@ -449,7 +449,7 @@ This command will recreate the topics with the correct configuration.
 - Delete the `karafka_*` topics from your cluster. This can be done manually, through the Karafka Web UI, or using the Admin API.
 - Migrate Karafka Web UI with the correct replication factor using the following command after Karafka Web UI topics were removed:
 
-```sh
+```shell
 bundle exec karafka-web migrate --replication-factor=CORRECT_FACTOR
 ```
 

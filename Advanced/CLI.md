@@ -12,13 +12,13 @@ Karafka has a simple CLI built in. It provides the following commands:
 
 All the commands are executed the same way:
 
-```sh
+```shell
 bundle exec karafka [COMMAND]
 ```
 
 If you need more details about each of the CLI commands, you can execute the following command:
 
-```sh
+```shell
 bundle exec karafka help [COMMAND]
 ```
 

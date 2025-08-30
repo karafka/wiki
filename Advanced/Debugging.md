@@ -364,13 +364,13 @@ If you have followed these steps and still believe there is a memory leak in Kar
 
 1. **Set `MALLOC_ARENA_MAX=2`**: This environment variable is the closest thing to a silver bullet if you are using Linux/glibc in production. Setting `MALLOC_ARENA_MAX=2` limits the number of memory arenas, which can significantly reduce memory fragmentation and overall memory usage.
 
-    ```sh
+    ```shell
     export MALLOC_ARENA_MAX=2
     ```
 
     On Heroku, you can set this configuration by running:
 
-    ```sh
+    ```shell
     heroku config:set MALLOC_ARENA_MAX=2
     ```
 
@@ -380,7 +380,7 @@ If you have followed these steps and still believe there is a memory leak in Kar
 
     To install `jemalloc`, follow these steps:
 
-    ```sh
+    ```shell
     sudo apt-get install libjemalloc-dev
     ```
 
