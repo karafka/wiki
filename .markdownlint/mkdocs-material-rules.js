@@ -6,20 +6,20 @@ module.exports = [{
   "tags": ["mkdocs", "admonitions"],
   "function": function rule(params, onError) {
     const validTypes = [
-      "note", "abstract", "info", "tip", "success", 
-      "question", "warning", "failure", "danger", 
+      "note", "abstract", "info", "tip", "success",
+      "question", "warning", "failure", "danger",
       "bug", "example", "quote"
     ];
-    
+
     const lines = params.lines;
-    
+
     lines.forEach((line, lineIndex) => {
       const admonitionMatch = line.match(/^!!!\s+(\S+)(\s+"([^"]*)")?/);
-      
+
       if (admonitionMatch) {
         const type = admonitionMatch[1];
         const title = admonitionMatch[3];
-        
+
         // Check if type is valid and lowercase
         if (!validTypes.includes(type)) {
           // Check if it's a case issue
@@ -36,7 +36,7 @@ module.exports = [{
             else if (type.toLowerCase() === "notice") suggestion = "note";
             else if (type.toLowerCase() === "caution") suggestion = "warning";
             else if (type.toLowerCase() === "error") suggestion = "failure";
-            
+
             onError({
               "lineNumber": lineIndex + 1,
               "detail": `Invalid admonition type "${type}". ${suggestion !== type ? `Did you mean "${suggestion}"? ` : ""}Valid types: ${validTypes.join(", ")}`,
@@ -44,7 +44,7 @@ module.exports = [{
             });
           }
         }
-        
+
         // Check for empty title (empty quotes)
         if (admonitionMatch[2] && title === "") {
           onError({
