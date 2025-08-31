@@ -8,12 +8,10 @@
     "!Development/Karafka-Integration-Tests-Catalog.md",
     "!Changelog/*.md",
     "!.gh/**",
+    "!node_modules/**"
   ],
   "customRules": [
-    ".markdownlint/rules/admonition-valid-types.js",
-    ".markdownlint/rules/admonition-no-empty-title.js",
-    ".markdownlint/rules/bundle-exec-shell-type.js",
-    ".markdownlint/rules/shell-language-standardization.js"
+    "mkdocs-material-linter"
   ],
   "config": {
     "default": true,
@@ -41,9 +39,14 @@
     "MD024": {
       "siblings_only": true
     },
-    "admonition-valid-types": true,
-    "admonition-no-empty-title": true,
-    "bundle-exec-shell-type": true,
-    "shell-language-standardization": true
+    "material-admonition-types": true,
+    "material-admonition-indentation": true,
+    "material-admonition-empty": true,
+    "material-content-tabs": true,
+    "material-code-annotations": true,
+    "material-navigation-structure": false,
+    "material-admonition-empty-title": true,
+    "material-bundle-exec-shell-type": true,
+    "material-shell-language-standardization": true
   }
 }
