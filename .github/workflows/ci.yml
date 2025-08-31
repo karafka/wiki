@@ -16,8 +16,17 @@ jobs:
       - name: Checkout docs
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
+      - name: Set up Node.js
+        uses: actions/setup-node@80c7c92be2a6fe0ba80a63b01f2e7b59d8f2c01b # v4.1.1
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm install
+
       - name: Run markdownlint-cli2
-        uses: docker://davidanson/markdownlint-cli2:latest@sha256:173cb697a255a8a985f2c6a83b4f7a8b3c98f4fb382c71c45f1c52e4d4fed63a
+        run: npm run lint
 
   mkdocs-lint:
     runs-on: ubuntu-latest
