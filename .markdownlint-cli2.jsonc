@@ -8,7 +8,8 @@
     "!Development/Karafka-Integration-Tests-Catalog.md",
     "!Changelog/*.md",
     "!.gh/**",
-    "!node_modules/**"
+    "!node_modules/**",
+    "!.lint/**",
   ],
   "customRules": [
     "mkdocs-material-linter"
@@ -47,6 +48,9 @@
     "material-navigation-structure": false,
     "material-admonition-empty-title": true,
     "material-bundle-exec-shell-type": true,
-    "material-shell-language-standardization": true
+    "material-shell-language-standardization": true,
+    "material-meta-tags": false,
+    "material-math-blocks": false,
+    "material-footnotes-syntax": false
   }
 }

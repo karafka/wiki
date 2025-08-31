@@ -417,7 +417,7 @@ When using `rename_consumer_group`, the method ensures that offsets from the old
 
 !!! warning "Never Copy Active Consumer Groups"
 
-  This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
+    This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
 
 The `#copy_consumer_group` method in Karafka Admin API allows you to copy offsets from an existing consumer group to another while preserving its consumption state for specific topics. This functionality is useful when creating a duplicate consumer group with the same consumption progress as an existing one.
 
