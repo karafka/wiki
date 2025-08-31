@@ -9,7 +9,7 @@
 
 # Librdkafka Errors
 
-!!! info "Handling Non-Permanent and Permanent Errors from librdkafka"
+!!! Info "Handling Non-Permanent and Permanent Errors from librdkafka"
 
     Most errors from `librdkafka` are non-permanent and are gracefully managed by internal retries, reducing the immediate impact on your application. These errors are generally not critical and often involve temporary issues such as a `timed_out` error, which indicates a delay in response or operation but does not necessarily signify a permanent problem. Those types of errors, while reported, usually resolve themselves through subsequent retries without requiring direct intervention.
 
