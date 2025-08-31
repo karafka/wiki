@@ -45,7 +45,7 @@
     "material-admonition-empty": true,
     "material-content-tabs": true,
     "material-code-annotations": true,
-    "material-navigation-structure": false,
+    "material-navigation-structure": true,
     "material-admonition-empty-title": true,
     "material-bundle-exec-shell-type": true,
     "material-shell-language-standardization": true,
