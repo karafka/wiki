@@ -5,7 +5,7 @@
   "private": true,
   "devDependencies": {
     "markdownlint-cli2": "^0.14.0",
-    "mkdocs-material-linter": "^1.2.0"
+    "mkdocs-material-linter": "^1.3.0"
   },
   "scripts": {
     "lint": "markdownlint-cli2",

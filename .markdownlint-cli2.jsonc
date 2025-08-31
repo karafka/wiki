@@ -50,7 +50,6 @@
     "material-bundle-exec-shell-type": true,
     "material-shell-language-standardization": true,
     "material-meta-tags": false,
-    "material-math-blocks": false,
-    "material-footnotes-syntax": false
+    "material-footnotes-syntax": true
   }
 }
