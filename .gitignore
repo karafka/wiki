@@ -1,2 +1,4 @@
 .gh/
 .lint/
+node_modules
+CLAUDE.md

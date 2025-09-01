@@ -2,7 +2,7 @@
 
 Before we combine Kafka with Ruby, it would be good to have a workable local Kafka process. The easiest way to do that is by using our `docker-compose.yml` present in Karafka:
 
-```bash
+```shell
 git clone git@github.com:karafka/karafka.git
 cd karafka
 docker-compose up
@@ -10,7 +10,7 @@ docker-compose up
 
 To check that it works, you can just telnet to it:
 
-```bash
+```shell
 telnet 127.0.0.1 9092
 Trying 127.0.0.1...
 Connected to 127.0.0.1.
@@ -30,7 +30,7 @@ KAFKA_ADVERTISED_HOST_NAME: 192.168.0.5
 
 Once you've changed that, you should be able to connect from other docker containers to your Kafka by using the host IP address:
 
-```bash
+```shell
 # Run an example docker container to check it via telnet
 docker run -it --rm --entrypoint=bash python:3.8-slim-buster
 

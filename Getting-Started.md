@@ -6,14 +6,14 @@
 
 1. Add Karafka to your Gemfile:
 
-```bash
+```shell
 # Make sure to install Karafka 2.5 as Karafka 1.4 is no longer maintained
 bundle add karafka --version ">= 2.5.0"
 ```
 
 2. To install Karafka for both Rails and standalone applications, run the following command:
 
-```bash
+```shell
 bundle exec karafka install
 ```
 
@@ -33,7 +33,7 @@ Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to
 
 4. To start consuming messages, run the Karafka server:
 
-```
+```shell
 bundle exec karafka server
 
 # example outcome
@@ -71,7 +71,7 @@ gem "karafka", ">= 2.5.0"
 
 3. To install Karafka for both Rails and standalone applications, run the following command:
 
-```bash
+```shell
 bundle exec karafka install
 ```
 
@@ -91,7 +91,7 @@ Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to
 
 5. To start consuming messages, run the karafka server:
 
-```
+```shell
 bundle exec karafka server
 
 # example outcome
@@ -106,7 +106,7 @@ bundle exec karafka server
 
 If you have any problems setting up Karafka or want a ready application to play with, clone our examples repository:
 
-```bash
+```shell
 git clone https://github.com/karafka/example-apps ./example_apps
 ```
 

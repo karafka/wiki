@@ -8,7 +8,7 @@ To get started with WaterDrop:
 
 1. Add it to your Gemfile:
 
-```bash
+```shell
 bundle add waterdrop
 ```
 
