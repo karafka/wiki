@@ -40,16 +40,6 @@
     "MD024": {
       "siblings_only": true
     },
-    "material-admonition-types": true,
-    "material-admonition-indentation": true,
-    "material-admonition-empty": true,
-    "material-content-tabs": true,
-    "material-code-annotations": true,
-    "material-navigation-structure": true,
-    "material-admonition-empty-title": true,
-    "material-bundle-exec-shell-type": true,
-    "material-shell-language-standardization": true,
     "material-meta-tags": false,
-    "material-footnotes-syntax": true
   }
 }
