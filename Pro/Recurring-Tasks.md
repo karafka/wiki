@@ -212,7 +212,7 @@ The configuration for Recurring Tasks is done in the Karafka application's setup
 class KarafkaApp < Karafka::App
   setup do |config|
     # Other configurations...
-    
+
     # Configuring Recurring Tasks
     config.recurring_tasks.group_id = 'custom_group_id'
     # Run the scheduler every 10 seconds
@@ -297,7 +297,7 @@ By default, after each task is executed, Karafka produces a log entry in the rec
 ### Benefits of Task Execution Logging
 
 - **Auditability**: Logging each task execution provides a comprehensive audit trail, allowing you to track when tasks were executed and their outcomes. This is crucial for maintaining transparency and accountability in your system.
-  
+
 - **Monitoring and Debugging**: The log entries enable effective monitoring and debugging of task executions. By analyzing these logs, you can identify patterns of failures or performance issues and address them proactively.
 
 - **Operational Insights**: The logs offer valuable insights into the operational efficiency of your recurring tasks, helping you optimize schedules and improve overall system performance.
@@ -338,7 +338,7 @@ end
 The Karafka Web UI provides comprehensive tools for managing and monitoring recurring tasks:
 
 - **Inspect and Control Tasks**: You can view, enable, disable, and trigger recurring tasks directly from the Web UI. This allows for real-time management and ensures tasks run as expected.
-  
+
 - **Execution Logs**: The Web UI enables you to explore the logs of task executions, offering insights into when tasks were executed, their outcomes, and whether any issues occurred.
 
 ![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/recurring-tasks.png)

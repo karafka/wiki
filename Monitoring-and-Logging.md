@@ -152,7 +152,7 @@ For automated alerting systems like CloudWatch or Splunk, you can structure your
 Karafka.monitor.subscribe 'connection.listener.fetch_loop' do |event|
   listener_id = event[:caller].id
   timestamp = Time.current.iso8601
-  
+
   # Structured log for monitoring systems
   Rails.logger.info({
     timestamp: timestamp,
@@ -211,7 +211,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
     When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking, as this runs every 5 seconds and during active processing. Long-running handlers can impede the polling process, affecting message consumption. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your consumption process.
 
 !!! note
-  
+
     Karafka emits metrics every 5 seconds by default, governed by the Kafka setting `statistics.interval.ms`. Metrics are also published during processing and long polling. Whether you are processing data or waiting on more information being shipped from Kafka, metrics publishing will occur.
 
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event. By default this setting is set to 5 seconds.
@@ -635,7 +635,7 @@ class CustomMonitor < ::Karafka::Instrumentation::Monitor
 
     # Pre-processing
     MyLogger.info("Starting #{event_id}")
-    
+
     # Maintain core functionality
     super
   ensure 

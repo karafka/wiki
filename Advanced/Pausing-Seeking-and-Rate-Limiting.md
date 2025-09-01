@@ -101,7 +101,7 @@ def consume
   messages.each do |message|
     results << Processor.call(message.payload)
   end
-  
+
   return if results.all? { |result| result == true }
 
   # Get back by 100 messages and reprocess data if anything went badly
@@ -193,7 +193,7 @@ def consume
   messages.each do |message|
     results << Processor.call(message.payload)
   end
-  
+
   return if results.all? { |result| result == true }
 
   # Get back by 100 messages and reprocess data if anything went badly

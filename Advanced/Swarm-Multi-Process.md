@@ -519,7 +519,7 @@ Karafka.monitor.subscribe('swarm.node.after_fork') do
     p_config.logger = Karafka::App.config.logger
     # Copy and map all the Kafka configuration or replace with your own
     p_config.kafka = ::Karafka::Setup::AttributesMap.producer(Karafka::App.config.kafka.dup)
-    
+
     # Add any node-specific configurations here
     p_config.kafka[:'client.id'] = "#{Karafka::App.config.client_id}-#{Process.pid}"
   end
