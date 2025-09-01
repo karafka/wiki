@@ -5,7 +5,7 @@
   "private": true,
   "devDependencies": {
     "markdownlint-cli2": "^0.18.0",
-    "mkdocs-material-linter": "^1.5.2"
+    "mkdocs-material-linter": "file:/home/mencio/Software/Mensfeld/mkdocs-material-linter"
   },
   "scripts": {
     "lint": "markdownlint-cli2",

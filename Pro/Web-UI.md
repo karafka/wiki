@@ -153,7 +153,7 @@ Karafka::Web.setup do |config|
   config.ui.custom_css = '/path/to/your/custom.css'
   # or inline CSS
   config.ui.custom_css = '.dashboard { background-color: #f5f5f5; }'
-  
+
   # Custom JavaScript configuration
   config.ui.custom_js = '/path/to/your/custom.js'
   # or inline JavaScript

@@ -54,7 +54,7 @@ class SingleMessageBaseConsumer < Karafka::BaseConsumer
     messages.each do |message|
       @message = message
       consume_one
-    
+
       mark_as_consumed(message)
     end
   end

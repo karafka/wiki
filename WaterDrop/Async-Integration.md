@@ -67,7 +67,7 @@ Async do |task|
         key: "batch_key_#{i}"
       }
     end
-    
+
     begin
       producer.produce_many_sync(messages)
     rescue WaterDrop::Errors::ProduceError => e
@@ -118,7 +118,7 @@ Async do |task|
       producer.produce_sync(topic: 'events', payload: 'data1')
     end
   end
-  
+
   task.async do
     producer.transaction do
       # This will wait for the first transaction to complete
@@ -134,7 +134,7 @@ Async do |task|
       producer1.produce_sync(topic: 'events', payload: 'data1')
     end
   end
-  
+
   task.async do
     producer2.transaction do
       producer2.produce_sync(topic: 'events', payload: 'data2')

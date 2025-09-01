@@ -199,11 +199,11 @@ Karafka.producer.produce_sync(
 !!! note
 
     The `msg_size_too_large error` can arise from:
-    
+
     - Local Validation by librdkafka: Before reaching the Kafka broker, if a message size exceeds the library's limit.
-    
+
     - Kafka Broker Rejection: If the broker finds the message too big based on its configuration.
-    
+
     Both scenarios produce the same `msg_size_too_large` error code, making them indistinguishable in code.
 
     When addressing this error, check message size settings in both librdkafka and the Kafka broker.
