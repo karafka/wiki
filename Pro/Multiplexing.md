@@ -66,19 +66,21 @@ end
 
     The `#multiplexing` method must be used exclusively within a `#subscription_group` block. It is not suitable for routing without an explicit subscription group definition.
 
-        routes.draw do
-          # This will NOT work - will raise undefined method
+    ```ruby
+      routes.draw do
+        # This will NOT work - will raise undefined method
+        multiplexing(max: 2)
+
+        # Always define your subscription group and apply multiplexing directly on it
+        subscription_group :main do
           multiplexing(max: 2)
 
-          # Always define your subscription group and apply multiplexing directly on it
-          subscription_group :main do
-            multiplexing(max: 2)
-
-            topic :events do
-              consumer EventsConsumer
-            end
+          topic :events do
+            consumer EventsConsumer
           end
         end
+      end
+    ```
 
 Once you have configured multiplexing in your routing settings, no additional steps are required for it to function. Your application will start processing messages from multiple partitions simultaneously, leveraging the benefits of multiplexing immediately and seamlessly.
 

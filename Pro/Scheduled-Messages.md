@@ -50,7 +50,7 @@ This approach simplifies setting up scheduled messages, making them accessible w
 
 When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
 
-```bash
+```shell
 bundle exec karafka topics migrate
 ```
 
@@ -323,7 +323,7 @@ enveloped = Karafka::Pro::ScheduledMessages.schedule(
 
 !!! warning "Ensure Unique Custom Keys"
 
-     The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
+    The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
 
 If you must ensure that particular messages are dispatched in a specific order, you can utilize the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key ensures that:
 

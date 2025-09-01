@@ -172,7 +172,7 @@ Producer clientId=producer-1] Got error produce response with correlation id X o
 
 ##### `leader_not_available` (Transient)
 
-```
+```text
 Broker: Leader not available (`leader_not_available`)
 ```
 
@@ -182,7 +182,7 @@ Broker: Leader not available (`leader_not_available`)
 
 ##### `not_leader_for_partition` (Requires Metadata Refresh)
 
-```
+```text
 Broker: Not leader for partition (`not_leader_for_partition`)
 ```
 
@@ -192,7 +192,7 @@ Broker: Not leader for partition (`not_leader_for_partition`)
 
 ##### `fenced_leader_epoch` (Advanced Error Handling)
 
-```
+```text
 Broker: Leader epoch is older than broker epoch (`fenced_leader_epoch`)
 ```
 
@@ -316,7 +316,7 @@ end
 
 #### `not_enough_replicas` (Error Code 19)
 
-```
+```text
 Broker: Not enough in-sync replicas (not_enough_replicas)
 ```
 
@@ -325,7 +325,7 @@ Broker: Not enough in-sync replicas (not_enough_replicas)
 
 #### `not_enough_replicas_after_append` (Error Code 20)
 
-```
+```text
 Broker: Messages are rejected since there are fewer in-sync replicas than required
 ```
 
@@ -372,7 +372,7 @@ puts "  Current Sync Replicas (min per partition): #{in_sync_brokers.min}"
 
 Topic configurations can be updated through multiple approaches in Karafka. The `min.insync.replicas` configuration can be modified using the Admin Configs API or through the Web UI interface. However, updating the replication factor requires using the standard Kafka CLI tools as it involves partition reassignment.
 
-```bash
+```shell
 # Update replication factor using Kafka CLI (requires partition reassignment)
 kafka-reassign-partitions.sh --bootstrap-server localhost:9092 \
   --reassignment-json-file increase-replication.json --execute

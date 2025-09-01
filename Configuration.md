@@ -116,7 +116,7 @@ end
 
     In order to use `zstd`, you need to install `libzstd-dev`:
 
-    ```bash
+    ```shell
     apt-get install -y libzstd-dev
     ```
 

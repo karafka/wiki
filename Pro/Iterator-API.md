@@ -263,7 +263,7 @@ The Cleaner API can be integrated with the Iterator API to ensure optimal memory
 
 Here's how you can use the Cleaner API with the Iterator API to process messages and clean up memory efficiently:
 
-```
+```ruby
 # Initialize the iterator for a specific topic
 iterator = Karafka::Pro::Iterator.new(['my_topic'])
 

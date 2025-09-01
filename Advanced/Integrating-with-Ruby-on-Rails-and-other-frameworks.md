@@ -6,13 +6,13 @@ Karafka detects Ruby on Rails by itself, so no extra changes are required beside
 
 Add Karafka to your Gemfile:
 
-```bash
+```shell
 bundle add karafka --version ">= 2.3.0"
 ```
 
 and run the installation command:
 
-```bash
+```shell
 bundle exec karafka install
 ```
 
@@ -32,7 +32,7 @@ gem 'karafka'
 
 run the installation process:
 
-```bash
+```shell
 bundle exec karafka install
 ```
 

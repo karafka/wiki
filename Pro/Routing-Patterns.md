@@ -267,7 +267,7 @@ end
 
 You can limit the process operations to only specific patterns:
 
-```bash
+```shell
 # This code will not run topics and patterns other than `dlqs_pattern`
 #
 # You can use space to provide more patterns
@@ -276,7 +276,7 @@ bundle exec karafka server --include-topics dlqs_pattern
 
 as well as you can exclude patterns from being part of the operations:
 
-```bash
+```shell
 # This code will run ony topics and patterns other than `dlqs_pattern`
 #
 # You can use space to provide more patterns
@@ -358,7 +358,7 @@ To bridge the gap and verify that your regular expressions work as expected in b
 
 Here's how you can test a POSIX regular expression in a Unix-like terminal:
 
-```bash
+```shell
 echo 'sample_string' | grep -E 'posix_regex'
 ```
 

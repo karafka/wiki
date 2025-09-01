@@ -240,7 +240,7 @@ In summary, when working with Kafka through Karafka, it's crucial to understand 
 
 When using `rdkafka` or `karafka-rdkafka` on macOS, `zstd` support may break on macOS development machines. Users have encountered the following error:
 
-```
+```text
 Karafka::Errors::InvalidConfigurationError:
 
 Unsupported value "zstd" for configuration property "compression.codec": libzstd not available at build time
@@ -250,7 +250,7 @@ This issue occurs because of karafka-rdkafka not being linked against `libzstd`,
 
 To resolve this issue, ensure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
 
-```
+```shell
 brew install pkg-config
 gem uninstall karafka-rdkafka
 bundle install

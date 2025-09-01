@@ -43,7 +43,7 @@ When only consumers are present (no WaterDrop producers), topics will **not** be
 
 The Kafka CLI consumer (`kafka-console-consumer.sh`) behaves differently and may create topics:
 
-```bash
+```shell
 # Before running consumer
 $ kafka-topics.sh --list | grep my-topic
 # (no output)

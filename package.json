@@ -1,0 +1,14 @@
+{
+  "name": "karafka-wiki",
+  "version": "1.0.0",
+  "description": "Documentation repository for the Karafka ecosystem",
+  "private": true,
+  "devDependencies": {
+    "markdownlint-cli2": "^0.14.0",
+    "mkdocs-material-linter": "^1.5.2"
+  },
+  "scripts": {
+    "lint": "markdownlint-cli2",
+    "lint:fix": "markdownlint-cli2 --fix"
+  }
+}

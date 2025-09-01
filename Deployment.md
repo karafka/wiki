@@ -14,7 +14,7 @@ Since the only thing that is long-running is the Karafka server, it shouldn't be
 
 You can easily manage Karafka applications with `systemd`. Here's an example `.service` file that you can use.
 
-```bash
+```shell
 # Move to /lib/systemd/system/karafka.service
 # Run: systemctl enable karafka
 
@@ -87,7 +87,7 @@ If you need to run several processes of a given type, please refer to `template 
 
 Karafka can be dockerized as any other Ruby/Rails app. To execute ```karafka server``` command in your Docker container, just put this into your Dockerfile:
 
-```bash
+```shell
 ENV KARAFKA_ENV production
 CMD bundle exec karafka server
 ```
@@ -150,7 +150,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 
 11. Log in to any of your machines and run a `telnet` session to any of the brokers:
 
-```bash
+```shell
 telnet your-broker.kafka.us-east-1.amazonaws.com 9096
 
 Trying 172.31.22.230...
@@ -218,7 +218,7 @@ After that, you should be good to go.
 
 #### Local: Authentication failure
 
-```
+```text
 ERROR -- : rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
 sasl_ssl://broker1.us-east-1.amazonaws.com:9096/bootstrap: SASL authentication error:
 Authentication failed during authentication due to invalid credentials with SASL mechanism SCRAM-SHA-512
@@ -235,7 +235,7 @@ It may mean two things:
 
 #### Connection setup timed out in state CONNECT
 
-```
+```text
 rdkafka: [thrd:sasl_ssl://broker1.kafka.us-east-1.amazonaws.]:
 sasl_ssl://broker1.us-east-1.amazonaws.com:9092/bootstrap:
 Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
@@ -359,7 +359,7 @@ end
 
 3. Create all the consumer groups before using them via the Heroku CLI.
 
-```bash
+```shell
 heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 ```
 
@@ -369,7 +369,7 @@ heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
 
 This means that the Heroku CLI command needs to look as follows:
 
-```bash
+```shell
 heroku kafka:consumer-groups:create app
 ```
 
@@ -418,7 +418,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-```bash
+```shell
 # Since both are set to karafka_admin by default, if you did not change those values,
 # you can just run:
 heroku kafka:consumer-groups:create karafka_admin
@@ -468,7 +468,7 @@ There are few problems you may encounter when configuring things for Heroku:
 
 #### Unsupported protocol "KAFKA+SSL"
 
-```
+```text
 parse error: unsupported protocol "KAFKA+SSL"
 ```
 
@@ -476,7 +476,7 @@ parse error: unsupported protocol "KAFKA+SSL"
 
 #### Disconnected while requesting ApiVersion
 
-```
+```text
 Disconnected while requesting ApiVersion: might be caused by incorrect security.protocol configuration
 (connecting to a SSL listener?)
 ```
@@ -485,7 +485,7 @@ Disconnected while requesting ApiVersion: might be caused by incorrect security.
 
 #### Topic authorization failed
 
-```
+```text
 Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::RdkafkaError)
 ```
 
@@ -493,7 +493,7 @@ Broker: Topic authorization failed (topic_authorization_failed) (Rdkafka::Rdkafk
 
 #### Messages are not being consumed
 
-```
+```text
 DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 DEBUG -- : [3732873c8a74] Polling messages...
 DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
@@ -637,7 +637,7 @@ The liveness listener returns detailed health information in JSON format:
     "unrecoverable": false
   }
 }
-```
+```text
 
 This response format allows for more granular monitoring and debugging while maintaining compatibility with existing Kubernetes liveness probe configurations that check for HTTP 2xx status codes.
 
@@ -659,7 +659,7 @@ class LivenessListener < ::Karafka::Instrumentation::Vendors::Kubernetes::Livene
     true
   end
 end
-```
+```text
 
 ### Liveness In the Swarm Mode
 
