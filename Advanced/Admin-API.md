@@ -487,7 +487,7 @@ Karafka::Admin.seek_consumer_group(
     # move offset to 1000 on all partitions of this topic
     'my_other_topic' => 1000
   }
-  
+
 )
 ```
 

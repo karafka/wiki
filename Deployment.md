@@ -622,6 +622,7 @@ The liveness listener returns detailed health information in JSON format:
     "unrecoverable": false
   }
 }
+```
 
 **Unhealthy Response (500 Internal Server Error):**
 
@@ -637,7 +638,7 @@ The liveness listener returns detailed health information in JSON format:
     "unrecoverable": false
   }
 }
-```text
+```
 
 This response format allows for more granular monitoring and debugging while maintaining compatibility with existing Kubernetes liveness probe configurations that check for HTTP 2xx status codes.
 
@@ -659,7 +660,7 @@ class LivenessListener < ::Karafka::Instrumentation::Vendors::Kubernetes::Livene
     true
   end
 end
-```text
+```
 
 ### Liveness In the Swarm Mode
 

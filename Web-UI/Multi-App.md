@@ -116,7 +116,7 @@ class KarafkaApp < Karafka::App
       # Set it to inactive if this comes from different app
       # and should not be consumed
       active false
-      
+
       # Indicate, that there is `general_dlq` topic that is
       # a DLQ to a different topic.
       # This definition is required for Web UI to understand

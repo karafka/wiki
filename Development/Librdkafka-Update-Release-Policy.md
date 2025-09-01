@@ -5,12 +5,12 @@ The Karafka ecosystem prioritizes **stability over speed** when it comes to libr
 !!! warning "Flexible Timeline Policy"
 
     The timelines specified in this document represent **minimum waiting periods** that will not be shortened. However, these periods may be extended when other development priorities take precedence, such as:
-    
+
     - Active development of new features in the rdkafka gem
     - Major Karafka ecosystem improvements
     - Critical bug fixes in existing functionality
     - Other high-priority maintenance work
-    
+
     Additionally, new feature releases are intentionally **never bundled with librdkafka updates** to maintain a clear separation between infrastructure updates and functionality changes. This ensures that any issues can be attributed to their specific cause, reducing the complexity of troubleshooting.
 
 ## Update Strategy

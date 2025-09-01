@@ -137,7 +137,7 @@ end
 ```
 
 !!! tip "Use Karafka Monitoring Hooks to Debug Consumer Failures"
-    
+
     Use Karafka's monitoring hooks to debug these scenarios. Subscribe to the `error.occurred` event to get detailed info whenever a consumer error happens.
 
 ### Non-Thread-Safe Code or Shared Resource Issues
@@ -344,7 +344,7 @@ Karafka is designed to be efficient with memory, but many factors can contribute
 1. **Memory Bloat**: This occurs when your process's memory size keeps increasing over time, even if it is not actively processing a higher load. Common causes include:
    - Ruby gem issues or memory fragmentation.
    - Unreleased resources or objects being held in memory longer than necessary.
-   
+
 2. **Garbage Collection**: Ruby uses a garbage collector (GC) to manage memory. Sometimes, tweaking GC settings can help manage memory usage more effectively. You can experiment with environment variables like `RUBY_GC_HEAP_GROWTH_FACTOR`, `RUBY_GC_MALLOC_LIMIT`, and `RUBY_GC_OLDMALLOC_LIMIT` to optimize memory use.
 
 3. **External Dependencies**: Libraries and gems that your application depends on might have their own memory issues. Regularly update and monitor all dependencies.
