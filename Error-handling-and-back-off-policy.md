@@ -205,6 +205,42 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
 
     This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Virtual-Partitions#behaviour-on-errors) for more details.
 
+### Offset Management Errors
+
+Karafka supports immediate error raising for offset-related issues when `auto.offset.reset` is set to `error`. This configuration provides strict control over consumer behavior when encountering missing or invalid offsets, preventing reprocessing or skipping messages.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      # Raise errors immediately on offset issues
+      'auto.offset.reset': 'error'
+    }
+  end
+end
+```
+
+With this configuration:
+
+- **Missing Offsets**: When a consumer attempts to read from a partition with no committed offset, Karafka will immediately raise an error instead of automatically resetting to the earliest/latest
+- **Out-of-Range Offsets**: If the requested offset is no longer available (due to log retention), an error will be raised immediately
+
+This setting is particularly useful for:
+
+- **Strict Data Processing**: When you need a guarantee that no messages are skipped due to automatic offset resets
+- **Audit Requirements**: Applications requiring a complete processing history without automatic recovery
+- **Debugging**: Identifying offset-related issues in consumer group management
+
+!!! note "Alternative Offset Reset Strategies"
+
+    For less strict requirements, you can use:
+
+    - `'earliest'` or `'beginning'`: Reset to the oldest available message
+    - `'latest'` or `'end'`: Reset to the newest available message
+
+    These alternatives provide automatic recovery but may result in message skipping or reprocessing.
+
 ## Shutdown
 
 Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. If this value is not set, Karafka will wait indefinitely for consumers to finish processing given messages.
