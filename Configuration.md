@@ -36,7 +36,7 @@ A complete list of the configuration options related to `librdkafka` with their 
 
 ## Configuring External components
 
-The `app.initialized` event hook allows you to perform additional setup and configuration tasks for external components that depend on the internal settings of Karafka. This event is executed once per process, immediately after all framework components are ready, including dynamically built components.
+The `app.initialized` event hook allows you to perform additional setup and configuration tasks for external components that depend on the internal settings of Karafka. This event is executed once per process, immediat"ely after all framework components are ready, including dynamically built components.
 
 **Prerequisites**
 
@@ -49,20 +49,20 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 2. Find the setup block and add the event subscription inside your `setup` block
 3. Inside the event handler block, implement the configuration logic for your external components using available Karafka configuration values:
    
-   ```ruby
-   class KarafkaApp < Karafka::App
-     setup do |config|
-       # All the config magic
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # All the config magic
 
-       # Once everything is configured and done, assign Karafka app logger as a MyComponent logger
-       # @note This example does not use config details, but you can use all the config values
-       #   to setup your external components
-       config.monitor.subscribe('app.initialized') do
-         MyComponent::Logging.logger = Karafka::App.logger
-       end
-     end
-   end
-   ```
+    # Once everything is configured and done, assign Karafka app logger as a MyComponent logger
+    # @note This example does not use config details, but you can use all the config values
+    #   to setup your external components
+    config.monitor.subscribe('app.initialized') do
+      MyComponent::Logging.logger = Karafka::App.logger
+    end
+  end
+end
+```
 
 **Result**
 
@@ -79,22 +79,23 @@ There are several env settings you can use with Karafka. They are described unde
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-!!! note ""
+!!! note
 
-Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
+    Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
 
-- `gzip`
-- `zstd`
-- `lz4`
-- `snappy`
+    - `gzip`
+    - `zstd`
+    - `lz4`
+    - `snappy`
 
 **Prerequisites:**
 
 If you plan to to use `zstd`, you need to install `libzstd-dev`:
 
-    ```bash
-    apt-get install -y libzstd-dev
-    ```
+```bash
+apt-get install -y libzstd-dev
+```
+
 **Procedure**
 
 1. To enable the compression, use the `compression.codec` and `compression.level` settings:
