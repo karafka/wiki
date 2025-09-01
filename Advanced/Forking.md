@@ -1,6 +1,6 @@
 Karafka under the hood relies on `librdkafka` to manage Kafka connections. It is crucial to understand that `librdkafka` is **not** fork-safe, which means special care must be taken when managing Ruby processes interacting with Kafka. This document provides guidelines for handling forking in Karafka, especially under macOS and in environments using Rails' Spring loader.
 
-!!! Tip "Ecosystem-Wide Recommendations"
+!!! tip "Ecosystem-Wide Recommendations"
 
     This guidance applies to all components of the Karafka ecosystem interacting with Kafka, including `rdkafka`, `karafka-rdkafka`, `WaterDrop`, and `Karafka`. Ensure these recommendations are followed to maintain system stability and prevent resource leaks.
 

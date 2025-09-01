@@ -1,6 +1,6 @@
 # Getting Started with WaterDrop
 
-!!! info ""
+!!! info
 
     If you want to both produce and consume messages, please use [Karafka](Getting-Started). It integrates WaterDrop automatically.
 
@@ -50,6 +50,6 @@ producer.produce_many_async(
 )
 ```
 
-!!! info ""
+!!! info
 
     For additional WaterDrop usage examples, please refer to the [Usage](WaterDrop-Usage) section of this documentation.

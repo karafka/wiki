@@ -6,7 +6,7 @@ Developers can customize their data processing logic and perform data lookups ac
 
 One of the major benefits of the Iterator API is its flexibility. You can use it from any Ruby process, including Rake tasks, custom scripts, and the Rails console. This means you can easily integrate Kafka data processing into their existing workflows and automation tasks. It also makes it easy to perform ad-hoc data processing and analysis without complex infrastructure.
 
-!!! Info "Iterator API and Compacted Messages"
+!!! info "Iterator API and Compacted Messages"
 
     When using Karafka's Iterator API to access Kafka data, please keep in mind, that it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
 
@@ -67,11 +67,11 @@ iterator.each do |message|
 end
 ```
 
-!!! Tip "Differentiating Negative Offsets in Karafka"
+!!! tip "Differentiating Negative Offsets in Karafka"
 
     In Karafka, you may encounter a negative offset of `-1001` in the context of statistics reporting, and this does **not** represent the same concept as the Iterator negative offsets lookup. In the context of Karafka emitted statistics, the `-1001` means that the offset information is not yet available.
 
-!!! Info "Handling Compacted Topics with Negative Lookups"
+!!! info "Handling Compacted Topics with Negative Lookups"
 
     Negative lookups operate based on watermark offsets, not actual message counts. So, for compacted topics (where redundant data is removed), this could result in fetching fewer messages than requested, as the specified offset might include removed data.
 
@@ -192,7 +192,7 @@ iterator.each do |message|
 end
 ```
 
-!!! Tip "Recommended Approach for Long-Living Iterators"
+!!! tip "Recommended Approach for Long-Living Iterators"
 
     If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption. 
 

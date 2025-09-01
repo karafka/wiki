@@ -1,10 +1,10 @@
 # OSS Support Policy
 
-!!! Warning "No Direct Contact for OSS Support"
+!!! warning "No Direct Contact for OSS Support"
 
     **Do NOT** contact Karafka or rdkafka gem maintainers directly via email, personal messages, or other private channels for OSS support reasons. Use [GitHub Issues](https://github.com/karafka/karafka/issues) for bug reports and feature requests, or join the [Slack community](https://slack.karafka.io) for general questions and discussions. Direct contact attempts will be ignored and not responded to.
 
-!!! Tip "The 5-Minute Support Promise"
+!!! tip "The 5-Minute Support Promise"
 
     I have a simple 5-minute rule for OSS support: If I can reply and provide solutions within 5 minutes, I will always help without requiring payment or subscription. This applies to quick troubleshooting and guidance within my OSS support scope. My goal is to make the Karafka experience as smooth as possible while respecting everyone's time and resources.
 
@@ -28,13 +28,13 @@ However, it is crucial to understand that the OSS support does **not** extend to
 
 We acknowledge that understanding your specific applications and their configuration is essential, but due to the time and resource demands, this goes beyond the scope of our OSS support.
 
-!!! Info "No ETAs or Timelines in OSS"
+!!! info "No ETAs or Timelines in OSS"
 
     Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there won't be one. Please do not ask for timelines unless I've already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
 
     If a bug affects your business operations and you need prioritized support, please consider supporting Karafka by upgrading to the Pro offering. This allows me to prioritize issues differently and consider your business needs.
 
-!!! Hint "Enhance Your Karafka Experience with Pro Support"
+!!! tip "Enhance Your Karafka Experience with Pro Support"
 
     For users seeking assistance with application-specific issues, we offer a Pro version of Karafka. This subscription provides comprehensive support, including help with application-specific problems.
 
@@ -44,7 +44,7 @@ We acknowledge that understanding your specific applications and their configura
 
 When reporting an issue within the Karafka ecosystem, providing detailed information is crucial for diagnosing and resolving the problem efficiently. 
 
-!!! Warning "Complete Information Required"
+!!! warning "Complete Information Required"
 
     Failing to provide the below information may result in the issue **being closed** without assessment.
 

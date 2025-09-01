@@ -396,7 +396,7 @@ require 'karafka_root_dir/karafka_app'
 
 Still not a perfect solution because karafka gem is still loaded.
 
-!!! note ""
+!!! note
 
     This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
 
@@ -591,7 +591,7 @@ end
 
 It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
 
-!!! note ""
+!!! note
 
     If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
 
@@ -1103,7 +1103,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-!!! note ""
+!!! note
 
     When using Karafka [Virtual Partitions](Pro-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Virtual-Partitions#virtual-offset-management) works.
 
@@ -1431,7 +1431,7 @@ Karafka.producer.monitor.subscribe(
 )
 ```
 
-!!! note ""
+!!! note
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
@@ -1457,7 +1457,7 @@ When a message is dispatched to a [dead letter queue](Dead-Letter-Queue) (DLQ) t
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled. 
 
-!!! note ""
+!!! note
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 

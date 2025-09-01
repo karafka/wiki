@@ -1,0 +1,162 @@
+#!/usr/bin/env node
+/**
+ * Material for MkDocs compatibility validator
+ * Validates markdown files for Material for MkDocs specific syntax requirements
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+const VALID_ADMONITION_TYPES = [
+  'note', 'abstract', 'info', 'tip', 'success', 
+  'question', 'warning', 'failure', 'danger', 
+  'bug', 'example', 'quote'
+];
+
+const COMMON_MISTAKES = {
+  'hint': 'tip',
+  'notice': 'note',
+  'caution': 'warning',
+  'error': 'failure',
+  'attention': 'warning'
+};
+
+class MkDocsValidator {
+  constructor() {
+    this.errors = [];
+    this.warnings = [];
+  }
+
+  validateFile(filePath) {
+    const content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.split('\n');
+    
+    lines.forEach((line, index) => {
+      this.validateAdmonitions(line, index + 1, filePath);
+      this.validateTables(line, index + 1, filePath);
+    });
+  }
+
+  validateAdmonitions(line, lineNumber, filePath) {
+    const admonitionMatch = line.match(/^!!!\s+(\S+)(\s+"([^"]*)")?/);
+    
+    if (admonitionMatch) {
+      const type = admonitionMatch[1];
+      const title = admonitionMatch[3];
+      
+      // Check if type is valid
+      if (!VALID_ADMONITION_TYPES.includes(type)) {
+        // Check if it's a case issue
+        if (VALID_ADMONITION_TYPES.includes(type.toLowerCase())) {
+          this.errors.push({
+            file: filePath,
+            line: lineNumber,
+            type: 'admonition-case',
+            message: `Admonition type "${type}" should be lowercase: "${type.toLowerCase()}"`,
+            context: line.trim()
+          });
+        } else {
+          // Check for common mistakes
+          const suggestion = COMMON_MISTAKES[type.toLowerCase()] || 
+                           COMMON_MISTAKES[type] ||
+                           (VALID_ADMONITION_TYPES.includes(type.toLowerCase()) ? type.toLowerCase() : null);
+          
+          this.errors.push({
+            file: filePath,
+            line: lineNumber,
+            type: 'admonition-invalid',
+            message: `Invalid admonition type "${type}".${suggestion ? ` Did you mean "${suggestion}"?` : ''} Valid types: ${VALID_ADMONITION_TYPES.join(', ')}`,
+            context: line.trim()
+          });
+        }
+      }
+      
+      // Check for empty title
+      if (admonitionMatch[2] && title === "") {
+        this.errors.push({
+          file: filePath,
+          line: lineNumber,
+          type: 'admonition-empty-title',
+          message: 'Admonition should not have empty quotes. Remove the quotes or add a title.',
+          context: line.trim()
+        });
+      }
+    }
+  }
+
+  validateTables(line, lineNumber, filePath) {
+    // Check for markdown tables (should use HTML tables per your guidelines)
+    if (line.match(/^\|.*\|$/)) {
+      this.warnings.push({
+        file: filePath,
+        line: lineNumber,
+        type: 'table-markdown',
+        message: 'Consider using HTML <table> tags instead of Markdown tables for better compatibility',
+        context: line.trim()
+      });
+    }
+  }
+
+  getFiles() {
+    try {
+      // Use find to get all .md files, excluding the ignored patterns
+      const output = execSync(`find . -name "*.md" -type f | grep -v -E "(Librdkafka/Changelog\\.md|Librdkafka/Errors\\.md|Librdkafka/Statistics\\.md|Librdkafka/Configuration\\.md|Development/Karafka-Integration-Tests-Catalog\\.md|Changelog/.*\\.md|\\.gh/)"`, 
+        { cwd: path.dirname(__dirname), encoding: 'utf8' });
+      return output.trim().split('\n').filter(f => f).map(f => f.replace('./wiki/', ''));
+    } catch (error) {
+      console.error('Error finding files:', error.message);
+      return [];
+    }
+  }
+
+  run() {
+    const files = this.getFiles();
+
+    console.log(`🔍 Validating ${files.length} files for Material for MkDocs compatibility...\n`);
+
+    files.forEach(file => {
+      const fullPath = path.resolve(path.dirname(__dirname), file);
+      if (fs.existsSync(fullPath)) {
+        this.validateFile(fullPath);
+      }
+    });
+
+    // Report results
+    if (this.errors.length === 0 && this.warnings.length === 0) {
+      console.log('✅ All files are Material for MkDocs compatible!');
+      return 0;
+    }
+
+    if (this.errors.length > 0) {
+      console.log(`❌ Found ${this.errors.length} error(s):\n`);
+      this.errors.forEach(error => {
+        console.log(`${path.basename(error.file)}:${error.line} [${error.type}]`);
+        console.log(`  ${error.message}`);
+        console.log(`  Context: ${error.context}`);
+        console.log('');
+      });
+    }
+
+    if (this.warnings.length > 0) {
+      console.log(`⚠️  Found ${this.warnings.length} warning(s):\n`);
+      this.warnings.forEach(warning => {
+        console.log(`${path.basename(warning.file)}:${warning.line} [${warning.type}]`);
+        console.log(`  ${warning.message}`);
+        console.log(`  Context: ${warning.context}`);
+        console.log('');
+      });
+    }
+
+    return this.errors.length > 0 ? 1 : 0;
+  }
+}
+
+// Run if called directly
+if (require.main === module) {
+  const validator = new MkDocsValidator();
+  const exitCode = validator.run();
+  process.exit(exitCode);
+}
+
+module.exports = MkDocsValidator;

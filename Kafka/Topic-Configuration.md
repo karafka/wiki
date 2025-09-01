@@ -1,6 +1,6 @@
 # Kafka Topic Configuration
 
-!!! Tip "Kafka Configuration Variability"
+!!! tip "Kafka Configuration Variability"
 
     The defaults and exact list of per-topic configuration options may differ between various Kafka versions. For the most accurate information, please refer to the documentation for the specific Kafka version.
 

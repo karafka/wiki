@@ -137,7 +137,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note ""
+!!! note
 
     This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
@@ -165,11 +165,11 @@ It is worth, however, keeping in mind that under normal operating conditions, Ka
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
-!!! note ""
+!!! note
 
     You do **not** need to mark the message as consumed for the `#revoked?` method result to change.
 
-!!! note ""
+!!! note
 
     When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result also changes independently from marking messages.
 
@@ -179,7 +179,7 @@ Karafka consumer instances are persistent by default. This means that a single c
 
 Karafka consumer instance for a given topic partition will be re-created in case a given partition is lost and re-assigned.
 
-!!! note ""
+!!! note
 
     If you decide to utilize such techniques, you may be better with manual offset management.
 
@@ -410,7 +410,7 @@ EOF signaling can happen in two ways:
 - Via `#eofed` Method: This method is triggered when no more messages are polled.
 - Alongside `#consume` Method: EOF can be signaled together with messages if some messages were polled.
 
-!!! Tip "Full Coverage of EOF"
+!!! tip "Full Coverage of EOF"
 
     To ensure full coverage of EOF scenarios, both the `#eofed` method and the `#eofed?` method should be used. This ensures that EOF is handled whether it occurs with or without new messages.
 

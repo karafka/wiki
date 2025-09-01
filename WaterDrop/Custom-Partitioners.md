@@ -27,7 +27,7 @@ In both cases, you need to know the partition count for a given topic. You can r
 producer.partition_count('users_events') => 5
 ```
 
-!!! Warning "Failure To Fetch Partition Count"
+!!! warning "Failure To Fetch Partition Count"
 
     If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Ensure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
 

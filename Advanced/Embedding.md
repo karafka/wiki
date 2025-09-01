@@ -14,7 +14,7 @@ There are two embedding API calls that you need to connect to your main process 
 - `::Karafka::Embedded.start` - Starts Karafka without process supervision and ownership of signals in a background thread. This method is non-blocking, and it won't interrupt other things running
 - `::Karafka::Embedded.stop` - Stops Karafka in a blocking fashion. It waits for all the current work to be done and then shuts down all the threads, connections, etc.
 
-!!! Tip "Safe and Unsafe Trap Context Usage"
+!!! tip "Safe and Unsafe Trap Context Usage"
 
     It is safe to use both `#quiet` and `#stop` from the trap context of a process that controls the execution in embedded mode, but it is **not** safe to run `#start` from the trap context.
 
@@ -198,6 +198,6 @@ end
 
 The listener thread priority (internal setting `internal.connection.listener_thread_priority`, default 0) should not be modified unless necessary. Listener threads efficiently release the GVL while waiting for poll results, making the standard 100ms quantum appropriate for their workload.
 
-!!! Warning "Performance Trade-offs"
+!!! warning "Performance Trade-offs"
 
     Lower priorities reduce GVL time per quantum, which can slightly increase message processing latency. However, this trade-off usually improves overall system responsiveness. Monitor your specific workload and adjust priorities accordingly - the practical range is -3 to 3, with -3 providing the minimum 20ms quantum in practice due to Ruby's internal tick system.

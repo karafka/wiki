@@ -6,7 +6,7 @@ Karafka offers capabilities for controlling and managing consumers at both proce
 
 Process-level commanding includes tracing consumers for detailed state information, quieting consumers to reduce activity, and stopping them when necessary.
 
-!!! Hint "Quiet and Stop Commands Limitation"
+!!! tip "Quiet and Stop Commands Limitation"
 
     Quiet and Stop commands do not function with Karafka processes operating in [Embedded](Embedding) or [Swarm](Swarm-Multi-Process) mode. This limitation arises because, in these modes, the Karafka process itself is not directly responsible for its state management.
 
@@ -34,7 +34,7 @@ Opting out of commanding is recommended for environments where direct consumer m
 
 The commanding functionality within the Web UI is organized into two distinct tabs: "Controls" and "Commands." These tabs provide a centralized interface for managing consumer processes, making it easier for administrators to perform and track administrative actions directly from the Web UI.
 
-!!! Info ""
+!!! info
 
     Commands issued through the Web UI are retained in Kafka for a default period of 7 days. After this duration, these commands are automatically removed from the system. This automatic cleanup helps manage the storage and maintain efficiency within Kafka without manual intervention.
 
@@ -97,7 +97,7 @@ A special command message is dispatched to the targeted consumer when the "Trace
 
 Quieting is a command designed to gracefully reduce the activity of a consumer process. When a quiet command is issued, the consumer stops accepting new jobs or batches but continues to process any currently active tasks. This feature is particularly useful during deployments or when a controlled slowdown in consumer activities is required. Quieting ensures that ongoing processing completes successfully while preventing new work from being started, aiding in smooth transitions and system maintenance without abrupt interruptions.
 
-!!! Tip "Stability Through Quiet State"
+!!! tip "Stability Through Quiet State"
     Moving to and staying in a quiet state means that no rebalance will be triggered. Although the consumer will not process new messages, it will not relinquish its assignments, maintaining its position within the consumer group.
 
 #### Use Cases
@@ -113,7 +113,7 @@ Quieting is a command designed to gracefully reduce the activity of a consumer p
 
 The stopping command is used to halt a consumer process entirely. This command should be used with caution as it stops all processing activities after `shutdown_timeout` is reached. Stopping is typically employed when a consumer needs to be taken offline for upgrades, troubleshooting, or when decommissioning is required. Once stopped, a consumer process will need to be manually restarted, and it will resume from the last committed offset in Kafka, ensuring no loss of data but requiring careful management to avoid processing delays or other operational impacts.
 
-!!! Warning "Topics and Partitions Reassignment"
+!!! warning "Topics and Partitions Reassignment"
     When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues seamlessly without interruption.
 
 #### Use Cases

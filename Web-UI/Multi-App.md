@@ -30,7 +30,7 @@ Karafka::Process.tags.add(:application_name, 'MyApp1')
   <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/multi-app.png" alt="karafka web multi-app processes view" />
 </p>
 
-!!! Warning "Critical Setup Requirement"
+!!! warning "Critical Setup Requirement"
 
     It is critical to ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
 

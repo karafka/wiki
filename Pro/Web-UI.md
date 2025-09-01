@@ -115,7 +115,7 @@ Error details:
 
 Dead insights allowing to navigate through DLQ topics and messages that were dispatched to them.
 
-!!! Tip "Automatic Qualification of DLQ Topics"
+!!! tip "Automatic Qualification of DLQ Topics"
 
     Web UI will automatically classify any topics that contain `dlq` or `dead_letter` in their names - irrespective of case - as Dead Letter Queue (DLQ) topics. This means topics labeled with variations such as `DLQ`, `dlq`, `Dead_Letter`, or `DEAD_LETTER` will be viewed and managed under the DLQ view. 
 

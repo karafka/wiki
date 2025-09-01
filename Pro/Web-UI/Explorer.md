@@ -2,7 +2,7 @@ Karafka Data Explorer is an essential tool for users seeking to navigate and com
 
 Below you can find the primary features of the Karafka Data Explorer.
 
-!!! Warning "Large Payloads and Performance Considerations"
+!!! warning "Large Payloads and Performance Considerations"
 
     Explorer is **not** suited for viewing and managing messages with large payloads (e.g., tens of MB in size). This is because it downloads all payloads for each page load, leading to significant network and memory usage. While it does not deserialize the data, the sheer volume of data transferred can cause performance bottlenecks.
 

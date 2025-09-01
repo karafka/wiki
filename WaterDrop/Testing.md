@@ -1,6 +1,6 @@
 # WaterDrop Testing
 
-!!! note ""
+!!! note
 
     If you're using WaterDrop with Karafka, consider the `karafka-testing` gem for RSpec integration. Detailed documentation on its usage can be found [here](Testing).
 
@@ -65,7 +65,7 @@ WaterDrop offers a client specifically designed for testing. This client can rep
 
 ### Configuration
 
-!!! note ""
+!!! note
 
     With the `karafka-testing` gem integrated, the WaterDrop Buffered backend is automatically activated for `Karafka.producer`.
 

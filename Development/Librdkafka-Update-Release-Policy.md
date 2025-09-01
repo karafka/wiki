@@ -2,7 +2,7 @@ This document outlines the policy and strategy for updating librdkafka in the Ka
 
 The Karafka ecosystem prioritizes **stability over speed** when it comes to librdkafka updates. Historical evidence shows that new librdkafka releases introduced subtle behavioral changes or previously undetected issues that can emerge under specific production conditions. This conservative approach ensures that Karafka users receive only thoroughly tested and validated librdkafka updates.
 
-!!! Warning "Flexible Timeline Policy"
+!!! warning "Flexible Timeline Policy"
 
     The timelines specified in this document represent **minimum waiting periods** that will not be shortened. However, these periods may be extended when other development priorities take precedence, such as:
     

@@ -9,6 +9,10 @@
     "!Changelog/*.md",
     "!.gh/**",
   ],
+  "customRules": [
+    ".markdownlint/rules/admonition-valid-types.js",
+    ".markdownlint/rules/admonition-no-empty-title.js"
+  ],
   "config": {
     "default": true,
     "MD009": false,
@@ -35,6 +39,8 @@
     },
     "MD024": {
       "siblings_only": true
-    }
+    },
+    "admonition-valid-types": true,
+    "admonition-no-empty-title": true
   }
 }

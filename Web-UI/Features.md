@@ -4,17 +4,17 @@ Karafka Web UI contains several features allowing you to understand your system'
 
 Below you can find a comprehensive description of the most important features you can use.
 
-!!! Info "Karafka Pro Enhancements"
+!!! info "Karafka Pro Enhancements"
 
     Karafka Pro offers enhanced Web UI with many additional metrics and functionalities.
 
-!!! Tip "Web UI Scope and Simplifications"
+!!! tip "Web UI Scope and Simplifications"
 
     Karafka Web UI does not aim to be a full analytical platform for tracking and measuring all data from Kafka with extreme accuracy. Due to technical reasons, some simplifications have been made. Karafka offers [instrumentation API](Monitoring-and-Logging), allowing you to craft instrumentation matching your use cases. While certain graphs and metrics may not always be fully accurate, they should provide an overall understanding of the system state.
 
 ## Dashboard
 
-!!! Info "Additional Graphs in Pro"
+!!! info "Additional Graphs in Pro"
 
     More graphs are available only in our Pro offering.
 
@@ -24,7 +24,7 @@ The dashboard provides an all-encompassing insight into your Karafka operations.
 
 ## Consumers
 
-!!! Info "Enhanced Consumer Metrics in Pro"
+!!! info "Enhanced Consumer Metrics in Pro"
 
     More metrics and detailed consumers inspection are available only in our Pro offering.
 
@@ -43,7 +43,7 @@ The following metrics are available for each consumer:
 
 ## Jobs
 
-!!! Info ""
+!!! info
 
     More metrics are available in our Pro offering.
 
@@ -83,7 +83,7 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
 ## Explorer
 
-!!! Info "Pro Only Functionality"
+!!! info "Pro Only Functionality"
 
     This functionality is available only in our Pro offering.
 
@@ -95,7 +95,7 @@ Karafka Data Explorer is an essential tool for users seeking to navigate and com
 
 ## Search
 
-!!! Info "Pro Only Functionality"
+!!! info "Pro Only Functionality"
 
     This functionality is available only in our Pro offering.
 
@@ -125,7 +125,7 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 ## DLQ / Dead
 
-!!! Info "Pro Only Functionality"
+!!! info "Pro Only Functionality"
 
     This functionality is available only in our Pro offering.
 

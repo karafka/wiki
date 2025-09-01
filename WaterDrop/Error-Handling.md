@@ -1,6 +1,6 @@
 Understanding WaterDrop error handling mechanisms is crucial for developing robust and reliable Kafka-based applications.
 
-!!! notice ""
+!!! note
 
     This document focuses on error handling for the Standard Producer (non-transactional). For information regarding the error behavior of the Transactional Producer, it is highly recommended to refer to the [Transactional Producer](WaterDrop-Transactions) documentation.
 

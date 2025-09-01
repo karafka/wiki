@@ -7,7 +7,7 @@ Karafka uses native Ruby threads to achieve concurrent processing in four scenar
 
 Additionally, Karafka supports [Swarm Mode](Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
 
-!!! Tip "Separate Resources Management Documentation"
+!!! tip "Separate Resources Management Documentation"
 
     Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
 
@@ -46,7 +46,7 @@ Example of work distribution amongst two workers:
   <img src="https://cdn.karafka.io/assets/misc/charts/processing-workers.svg" />
 </p>
 
-!!! note ""
+!!! note
 
     Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
@@ -100,15 +100,15 @@ end
   </small>
 </p>
 
-!!! note ""
+!!! note
 
     This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that are within different subscription groups.
 
-!!! note ""
+!!! note
 
     Subscription groups are a different concept than consumer groups. It is an internal Karafka concept; you can have many subscription groups in one consumer group.
 
-!!! note ""
+!!! note
 
     If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
 
