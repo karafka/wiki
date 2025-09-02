@@ -58,8 +58,7 @@ end
       <td>High-frequency producers or when connection persistence is critical</td>
     </tr>
     <tr>
-      <td><code>30_000</code> or higher</td>
-      <td>Disconnects after specified seconds of inactivity</td>
+      <td>Disconnects after specified milliseconds of inactivity</td>
       <td>Low-frequency producers or resource-constrained environments</td>
     </tr>
   </tbody>
