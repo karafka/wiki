@@ -11,7 +11,7 @@
 ## Incident History
 
 !!! success "[RESOLVED] August 4, 2025 - OpenSSL 3.0.17 Segmentation Faults"
-    
+
     **Status:** Resolved  
     **Impact:** High  
     **Affected:** All Karafka and rdkafka-ruby applications with OpenSSL 3.0.17

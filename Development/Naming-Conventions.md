@@ -304,7 +304,7 @@ test_topic = "it-#{SecureRandom.uuid}"
 # RSpec example
 RSpec.describe SomeConsumer do
   let(:topic_name) { "it-#{SecureRandom.uuid}" }
-  
+
   before do
     create_topic(topic_name)
   end

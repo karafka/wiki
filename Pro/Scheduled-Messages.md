@@ -460,9 +460,9 @@ Additionally, the Web UI offers a detailed exploration of scheduled messages, sh
 !!! warning "Future Day Cancellation Reporting Limitations"
 
     The Web UI scheduled messages reporting will not reflect cancellations of scheduled messages for days beyond the current day. This limitation is a performance optimization that allows the system to store statistics for upcoming days without having to maintain complete data for each future day.
-    
+
     While cancellation statistics for the current day are 100% accurate, cancellations for future days will only be reflected in the reporting once that day becomes the current day. This approach significantly reduces memory usage and processing overhead, as the system only needs to maintain detailed schedule data for the current day rather than for all future scheduled messages.
-    
+
     When you cancel a scheduled message for a future day, the cancellation is properly recorded in Kafka, but the Web UI statistics will not be updated until that day arrives and the full schedule for that day is loaded into memory.
 
 ## Error Handling and Retries

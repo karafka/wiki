@@ -78,25 +78,25 @@ Karafka::Web.setup do |config|
     'retention.ms' => '604800000',  # 7 days
     'segment.ms' => '86400000'      # 1 day
   }
-  
+
   # Configure consumers reports topic
   config.topics.consumers.reports.config = {
     'retention.ms' => '259200000',  # 3 days
     'min.compaction.lag.ms' => '3600000'  # 1 hour
   }
-  
+
   # Configure consumers states topic
   config.topics.consumers.states.config = {
     'segment.ms' => '3600000',      # 1 hour
     'min.compaction.lag.ms' => '1800000'  # 30 minutes
   }
-  
+
   # Configure consumers metrics topic
   config.topics.consumers.metrics.config = {
     'retention.ms' => '172800000',  # 2 days
     'segment.ms' => '43200000'      # 12 hours
   }
-  
+
   # Configure consumers commands topic
   config.topics.consumers.commands.config = {
     'retention.ms' => '86400000',   # 1 day

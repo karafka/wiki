@@ -362,12 +362,12 @@ class MyConsumer < ApplicationConsumer
   def consume
     segment_id = consumer_group.segment_id
     original_group = consumer_group.segment_origin
-    
+
     Karafka.logger.info(
       "Processing #{messages.count} messages in segment #{segment_id} " \
       "of group #{original_group}"
     )
-    
+
     messages.each do |message|
       process_message(message)
     end
@@ -618,7 +618,7 @@ class MyConsumer < ApplicationConsumer
     Karafka.logger.info(
       "Segment #{consumer_group.segment_id} processing #{messages.count} messages"
     )
-    
+
     messages.each do |message|
       process_message(message)
     end
@@ -659,7 +659,7 @@ consumer_group :high_throughput do
 
   topic :high_volume_data do
     consumer HighVolumeConsumer
-    
+
     virtual_partitions(
       partitioner: ->(message) { message.headers['user_id'] },
       max_partitions: 4
@@ -681,7 +681,7 @@ consumer_group :resilient_processing do
 
   topic :risky_data do
     consumer RiskyDataConsumer
-    
+
     dead_letter_queue(
       topic: 'failed_messages',
       max_retries: 3

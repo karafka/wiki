@@ -368,24 +368,24 @@ We also recommend creating a test helper class or method to ensure consistency i
 def ruby_posix_regexp_same?(test_string, ruby_regex)
   # Prepare POSIX regex from Ruby regex
   posix_regex = ruby_regex.source
-  
+
   # Evaluate regex in Ruby
   ruby_match = !!(test_string =~ ruby_regex)
-  
+
   # Prepare command for bash execution
   grep_command = "echo '#{test_string}' | grep -E '#{posix_regex}' > /dev/null"
-  
+
   # Evaluate regex in bash (POSIX)
   posix_match = system(grep_command)
-  
+
   # Compare results
   comparison_result = ruby_match == posix_match
-  
+
   # Remove printing for automated specs
   puts "Ruby match: #{ruby_match}"
   puts "POSIX match: #{posix_match}"
   puts "Comparison: #{comparison_result}"
-  
+
   comparison_result
 end
 ```

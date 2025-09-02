@@ -1777,7 +1777,7 @@ Optimizing latency in Karafka involves tweaking various configurations and makin
 - **Max Wait Time Adjustments**: The `max_wait_time` parameter determines the maximum time the consumer will block, waiting for sufficient data to come in during a poll before it returns control. By adjusting this value, you can balance between latency and throughput. If end-to-end latency is a primary concern and your consumers want to react quickly to smaller batches of incoming messages, consider reducing the max_wait_time. A shorter wait time means the process will fetch messages more frequently, leading to quicker processing of smaller data batches.
 
 - **Batch Size Adjustments**: Use the `max_messages` parameter to control the number of messages fetched in a single poll. Decreasing the batch size can reduce the time taken to process each batch, potentially reducing end-to-end latency. However, note that smaller batches can also decrease throughput, so balance is key.
-  
+
 - **Increase Consumer Instances**: Scale out by adding more consumer instances to your application. This allows you to process more messages concurrently. However, ensure you have an appropriate number of topic partitions to distribute among the consumers and monitor the utilization of Karafka processes.
 
 - **Leverage Virtual Partitions**: Virtual Partitions can be beneficial if your workload is IO-bound. You can better utilize available resources and potentially reduce processing latency by enabling further parallelization within a single partition.
@@ -2147,7 +2147,7 @@ before_fork do
   end
 end
 ```
-    
+
 It is worth pointing out that this is not a Karafka-specific issue. While the issue manifests when using Karafka with Puma, it's more related to how macOS handles forking with Objective-C libraries and specific initializations post-fork.
 
 ## How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?
@@ -2737,7 +2737,7 @@ App.routes.draw do
   topic :orders do
     consumer OrdersConsumer
   end
-  
+
   topic :notifications do
     consumer NotificationsConsumer
   end

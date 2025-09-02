@@ -162,7 +162,7 @@ When a background processing thread has normal priority (0), it holds the GVL fo
 Karafka.setup do |config|
   # Worker thread priority (default: -1 = 50ms quantum)
   config.worker_thread_priority = -2  # 25ms quantum for embedded mode
-  
+
   # Listener thread priority remains internal
   # config.internal.connection.listener_thread_priority = 0
 end
@@ -179,7 +179,7 @@ on_worker_boot do
     # Lower quantum for better request responsiveness
     config.worker_thread_priority = -2
   end
-  
+
   ::Karafka::Embedded.start
 end
 
@@ -190,7 +190,7 @@ Sidekiq.configure_server do |config|
       # Sidekiq's own processing may benefit from less aggressive priority
       config.worker_thread_priority = -1
     end
-    
+
     ::Karafka::Embedded.start
   end
 end
