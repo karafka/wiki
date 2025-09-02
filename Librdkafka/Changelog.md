@@ -42,7 +42,7 @@ librdkafka v2.11.1 is a maintenance release:
   particular broker. Solved by resetting the cached broker down state when any
   broker successfully connects, so that broker needs to be tried again.
   Happening since 1.x (#5126).
-
+  
 ### Checksums
 Release asset checksums:
  * v2.11.1.zip SHA256 `4a63e4422e5f5bbbb47f0ac1200e2ebd1f91b7b23f0de1bc625810c943fb870e`
@@ -497,7 +497,7 @@ librdkafka v2.6.1 is a maintenance release:
   consumed. Solved by purging internal partition queue, after being stopped
   and removed, to allow reference count to reach zero and trigger a destroy.
   Happening since 2.0.2 (#4724).
-
+  
 
 ### Checksums
 Release asset checksums:
@@ -725,8 +725,8 @@ librdkafka v2.4.0 is a feature release:
    a full unassign. Solved by changing state from `WAIT_ASSIGN_CALL` to `WAIT_UNASSIGN_CALL`
    while doing this conversion.
    Happening since 1.x (#4528).
-
-
+   
+   
 ### Checksums
 Release asset checksums:
  * v2.4.0.zip SHA256 `24b30d394fc6ce5535eaa3c356ed9ed9ae4a6c9b4fc9159c322a776786d5dd15`
@@ -955,7 +955,7 @@ librdkafka v2.1.1 is a maintenance release:
    but it is possible for the user to obtain the queue with messages from
    the broker, skipping these functions. This was fixed by encoding information
    in a queue itself, that, whether polling, resets the timer.
-
+   
 ### Checksums
 Release asset checksums:
  * v2.1.1.zip SHA256 `3b8a59f71e22a8070e0ae7a6b7ad7e90d39da8fddc41ce6c5d596ee7f5a4be4b`
@@ -1032,7 +1032,7 @@ librdkafka v2.1.0 is a feature release:
    in the middle of an offset validation request.
  * Segmentation fault when subscribing to a non-existent topic and
    calling `rd_kafka_message_leader_epoch()` on the polled `rkmessage`.
-
+   
 
 ### Checksums
 Release asset checksums:
