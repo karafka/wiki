@@ -50,6 +50,10 @@ Resource types are entities within Kafka for which ACLs can be defined. They spe
       <td class="nowrap"><code>:broker</code></td>
       <td>Represents a given Kafka broker.</td>
     </tr>
+    <tr>
+      <td class="nowrap"><code>:transactional_id</code></td>
+      <td>Represents a transactional ID used for Kafka transactions.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -291,6 +295,7 @@ end
 
 - **Topic Access Control**: Restrict read/write operations on specific topics to certain users or applications.
 - **Consumer Group Management**: Control which principals can create or interact with consumer groups.
+- **Transactional Access Control**: Manage access to transactional IDs for applications using Kafka transactions, ensuring only authorized producers can use specific transaction identifiers.
 - **Administrative Restriction**: Limit who can create, alter, or delete topics within the Kafka cluster.
 - **Security**: Ensure that only authorized entities can perform operations, maintaining data integrity and security.
 - **Securing Data**: Whenever you need to secure your Kafka data, ensure that only authorized users and services can access or modify it.
