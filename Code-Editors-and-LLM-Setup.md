@@ -48,7 +48,7 @@ The following process describes alternative approaches depending on your IDE's c
 
 ## Advantages of LLM-optimized documentation
 
-### When you work with traditional documentation search, you:
+**When you work with traditional documentation search, you:**
 
 ❌ Hunt through multiple pages.  
 ❌ Miss important configuration details.  
