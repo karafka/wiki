@@ -106,7 +106,7 @@ In environments where connection limits or memory usage are concerns:
 ```ruby
 # Configure for efficient resource usage
 efficient_producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 60   # Disconnect quickly when idle
+  config.idle_disconnect_timeout = 60_000   # Disconnect quickly when idle
   config.kafka = {
     'bootstrap.servers': 'localhost:9092',
     'socket.keepalive.enable': true
