@@ -241,7 +241,6 @@ end
 ```
 
 ```ruby
-
 # Sidekiq configuration  
 Sidekiq.configure_server do |config|
   config.on(:startup) do
