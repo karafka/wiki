@@ -30,11 +30,21 @@ threads 1, 3
 
 preload_app!
 
+# Puma < 7
 on_worker_boot do
   ::Karafka::Embedded.start
 end
 
 on_worker_shutdown do
+  ::Karafka::Embedded.stop
+end
+
+# Puma >= 7
+before_worker_boot do
+  ::Karafka::Embedded.start
+end
+
+before_worker_shutdown do
   ::Karafka::Embedded.stop
 end
 ```
@@ -46,12 +56,23 @@ In a single node mode:
 
 preload_app!
 
+# Puma < 7
 @config.options[:events].on_booted do
   ::Karafka::Embedded.start
 end
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
+  ::Karafka::Embedded.stop
+end
+
+# Puma >= 7
+@config.options[:events].after_booted do
+  ::Karafka::Embedded.start
+end
+
+# There is no `before_worker_shutdown` equivalent for single mode
+@config.options[:events].after_stopped do
   ::Karafka::Embedded.stop
 end
 ```
@@ -174,7 +195,9 @@ Here's the recommended configuration for different scenarios:
 
 ```ruby
 # Puma configuration
-on_worker_boot do
+# Puma < 7: on_worker_boot
+# Puma >= 7: before_worker_boot
+on_worker_boot do # or before_worker_boot for Puma >= 7
   Karafka.setup do |config|
     # Lower quantum for better request responsiveness
     config.worker_thread_priority = -2
