@@ -324,16 +324,22 @@ When you shut down Karafka consumer, the `Karafka.producer` WaterDrop instance a
 
 ### Closing Producer Used in Puma (Single Mode)
 
+**For Puma < 7:**
+
 ```ruby
 # config/puma.rb 
 
-# Puma < 7
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
   MY_PRODUCER.close
 end
+```
 
-# Puma >= 7
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
 # There is no `before_worker_shutdown` equivalent for single mode
 @config.options[:events].after_stopped do
   MY_PRODUCER.close
@@ -342,15 +348,21 @@ end
 
 ### Closing Producer Used in Puma (Cluster Mode)
 
+**For Puma < 7:**
+
 ```ruby
 # config/puma.rb 
 
-# Puma < 7
 on_worker_shutdown do
   MY_PRODUCER.close
 end
+```
 
-# Puma >= 7
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
 before_worker_shutdown do
   MY_PRODUCER.close
 end
