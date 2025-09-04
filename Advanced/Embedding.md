@@ -22,6 +22,8 @@ There are two embedding API calls that you need to connect to your main process 
 
 In a cluster mode:
 
+**For Puma < 7:**
+
 ```ruby
 # config/puma.rb 
 
@@ -39,7 +41,28 @@ on_worker_shutdown do
 end
 ```
 
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
+workers 2
+threads 1, 3
+
+preload_app!
+
+before_worker_boot do
+  ::Karafka::Embedded.start
+end
+
+before_worker_shutdown do
+  ::Karafka::Embedded.stop
+end
+```
+
 In a single node mode:
+
+**For Puma < 7:**
 
 ```ruby
 # config/puma.rb 
@@ -52,6 +75,23 @@ end
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
+  ::Karafka::Embedded.stop
+end
+```
+
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
+preload_app!
+
+@config.options[:events].after_booted do
+  ::Karafka::Embedded.start
+end
+
+# There is no `before_worker_shutdown` equivalent for single mode
+@config.options[:events].after_stopped do
   ::Karafka::Embedded.stop
 end
 ```
@@ -172,6 +212,8 @@ The default worker thread priority is -1 (50ms quantum) to prevent CPU-intensive
 
 Here's the recommended configuration for different scenarios:
 
+**For Puma < 7:**
+
 ```ruby
 # Puma configuration
 on_worker_boot do
@@ -182,7 +224,23 @@ on_worker_boot do
 
   ::Karafka::Embedded.start
 end
+```
 
+**For Puma >= 7:**
+
+```ruby
+# Puma configuration
+before_worker_boot do
+  Karafka.setup do |config|
+    # Lower quantum for better request responsiveness
+    config.worker_thread_priority = -2
+  end
+
+  ::Karafka::Embedded.start
+end
+```
+
+```ruby
 # Sidekiq configuration  
 Sidekiq.configure_server do |config|
   config.on(:startup) do

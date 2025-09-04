@@ -38,6 +38,8 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
 
 1.1. Use this config when your Puma operates in a cluster mode:
 
+**For Puma < 7:**
+
 ```ruby
 # config/puma.rb
 # Use only when your Web UI Puma does not host your main application!
@@ -57,7 +59,30 @@ on_worker_shutdown do
 end
 ```
 
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb
+# Use only when your Web UI Puma does not host your main application!
+# Use when you run your Puma in a cluster mode
+
+workers 2
+threads 1, 3
+
+preload_app!
+
+before_worker_boot do
+  ::Karafka::Embedded.start
+end
+
+before_worker_shutdown do
+  ::Karafka::Embedded.stop
+end
+```
+
 1.2. Use this configuration when running Puma in a single node mode:
+
+**For Puma < 7:**
 
 ```ruby
 preload_app!
@@ -68,6 +93,21 @@ end
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
+  ::Karafka::Embedded.stop
+end
+```
+
+**For Puma >= 7:**
+
+```ruby
+preload_app!
+
+@config.options[:events].after_booted do
+  ::Karafka::Embedded.start
+end
+
+# There is no `before_worker_shutdown` equivalent for single mode
+@config.options[:events].after_stopped do
   ::Karafka::Embedded.stop
 end
 ```
