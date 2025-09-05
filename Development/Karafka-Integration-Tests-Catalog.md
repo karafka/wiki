@@ -391,6 +391,7 @@
 | `pro/consumption/adaptive_iterator/without_anything_running_spec.rb` | When processing messages with iterator enabled but no features enabled, it should work |
 | `pro/consumption/at_most_once_on_error_spec.rb` | When marking as consumed before the error, message should be skipped as it should be considered consumed |
 | `pro/consumption/cleaner/automatic_cleaning_on_iterator_spec.rb` | We should be able to use automatic cleaning to get rid of the payload We should fail when trying to deserialize a cleaned message |
+| `pro/consumption/cleaner/external_prepend_compatibility_spec.rb` | We should be able to use cleaning functionality even when external libraries prepend modules to Messages#each (like DataDog tracing) This tests the fix for: https://github.com/DataDog/dd-trace-rb/issues/4867 |
 | `pro/consumption/cleaner/fail_on_dlq_dispatch_of_cleaned_spec.rb` | Attempt to dispatch to DLQ a cleaned message should always fail |
 | `pro/consumption/cleaner/manual_cleaning_on_each_spec.rb` | We should be able to iterate over messages and run cleaning both with and without prior deserialization in a manual mode We should fail when trying to deserialize a cleaned message |
 | `pro/consumption/cleaner/metadata_cleaning_on_iterator_spec.rb` | We should be able to use automatic cleaning to get rid of the key and headers We should fail when trying to deserialize a cleaned details |
