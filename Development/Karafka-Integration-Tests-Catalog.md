@@ -407,7 +407,13 @@
 | `pro/cli/parallel_segments/distribute/without_segments_spec.rb` | Karafka parallel segments distribute should work when there are no segments to distribute |
 | `pro/cli/parallel_segments/invalid_action_spec.rb` | Karafka parallel segments should fail with ArgumentError when an invalid action is provided |
 | `pro/cli/parallel_segments/reset_combined_operation_spec.rb` | Karafka parallel segments reset should perform both collapse and distribute operations |
+| `pro/cli/swarm/with_cg_exclusion_spec.rb` | Karafka in swarm should properly handle consumer group exclusion flag and skip processing the specified consumer groups |
+| `pro/cli/swarm/with_cg_inclusion_spec.rb` | Karafka in swarm should properly handle consumer group inclusion flag and only process the specified consumer groups |
 | `pro/cli/swarm/with_nothing_matching_spec.rb` | Karafka in swarm should raise well nested validated errors with the swarm context |
+| `pro/cli/swarm/with_sg_exclusion_spec.rb` | Karafka in swarm should raise well nested validated errors with the swarm context This spec will cause it to crash if any validation that would fail is happening in the nodes post-fork |
+| `pro/cli/swarm/with_sg_inclusion_spec.rb` | Karafka in swarm should properly handle subscription group inclusion flag and only process the specified subscription groups |
+| `pro/cli/swarm/with_topic_exclusion_spec.rb` | Karafka in swarm should properly handle topic exclusion flag and skip processing the specified topics |
+| `pro/cli/swarm/with_topic_inclusion_spec.rb` | Karafka in swarm should properly handle topic inclusion flag and only process the specified topics |
 | `pro/consumption/adaptive_iterator/with_adaptive_estimated_processing_limited_spec.rb` | With adaptive margin, if the max cost of message would cause reaching max poll, we should seek back |
 | `pro/consumption/adaptive_iterator/with_fast_exit_on_stop_spec.rb` | We should stop fast and not process all in batch and offset position should be preserved |
 | `pro/consumption/adaptive_iterator/without_adaptive_stable_processing_limited_spec.rb` | When processing messages with iterator enabled and reaching max.poll.interval, we should never get any errors and processing should be consecutive |
