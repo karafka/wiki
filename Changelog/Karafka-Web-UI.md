@@ -4,8 +4,11 @@
 # Karafka Web Changelog
 
 ## 0.11.3 (Unreleased)
+- [Enhancement] Upgrade DaisyUI to 5.1.
 - [Change] Remove Ruby `3.1` specs according to the EOL schedule.
 - [Change] Normalize how libs and dependencies are required (no functional change for the end user)
+- [Fix] Fix a case where the states JSON would contain multiple entries for the same processes causing `JSON.parse` with `allow_duplicate_key: false` to fail.
+- [Fix] Fix incorrect reference to `IncompatibleSchemaError`.
 
 ## 0.11.2 (2025-08-18)
 - [Enhancement] Make sure that TTL counters related `#inspect` are thread-safe.
@@ -164,6 +167,9 @@
 - [Fix] Fix several UI inconsistencies.
 - [Fix] License identifier `LGPL-3.0` is deprecated for SPDX (#2177).
 - [Fix] Do not include prettifying the payload for visibility in the resource computation cost.
+
+## 0.9.2 (2025-09-19)
+- [Fix] Fix BaseController caller action name extraction.
 
 ## 0.9.1 (2024-05-03)
 - [Fix] OSS `lag_stored` for not-subscribed consumers causes Web UI to crash.

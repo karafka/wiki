@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+- [WaterDrop Meets Ruby’s Async Ecosystem: Lightweight Concurrency Done Right](https://mensfeld.pl/2025/09/ruby-async-waterdrop-concurrency/)
 - [The 60-Second Wait: How I Spent Months Solving the Ruby’s Most Annoying Gem Installation Problem](https://mensfeld.pl/2025/07/solving-ruby-rdkafka-installation-problem/)
 - [Deimos — The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)
 - [Under the Hood: Enhancing Karafka’s CPU and Memory Efficiency](https://mensfeld.pl/2024/08/under-the-hood-enhancing-karafkas-cpu-and-memory-efficiency/)
