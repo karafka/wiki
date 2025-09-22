@@ -1272,6 +1272,7 @@
 | `routing/with_altered_routing_flow_spec.rb` | @see https://github.com/karafka/karafka/issues/2344 @see https://github.com/flipp-oss/deimos @see https://github.com/flipp-oss/deimos/blob/fc89c645/lib/deimos/ext/routing_defaults.rb This is to ensure that Deimos routing patches work as expected |
 | `routing/with_defaults_configured_spec.rb` | Karafka should use the defaults if they were configured but only if the appropriate config setup was not executed |
 | `routing/with_incomplete_kafka_reconfiguration_spec.rb` | When reconfiguring kafka scope without providing bootstrap.servers, we should fail |
+| `routing/with_kafka_scope_inherit_empty_hash_spec.rb` | Test that kafka scope settings with inherit: true properly merge defaults even when empty hash is provided as config. This addresses the edge case where calling kafka(**{}) with inherit: true should still preserve the defaults from Karafka::App.config.kafka instead of overriding them. |
 | `routing/with_nameless_subscription_groups_spec.rb` | Karafka should allow for nameless subscription groups inside of consumer groups |
 | `routing/with_namespace_collisions_spec.rb` | Karafka should now allow for topics that would have metrics namespace collisions It should not be allowed within same consumer group |
 | `routing/with_namespace_collisions_without_strict_spec.rb` | Karafka should allow for topics that would have metrics namespace collisions if strict topic names validation is off |
