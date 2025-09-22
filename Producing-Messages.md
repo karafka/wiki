@@ -56,6 +56,8 @@ When you shut down the Karafka consumer, the `Karafka.producer` automatically cl
 
 ### Closing Producer Used in Puma (Single Mode)
 
+**For Puma < 7:**
+
 ```ruby
 # config/puma.rb 
 
@@ -65,12 +67,35 @@ When you shut down the Karafka consumer, the `Karafka.producer` automatically cl
 end
 ```
 
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
+# There is no `before_worker_shutdown` equivalent for single mode
+@config.options[:events].after_stopped do
+  Karafka.producer.close
+end
+```
+
 ### Closing Producer Used in Puma (Cluster Mode)
+
+**For Puma < 7:**
 
 ```ruby
 # config/puma.rb 
 
 on_worker_shutdown do
+  ::Karafka.producer.close
+end
+```
+
+**For Puma >= 7:**
+
+```ruby
+# config/puma.rb 
+
+before_worker_shutdown do
   ::Karafka.producer.close
 end
 ```
