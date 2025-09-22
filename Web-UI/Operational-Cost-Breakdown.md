@@ -14,6 +14,29 @@ Several factors influence the cost of running the Karafka Web UI. Understanding 
 
     Depending on your specific setup, additional factors may affect costs, or some of the listed factors may not apply.
 
+## Message Characteristics and Throughput
+
+Understanding the specific characteristics of Web UI topics is crucial for accurate cost estimation. The following details explain how messages are serialized and what throughput to expect:
+
+### Topics and Message Frequency
+
+The Web UI uses several internal topics with specific message patterns:
+
+- **`karafka_consumers_reports`**: 1 message every 5 seconds per consumer process
+- **`karafka_consumers_states`**: 1 message every 5 seconds (not per process, single aggregate message)
+- **`karafka_consumers_metrics`**: 1 message every 5 seconds (similar to states, single aggregate message)
+- **`karafka_consumers_commands`**: 0 messages unless commands are sent via Web UI (1 message per command)
+- **`karafka_errors`**: 0 messages if no errors occur, 1 message per error occurrence when errors happen
+
+### Throughput Impact Factors
+
+The number of messages consumed by your regular Karafka consumers **does not directly impact** the throughput of the internal Web UI topics. The Web UI topic throughput is primarily determined by:
+
+- Number of consumer processes (affects reports volume)
+- Error frequency (affects error topic volume)
+- Command usage frequency (affects commands topic volume)
+- Fixed 5-second intervals for state and metrics reporting
+
 <table border="1">
     <thead>
         <tr>
@@ -24,19 +47,19 @@ Several factors influence the cost of running the Karafka Web UI. Understanding 
     <tbody>
         <tr>
             <td>Reporting Frequency</td>
-            <td>Each Karafka process produces one message every 5 seconds, affecting the total data volume.</td>
+            <td>Each Karafka process produces one report message every 5 seconds (17,280 messages per day per process).</td>
         </tr>
         <tr>
             <td>State Materialization</td>
-            <td>States are materialized every 5 seconds, impacting storage requirements.</td>
+            <td>States and metrics are materialized every 5 seconds as single aggregate messages (not per process).</td>
         </tr>
         <tr>
             <td>Message Size</td>
-            <td>An average size of 1 KB per message and 30 KB for state data affects data transfer and storage costs.</td>
+            <td>An average size of 1 KB per report message (compressed JSON), 30 KB for state data, and 60 KB for metrics data.</td>
         </tr>
         <tr>
             <td>Number of Processes</td>
-            <td>More processes generate more data, increasing costs.</td>
+            <td>More consumer processes generate more report messages (1 message per process every 5 seconds).</td>
         </tr>
         <tr>
             <td>Ingress/Egress Cost</td>
