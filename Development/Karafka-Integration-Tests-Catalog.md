@@ -32,6 +32,7 @@
 |-----------|-------------|
 | `admin/acl_flow_spec.rb` | This integration spec illustrates the all the basic ACL flows. Detailed ACL API specs are in the unit RSpec specs. |
 | `admin/configs_flow_spec.rb` | This integration spec illustrates the all the basic Admin configs flows. Detailed Configs API specs are in the unit RSpec specs. |
+| `admin/consumer_group_operations_spec.rb` | Karafka should handle consumer group operations with active consumers correctly |
 | `admin/consumer_groups/delete_existing_spec.rb` | We should be able to remove consumer group and start from beginning using the Admin API |
 | `admin/consumer_groups/seek_consumer_group/few_partitions_few_topics_spec.rb` | We should be able to move the offset to requested location per topic partition |
 | `admin/consumer_groups/seek_consumer_group/mixed_time_and_real_offsets_spec.rb` | We should be able to mix moving of the same topic data and use different type of location in between partitions. |
@@ -50,6 +51,8 @@
 | `admin/copy_consumer_group/when_previous_and_new_cgs_exist_spec.rb` | When we have old cg and new cg and topics with offsets to migrate, it should work |
 | `admin/copy_consumer_group/when_previous_cg_does_not_exist_spec.rb` | When the previous consumer group does not exist, it should not crash |
 | `admin/copy_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
+| `admin/lag_calculation_edge_cases_spec.rb` | Karafka should handle lag calculation edge cases correctly |
+| `admin/metadata_refresh_during_changes_spec.rb` | Karafka should handle metadata refresh correctly during topic changes |
 | `admin/post_fork_behaviour_spec.rb` | When working with Admin API in post-forks we should have no issues. @see https://github.com/ffi/ffi/issues/1114 |
 | `admin/read_lags_with_offsets/inactive_topics_lags_spec.rb` | When configured with inactive visible, we should get their lags. |
 | `admin/read_lags_with_offsets/multi_cg_setup_spec.rb` | A set of cases that can be easily tested together to save time |
@@ -62,6 +65,8 @@
 | `admin/rename_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
 | `admin/rename_consumer_group/without_old_removal_spec.rb` | When we have old cg and new cg and topics with offsets to migrate, it should work When we indicate that old group should stay, it should not be removed. |
 | `admin/replication_info_fetch_spec.rb` | We should be able to fetch and use info about replication, in sync etc. |
+| `admin/seeking_operations_active_spec.rb` | Karafka should handle seeking operations during active consumption correctly |
+| `admin/topic_operations_nonexistent_spec.rb` | Karafka should handle administrative operations on non-existent topics gracefully |
 | `cli/cli_start_spec.rb` | Karafka CLI should work and should just run help without command |
 | `cli/cli_unknown_spec.rb` | Karafka CLI should work and should fail with unknown command error |
 | `cli/declaratives/align/aliased_aligned_spec.rb` | karafka topics align should do nothing when no changes needed despite changes being defined but then redefined by an alias |
@@ -108,9 +113,19 @@
 | `cli/declaratives/strict_setup_requirement_spec.rb` | When we have strict_declarative_topics set to true, we should ensure all non-pattern definitions of topics have their declarative references |
 | `cli/info_spec.rb` | Karafka CLI should work and should not fail |
 | `consumption/at_most_once_on_error_spec.rb` | When marking as consumed before the error, message should be skipped as it should be considered consumed |
+| `consumption/batch_processing/early_termination_spec.rb` | Karafka should handle batch processing with early termination scenarios |
+| `consumption/batch_processing/empty_batch_handling_spec.rb` | Karafka should handle empty batches correctly in different processing strategies |
+| `consumption/batch_processing/single_message_batches_spec.rb` | Karafka should handle single message batches correctly |
+| `consumption/batch_processing/variable_batch_sizes_spec.rb` | Karafka should handle very small and very large batches efficiently |
 | `consumption/compressions/using_gzip_spec.rb` | *No description available* |
 | `consumption/compressions/using_lz4_spec.rb` | *No description available* |
 | `consumption/compressions/using_snappy_spec.rb` | *No description available* |
+| `consumption/concurrency/coordinator_state_spec.rb` | Karafka should handle coordinator state during rapid message flow safely |
+| `consumption/concurrency/memory_visibility_spec.rb` | Karafka should handle memory visibility between processing threads correctly |
+| `consumption/concurrency/shared_consumer_state_spec.rb` | Karafka should handle concurrent access to shared consumer state safely |
+| `consumption/concurrency/shared_mutable_objects_spec.rb` | Karafka should handle message processing with shared mutable objects safely |
+| `consumption/concurrency/thread_local_isolation_spec.rb` | Karafka should handle thread-local variable isolation properly |
+| `consumption/consumer_initialization_with_preexisting_topics_spec.rb` | Karafka should initialize consumers properly when topics already have messages |
 | `consumption/eofed/error_recovery_spec.rb` | When eof is in use and `#eofed` crashes, it should emit an error but it should not cause any other crashes. Since `#eofed` does not deal with new data, it is not retried. It is up to the user to deal with any retry policies he may want to have eofed errors should not leak and processing should continue |
 | `consumption/eofed/marking_as_consumed_spec.rb` | We should be able to mark as consumed from the `#eofed` |
 | `consumption/eofed/post_consumption_spec.rb` | When eof is in use we may not get it as it may go with messages polling via `#consume` It may happen that eof goes via `#eofed` because of polling but we will correct this spec only when this would happen as it should not be frequent |
@@ -130,6 +145,8 @@
 | `consumption/inline_insights/slow_with_refreshed_insights_spec.rb` | Inline insights should auto-refresh when new values are present during extensive processing |
 | `consumption/inline_insights/without_being_enabled_spec.rb` | Karafka should not have the insights methods when insights are not enabled |
 | `consumption/loop_with_messages_with_headers_spec.rb` | Karafka should be able to consume messages in a loop Messages can have headers that should be accessible to use |
+| `consumption/max_message_size_mismatches_spec.rb` | Karafka should handle different message sizes properly |
+| `consumption/message_content_edge_cases_spec.rb` | Karafka should handle various message content edge cases properly |
 | `consumption/no_long_wait_with_eof_spec.rb` | With above settings it would never finish because would accumulate messages for so long Only if eof return works, will it finish fast enough |
 | `consumption/of_a_tombstone_record_spec.rb` | Karafka should not have any problems of consuming of a tombstone record with the default deserializer |
 | `consumption/of_an_post_tombstone_message_spec.rb` | When consuming post-compaction data, it should not consume pre-compact info. |
@@ -258,6 +275,11 @@
 | `deserialization/custom_default_deserializer_usage_spec.rb` | Karafka should be able to use custom default deserializer on messages after it is declared |
 | `deserialization/custom_deserializer_usage_spec.rb` | Karafka should be able to use custom deserializers on messages after they are declared |
 | `deserialization/custom_per_topic_spec.rb` | Karafka should allow to setup defaults and never use them as it uses per topic config |
+| `deserialization/data_serialization_edge_cases_spec.rb` | Karafka should handle various data serialization edge cases properly |
+| `deserialization/encoding_issues_spec.rb` | Karafka should handle various encoding issues gracefully |
+| `deserialization/large_nested_objects_spec.rb` | Karafka should handle large nested objects and deep JSON structures |
+| `deserialization/malformed_json_handling_spec.rb` | Karafka should handle malformed JSON gracefully without crashing |
+| `deserialization/mixed_formats_single_topic_spec.rb` | Karafka should handle mixed serialization formats in a single topic |
 | `deserialization/routing_default_deserializer_usage_spec.rb` | Karafka should be able to use routing default deserializers |
 | `embedding/puma_single_poro/flow_spec.rb` | Karafka should run from a Puma server easily |
 | `embedding/puma_with_worker_poro/flow_spec.rb` | Karafka should run from a Puma server easily |
@@ -336,6 +358,7 @@
 | `offset_management/from_latest_via_initial_offset_spec.rb` | Karafka should be able to start consuming from the latest offset whe set via initial_offset |
 | `offset_management/from_latest_via_kafka_setting_spec.rb` | Karafka should be able to start consuming from the latest offset |
 | `offset_management/messages_and_metadata_details_spec.rb` | Karafka messages data should be as defined here |
+| `offset_management/offset_edge_cases_spec.rb` | Karafka should handle offset management edge cases properly |
 | `offset_management/rebalance_commit_spec.rb` | Karafka flushes the offsets once in a while. When auto offset committing is disabled, we anyhow should commit the offset in rebalance |
 | `offset_management/with_different_initial_offsets_many_groups_spec.rb` | Karafka should be able to consume many topics with different initial offset strategies and should handle that correctly for all the topics in many groups |
 | `offset_management/with_different_initial_offsets_one_group_spec.rb` | Karafka should be able to consume many topics with different initial offset strategies and should handle that correctly for all the topics |
@@ -384,13 +407,20 @@
 | `pro/cli/parallel_segments/distribute/without_segments_spec.rb` | Karafka parallel segments distribute should work when there are no segments to distribute |
 | `pro/cli/parallel_segments/invalid_action_spec.rb` | Karafka parallel segments should fail with ArgumentError when an invalid action is provided |
 | `pro/cli/parallel_segments/reset_combined_operation_spec.rb` | Karafka parallel segments reset should perform both collapse and distribute operations |
+| `pro/cli/swarm/with_cg_exclusion_spec.rb` | Karafka in swarm should properly handle consumer group exclusion flag and skip processing the specified consumer groups |
+| `pro/cli/swarm/with_cg_inclusion_spec.rb` | Karafka in swarm should properly handle consumer group inclusion flag and only process the specified consumer groups |
 | `pro/cli/swarm/with_nothing_matching_spec.rb` | Karafka in swarm should raise well nested validated errors with the swarm context |
+| `pro/cli/swarm/with_sg_exclusion_spec.rb` | Karafka in swarm should raise well nested validated errors with the swarm context This spec will cause it to crash if any validation that would fail is happening in the nodes post-fork |
+| `pro/cli/swarm/with_sg_inclusion_spec.rb` | Karafka in swarm should properly handle subscription group inclusion flag and only process the specified subscription groups |
+| `pro/cli/swarm/with_topic_exclusion_spec.rb` | Karafka in swarm should properly handle topic exclusion flag and skip processing the specified topics |
+| `pro/cli/swarm/with_topic_inclusion_spec.rb` | Karafka in swarm should properly handle topic inclusion flag and only process the specified topics |
 | `pro/consumption/adaptive_iterator/with_adaptive_estimated_processing_limited_spec.rb` | With adaptive margin, if the max cost of message would cause reaching max poll, we should seek back |
 | `pro/consumption/adaptive_iterator/with_fast_exit_on_stop_spec.rb` | We should stop fast and not process all in batch and offset position should be preserved |
 | `pro/consumption/adaptive_iterator/without_adaptive_stable_processing_limited_spec.rb` | When processing messages with iterator enabled and reaching max.poll.interval, we should never get any errors and processing should be consecutive |
 | `pro/consumption/adaptive_iterator/without_anything_running_spec.rb` | When processing messages with iterator enabled but no features enabled, it should work |
 | `pro/consumption/at_most_once_on_error_spec.rb` | When marking as consumed before the error, message should be skipped as it should be considered consumed |
 | `pro/consumption/cleaner/automatic_cleaning_on_iterator_spec.rb` | We should be able to use automatic cleaning to get rid of the payload We should fail when trying to deserialize a cleaned message |
+| `pro/consumption/cleaner/external_prepend_compatibility_spec.rb` | We should be able to use cleaning functionality even when external libraries prepend modules to Messages#each (like DataDog tracing) This tests the fix for: https://github.com/DataDog/dd-trace-rb/issues/4867 |
 | `pro/consumption/cleaner/fail_on_dlq_dispatch_of_cleaned_spec.rb` | Attempt to dispatch to DLQ a cleaned message should always fail |
 | `pro/consumption/cleaner/manual_cleaning_on_each_spec.rb` | We should be able to iterate over messages and run cleaning both with and without prior deserialization in a manual mode We should fail when trying to deserialize a cleaned message |
 | `pro/consumption/cleaner/metadata_cleaning_on_iterator_spec.rb` | We should be able to use automatic cleaning to get rid of the key and headers We should fail when trying to deserialize a cleaned details |
@@ -734,6 +764,7 @@
 | `pro/consumption/strategies/ftr/exg/with_some_expiring_messages_spec.rb` | When Karafka encounters messages that are too old, it should skip them We simulate this by having short ttl and delaying processing to build up a lag |
 | `pro/consumption/strategies/ftr/increasing_lag_on_full_filtering_spec.rb` | When we have a filter that rejects all (or most of) the data all the time, since we do not mark as consumed, the offset will not be stored. This means, that lag will grow unless we explicitly request marking post-filtering. |
 | `pro/consumption/strategies/ftr/not_increasing_lag_on_full_filtering_with_marking_spec.rb` | When we have a filter that rejects all (or most of) the data all the time, since we do mark as consumed, the offset will be stored. This means, that lag will not grow. |
+| `pro/consumption/strategies/ftr/partial_offset_storage_race_condition_spec.rb` | Test for partial offset storage race condition in filtering API We mark the last removed message on a cursor but then mark ahead and check what is going to be marked to ensure proper offset management This tests the scenario where we have a cursor pointing to a removed message while also marking ahead of the cursor position |
 | `pro/consumption/strategies/ftr/persistent_post_rebalance_pausing_spec.rb` | When using the filtering API, we can use a persistent storage to transfer the pause over the rebalance to the same or other processes. Here we do not use cooperative.sticky to trigger a revocation during a pause and we continue the pause until its end after getting the assignment back. Fake DB layer We do not have to care about topics and partitions because for spec like this we use one partition |
 | `pro/consumption/strategies/ftr/persistent_transactional_offset_spec.rb` | When using the Filtering API, we can use persistent storage to transfer last offset that we successfully operated on in case of rebalances, even if different process receives the partition on a rebalance. This allows us to ensure, that things are processed exactly once and in transactions. Note, though that this requires to have SQL timeouts, etc tuned well. Simulates a persistent DB backed offset that can be fetched in any process Keep in mind, this example is a simplification because it forces `#seek` for each assignment just to simplify the code. |
 | `pro/consumption/strategies/ftr/starting_from_latest_always_spec.rb` | A spec that illustrates usage of a filter that will ensure that when we start Karafka, we always start from the latest message despite any previous assignments It should move to latest and then move forward |
@@ -853,6 +884,7 @@
 | `pro/consumption/strategies/vp/collapsing/with_pause_on_collapsed_spec.rb` | While VPs do not support pausing in the regular flow, we can pause while running VP when collapsed. This can be used to provide a manual back-off if we would want. |
 | `pro/consumption/strategies/vp/collective_state_awareness_break_spec.rb` | We should be able to use `#failing?` to detect, that part of our work has already failed and that our current set of VPs will collapse. This can be used to stop processing when we know, it is going to be re-processed again |
 | `pro/consumption/strategies/vp/consistent_distribution_spec.rb` | Karafka should always assign same consumer instance to the same virtual partitioner result. In case data from few virtual partitions is merged into one chunk, the partition should always stay the same (consistent). |
+| `pro/consumption/strategies/vp/custom_expensive_message_scheduling_spec.rb` | This integration test demonstrates how to override the default LJF (Longest Job First) scheduling algorithm to implement custom logic that identifies and prioritizes Virtual Partitions containing expensive messages. This ensures expensive messages are processed first, allowing them to run in parallel with other messages rather than blocking at the end. Real-world scenario: In production, some messages require extensive processing (1+ minute) while others complete quickly (<1 second). With Virtual Partitions and limited worker threads, default LJF scheduling might not optimally handle this, causing idle workers while the expensive message blocks progress. |
 | `pro/consumption/strategies/vp/custom_partitioning_engine_spec.rb` | When using Pro, we should be able to redefine and change the whole partitioner and use our own custom one without any problems. This spec illustrated, that you can overwrite the core partitioner and use your own that distributes work differently for different topics with awareness of the received batch size. |
 | `pro/consumption/strategies/vp/different_coordinator_different_partitions_spec.rb` | Karafka should not use the same coordinator for jobs from different partitions |
 | `pro/consumption/strategies/vp/distributing_work_randomly_spec.rb` | Karafka should support possibility of distributing work randomly when using virtual partitions Note that even when using random distribution, messages from different partitions will never mix within a batch. |
@@ -1206,13 +1238,18 @@
 | `routing/and_cli_validations_for_inclusions_spec.rb` | Karafka should fail when defined routing is invalid Karafka should fail if we want to listen on a topic that was not defined |
 | `routing/and_cli_validations_for_many_inclusions_spec.rb` | Karafka should correctly load resources separated by spaces or commas in the CLI usage |
 | `routing/blockless_defaults_spec.rb` | We should be able to set up a shared setup for topics and not use any block configuration This can be used for example to define routing for a separate app that only manages the topics states as a migrator app |
+| `routing/circular_dependencies_spec.rb` | Karafka should detect circular dependencies and duplicate definitions |
 | `routing/cluster_info_based_discovery_spec.rb` | We should be able to build topics based on cluster info |
+| `routing/conflicting_consumer_group_settings_spec.rb` | Karafka should detect conflicting configurations that cause namespace collisions |
+| `routing/consumer_group_empty_topics_spec.rb` | Karafka should detect and reject consumer groups with no topics defined |
 | `routing/different_cluster_consumer_groups_spec.rb` | Karafka should allow for defining separate consumer groups that will talk with separate clusters Distribution in subscription groups should match same cluster with same settings |
+| `routing/dynamic_topic_creation_spec.rb` | Karafka should handle dynamic routing patterns and topic configuration edge cases |
 | `routing/eofed/with_eof_disabled_and_kafka_eof_spec.rb` | Karafka should allow to use kafka scope eof without eofed enabled. |
 | `routing/eofed/with_eof_in_different_scope_spec.rb` | Karafka should not allow to use eofed when kafka scope setup is with eof in different sub-scope |
 | `routing/eofed/with_eof_in_same_scope_spec.rb` | Karafka should allow to use eofed when kafka scope setup is with eof in same sub-scope |
 | `routing/eofed/with_eof_spec.rb` | Karafka should allow to use eofed when kafka scope setup is with eof |
 | `routing/eofed/without_eof_spec.rb` | Karafka should not allow to use eofed when kafka scope setup is not with eof |
+| `routing/invalid_regex_patterns_spec.rb` | Karafka should handle invalid topic names and patterns |
 | `routing/limited_scope/with_inactive_and_disabled_spec.rb` | When combination of cli disabled topics and routing disabled topics meet, we should error. |
 | `routing/limited_scope/with_mix_but_inactive_without_consumer_spec.rb` | When we have inactive topics, they should be ok without consumer defined |
 | `routing/limited_scope/with_non_existing_consumer_groups_excluded_spec.rb` | When trying to exclude non existing consumer group, we should fail. |
@@ -1221,17 +1258,21 @@
 | `routing/limited_scope/with_non_existing_topics_spec.rb` | When trying to run non existing topics, we should fail. |
 | `routing/limited_scope/with_nothing_to_run_spec.rb` | When combination of consumer groups, subscription groups and topics we want to run is such, that they do not exist all together, we need to raise an error. |
 | `routing/limited_scope/with_only_inactive_topics_spec.rb` | When all our topics are disabled in routing, we should not allow Karafka to run |
+| `routing/overlapping_consumer_patterns_spec.rb` | Karafka should handle complex consumer patterns and prevent conflicts |
 | `routing/runtime_routing_expansion_spec.rb` | When Karafka runs, we should be able to inject new routes and they should be picked It does NOT mean they will be used (not yet) but it should mean, that valid once are accepted and invalid are validated and an error is raised. This spec ensures, that dynamic routing expansions in runtime are subject to validation |
+| `routing/special_character_topics_spec.rb` | Karafka should handle topics with special characters properly |
 | `routing/stable_with_limited_consumer_groups_excluded_spec.rb` | When building subscription groups and then using a limited subset of consumer groups simulating the --exclude_consumer_groups flag should not impact the numbers in the group |
 | `routing/stable_with_limited_consumer_groups_spec.rb` | When building subscription groups and then using a limited subset of consumer groups simulating the --consumer_groups flag should not impact the numbers in the group |
 | `routing/stable_with_subscription_groups_spec.rb` | Building subscription groups multiple times should not change their static group membership ids as long as topics structure is unchanged. |
 | `routing/topic_custom_attributes_spec.rb` | You should be able to define your own features to assign them to topics You should also be able to use it from the consumer |
+| `routing/topic_pattern_matching_spec.rb` | Karafka should handle topic routing patterns and naming edge cases |
 | `routing/valid_with_features_usage_spec.rb` | Karafka should auto-load all the routing features |
 | `routing/with_active_false_overwritten_spec.rb` | When by default all topics are not active, we should be able to explicitely set it to active |
 | `routing/with_active_true_overwritten_spec.rb` | When by default all topics are active, we should be able to explicitely set it to inactive |
 | `routing/with_altered_routing_flow_spec.rb` | @see https://github.com/karafka/karafka/issues/2344 @see https://github.com/flipp-oss/deimos @see https://github.com/flipp-oss/deimos/blob/fc89c645/lib/deimos/ext/routing_defaults.rb This is to ensure that Deimos routing patches work as expected |
 | `routing/with_defaults_configured_spec.rb` | Karafka should use the defaults if they were configured but only if the appropriate config setup was not executed |
 | `routing/with_incomplete_kafka_reconfiguration_spec.rb` | When reconfiguring kafka scope without providing bootstrap.servers, we should fail |
+| `routing/with_kafka_scope_inherit_empty_hash_spec.rb` | Test that kafka scope settings with inherit: true properly merge defaults even when empty hash is provided as config. This addresses the edge case where calling kafka(**{}) with inherit: true should still preserve the defaults from Karafka::App.config.kafka instead of overriding them. |
 | `routing/with_nameless_subscription_groups_spec.rb` | Karafka should allow for nameless subscription groups inside of consumer groups |
 | `routing/with_namespace_collisions_spec.rb` | Karafka should now allow for topics that would have metrics namespace collisions It should not be allowed within same consumer group |
 | `routing/with_namespace_collisions_without_strict_spec.rb` | Karafka should allow for topics that would have metrics namespace collisions if strict topic names validation is off |
@@ -1272,6 +1313,7 @@
 | `setup/re_initialization_of_cached_resources_spec.rb` | Karafka should update the cached references to the monitor, logger and producer once those are altered during the configuration |
 | `setup/with_custom_worker_thread_priority_spec.rb` | When reconfiguring the worker thread priority, worker threads should have proper priority set When reconfiguring internal listener worker thread priority, it should also work |
 | `setup/with_patched_object_spec.rb` | *No description available* |
+| `shutdown/consumer_shutdown_during_processing_spec.rb` | Karafka should call shutdown hooks during server termination |
 | `shutdown/extremely_fast_stop_spec.rb` | When we stop right after run, it should not hang even on extreme edge cases |
 | `shutdown/fast_shutdown_on_long_polling_spec.rb` | Karafka should not wait full long polling cycle when shutdown is issued due to fast circuit breaker flow. No assertions are needed as it will just wait forever if not working correctly |
 | `shutdown/on_hanging_jobs_and_a_shutdown_spec.rb` | When Karafka is being shutdown and the consumer is hanging, it should force a shutdown |
