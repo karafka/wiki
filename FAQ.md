@@ -214,6 +214,8 @@
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
 1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
+1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
+1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
 
 ---
 
@@ -2888,3 +2890,13 @@ production:
 - Examples and best practices for Avro usage with Karafka
 - Support for complex Avro schemas and schema evolution
 - Performance optimization guidance for Avro serialization
+
+## What is the serialization format for Karafka Web UI internal topics?
+
+Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach leverages Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
+
+## What is the expected message throughput for Karafka Web UI internal topics?
+
+The write throughput for Karafka Web UI internal topics follows predictable patterns based on your deployment. The throughput is proportional to the number of consumer processes for some topics, while others maintain fixed rates regardless of process count. The number of messages consumed by your consumers does not impact the throughput of these internal topics, as reporting frequency remains constant.
+
+All detailed throughput rates, message volumes, and operational cost breakdowns for each internal topic can be found in the [Web UI Operational Cost Breakdown](https://karafka.io/docs/Web-UI-Operational-Cost-Breakdown/) documentation.
