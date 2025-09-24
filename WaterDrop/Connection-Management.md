@@ -1,5 +1,6 @@
 # Connection Management
 
+
 WaterDrop provides advanced connection management features that complement librdkafka's native connection handling, helping to optimize resource usage and maintain efficient connections to Kafka brokers. These features are particularly valuable in environments with varying message production patterns.
 
 ## Connection Management Background
@@ -58,6 +59,7 @@ end
       <td>High-frequency producers or when connection persistence is critical</td>
     </tr>
     <tr>
+      <td><code>&gt;= 30,000</code></td>
       <td>Disconnects after specified milliseconds of inactivity</td>
       <td>Low-frequency producers or resource-constrained environments</td>
     </tr>
