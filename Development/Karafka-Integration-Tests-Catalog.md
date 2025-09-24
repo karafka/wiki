@@ -1158,6 +1158,7 @@
 | `production/reject_no_key_message_when_compacted_spec.rb` | Kafka should reject a message on a compacted topic, when this message does not contain a key |
 | `production/via_overwritten_producer_spec.rb` | User should be able to redefine the per consumer producer instance via direct `#producer` redefinition. It should be then fully usable |
 | `production/waterdrop_connection_pool_pristine/connection_pool_spec.rb` | User should be able to use WaterDrop default connection pool from within consumers This allows for producer pooling and reuse across different consumers |
+| `production/waterdrop_transactional_direct_pristine/transactional_pool_spec.rb` | User should be able to use WaterDrop connection pool with transactional direct api Each producer in the pool should have a unique transactional.id |
 | `production/waterdrop_transactional_pool_pristine/transactional_pool_spec.rb` | User should be able to use WaterDrop connection pool with transactional producers Each producer in the pool should have a unique transactional.id |
 | `production/with_key_and_partition_key_spec.rb` | When using both key and partition key to target partition, partition key should take precedence |
 | `rails/rails71_pristine/just-a-dependency/rails_setup_spec.rb` | Karafka should work fine with Rails 7.1 even when it is just a transitive dependency and is not in active use. In case like this KARAFKA_BOOT_FILE needs to be set to "false" @see https://github.com/karafka/karafka/issues/813 Load all the Railtie stuff like when `rails server` |
