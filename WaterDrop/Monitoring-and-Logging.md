@@ -1,6 +1,10 @@
 # WaterDrop Monitoring and Logging
 
-Each of the producers after the `#setup` is done, has a custom monitor to which you can subscribe.
+WaterDrop provides two levels of event monitoring: per-producer instance monitoring and global cross-producer monitoring.
+
+## Per-Producer Monitoring
+
+Each producer instance after `#setup` has a custom monitor to which you can subscribe:
 
 ```ruby
 producer = WaterDrop::Producer.new
@@ -21,6 +25,82 @@ producer.close
 !!! info
 
     See the `WaterDrop::Instrumentation::Notifications::EVENTS` for the list of all the supported events.
+
+## Global Cross-Producer Monitoring
+
+WaterDrop also provides class-level instrumentation that allows you to monitor events across all producer instances. This is particularly useful for external libraries and monitoring tools that need to hook into producer lifecycle events without requiring specific producer instance references.
+
+```ruby
+# Subscribe to global producer lifecycle events
+WaterDrop.monitor.subscribe('producer.configured') do |event|
+  producer = event[:producer]
+  puts "Producer configured: #{producer.id}"
+
+  # Example: Add middleware after producer is fully configured
+  producer.middleware.append do |message|
+    # Custom message processing logic
+    message
+  end
+
+  # Example: Set up monitoring or other integrations
+  setup_monitoring_for_producer(producer)
+end
+
+# Create producers - global events will fire automatically
+producer1 = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+
+producer2 = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+```
+
+### Using `producer.configured` as a Universal Integration Point
+
+The `producer.configured` event serves as a powerful integration point that allows you to automatically enhance all producer instances with additional functionality. This event fires after the producer is fully configured, making it the perfect hook for:
+
+- **Middleware Injection**: Automatically add middleware to all producers
+- **Monitoring Setup**: Attach custom monitoring to every producer instance
+- **Instrumentation**: Add tracing, metrics collection, or logging to all producers
+
+#### Practical Integration Patterns
+
+**Pattern 1: Automatic Middleware Injection**
+
+```ruby
+# Automatically add custom middleware to all producers
+WaterDrop.monitor.subscribe('producer.configured') do |event|
+  producer = event[:producer]
+
+  # Add logging middleware to every producer
+  producer.middleware.append do |message|
+    puts "Producing message to topic: #{message[:topic]}"
+    message
+  end
+
+  # Add message transformation middleware
+  producer.middleware.append(MessageEnricherMiddleware.new)
+end
+```
+
+**Pattern 2: Universal Monitoring Setup**
+
+```ruby
+# Set up comprehensive monitoring for all producers
+WaterDrop.monitor.subscribe('producer.configured') do |event|
+  producer = event[:producer]
+
+  # Subscribe to all events for this producer
+  producer.monitor.subscribe('error.occurred') do |error_event|
+    ErrorTracker.report(error_event[:error])
+  end
+
+  producer.monitor.subscribe('message.acknowledged') do |ack_event|
+    MetricsCollector.increment('messages.delivered')
+  end
+end
+```
 
 ## Karafka Web-UI
 
