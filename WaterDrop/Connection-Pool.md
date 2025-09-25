@@ -125,6 +125,7 @@ end
 ```
 
 The configuration block receives:
+
 - `config` - Standard WaterDrop producer configuration
 - `index` - Zero-based index of the producer in the pool (useful for unique IDs)
 
@@ -165,6 +166,7 @@ notifications_pool.close
 ```
 
 This approach is useful when you need:
+
 - Different Kafka clusters for different message types
 - Separate transaction ID namespaces
 - Different performance characteristics (pool sizes, timeouts)
