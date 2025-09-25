@@ -22,7 +22,7 @@ gem 'connection_pool'
 
 Then run:
 
-```bash
+```shell
 bundle install
 ```
 
