@@ -3,7 +3,14 @@
 
 # Rdkafka Changelog
 
-## 0.22.3 (Unreleased)
+## 0.23.1 (2025-09-25)
+- [Enhancement] Improve sigstore attestation for precompiled releases.
+- [Fix] Fix incorrectly set default SSL certs dir.
+- [Fix] Disable OpenSSL Heartbeats during compilation.
+
+## 0.23.0 (2025-09-04)
+- **[Breaking]** Drop support for Ruby 3.1 to move forward with the fiber scheduler work.
+- [Enhancement] Bump librdkafka to `2.11.0`
 - [Enhancement] Support explicit Debian testing due to lib issues.
 - [Enhancement] Support ARM64 Gnu precompilation.
 - [Enhancement] Improve what symbols are exposed outside of the precompiled extensions.

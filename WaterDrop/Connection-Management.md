@@ -1,5 +1,3 @@
-# Connection Management
-
 WaterDrop provides advanced connection management features that complement librdkafka's native connection handling, helping to optimize resource usage and maintain efficient connections to Kafka brokers. These features are particularly valuable in environments with varying message production patterns.
 
 ## Connection Management Background
@@ -34,7 +32,7 @@ The idle disconnection feature is controlled by the `idle_disconnect_timeout` co
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 60_000  # Disconnect after 60 seconds of inactivity
+  config.idle_disconnect_timeout = 60_000 # Disconnect after 60 seconds of inactivity
   config.kafka = {
     'bootstrap.servers': 'localhost:9092'
   }
@@ -58,6 +56,7 @@ end
       <td>High-frequency producers or when connection persistence is critical</td>
     </tr>
     <tr>
+      <td><code>&gt;= 30,000</code></td>
       <td>Disconnects after specified milliseconds of inactivity</td>
       <td>Low-frequency producers or resource-constrained environments</td>
     </tr>
@@ -87,7 +86,7 @@ For applications that send messages sporadically, such as background job notific
 # Configure for background job producer
 job_producer = WaterDrop::Producer.new do |config|
   config.id = 'background_jobs'
-  config.idle_disconnect_timeout = 300  # 5 minutes
+  config.idle_disconnect_timeout = 300 # 5 minutes
   config.kafka = {
     'bootstrap.servers': 'localhost:9092'
   }
@@ -105,7 +104,7 @@ In environments where connection limits or memory usage are concerns:
 ```ruby
 # Configure for efficient resource usage
 efficient_producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 60_000   # Disconnect quickly when idle
+  config.idle_disconnect_timeout = 60_000 # Disconnect quickly when idle
   config.kafka = {
     'bootstrap.servers': 'localhost:9092',
     'socket.keepalive.enable': true
@@ -120,7 +119,7 @@ For producers that send messages continuously, disable the feature:
 ```ruby
 # Disable for high-frequency producers
 stream_producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 0    # Keep connections persistent
+  config.idle_disconnect_timeout = 0 # Keep connections persistent
   config.kafka = {
     'bootstrap.servers': 'localhost:9092'
   }
@@ -163,10 +162,10 @@ WaterDrop's idle disconnection works alongside librdkafka's native connection ma
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 300_000  # WaterDrop: disconnect entire producer after 5 minutes
+  config.idle_disconnect_timeout = 300_000 # WaterDrop: disconnect entire producer after 5 minutes
   config.kafka = {
     'bootstrap.servers': 'localhost:9092',
-    'connections.max.idle.ms': 60_000     # librdkafka: close individual broker connections after 1 minute
+    'connections.max.idle.ms': 60_000 # librdkafka: close individual broker connections after 1 minute
   }
 end
 ```

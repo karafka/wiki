@@ -52,6 +52,7 @@
 - [Custom Partitioners](WaterDrop-Custom-Partitioners)
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements)
 - [Connection Management](WaterDrop-Connection-Management)
+- [Connection Pool](WaterDrop-Connection-Pool)
 - [Async Ecosystem Integration](WaterDrop-Async-Integration)
 
 ## Production Usage

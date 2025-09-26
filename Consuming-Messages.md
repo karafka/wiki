@@ -479,7 +479,7 @@ Knowing when a partition has reached EOF can be helpful in several scenarios:
 
 ## Wrapping the Execution Flow
 
-Karafka's design includes the ability to "wrap" the execution flow, which allows to execute custom logic before and after the message processing cycle. This functionality is particularly valuable for scenarios where additional setup, teardown, or contextual operations (such as selecting a transactional producer from a pool) are needed.
+Karafka's design includes the ability to "wrap" the execution flow, which allows to execute custom logic before and after the message processing cycle. This functionality is particularly valuable for scenarios where additional setup, teardown, or contextual operations (such as selecting a transactional producer from WaterDrop's [connection pool](WaterDrop-Connection-Pool)) are needed.
 
 The `#wrap` method surrounds the entire operational flow of the consumer, not just the user's business logic. This includes:
 
@@ -504,12 +504,12 @@ class CustomConsumer < ApplicationConsumer
     default_producer = producer
 
     begin
-      # Attempt to select a producer from the pool
-      PRODUCERS.with do |transactional_producer|
+      # Attempt to select a producer from WaterDrop's connection pool
+      WaterDrop::ConnectionPool.with do |transactional_producer|
         self.producer = transactional_producer
         yield
       end
-    rescue ProducerUnavailableError => e
+    rescue ConnectionPool::TimeoutError => e
       # Handle scenarios where a producer isn't available
       @wrap_error = e
       yield # Ensure framework operations still execute

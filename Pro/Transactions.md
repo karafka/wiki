@@ -212,7 +212,7 @@ def wrap(_action_name)
 end
 ```
 
-- **Connection Pool of Producers**: In high-traffic systems where throughput is vital, efficiently managing producer instances becomes essential. Using different producer instances with the `#transaction` method enables you to set up a pool of producers. This pool allows your system to handle multiple transactions simultaneously by providing an available producer for each transaction, optimizing resource use, and maintaining system performance.
+- **WaterDrop Connection Pool**: In high-traffic systems where throughput is vital, efficiently managing producer instances becomes essential. WaterDrop provides a built-in [`ConnectionPool`](WaterDrop-Connection-Pool) that manages producer instances automatically. This pool allows your system to handle multiple transactions simultaneously by providing an available producer for each transaction, optimizing resource use, and maintaining system performance.
 
 ```ruby
 def consume
@@ -229,16 +229,16 @@ def consume
   end
 end
 
-# The `#wrap` allows you to wrap the actions with a custom block that can be used to assign the
-# selected producer from the pool
+# The `#wrap` allows you to wrap the actions with a custom block that can be used to assign
+# a producer from WaterDrop's built-in connection pool
 #
 # @param _action_name [Symbol] name of action like :consume, :revoked, etc
 def wrap(_action_name)
   # Store the original producer
   default = producer
 
-  PRODUCERS.with do |selected_producer|
-    # Assign the transactional producer
+  WaterDrop::ConnectionPool.with do |selected_producer|
+    # Assign the transactional producer from the pool
     self.producer = selected_producer
 
     yield
@@ -247,8 +247,7 @@ def wrap(_action_name)
     self.producer = default
   end
 # Ensure yield is called even in case of any errors
-# This error is just an example error
-rescue NoProducerAvailableError => e
+rescue ConnectionPool::TimeoutError => e
   @wrap_error = e
 
   yield
@@ -259,7 +258,7 @@ end
 
 The importance of having a pool of producers is highlighted by how transactions lock producers in Karafka. When a transaction starts, it locks its producer to the current thread, making the producer unavailable for other operations until the transaction is completed or rolled back. In a high-traffic system, this could lead to performance issues if multiple transactions are waiting for the same producer.
 
-With a producers' connection pool, this challenge is mitigated. When a transaction begins, it picks the assigned producer from the pool, allowing other operations to proceed in parallel with their producers. After the transaction ends, the producer is released back to the pool, ready to be used for new transactions.
+With WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool), this challenge is mitigated. When a transaction begins, it picks an assigned producer from the pool, allowing other operations to proceed in parallel with their producers. After the transaction ends, the producer is released back to the pool, ready to be used for new transactions.
 
 In essence, with support for dedicated transactional producers, Karafka's `#transaction` method offers a structured and efficient way to manage message transactions in highly-traffic systems.
 
@@ -344,11 +343,11 @@ It's crucial to understand the implications of this producer reassignment:
 
 - **Implications for Long-Running Jobs**: For long-running jobs actions `#revoked` that might run parallel with the consumption process, the transactional producer (the custom producer provided to the transaction) may be used for these operations. This could be a concern if the transactional producer is locked for an extended period due to a lengthy transaction, potentially affecting parallel processing.
 
-- **Recommendation for Systems with Parallel Processing Needs**: If your system frequently handles long-running jobs alongside message consumption, especially if these jobs are expected to run in parallel with transactions, it's advisable to use a pool of producers consistently. Doing so ensures that a locked producer in a lengthy transaction doesn't hinder the performance or progress of other parallel operations. Instead of relying on the default `#producer` consumer reference, managing and allocating producers from a dedicated pool can significantly enhance system robustness and concurrency, allowing each transaction or job to operate with its dedicated producer resource.
+- **Recommendation for Systems with Parallel Processing Needs**: If your system frequently handles long-running jobs alongside message consumption, especially if these jobs are expected to run in parallel with transactions, it's advisable to use WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) consistently. Doing so ensures that a locked producer in a lengthy transaction doesn't hinder the performance or progress of other parallel operations. Instead of relying on the default `#producer` consumer reference, using WaterDrop's [`ConnectionPool`](WaterDrop-Connection-Pool) can significantly enhance system robustness and concurrency, allowing each transaction or job to operate with its dedicated producer resource.
 
 ```ruby
 # Example consumer that due to usage of LRJ in the routing can have the `#consume`
-# and `#revoked` run in parallel. Due to this, consumers pool is used to make sure
+# and `#revoked` run in parallel. Due to this, WaterDrop's [connection pool](WaterDrop-Connection-Pool) is used to make sure
 # that ongoing transaction and revocation get their respective dedicated producers
 class LrjOperableConsumer
   def consume
@@ -381,7 +380,7 @@ class LrjOperableConsumer
     # Store the original producer
     default = producer
 
-    PRODUCERS.with do |selected_producer|
+    WaterDrop::ConnectionPool.with do |selected_producer|
       # Assign the transactional producer
       self.producer = selected_producer
 
@@ -391,7 +390,7 @@ class LrjOperableConsumer
       self.producer = default
     end
   # yield needs to be called always, even in case of wrap errors
-  rescue NoProducerAvailableError => e
+  rescue ConnectionPool::TimeoutError => e
     @wrap_error = e
     yield
   end
