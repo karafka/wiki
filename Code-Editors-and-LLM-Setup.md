@@ -77,7 +77,6 @@ Good:
 
 ```text
 "I'm using Karafka OSS with Rails 7 in production"
-
 ```
 
 Better:
