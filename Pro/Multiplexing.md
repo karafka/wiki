@@ -1,6 +1,20 @@
-Karafka Multiplexing is designed to boost the efficiency and performance of message processing in Kafka. Allowing a single process to establish multiple independent connections to the same Kafka topic significantly enhances parallel processing and throughput.
+Karafka Multiplexing is designed to enhance the efficiency and performance of message processing in Kafka by enabling a single process to establish multiple independent connections for the same consumer group. This significantly enhances parallel processing and throughput by creating separate polling streams for different partitions.
 
-Multiplexing in Karafka enables more effective data handling and improves performance by dividing the workload across several connections. This approach ensures quicker data processing, better resource utilization, and increased fault tolerance, making your Kafka-based systems more robust and responsive.
+!!! warning "Understanding Connection Impact"
+
+    **Multiplexing may increase your total connection count.** Each `multiplexing(max: N)` setting creates up to N connections per subscription group. The formula for maximum possible connections is:
+
+    ```
+    Max Connections = Consumer Groups × Subscription Groups × Multiplexing Factor
+    ```
+
+    If connection count is a primary concern, consider the optimization strategies outlined in this document before implementing multiplexing.
+
+Multiplexing enables more effective data handling and improves performance by dividing the workload across several connections. This approach provides:
+
+- **Partition Isolation**: Each connection handles a subset of partitions, ensuring that lag in one doesn't halt polling of others
+- **Breaking Prefetch Patterns**: Under heavy load, librdkafka tends to prefetch large batches from single partitions; multiplexing breaks this pattern for more even distribution
+- **Better Work Distribution**: Processing becomes more balanced across partitions, even when data waits in internal queues
 
 Multiplexing increases throughput and significantly enhances processing capabilities in scenarios with multi-partition lags. When a single process subscribes to multiple partitions, it can swiftly address lags in any of them, ensuring more consistent performance across your system. This advantage becomes particularly prominent in IO-intensive workloads where efficient data handling and processing are crucial.
 
@@ -84,7 +98,25 @@ end
 
 Once you have configured multiplexing in your routing settings, no additional steps are required for it to function. Your application will start processing messages from multiple partitions simultaneously, leveraging the benefits of multiplexing immediately and seamlessly.
 
-The following configuration options are available for `#multiplexing`:
+### Configuration API
+
+The actual multiplexing API provides these options:
+
+```ruby
+subscription_group 'events' do
+  multiplexing(
+    min: 1,    # Minimum connections (for dynamic mode)
+    max: 3,    # Maximum connections
+    boot: 2    # Connections to start with (dynamic mode)
+  )
+
+  topic :events do
+    consumer EventsConsumer
+  end
+end
+```
+
+The following configuration options are available:
 
 <table>
   <thead>
@@ -116,6 +148,64 @@ The following configuration options are available for `#multiplexing`:
     </tr>
   </tbody>
 </table>
+
+## Connection Optimization Strategies
+
+If your goal is to **minimize connection count** while maintaining performance, consider these alternatives to multiplexing:
+
+### Optimize librdkafka Prefetch Settings
+
+This is the most effective approach for reducing the need for multiplexing without sacrificing performance:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # Reduce aggressive prefetching that causes imbalance
+      'fetch.max.bytes' => 1_048_576,         # 1MB (default: 50MB)
+      'max.partition.fetch.bytes' => 131_072,  # 128KB (default: 1MB)
+      'fetch.wait.max.ms' => 200,              # Lower latency for fairness
+
+      # Control internal queuing
+      'queued.min.messages' => 10_000,         # (default: 100,000)
+
+      # Reduce network latency
+      'socket.nagle.disable' => true           # Disable Nagle algorithm
+    }
+  end
+end
+```
+
+### Use Virtual Partitions Instead of Multiplexing
+
+For single-partition workloads, [Virtual Partitions](Virtual-Partitions.md) provide parallelism **without extra connections**:
+
+```ruby
+topic :single_partition_heavy_io do
+  consumer OrderProcessor
+
+  virtual_partitions(
+    partitioner: ->(message) { message.headers['user_id'] },
+    max_partitions: 5  # Parallel processing WITHOUT extra connections
+  )
+end
+```
+
+### Consolidate Consumer Groups
+
+Use the [Admin API](../Admin-API.md#copying-a-consumer-group) to merge consumer groups and reduce base connection count:
+
+```ruby
+# Migrate multiple groups into one to reduce base connection count
+Karafka::Admin.seek_consumer_group(
+  'old-consumer-group',
+  { 'topic-name' => { 0 => 1000, 1 => 2000 } }
+)
+```
+
+!!! note "When to Remove Multiplexing"
+
+    If you remove multiplexing and replace it with kafka-scope settings, be aware that using per-topic `kafka` configurations may also create multiple subscription groups, potentially negating connection savings.
 
 ## Multiplexing vs. Virtual Partitions
 
@@ -252,6 +342,20 @@ end
 
 - **Improved Parallelism**: Enhances the system's ability to process data concurrently across multiple partitions and topics, resulting in faster processing times and higher throughput.
 
+### When to Use Multiplexing vs. Alternatives
+
+**Use Multiplexing When:**
+
+- High-volume, multi-partition scenarios where alternatives don't provide sufficient performance
+- Connection count is not a primary constraint
+- You need isolation between partition processing streams
+
+**Consider Alternatives When:**
+
+- Minimizing connection count is a priority
+- Working with single-partition topics (use [Virtual Partitions](Virtual-Partitions.md) instead)
+- librdkafka tuning can achieve similar fairness improvements
+
 ### Limitations
 
 Below, you can find specific considerations and recommendations related to using dynamic mode multiplexing in Karafka.
@@ -264,11 +368,23 @@ However, Multiplexing can be used without issues if Dynamic mode is not enabled.
 
 ### Conclusion
 
-Dynamic Multiplexing feature in Karafka represents a refined approach to managing connections with Kafka clusters. By focusing on partition assignments, Karafka ensures that resources are utilized efficiently, balancing performance needs with cost and resource conservation. This feature is handy for large-scale, distributed applications where partition loads vary significantly.
+The Dynamic Multiplexing feature in Karafka represents a refined approach to managing connections with Kafka clusters. By focusing on partition assignments, Karafka ensures that resources are utilized efficiently, balancing performance needs with cost and resource conservation. This feature is handy for large-scale, distributed applications where partition loads vary significantly.
 
-## Multiplexing Memory Usage Implications
+## Memory and Resource Considerations
 
-When employing Multiplexing, one must be aware of the potential impact on memory usage. Each additional connection established by a process consumes more memory as it maintains its own set of buffers, offsets, and other metadata related to its subscribed topics. In scenarios where many connections are established to handle high volumes of data, the memory footprint can increase significantly.
+### Connection Resource Usage
+
+**With Multiplexing**: Each additional connection consumes more memory as it maintains its own set of buffers, offsets, and other metadata. For large message scenarios, use the [Cleaner API](Pro-Cleaner-API).
+
+**Without Multiplexing**: Lower memory usage, but potentially less parallel processing capability. Compensate with:
+
+- Higher [concurrency settings](../Advanced/Concurrency-and-Multithreading.md)
+- [Virtual Partitions](Virtual-Partitions.md) for single-partition parallelism
+- Better librdkafka tuning for fairness
+
+### Memory Usage Impact
+
+When employing Multiplexing, each additional connection established by a process consumes more memory as it maintains its own set of buffers, offsets, and other metadata related to its subscribed topics. In scenarios where many connections are established to handle high volumes of data, the memory footprint can increase significantly.
 
 This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it's successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
 
