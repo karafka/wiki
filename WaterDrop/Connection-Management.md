@@ -79,13 +79,8 @@ end
       <td>High-frequency producers or when connection persistence is critical</td>
     </tr>
     <tr>
-<<<<<<< Updated upstream
       <td><code>&gt;= 30,000</code></td>
       <td>Disconnects after specified milliseconds of inactivity</td>
-=======
-      <td><code>>30000</code></td>
-      <td>Disconnects after the specified number of milliseconds of inactivity</td>
->>>>>>> Stashed changes
       <td>Low-frequency producers or resource-constrained environments</td>
     </tr>
   </tbody>
