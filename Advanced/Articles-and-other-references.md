@@ -50,6 +50,8 @@
 
 ## Videos
 
+- [Startup Speed, Enterprise Scale: Rails Powers 3k Events/Sec Throughput - Doximity](https://www.youtube.com/watch?v=YUaE4niST-k)
+- [RailsConf 2025 The Past, Present and Future of Background Jobs](https://www.youtube.com/watch?v=xf5mrEu5190)
 - [Kafka with Ruby on Rails by CJ Avilla](https://www.youtube.com/watch?v=gXz1YtfeiJk)
 - [RailsConf 2023 - Applying microservices patterns to a modular monolith by Guillermo Aguirre](https://www.youtube.com/watch?v=4zrQAJ0RlI4)
 - [RubyConfTH 2023 - Event Streaming Patterns for Ruby Services by Brad Urani](https://www.youtube.com/watch?v=RBj4S9S-fJI)
