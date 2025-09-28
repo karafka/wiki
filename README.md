@@ -22,7 +22,7 @@ The repository automatically fetches and updates dynamic content twice daily (6:
 
 Located in the `bin/` directory:
 
-- `refresh_changelogs` - Downloads changelogs from component repositories
+- `refresh_remote_content` - Downloads changelogs and commercial license from component repositories
 - `refresh_librdkafka_errors` - Generates librdkafka error documentation dynamically using the rdkafka gem
 - `refresh_librdkafka_releases` - Generates librdkafka releases documentation dynamically based on the official releases
 - `refresh_librdkafka_statistics` - Generates librdkafka statistics documentation based on the official docs

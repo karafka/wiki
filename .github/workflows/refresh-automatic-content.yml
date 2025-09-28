@@ -31,9 +31,9 @@ jobs:
     - name: Refresh Karafka integrations catalog
       run: |
         bin/refresh_karafka_integrations_catalog
-    - name: Fetch remote changelogs
+    - name: Fetch remote content
       run: |
-        bin/refresh_changelogs
+        bin/refresh_remote_content
     - name: Fetch librdkafka releases
       run: |
         bin/refresh_librdkafka_releases
