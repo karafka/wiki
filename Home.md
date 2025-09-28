@@ -115,6 +115,7 @@
 - [Rotating credentials](Pro-Rotating-Credentials)
 - [Pro FAQ](Pro-FAQ)
 - [Pro Support](Pro-Support)
+- [Commercial License](Pro-License-Comm)
 - [Security](Pro-Security)
 - [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support)
 - [FIPS Support](Pro-FIPS-Support)
