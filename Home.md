@@ -117,6 +117,7 @@
 - [Pro Support](Pro-Support)
 - [Commercial License](Pro-License-Comm)
 - [Security](Pro-Security)
+- [Compliance Certifications](Pro-Compliance-Certifications)
 - [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support)
 - [FIPS Support](Pro-FIPS-Support)
 - [Enterprise](Pro-Enterprise)
