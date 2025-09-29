@@ -120,7 +120,6 @@
 | `consumption/compressions/using_gzip_spec.rb` | *No description available* |
 | `consumption/compressions/using_lz4_spec.rb` | *No description available* |
 | `consumption/compressions/using_snappy_spec.rb` | *No description available* |
-| `consumption/concurrency/coordinator_state_spec.rb` | Karafka should handle coordinator state during rapid message flow safely |
 | `consumption/concurrency/memory_visibility_spec.rb` | Karafka should handle memory visibility between processing threads correctly |
 | `consumption/concurrency/shared_consumer_state_spec.rb` | Karafka should handle concurrent access to shared consumer state safely |
 | `consumption/concurrency/shared_mutable_objects_spec.rb` | Karafka should handle message processing with shared mutable objects safely |
