@@ -284,6 +284,8 @@ Karafka Enterprise can be purchased via invoice and purchase order if needed. Em
 
 Only for Karafka Enterprise tier.
 
+For information about why certain compliance certifications (SOC 2, ISO 27001) do not apply to Karafka as a self-hosted framework, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
+
 ## Can I request a change to the license terms?
 
 Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can ask for changes to the terms and conditions. Email your concerns and we can negotiate something.
