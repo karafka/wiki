@@ -1,10 +1,9 @@
 ## Prerequisites
 
-<!-- [Maciek] TODO: jak odbywa się weryfikacja? -->
-
 1. To verify that Apache Kafka is running, run the following command:
 
-```bash
+
+```shell
 docker ps | grep kafka
 ```
 
@@ -62,8 +61,7 @@ Below is the demo of the installation process:
   </span>
 </div>
 
-5. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI
-](Web-UI-Getting-Started).
+5. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI](Web-UI-Getting-Started).
 
 ## For New Applications (Starting From Scratch)
 
@@ -119,7 +117,7 @@ If you have any problems setting up Karafka or need a ready application to play 
 git clone https://github.com/karafka/example-apps ./example_apps
 ```
 
-and follow the instructions from the [example apps Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
+For instructions, see [Karafka Example Applications Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
 
 ## Use cases, edge cases, and usage examples
 
