@@ -183,6 +183,8 @@
 | `consumption/strategies/default/from_earliest_simple_routing_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) when simple routing is in use |
 | `consumption/strategies/default/from_earliest_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) |
 | `consumption/strategies/default/from_latest_with_non_persistent_error_spec.rb` | When we connect for the first time with cluster from a new consumer group and start consuming from earliest and an error occurs on a first message, we should pause and retry consumption until we can process this message. No messages should be skipped or ignored. |
+| `consumption/strategies/default/kip_848_revocation_on_timeout_spec.rb` | Test KIP-848 with regular (non-LRJ) consumption to ensure that when max.poll.interval.ms is exceeded, the consumer is properly kicked out and revoked callbacks are triggered |
+| `consumption/strategies/default/kip_848_shutdown_revocation_spec.rb` | Test KIP-848 to verify that the #revoked callback is not called during shutdown |
 | `consumption/strategies/default/many_topics_same_group_spec.rb` | Karafka should be able to subscribe and consume messages from as many topics as someone wants Here we consume from 100 topics |
 | `consumption/strategies/default/multi_topic_ping_pong_spec.rb` | Karafka should be able to easily consume messages sent from one topic to another |
 | `consumption/strategies/default/non_constant_error_and_other_topics_spec.rb` | When on one partition topic an error occurs, other topics should be processed and given partition should catch up on recovery after the pause timeout |
@@ -795,6 +797,7 @@
 | `pro/consumption/strategies/lrj/default/concurrent_operations_execution_spec.rb` | When we make long polls the same time consumers operate, those operations should be executable in parallel. This spec is to ensure, that no `librdkafka` or `rdkafka-ruby` locks interfere with the expected concurrency boundaries of Karafka It did happen, that due to locking model changes, certain things would heavily impact ability to operate concurrently. |
 | `pro/consumption/strategies/lrj/default/fast_non_blocking_spec.rb` | Fast jobs should also not have any problems (though not recommended) when running as lrj It should work ok also when used via `non_blocking` API. |
 | `pro/consumption/strategies/lrj/default/fast_spec.rb` | Fast jobs should also not have any problems (though not recommended) when running as lrj |
+| `pro/consumption/strategies/lrj/default/kip_848_revocation_detection_spec.rb` | Test KIP-848 with Long Running Jobs to ensure that when a rebalance occurs during long-running consumption with the new protocol, the consumer is properly notified via both #revoked and #revoked? methods |
 | `pro/consumption/strategies/lrj/default/multiple_batches_processing_spec.rb` | When processing multiple incoming batches, the order should be preserved |
 | `pro/consumption/strategies/lrj/default/no_revocation_on_low_concurrency_spec.rb` | When running LRJ with low concurrency and many LRJ topics, we should not be kicked out of the consumer group after reaching the interval. Pausing should happen prior to processing and it should ensure that all new LRJ topics and partitions assigned are paused even when there are no available workers to do the work. |
 | `pro/consumption/strategies/lrj/default/parallel_non_lrj_with_lrj_spec.rb` | When using LRJ within a consumer group with other non-LRJ, the LRJ should be running while other jobs are consumed and they should not wait (as long as enough workers) |
@@ -1229,6 +1232,10 @@
 | `rebalancing/exceeding_max_poll_interval_spec.rb` | When processing beyond the poll interval, we should be kicked out and we should loose the assigned partition. The revocation job should kick in with a proper revoked state. |
 | `rebalancing/exceeding_max_poll_with_fast_commit_spec.rb` | When processing beyond the poll interval, with fast offset commit, we should pick up from where we left without duplicates |
 | `rebalancing/exceeding_max_poll_with_late_commit_spec.rb` | When processing beyond the poll interval, with slower offset commit, we will restart processing and there should be duplicated messages. |
+| `rebalancing/kip_848/mixed_protocols_spec.rb` | Test that both old (eager/cooperative) and new (KIP-848) rebalance protocols can work simultaneously in different consumer groups within Karafka We'll set up multiple Karafka apps with different configurations to simulate different consumer groups with different protocols Consumer class for KIP-848 group |
+| `rebalancing/kip_848/multiple_groups_spec.rb` | Test multiple consumer groups using the new KIP-848 consumer group protocol This ensures different consumer groups can consume the same topic independently |
+| `rebalancing/kip_848/rebalancing_spec.rb` | Test rebalancing with KIP-848 by verifying partition assignment changes when a second consumer joins the group |
+| `rebalancing/kip_848/simple_spec.rb` | Test that KIP-848 consumer group protocol works with basic consumption |
 | `rebalancing/lifecycle_events_spec.rb` | When rebalance occurs, we should go through all the proper lifecycle events and only for the subscription group for which rebalance occurs. Details should be present and second group should be intact. |
 | `rebalancing/lost_partition_revoked_execution_time_spec.rb` | When partition is lost but our job is still running, it should be allowed to finish work and should not run while code execution is still running. Revocation code should wait on the whole job to finish before running `#revoked`. @note This works differently in the Pro LRJ. |
 | `rebalancing/message_order_with_sync_commit_spec.rb` | Messages should not be reprocessed out of order during a rebalance triggered by an unhealthy consumer with additional manual synchronous commits using #mark_as_consumed\!. |
@@ -1322,6 +1329,7 @@
 | `setup/max_messages_format_as_string_spec.rb` | When max messages format is not as expected, we should fail |
 | `setup/re_initialization_of_cached_resources_spec.rb` | Karafka should update the cached references to the monitor, logger and producer once those are altered during the configuration |
 | `setup/with_custom_worker_thread_priority_spec.rb` | When reconfiguring the worker thread priority, worker threads should have proper priority set When reconfiguring internal listener worker thread priority, it should also work |
+| `setup/with_kip_848_protocol_incorrect_config_spec.rb` | Karafka should crash when new and old rebalance protocol settings are mixed even if independently they are correct. Note that those errors only happen upon subscription, not during configuration. |
 | `setup/with_patched_object_spec.rb` | *No description available* |
 | `shutdown/consumer_shutdown_during_processing_spec.rb` | Karafka should call shutdown hooks during server termination |
 | `shutdown/extremely_fast_stop_spec.rb` | When we stop right after run, it should not hang even on extreme edge cases |
