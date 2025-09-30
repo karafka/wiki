@@ -91,7 +91,7 @@ The combination of commercial success, proven scale, and active development crea
 
 ## To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?
 
-Yes, it is required to accept the [LICENSE-COMM](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) terms to become a Karafka Pro user.
+Yes, it is required to accept the [LICENSE-COMM](Pro-License-Comm) terms to become a Karafka Pro user.
 
 ## Is there a trial version?
 
@@ -103,7 +103,7 @@ The trial license does **not** grant you our Pro commercial support.
 
 ## What is the license?
 
-See [LICENSE-COMM](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) in the root of the Karafka repo.
+See [LICENSE-COMM](Pro-License-Comm) on our documentation website.
 
 ## How does Pro licensing work?
 
@@ -283,6 +283,8 @@ Karafka Enterprise can be purchased via invoice and purchase order if needed. Em
 ## Can you fill out my security or compliance documentation?
 
 Only for Karafka Enterprise tier.
+
+For information about why certain compliance certifications (SOC 2, ISO 27001) do not apply to Karafka as a self-hosted framework, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
 ## Can I request a change to the license terms?
 

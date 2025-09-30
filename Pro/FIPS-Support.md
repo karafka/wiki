@@ -2,6 +2,8 @@
 
     If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
 
+    For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
+
 Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secure operations in environments that require adherence to Federal Information Processing Standards. This documentation outlines how Karafka supports FIPS requirements.
 
 !!! info "No Warranty"

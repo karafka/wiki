@@ -120,7 +120,6 @@
 | `consumption/compressions/using_gzip_spec.rb` | *No description available* |
 | `consumption/compressions/using_lz4_spec.rb` | *No description available* |
 | `consumption/compressions/using_snappy_spec.rb` | *No description available* |
-| `consumption/concurrency/coordinator_state_spec.rb` | Karafka should handle coordinator state during rapid message flow safely |
 | `consumption/concurrency/memory_visibility_spec.rb` | Karafka should handle memory visibility between processing threads correctly |
 | `consumption/concurrency/shared_consumer_state_spec.rb` | Karafka should handle concurrent access to shared consumer state safely |
 | `consumption/concurrency/shared_mutable_objects_spec.rb` | Karafka should handle message processing with shared mutable objects safely |
@@ -305,12 +304,15 @@
 | `instrumentation/error_callback_multiple_subscription_groups_spec.rb` | Karafka should publish async errors from all the clients via a dedicated instrumentation hooks and they should not collide with each other. If they would, events would be published twice. |
 | `instrumentation/error_callback_on_max_poll_interval_spec.rb` | Karafka should publish the max.poll.interval.ms violations into the errors pipeline |
 | `instrumentation/error_callback_subscription_spec.rb` | Karafka should publish async errors from the client via a dedicated instrumentation hook |
+| `instrumentation/event_ordering_guarantees_spec.rb` | Instrumentation events should maintain proper ordering guarantees and sequence during parallel processing and concurrent event emission. |
 | `instrumentation/initialized_flow_spec.rb` | Karafka should publish correct events post-initializing the consumer instances When initialization fails, it should also publish error |
 | `instrumentation/listener_lifecycle_flow_spec.rb` | Karafka should publish listener lifecycle events |
 | `instrumentation/low_level_buffer_analysis_spec.rb` | We should be able to inject a low level monitor for ensuring, that there are no duplicates in the data received from rdkafka |
+| `instrumentation/nil_missing_data_edge_cases_spec.rb` | Instrumentation should handle events with nil/missing data gracefully without crashing the monitoring system or causing data corruption. |
 | `instrumentation/oauth_listener_producer_inheritance_spec.rb` | Karafka should propagate the oauth listener to the producer when oauth in use |
 | `instrumentation/pausing_and_retry_callback_subscription_spec.rb` | We should be able to instrument on pausing and retry events |
 | `instrumentation/pausing_and_retry_client_callbacks_spec.rb` | We should be able to get client level instrumentation on pausing and resuming |
+| `instrumentation/performance_monitoring_load_spec.rb` | Performance monitoring should handle high-volume event emission without significant performance degradation or memory leaks during heavy load scenarios. |
 | `instrumentation/post_errors_instrumentation_error_spec.rb` | If post-error instrumentation re-raises the error so it bubbles up to the worker, it will crash and karafka should stop. Since an endless bubbling error cannot be rescued, it will force Karafka to move into a forceful shutdown. |
 | `instrumentation/post_mutation_messages_count_reporting_spec.rb` | When we mutate the messages batch size, it should not impact the instrumentation Alongside that, because we use auto-offset management, it also should not crash as it should use original messages references. |
 | `instrumentation/process_tagging_spec.rb` | We should have abilities to tag process with whatever info we want |
@@ -596,6 +598,7 @@
 | `pro/consumption/strategies/aj/mom/with_multiple_custom_partitioners_spec.rb` | Karafka should use different partitioners and karafka options for jobs and not mutate in between |
 | `pro/consumption/strategies/aj/mom/with_variant_producers_spec.rb` | We should be able to define producer variants and use them to dispatch different jobs based on our preferences |
 | `pro/consumption/strategies/aj/mom_vp/execution_on_failing_saturated_spec.rb` | Karafka when running VPs with AJ and being saturated, should run further jobs if the first job in the queue failed because we use virtual offset management for handling this scenario. |
+| `pro/consumption/strategies/dlq/complex_error_classification_spec.rb` | DLQ should handle complex error classification scenarios including error chaining, nested errors, timeout-based errors, and custom error hierarchies. |
 | `pro/consumption/strategies/dlq/default/details_dispatch_transfer_spec.rb` | When DLQ transfer occurs, payload and many other things should be transferred to the DLQ topic. |
 | `pro/consumption/strategies/dlq/default/details_dispatch_transfer_with_enhancement_spec.rb` | When DLQ transfer occurs, we should be able to build our own payload and headers via `#enhance_dlq_message` |
 | `pro/consumption/strategies/dlq/default/dispatch_instrumentation_spec.rb` | When DLQ delegation happens, Karafka should emit appropriate event. |
@@ -754,6 +757,7 @@
 | `pro/consumption/strategies/dlq/vp/skip_after_collapse_spec.rb` | DLQ in the VP mode should collapse and skip when error occurs again in a collapsed mode After that, we should move to processing in a non-collapsed mode again |
 | `pro/consumption/strategies/ftr/chained_filters_with_post_throttle_spec.rb` | We should be able to chain filters and to achieve expected processing flow In this scenario we will filter all odd offsets and we will make sure, we process data with a delay and with throttling used to make sure we do not process more than 5 messages per second It is important to notice, that the order of filters is important. If we throttle before we filter, we will actually always process late because throttling will occur on odd and even. |
 | `pro/consumption/strategies/ftr/chained_filters_with_pre_throttle_spec.rb` | We should be able to chain filters and to achieve expected processing flow In this scenario we will filter all odd offsets and we will make sure, we process data with a delay and with throttling used to make sure we do not process more than 5 messages per second We will throttle first and this will have impact on how many elements we will get into the consumer |
+| `pro/consumption/strategies/ftr/complex_predicate_filtering_spec.rb` | Filtering should handle complex predicates including JSON parsing, regex matching, timestamp-based filtering, and composite conditions without performance degradation. |
 | `pro/consumption/strategies/ftr/custom_per_topic_spec.rb` | Karafka should allow for usage of custom throttlers per topic |
 | `pro/consumption/strategies/ftr/custom_to_delay_spec.rb` | Karafka should allow us to use throttling engine to implement delayed jobs |
 | `pro/consumption/strategies/ftr/dlg/constant_flow_spec.rb` | When we are just getting new data, we should delay to match time expectations |
@@ -853,6 +857,7 @@
 | `pro/consumption/strategies/lrj/ftr_mom_vp/with_never_ending_error_spec.rb` | When doing work with error, we should slowly increase the attempt count for LRJ same as for regular workloads, despite pausing. |
 | `pro/consumption/strategies/lrj/ftr_mom_vp/with_throttle_and_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj the same way as any normal consumer even if throttled. Error flow should be the same as non-throttled. |
 | `pro/consumption/strategies/lrj/ftr_mom_vp/without_marking_spec.rb` | When using manual offset management and not marking anything at all, we should not change offsets but we should keep moving forward in the processing. |
+| `pro/consumption/strategies/lrj/immediate_completion_spec.rb` | LRJ should handle jobs that complete immediately without any actual long-running work, ensuring proper resource management and offset handling. |
 | `pro/consumption/strategies/lrj/mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/lrj/mom/with_manual_pause_on_early_spec.rb` | When pausing not on a last message, we should un-pause from it and not from the next incoming. |
 | `pro/consumption/strategies/lrj/mom/with_manual_seek_spec.rb` | Manual seek per user request should super-seed the automatic LRJ movement. |
@@ -889,6 +894,7 @@
 | `pro/consumption/strategies/vp/different_coordinator_different_partitions_spec.rb` | Karafka should not use the same coordinator for jobs from different partitions |
 | `pro/consumption/strategies/vp/distributing_work_randomly_spec.rb` | Karafka should support possibility of distributing work randomly when using virtual partitions Note that even when using random distribution, messages from different partitions will never mix within a batch. |
 | `pro/consumption/strategies/vp/distributing_work_using_message_keys_spec.rb` | Karafka should support possibility of using message keys to distribute work We have two partitions but virtual partitioner should allow us to distribute this work across four threads concurrently. Note that you can get different combinations of messages for different batches fetched. The fact that the first time messages with key `a` were together with `c`, does not mean, that it will always be the same. The distribution combination is unique for the batch. One thing you can be sure, is that if you have messages with key `c`, they will always go to one of the virtual consumers. Virtual consumer instance is **not** warrantied. |
+| `pro/consumption/strategies/vp/empty_and_nil_keys_spec.rb` | Virtual partitions should handle edge cases with empty keys, nil keys, and keys that result in invalid partitioning scenarios without crashing the consumer. |
 | `pro/consumption/strategies/vp/errors_tracking/collapsed_consecutive_errors_accumulation_spec.rb` | When using virtual partitions and tracking errors, they under consecutive collapse should grow in terms of size |
 | `pro/consumption/strategies/vp/errors_tracking/consecutive_errors_spec.rb` | When using virtual partitions and tracking errors, under collapse they should be present collectively from many partitions |
 | `pro/consumption/strategies/vp/from_earliest_patterned_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) using multiple threads based on the used virtual partitioner. We should use more than one thread for processing of all the messages. This should also work as expected for pattern based topics. |
@@ -1123,6 +1129,7 @@
 | `pro/scheduled_messages/fast_close_past_schedules_spec.rb` | Messages scheduled close in past should work without any issues |
 | `pro/scheduled_messages/future_scheduled_cancelling_spec.rb` | When we cancel future already loaded daily message, it should not go out |
 | `pro/scheduled_messages/ordered_dispatches_spec.rb` | Messages going to one partition from one schedule topic partition should be always dispatched in order |
+| `pro/scheduled_messages/past_timestamps_spec.rb` | Scheduled messages with past timestamps should be handled gracefully - either executed immediately or properly discarded based on configuration. |
 | `pro/scheduled_messages/seeking_setup_flow_spec.rb` | When we define scheduled messages setup, it should have correct offset position configuration for offset reset |
 | `pro/scheduled_messages/with_constant_non_eof_flow_spec.rb` | When there are constantly published messages, the state should be switched within acceptable time after the messages reach the current time. This should happen even when EOF is not triggered. |
 | `pro/scheduled_messages/with_dispatched_except_one_for_dispatch_spec.rb` | When there are messages for dispatch but they were already dispatched (tombstone exists), we should not dispatch them again. We should only dispatch the once that were not |
