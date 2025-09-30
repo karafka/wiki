@@ -2,7 +2,6 @@
 
 1. To verify that Apache Kafka is running, run the following command:
 
-
 ```shell
 docker ps | grep kafka
 ```
@@ -37,7 +36,7 @@ bundle exec karafka install
 # You usually want to produce async but here it may raise exception if Kafka is not available, etc
 Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
 ```
-<!-- TODO: Polled — poprawne słowo?-->
+
 4. To start consuming messages, run the Karafka server:
 
 ```shell

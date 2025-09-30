@@ -109,7 +109,6 @@ Use the following prompt for AI to illustrate the solution in detail.
 
 This section is a prompt engineering guide to help you cooperate with AI assistants on more complex Karafka-related problems.
 
-
 ### Development Planning
 
 ```text
