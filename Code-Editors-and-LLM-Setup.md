@@ -55,7 +55,7 @@ The following process describes alternative approaches depending on your IDE's c
 ❌ Struggle with framework-specific patterns.  
 ❌ Get generic Kafka advice instead of Karafka-specific guidance . 
 
-### When you optimize your work with AI-enhanced documentation, you:
+**When you optimize your work with AI-enhanced documentation, you:**
 
 ✅ Get comprehensive answers that reference multiple docs.  
 ✅ Receive Karafka-specific best practices.  
@@ -86,7 +86,9 @@ Better:
 ```
 
 ### 2. **Mention Your Experience Level**
+
 You can specify your expertise on one of the following levels:
+
 - **New to Kafka**: to get foundational explanations
 - **Kafka expert, new to Karafka**: for AI to focus on framework-specific patterns
 - **Karafka user**: to get advanced optimization tips
@@ -104,6 +106,7 @@ Use the following prompt for AI to illustrate the solution in detail.
 ```
 
 ## Prompts for Advanced AI Workflows
+
 This section is a prompt engineering guide to help you cooperate with AI assistants on more complex Karafka-related problems.
 
 

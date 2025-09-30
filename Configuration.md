@@ -92,7 +92,7 @@ Kafka lets you compress your messages as they travel over the wire. By default, 
 
 If you plan to to use `zstd`, you need to install `libzstd-dev`:
 
-```bash
+```shell
 apt-get install -y libzstd-dev
 ```
 
