@@ -36,7 +36,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-LGPL">LGPL-3.0-only</a>
       or
-      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
+      <a rel="nofollow noopener noreferrer" href="https://karafka.io/docs/Pro-License-Comm">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>
@@ -49,7 +49,7 @@ This page exists because of our commitment to security, compliance, and transpar
       2.0+ (Pro enhancements)
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
+      <a rel="nofollow noopener noreferrer" href="https://karafka.io/docs/Pro-License-Comm">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>
@@ -77,7 +77,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-LGPL">LGPL-3.0-only</a>
       or
-      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
+      <a rel="nofollow noopener noreferrer" href="https://karafka.io/docs/Pro-License-Comm">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>
@@ -116,7 +116,7 @@ This page exists because of our commitment to security, compliance, and transpar
       All (Pro enhancements)
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/karafka/karafka/blob/master/LICENSE-COMM">Commercial</a>
+      <a rel="nofollow noopener noreferrer" href="https://karafka.io/docs/Pro-License-Comm">Commercial</a>
     </td>
     <td>Maciej Mensfeld</td>
   </tr>

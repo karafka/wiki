@@ -216,6 +216,7 @@
 1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
 1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
 1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
+1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
 
 ---
 
@@ -2900,3 +2901,32 @@ Karafka Web UI internal topics use compressed JSON serialization for all message
 The write throughput for Karafka Web UI internal topics follows predictable patterns based on your deployment. The throughput is proportional to the number of consumer processes for some topics, while others maintain fixed rates regardless of process count. The number of messages consumed by your consumers does not impact the throughput of these internal topics, as reporting frequency remains constant.
 
 All detailed throughput rates, message volumes, and operational cost breakdowns for each internal topic can be found in the [Web UI Operational Cost Breakdown](https://karafka.io/docs/Web-UI-Operational-Cost-Breakdown/) documentation.
+
+## Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?
+
+This is typically caused by a multiplexing configuration that creates more connections than available partitions. When you use `multiplexing(max: N)`, each multiplexed connection is treated by Kafka as a separate process/consumer. If your `max` value equals or exceeds your partition count, all partitions are already assigned to the existing multiplexed connections, leaving no partitions available for newly scaled consumers.
+
+Here's what may happen:
+
+- Topic has 4 partitions
+- Single consumer process with `multiplexing(max: 4)` 
+- Kafka sees this as 4 separate consumers, each getting 1 partition
+- When you scale up by adding more processes, there are no unassigned partitions left
+
+**Solutions:**
+
+**Use min-max multiplexing strategy:**
+
+```ruby
+multiplexing(min: 1, max: YOUR_ENV_VARIABLE, boot: 1)
+```
+
+This starts with minimal multiplexing (1 connection) and only scales up multiplexing when there's available capacity after at least one minute from the last rebalance.
+
+**Reduce multiplexing max value:**
+
+Set your multiplexing `max` to be less than your partition count, allowing room for additional consumer processes.
+
+**Increase partition count:**
+
+If you need both high multiplexing and multiple processes, consider increasing your topic's partition count.

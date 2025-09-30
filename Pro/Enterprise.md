@@ -30,6 +30,8 @@ Understanding the diverse needs of large organizations, the Enterprise version o
 
 Legal compliance, especially in today's complex regulatory environment, is paramount. With the Enterprise version, I am available to assist your organization in crafting any security or compliance documentation. This bespoke service ensures that your usage of Karafka aligns with industry standards and meets organizational requirements.
 
+For information about why certain compliance certifications (SOC 2, ISO 27001) do not apply to Karafka as a self-hosted framework, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
+
 ### Custom License Agreement
 
 While Karafka Pro is sold with its set terms and conditions, Enterprise customers may request contract changes. Recognizing that enterprise businesses might have specific requirements or concerns, we offer the flexibility for Enterprise users to request changes to the terms and conditions of the license agreement. This level of customization ensures that your organization's unique needs and preferences are met.

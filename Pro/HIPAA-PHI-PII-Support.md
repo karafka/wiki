@@ -110,3 +110,5 @@ Although HIPAA, PHI, and PII regulations do not explicitly require the use of pr
 ## Summary
 
 Karafka and Karafka Web UI offer a secure and adaptable platform that can be configured to meet the stringent requirements of environments governed by HIPAA, PHI, and PII regulations. Key features such as at-rest and in-transit data encryption, role-based access control, granular data presentation, comprehensive logging, and configurable data access policies make Karafka a robust solution for managing sensitive data streams in compliance with privacy laws.
+
+For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
