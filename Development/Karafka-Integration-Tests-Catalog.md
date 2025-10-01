@@ -1234,6 +1234,7 @@
 | `rebalancing/exceeding_max_poll_with_late_commit_spec.rb` | When processing beyond the poll interval, with slower offset commit, we will restart processing and there should be duplicated messages. |
 | `rebalancing/kip_848/mixed_protocols_spec.rb` | Test that both old (eager/cooperative) and new (KIP-848) rebalance protocols can work simultaneously in different consumer groups within Karafka We'll set up multiple Karafka apps with different configurations to simulate different consumer groups with different protocols Consumer class for KIP-848 group |
 | `rebalancing/kip_848/multiple_groups_spec.rb` | Test multiple consumer groups using the new KIP-848 consumer group protocol This ensures different consumer groups can consume the same topic independently |
+| `rebalancing/kip_848/newly_joined_fencing_spec.rb` | Test rebalancing with KIP-848 by verifying that new consumer joining with same group instance id should be fenced If new consumer is not fenced, it will run forever and spec will timeout |
 | `rebalancing/kip_848/rebalancing_spec.rb` | Test rebalancing with KIP-848 by verifying partition assignment changes when a second consumer joins the group |
 | `rebalancing/kip_848/simple_spec.rb` | Test that KIP-848 consumer group protocol works with basic consumption |
 | `rebalancing/lifecycle_events_spec.rb` | When rebalance occurs, we should go through all the proper lifecycle events and only for the subscription group for which rebalance occurs. Details should be present and second group should be intact. |
