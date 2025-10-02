@@ -183,8 +183,10 @@
 | `consumption/strategies/default/from_earliest_simple_routing_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) when simple routing is in use |
 | `consumption/strategies/default/from_earliest_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) |
 | `consumption/strategies/default/from_latest_with_non_persistent_error_spec.rb` | When we connect for the first time with cluster from a new consumer group and start consuming from earliest and an error occurs on a first message, we should pause and retry consumption until we can process this message. No messages should be skipped or ignored. |
-| `consumption/strategies/default/kip_848_revocation_on_timeout_spec.rb` | Test KIP-848 with regular (non-LRJ) consumption to ensure that when max.poll.interval.ms is exceeded, the consumer is properly kicked out and revoked callbacks are triggered |
-| `consumption/strategies/default/kip_848_shutdown_revocation_spec.rb` | Test KIP-848 to verify that the #revoked callback is not called during shutdown |
+| `consumption/strategies/default/kip_848/post_revocation_recovery_spec.rb` | Karafka should recover from expired timeout when post-recovery the processing is fast enough |
+| `consumption/strategies/default/kip_848/revocation_on_timeout_spec.rb` | Test KIP-848 with regular (non-LRJ) consumption to ensure that when max.poll.interval.ms is exceeded, the consumer is properly kicked out and revoked callbacks are triggered |
+| `consumption/strategies/default/kip_848/shutdown_revocation_spec.rb` | Test KIP-848 to verify that the #revoked callback is not called during shutdown |
+| `consumption/strategies/default/kip_848/single_cg_mixed_spec.rb` | Karafka should allow for running a single consumer group with new protocol members joining. It should allow for transition. Note: it is not recommended to do so. |
 | `consumption/strategies/default/many_topics_same_group_spec.rb` | Karafka should be able to subscribe and consume messages from as many topics as someone wants Here we consume from 100 topics |
 | `consumption/strategies/default/multi_topic_ping_pong_spec.rb` | Karafka should be able to easily consume messages sent from one topic to another |
 | `consumption/strategies/default/non_constant_error_and_other_topics_spec.rb` | When on one partition topic an error occurs, other topics should be processed and given partition should catch up on recovery after the pause timeout |
