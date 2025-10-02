@@ -28,30 +28,8 @@ The automatic idle producer disconnection feature allows WaterDrop to automatica
 
 ### Configuring automatic idle producer disconnection 
 
-To enable automatic idle producer disconnection, follow these steps:
+To enable automatic idle producer disconnection, create a new WaterDrop producer instance and set the timeout with a configuration block:
 
-1. Create a new WaterDrop producer instance with a configuration block:
-   ```ruby
-   producer = WaterDrop::Producer.new do |config|
-   ```
-
-2. Set the idle disconnection timeout using the `idle_disconnect_timeout` parameter:
-   ```ruby
-   config.idle_disconnect_timeout = 60_000  # Disconnect after 60 seconds of inactivity
-   ```
-
-3. Configure the Kafka connection settings in the `kafka` block:
-   ```ruby
-   config.kafka = {
-     'bootstrap.servers': 'localhost:9092'
-   }
-   end
-   ```
-   ``  
-
-**Result:** The producer automatically disconnects after 60 seconds of inactivity and establishes fresh connections when it becomes active again.
-
-**Complete configuration example:**
 ```ruby
 producer = WaterDrop::Producer.new do |config|
   config.idle_disconnect_timeout = 60_000 # Disconnect after 60 seconds of inactivity
@@ -61,6 +39,7 @@ producer = WaterDrop::Producer.new do |config|
 end
 ```
 
+**Result:** The producer automatically disconnects after 60 seconds of inactivity and establishes fresh connections when it becomes active again.
 
 ### Configuration Options
 
