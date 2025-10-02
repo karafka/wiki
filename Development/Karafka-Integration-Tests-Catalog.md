@@ -48,6 +48,7 @@
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_multi_partition_all_spec.rb` | We should be able to move the offset way beyond in time for all partitions at once |
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_multi_partition_spec.rb` | We should be able to move the offset way beyond in time for all partitions at once |
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_spec.rb` | We should be able to move the offset way beyond in time and should just select first offset This should work when defining time on a topic level |
+| `admin/consumer_groups/trigger_rebalance_spec.rb` | Karafka should be able to trigger a rebalance for a consumer group using Admin API |
 | `admin/copy_consumer_group/when_previous_and_new_cgs_exist_spec.rb` | When we have old cg and new cg and topics with offsets to migrate, it should work |
 | `admin/copy_consumer_group/when_previous_cg_does_not_exist_spec.rb` | When the previous consumer group does not exist, it should not crash |
 | `admin/copy_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
