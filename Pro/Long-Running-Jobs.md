@@ -75,7 +75,7 @@ end
 
 Upon a group rebalance, there are three scenarios affecting the paused partition you are processing:
 
-1. Partition is not revoked because `cooperative-sticky` assignment strategy is in use.
+1. Partition is not revoked because an incremental rebalancing strategy (KIP-848 or `cooperative-sticky`) is in use.
 2. Partition is revoked and re-assigned to the same process.
 3. Partition is revoked and assigned to a different process.
 
@@ -87,9 +87,24 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 
     Revocation jobs are also non-blocking for long-running jobs. If the internal workers' batch is full, they will not block polling.
 
-### `cooperative-sticky` rebalance
+### Rebalancing Strategy for Long-Running Jobs
 
-Using the `cooperative-sticky` assignment strategy is recommended when using Long-Running Jobs. This can increase overall stability by not triggering revocation of partitions upon rebalances when partition would be re-assigned back:
+Using an appropriate rebalancing strategy is recommended when using Long-Running Jobs. This can increase overall stability by minimizing partition revocations during rebalances:
+
+**For Kafka 4.0+ - Recommended:**
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'group.protocol': 'consumer'
+    }
+  end
+end
+```
+
+**For older Kafka versions - Use cooperative-sticky:**
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -101,6 +116,8 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+Both strategies help avoid unnecessary partition revocations when partitions would be re-assigned back to the same process.
 
 ### Revocation and re-assignment
 

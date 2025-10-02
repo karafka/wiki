@@ -64,13 +64,35 @@ Topics that are automatically created because of `allow.auto.create.topics` are 
 
 ## Consider the Impact of Rolling Deployments on Rebalances
 
-Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative-sticky` rebalance strategy can mitigate some of these issues.
+Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. Choosing the right rebalancing strategy can significantly mitigate these issues.
+
+### Recommended Rebalancing Strategies
+
+**For Kafka 4.0+:**
 
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092',
+      # Use the new consumer protocol (KIP-848) - Recommended
+      'group.protocol': 'consumer',
+      'group.remote.assignor': 'uniform' # or 'range'
+    }
+  end
+end
+```
+
+Benefits: Faster rebalancing, minimal disruption, improved static membership
+
+**For older Kafka versions:**
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      # Fallback to cooperative-sticky for older brokers
       'partition.assignment.strategy': 'cooperative-sticky'
     }
   end
