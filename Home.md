@@ -54,6 +54,7 @@
 - [Connection Management](WaterDrop-Connection-Management)
 - [Connection Pool](WaterDrop-Connection-Pool)
 - [Async Ecosystem Integration](WaterDrop-Async-Integration)
+- [Instrumentation Events](WaterDrop-Instrumentation-Events)
 
 ## Production Usage
 
@@ -68,6 +69,7 @@
     - [Confluent Cloud](Deployment#confluent-cloud)
     - [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers)
 - [Monitoring and Logging](Monitoring-and-Logging)
+- [Instrumentation Events](Instrumentation-Events)
 - [Error Handling and back off policy](Error-handling-and-back-off-policy)
 
 ## Advanced
