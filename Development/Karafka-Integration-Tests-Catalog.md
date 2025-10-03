@@ -1367,6 +1367,7 @@
 | `swarm/with_blocking_at_exit_spec.rb` | When supervisor stops work but do not stop because of blocking `at_exit` in them, supervisor should kill them |
 | `swarm/with_different_producer_payload_sizes_spec.rb` | When creating a producer in forks, forks should inherit all producer settings and not only the once coming from th kafka scope The id should NOT be inherited not to create confusion. |
 | `testing/minitest_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
+| `testing/rspec/dynamic_sg_dispatch_spec.rb` | We should be able to use testing lib with rspec for topics that belong to one of few SGs from a single CG |
 | `testing/rspec/simple_integration_spec.rb` | We should be able to use testing lib with rspec in a simple manner |
 | `testing/rspec_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
 | `web/end_to_end_install_flow_pristine/install_with_rails_spec.rb` | Karafka 2.4+ should work ok with 0.9.0+ |
