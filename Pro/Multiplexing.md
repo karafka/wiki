@@ -284,7 +284,26 @@ Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs.
 
 There are two things you need to do to fully facilitate dynamic multiplexing:
 
-1. Make sure you use `cooperative-sticky` rebalance strategy either globally or within the selected subscription group:
+1. Use an appropriate rebalance strategy that supports incremental rebalancing. Choose based on your Kafka version:
+
+**For Kafka 4.0+ - Recommended:**
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # Other kafka settings...
+      'group.protocol': 'consumer'
+    }
+  end
+
+  routes.draw do
+    # ...
+  end
+end
+```
+
+**For older Kafka versions:**
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -301,11 +320,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! warning "Always Use Cooperative-Sticky Rebalance with the Dynamic Mode"
+!!! warning "Always Use Incremental Rebalancing with Dynamic Mode"
 
-    The `cooperative-sticky` rebalance strategy is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays. 
+    An incremental rebalancing strategy (KIP-848 or cooperative-sticky) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
 
-    `cooperative-sticky` strategy minimizes these disruptions by allowing more gradual and efficient rebalancing, ensuring smoother operation and more consistent throughput.
+    KIP-848 (recommended for Kafka 4.0+) provides the fastest and most efficient rebalancing. The `cooperative-sticky` strategy (for older Kafka versions) also minimizes disruptions by allowing gradual rebalancing, ensuring smoother operation and consistent throughput.
 
 !!! warning "Caution Against Using Dynamic Connection Multiplexing with Long-Running Jobs"
 
