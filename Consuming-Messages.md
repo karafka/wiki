@@ -44,7 +44,7 @@ end
 
 While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may want to process messages one at a time.
 
-You can achieve this by defining a base consumer with such a capability:
+You can achieve this by defining a base consumer with such capability:
 
 ```ruby
 class SingleMessageBaseConsumer < Karafka::BaseConsumer
@@ -69,7 +69,13 @@ end
 
 ### Accessing Topic Details
 
-If, in any case, your logic is dependent on some routing details, you can access them from the consumer using the ```#topic``` method. You could use it, for example, in case you want to perform a different logic within a single consumer based on the topic from which your messages come:
+If your logic depends on specific routing details, you can access them from the consumer, using the ```#topic``` method.
+
+!!! example Use Case
+
+    You could use it, for example, when you want to perform a different logic within a single consumer based on the topic from which your messages come.
+
+To access the topic details, call the ```#topic``` method within the consume method:
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -87,7 +93,7 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-If you're interested in all the details that are stored in the topic, you can extract all of them at once, by using the ```#to_h``` method:
+To extract all the details that are stored in the topic at once, use the ```#to_h``` method:
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -99,7 +105,7 @@ end
 
 ## Consuming From Earliest or Latest Offset
 
-Karafka, by default, will start consuming messages from the earliest it can reach. You can, however configure it to start consuming from the latest message by setting the `initial_offset` value as a default:
+By default, Karafka will start consuming messages from the earliest available offset. However, you can configure it to begin consuming from the latest message by setting the `initial_offset` value as the default.
 
 ```ruby
 # This will start from the earliest (default)
