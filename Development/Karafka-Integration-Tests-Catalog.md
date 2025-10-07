@@ -1013,6 +1013,7 @@
 | `pro/licensing/load_poro/configure_spec.rb` | Karafka in a PORO project should load without any problems |
 | `pro/licensing/load_poro/early_components_visibility_spec.rb` | Karafka in a PORO project should load components after the require even prior to the setup, so we can use those when needed |
 | `pro/licensing/post_checksum_verification_poro/verify_spec.rb` | Run the verification script post install to make sure it works as expected |
+| `pro/pausing/with_per_topic_pause_setup_old_api_spec.rb` | When customizing the error pausing strategy using old API (setters), each topic should obey its own limitations This is a backwards compatibility test |
 | `pro/pausing/with_per_topic_pause_setup_spec.rb` | When customizing the error pausing strategy, each topic should obey its own limitations |
 | `pro/performance_tracking_spec.rb` | Karafka should track consumption rate metrics when pro This metrics tracker is then used internally for optimization purposes |
 | `pro/rails/active_job/dispatching_async_job_spec.rb` | Karafka should be able to dispatch jobs using async pro adapter |
@@ -1118,14 +1119,18 @@
 | `pro/routing/patterns/same_pattern_in_same_consumer_group_spec.rb` | We should not be able to define same pattern multiple times in the same consumer group |
 | `pro/routing/patterns/with_non_existing_topics_excluded_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is not part of the exclusion, it should work |
 | `pro/routing/patterns/without_pro_spec.rb` | When running non-pro, patterns should not be available |
+| `pro/routing/pausing/with_bidirectional_compatibility_spec.rb` | Verify that both old and new pause configuration styles work and are bidirectionally compatible |
+| `pro/routing/pausing/with_config_object_old_api_spec.rb` | Verify that the old pause configuration API (setters) still works correctly This is a backwards compatibility test |
+| `pro/routing/pausing/with_config_object_spec.rb` | Verify that the new pausing config object approach works correctly |
 | `pro/routing/pausing/with_custom_invalid_pausing_spec.rb` | When overwriting the default pausing strategy on a per topic basis with something invalid, validations should kick in and stop it |
+| `pro/routing/pausing/with_custom_valid_old_api_spec.rb` | When altering the default pausing using old API (setters), it should not impact other topics This is a backwards compatibility test |
 | `pro/routing/pausing/with_custom_valid_spec.rb` | When altering the default pausing, it should not impact other topics |
 | `pro/routing/pro_with_long_running_job_spec.rb` | I should be able to define a topic consumption with long-running job indication It should not impact other jobs and the default should not be lrj |
 | `pro/routing/pro_with_virtual_partitioner_spec.rb` | I should be able to define a topic consumption with virtual partitioner. It should not impact other jobs and the default should not have it. |
 | `pro/routing/recurring_tasks/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/scheduled_messages/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/valid_with_features_usage_spec.rb` | Karafka should auto-load all the routing features |
-| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG We also should be able to use any of the pause declaration styles. |
+| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG |
 | `pro/routing/with_same_topic_in_multiple_same_subscription_groups_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group with same subscription group name |
 | `pro/routing/with_same_topic_in_multiple_sgs_diff_consumer_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group when trying to define different consumer classes. |
 | `pro/routing/with_same_topic_in_multiple_subscription_groups_spec.rb` | Karafka should allow for same topic to be present in multiple subscription groups in the same consumer group as long as subscription groups have different names and same consumer class |
@@ -1282,6 +1287,9 @@
 | `routing/limited_scope/with_nothing_to_run_spec.rb` | When combination of consumer groups, subscription groups and topics we want to run is such, that they do not exist all together, we need to raise an error. |
 | `routing/limited_scope/with_only_inactive_topics_spec.rb` | When all our topics are disabled in routing, we should not allow Karafka to run |
 | `routing/overlapping_consumer_patterns_spec.rb` | Karafka should handle complex consumer patterns and prevent conflicts |
+| `routing/pausing/with_global_config_backwards_compatibility_spec.rb` | Verify that both old and new global pause configuration APIs work and are bidirectionally compatible |
+| `routing/pausing/with_global_config_new_api_spec.rb` | Verify that the new global pause configuration API works correctly |
+| `routing/pausing/with_global_config_old_api_spec.rb` | Verify that the old global pause configuration API (setters) still works correctly This is a backwards compatibility test |
 | `routing/runtime_routing_expansion_spec.rb` | When Karafka runs, we should be able to inject new routes and they should be picked It does NOT mean they will be used (not yet) but it should mean, that valid once are accepted and invalid are validated and an error is raised. This spec ensures, that dynamic routing expansions in runtime are subject to validation |
 | `routing/special_character_topics_spec.rb` | Karafka should handle topics with special characters properly |
 | `routing/stable_with_limited_consumer_groups_excluded_spec.rb` | When building subscription groups and then using a limited subset of consumer groups simulating the --exclude_consumer_groups flag should not impact the numbers in the group |
