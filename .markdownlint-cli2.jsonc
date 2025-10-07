@@ -6,6 +6,8 @@
     "!Librdkafka/Statistics.md",
     "!Librdkafka/Configuration.md",
     "!Development/Karafka-Integration-Tests-Catalog.md",
+    "!Instrumentation-Events.md",
+    "!WaterDrop/Instrumentation-Events.md",
     "!Changelog/*.md",
     "!Pro/License-Comm.md",
     "!.gh/**",

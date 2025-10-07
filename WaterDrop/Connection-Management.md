@@ -1,8 +1,8 @@
-WaterDrop provides advanced connection management features that complement librdkafka's native connection handling, helping to optimize resource usage and maintain efficient connections to Kafka brokers. These features are particularly valuable in environments with varying message production patterns.
+WaterDrop provides advanced connection management features that complement the process of handling the native connection in librdkafka, helping to optimize resource usage and maintain efficient connections to Kafka brokers. These features are particularly valuable in the environments with varying message production patterns.
 
 ## Connection Management Background
 
-Understanding how connections are managed across the stack is essential for effective resource optimization:
+Understanding how connections are managed across the stack is essential for effective resource optimization.
 
 ### librdkafka Native Connection Management
 
@@ -10,25 +10,25 @@ librdkafka features built-in connection management through configuration options
 
 ### Kafka Broker Connection Reaping
 
-Kafka brokers themselves also manage connections through their own connection reaper mechanisms, closing idle client connections based on server-side configuration.
+Kafka brokers themselves also manage connections through their own connection reaper mechanisms, closing idle client connections based on the server-side configuration.
 
-### WaterDrop's Enhancement
+### WaterDrop Enhancement
 
-WaterDrop's automatic idle producer disconnection feature fills an important gap by providing **complete producer-level disconnection**, including the leader connection that librdkafka keeps open. When WaterDrop disconnects an idle producer, it performs a full shutdown and will establish fresh connections (including a new leader connection) when the producer becomes active again.
+ Automatic idle producer disconnection feature of WaterDrop fills a critical gap by providing a **complete producer-level disconnection**, including the leader connection that librdkafka keeps open. When WaterDrop disconnects an idle producer, it performs a full shutdown and establishes fresh connections (including a new leader connection), when the producer becomes active again.
 
-This is particularly valuable because:
+#### Key Advantages
 
-- **Addresses the leader connection limitation**: Unlike librdkafka's native idle connection handling, WaterDrop can close all connections, including the persistent leader connection
-- **Producer-level control**: Operates at the WaterDrop producer instance level rather than individual broker connections
-- **Complete resource cleanup**: Ensures full connection pool cleanup during extended idle periods
+- **Addressing the leader connection limitation**: Unlike  native idle connection handling in librdkafka, WaterDrop can close all connections, including the persistent leader connection.
+- **Producer-level control**: Waterdrop operates at the producer instance level rather than individual broker connections.
+- **Complete resource cleanup**: Waterdrop ensures full connection pool cleanup during extended idle periods.
 
 ## Automatic Idle Producer Disconnection
 
-The automatic idle producer disconnection feature allows WaterDrop to automatically disconnect entire producers (including all their connections) when they have been inactive for a specified period. This provides more comprehensive resource management than librdkafka's native connection idle handling.
+The automatic idle producer disconnection feature allows WaterDrop to automatically disconnect entire producers, along with all their connections, when they have been inactive for a specified period. This feature offers more effective resource management compared to the native idle connection handling provided by librdkafka.
 
-### Configuration
+### Configuring automatic idle producer disconnection 
 
-The idle disconnection feature is controlled by the `idle_disconnect_timeout` configuration option:
+To enable automatic idle producer disconnection, create a new WaterDrop producer instance and set the timeout with a configuration block:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -38,6 +38,8 @@ producer = WaterDrop::Producer.new do |config|
   }
 end
 ```
+
+**Result:** The producer automatically disconnects after 60 seconds of inactivity and establishes fresh connections when it becomes active again.
 
 ### Configuration Options
 
@@ -65,22 +67,22 @@ end
 
 !!! note "Minimum Timeout"
 
-    The minimum allowed timeout is 30 000 milliseconds. Values below 30 000 will result in a configuration error.
+    The minimum timeout allowed is 30 000 milliseconds. Values below 30 000 result in a configuration error.
 
-### How It Works
+### Idle Disconnection Mechanism
 
-The idle disconnection mechanism monitors producer activity and automatically disconnects producers that haven't transmitted messages within the configured timeout period.
+The idle disconnection feature monitors producer activity and automatically disconnects the producers that haven not transmitted messages within the configured timeout period.The following process is aplied.
 
-1. **Activity Monitoring**: WaterDrop tracks the last message transmission time for each producer
-2. **Timeout Check**: Periodically checks if producers have exceeded the idle timeout
-3. **Safe Disconnection**: Only disconnects producers that are in a safe state (no pending operations)
-4. **Automatic Reconnection**: Producers automatically reconnect when new messages need to be sent
+1. **Activity Monitoring**: WaterDrop tracks the last message transmission time for each producer.
+2. **Timeout Check**: WaterDrop periodically checks if producers have exceeded the idle timeout.
+3. **Safe Disconnection**: WaterDrop disconnects only the producers that are in a safe state (no pending operations).
+4. **Automatic Reconnection**: The producers automatically reconnect when new messages need to be sent.
 
-### Example Usage Scenarios
+### Usage Scenarios
 
 #### Low-Frequency Background Jobs
 
-For applications that send messages sporadically, such as background job notifications:
+For applications that send messages sporadically such as background job notifications, configure your producer with the following settings:
 
 ```ruby
 # Configure for background job producer
@@ -99,7 +101,7 @@ job_producer.produce_async(topic: 'job_notifications', payload: job_data)
 
 #### Resource-Constrained Environments
 
-In environments where connection limits or memory usage are concerns:
+In environments where connection limits or memory usage are concern, configure your producer with the following settings:
 
 ```ruby
 # Configure for efficient resource usage
@@ -128,7 +130,7 @@ end
 
 ### Monitoring and Observability
 
-When using idle disconnection, you can monitor your producer's connection behavior through WaterDrop's built-in instrumentation:
+When you use idle disconnection, track the producer connection lifecycle with the following event subscriptions to the WaterDrop instrumentation system:
 
 ```ruby
 # Subscribe to connection events
@@ -143,16 +145,18 @@ end
 
 ### Performance Considerations
 
+Understanding the performance implications of idle disconnection will help you make informed decisions about timeout configuration for your specific use case. While this feature provides significant resource and cost benefits, it's important to consider the potential impact on message delivery patterns and connection overhead in your application architecture.
+
 #### Benefits
 
-- **Reduced Resource Usage**: Fewer idle TCP connections consume less system resources
-- **Better Connection Pool Management**: Prevents connection pool exhaustion in broker clusters
-- **Cost Optimization**: Reduces network overhead in cloud environments
+- **Reduced Resource Usage**: Fewer idle TCP connections consume less system resources.
+- **Better Connection Pool Management**: Prevents connection pool exhaustion in broker clusters.
+- **Cost Optimization**: Reduces network overhead in cloud environments.
 
 #### Trade-offs
 
-- **Reconnection Latency**: First message after disconnection incurs reconnection overhead
-- **Metadata Refresh**: Reconnecting producers need to refresh topic metadata
+- **Reconnection Latency**: First message after disconnection incurs reconnection overhead.
+- **Metadata Refresh**: Reconnecting producers need to refresh topic metadata.
 
 ## Interaction with librdkafka Connection Settings
 

@@ -48,6 +48,7 @@
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_multi_partition_all_spec.rb` | We should be able to move the offset way beyond in time for all partitions at once |
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_multi_partition_spec.rb` | We should be able to move the offset way beyond in time for all partitions at once |
 | `admin/consumer_groups/seek_consumer_group/topic_time_total_past_spec.rb` | We should be able to move the offset way beyond in time and should just select first offset This should work when defining time on a topic level |
+| `admin/consumer_groups/trigger_rebalance_spec.rb` | Karafka should be able to trigger a rebalance for a consumer group using Admin API |
 | `admin/copy_consumer_group/when_previous_and_new_cgs_exist_spec.rb` | When we have old cg and new cg and topics with offsets to migrate, it should work |
 | `admin/copy_consumer_group/when_previous_cg_does_not_exist_spec.rb` | When the previous consumer group does not exist, it should not crash |
 | `admin/copy_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
@@ -125,6 +126,7 @@
 | `consumption/concurrency/shared_mutable_objects_spec.rb` | Karafka should handle message processing with shared mutable objects safely |
 | `consumption/concurrency/thread_local_isolation_spec.rb` | Karafka should handle thread-local variable isolation properly |
 | `consumption/consumer_initialization_with_preexisting_topics_spec.rb` | Karafka should initialize consumers properly when topics already have messages |
+| `consumption/eofed/eof_offset_continuity_spec.rb` | Regression test to ensure correct offset handling when EOF is reached and subsequent messages are produced. Note: While librdkafka has a bug in rd_kafka_consume_batch() where offsets can be incorrectly advanced by 2 after EOF (see https://github.com/confluentinc/librdkafka/pull/5213), this bug does NOT affect Karafka as we use different APIs (rd_kafka_consumer_poll). However, the bug affects rd_kafka_position(), which we use. This test verifies that position tracking remains correct after EOF. Test scenario: 1. Produce 5 messages (offsets 0-4) 2. Consume all and reach EOF 3. Verify position is 5 (last consumed + 1) 4. Produce 1 more message (offset 5) 5. Verify all 6 messages are consumed with continuous offsets (0-5) |
 | `consumption/eofed/error_recovery_spec.rb` | When eof is in use and `#eofed` crashes, it should emit an error but it should not cause any other crashes. Since `#eofed` does not deal with new data, it is not retried. It is up to the user to deal with any retry policies he may want to have eofed errors should not leak and processing should continue |
 | `consumption/eofed/marking_as_consumed_spec.rb` | We should be able to mark as consumed from the `#eofed` |
 | `consumption/eofed/post_consumption_spec.rb` | When eof is in use we may not get it as it may go with messages polling via `#consume` It may happen that eof goes via `#eofed` because of polling but we will correct this spec only when this would happen as it should not be frequent |
@@ -1011,6 +1013,7 @@
 | `pro/licensing/load_poro/configure_spec.rb` | Karafka in a PORO project should load without any problems |
 | `pro/licensing/load_poro/early_components_visibility_spec.rb` | Karafka in a PORO project should load components after the require even prior to the setup, so we can use those when needed |
 | `pro/licensing/post_checksum_verification_poro/verify_spec.rb` | Run the verification script post install to make sure it works as expected |
+| `pro/pausing/with_per_topic_pause_setup_old_api_spec.rb` | When customizing the error pausing strategy using old API (setters), each topic should obey its own limitations This is a backwards compatibility test |
 | `pro/pausing/with_per_topic_pause_setup_spec.rb` | When customizing the error pausing strategy, each topic should obey its own limitations |
 | `pro/performance_tracking_spec.rb` | Karafka should track consumption rate metrics when pro This metrics tracker is then used internally for optimization purposes |
 | `pro/rails/active_job/dispatching_async_job_spec.rb` | Karafka should be able to dispatch jobs using async pro adapter |
@@ -1116,14 +1119,18 @@
 | `pro/routing/patterns/same_pattern_in_same_consumer_group_spec.rb` | We should not be able to define same pattern multiple times in the same consumer group |
 | `pro/routing/patterns/with_non_existing_topics_excluded_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is not part of the exclusion, it should work |
 | `pro/routing/patterns/without_pro_spec.rb` | When running non-pro, patterns should not be available |
+| `pro/routing/pausing/with_bidirectional_compatibility_spec.rb` | Verify that both old and new pause configuration styles work and are bidirectionally compatible |
+| `pro/routing/pausing/with_config_object_old_api_spec.rb` | Verify that the old pause configuration API (setters) still works correctly This is a backwards compatibility test |
+| `pro/routing/pausing/with_config_object_spec.rb` | Verify that the new pausing config object approach works correctly |
 | `pro/routing/pausing/with_custom_invalid_pausing_spec.rb` | When overwriting the default pausing strategy on a per topic basis with something invalid, validations should kick in and stop it |
+| `pro/routing/pausing/with_custom_valid_old_api_spec.rb` | When altering the default pausing using old API (setters), it should not impact other topics This is a backwards compatibility test |
 | `pro/routing/pausing/with_custom_valid_spec.rb` | When altering the default pausing, it should not impact other topics |
 | `pro/routing/pro_with_long_running_job_spec.rb` | I should be able to define a topic consumption with long-running job indication It should not impact other jobs and the default should not be lrj |
 | `pro/routing/pro_with_virtual_partitioner_spec.rb` | I should be able to define a topic consumption with virtual partitioner. It should not impact other jobs and the default should not have it. |
 | `pro/routing/recurring_tasks/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/scheduled_messages/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/valid_with_features_usage_spec.rb` | Karafka should auto-load all the routing features |
-| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG We also should be able to use any of the pause declaration styles. |
+| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG |
 | `pro/routing/with_same_topic_in_multiple_same_subscription_groups_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group with same subscription group name |
 | `pro/routing/with_same_topic_in_multiple_sgs_diff_consumer_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group when trying to define different consumer classes. |
 | `pro/routing/with_same_topic_in_multiple_subscription_groups_spec.rb` | Karafka should allow for same topic to be present in multiple subscription groups in the same consumer group as long as subscription groups have different names and same consumer class |
@@ -1166,6 +1173,7 @@
 | `pro/web/with_idle_and_fast_shutdown_spec.rb` | When the idle job kicks in before we had a chance to process any data, it should still have access to empty messages batch with proper offset positions (-1001) and no messages. Web tracking should pick it up and not fail |
 | `pro/web/with_tick_and_eofed_errors_spec.rb` | When we use web-ui and error happens during eofed and tick when no offsets were marked as consumed, web UI should not fail. It used to fail because it was trying to extract offsets from not (yet) existing marking |
 | `production/compression_different_no_conflict_spec.rb` | Kafka allows to use different default compression and per producer compression type It should be supported in Karafka |
+| `production/dropped_message_error_handling_spec.rb` | WaterDrop should handle dropped messages gracefully when Kafka is unavailable This spec demonstrates how to track dropped messages using the labeling API and error.occurred notifications |
 | `production/inflight_topic_removal_spec.rb` | Karafka should emit an inline error if topic that was used was suddenly removed In async, it should emit it via the error pipeline |
 | `production/reject_no_key_message_when_compacted_spec.rb` | Kafka should reject a message on a compacted topic, when this message does not contain a key |
 | `production/via_overwritten_producer_spec.rb` | User should be able to redefine the per consumer producer instance via direct `#producer` redefinition. It should be then fully usable |
@@ -1279,6 +1287,9 @@
 | `routing/limited_scope/with_nothing_to_run_spec.rb` | When combination of consumer groups, subscription groups and topics we want to run is such, that they do not exist all together, we need to raise an error. |
 | `routing/limited_scope/with_only_inactive_topics_spec.rb` | When all our topics are disabled in routing, we should not allow Karafka to run |
 | `routing/overlapping_consumer_patterns_spec.rb` | Karafka should handle complex consumer patterns and prevent conflicts |
+| `routing/pausing/with_global_config_backwards_compatibility_spec.rb` | Verify that both old and new global pause configuration APIs work and are bidirectionally compatible |
+| `routing/pausing/with_global_config_new_api_spec.rb` | Verify that the new global pause configuration API works correctly |
+| `routing/pausing/with_global_config_old_api_spec.rb` | Verify that the old global pause configuration API (setters) still works correctly This is a backwards compatibility test |
 | `routing/runtime_routing_expansion_spec.rb` | When Karafka runs, we should be able to inject new routes and they should be picked It does NOT mean they will be used (not yet) but it should mean, that valid once are accepted and invalid are validated and an error is raised. This spec ensures, that dynamic routing expansions in runtime are subject to validation |
 | `routing/special_character_topics_spec.rb` | Karafka should handle topics with special characters properly |
 | `routing/stable_with_limited_consumer_groups_excluded_spec.rb` | When building subscription groups and then using a limited subset of consumer groups simulating the --exclude_consumer_groups flag should not impact the numbers in the group |
@@ -1366,6 +1377,7 @@
 | `swarm/with_blocking_at_exit_spec.rb` | When supervisor stops work but do not stop because of blocking `at_exit` in them, supervisor should kill them |
 | `swarm/with_different_producer_payload_sizes_spec.rb` | When creating a producer in forks, forks should inherit all producer settings and not only the once coming from th kafka scope The id should NOT be inherited not to create confusion. |
 | `testing/minitest_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
+| `testing/rspec/dynamic_sg_dispatch_spec.rb` | We should be able to use testing lib with rspec for topics that belong to one of few SGs from a single CG |
 | `testing/rspec/simple_integration_spec.rb` | We should be able to use testing lib with rspec in a simple manner |
 | `testing/rspec_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
 | `web/end_to_end_install_flow_pristine/install_with_rails_spec.rb` | Karafka 2.4+ should work ok with 0.9.0+ |
