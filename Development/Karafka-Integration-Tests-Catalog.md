@@ -301,8 +301,10 @@
 | `instrumentation/aj_per_job_consumption_events_spec.rb` | Karafka should instrument on particular active job jobs and should include details allowing for correlation of jobs with topic, messages, etc |
 | `instrumentation/app_status_lifecycle_flow_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages States changes that are published |
 | `instrumentation/assignment_and_revocation_logs_spec.rb` | Karafka should have the info level logging of assigned and revoked partitions |
+| `instrumentation/assignments_tracker_revocation_detection_spec.rb` | This spec demonstrates using Fiber storage to pass context (topic, partition) to helper classes without explicit arguments, enabling them to check assignment status. |
 | `instrumentation/before_schedule_jobs_tracking_spec.rb` | Karafka should instrument prior to each consumer being scheduled |
 | `instrumentation/cg_info_on_maximum_poll_interval_exceeded_spec.rb` | When we exceed max.poll.interval the error should contain CG name |
+| `instrumentation/client_events_poll_on_assignment_loss_spec.rb` | This spec verifies that the client.events_poll event is emitted when assignment loss is detected, and that the AssignmentsTracker properly clears assignments in response. |
 | `instrumentation/consumer_seeking_spec.rb` | We should be able to instrument seeking |
 | `instrumentation/consumers_runtime_tagging_spec.rb` | Karafka should allow us to tag consumers runtime operations and should allow us to track those tags whenever we need from any external location. |
 | `instrumentation/consumption_event_vs_processing_spec.rb` | Karafka should publish same number of consumed events as batches consumed We also should track the assignments correctly |
@@ -1270,6 +1272,12 @@
 | `routing/cluster_info_based_discovery_spec.rb` | We should be able to build topics based on cluster info |
 | `routing/conflicting_consumer_group_settings_spec.rb` | Karafka should detect conflicting configurations that cause namespace collisions |
 | `routing/consumer_group_empty_topics_spec.rb` | Karafka should detect and reject consumer groups with no topics defined |
+| `routing/consumer_group_reopening/comprehensive_reopening_spec.rb` | Comprehensive test covering multiple consumer group reopening scenarios: - Multiple named consumer groups - Implicit default group - Reopening multiple times - All in a single test to verify complex interactions |
+| `routing/consumer_group_reopening/duplicate_topic_in_reopened_group_spec.rb` | Test what happens when the same topic name is defined twice when reopening a consumer group Expected: Karafka should raise InvalidConfigurationError because duplicate topic names within a consumer group are not allowed |
+| `routing/consumer_group_reopening/explicit_reopening_spec.rb` | Karafka should allow reopening explicitly named consumer groups across multiple draw calls This test verifies that topics accumulate correctly when the same consumer group is defined multiple times |
+| `routing/consumer_group_reopening/implicit_default_group_reopening_spec.rb` | Karafka should allow reopening the implicit default consumer group when using the simple topic style across multiple draw calls |
+| `routing/consumer_group_reopening/mixed_explicit_implicit_reopening_spec.rb` | Test mixing explicit consumer group definitions with implicit default group usage This verifies that default group and named groups can coexist |
+| `routing/consumer_group_reopening_pristine/multi_file_spec.rb` | This pristine spec simulates the real-world scenario from GitHub issue #2363 where routing configuration is split across multiple files, each defining topics in the same consumer group. Directory structure: - routes/users_routes.rb  - defines topics in a shared consumer group - routes/orders_routes.rb - reopens the same consumer group with more topics - consumers/              - consumer implementations Expected behavior: All topics should accumulate in the same consumer group, allowing for modular routing configuration. |
 | `routing/different_cluster_consumer_groups_spec.rb` | Karafka should allow for defining separate consumer groups that will talk with separate clusters Distribution in subscription groups should match same cluster with same settings |
 | `routing/dynamic_topic_creation_spec.rb` | Karafka should handle dynamic routing patterns and topic configuration edge cases |
 | `routing/eofed/with_eof_disabled_and_kafka_eof_spec.rb` | Karafka should allow to use kafka scope eof without eofed enabled. |
@@ -1301,6 +1309,7 @@
 | `routing/with_active_false_overwritten_spec.rb` | When by default all topics are not active, we should be able to explicitely set it to active |
 | `routing/with_active_true_overwritten_spec.rb` | When by default all topics are active, we should be able to explicitely set it to inactive |
 | `routing/with_altered_routing_flow_spec.rb` | @see https://github.com/karafka/karafka/issues/2344 @see https://github.com/flipp-oss/deimos @see https://github.com/flipp-oss/deimos/blob/fc89c645/lib/deimos/ext/routing_defaults.rb This is to ensure that Deimos routing patches work as expected |
+| `routing/with_consumer_group_reopening_spec.rb` | Karafka should allow reopening consumer groups across multiple draw calls This enables splitting routing configuration across multiple files |
 | `routing/with_defaults_configured_spec.rb` | Karafka should use the defaults if they were configured but only if the appropriate config setup was not executed |
 | `routing/with_incomplete_kafka_reconfiguration_spec.rb` | When reconfiguring kafka scope without providing bootstrap.servers, we should fail |
 | `routing/with_kafka_scope_inherit_empty_hash_spec.rb` | Test that kafka scope settings with inherit: true properly merge defaults even when empty hash is provided as config. This addresses the edge case where calling kafka(**{}) with inherit: true should still preserve the defaults from Karafka::App.config.kafka instead of overriding them. |

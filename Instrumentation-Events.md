@@ -34,6 +34,7 @@ Below is the complete list of instrumentation events available in Karafka:
 
 ### Client Events
 
+- `client.events_poll`
 - `client.pause`
 - `client.reset`
 - `client.resume`
