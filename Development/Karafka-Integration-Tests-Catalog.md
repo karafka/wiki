@@ -301,8 +301,10 @@
 | `instrumentation/aj_per_job_consumption_events_spec.rb` | Karafka should instrument on particular active job jobs and should include details allowing for correlation of jobs with topic, messages, etc |
 | `instrumentation/app_status_lifecycle_flow_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages States changes that are published |
 | `instrumentation/assignment_and_revocation_logs_spec.rb` | Karafka should have the info level logging of assigned and revoked partitions |
+| `instrumentation/assignments_tracker_revocation_detection_spec.rb` | This spec demonstrates using Fiber storage to pass context (topic, partition) to helper classes without explicit arguments, enabling them to check assignment status. |
 | `instrumentation/before_schedule_jobs_tracking_spec.rb` | Karafka should instrument prior to each consumer being scheduled |
 | `instrumentation/cg_info_on_maximum_poll_interval_exceeded_spec.rb` | When we exceed max.poll.interval the error should contain CG name |
+| `instrumentation/client_events_poll_on_assignment_loss_spec.rb` | This spec verifies that the client.events_poll event is emitted when assignment loss is detected, and that the AssignmentsTracker properly clears assignments in response. |
 | `instrumentation/consumer_seeking_spec.rb` | We should be able to instrument seeking |
 | `instrumentation/consumers_runtime_tagging_spec.rb` | Karafka should allow us to tag consumers runtime operations and should allow us to track those tags whenever we need from any external location. |
 | `instrumentation/consumption_event_vs_processing_spec.rb` | Karafka should publish same number of consumed events as batches consumed We also should track the assignments correctly |
@@ -1013,6 +1015,7 @@
 | `pro/licensing/load_poro/configure_spec.rb` | Karafka in a PORO project should load without any problems |
 | `pro/licensing/load_poro/early_components_visibility_spec.rb` | Karafka in a PORO project should load components after the require even prior to the setup, so we can use those when needed |
 | `pro/licensing/post_checksum_verification_poro/verify_spec.rb` | Run the verification script post install to make sure it works as expected |
+| `pro/pausing/with_per_topic_pause_setup_old_api_spec.rb` | When customizing the error pausing strategy using old API (setters), each topic should obey its own limitations This is a backwards compatibility test |
 | `pro/pausing/with_per_topic_pause_setup_spec.rb` | When customizing the error pausing strategy, each topic should obey its own limitations |
 | `pro/performance_tracking_spec.rb` | Karafka should track consumption rate metrics when pro This metrics tracker is then used internally for optimization purposes |
 | `pro/rails/active_job/dispatching_async_job_spec.rb` | Karafka should be able to dispatch jobs using async pro adapter |
@@ -1118,14 +1121,18 @@
 | `pro/routing/patterns/same_pattern_in_same_consumer_group_spec.rb` | We should not be able to define same pattern multiple times in the same consumer group |
 | `pro/routing/patterns/with_non_existing_topics_excluded_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is not part of the exclusion, it should work |
 | `pro/routing/patterns/without_pro_spec.rb` | When running non-pro, patterns should not be available |
+| `pro/routing/pausing/with_bidirectional_compatibility_spec.rb` | Verify that both old and new pause configuration styles work and are bidirectionally compatible |
+| `pro/routing/pausing/with_config_object_old_api_spec.rb` | Verify that the old pause configuration API (setters) still works correctly This is a backwards compatibility test |
+| `pro/routing/pausing/with_config_object_spec.rb` | Verify that the new pausing config object approach works correctly |
 | `pro/routing/pausing/with_custom_invalid_pausing_spec.rb` | When overwriting the default pausing strategy on a per topic basis with something invalid, validations should kick in and stop it |
+| `pro/routing/pausing/with_custom_valid_old_api_spec.rb` | When altering the default pausing using old API (setters), it should not impact other topics This is a backwards compatibility test |
 | `pro/routing/pausing/with_custom_valid_spec.rb` | When altering the default pausing, it should not impact other topics |
 | `pro/routing/pro_with_long_running_job_spec.rb` | I should be able to define a topic consumption with long-running job indication It should not impact other jobs and the default should not be lrj |
 | `pro/routing/pro_with_virtual_partitioner_spec.rb` | I should be able to define a topic consumption with virtual partitioner. It should not impact other jobs and the default should not have it. |
 | `pro/routing/recurring_tasks/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/scheduled_messages/validations_flows_spec.rb` | When providing invalid config details for scheduled messages, validation should kick in. |
 | `pro/routing/valid_with_features_usage_spec.rb` | Karafka should auto-load all the routing features |
-| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG We also should be able to use any of the pause declaration styles. |
+| `pro/routing/with_different_backoff_settings_in_one_sg_spec.rb` | Karafka should not build separate SGs when altering pause settings per topic in a SG/CG |
 | `pro/routing/with_same_topic_in_multiple_same_subscription_groups_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group with same subscription group name |
 | `pro/routing/with_same_topic_in_multiple_sgs_diff_consumer_spec.rb` | Karafka should not allow for same topic to be present in multiple subscription groups in the same consumer group when trying to define different consumer classes. |
 | `pro/routing/with_same_topic_in_multiple_subscription_groups_spec.rb` | Karafka should allow for same topic to be present in multiple subscription groups in the same consumer group as long as subscription groups have different names and same consumer class |
@@ -1265,6 +1272,12 @@
 | `routing/cluster_info_based_discovery_spec.rb` | We should be able to build topics based on cluster info |
 | `routing/conflicting_consumer_group_settings_spec.rb` | Karafka should detect conflicting configurations that cause namespace collisions |
 | `routing/consumer_group_empty_topics_spec.rb` | Karafka should detect and reject consumer groups with no topics defined |
+| `routing/consumer_group_reopening/comprehensive_reopening_spec.rb` | Comprehensive test covering multiple consumer group reopening scenarios: - Multiple named consumer groups - Implicit default group - Reopening multiple times - All in a single test to verify complex interactions |
+| `routing/consumer_group_reopening/duplicate_topic_in_reopened_group_spec.rb` | Test what happens when the same topic name is defined twice when reopening a consumer group Expected: Karafka should raise InvalidConfigurationError because duplicate topic names within a consumer group are not allowed |
+| `routing/consumer_group_reopening/explicit_reopening_spec.rb` | Karafka should allow reopening explicitly named consumer groups across multiple draw calls This test verifies that topics accumulate correctly when the same consumer group is defined multiple times |
+| `routing/consumer_group_reopening/implicit_default_group_reopening_spec.rb` | Karafka should allow reopening the implicit default consumer group when using the simple topic style across multiple draw calls |
+| `routing/consumer_group_reopening/mixed_explicit_implicit_reopening_spec.rb` | Test mixing explicit consumer group definitions with implicit default group usage This verifies that default group and named groups can coexist |
+| `routing/consumer_group_reopening_pristine/multi_file_spec.rb` | This pristine spec simulates the real-world scenario from GitHub issue #2363 where routing configuration is split across multiple files, each defining topics in the same consumer group. Directory structure: - routes/users_routes.rb  - defines topics in a shared consumer group - routes/orders_routes.rb - reopens the same consumer group with more topics - consumers/              - consumer implementations Expected behavior: All topics should accumulate in the same consumer group, allowing for modular routing configuration. |
 | `routing/different_cluster_consumer_groups_spec.rb` | Karafka should allow for defining separate consumer groups that will talk with separate clusters Distribution in subscription groups should match same cluster with same settings |
 | `routing/dynamic_topic_creation_spec.rb` | Karafka should handle dynamic routing patterns and topic configuration edge cases |
 | `routing/eofed/with_eof_disabled_and_kafka_eof_spec.rb` | Karafka should allow to use kafka scope eof without eofed enabled. |
@@ -1282,6 +1295,9 @@
 | `routing/limited_scope/with_nothing_to_run_spec.rb` | When combination of consumer groups, subscription groups and topics we want to run is such, that they do not exist all together, we need to raise an error. |
 | `routing/limited_scope/with_only_inactive_topics_spec.rb` | When all our topics are disabled in routing, we should not allow Karafka to run |
 | `routing/overlapping_consumer_patterns_spec.rb` | Karafka should handle complex consumer patterns and prevent conflicts |
+| `routing/pausing/with_global_config_backwards_compatibility_spec.rb` | Verify that both old and new global pause configuration APIs work and are bidirectionally compatible |
+| `routing/pausing/with_global_config_new_api_spec.rb` | Verify that the new global pause configuration API works correctly |
+| `routing/pausing/with_global_config_old_api_spec.rb` | Verify that the old global pause configuration API (setters) still works correctly This is a backwards compatibility test |
 | `routing/runtime_routing_expansion_spec.rb` | When Karafka runs, we should be able to inject new routes and they should be picked It does NOT mean they will be used (not yet) but it should mean, that valid once are accepted and invalid are validated and an error is raised. This spec ensures, that dynamic routing expansions in runtime are subject to validation |
 | `routing/special_character_topics_spec.rb` | Karafka should handle topics with special characters properly |
 | `routing/stable_with_limited_consumer_groups_excluded_spec.rb` | When building subscription groups and then using a limited subset of consumer groups simulating the --exclude_consumer_groups flag should not impact the numbers in the group |
@@ -1293,6 +1309,7 @@
 | `routing/with_active_false_overwritten_spec.rb` | When by default all topics are not active, we should be able to explicitely set it to active |
 | `routing/with_active_true_overwritten_spec.rb` | When by default all topics are active, we should be able to explicitely set it to inactive |
 | `routing/with_altered_routing_flow_spec.rb` | @see https://github.com/karafka/karafka/issues/2344 @see https://github.com/flipp-oss/deimos @see https://github.com/flipp-oss/deimos/blob/fc89c645/lib/deimos/ext/routing_defaults.rb This is to ensure that Deimos routing patches work as expected |
+| `routing/with_consumer_group_reopening_spec.rb` | Karafka should allow reopening consumer groups across multiple draw calls This enables splitting routing configuration across multiple files |
 | `routing/with_defaults_configured_spec.rb` | Karafka should use the defaults if they were configured but only if the appropriate config setup was not executed |
 | `routing/with_incomplete_kafka_reconfiguration_spec.rb` | When reconfiguring kafka scope without providing bootstrap.servers, we should fail |
 | `routing/with_kafka_scope_inherit_empty_hash_spec.rb` | Test that kafka scope settings with inherit: true properly merge defaults even when empty hash is provided as config. This addresses the edge case where calling kafka(**{}) with inherit: true should still preserve the defaults from Karafka::App.config.kafka instead of overriding them. |
