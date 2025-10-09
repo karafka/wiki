@@ -12,9 +12,9 @@ WaterDrop provides three distinct APIs, each with unique error-handling behavior
 
 1. **Single Message Dispatch (`#produce_sync` and `#produce_async`)**: These methods send a single message to Kafka. Errors in this mode are specifically related to the individual message being sent. If an error occurs, it's directly tied to the single message dispatch attempt, making it straightforward to identify and handle issues related to message production or delivery.
 
-2. **Batch Dispatch (`#produce_many_sync` and `#produce_many_async`)**: These methods allow sending multiple messages to Kafka in a batch. In this mode, errors can be more complex, as they might pertain to any single message within the batch. It's vital to have a strategy to identify which message(s) caused the error and respond accordingly. Error handling in this context needs to consider partial failures where some messages are dispatched successfully while others are not.
+1. **Batch Dispatch (`#produce_many_sync` and `#produce_many_async`)**: These methods allow sending multiple messages to Kafka in a batch. In this mode, errors can be more complex, as they might pertain to any single message within the batch. It's vital to have a strategy to identify which message(s) caused the error and respond accordingly. Error handling in this context needs to consider partial failures where some messages are dispatched successfully while others are not.
 
-3. **Transactional Dispatch**: This mode supports operations within a Kafka transaction. It suits scenarios where you must maintain exactly-once delivery semantics or atomicity across multiple messages and partitions. Errors in this mode can be transaction-wide, affecting all messages sent within the transaction's scope. The transactional producer operates under its own set of rules and complexities, and it's crucial to refer to the [specific documentation](WaterDrop-Transactions) page dedicated to transactional dispatch for guidance on handling errors effectively.
+1. **Transactional Dispatch**: This mode supports operations within a Kafka transaction. It suits scenarios where you must maintain exactly-once delivery semantics or atomicity across multiple messages and partitions. Errors in this mode can be transaction-wide, affecting all messages sent within the transaction's scope. The transactional producer operates under its own set of rules and complexities, and it's crucial to refer to the [specific documentation](WaterDrop-Transactions) page dedicated to transactional dispatch for guidance on handling errors effectively.
 
 ## Error Types
 
@@ -31,6 +31,8 @@ In WaterDrop, errors encountered during the message-handling process can be cate
 - **ProduceMany Errors**: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` method with appropriate delivery handles for successfully enqueued messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
 
 - **Transactional ProduceMany Errors**: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
+
+- **Fatal Errors**: These are critical errors that prevent the producer from continuing to operate correctly. Fatal errors can occur in both idempotent and transactional producers. When a fatal error occurs, the producer may need to be reloaded to recover. WaterDrop provides automatic recovery mechanisms to handle these errors gracefully. See the [Fatal Error Recovery](#fatal-error-recovery) section for more details.
 
 Each error type plays a crucial role in understanding and managing the complexities of message handling in WaterDrop, providing precise categorization for troubleshooting and system optimization.
 
@@ -159,6 +161,105 @@ producer.monitor.subscribe('error.occurred') do |event|
   when
     # Track all the others
     ErrorsTracker.track(event[:error])
+  end
+end
+```
+
+## Fatal Error Recovery
+
+WaterDrop provides automatic recovery mechanisms for fatal errors that occur in both idempotent and transactional producers. Fatal errors are critical issues that prevent the producer from continuing to operate correctly, such as broker state inconsistencies or internal producer failures.
+
+!!! warning "Message Loss Risk During Reload"
+
+    Fatal error recovery involves reloading the entire producer client, which causes a brief interruption in message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Ensure your application can tolerate this behavior before enabling this feature.
+
+### Idempotent Producer Fatal Error Recovery
+
+For idempotent producers (non-transactional), WaterDrop can automatically reload the producer when fatal errors occur. This feature is **disabled by default** and must be explicitly enabled through configuration.
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'enable.idempotence': true
+  }
+
+  # Enable automatic reload on idempotent fatal errors
+  config.reload_on_idempotent_fatal_error = true
+  # Wait 5 seconds (5000ms) before retrying after a fatal error
+  config.wait_backoff_on_idempotent_fatal_error = 5_000
+  # Maximum 5 reload attempts before giving up
+  config.max_attempts_on_idempotent_fatal_error = 5
+end
+```
+
+**Configuration Options:**
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `reload_on_idempotent_fatal_error` | `false` | Enable automatic producer reload on fatal errors for idempotent producers |
+| `wait_backoff_on_idempotent_fatal_error` | `5000` | Time in milliseconds to wait before retrying after a fatal error |
+| `max_attempts_on_idempotent_fatal_error` | `5` | Maximum number of reload attempts before giving up |
+
+### Transactional Producer Fatal Error Recovery
+
+For transactional producers, fatal error recovery is **enabled by default** with more aggressive retry settings, as transactions require higher reliability guarantees.
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'transactional.id': 'my-transactional-producer'
+  }
+
+  # Customize transactional fatal error recovery (optional)
+  config.reload_on_transaction_fatal_error = true
+  # Wait 1 second (1000ms) before continuing after a fatal error reload
+  config.wait_backoff_on_transaction_fatal_error = 1_000
+  # Maximum 10 reload attempts before giving up
+  config.max_attempts_on_transaction_fatal_error = 10
+end
+```
+
+**Configuration Options:**
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `reload_on_transaction_fatal_error` | `true` | Enable automatic producer reload on fatal errors for transactional producers |
+| `wait_backoff_on_transaction_fatal_error` | `1000` | Time in milliseconds to wait before continuing after a fatal error reload |
+| `max_attempts_on_transaction_fatal_error` | `10` | Maximum number of reload attempts before giving up |
+
+### How Fatal Error Recovery Works
+
+When a fatal error occurs:
+
+1. **Error Detection**: WaterDrop detects that the error is fatal and cannot be resolved through normal retry mechanisms.
+
+1. **Reload Decision**: If the reload feature is enabled and the maximum number of attempts has not been exceeded, WaterDrop initiates a producer reload.
+
+1. **Producer Reload**: The underlying librdkafka producer client is completely reloaded, clearing any internal state that may have caused the fatal error.
+
+1. **Backoff Period**: WaterDrop waits for the configured backoff period before retrying the operation.
+
+1. **Retry**: The operation is retried with the newly reloaded producer.
+
+1. **Attempt Tracking**: WaterDrop tracks the number of reload attempts to prevent infinite loops. If the maximum attempts are exceeded, the error is raised to the application.
+
+### Monitoring Fatal Error Recovery
+
+Fatal error recovery events are instrumented and can be monitored through WaterDrop's instrumentation system:
+
+```ruby
+# Monitor producer reload events (for both idempotent and transactional)
+producer.monitor.subscribe('producer.reloaded') do |event|
+  puts "Producer #{event[:producer_id]} reloaded on attempt #{event[:attempt]}"
+end
+
+# Monitor idempotent fatal errors
+producer.monitor.subscribe('error.occurred') do |event|
+  if event[:type] == 'librdkafka.idempotent_fatal_error'
+    puts "Idempotent fatal error occurred on attempt #{event[:attempt]}"
+    puts "Error: #{event[:error]}"
   end
 end
 ```
