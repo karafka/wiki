@@ -1,4 +1,4 @@
-Karafka contains multiple configuration options. For better organization, all configuration options were divided into two groups:
+Karafka contains multiple configuration options. For better organization of logic and separation of concerns, all configuration options were divided into two groups:
 
 - root `karafka` options - options directly related to the Karafka framework and its components.
 
