@@ -329,8 +329,8 @@ No. IAM is a custom authentication engine that is not a part of the Kafka protoc
 
 Karafka supports following methods that work with AWS MSK:
 
-- [Standard SASL + SSL mechanisms](Deployment#aws-msk-cluster-setup).
-- [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers) flow.
+- [Standard SASL + SSL mechanisms](Operations-Deployment#aws-msk-cluster-setup).
+- [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers) flow.
 
 ## Why can't I connect to Kafka from another Docker container?
 
@@ -1023,7 +1023,7 @@ Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to det
 
 ## How can I configure WaterDrop with SCRAM?
 
-You can use the same setup as the one used by Karafka, described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can use the same setup as the one used by Karafka, described [here](Operations-Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?
 
@@ -1082,7 +1082,7 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 
 ## How can I set up WaterDrop with SCRAM?
 
-You can configure it the same way as Karafka support for SCRAM described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can configure it the same way as Karafka support for SCRAM described [here](Operations-Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Is there a way to mark messages as consumed in bulk?
 
