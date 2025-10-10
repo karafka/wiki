@@ -56,10 +56,9 @@
 - [Async Ecosystem Integration](WaterDrop-Async-Integration)
 - [Instrumentation Events](WaterDrop-Instrumentation-Events)
 
-## Production Usage
+## Operations
 
 - [Development vs Production](Development-vs-Production)
-- [Signals and States](Signals-and-States)
 - [Deployment](Operations-Deployment)
     - [systemd (+ Capistrano)](Operations-Deployment#systemd-capistrano)
     - [Docker](Operations-Deployment#docker)
@@ -68,6 +67,7 @@
     - [Kubernetes](Operations-Deployment#kubernetes)
     - [Confluent Cloud](Operations-Deployment#confluent-cloud)
     - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
+- [Signals and States](Signals-and-States)
 - [Monitoring and Logging](Monitoring-and-Logging)
 - [Instrumentation Events](Instrumentation-Events)
 - [Error Handling and back off policy](Error-handling-and-back-off-policy)
