@@ -29,7 +29,7 @@ When idempotence is enabled in WaterDrop producer:
 
 !!! info "Related: Fatal Error Recovery for Idempotent Producers"
 
-    Idempotent producers can encounter fatal errors that require producer reload. WaterDrop provides automatic recovery mechanisms for these scenarios. For details on fatal error handling and recovery configuration, see the [Error Handling - Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) section.
+    Idempotent producers can encounter fatal errors that require producer reload. WaterDrop provides automatic recovery mechanisms for these scenarios. For details on fatal error handling and recovery configuration, see the [Error Handling - Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#fatal-error-recovery) section.
 
 ## Acknowledgements
 
