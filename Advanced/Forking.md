@@ -25,15 +25,15 @@ These errors indicate processes in the middle of certain operations during a for
 
 1. **Pre-load `rdkafka` before forking**: Ensure `rdkafka` is loaded in the parent process before any fork occurs. For Puma web server users, add this line to your `puma.rb` configuration file:
 
-```ruby
-require 'rdkafka'
-```
+    ```ruby
+    require 'rdkafka'
+    ```
 
-This ensures that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
+    This ensures that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
 
-2. **Environment Variable**: You can set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to help manage initialization issues related to forking in macOS environments.
+1. **Environment Variable**: You can set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to help manage initialization issues related to forking in macOS environments.
 
-3. **Rails Spring Strategy**: For developers using Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. Consider one of these approaches:
+1. **Rails Spring Strategy**: For developers using Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. Consider one of these approaches:
 
     - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
     - Disable Spring in development if you're encountering persistent issues
