@@ -110,93 +110,93 @@ Please follow the below instructions for both cluster initialization and Karafka
 ### AWS MSK cluster setup
 
 1. Navigate to the AWS MSK page and press the `Create cluster` button.
-2. Select `Custom create` and `Provisioned` settings.
+1. Select `Custom create` and `Provisioned` settings.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/creation_method.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/creation_method.png" />
+    </p>
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/provisioned2.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/provisioned2.png" />
+    </p>
 
-3. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
+1. Use custom config and set `auto.create.topics.enable` to `true` unless you want to create topics using Kafka API. You can change it later, and in general, it is recommended to disallow auto-topic creation (typos, etc.), but this can be useful for debugging.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/broker-settings.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/broker-settings.png" />
+    </p>
 
-4. Setup your VPC and networking details.
-5. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
-6. **Disable** `IAM role-based authentication`.
-7. **Enable** `SASL/SCRAM authentication`
+1. Setup your VPC and networking details.
+1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
+1. **Disable** `IAM role-based authentication`.
+1. **Enable** `SASL/SCRAM authentication`
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/access-methods.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/access-methods.png" />
+    </p>
 
-8. Provision your cluster.
-9. Make sure your cluster is accessible from your machines. You can test it by using the AWS VPC Reachability Analyzer.
+1. Provision your cluster.
+1. Make sure your cluster is accessible from your machines. You can test it by using the AWS VPC Reachability Analyzer.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/reachability.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/reachability.png" />
+    </p>
 
-10. Visit your cluster `Properties` page and copy the `Endpoints` addresses.
+1. Visit your cluster `Properties` page and copy the `Endpoints` addresses.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/brokers-list.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/brokers-list.png" />
+    </p>
 
-11. Log in to any of your machines and run a `telnet` session to any of the brokers:
+1. Log in to any of your machines and run a `telnet` session to any of the brokers:
 
-```shell
-telnet your-broker.kafka.us-east-1.amazonaws.com 9096
+    ```shell
+    telnet your-broker.kafka.us-east-1.amazonaws.com 9096
 
-Trying 172.31.22.230...
-Connected to your-broker.kafka.us-east-1.amazonaws.com.
-Escape character is '^]'.
-^Connection closed by foreign host.
-```
+    Trying 172.31.22.230...
+    Connected to your-broker.kafka.us-east-1.amazonaws.com.
+    Escape character is '^]'.
+    ^Connection closed by foreign host.
+    ```
 
-If you can connect, your settings are correct, and your cluster is visible from your instance.
+    If you can connect, your settings are correct, and your cluster is visible from your instance.
 
-12. Go to the AWS Secret Manager and create a key starting with `AmazonMSK_` prefix. Select `Other type of secret` and `Plaintext` and provide the following value inside of the text field:
+1. Go to the AWS Secret Manager and create a key starting with `AmazonMSK_` prefix. Select `Other type of secret` and `Plaintext` and provide the following value inside of the text field:
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/secret_type2.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/secret_type2.png" />
+    </p>
 
-13. In the `Encryption key` section, press the `Add new key`.
+1. In the `Encryption key` section, press the `Add new key`.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/add_new_key.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/add_new_key.png" />
+    </p>
 
-14. Create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
+1. Create a `Symmetric` key with `Encrypt and decrypt` as a usage pattern.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/keys.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/keys.png" />
+    </p>
 
-15. Select your key in the `Encryption key` section and press `Next`.
-16. Provide a secret name and description and press `Next` until you reach the `Store` button.
-17. Store your secret.
-18. Go back to the AWS MSK and select your cluster.
-19. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
+1. Select your key in the `Encryption key` section and press `Next`.
+1. Provide a secret name and description and press `Next` until you reach the `Store` button.
+1. Store your secret.
+1. Go back to the AWS MSK and select your cluster.
+1. Navigate to the `Associated secrets from AWS Secrets Manager` section and press `Associate secrets`
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets.png" />
+    </p>
 
-20. Press the `Choose secrets` and select the previously created secret.
+1. Press the `Choose secrets` and select the previously created secret.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets2.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/msk/associate_secrets2.png" />
+    </p>
 
-21. Press `Associate secrets`. It will take AWS a while to do it.
-22. Congratulations, you just configured everything needed to make it work with Karafka.
+1. Press `Associate secrets`. It will take AWS a while to do it.
+1. Congratulations, you just configured everything needed to make it work with Karafka.
 
 ### Karafka configuration for AWS MSK SASL + SSL
 
@@ -318,123 +318,123 @@ To make it work you need to follow few steps:
 
 1. Change the `group_id` setting to match your `KAFKA_PREFIX`.
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # other config options...
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # other config options...
 
-    # Inject the prefix automatically to the default consumer group
-    config.group_id = "#{ENV['KAFKA_PREFIX']}app"
-  end
-end
-```
+        # Inject the prefix automatically to the default consumer group
+        config.group_id = "#{ENV['KAFKA_PREFIX']}app"
+      end
+    end
+    ```
 
-2. If you use explicit consumer groups, ensure they are prefixed with `KAFKA_PREFIX`.
+1. If you use explicit consumer groups, ensure they are prefixed with `KAFKA_PREFIX`.
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # ...
-  end
-
-  routes.draw do
-    consumer_group "#{ENV['KAFKA_PREFIX']}my-group1" do
-      topic :example do
-        consumer ExampleConsumer
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # ...
       end
 
-      topic :example2 do
-        consumer ExampleConsumer2
+      routes.draw do
+        consumer_group "#{ENV['KAFKA_PREFIX']}my-group1" do
+          topic :example do
+            consumer ExampleConsumer
+          end
+
+          topic :example2 do
+            consumer ExampleConsumer2
+          end
+        end
+
+        consumer_group "#{ENV['KAFKA_PREFIX']}my-group2" do
+          topic :example3 do
+            consumer Example2Consumer3
+          end
+        end
+      end
+    end
+    ```
+
+1. Create all the consumer groups before using them via the Heroku CLI.
+
+    ```shell
+    heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
+    ```
+
+    !!! note
+
+        The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
+
+    This means that the Heroku CLI command needs to look as follows:
+
+    ```shell
+    heroku kafka:consumer-groups:create app
+    ```
+
+    This allows Heroku's multi-tenant setup to route `smoothboulder-1234.app` to your cluster correctly.
+
+1. When consuming, you **always** need to use the prefixed topic name:
+
+    ```ruby
+    class KarafkaApp < Karafka::App
+      # ...
+      routes.draw do
+        topic "#{ENV['KAFKA_PREFIX']}users_events" do
+          consumer UsersEventsConsumer
+        end
+      end
+    end
+    ```
+
+1. When producing, you **always** need to use the prefixed topic name:
+
+    ```ruby
+    Karafka.producer.produce_async(
+      topic: "#{ENV['KAFKA_PREFIX']}users_events",
+      payload: {
+        user_id: user.id,
+        event: 'user.deleted'
+      }.to_json
+    )
+    ```
+
+1. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well.
+
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # other config options...
+
+        # Make Karafka admin use such a group ID
+        config.admin.group_id = "#{ENV['KAFKA_PREFIX']}karafka-admin-extra"
       end
     end
 
-    consumer_group "#{ENV['KAFKA_PREFIX']}my-group2" do
-      topic :example3 do
-        consumer Example2Consumer3
-      end
+    Karafka::Web.setup do |config|
+      # other config options...
+      config.group_id = "#{ENV['KAFKA_PREFIX']}karafka-web-ui"
     end
-  end
-end
-```
+    ```
 
-3. Create all the consumer groups before using them via the Heroku CLI.
+    ```shell
+    # Since both are set to karafka_admin by default, if you did not change those values,
+    # you can just run:
+    heroku kafka:consumer-groups:create karafka_admin
 
-```shell
-heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
-```
+    # If you did change them according to the above example, create all the groups needed:
 
-!!! note
+    # Create the admin consumer group
+    heroku kafka:consumer-groups:create karafka-admin-extra
 
-    The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
+    # Create the web ui consumer group
+    heroku kafka:consumer-groups:create karafka-web-ui
+    ```
 
-This means that the Heroku CLI command needs to look as follows:
+    !!! note
 
-```shell
-heroku kafka:consumer-groups:create app
-```
-
-This allows Heroku's multi-tenant setup to route `smoothboulder-1234.app` to your cluster correctly.
-
-4. When consuming, you **always** need to use the prefixed topic name:
-
-```ruby
-class KarafkaApp < Karafka::App
-  # ...
-  routes.draw do
-    topic "#{ENV['KAFKA_PREFIX']}users_events" do
-      consumer UsersEventsConsumer
-    end
-  end
-end
-```
-
-5. When producing, you **always** need to use the prefixed topic name:
-
-```ruby
-Karafka.producer.produce_async(
-  topic: "#{ENV['KAFKA_PREFIX']}users_events",
-  payload: {
-    user_id: user.id,
-    event: 'user.deleted'
-  }.to_json
-)
-```
-
-6. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well.
-
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # other config options...
-
-    # Make Karafka admin use such a group ID
-    config.admin.group_id = "#{ENV['KAFKA_PREFIX']}karafka-admin-extra"
-  end
-end
-
-Karafka::Web.setup do |config|
-  # other config options...
-  config.group_id = "#{ENV['KAFKA_PREFIX']}karafka-web-ui"
-end
-```
-
-```shell
-# Since both are set to karafka_admin by default, if you did not change those values,
-# you can just run:
-heroku kafka:consumer-groups:create karafka_admin
-
-# If you did change them according to the above example, create all the groups needed:
-
-# Create the admin consumer group
-heroku kafka:consumer-groups:create karafka-admin-extra
-
-# Create the web ui consumer group
-heroku kafka:consumer-groups:create karafka-web-ui
-```
-
-!!! note
-
-    You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
+        You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
 ### Configuring Karafka to Work With Heroku SSL
 
@@ -572,33 +572,33 @@ Below you can find an example of how to require, configure and connect the liven
 
 1. Put following code at the end of your `karafka.rb` file:
 
-```ruby
-require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
+    ```ruby
+    require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
 
-listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
-  # If hostname not specified or nil, will bind to all the interfaces
-  hostname: '192.168.1.100',
-  port: 3000,
-  # Make sure polling happens at least once every 5 minutes
-  polling_ttl: 300_000,
-  # Make sure that consuming does not hang and does not take more than 1 minute
-  consuming_ttl: 60_000
-)
+    listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
+      # If hostname not specified or nil, will bind to all the interfaces
+      hostname: '192.168.1.100',
+      port: 3000,
+      # Make sure polling happens at least once every 5 minutes
+      polling_ttl: 300_000,
+      # Make sure that consuming does not hang and does not take more than 1 minute
+      consuming_ttl: 60_000
+    )
 
-Karafka.monitor.subscribe(listener)
-```
+    Karafka.monitor.subscribe(listener)
+    ```
 
-2. Expand your deployment spec with the following `livenessProbe` section:
+1. Expand your deployment spec with the following `livenessProbe` section:
 
-```yaml
-livenessProbe:
-  httpGet:
-    path: /
-    port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 5
-```
+    ```yaml
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+    ```
 
 The provided liveness listener is a generic implementation designed to handle common scenarios. However, it may not address all cases specific to your application's requirements. Fortunately, the listener serves as a solid foundation that can be customized and extended to create a more complex and tailored solution.
 
@@ -678,32 +678,32 @@ To integrate the `SwarmLivenessListener` into your Karafka application, follow t
 
 1. Embed the listener setup at the end of your `karafka.rb` file to initialize and subscribe the listener to your Karafka monitoring system:
 
-```ruby
-require 'karafka/instrumentation/vendors/kubernetes/swarm_liveness_listener'
+    ```ruby
+    require 'karafka/instrumentation/vendors/kubernetes/swarm_liveness_listener'
 
-listener = ::Karafka::Instrumentation::Vendors::Kubernetes::SwarmLivenessListener.new(
-  # Optional: Specify to bind to a specific interface
-  hostname: '192.168.1.100',
-  # TCP port for the HTTP server
-  port: 3000,
-  # TTL for supervisor control checks (in milliseconds)
-  controlling_ttl: 60_000
-)
+    listener = ::Karafka::Instrumentation::Vendors::Kubernetes::SwarmLivenessListener.new(
+      # Optional: Specify to bind to a specific interface
+      hostname: '192.168.1.100',
+      # TCP port for the HTTP server
+      port: 3000,
+      # TTL for supervisor control checks (in milliseconds)
+      controlling_ttl: 60_000
+    )
 
-Karafka.monitor.subscribe(listener)
-```
+    Karafka.monitor.subscribe(listener)
+    ```
 
-2. Adjust your deployment spec to include the liveness probe, targeting the listener's port and path.
+1. Adjust your deployment spec to include the liveness probe, targeting the listener's port and path.
 
-```yaml
-livenessProbe:
-  httpGet:
-    path: /
-    port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  timeoutSeconds: 5
-```
+    ```yaml
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+    ```
 
 By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
@@ -727,59 +727,59 @@ Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka i
 
 1. **Create a Confluent Cloud Account**
 
-Begin by registering for a Confluent Cloud account at Confluent.io. After registration, you can manage your Kafka clusters directly from the Confluent UI.
+    Begin by registering for a Confluent Cloud account at Confluent.io. After registration, you can manage your Kafka clusters directly from the Confluent UI.
 
-2. **Create a Kafka Cluster**
+1. **Create a Kafka Cluster**
 
-- Navigate to the Confluent Cloud dashboard.
-- Click on "Add Cluster" to configure a new Kafka cluster.
-- Select the appropriate cloud provider and region that fits your application needs.
-- Choose a Basic or Dedicated cluster plan depending on your scale requirements.
+    - Navigate to the Confluent Cloud dashboard.
+    - Click on "Add Cluster" to configure a new Kafka cluster.
+    - Select the appropriate cloud provider and region that fits your application needs.
+    - Choose a Basic or Dedicated cluster plan depending on your scale requirements.
 
-!!! tip "Region Selection"
+    !!! tip "Region Selection"
 
-    Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
+        Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
 
-3. **Configure Kafka Topics**
+1. **Configure Kafka Topics**
 
-- Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
+    - Once your cluster is active, go to the 'Topics' tab and create the necessary topics that your application will use.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-select.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-select.png" />
+    </p>
 
-- Set appropriate partitions and retention policies based on your expected workload and data retention needs.
+    - Set appropriate partitions and retention policies based on your expected workload and data retention needs.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-new.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/instructions/confluent/topics-new.png" />
+    </p>
 
-4. **Configure Web UI Topics**
+1. **Configure Web UI Topics**
 
-Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
+    Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
 
-The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](Web-UI-Getting-Started#manual-web-ui-topics-management).
+    The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
-5. **Integration with Karafka**
+1. **Integration with Karafka**
 
-In your Karafka application, configure the Kafka client to connect to your Confluent Cloud cluster. You will need to specify several configurations provided by Confluent Cloud:
+    In your Karafka application, configure the Kafka client to connect to your Confluent Cloud cluster. You will need to specify several configurations provided by Confluent Cloud:
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.kafka = {
-      'allow.auto.create.topics': false,
-      'bootstrap.servers': 'your-confluent-bootstrap-server.confluent.cloud:9092',
-      'security.protocol': 'SASL_SSL',
-      'sasl.username': 'CONFLUENT_USERNAME',
-      'sasl.password': 'CONFLUENT_PASSWORD',
-      'sasl.mechanisms': 'PLAIN'
-    }
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        config.kafka = {
+          'allow.auto.create.topics': false,
+          'bootstrap.servers': 'your-confluent-bootstrap-server.confluent.cloud:9092',
+          'security.protocol': 'SASL_SSL',
+          'sasl.username': 'CONFLUENT_USERNAME',
+          'sasl.password': 'CONFLUENT_PASSWORD',
+          'sasl.mechanisms': 'PLAIN'
+        }
 
-    # Other settings...
-  end
-end
-```
+        # Other settings...
+      end
+    end
+    ```
 
 ## Custom OAuth Token Providers
 
