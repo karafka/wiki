@@ -58,7 +58,7 @@
 
 ## Operations
 
-- [Development vs Production](Development-vs-Production)
+- [Development vs Production](Operations-Development-vs-Production)
 - [Deployment](Operations-Deployment)
     - [systemd (+ Capistrano)](Operations-Deployment#systemd-capistrano)
     - [Docker](Operations-Deployment#docker)
@@ -67,10 +67,10 @@
     - [Kubernetes](Operations-Deployment#kubernetes)
     - [Confluent Cloud](Operations-Deployment#confluent-cloud)
     - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
-- [Signals and States](Signals-and-States)
-- [Monitoring and Logging](Monitoring-and-Logging)
-- [Instrumentation Events](Instrumentation-Events)
-- [Error Handling and back off policy](Error-handling-and-back-off-policy)
+- [Signals and States](Operations-Signals-and-States)
+- [Monitoring and Logging](Operations-Monitoring-and-Logging)
+- [Instrumentation Events](Operations-Instrumentation-Events)
+- [Error Handling and back off policy](Operations-Error-Handling-and-Back-Off-Policy)
 
 ## Advanced
 
