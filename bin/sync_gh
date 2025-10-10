@@ -25,6 +25,7 @@ end
   Web-UI
   WaterDrop
   Upgrades
+  Operations
 ].each do |namespace|
   # Find all markdown files in the namespace, including those in subdirectories
   Dir["#{Dir.pwd}/#{namespace}/**/*.md"].each do |file|

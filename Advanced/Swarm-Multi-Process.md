@@ -439,7 +439,7 @@ These statuses offer valuable diagnostics, enabling targeted interventions to ma
 
 When deploying a swarm within a Kubernetes cluster, it is recommended to use the swarm liveness listener to supervise only the supervisor process. This specialized liveness probe ensures that the Kubernetes orchestrator accurately reflects the Karafka supervisor's state, enhancing your deployment's reliability.
 
-Please refer to our Kubernetes [documentation](Deployment#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
+Please refer to our Kubernetes [documentation](Operations-Deployment#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
 
 ## Signal Handling
 

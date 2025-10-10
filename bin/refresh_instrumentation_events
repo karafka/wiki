@@ -9,7 +9,7 @@ require 'fileutils'
 INSTRUMENTATION_SOURCES = {
   'Karafka' => {
     url: 'https://raw.githubusercontent.com/karafka/karafka/master/lib/karafka/instrumentation/notifications.rb',
-    output_file: 'Instrumentation-Events.md',
+    output_file: 'Operations/Instrumentation-Events.md',
     title: 'Karafka Instrumentation Events'
   },
   'WaterDrop' => {
