@@ -175,6 +175,10 @@ WaterDrop provides automatic recovery mechanisms for fatal errors that occur in 
 
 ### Idempotent Producer Fatal Error Recovery
 
+!!! info "Related: Idempotence Overview"
+
+    For a comprehensive overview of idempotence concepts, configuration, and best practices, see the [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) documentation.
+
 For idempotent producers (non-transactional), WaterDrop can automatically reload the producer when fatal errors occur. This feature is **disabled by default** and must be explicitly enabled through configuration.
 
 ```ruby

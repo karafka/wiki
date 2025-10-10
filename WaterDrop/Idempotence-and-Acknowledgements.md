@@ -27,6 +27,10 @@ When idempotence is enabled in WaterDrop producer:
 - Kafka ensures that even if a message is retried, it will not be written again.
 - The producer will assign a sequence number to each message, and Kafka ensures that messages with the same sequence number are deduplicated.
 
+!!! info "Related: Fatal Error Recovery for Idempotent Producers"
+
+    Idempotent producers can encounter fatal errors that require producer reload. WaterDrop provides automatic recovery mechanisms for these scenarios. For details on fatal error handling and recovery configuration, see the [Error Handling - Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) section.
+
 ## Acknowledgements
 
 Acknowledgements (`acks`) dictate how the producer and the broker agree that a message has been successfully written. Kafka's acknowledgment system controls the level of durability and fault tolerance:
