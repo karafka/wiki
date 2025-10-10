@@ -1,22 +1,33 @@
-Consumers should inherit from the **ApplicationConsumer**. You need to define a ```#consume``` method that will execute your business logic code against a batch of messages.
+Karafka framework has a long-running server process responsible for fetching and consuming messages. Consumers should inherit from the **ApplicationConsumer**. You need to define a ```#consume``` method that will execute your business logic code against a batch of messages. Karafka fetches and consumes messages in batches by default.
 
-Karafka fetches and consumes messages in batches by default.
+### Consuming Messages in Batches
 
-## Consuming Messages
+Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable containing received data and additional information that can be useful during the processing.
 
-Karafka framework has a long-running server process responsible for fetching and consuming messages.
-
-To start the Karafka server process, use the following CLI command:
+1. To start the Karafka server process, use the following CLI command:
 
 ```shell
 bundle exec karafka server
 ```
+2. To access the message batch, use the `#messages` method:
+```ruby
+  
+  class EventsConsumer < ApplicationConsumer
+  def consume
+    # Access the batch via messages method
+    batch = messages
+  end
+end
+```
 
-### In Batches
+3. Select one of two processing approaches based on your use case:
 
-Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable containing received data and additional information that can be useful during the processing.
+   - Process each message one by one
+   - Process all payloads together to leverage batch database operations provided by many ORMs
+  
+4. Access message payloads.
 
-To access the payload of your messages, you can use the `#payload` method available for each received message:
+For individual message iteration, use the `#payload` method available for each received message:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -28,8 +39,8 @@ class EventsConsumer < ApplicationConsumer
   end
 end
 ```
-
-You can also access all the payloads together to elevate things like batch DB operations available for some of the ORMs:
+     
+For bulk operations, use the `#payloads` method to access all payloads at once:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -40,11 +51,16 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-### One At a Time
+### Consuming Messages One At a Time
 
-While we encourage you to process data in batches to elevate in-memory computation and many DBs batch APIs, you may want to process messages one at a time.
+While batch processing is recommended to leverage in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
 
-You can achieve this by defining a base consumer with such capability:
+1. To start the Karafka server process, use the following CLI command:
+
+```shell
+bundle exec karafka server
+```
+2. Define a reusable base consumer that handles the single-message iteration pattern:
 
 ```ruby
 class SingleMessageBaseConsumer < Karafka::BaseConsumer
@@ -66,6 +82,7 @@ class Consumer < SingleMessageBaseConsumer
   end
 end
 ```
+**Result:** The `#consume_one` method will be called for each message in the batch, allowing you to process messages individually while maintaining the benefits of Karafka's batch fetching.
 
 ### Accessing Topic Details
 
@@ -75,7 +92,7 @@ If your logic depends on specific routing details, you can access them from the 
 
     You could use it, for example, when you want to perform a different logic within a single consumer based on the topic from which your messages come.
 
-To access the topic details, call the ```#topic``` method within the consume method:
+1. To access the topic details, call the ```#topic``` method within the consume method:
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -93,7 +110,7 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-To extract all the details that are stored in the topic at once, use the ```#to_h``` method:
+2. To extract all the details that are stored in the topic at once, use the ```#to_h``` method:
 
 ```ruby
 class UsersConsumer < ApplicationConsumer
@@ -103,9 +120,16 @@ class UsersConsumer < ApplicationConsumer
 end
 ```
 
-## Consuming From Earliest or Latest Offset
+## Setting Initial Offset Position
 
-By default, Karafka will start consuming messages from the earliest available offset. However, you can configure it to begin consuming from the latest message by setting the `initial_offset` value as the default.
+By default, Karafka starts consuming messages from the earliest available offset. Use this procedure to configure the initial offset position for your consumers.
+
+**To configure the initial offset globally:**
+
+1. Open your Karafka application configuration file.
+2. Set the `initial_offset` value in the setup block. 
+
+To start from the earliest offset (default behavior):
 
 ```ruby
 # This will start from the earliest (default)
@@ -114,7 +138,10 @@ class KarafkaApp < Karafka::App
     config.initial_offset = 'earliest'
   end
 end
+```
 
+To start from the latest offset:
+```ruby
 # This will make Karafka start consuming from the latest message on a given topic
 class KarafkaApp < Karafka::App
   setup do |config|
@@ -122,8 +149,12 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+**Result:** All topics will use this offset position as the default.
 
-or on a per-topic basis:
+**To configure the initial offset for specific topics:**
+
+1. Open your Karafka routing configuration.
+2. Add the `initial_offset` setting to individual topic definitions:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -142,6 +173,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+**Result:** Each topic will use its configured offset position, overriding the global default.
 
 !!! note
 
