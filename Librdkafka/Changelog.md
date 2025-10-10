@@ -6,6 +6,73 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.12.0 (2025-10-08)
+
+librdkafka v2.12.0 is a feature release:
+
+### [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) – General Availability
+
+Starting with **librdkafka 2.12.0**, the next generation consumer group rebalance protocol defined in **[KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol)** is **production-ready**. Please refer the following [migration guide](INTRODUCTION.md#next-generation-consumer-group-protocol-kip-848) for moving from `classic` to `consumer` protocol.
+
+**Note:** The new consumer group protocol defined in [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) is not enabled by default. There are few contract change associated with the new protocol and might cause breaking changes. `group.protocol` configuration property dictates whether to use the new `consumer` protocol or older `classic` protocol. It defaults to `classic` if not provided.
+
+### Enhancements and Fixes
+* Support for OAUTHBEARER metadata based authentication types,
+  starting with Azure IMDS. [Introduction available](INTRODUCTION.md#oauthbearer-oidc-metadata-authentication) (#5155).
+* Fix compression types read issue in GetTelemetrySubscriptions response
+  for big-endian architectures (#5183, @paravoid).
+* Fix for KIP-1102 time based re-bootstrap condition (#5177).
+* Fix for discarding the member epoch in a consumer group heartbeat response when leaving with an inflight HB (#4672).
+* Fix for an error being raised after a commit due to an existing error in the topic partition (#4672).
+* Fix double free of headers in `rd_kafka_produceva` method (@blindspotbounty, #4628).
+* Fix to ensure `rd_kafka_query_watermark_offsets` enforces the specified timeout and does not continue beyond timeout expiry (#5201).
+* New [walkthrough](https://github.com/confluentinc/librdkafka/wiki/Using-SASL-GSSAPI-with-librdkafka-in-a-cross%E2%80%90realm-scenario-with-Windows-SSPI-and-MIT-Kerberos) in the Wiki about configuring Kafka cross-realm authentication between Windows SSPI and MIT Kerberos.
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #5178.
+  Fix for KIP-1102 time based re-bootstrap condition.
+  Re-bootstrap is now triggered only after `metadata.recovery.rebootstrap.trigger.ms`
+  have passed since first metadata refresh request after last successful
+  metadata response. The calculation was since last successful metadata response
+  so it's possible it did overlap with the periodic `topic.metadata.refresh.interval.ms`
+  and cause a re-bootstrap even if not needed.
+  Happening since 2.11.0 (#5177).
+* Issues: #4878.
+  Fix to ensure `rd_kafka_query_watermark_offsets` enforces the specified timeout and does not continue beyond timeout expiry.
+  Happening since 2.3.0 (#5201).
+
+#### Telemetry fixes
+
+* Issues: #5179 .
+  Fix issue in GetTelemetrySubscriptions with big-endian
+  architectures where wrong values are read as
+  accepted compression types causing the metrics to be sent uncompressed.
+  Happening since 2.5.0. Since 2.10.1 unit tests are failing when run on
+  big-endian architectures (#5183, @paravoid).
+
+#### Consumer fixes
+  
+  * Issues: #5199
+  Fixed an issue where topic partition errors were not cleared after a successful
+  commit. Previously, a partition could retain a stale error state even though the
+  most recent commit succeeded, causing misleading error reporting. Now, successful
+  commits correctly clear the error state for the affected partitions
+  Happening since 2.4.0 (#4672).
+
+#### Producer fixes
+
+* Issues: #4627.
+  Fix double free of headers in `rd_kafka_produceva` method in cases where the partition doesn't exist.
+  Happening since 1.x (@blindspotbounty, #4628).
+  
+ ## Checksums
+Release asset checksums:
+ * v2.12.0.zip SHA256 `9b2f373e03f3d5d87c2075b3ce07ee9ea3802eea00cea41b99d8351a68d8a062`
+ * v2.12.0.tar.gz SHA256 `1355d81091d13643aed140ba0fe62437c02d9434b44e90975aaefab84c2bf237`
 ## 2.11.1 (2025-08-18)
 
 librdkafka v2.11.1 is a maintenance release:
@@ -2084,116 +2151,3 @@ Release asset checksums:
  * v1.5.2.zip SHA256 `de70ebdb74c7ef8c913e9a555e6985bcd4b96eb0c8904572f3c578808e0992e1`
  * v1.5.2.tar.gz SHA256 `ca3db90d04ef81ca791e55e9eed67e004b547b7adedf11df6c24ac377d4840c6`
 
-## 1.5.0 (2020-07-20)
-
-# librdkafka v1.5.0
-
-The v1.5.0 release brings usability improvements, enhancements and fixes to
-librdkafka.
-
-### Enhancements
-
- * Improved broker connection error reporting with more useful information and
-   hints on the cause of the problem.
- * Consumer: Propagate errors when subscribing to unavailable topics (#1540)
- * Producer: Add `batch.size` producer configuration property (#638)
- * Add `topic.metadata.propagation.max.ms` to allow newly manually created
-   topics to be propagated throughout the cluster before reporting them
-   as non-existent. This fixes race issues where CreateTopics() is
-   quickly followed by produce().
- * Prefer least idle connection for periodic metadata refreshes, et.al.,
-   to allow truly idle connections to time out and to avoid load-balancer-killed
-   idle connection errors (#2845)
- * Added `rd_kafka_event_debug_contexts()` to get the debug contexts for
-   a debug log line (by @wolfchimneyrock).
- * Added Test scenarios which define the cluster configuration.
- * Added MinGW-w64 builds (@ed-alertedh, #2553)
- * `./configure --enable-XYZ` now requires the XYZ check to pass,
-   and `--disable-XYZ` disables the feature altogether (@benesch)
- * Added `rd_kafka_produceva()` which takes an array of produce arguments
-   for situations where the existing `rd_kafka_producev()` va-arg approach
-   can't be used.
- * Added `rd_kafka_message_broker_id()` to see the broker that a message
-   was produced or fetched from, or an error was associated with.
- * Added RTT/delay simulation to mock brokers.
-
-
-### Upgrade considerations
-
- * Subscribing to non-existent and unauthorized topics will now propagate
-   errors `RD_KAFKA_RESP_ERR_UNKNOWN_TOPIC_OR_PART` and
-   `RD_KAFKA_RESP_ERR_TOPIC_AUTHORIZATION_FAILED` to the application through
-   the standard consumer error (the err field in the message object).
- * Consumer will no longer trigger auto creation of topics,
-   `allow.auto.create.topics=true` may be used to re-enable the old deprecated
-   functionality.
- * The default consumer pre-fetch queue threshold `queued.max.messages.kbytes`
-   has been decreased from 1GB to 64MB to avoid excessive network usage for low
-   and medium throughput consumer applications. High throughput consumer
-   applications may need to manually set this property to a higher value.
- * The default consumer Fetch wait time has been increased from 100ms to 500ms
-   to avoid excessive network usage for low throughput topics.
- * If OpenSSL is linked statically, or `ssl.ca.location=probe` is configured,
-   librdkafka will probe known CA certificate paths and automatically use the
-   first one found. This should alleviate the need to configure
-   `ssl.ca.location` when the statically linked OpenSSL's OPENSSLDIR differs
-   from the system's CA certificate path.
- * The heuristics for handling Apache Kafka < 0.10 brokers has been removed to
-   improve connection error handling for modern Kafka versions.
-   Users on Brokers 0.9.x or older should already be configuring
-   `api.version.request=false` and `broker.version.fallback=...` so there
-   should be no functional change.
- * The default producer batch accumulation time, `linger.ms`, has been changed
-   from 0.5ms to 5ms to improve batch sizes and throughput while reducing
-   the per-message protocol overhead.
-   Applications that require lower produce latency than 5ms will need to
-   manually set `linger.ms` to a lower value.
- * librdkafka's build tooling now requires Python 3.x (python3 interpreter).
-
-
-### Fixes
-
-#### General fixes
-
- * The client could crash in rare circumstances on ApiVersion or
-   SaslHandshake request timeouts (#2326)
- * `./configure --LDFLAGS='a=b, c=d'` with arguments containing = are now
-   supported (by @sky92zwq).
- * `./configure` arguments now take precedence over cached `configure` variables
-   from previous invocation.
- * Fix theoretical crash on coord request failure.
- * Unknown partition error could be triggered for existing partitions when
-   additional partitions were added to a topic (@benesch, #2915)
- * Quickly refresh topic metadata for desired but non-existent partitions.
-   This will speed up the initial discovery delay when new partitions are added
-   to an existing topic (#2917).
-
-
-#### Consumer fixes
-
- * The roundrobin partition assignor could crash if subscriptions
-   where asymmetrical (different sets from different members of the group).
-   Thanks to @ankon and @wilmai for identifying the root cause (#2121).
- * The consumer assignors could ignore some topics if there were more subscribed
-   topics than consumers in taking part in the assignment.
- * The consumer would connect to all partition leaders of a topic even
-   for partitions that were not being consumed (#2826).
- * Initial consumer group joins should now be a couple of seconds quicker
-   thanks expedited query intervals (@benesch).
- * Fix crash and/or inconsistent subscriptions when using multiple consumers
-   (in the same process) with wildcard topics on Windows.
- * Don't propagate temporary offset lookup errors to application.
- * Immediately refresh topic metadata when partitions are reassigned to other
-   brokers, avoiding a fetch stall of up to `topic.metadata.refresh.interval.ms`. (#2955)
- * Memory for batches containing control messages would not be freed when
-   using the batch consume APIs (@pf-qiu, #2990).
-
-
-#### Producer fixes
-
- * Proper locking for transaction state in EndTxn handler.
-
-### Checksums
-Release asset checksums:
- * v1.5.0.zip SHA256 `76a1e83d643405dd1c0e3e62c7872b74e3a96c52be910233e8ec02d501fa33c8`
- * v1.5.0.tar.gz SHA256 `f7fee59fdbf1286ec23ef0b35b2dfb41031c8727c90ced6435b8cf576f23a656`

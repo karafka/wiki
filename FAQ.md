@@ -418,7 +418,7 @@ Fatal error: Broker: Static consumer fenced by other consumer with same group.in
 It can mean two things:
 
 1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
-2. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
 
 ## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
 
@@ -435,9 +435,9 @@ Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 It may mean one of four things:
 
 1. High probability: Broker can't keep up with the produce rate.
-2. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
-3. Low probability: Slow network connection.
-4. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
+1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
+1. Low probability: Slow network connection.
+1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
 WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
 
@@ -658,9 +658,9 @@ and you can use them.
 There are a few things to keep in mind, though:
 
 1. Producers should be long-lived.
-2. Producers should be closed before the process shutdown to ensure proper resource finalization.
-3. You need to instrument each producer using the WaterDrop instrumentation API.
-4. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
+1. Producers should be closed before the process shutdown to ensure proper resource finalization.
+1. You need to instrument each producer using the WaterDrop instrumentation API.
+1. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
 
 ## What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?
 
@@ -675,8 +675,8 @@ If you are seeing the following error:
 It means you want to use SSL, but `librdkafka` was built without it. You have to:
 
 1. Uninstal it by running `gem remove karafka-rdkafka`
-2. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
-3. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
+1. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
+1. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
 
 ## Can Karafka ask Kafka to list available topics?
 
@@ -732,9 +732,9 @@ end
 There are a few reasons why Karafka may not be picking up messages from the beginning, even if you set `initial_offset` to `earliest`:
 
 1. Consumer group already exists: If the consumer group you are using to consume messages already exists, Karafka will not start consuming from the beginning by default. Instead, it will start consuming from the last committed offset for that group. To start from the beginning, you need to reset the offsets for the consumer group using the Kafka CLI or using the Karafka consumer `#seek` method.
-2. Topic retention period: If the messages you are trying to consume are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, setting `initial_offset` to `earliest` will not allow you to consume those messages.
-3. Message timestamps: If the messages you are trying to consume have timestamps that are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, even setting `initial_offset` to `earliest` will not allow you to consume those messages.
-4. Kafka configuration: There may be a misconfiguration in your Kafka setup that is preventing Karafka from consuming messages from the beginning. For example, the `log.retention.ms` or `log.retention.bytes` settings may be set too low, causing messages to be deleted before you can consume them.
+1. Topic retention period: If the messages you are trying to consume are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, setting `initial_offset` to `earliest` will not allow you to consume those messages.
+1. Message timestamps: If the messages you are trying to consume have timestamps that are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, even setting `initial_offset` to `earliest` will not allow you to consume those messages.
+1. Kafka configuration: There may be a misconfiguration in your Kafka setup that is preventing Karafka from consuming messages from the beginning. For example, the `log.retention.ms` or `log.retention.bytes` settings may be set too low, causing messages to be deleted before you can consume them.
 
 To troubleshoot the issue, you can try:
 
@@ -1143,8 +1143,8 @@ Yes.
 There are a few ways to do that:
 
 1. Use the [Iterator API](Pro-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
-2. Use the `#seek` consumer method in combination with [Admin watermark API](Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
-3. Create a new consumer group that will start from the beginning.
+1. Use the `#seek` consumer method in combination with [Admin watermark API](Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+1. Create a new consumer group that will start from the beginning.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
 
@@ -1227,9 +1227,9 @@ Healing means that Amazon MSK is running an internal operation, like replacing a
 
 1. **`rdkafka-ruby` lack of instrumentation callbacks hooks by default**: By default, `rdkafka` does not include instrumentation callback hooks. This means that it does not publish asynchronous errors unless explicitly configured to do so. On the other hand, Karafka and WaterDrop, provide a unified instrumentation framework that reports errors, even those happening asynchronously, by default.
 
-2. **WaterDrop and Karafka use `karafka-rdkafka`, which is patched and provides specific improvements**: Both WaterDrop and Karafka use a variant of `rdkafka-ruby`, known as `karafka-rdkafka`. This version is patched, meaning it includes improvements and modifications that the standard `rdkafka-ruby` client does not. These patches may offer enhanced performance, additional features, and/or bug fixes that can impact how the two systems behaves.
+1. **WaterDrop and Karafka use `karafka-rdkafka`, which is patched and provides specific improvements**: Both WaterDrop and Karafka use a variant of `rdkafka-ruby`, known as `karafka-rdkafka`. This version is patched, meaning it includes improvements and modifications that the standard `rdkafka-ruby` client does not. These patches may offer enhanced performance, additional features, and/or bug fixes that can impact how the two systems behaves.
 
-3. **Different setup conditions**: Comparing different Kafka clients or frameworks can be like comparing apples to oranges if they aren't set up under the same conditions. Factors such as client configuration, Kafka cluster configuration, network latency, message sizes, targeted topics, and batching settings can significantly influence the behavior and performance of Kafka clients. Therefore, when you notice a discrepancy between the behavior of `rdkafka-ruby` and Karafka or WaterDrop, it might be because the conditions they are running under are not identical. To make a fair comparison, ensure that they are configured similarly and are running under the same conditions.
+1. **Different setup conditions**: Comparing different Kafka clients or frameworks can be like comparing apples to oranges if they aren't set up under the same conditions. Factors such as client configuration, Kafka cluster configuration, network latency, message sizes, targeted topics, and batching settings can significantly influence the behavior and performance of Kafka clients. Therefore, when you notice a discrepancy between the behavior of `rdkafka-ruby` and Karafka or WaterDrop, it might be because the conditions they are running under are not identical. To make a fair comparison, ensure that they are configured similarly and are running under the same conditions.
 
 In summary, while `rdkafka-ruby`, Karafka, and WaterDrop all provide ways to interact with Kafka from a Ruby environment, differences in their design, their handling of errors, and the conditions under which they are run can result in different behavior. Always consider these factors when evaluating or troubleshooting these systems.
 
@@ -1450,7 +1450,7 @@ Yes, it's possible to use a Karafka producer without a consumer in two ways:
 
 1. You can use [WaterDrop](https://github.com/karafka/waterdrop), a standalone Karafka component for producing Kafka messages. WaterDrop was explicitly designed for use cases where only message production is required, with no need for consumption.
 
-2. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
+1. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
 
 Remember, if you're using Karafka without a consumer and encounter errors, ensure your consumer is set to inactive (active false), and refrain from running commands that necessitate a consumer, such as karafka server.
 
@@ -1525,15 +1525,15 @@ There are several potential reasons why you can produce messages to your local K
 
 1. **Network Issues**: Docker's networking can cause problems if not configured correctly. Make sure your Kafka and Zookeeper instances can communicate with each other. Use the docker inspect command to examine the network settings of your containers.
 
-2. **Configuration Errors**: Incorrect settings in Kafka configuration files, such as the `server.properties` file, could lead to this issue. Make sure that you've configured things like the `advertised.listeners` property correctly.
+1. **Configuration Errors**: Incorrect settings in Kafka configuration files, such as the `server.properties` file, could lead to this issue. Make sure that you've configured things like the `advertised.listeners` property correctly.
 
-3. **Incorrect Consumer Group**: If you're consuming messages from a topic that a different consumer has already consumed in the same group, you won't see any messages. Kafka uses consumer groups to manage which messages have been consumed. You should use a new group or reset the offset of the existing group.
+1. **Incorrect Consumer Group**: If you're consuming messages from a topic that a different consumer has already consumed in the same group, you won't see any messages. Kafka uses consumer groups to manage which messages have been consumed. You should use a new group or reset the offset of the existing group.
 
-4. **Security Protocols**: If you've set up your Kafka instance with security protocols like SSL/TLS or SASL, you'll need to ensure that your consumer is correctly configured to use these protocols.
+1. **Security Protocols**: If you've set up your Kafka instance with security protocols like SSL/TLS or SASL, you'll need to ensure that your consumer is correctly configured to use these protocols.
 
-5. **Offset Issue**: The consumer might be reading from an offset where no messages exist. This often happens if the offset is set to the latest, but the messages were produced before the consumer started. Try consuming from the earliest offset to see if this resolves the issue.
+1. **Offset Issue**: The consumer might be reading from an offset where no messages exist. This often happens if the offset is set to the latest, but the messages were produced before the consumer started. Try consuming from the earliest offset to see if this resolves the issue.
 
-6. **Zookeeper Connection Issue**: Sometimes, the issue could be a faulty connection between Kafka and Zookeeper. Ensure that your Zookeeper instance is running without issues.
+1. **Zookeeper Connection Issue**: Sometimes, the issue could be a faulty connection between Kafka and Zookeeper. Ensure that your Zookeeper instance is running without issues.
 
 Remember, these issues are common, so don't worry if you face them. Persistence and careful debugging are key in these situations.
 
@@ -1660,30 +1660,30 @@ Getting the exact number of messages in a Kafka topic is more complicated due to
 
 1. Using the `Karafa::Admin#read_watermark_offsets` to get offsets for each partition and summing them:
 
-```ruby
-Karafka::Admin
-  .cluster_info
-  .topics
-  .find { |top| top[:topic_name] == 'my_topic_name' }
-  .then { |topic| topic.fetch(:partitions) }
-  .size
-  .times
-  .sum do |partition_id|
-    offsets = Karafka::Admin.read_watermark_offsets('my_topic_name', partition_id)
-    offsets.last - offsets.first
-  end
-```
+    ```ruby
+    Karafka::Admin
+      .cluster_info
+      .topics
+      .find { |top| top[:topic_name] == 'my_topic_name' }
+      .then { |topic| topic.fetch(:partitions) }
+      .size
+      .times
+      .sum do |partition_id|
+        offsets = Karafka::Admin.read_watermark_offsets('my_topic_name', partition_id)
+        offsets.last - offsets.first
+      end
+    ```
 
-2. Using the [Iterator API](Pro-Iterator-API) and counting all the messages:
+1. Using the [Iterator API](Pro-Iterator-API) and counting all the messages:
 
-```ruby
-iterator = Karafka::Pro::Iterator.new('my_topic_name')
+    ```ruby
+    iterator = Karafka::Pro::Iterator.new('my_topic_name')
 
-i = 0
-iterator.each do
-  puts i+= 1
-end
-```
+    i = 0
+    iterator.each do
+      puts i+= 1
+    end
+    ```
 
 The first approach offers rapid results, especially for topics with substantial messages. However, its accuracy may be compromised by factors such as log compaction. Conversely, the second method promises greater precision, but it's important to note that it could necessitate extensive data transfer and potentially operate at a reduced speed.
 
@@ -1755,11 +1755,11 @@ In summary, while operating on a single partition typically uses just one worker
 
 1. **Not Enough Messages in Batches**: If there aren't many messages within the batches you're processing, splitting these already-small batches among multiple virtual partitions won't yield noticeable performance gains. There needs to be more work to be shared among the virtual partitions, leading to underutilization.
 
-2. **No IO Involved**: Virtual Partitions shine in scenarios where IO operations (e.g., database reads/writes, network calls) are predominant. These operations often introduce latencies, and with virtual partitions, while one thread waits on an IO operation, another can process data. If your processing doesn't involve IO, the parallelism introduced by virtual partitions might not offer substantial benefits.
+1. **No IO Involved**: Virtual Partitions shine in scenarios where IO operations (e.g., database reads/writes, network calls) are predominant. These operations often introduce latencies, and with virtual partitions, while one thread waits on an IO operation, another can process data. If your processing doesn't involve IO, the parallelism introduced by virtual partitions might not offer substantial benefits.
 
-3. **Heavy CPU Computations**: If the primary task of your consumer is CPU-intensive computations, then the overhead introduced by managing multiple threads might offset the benefits. CPU-bound tasks usually require dedicated computational resources, and adding more threads (even with virtual partitions) might introduce contention without increasing throughput.
+1. **Heavy CPU Computations**: If the primary task of your consumer is CPU-intensive computations, then the overhead introduced by managing multiple threads might offset the benefits. CPU-bound tasks usually require dedicated computational resources, and adding more threads (even with virtual partitions) might introduce contention without increasing throughput.
 
-4. **Virtual Partitioner Assigns Data to a Single Virtual Partition**: The purpose of virtual partitions is to distribute messages across multiple virtual sub-partitions for concurrent processing. If your virtual partitioner, for whatever reason, is consistently assigning messages to only one virtual partition, you effectively negate the benefits. This scenario is akin to not using virtual partitions, as all messages would be processed serially in a single "stream".
+1. **Virtual Partitioner Assigns Data to a Single Virtual Partition**: The purpose of virtual partitions is to distribute messages across multiple virtual sub-partitions for concurrent processing. If your virtual partitioner, for whatever reason, is consistently assigning messages to only one virtual partition, you effectively negate the benefits. This scenario is akin to not using virtual partitions, as all messages would be processed serially in a single "stream".
 
 In conclusion, while Virtual Partitions can be a potent tool for improving throughput in certain scenarios, their utility is context-dependent. It's essential to understand the nature of the work being done, the volume of messages, and the behavior of the virtual partitioner to ascertain the effectiveness of virtual partitions in your setup.
 
@@ -1870,14 +1870,14 @@ It is indicative of a connectivity issue. Let's break down the meaning and impli
 
 1. **Main Message**: The primary message is about querying watermark offsets. Watermark offsets are pointers indicating the highest and lowest offsets (positions) in a Kafka topic partition the consumer has read. The error suggests that the client is facing difficulties in querying these offsets for a particular partition (in this case, partition 0) of the karafka_consumers_states topic.
 
-2. **Local: All broker connections are down (all_brokers_down)**: Despite the starkness of the phrasing, this doesn't necessarily mean that all the brokers in the Kafka cluster are offline. Instead, it suggests that the Karafka client cannot establish a connection to any of the brokers responsible for the mentioned partition. The reasons could be manifold:
+1. **Local: All broker connections are down (all_brokers_down)**: Despite the starkness of the phrasing, this doesn't necessarily mean that all the brokers in the Kafka cluster are offline. Instead, it suggests that the Karafka client cannot establish a connection to any of the brokers responsible for the mentioned partition. The reasons could be manifold:
     - **Connectivity Issues**: Network interruptions between your Karafka client and the Kafka brokers might occur. This can be due to firewalls, routing issues, or other network-related blocks.
 
     - **Broker Problems**: There's a possibility that the specific broker or brokers responsible for the mentioned partition are down or facing internal issues.
 
     - **Misconfiguration**: Incorrect configurations, such as too short connection or request timeouts, could lead to premature termination of requests, yielding such errors.
 
-3. **Implications for Karafka Web UI**:
+1. **Implications for Karafka Web UI**:
 
     - If you're experiencing this issue with topics related to Karafka Web UI, it's essential to note that Karafka improved its error handling in version 2.2.2. If you're using an older version, upgrading to the latest Karafka and Karafka Web UI versions might alleviate the issue.
 
@@ -1887,9 +1887,9 @@ Below, you can find a few recommendations in case you encounter this error:
 
 1. **Upgrade Karafka**: If you're running a version older than `2.2.2`, consider upgrading both Karafka and Karafka Web UI. This might resolve the issue if it's related to previous error-handling mechanisms.
 
-2. **Review Configurations**: Examine your Karafka client configurations, especially timeouts and broker addresses, to ensure they're set appropriately.
+1. **Review Configurations**: Examine your Karafka client configurations, especially timeouts and broker addresses, to ensure they're set appropriately.
 
-3. **Replication Factor**: For critical topics, especially if you're using Karafka Web UI, consider setting a replication factor greater than 1. This ensures data redundancy and availability even if a broker goes down.
+1. **Replication Factor**: For critical topics, especially if you're using Karafka Web UI, consider setting a replication factor greater than 1. This ensures data redundancy and availability even if a broker goes down.
 
 In summary, while the error message might seem daunting, understanding its nuances can guide targeted troubleshooting, and being on the latest software versions can often preemptively avoid such challenges.
 
@@ -1947,51 +1947,51 @@ If you make Karafka not retry, the system will not attempt retries on errors but
 
 1. **Manual Exception Handling**: This involves catching all exceptions arising from your code and choosing to ignore them. This means the system doesn't wait or retry; it simply moves to the next task or message.
 
-```ruby
-def consume
-  messages.each do |message|
-    begin
-      persist(message)
-    # Ignore any errors and just log them
-    rescue StandardError => e
-      ErrorTracker.notify(e)
+    ```ruby
+    def consume
+      messages.each do |message|
+        begin
+          persist(message)
+        # Ignore any errors and just log them
+        rescue StandardError => e
+          ErrorTracker.notify(e)
+        end
+
+        mark_as_consumed(message)
+      end
+    end
+    ```
+
+1. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](Pro-Enhanced-Dead-Letter-Queue) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
+
+    ```ruby
+    class KarafkaApp < Karafka::App
+      routes.draw do
+        topic :orders_states do
+          consumer OrdersStatesConsumer
+
+          # This setup will move broken messages to the DLQ, backoff and continue
+          dead_letter_queue(
+            topic: 'dead_messages',
+            max_retries: 0
+          )
+        end
+      end
     end
 
-    mark_as_consumed(message)
-  end
-end
-```
+    class OrdersStatesConsumer < ApplicationConsumer
+      def consume
+        # No need to handle errors manually, if `#persist` fails,
+        # Karafka will pause, backoff and retry automatically and
+        # will move the failed messages to `dead_messages` topic
+        messages.each do |message|
+          persist(message)
 
-2. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](Pro-Enhanced-Dead-Letter-Queue) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
-
-```ruby
-class KarafkaApp < Karafka::App
-  routes.draw do
-    topic :orders_states do
-      consumer OrdersStatesConsumer
-
-      # This setup will move broken messages to the DLQ, backoff and continue
-      dead_letter_queue(
-        topic: 'dead_messages',
-        max_retries: 0
-      )
+          mark_as_consumed(message)
+        end
+      end
     end
-  end
-end
-
-class OrdersStatesConsumer < ApplicationConsumer
-  def consume
-    # No need to handle errors manually, if `#persist` fails,
-    # Karafka will pause, backoff and retry automatically and
-    # will move the failed messages to `dead_messages` topic
-    messages.each do |message|
-      persist(message)
-
-      mark_as_consumed(message)
-    end
-  end
-end
-```
+    ```
 
 However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
@@ -2023,9 +2023,9 @@ This error occurs when a consumer tries to join a consumer group in Apache Kafka
 
 1. Check the configuration of your consumer to ensure you're setting an appropriate session timeout value.
 
-2. Ensure that the value lies within the broker's allowable range, which you can find in the broker's configuration.
+1. Ensure that the value lies within the broker's allowable range, which you can find in the broker's configuration.
 
-3. Adjust the consumer's session timeout value to be within this range and try reconnecting.
+1. Adjust the consumer's session timeout value to be within this range and try reconnecting.
 
 Remember to make sure that the timeout value you set is suitable for your use case, as it can affect the responsiveness of your consumer group to failures.
 
@@ -2131,25 +2131,25 @@ There are a few potential workarounds:
 
 1. Setting the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` when running Puma. This is not ideal as it might introduce other issues.
 
-2. Creating an instance of `Rdkafka` that would force-load all the needed components before the fork as follows:
+1. Creating an instance of `Rdkafka` that would force-load all the needed components before the fork as follows:
 
-```ruby
-require 'rdkafka'
+    ```ruby
+    require 'rdkafka'
 
-before_fork do
-  # Make sure to configure it according to your cluster location
-  config = {
-    'bootstrap.servers': 'localhost:9092'
-  }
+    before_fork do
+      # Make sure to configure it according to your cluster location
+      config = {
+        'bootstrap.servers': 'localhost:9092'
+      }
 
-  # Create a new instance and close it
-  # This will load or dynamic components on macOS
-  # Not needed under other OSes, so not worth running
-  if RUBY_PLATFORM.include?('darwin')
-    ::Rdkafka::Config.new(config).admin.close
-  end
-end
-```
+      # Create a new instance and close it
+      # This will load or dynamic components on macOS
+      # Not needed under other OSes, so not worth running
+      if RUBY_PLATFORM.include?('darwin')
+        ::Rdkafka::Config.new(config).admin.close
+      end
+    end
+    ```
 
 It is worth pointing out that this is not a Karafka-specific issue. While the issue manifests when using Karafka with Puma, it's more related to how macOS handles forking with Objective-C libraries and specific initializations post-fork.
 
@@ -2171,7 +2171,7 @@ If the "Dead" tab in your Karafka Web UI is empty, especially within a multi-app
 
 1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
 
-2. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
+1. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
 
 To troubleshoot and resolve this issue, you should:
 
@@ -2187,9 +2187,9 @@ The `Broker: Policy violation (policy_violation)` error in Karafka typically occ
 
 1. **ACL Verification**: Ensure that your Kafka cluster's ACLs are configured correctly. ACLs control the permissions for topic creation, access, and modification. If ACLs are not properly set up, Karafka might be blocked from performing necessary operations.
 
-2. **Quota Checks**: Kafka administrators can set quotas on various resources, such as data throughput rates and the number of client connections. If Karafka exceeds these quotas, it may trigger a `policy_violation` error. Review your Kafka cluster's quota settings to ensure they align with your usage patterns.
+1. **Quota Checks**: Kafka administrators can set quotas on various resources, such as data throughput rates and the number of client connections. If Karafka exceeds these quotas, it may trigger a `policy_violation` error. Review your Kafka cluster's quota settings to ensure they align with your usage patterns.
 
-3. **Adjust Configurations**: Make the necessary adjustments based on your findings from the ACL and quota checks. This might involve modifying ACL settings to grant appropriate permissions or altering quota limits to accommodate your application's needs.
+1. **Adjust Configurations**: Make the necessary adjustments based on your findings from the ACL and quota checks. This might involve modifying ACL settings to grant appropriate permissions or altering quota limits to accommodate your application's needs.
 
 ## Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?
 
@@ -2205,7 +2205,7 @@ This issue is typically caused by a gem conflict related to the Thor gem version
 
 1. Ensure you're using a version of Thor earlier than `1.3`, as recommended by community members.
 
-2. Upgrade to a newer version of Karafka that does not use Thor. It's recommended to upgrade to at least version `2.2.8` for stability and to take advantage of improvements.
+1. Upgrade to a newer version of Karafka that does not use Thor. It's recommended to upgrade to at least version `2.2.8` for stability and to take advantage of improvements.
 
 ## Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
 
@@ -2309,63 +2309,63 @@ Here's how you can set up this  detailed tracing step-by-step:
 
 1. **Register Custom Event**
 
-Begin by registering a custom event in Karafka for each message processed. This is essential to create a unique event for the monitoring system to trigger on each message consumption.
+    Begin by registering a custom event in Karafka for each message processed. This is essential to create a unique event for the monitoring system to trigger on each message consumption.
 
-```ruby
-# This will trigger before consumption to start trace
-Karafka.monitor.notifications_bus.register_event('consumer.consume.message')
-# This will trigger after consumption to finish trace
-Karafka.monitor.notifications_bus.register_event('consumer.consumed.message')
-```
+    ```ruby
+    # This will trigger before consumption to start trace
+    Karafka.monitor.notifications_bus.register_event('consumer.consume.message')
+    # This will trigger after consumption to finish trace
+    Karafka.monitor.notifications_bus.register_event('consumer.consumed.message')
+    ```
 
-Registering a custom event allows you to define specific behavior and tracking that aligns with your application's needs, distinct from the batch processing default.
+    Registering a custom event allows you to define specific behavior and tracking that aligns with your application's needs, distinct from the batch processing default.
 
-2. **Instrument with Karafka Monitor**
+1. **Instrument with Karafka Monitor**
 
-Once the event is registered, use Karafka’s monitor to instrument it. This step does not involve actual data processing but sets up the framework for tracing.
+    Once the event is registered, use Karafka’s monitor to instrument it. This step does not involve actual data processing but sets up the framework for tracing.
 
-```ruby
-class OrdersStatesConsumer < ApplicationConsumer
-  def consume
-    messages.each do |message|
-      Karafka.monitor.instrument('consumer.consume.message', message: message)
+    ```ruby
+    class OrdersStatesConsumer < ApplicationConsumer
+      def consume
+        messages.each do |message|
+          Karafka.monitor.instrument('consumer.consume.message', message: message)
 
-      consume_one(message)
+          consume_one(message)
 
-      Karafka.monitor.instrument('consumer.consumed.message', message: message)
+          Karafka.monitor.instrument('consumer.consumed.message', message: message)
 
-      # Mark as consumed after each successfully processed message
-      mark_as_consumed(message)
+          # Mark as consumed after each successfully processed message
+          mark_as_consumed(message)
+        end
+      end
+
+      def consume_one(message)
+        # Your logic goes here
+      end
     end
-  end
+    ```
 
-  def consume_one(message)
-    # Your logic goes here
-  end
-end
-```
+1. **Build a Custom Tracing Listener**
 
-3. **Build a Custom Tracing Listener**
+    Modify or build a new tracing listener that specifically handles the per-message tracing.
 
-Modify or build a new tracing listener that specifically handles the per-message tracing.
+    ```ruby
+    class MyTracingListener
+      def on_consumer_consume_message(event)
+        # Start tracing here...
+      end
 
-```ruby
-class MyTracingListener
-  def on_consumer_consume_message(event)
-    # Start tracing here...
-  end
+      def on_consumer_consumed_message(event)
+        # Finalize trace when message is processed
+      end
 
-  def on_consumer_consumed_message(event)
-    # Finalize trace when message is processed
-  end
+      def on_error_occurred(event)
+        # Do not forget to finalize also on errors if trace available
+      end
+    end
 
-  def on_error_occurred(event)
-    # Do not forget to finalize also on errors if trace available
-  end
-end
-
-Karafka.monitor.subscribe(MyTracingListener.new)
-```
+    Karafka.monitor.subscribe(MyTracingListener.new)
+    ```
 
 ## When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?
 
@@ -2467,29 +2467,29 @@ To handle this, you can use a guard to check whether the `#dispatch_to_dlq` meth
 
 1. **Check for Method Availability**:
 
-You can use the `#respond_to?` method to check if dispatch_to_dlq is available before calling it.
+    You can use the `#respond_to?` method to check if dispatch_to_dlq is available before calling it.
 
-```ruby
-if respond_to?(:dispatch_to_dlq)
-  dispatch_to_dlq
-else
-  # Handle the error or reprocess logic here
-end
-```
+    ```ruby
+    if respond_to?(:dispatch_to_dlq)
+      dispatch_to_dlq
+    else
+      # Handle the error or reprocess logic here
+    end
+    ```
 
-2. **Differentiate Using Topic Reference**:
+1. **Differentiate Using Topic Reference**:
 
-Alternatively, you can check if the consumer is processing a DLQ topic by using the `topic.dead_letter_queue?` method. This method returns true if the current topic has DLQ enabled but will be false when processing the DLQ itself.
+    Alternatively, you can check if the consumer is processing a DLQ topic by using the `topic.dead_letter_queue?` method. This method returns true if the current topic has DLQ enabled but will be false when processing the DLQ itself.
 
-```ruby
-if topic.dead_letter_queue?
-  # This is the original topic, so `dispatch_to_dlq` is safe to use
-  dispatch_to_dlq
-else
-  # This is the DLQ topic, handle accordingly
-  # Handle the error or reprocess logic here
-end
-```
+    ```ruby
+    if topic.dead_letter_queue?
+      # This is the original topic, so `dispatch_to_dlq` is safe to use
+      dispatch_to_dlq
+    else
+      # This is the DLQ topic, handle accordingly
+      # Handle the error or reprocess logic here
+    end
+    ```
 
 When using the same consumer for both a topic and its DLQ in Karafka, ensure that you handle method availability appropriately to avoid errors. Using guards like checking the topic context with `topic.dead_letter_queue?` can help maintain robustness and prevent unexpected exceptions during reprocessing.
 
@@ -2499,9 +2499,9 @@ This error indicates that there are not enough in-sync replicas to handle the me
 
 1. **Check Cluster Size and Configuration:** Ensure that your Kafka cluster has enough brokers to meet the required replication factor for the topics. If your replication factor is set to `3`, you need at least `3` brokers.
 
-2. **Increase Broker Storage Size:** If your brokers are running out of storage space, they will not be able to stay in sync. Increasing the storage size, if insufficient, can help maintain enough in-sync replicas.
+1. **Increase Broker Storage Size:** If your brokers are running out of storage space, they will not be able to stay in sync. Increasing the storage size, if insufficient, can help maintain enough in-sync replicas.
 
-3. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
+1. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
 
 By following these steps, you should be able to resolve the "Broker: Not enough in-sync replicas" error and ensure your Kafka cluster is correctly configured to handle the required replication.
 
@@ -2605,13 +2605,13 @@ There are a couple of reasons `librdkafka` might lose SSL and SASL support in a 
 
 1. **Removing Essential Build Dependencies Too Early**: In multi-stage builds, it's common to install libraries and development tools in an earlier stage and then copy the built software into a slimmer final stage to reduce the image size. However, if the necessary packages (like `libssl-dev` and `libsasl2-dev`) are removed or not available during the initial build stage, librdkafka will compile without SSL and SASL support.
 
-**Solution**: Ensure that `libssl-dev`, `libsasl2-dev`, and other required libraries are installed in the stage where you build librdkafka. Only clean up or remove these libraries after the build is complete.
+    **Solution**: Ensure that `libssl-dev`, `libsasl2-dev`, and other required libraries are installed in the stage where you build librdkafka. Only clean up or remove these libraries after the build is complete.
 
-2. **Build Layers Removal During Docker Image Creation**:
+1. **Build Layers Removal During Docker Image Creation**:
 
-During the process of building Docker images, each command in the Dockerfile creates a new layer. When a layer is removed, all the changes made in that layer (including installed libraries) are also discarded. If the layers containing the installation of `libssl-dev`, `libsasl2-dev`, or other dependencies are removed before librdkafka is fully built and linked, then the resulting image will lack SSL and SASL support.
+    During the process of building Docker images, each command in the Dockerfile creates a new layer. When a layer is removed, all the changes made in that layer (including installed libraries) are also discarded. If the layers containing the installation of `libssl-dev`, `libsasl2-dev`, or other dependencies are removed before librdkafka is fully built and linked, then the resulting image will lack SSL and SASL support.
 
-**Solution**: To avoid this issue, ensure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
+    **Solution**: To avoid this issue, ensure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
 
 ## Why do I see WaterDrop error events but no raised exceptions in sync producer?
 
@@ -2619,28 +2619,28 @@ This behavior is by design and relates to WaterDrop's sophisticated error handli
 
 1. Retryable vs. Fatal Errors
 
-- WaterDrop distinguishes between intermediate retryable errors and fatal errors
-- Many errors (like network glitches) are considered retryable
-- These errors are logged but don't necessarily cause the operation to fail
+    - WaterDrop distinguishes between intermediate retryable errors and fatal errors
+    - Many errors (like network glitches) are considered retryable
+    - These errors are logged but don't necessarily cause the operation to fail
 
-2. Recovery Process
+1. Recovery Process
 
-- As long as a message isn't purged from dispatch, WaterDrop will attempt to deliver it
-- If WaterDrop can recover before the message purge time, the produce_sync operation will still succeed
-- Background errors are emitted to inform you about these recovery attempts
+    - As long as a message isn't purged from dispatch, WaterDrop will attempt to deliver it
+    - If WaterDrop can recover before the message purge time, the produce_sync operation will still succeed
+    - Background errors are emitted to inform you about these recovery attempts
 
-3. Why This Matters
+1. Why This Matters
 
-- You want to know about intermediate issues (like socket disconnects) as they might indicate underlying cluster problems
-- However, if WaterDrop successfully recovers and delivers the message, there's no need to raise an exception
-- The operation ultimately succeeded from the user's perspective
+    - You want to know about intermediate issues (like socket disconnects) as they might indicate underlying cluster problems
+    - However, if WaterDrop successfully recovers and delivers the message, there's no need to raise an exception
+    - The operation ultimately succeeded from the user's perspective
 
 For example, if there's a temporary network disconnection:
 
 1. The error event is emitted and logged
-2. WaterDrop reestablishes the connection
-3. The message is successfully delivered
-4. No exception is raised because the operation ultimately succeeded
+1. WaterDrop reestablishes the connection
+1. The message is successfully delivered
+1. No exception is raised because the operation ultimately succeeded
 
 For more detailed information about WaterDrop's error handling model, refer to [this](WaterDrop-Error-Handling) documentation.
 
@@ -2757,18 +2757,19 @@ This deliberate architectural decision provides several significant benefits:
 
 1. **Consumer reusability**: The same consumer class can be used with multiple topics without modification. This enables powerful patterns where a single processing implementation can handle data from various sources.
 
-2. **Multi-level configuration**: Karafka's routing system allows configuration at different levels of abstraction:
-   - Consumer group level
-   - Subscription group level
-   - Topic level
+1. **Multi-level configuration**: Karafka's routing system allows configuration at different levels of abstraction:
 
-3. **Separation of concerns**: Routing (what to consume) is separated from consumption logic (how to process). This creates cleaner, more maintainable code.
+    - Consumer group level
+    - Subscription group level
+    - Topic level
 
-4. **Dynamic routing capabilities**: The routing layer can be extended with logic that determines routes based on runtime conditions.
+1. **Separation of concerns**: Routing (what to consume) is separated from consumption logic (how to process). This creates cleaner, more maintainable code.
 
-5. **Enhanced testing**: Consumers can be tested independently from their routing configuration, improving unit test isolation.
+1. **Dynamic routing capabilities**: The routing layer can be extended with logic that determines routes based on runtime conditions.
 
-6. **Flexibility for complex setups**: The separate routing layer provides much better organization and clarity for advanced Kafka deployments with many topics and consumers.
+1. **Enhanced testing**: Consumers can be tested independently from their routing configuration, improving unit test isolation.
+
+1. **Flexibility for complex setups**: The separate routing layer provides much better organization and clarity for advanced Kafka deployments with many topics and consumers.
 
 This approach follows established software architecture principles and provides significantly more flexibility when working with complex Kafka-based systems, especially as your application grows.
 

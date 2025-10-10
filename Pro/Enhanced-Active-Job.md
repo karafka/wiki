@@ -54,27 +54,27 @@ To utilize the Scheduled Jobs functionality in Karafka, you must:
 
 1. **Configure the Scheduled Messages Feature**: Ensure the Scheduled Messages feature is properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages) within your Karafka setup. This involves setting up the necessary Kafka topics and ensuring Karafka knows these configurations.
 
-2. **Configure the Job Class**: Each job class that requires scheduling must have the scheduled_messages_topic configured. This setting informs Karafka about the specific Kafka topic that serves as the proxy for handling the scheduling of these messages.
+1. **Configure the Job Class**: Each job class that requires scheduling must have the scheduled_messages_topic configured. This setting informs Karafka about the specific Kafka topic that serves as the proxy for handling the scheduling of these messages.
 
-```ruby
-class ExampleJob < ActiveJob::Base
-  queue_as :default
+    ```ruby
+    class ExampleJob < ActiveJob::Base
+      queue_as :default
 
-  karafka_options(
-    scheduled_messages_topic: 'scheduled_jobs_topic'
-  )
+      karafka_options(
+        scheduled_messages_topic: 'scheduled_jobs_topic'
+      )
 
-  def perform(*args)
-    # Job execution logic here
-  end
-end
-```
+      def perform(*args)
+        # Job execution logic here
+      end
+    end
+    ```
 
-3. **Schedule Jobs**: After these configurations are in place, jobs can be scheduled using the standard ActiveJob APIs by specifying the execution time:
+1. **Schedule Jobs**: After these configurations are in place, jobs can be scheduled using the standard ActiveJob APIs by specifying the execution time:
 
-```ruby
-ExampleJob.set(wait_until: Date.tomorrow.noon).perform_later(user_id)
-```
+    ```ruby
+    ExampleJob.set(wait_until: Date.tomorrow.noon).perform_later(user_id)
+    ```
 
 This integration not only simplifies the management of timed tasks but also enhances the reliability and scalability of job execution, making Karafka an ideal platform for complex, time-sensitive job scheduling needs in large-scale applications.
 
