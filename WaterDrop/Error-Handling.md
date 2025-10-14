@@ -208,9 +208,9 @@ During retries, the producer must preserve per-record ordering and sequence numb
 
 When a fatal error occurs:
 
-- Subsequent produce API calls will fail
-- The producer should be closed or reloaded
-- In-flight messages that cannot be delivered will be purged
+- In WaterDrop, subsequent produce API calls will fail with a fatal error until the producer is closed or reloaded.
+- If auto-reload is enabled, WaterDrop will reload the producer; otherwise, the application should close and recreate it.
+- In-flight messages that cannot be delivered will be dropped and reported as failures.
 
 #### Configuration
 
