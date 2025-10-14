@@ -200,9 +200,9 @@ When the broker cannot locate the producer's metadata (Producer ID and epoch inf
 - There are in-flight messages or pending retries that cannot be safely recovered
 - Producer records expire due to retention policies, removing critical metadata needed for idempotency
 
-**Message Batch Reconstruction Issues**
+**Message Sequence and Ordering Issues**
 
-During retries, the producer must reconstruct message batches identically to maintain consistency. Fatal errors can occur when this reconstruction fails.
+During retries, the producer must preserve per-record ordering and sequence numbers to maintain idempotency; fatal errors can occur when the broker detects out-of-order sequences, an unknown producer ID, or a fenced epoch.
 
 **Impact on Applications**
 
