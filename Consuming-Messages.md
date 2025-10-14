@@ -1,6 +1,6 @@
 Karafka framework has a long-running server process responsible for fetching and consuming messages. Consumers should inherit from the **ApplicationConsumer**. You need to define a ```#consume``` method that will execute your business logic code against a batch of messages. Karafka fetches and consumes messages in batches by default.
 
-### Consuming Messages in Batches
+## Consuming Messages in Batches
 
 Data fetched from Kafka is accessible using the `#messages` method. The returned object is an enumerable containing received data and additional information that can be useful during the processing.
 
@@ -51,7 +51,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-### Consuming Messages One At a Time
+## Consuming Messages One At a Time
 
 While batch processing is recommended to leverage in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
 
@@ -84,7 +84,7 @@ end
 ```
 **Result:** The `#consume_one` method will be called for each message in the batch, allowing you to process messages individually while maintaining the benefits of Karafka's batch fetching.
 
-### Accessing Topic Details
+## Accessing Topic Details
 
 If your logic depends on specific routing details, you can access them from the consumer, using the ```#topic``` method.
 
@@ -181,11 +181,13 @@ end
 
 ## Detecting Revocation Midway
 
-When working with a distributed system like Kafka, partitions of a topic can be distributed among different consumers in a consumer group for processing. However, there might be cases where a partition needs to be taken away from a consumer and reassigned to another consumer. This is referred to as a partition revocation.
+When working with a distributed system like Kafka, topic partitions can be distributed among different consumers in a consumer group for processing. However, there are cases where a partition needs to be removed from one consumer and reassigned to another. This process is known as a partition revocation.
 
-Partition revocation can be voluntary, where the consumer willingly gives up the partition after it is done processing the current batch, or it can be involuntary. An involuntary partition revocation is typically due to a rebalance triggered by consumer group changes or a failure in the consumer, which causes it to become unresponsive. It is important to remember that involuntary revocations can occur during data processing. You may not want to continue processing messages when you know the partition has been taken away. This is where the `#revoked?` method is beneficial.
+Partition revocation can be voluntary, where a consumer willingly gives up the partition after processsing the current batch, or it can be involuntary. Involuntary partition revocation usually happens due to events such as a rebalance triggered by changes in the consumer group or a failure of a consumer that makes it unresponsive.  It is important to remember that involuntary revocations can occur during data processing. if you are aware that a partition has been removed, you may not want to continue processing messages. This is where the `#revoked?` method is beneficial.
 
-By monitoring the status of the `#revoked?` method, your application can detect that your process no longer owns a partition you are operating on. In such scenarios, you can choose to stop any ongoing, expensive processing. This can help you save resources and limit the number of potential reprocessings.
+By monitoring the status of the `#revoked?` method, your application can detect that your process no longer owns a partition you are operating on. In such cases, you can choose to stop any ongoing, expensive processing. This can help you save resources and reduce the number of potential reprocessings.
+
+As shown in the following example, you can check for revocation after processing each message:
 
 ```ruby
 def consume
@@ -199,27 +201,37 @@ def consume
 end
 ```
 
-It is worth, however, keeping in mind that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence `#revoked?` is especially useful for involuntary revocations.
+It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
-In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+
+!!! note
+    
+    The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
 
 !!! note
 
-    You do **not** need to mark the message as consumed for the `#revoked?` method result to change.
+    With [Long-Running Jobs](Pro-Long-Running-Jobs), the `#revoked?` method still updates automatically, even when messages remain unmarked for extended periods.
 
-!!! note
-
-    When using the [Long-Running Jobs](Pro-Long-Running-Jobs) feature, `#revoked?` result also changes independently from marking messages.
 
 ## Consumer Persistence
 
-Karafka consumer instances are persistent by default. This means that a single consumer instance will "live" as long as a given process instance consumes a given topic partition. This means you can elevate in-memory processing and buffering to achieve better performance.
+Karafka consumer instances are persistent by default. A single consumer instance will "live" as long as a given process consumes a given topic partition. This allows you to:
 
-Karafka consumer instance for a given topic partition will be re-created in case a given partition is lost and re-assigned.
+- Maintain database connections across batches
+- Keep in-memory state and caches
+- Buffer messages for batch processing
+- Reuse expensive resources
+
+Karafka recreates the consumer instance only when a partition is lost and reassigned.
+
 
 !!! note
 
-    If you decide to utilize such techniques, you may be better with manual offset management.
+    When buffering messages in memory, use manual offset management. Without it, you'll lose buffered data, if the process crashes before flushing.
+
+
+For example, here's a consumer that buffers messages until it reaches 1,000 of them before flushing:
 
 ```ruby
 # A consumer that will buffer messages in memory until it reaches 1000 of them. Then it will flush
