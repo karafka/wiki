@@ -181,6 +181,39 @@ WaterDrop provides automatic recovery mechanisms for fatal errors that occur in 
 
 For idempotent producers (non-transactional), WaterDrop can automatically reload the producer when fatal errors occur. This feature is **disabled by default** and must be explicitly enabled through configuration.
 
+#### Why Idempotent Producers May Enter Fatal States
+
+Idempotent producers may enter a fatal state when they encounter unrecoverable errors that would violate their core guarantees of message ordering and preventing duplicates. Understanding these scenarios helps in configuring appropriate recovery mechanisms:
+
+**Sequence Desynchronization**
+
+When the producer's internal sequence tracking becomes desynchronized with the broker's expectations, the producer cannot safely continue operations without risking message loss or duplication. This typically occurs due to:
+
+- Kafka cluster disruptions such as major broker failures and restarts
+- Partition leader reassignments during maintenance or failover
+- Network partitions that cause message retries with inconsistent state
+
+**Producer Metadata Loss**
+
+When the broker cannot locate the producer's metadata (Producer ID and epoch information), it cannot validate whether messages are duplicates or maintain ordering guarantees. This becomes fatal when:
+
+- There are in-flight messages or pending retries that cannot be safely recovered
+- Broker loses producer state (for example, UNKNOWN_PRODUCER_ID) due to log truncation, leader changes, or prolonged inactivity, which removes state needed to validate sequence numbers for idempotency
+
+**Message Sequence and Ordering Issues**
+
+During retries, the producer must preserve per-record ordering and sequence numbers to maintain idempotency; fatal errors can occur when the broker detects out-of-order sequences, an unknown producer ID, or a fenced epoch.
+
+**Impact on Applications**
+
+When a fatal error occurs:
+
+- In WaterDrop, subsequent produce API calls will fail with a fatal error until the producer is closed or reloaded.
+- If auto-reload is enabled, WaterDrop will reload the producer; otherwise, the application should close and recreate it.
+- In-flight messages that cannot be delivered will be dropped and reported as failures.
+
+#### Configuration
+
 ```ruby
 producer = WaterDrop::Producer.new do |config|
   config.kafka = {
