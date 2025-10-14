@@ -198,7 +198,7 @@ When the producer's internal sequence tracking becomes desynchronized with the b
 When the broker cannot locate the producer's metadata (Producer ID and epoch information), it cannot validate whether messages are duplicates or maintain ordering guarantees. This becomes fatal when:
 
 - There are in-flight messages or pending retries that cannot be safely recovered
-- Producer records expire due to retention policies, removing critical metadata needed for idempotency
+- Broker loses producer state (for example, UNKNOWN_PRODUCER_ID) due to log truncation, leader changes, or prolonged inactivity, which removes state needed to validate sequence numbers for idempotency
 
 **Message Sequence and Ordering Issues**
 
