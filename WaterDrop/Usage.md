@@ -415,7 +415,7 @@ In case of rake tasks, just invoke `MY_PRODUCER.close` at the end of your rake t
 desc 'My example rake task that sends all users data to Kafka'
 task send_users: :environment do
   User.find_each do |user|
-    MY_PRODUCER.producer.produce_async(
+    MY_PRODUCER.produce_async(
       topic: 'users',
       payload: user.to_json,
       key: user.id
