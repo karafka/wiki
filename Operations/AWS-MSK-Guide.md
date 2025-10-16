@@ -36,7 +36,7 @@ Express brokers have no maintenance windows - Amazon MSK automatically updates c
 
 Standard brokers follow the traditional rolling update pattern described above. During this update process, AWS expects transient disconnect errors on clients as a normal part of the maintenance procedure. Customers receive advance notification of planned maintenance, but must configure their applications to handle rolling broker restarts.
 
-!!! hint "Monitor MSK Express Despite No Maintenance Windows"
+!!! tip "Monitor MSK Express Despite No Maintenance Windows"
 
     While MSK Express eliminates scheduled maintenance windows, proper instrumentation and monitoring remain essential. There have been rare but documented cases where MSK Express automatic updates caused librdkafka to enter non-recoverable states, requiring consumer or producer instance restarts. Always maintain robust monitoring and automated recovery mechanisms even with Express brokers.
 
