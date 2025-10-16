@@ -179,6 +179,7 @@ For detailed information on fatal error handling and automatic recovery mechanis
 During MSK maintenance operations, producers may encounter `:not_enough_replicas` or `:not_enough_replicas_after_append` errors when the cluster cannot satisfy the configured `min.insync.replicas` requirement.
 
 This error occurs when:
+
 - Producer has `acks=all` (or `acks=-1`) configured
 - Topic has `min.insync.replicas` set (typically to 2 or higher)
 - The number of in-sync replicas falls below the configured minimum
