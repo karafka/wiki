@@ -241,7 +241,7 @@ AWS recommends that `min.insync.replicas` must be **one less than** the `replica
 
 This configuration allows the cluster to tolerate one broker failure while maintaining write availability. When RF equals MinISR (for example, RF=2 and MinISR=2), any single broker failure or maintenance operation blocks writes until all replicas are back in sync.
 
-!!! Warning "Karafka Recommendation Differs from AWS"
+!!! warning "Karafka Recommendation Differs from AWS"
 
     While AWS recommends 3-broker clusters with RF=3 and MinISR=2, **Karafka strongly recommends using at least 4 brokers** with RF=4 and MinISR=2 for production workloads. See the [Not Enough Replicas](#not-enough-replicas) section for detailed explanation.
 
