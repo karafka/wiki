@@ -64,7 +64,8 @@ config.kafka = {
   'metadata.recovery.strategy': 'rebootstrap',
   'topic.metadata.refresh.interval.ms': 30_000,
   'metadata.max.age.ms': 90_000,
-  'socket.timeout.ms': 90_000, 
+  'socket.connection.setup.timeout.ms': 45_000,
+  'socket.timeout.ms': 90_000,
   'retry.backoff.ms': 250,
   'retry.backoff.max.ms': 1000,
   'reconnect.backoff.ms': 250,
@@ -164,6 +165,39 @@ The broker-side error `Broker: Unknown topic or partition (unknown_topic_or_part
 
 Always pre-create all topics before making the MSK cluster publicly accessible, or configure Kafka ACLs to grant topic creation and access permissions.
 
+### SASL Authentication Errors After Healing Cluster Operations
+
+MSK clusters enter a `HEALING` state when AWS runs internal operations to address infrastructure issues, such as replacing unhealthy or unresponsive brokers. While you can continue producing and consuming data during healing operations, SASL/SCRAM authenticated clusters may experience authentication failures after the cluster returns to `ACTIVE` state.
+
+During healing, AWS replaces or restarts affected brokers while maintaining cluster availability. However, this process can disrupt SASL/SCRAM authentication state in ways that require manual intervention.
+
+Common authentication failure scenarios:
+
+- **Credential propagation delays** are the most frequent cause. Even after the cluster reports `ACTIVE` status with no pending changes, SASL/SCRAM credentials may take several minutes to propagate across all replaced or restarted brokers. During this window, clients receive authentication errors despite using correct credentials.
+
+- **ACL state inconsistency** can occur when heal operations replace brokers. If the cluster uses ACLs (particularly with `allow.everyone.if.no.acl.found=false`), the newly replaced brokers may not immediately reflect the current ACL state. Clients can connect but cannot perform operations until ACL state synchronizes.
+
+- **Secret association loss** has been reported in rare cases where AWS Secrets Manager secret associations with the MSK cluster become corrupted during broker replacements. This manifests as persistent authentication failures that resolve only after manually re-associating the secrets.
+
+**Recovery procedures:**
+
+For credential propagation delays (most common):
+
+1. Wait 5-10 minutes after the cluster returns to `ACTIVE` state
+1. Authentication should recover automatically as credentials propagate
+1. No manual intervention required
+
+For persistent authentication failures:
+
+1. **Verify ACL configuration** - Ensure ACLs allow the necessary operations for your SASL/SCRAM users.
+1. **Check ANONYMOUS user permissions** - If using cluster-level ACLs, verify the ANONYMOUS user has necessary permissions for inter-broker communication.
+1. **Re-associate Secrets Manager secrets** - If authentication failures persist after 10+ minutes.
+1. **Verify KMS key permissions** - If secrets use a custom KMS key, ensure the MSK service role maintains access to the key
+
+!!! warning "Public MSK Clusters Require Explicit ACLs"
+
+    If you've made your MSK cluster publicly accessible and set `allow.everyone.if.no.acl.found=false`, you **must** configure explicit ACLs for all SASL/SCRAM users. Heal operations can sometimes reset or corrupt ACL state, requiring manual re-application of ACLs. Document your ACL configuration and maintain scripts to quickly re-apply permissions if needed.
+
 ## Idempotent Producer Fatal Errors
 
 The idempotent producer can enter a **fatal error state** that completely halts message production. Once in this state, the producer cannot recover and must be recreated. This is one of the most severe issues in production Kafka deployments.
@@ -195,3 +229,26 @@ With 4 brokers and `min.insync.replicas=2`, the cluster can tolerate two simulta
 !!! warning "3-Broker Clusters Are Not Maintenance-Safe"
 
     While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to ensure write availability during maintenance operations.
+
+## AWS Health Dashboard Alerts for Replication Factor
+
+AWS actively monitors MSK clusters for availability risks and sends notifications through the AWS Health Dashboard when it detects topics with suboptimal replication configurations. These alerts typically indicate that one or more topics have `min.insync.replicas` (MinISR) configured equal to the `replication.factor` (RF), creating a situation where write/read failures can occur during maintenance, broker failures, or other transient issues.
+
+AWS recommends that `min.insync.replicas` must be **one less than** the `replication.factor` to preserve high availability. The standard recommendation is:
+
+- **Replication Factor**: 3
+- **MinISR**: 2
+
+This configuration allows the cluster to tolerate one broker failure while maintaining write availability. When RF equals MinISR (for example, RF=2 and MinISR=2), any single broker failure or maintenance operation blocks writes until all replicas are back in sync.
+
+!!! warning "Karafka Recommendation Differs from AWS"
+
+    While AWS recommends 3-broker clusters with RF=3 and MinISR=2, **Karafka strongly recommends using at least 4 brokers** with RF=4 and MinISR=2 for production workloads. See the [Not Enough Replicas](#not-enough-replicas) section for detailed explanation.
+
+### Changing Topic Replication Factor
+
+Karafka does **not** provide direct support for changing topic replication factors or partition counts. These are cluster-level administrative operations that must be performed using native Kafka tools.
+
+!!! info "Karafka Admin API Under Development"
+
+    A Karafka Admin API feature is currently under development that will provide a more user-friendly interface for replication factor management.
