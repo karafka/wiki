@@ -71,6 +71,7 @@
 - [Monitoring and Logging](Operations-Monitoring-and-Logging)
 - [Instrumentation Events](Operations-Instrumentation-Events)
 - [Error Handling and back off policy](Operations-Error-Handling-and-Back-Off-Policy)
+- [AWS MSK Guide](Operations-AWS-MSK-Guide)
 
 ## Advanced
 
