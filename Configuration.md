@@ -106,7 +106,8 @@ Example of root configuration:
 class KarafkaApp < Karafka::App
   setup do |config|
     config.client_id = "my_application-#{Process.pid}-#{Socket.gethostname}"
-    config.initial_offset = 'latest'
+    # initial_offset defaults to 'earliest' - only set on first consumer group run
+    config.initial_offset = 'earliest'
   end
 end
 ```
