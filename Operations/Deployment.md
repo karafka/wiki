@@ -107,6 +107,10 @@ Please follow the below instructions for both cluster initialization and Karafka
 
     While Karafka can be deployed on AWS using the Custom OAuth Token provider flow, additional code or gems may be required to fetch the tokens when necessary. This code is not included in the standard Karafka setup, so you must implement or integrate it based on your authentication provider's requirements.
 
+!!! info "AWS MSK Operational Issues Documentation"
+
+    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Operations-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
+
 ### AWS MSK cluster setup
 
 1. Navigate to the AWS MSK page and press the `Create cluster` button.
