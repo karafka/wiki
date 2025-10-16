@@ -1,6 +1,6 @@
 # AWS MSK Guide
 
-!!! Warning "Work in Progress"
+!!! warning "Work in Progress"
 
     This document is currently under active development. Content may be incomplete, subject to change, or require further validation. If you have questions about specific sections or would like to contribute additional MSK operational insights, please reach out to help improve this guide.
 
@@ -10,7 +10,7 @@ Over time, users of the Karafka and rdkafka ecosystems have reported numerous re
 
 While some documented issues may occur with other Kafka deployments, this guide is built on the collective experience of production MSK incidents, workarounds, and solutions discovered by the community. Each pattern and solution has been validated in real MSK environments where these problems consistently manifested.
 
-!!! Note "Help Improve This Guide"
+!!! note "Help Improve This Guide"
 
     This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, please reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
 
@@ -22,7 +22,7 @@ MSK performs maintenance via rolling updates, rebooting brokers one at a time. D
 
 When updating cluster configurations, Amazon MSK performs rolling restarts when necessary. After restarting each broker, MSK lets the broker catch up on any data it might have missed during the configuration update before moving to the next broker. This sequential approach prioritizes cluster availability over update speed.
 
-!!! Warning "Dual-Broker Outages During Maintenance"
+!!! warning "Dual-Broker Outages During Maintenance"
 
     Some Karafka users have observed instances where two brokers appear offline simultaneously during maintenance operations. It remains unclear whether these occurrences result from MSK taking down one broker for maintenance while another crashes independently, or whether MSK occasionally begins updating the next broker before the previous one fully completes its restart and catch-up process. These dual-broker outages significantly impact cluster availability and will be addressed in the configuration recommendations throughout this guide.
 
@@ -36,7 +36,7 @@ Express brokers have no maintenance windows - Amazon MSK automatically updates c
 
 Standard brokers follow the traditional rolling update pattern described above. During this update process, AWS expects transient disconnect errors on clients as a normal part of the maintenance procedure. Customers receive advance notification of planned maintenance, but must configure their applications to handle rolling broker restarts.
 
-!!! Hint "Monitor MSK Express Despite No Maintenance Windows"
+!!! hint "Monitor MSK Express Despite No Maintenance Windows"
 
     While MSK Express eliminates scheduled maintenance windows, proper instrumentation and monitoring remain essential. There have been rare but documented cases where MSK Express automatic updates caused librdkafka to enter non-recoverable states, requiring consumer or producer instance restarts. Always maintain robust monitoring and automated recovery mechanisms even with Express brokers.
 
@@ -102,7 +102,7 @@ This recovery process means that consumers can survive:
 - Rolling broker restarts during maintenance
 - Security group propagation delays
 
-!!! Info "Trust the Recovery Process"
+!!! info "Trust the Recovery Process"
 
     Unless "all brokers down" errors persist for longer than your configured `session.timeout.ms`, no intervention is required. Consumers will automatically recover, rejoin their groups, and resume processing from their last committed offsets. Premature restarts can actually slow recovery by interrupting the reconnection process.
 
@@ -112,7 +112,7 @@ This recovery process means that consumers can survive:
 
 This metadata synchronization issue presents as `rdkafka: [thrd:main]: Topic partition count changed from N to 0`, indicating librdkafka has either detected a topic deletion/recreation or is receiving corrupted or incomplete metadata from MSK brokers. While topic lifecycle changes are one cause, prolonged metadata inconsistency can also trigger this error even when topics remain unchanged.
 
-!!! Tip "Critical Error Except During Topic Operations"
+!!! tip "Critical Error Except During Topic Operations"
 
     This error should be considered **critical** in stable production environments and warrants affected consumer restart - **except** when performing intentional topic lifecycle operations (deletion, recreation, repartitioning, replication factor changes). During planned topic operations, this error is expected as MSK metadata propagation can take 30+ seconds. In all other cases, this indicates a serious metadata synchronization problem that typically will not self-recover.
 
@@ -152,7 +152,7 @@ config.kafka = {
 
 These settings force more frequent metadata updates and enable automatic recovery attempts through re-bootstrapping when metadata becomes inconsistent.
 
-!!! Info "Capacity Planning for Metadata Stability"
+!!! info "Capacity Planning for Metadata Stability"
 
     Always maintain at least 30-40% headroom on MSK and MSK Express instances. Running close to maximum recommended capacity significantly increases the risk of metadata synchronization failures, particularly with high partition counts. Monitor CPU utilization and partition counts against AWS recommended limits to ensure adequate operational margin.
 
