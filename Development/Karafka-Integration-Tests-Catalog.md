@@ -150,7 +150,6 @@
 | `consumption/message_content_edge_cases_spec.rb` | Karafka should handle various message content edge cases properly |
 | `consumption/no_long_wait_with_eof_spec.rb` | With above settings it would never finish because would accumulate messages for so long Only if eof return works, will it finish fast enough |
 | `consumption/of_a_tombstone_record_spec.rb` | Karafka should not have any problems of consuming of a tombstone record with the default deserializer |
-| `consumption/of_an_post_tombstone_message_spec.rb` | When consuming post-compaction data, it should not consume pre-compact info. |
 | `consumption/one_consumer_group_two_topics_spec.rb` | Karafka should be able to consume two topics with same consumer group |
 | `consumption/one_worker_many_topics_spec.rb` | Karafka should be able to consume multiple topics with one worker |
 | `consumption/pausing_not_unlocking_spec.rb` | When running longer jobs, someone may try to pause processing prior to reaching poll interval to bypass the issue. This will not work and this spec illustrates this. |
