@@ -1,9 +1,5 @@
 # AWS MSK Guide
 
-!!! warning "Work in Progress"
-
-    This document is currently under active development. Content may be incomplete, subject to change, or require further validation. If you have questions about specific sections or would like to contribute additional MSK operational insights, please reach out to help improve this guide.
-
 This document addresses the unique operational characteristics and recurring issues observed when running Karafka with AWS Managed Streaming for Apache Kafka (MSK) and MSK Express. While AWS MSK provides a fully managed Kafka service, it introduces several distinct behaviors compared to other Kafka vendors that affect how Karafka and librdkafka operate.
 
 Over time, users of the Karafka and rdkafka ecosystems have reported numerous recurring incidents specific to MSK deployments that rarely occur with other vendors. Issues such as `unknown_partition` errors during consumption, authentication failures after cluster maintenance, and complete consumer group stalls during broker patching prompted the creation of this guide.
