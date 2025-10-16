@@ -165,7 +165,7 @@ The broker-side error `Broker: Unknown topic or partition (unknown_topic_or_part
 
 Always pre-create all topics before making the MSK cluster publicly accessible, or configure Kafka ACLs to grant topic creation and access permissions.
 
-### SASL Authentication Errors After Heal Cluster Operations
+### SASL Authentication Errors After Healing Cluster Operations
 
 MSK clusters enter a `HEALING` state when AWS runs internal operations to address infrastructure issues, such as replacing unhealthy or unresponsive brokers. While you can continue producing and consuming data during healing operations, SASL/SCRAM authenticated clusters may experience authentication failures after the cluster returns to `ACTIVE` state.
 
