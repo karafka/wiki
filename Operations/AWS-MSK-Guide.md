@@ -189,8 +189,8 @@ For credential propagation delays (most common):
 
 For persistent authentication failures:
 
-1. **Verify ACL configuration** - Ensure ACLs allow the necessary operations for your SASL/SCRAM users:
-1. **Check ANONYMOUS user permissions** - If using cluster-level ACLs, verify the ANONYMOUS user has necessary permissions for inter-broker communication:
+1. **Verify ACL configuration** - Ensure ACLs allow the necessary operations for your SASL/SCRAM users.
+1. **Check ANONYMOUS user permissions** - If using cluster-level ACLs, verify the ANONYMOUS user has necessary permissions for inter-broker communication.
 1. **Re-associate Secrets Manager secrets** - If authentication failures persist after 10+ minutes.
 1. **Verify KMS key permissions** - If secrets use a custom KMS key, ensure the MSK service role maintains access to the key
 
