@@ -173,3 +173,29 @@ Always pre-create all topics before making the MSK cluster publicly accessible, 
 The idempotent producer can enter a **fatal error state** that completely halts message production. Once in this state, the producer cannot recover and must be recreated. This is one of the most severe issues in production Kafka deployments.
 
 For detailed information on fatal error handling and automatic recovery mechanisms, see the [WaterDrop Error Handling documentation](WaterDrop-Error-Handling#fatal-error-recovery).
+
+### Not Enough Replicas
+
+During MSK maintenance operations, producers may encounter `:not_enough_replicas` or `:not_enough_replicas_after_append` errors when the cluster cannot satisfy the configured `min.insync.replicas` requirement.
+
+This error occurs when:
+
+- Producer has `acks=all` (or `acks=-1`) configured
+- Topic has `min.insync.replicas` set (typically to 2 or higher)
+- The number of in-sync replicas falls below the configured minimum
+
+In typical Kafka deployments with controlled maintenance windows, this error is rare because only one broker restarts at a time. However, MSK's maintenance behavior may create a critical edge case. As documented in the [MSK vs. Other Kafka Vendors](#msk-vs-other-kafka-vendors) section, MSK maintenance can cause two brokers to go offline simultaneously. While it remains unclear whether this stems from overlapping maintenance operations or independent broker failures during maintenance windows, the operational impact is clear: with two brokers down, a 3-node cluster with `min.insync.replicas=2` cannot satisfy write requirements, causing producers to fail.
+
+**Recommended cluster sizing:**
+
+Based on observed MSK behavior, follow these guidelines:
+
+- **Minimum 4 brokers** for production clusters requiring high availability
+- **Set `min.insync.replicas=2`** when running 4+ broker clusters
+- **Avoid 3-broker clusters** for production workloads where write availability during maintenance is critical
+
+With 4 brokers and `min.insync.replicas=2`, the cluster can tolerate two simultaneous broker outages while maintaining write availability (2 out of 4 brokers remain in-sync).
+
+!!! warning "3-Broker Clusters Are Not Maintenance-Safe"
+
+    While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to ensure write availability during maintenance operations.
