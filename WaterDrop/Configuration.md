@@ -35,19 +35,25 @@ end
 
 Some of the options are:
 
-| Option                                | Description                                                                    |
-|---------------------------------------|--------------------------------------------------------------------------------|
-| `id`                                  | id of the producer for instrumentation and logging                             |
-| `logger`                              | Logger that we want to use                                                     |
-| `client_class`                        | Client class for creating the underlying client used to dispatch messages      |
-| `deliver`                             | Should we send messages to Kafka or just fake the delivery                     |
-| `max_wait_timeout`                    | Waits that long for the delivery report or raises an error                     |
-| `wait_on_queue_full`                  | Should be wait on queue full or raise an error when that happens               |
-| `wait_backoff_on_queue_full`          | Waits that long before retry when queue is full                                |
-| `wait_timeout_on_queue_full`          | If back-offs and attempts that that much time, error won't be retried more     |
-| `wait_backoff_on_transaction_command` | How long to wait before retrying a retryable transaction related error         |
-| `max_attempts_on_transaction_command` | How many times to retry a retryable transaction related error before giving up |
-| `instrument_on_wait_queue_full`       | Should we instrument when `queue_full` occurs                                  |
+| Option                                      | Description                                                                    |
+|---------------------------------------------|--------------------------------------------------------------------------------|
+| `id`                                        | id of the producer for instrumentation and logging                             |
+| `logger`                                    | Logger that we want to use                                                     |
+| `client_class`                              | Client class for creating the underlying client used to dispatch messages      |
+| `deliver`                                   | Should we send messages to Kafka or just fake the delivery                     |
+| `max_wait_timeout`                          | Waits that long for the delivery report or raises an error                     |
+| `wait_on_queue_full`                        | Should be wait on queue full or raise an error when that happens               |
+| `wait_backoff_on_queue_full`                | Waits that long before retry when queue is full                                |
+| `wait_timeout_on_queue_full`                | If back-offs and attempts that that much time, error won't be retried more     |
+| `wait_backoff_on_transaction_command`       | How long to wait before retrying a retryable transaction related error         |
+| `max_attempts_on_transaction_command`       | How many times to retry a retryable transaction related error before giving up |
+| `reload_on_idempotent_fatal_error`          | Automatically reload producer after fatal errors on idempotent producers       |
+| `wait_backoff_on_idempotent_fatal_error`    | Time to wait (ms) before retrying after an idempotent fatal error reload       |
+| `max_attempts_on_idempotent_fatal_error`    | Maximum number of reload attempts for idempotent fatal errors                  |
+| `reload_on_transaction_fatal_error`         | Automatically reload producer after fatal errors in transactions               |
+| `wait_backoff_on_transaction_fatal_error`   | Time to wait (ms) before continuing after a transactional fatal error reload   |
+| `max_attempts_on_transaction_fatal_error`   | Maximum number of reload attempts for transactional fatal errors               |
+| `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
 
 !!! info
 
@@ -82,6 +88,46 @@ The following Kafka configuration properties are adjusted automatically (if not 
 The idempotent producer ensures that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system ensures that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
 
 You can read more about idempotence and acknowledgements settings [here](WaterDrop-Idempotence-and-Acknowledgements).
+
+### Fatal Error Recovery for Idempotent Producers
+
+When working with idempotent producers, certain fatal errors may occur that prevent the producer from continuing to operate correctly. WaterDrop provides automatic recovery mechanisms to reload the producer when such errors occur.
+
+By default, idempotent fatal error recovery is **disabled**. You can enable it by setting the `reload_on_idempotent_fatal_error` configuration option:
+
+```ruby
+WaterDrop::Producer.new do |config|
+  config.deliver = true
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'enable.idempotence': true
+  }
+
+  # Enable automatic reload on idempotent fatal errors
+  config.reload_on_idempotent_fatal_error = true
+  # Wait 10 seconds before retrying after a fatal error
+  config.wait_backoff_on_idempotent_fatal_error = 10_000
+  # Maximum 3 reload attempts before giving up
+  config.max_attempts_on_idempotent_fatal_error = 3
+end
+```
+
+When enabled, WaterDrop will:
+
+1. Detect fatal errors that prevent the idempotent producer from continuing
+2. Automatically reload the underlying librdkafka producer client
+3. Wait for the configured backoff period before retrying the operation
+4. Track reload attempts to prevent infinite loops
+
+The reload mechanism helps ensure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
+
+!!! warning "Producer Client Reload Impact"
+
+    Fatal error recovery involves reloading the entire producer client, which may result in a brief interruption of message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Ensure your application can tolerate this behavior before enabling this feature.
+
+!!! note "Transactional Producer Support"
+
+    For transactional producers, similar configuration options are available with different defaults. See the [Transactional Producer documentation](WaterDrop-Transactions) for more details.
 
 ## Compression
 

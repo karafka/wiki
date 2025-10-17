@@ -150,7 +150,6 @@
 | `consumption/message_content_edge_cases_spec.rb` | Karafka should handle various message content edge cases properly |
 | `consumption/no_long_wait_with_eof_spec.rb` | With above settings it would never finish because would accumulate messages for so long Only if eof return works, will it finish fast enough |
 | `consumption/of_a_tombstone_record_spec.rb` | Karafka should not have any problems of consuming of a tombstone record with the default deserializer |
-| `consumption/of_an_post_tombstone_message_spec.rb` | When consuming post-compaction data, it should not consume pre-compact info. |
 | `consumption/one_consumer_group_two_topics_spec.rb` | Karafka should be able to consume two topics with same consumer group |
 | `consumption/one_worker_many_topics_spec.rb` | Karafka should be able to consume multiple topics with one worker |
 | `consumption/pausing_not_unlocking_spec.rb` | When running longer jobs, someone may try to pause processing prior to reaching poll interval to bypass the issue. This will not work and this spec illustrates this. |
@@ -268,6 +267,7 @@
 | `consumption/with_on_after_consume_method_spec.rb` | Karafka has a `#after_consume` method. This method should not be used as part of the official API but we add integration specs here just to make sure it runs as expected. |
 | `consumption/with_on_before_consume_method_spec.rb` | Karafka has a `#before_consume` method. This method should not be used as part of the official API but we add integration specs here just to make sure it runs as expected. |
 | `consumption/with_producer_disconnect_error_spec.rb` | When Karafka producer (WaterDrop) disconnects it should reconnect automatically. @note Here we force the disconnect by setting the `connections.max.idle.ms` to a really low value. With librdkafka updates, planned disconnections no longer emit "all brokers down" errors, so we test that the producer continues working after forced disconnection. |
+| `consumption/with_reset_topic_spec.rb` | When weird things happen with partition (it disappears), Karafka receives weird metadata, etc we should be able to detect this and gracefully shutdown For any reason, especially affected is MSK during rolling updates. |
 | `consumption/with_separate_subscription_groups_spec.rb` | When using separate subscription groups, each should have it's own underlying client and should operate independently for data fetching. |
 | `consumption/with_static_group_of_many_subscriptions_spec.rb` | Karafka should be able to use few subscription groups with static group memberships This requires us to inject extra postfix to group id per client and should happen automatically. |
 | `consumption/with_sync_mark_sa_consumed_after_revoke_spec.rb` | When we've lost a topic and end up with an `unknown_member_id`, we should handle that gracefully while running `mark_as_consumed\!`. |
@@ -331,6 +331,7 @@
 | `instrumentation/statistics_callback_on_client_change_spec.rb` | Karafka should not only recover from critical errors that happened but it also should reload the underlying client and keep publishing statistics from the new librdkafka client |
 | `instrumentation/statistics_callback_subscription_spec.rb` | Karafka should publish async errors from the client via a dedicated instrumentation hook |
 | `instrumentation/statistics_callback_with_crashing_subscription_spec.rb` | Karafka should not hang or crash when we receive the statistics processing error. It should recover and be responsive. |
+| `instrumentation/statistics_frozen_lag_on_paused_spec.rb` | When partition is paused for a longer period of time, its metadata won't be refreshed. This means that consumer-reported statistics lag will be frozen. This spec illustrates that. |
 | `instrumentation/statistics_on_lag_with_many_sub_group_spec.rb` | Karafka when consuming messages, should report per topic partition consumer lag By using two subscription groups, we can make sure we have separate connections and that we fetch data in parallel and ship it as it goes, so one topic partition data is not causing a wait on other things ref https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched |
 | `instrumentation/statistics_on_lag_with_one_sub_group_spec.rb` | Karafka when consuming messages, should report per topic partition consumer lag Since librdkafka fetches data in batches onto the queue, this can cause the lagged partition to run first without processing anything else despite good concurrency settings This can be solved either via subscription group distribution or by tuning the per partition data that goes into the buffer ref https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched |
 | `instrumentation/statistics_publishing_on_long_poll_spec.rb` | Karafka should publish statistics even when a long blocking processing occurs and there are no processing workers available as it should happen from one of the main threads. |
@@ -358,6 +359,7 @@
 | `instrumentation/with_hammered_assignments_tracker_spec.rb` | *No description available* |
 | `instrumentation/with_offset_querying_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages |
 | `instrumentation/with_replaced_monitor_spec.rb` | Karafka should allow for a monitor that can be used to run wrapped handling, as long as there is a delegation back to Karafka monitor afterwards. |
+| `instrumentation/with_watermarks_querying_spec.rb` | Karafka should be able to query watermark offsets for multiple topics and partitions using a single consumer instance |
 | `lags/consumption_delayed_spec.rb` | Karafka should correctly report consumption_lag when there is a delay in between publishing messages and their consumption |
 | `lags/consumption_real_time_spec.rb` | Karafka should correctly report consumption_lag when we consume messages fast and it should never be bigger than couple hundred ms with the defaults for integration specs |
 | `lags/processing_fast_spec.rb` | When processing data fast, the processing lag should not be big and things should be processed almost real time |

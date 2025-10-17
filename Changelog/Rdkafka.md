@@ -3,6 +3,12 @@
 
 # Rdkafka Changelog
 
+## 0.24.1 (2025-10-10)
+- [Fix] Fix Github Action Ruby reference preventing non-compiled releases.
+
+## 0.24.0 (2025-10-10)
+- [Enhancement] Bump librdkafka to `2.11.1`
+
 ## 0.23.1 (2025-09-25)
 - [Enhancement] Improve sigstore attestation for precompiled releases.
 - [Fix] Fix incorrectly set default SSL certs dir.
