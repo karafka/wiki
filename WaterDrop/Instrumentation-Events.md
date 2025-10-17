@@ -49,6 +49,7 @@ Below is the complete list of instrumentation events available in WaterDrop:
 - `producer.connected`
 - `producer.disconnected`
 - `producer.disconnecting`
+- `producer.reload`
 - `producer.reloaded`
 
 ### Statistics Events

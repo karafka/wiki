@@ -289,53 +289,53 @@ As of now, Karafka components have no known memory leaks. We take each report ex
 
 1. **Upgrade to the Latest Version**: Ensure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
 
-2. **Check for External Dependencies**: Limit the use of non-default gems to eliminate issues that might arise from other libraries.
+1. **Check for External Dependencies**: Limit the use of non-default gems to eliminate issues that might arise from other libraries.
 
-3. **Simplify Concurrency**: Set the `concurrency` value to `1` to simplify the processing flow and identify if the issue is related to multi-threading.
+1. **Simplify Concurrency**: Set the `concurrency` value to `1` to simplify the processing flow and identify if the issue is related to multi-threading.
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.concurrency = 1
-  end
-end
-```
-
-4. **Use a Single Topic and Partition**: Test with a single topic and partition to reduce complexity and isolate the issue.
-
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # ...
-  end
-
-  routes.draw do
-    topic :orders do
-      consumer OrdersConsumer
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        config.concurrency = 1
+      end
     end
-  end
-end
-```
+    ```
 
-5. **Monitor Memory Usage**: Use tools like `memory_profiler` or `derailed_benchmarks` to monitor and profile memory usage in your Karafka application.
+1. **Use a Single Topic and Partition**: Test with a single topic and partition to reduce complexity and isolate the issue.
 
-6. **Check Configuration**: Verify your Karafka configuration for any unusual settings that might cause excessive memory usage.
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # ...
+      end
 
-7. **Review Logs**: Check your logs for any warnings or errors that might indicate a problem with memory management.
+      routes.draw do
+        topic :orders do
+          consumer OrdersConsumer
+        end
+      end
+    end
+    ```
 
-8. **Isolate the Problem**: Reproduce the issue in a controlled environment. Use minimal configuration and isolate the components one by one.
+1. **Monitor Memory Usage**: Use tools like `memory_profiler` or `derailed_benchmarks` to monitor and profile memory usage in your Karafka application.
 
-9. **Garbage Collection**: Force garbage collection and monitor if the memory usage drops. This can help determine if the issue is with Ruby's garbage collector.
+1. **Check Configuration**: Verify your Karafka configuration for any unusual settings that might cause excessive memory usage.
 
-```ruby
-GC.start
-```
+1. **Review Logs**: Check your logs for any warnings or errors that might indicate a problem with memory management.
 
-10. **Collect Diagnostic Data**: Gather detailed diagnostic data, including heap dumps and backtraces. This information will be crucial for debugging the issue.
+1. **Isolate the Problem**: Reproduce the issue in a controlled environment. Use minimal configuration and isolate the components one by one.
 
-```ruby
-Process.kill('TTIN', Process.pid)
-```
+1. **Garbage Collection**: Force garbage collection and monitor if the memory usage drops. This can help determine if the issue is with Ruby's garbage collector.
+
+    ```ruby
+    GC.start
+    ```
+
+1. **Collect Diagnostic Data**: Gather detailed diagnostic data, including heap dumps and backtraces. This information will be crucial for debugging the issue.
+
+    ```ruby
+    Process.kill('TTIN', Process.pid)
+    ```
 
 ### Understanding Memory Usage and Leaks
 
