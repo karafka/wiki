@@ -1,6 +1,8 @@
-It's quite common when using Kafka to treat applications as parts of a bigger pipeline (similarly to Bash pipeline) and forward processing results to other applications. Karafka provides a way of dealing with that by allowing you to use the [WaterDrop](https://github.com/karafka/waterdrop) messages producer from any place within your application.
+It is quite common in Kafka to treat applications as components of a larger pipeline, similar to a Bash pipeline, where processing results are forwarded to other applications. Karafka facilitates this by enabling you to use the [WaterDrop](https://github.com/karafka/waterdrop) message producer from anywhere in your application.
 
-You can access the pre-initialized WaterDrop producer instance using the `Karafka.producer` method from any place within your codebase.
+You can access the pre-initialized WaterDrop producer instance using the `Karafka.producer` method from any location within your codebase.
+
+The following example demonstrates how to asynchronously produce a message to Kafka.
 
 ```ruby
 Karafka.producer.produce_async(
@@ -8,10 +10,9 @@ Karafka.producer.produce_async(
   payload: Events.last.to_json
 )
 ```
-
 WaterDrop is thread-safe and operates well at scale.
 
-If you're looking to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including `#producer`, `#produce_sync`, `#produce_async`, `#produce_many_sync`, and `#produce_many_async`. Here's how you might use them:
+If you need to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including `#producer`, `#produce_sync`, `#produce_async`, `#produce_many_sync`, and `#produce_many_async`, as shown in the folllowing example:
 
 ```ruby
 class VisitsConsumer < ApplicationConsumer
@@ -31,28 +32,37 @@ class VisitsConsumer < ApplicationConsumer
   end
 end
 ```
-
-Please follow the [WaterDrop documentation](WaterDrop-Usage) for more details on how to use it.
+For more details on how to use the WaterDrop producer and its various message production methods, see [WaterDrop documentation](WaterDrop-Usage) .
 
 ## Messages Piping
 
-If you are looking for seamless message piping in Kafka-based systems, we recommend checking out the [message piping](Pro-Piping) feature in Karafka Pro. Exclusive to Karafka Pro, this feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+If you are looking for seamless message piping in Kafka-based systems, see [Piping](Pro-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
 
 ## Producer Shutdown
 
-When using the Karafka producer in processes like Puma, Sidekiq, or rake tasks, it is always recommended to call the `#close` method on the producer before shutting it down.
+Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or rake tasks, make sure to call the `#close` method on the producer.
 
-This is because the `#close` method ensures that any pending messages in the producer's buffer are flushed to the Kafka broker before shutting down the producer. If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data.
+This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer. 
 
-In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
+!!! Info
 
-Overall, calling `#close` on the Karafka producer is a best practice that helps ensure reliable and efficient message delivery to Kafka while promoting your application's stability and scalability.
+    If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data. In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
 
-Below you can find an example of how to `#close` the producer used in various Ruby processes. Please note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
+
+Overall, calling `#close` on the Karafka producer is a best practice that helps ensure reliable and efficient message delivery to Kafka while promoting your application stability and scalability.
+
+In the following sections, you can find an example of how to `#close` the producer used in various Ruby processes.
+
+!!! Warning
+
+    Note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
+
 
 ### Closing Producer Used in Karafka
 
-When you shut down the Karafka consumer, the `Karafka.producer` automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+When you shut down the Karafka consumer, the `Karafka.producer` automatically closes. There is no need to close it yourself. If you are using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+
+The following examples show how to properly close Karafka producers in various Ruby environments to ensure all messages are delivered and resources are released.
 
 ### Closing Producer Used in Puma (Single Mode)
 
@@ -162,9 +172,11 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating Karafka producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+While integrating Karafka producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
 
-However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a Karafka producer:
+However, there might be scenarios where such specific hooks are not available or suitable. In these cases, employ Ruby's `at_exit` hook as a universal fallback to close the producer before the Ruby process exits. 
+
+The following basic example demonstrates using at_exit with a Karafka producer:
 
 ```ruby
 at_exit do
@@ -174,11 +186,13 @@ end
 
 ## Producing to Multiple Clusters
 
-Karafka, by default, provides a producer that sends messages to a specified Kafka cluster. If you don't configure it otherwise, this producer will always produce messages to the default cluster that you've configured Karafka to work with. If you only specify one Kafka cluster in your configuration, all produced messages will be sent to this cluster. This is the out-of-the-box behavior and works well for many setups with a single cluster.
+Karafka, by default, provides a producer that sends messages to a specified Kafka cluster. If you do not configure it otherwise, this producer will always produce messages to the default cluster that you have configured Karafka to work with. If you specify one Kafka cluster in your configuration, all produced messages will be sent to this cluster. This is the out-of-the-box behavior and works well for many setups with a single cluster.
 
-However, if you have a more complex setup where you'd like to produce messages to different Kafka clusters based on certain logic or conditions, you need a more customized setup. In such cases, you must configure a producer for each cluster to which you want to produce. This means you'll have separate producer configurations tailored to each cluster, allowing you to produce to any of them as required.
+However, if you have a more complex setup where you need to produce messages to different Kafka clusters based on certain logic or conditions, you need a more customized setup. In such cases, configure a producer for each cluster you want to produce to. This allows for distinct producer configurations for each cluster, making it possible to produce to any of them as needed.
 
-In scenarios where you want to decide which cluster to produce to based on the consumer logic or the consumed message, you can override the `#producer` method in your consumer. By overriding this method, you can specify a dedicated cluster-aware producer instance depending on your application's logic.
+If you need to determine which cluster to produce to based on the consumer logic or the message being consumed, you can override the `#producer` method in your consumer. By doing so, you can define a cluster-aware producer instance that aligns with your application's logic.
+
+The following example demonstrates how to create and use multiple producers for different Kafka clusters, allowing you to dynamically route messages:
 
 ```ruby
 # Define your producers for each of the clusters
@@ -210,6 +224,6 @@ class MyConsumer < ApplicationConsumer
 end
 ```
 
-The Web UI relies on per-producer listeners to monitor asynchronous errors. If you're crafting your consumers and utilizing the Web UI, please ensure you configure this integration appropriately.
+The Web UI relies on per-producer listeners to monitor asynchronous errors. If you craft your consumers and utilize the Web UI, make sure that you configure this integration appropriately.
 
-By leveraging this flexibility in Karafka, you can effectively manage and direct the flow of messages in multi-cluster Kafka environments, ensuring that data gets to the right place based on your application's unique requirements.
+By leveraging this flexibility in Karafka, you can effectively manage and direct message flow in multi-cluster Kafka environments, ensuring data reaches the right place based on your application's unique requirements.
