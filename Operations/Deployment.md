@@ -98,14 +98,18 @@ First of all, it is worth pointing out that Karafka, similar to librdkafka does 
 
 Karafka **does**, however, support:
 
-- [Standard SASL + SSL mechanisms](Deployment#aws-msk-cluster-setup).
-- [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers) flow.
+- [Standard SASL + SSL mechanisms](#aws-msk-cluster-setup).
+- [Custom OAuth Token Providers](#custom-oauth-token-providers) flow.
 
-Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](Deployment#custom-oauth-token-providers) section.
+Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](#custom-oauth-token-providers) section.
 
 !!! info "AWS Integration with Custom OAuth Token Providers"
 
     While Karafka can be deployed on AWS using the Custom OAuth Token provider flow, additional code or gems may be required to fetch the tokens when necessary. This code is not included in the standard Karafka setup, so you must implement or integrate it based on your authentication provider's requirements.
+
+!!! info "AWS MSK Operational Issues Documentation"
+
+    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Operations-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
 
 ### AWS MSK cluster setup
 
@@ -507,7 +511,7 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 
 #### Missing Information or "Initial Consumers State Missing" Notice After a While
 
-Please read the [Heroku Retention Policy Impact on the Web UI](Deployment#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
+Please read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
 
 ## Kubernetes
 

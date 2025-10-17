@@ -329,8 +329,8 @@ No. IAM is a custom authentication engine that is not a part of the Kafka protoc
 
 Karafka supports following methods that work with AWS MSK:
 
-- [Standard SASL + SSL mechanisms](Deployment#aws-msk-cluster-setup).
-- [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers) flow.
+- [Standard SASL + SSL mechanisms](Operations-Deployment#aws-msk-cluster-setup).
+- [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers) flow.
 
 ## Why can't I connect to Kafka from another Docker container?
 
@@ -948,7 +948,7 @@ Karafka and librdkafka are not designed to work over unstable and slow network c
 
 When a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
 
-To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](Monitoring-and-Logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
+To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](Operations-Monitoring-and-Logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
 
 ## Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?
 
@@ -1023,7 +1023,7 @@ Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to det
 
 ## How can I configure WaterDrop with SCRAM?
 
-You can use the same setup as the one used by Karafka, described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can use the same setup as the one used by Karafka, described [here](Operations-Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?
 
@@ -1082,7 +1082,7 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 
 ## How can I set up WaterDrop with SCRAM?
 
-You can configure it the same way as Karafka support for SCRAM described [here](Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
+You can configure it the same way as Karafka support for SCRAM described [here](Operations-Deployment#karafka-configuration-for-aws-msk-sasl-ssl).
 
 ## Is there a way to mark messages as consumed in bulk?
 
@@ -1832,7 +1832,7 @@ It indicates that you're attempting an online/rolling migration between two diff
 
 In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
-You can read more about this process [here](Development-vs-Production#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
+You can read more about this process [here](Operations-Development-vs-Production#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
 
 ## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
 
@@ -2101,7 +2101,7 @@ Checking the `event[:type]` and recognizing the role of the `event[:caller]` wil
 
 This issue is likely due to the `offsets.retention.minutes` setting in Kafka. Kafka deletes the saved offsets if a consumer is stopped for longer than this set retention period (like your 2-week downtime). Without these offsets, the consumer restarts from the beginning. However, the offsets are still available for shorter downtimes (like your 15-minute test), allowing the consumer to resume from where it left off.
 
-You can read more about this behavior [here](Development-vs-Production#configure-your-brokers-offsetsretentionminutes-policy).
+You can read more about this behavior [here](Operations-Development-vs-Production#configure-your-brokers-offsetsretentionminutes-policy).
 
 ## Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?
 
@@ -2664,7 +2664,7 @@ Note that:
 1. This works per offset location, not per individual message, unless you mark each message as consumed
 1. The error causing the retry may differ between retry attempts
 
-You can find more details about this [here](Error-handling-and-back-off-policy#altering-the-consumer-behaviour-upon-reprocessing).
+You can find more details about this [here](Operations-Error-Handling-and-Back-Off-Policy#altering-the-consumer-behaviour-upon-reprocessing).
 
 ## Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?
 

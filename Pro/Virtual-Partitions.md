@@ -429,7 +429,7 @@ This behavior is advantageous in scenarios where message processing involves ext
 
 ## Behaviour on Errors
 
-For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Error-handling-and-back-off-policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
+For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Operations-Error-Handling-and-Back-Off-Policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
 <p align="center">
   <img src="https://cdn.karafka.io/assets/misc/charts/virtual_partitions/error_handling.svg" />
@@ -642,7 +642,7 @@ This class defines a custom reducer with a `#call` method. The method uses an MD
 
 ## Monitoring
 
-Karafka default [monitor](Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
+Karafka default [monitor](Operations-Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
 ## Shutdown and Revocation Handlers
 

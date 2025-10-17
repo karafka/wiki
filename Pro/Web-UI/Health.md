@@ -54,3 +54,16 @@ This feature is handy in environments where:
 Focusing on the lag data directly from Kafka lets you gain insights into system performance and potential bottlenecks without relying solely on consumer process metrics.
 
 ![karafka web ui cluster lags](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-health-cluster-lags.png)
+
+!!! warning "Lag Reporting Limitation for Paused Partitions"
+
+    When consumer partitions are paused, there is a known limitation in how lag information is reported in the Web UI (except for Cluster Lags). The lag data for paused partitions comes from consumer processes, and librdkafka does not refresh metadata for paused partitions. This means the lag value will remain static until the partition is resumed, even if new messages are being produced to that partition.
+
+    **Important Notes:**
+
+    - **Consumer-reported lags** (visible in consumer views) will not grow for paused partitions
+    - **Cluster Lags** will continue to update correctly, as they reflect lag "as Kafka sees it" independent of consumer state
+    - This is a known limitation that will be mitigated in future versions of the Web UI
+    - Remember that Web UI is designed for operational monitoring, not as an analytical platform like Datadog
+
+    For accurate lag information during consumer pauses, rely on the Cluster Lags view, which always reflects the true state from Kafka's perspective.
