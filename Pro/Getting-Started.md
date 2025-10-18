@@ -6,20 +6,20 @@ To activate Karafka Pro, you need to do three things:
 
 1. Follow the standard Karafka [installation](Getting-Started) procedure.
 
-2. Obtain credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
+1. Obtain credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
 
-3. Add this to your Gemfile and `bundle install`:
+1. Add this to your Gemfile and `bundle install`:
 
-```ruby
-source 'https://USERNAME:PASSWORD@gems.karafka.io' do
-  gem 'karafka-license', 'LICENSE_ID'
-end
+    ```ruby
+    source 'https://USERNAME:PASSWORD@gems.karafka.io' do
+      gem 'karafka-license', 'LICENSE_ID'
+    end
 
-gem 'karafka'
-# other gems...
-```
+    gem 'karafka'
+    # other gems...
+    ```
 
-4. (Optionally) Enable Bundler native checksum verification by running: `bundle lock --add-checksums` or enabling it for all your projects via `bundle config lockfile_checksums true`.
+1. (Optionally) Enable Bundler native checksum verification by running: `bundle lock --add-checksums` or enabling it for all your projects via `bundle config lockfile_checksums true`.
 
 !!! tip "Crucial Gemfile Tip for Karafka Pro Users"
 
@@ -47,31 +47,31 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
 
 1. **Activate checksum management in your lockfile**:
 
-Run the following command to add a `CHECKSUMS` section to your `Gemfile.lock`:
+    Run the following command to add a `CHECKSUMS` section to your `Gemfile.lock`:
 
-```shell
-bundle lock --add-checksums
-```
+    ```shell
+    bundle lock --add-checksums
+    ```
 
-2. (First-time setup only) **Verify the karafka-license gem checksum**:
+1. (First-time setup only) **Verify the karafka-license gem checksum**:
 
-After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and ensure it matches the checksum provided in the email you received. This ensures that the correct gem version is being used and matches the one issued with your license.
+    After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and ensure it matches the checksum provided in the email you received. This ensures that the correct gem version is being used and matches the one issued with your license.
 
-Use the following command to extract the checksum of the karafka-license gem from the Gemfile.lock:
+    Use the following command to extract the checksum of the karafka-license gem from the Gemfile.lock:
 
-```shell
-grep -A 1 "karafka-license" Gemfile.lock | grep sha256
-```
+    ```shell
+    grep -A 1 "karafka-license" Gemfile.lock | grep sha256
+    ```
 
-3. (Optionally) **Enable checksum verification globally**:
+1. (Optionally) **Enable checksum verification globally**:
 
-If you want all new lockfiles to include checksum verification by default, run:
+    If you want all new lockfiles to include checksum verification by default, run:
 
-```shell
-bundle config lockfile_checksums true
-```
+    ```shell
+    bundle config lockfile_checksums true
+    ```
 
-This will ensure that every new project or lockfile you create will have checksums included.
+    This will ensure that every new project or lockfile you create will have checksums included.
 
 #### Protecting All Gems, Not Just `karafka-license`
 
@@ -133,18 +133,18 @@ fi
 Due to the nature of how Bundler works, it is **recommended** to run this script twice in the CI/CD:
 
 1. First, before `bundle install` is executed, to ensure that the gem server is serving the correct data.
-2. Second time after `bundle install` to ensure consistency of the fetched package.
+1. Second time after `bundle install` to ensure consistency of the fetched package.
 
 To use it:
 
 1. Store above script in your repository preferably under `bin/verify_karafka_license_checksum`.
 
-2. Set the `KARAFKA_PRO_USERNAME`, `KARAFKA_PRO_PASSWORD`, `KARAFKA_PRO_LICENSE_ID` and `KARAFKA_PRO_LICENSE_CHECKSUM` based on data provided to you in the license issuing email or set those values as your CI/CD ENV variables.
+1. Set the `KARAFKA_PRO_USERNAME`, `KARAFKA_PRO_PASSWORD`, `KARAFKA_PRO_LICENSE_ID` and `KARAFKA_PRO_LICENSE_CHECKSUM` based on data provided to you in the license issuing email or set those values as your CI/CD ENV variables.
 
-3. Run `MODE=before bin/verify_karafka_license_checksum` as part of your CI/CD **before** running `bundle install`.
+1. Run `MODE=before bin/verify_karafka_license_checksum` as part of your CI/CD **before** running `bundle install`.
 
-4. Run `bundle install`
+1. Run `bundle install`
 
-5. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
+1. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
 In case the verification fails, script will exit with the exit code `1`.

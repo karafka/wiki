@@ -34,35 +34,35 @@ To use connection pools with WaterDrop:
 
 1. **Set up the connection pool** with your desired configuration:
 
-```ruby
-# Basic connection pool setup
-WaterDrop::ConnectionPool.setup(
-  size: 10,
-  timeout: 5_000
-)
-```
+    ```ruby
+    # Basic connection pool setup
+    WaterDrop::ConnectionPool.setup(
+      size: 10,
+      timeout: 5_000
+    )
+    ```
 
-2. **Use the connection pool** to get producers and send messages:
+1. **Use the connection pool** to get producers and send messages:
 
-```ruby
-# Get a producer from the pool and use it
-WaterDrop::ConnectionPool.with do |producer|
-  producer.produce_sync(topic: 'events', payload: 'my message')
-end
+    ```ruby
+    # Get a producer from the pool and use it
+    WaterDrop::ConnectionPool.with do |producer|
+      producer.produce_sync(topic: 'events', payload: 'my message')
+    end
 
-# The producer is automatically returned to the pool
-```
+    # The producer is automatically returned to the pool
+    ```
 
-3. **Close the connection pool** when shutting down your application:
+1. **Close the connection pool** when shutting down your application:
 
-```ruby
-# Close the connection pool when done
-WaterDrop::ConnectionPool.close
-```
+    ```ruby
+    # Close the connection pool when done
+    WaterDrop::ConnectionPool.close
+    ```
 
-!!! note "Auto-Closing in Karafka Applications"
+    !!! note "Auto-Closing in Karafka Applications"
 
-    When using the default connection pool within Karafka framework processes, the connection pool is automatically closed during framework shutdown, similar to how the default producer is handled. You don't need to close it manually in Karafka processes.
+        When using the default connection pool within Karafka framework processes, the connection pool is automatically closed during framework shutdown, similar to how the default producer is handled. You don't need to close it manually in Karafka processes.
 
 ## Working with Transactions
 
