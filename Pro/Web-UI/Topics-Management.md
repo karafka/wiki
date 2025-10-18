@@ -13,28 +13,28 @@ The topic creation feature allows you to easily create new Kafka topics with cus
 To create a new topic:
 
 1. Navigate to **Home** → **Topics**
-2. Click on **Create Topic**
-3. You'll see the "Topic Creation Settings" screen with important notices:
+1. Click on **Create Topic**
+1. You'll see the "Topic Creation Settings" screen with important notices:
 
-!!! info "Topic Creation Information"
+    !!! info "Topic Creation Information"
 
-    - Topic name cannot be changed after creation
-    - Number of partitions can only be increased, never decreased
-    - Additional settings can be configured from the topic configuration page
-    - It may take Kafka up to a few minutes to fully synchronize the new topic
-    - Consumers may require additional time to discover the topic, depending on their metadata refresh frequency
+        - Topic name cannot be changed after creation
+        - Number of partitions can only be increased, never decreased
+        - Additional settings can be configured from the topic configuration page
+        - It may take Kafka up to a few minutes to fully synchronize the new topic
+        - Consumers may require additional time to discover the topic, depending on their metadata refresh frequency
 
-4. Fill in the required fields:
+1. Fill in the required fields:
 
-- **Topic Name**: Only alphanumeric characters, dots, underscores, and hyphens are allowed
-- **Number of Partitions**: Minimum 1 partition (cannot be decreased after creation)
-- **Replication Factor**: Number of replicas for each partition (minimum 1, recommended 3 for production)
+    - **Topic Name**: Only alphanumeric characters, dots, underscores, and hyphens are allowed
+    - **Number of Partitions**: Minimum 1 partition (cannot be decreased after creation)
+    - **Replication Factor**: Number of replicas for each partition (minimum 1, recommended 3 for production)
 
-5. Click the submit button to create your topic
+1. Click the submit button to create your topic
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-create.png" alt="Karafka Web UI topic creation interface" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-create.png" alt="Karafka Web UI topic creation interface" />
+    </p>
 
 ## Deleting Topics
 
@@ -45,29 +45,29 @@ When a topic is no longer needed, you can safely remove it through the Web UI.
 To delete a topic:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]**
-2. Click on **Delete Topic** at the page bottom
-3. You'll see a comprehensive warning screen:
+1. Click on **Delete Topic** at the page bottom
+1. You'll see a comprehensive warning screen:
 
-!!! warning "Topic Removal Warning"
+    !!! warning "Topic Removal Warning"
 
-    - All data in this topic will be permanently deleted and cannot be recovered
-    - All consumers and producers for this topic will stop functioning
-    - Applications dependent on this topic may experience errors or disruptions
-    - Consumer group offsets associated with this topic will be lost
+        - All data in this topic will be permanently deleted and cannot be recovered
+        - All consumers and producers for this topic will stop functioning
+        - Applications dependent on this topic may experience errors or disruptions
+        - Consumer group offsets associated with this topic will be lost
 
-!!! info "Before proceeding, ensure that"
+    !!! info "Before proceeding, ensure that"
 
-    - All applications consuming from this topic have been properly shut down
-    - All producers to this topic have been stopped
-    - You have backed up any critical data if needed
-    - You have notified relevant team members about this deletion
+        - All applications consuming from this topic have been properly shut down
+        - All producers to this topic have been stopped
+        - You have backed up any critical data if needed
+        - You have notified relevant team members about this deletion
 
-4. Review the final warning showing the topic name and partition count
-5. Confirm the deletion
+1. Review the final warning showing the topic name and partition count
+1. Confirm the deletion
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-delete.png" alt="Karafka Web UI topic deletion interface" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-delete.png" alt="Karafka Web UI topic deletion interface" />
+    </p>
 
 ## Managing Topic Configuration
 
@@ -78,62 +78,62 @@ The topic configuration management feature allows you to view and modify the con
 To view a topic's configuration:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Configuration**
-2. You'll see a tabular view with all configuration parameters:
+1. You'll see a tabular view with all configuration parameters:
 
-   - **Name**: The configuration parameter name
-   - **Value**: Current setting value
-   - **Default**: Whether this is the default value
-   - **Sensitive**: Whether the parameter contains sensitive information
-   - **Read Only**: Whether the parameter can be modified
-   - **Options**: Additional details about the parameter
+    - **Name**: The configuration parameter name
+    - **Value**: Current setting value
+    - **Default**: Whether this is the default value
+    - **Sensitive**: Whether the parameter contains sensitive information
+    - **Read Only**: Whether the parameter can be modified
+    - **Options**: Additional details about the parameter
 
-The configuration table includes all standard Kafka topic settings, such as:
+    The configuration table includes all standard Kafka topic settings, such as:
 
-- `cleanup.policy`
-- `compression.type`
-- `delete.retention.ms`
-- `file.delete.delay.ms`
-- `retention.bytes`
-- `retention.ms`
-- `segment.bytes`
-- And many more
+    - `cleanup.policy`
+    - `compression.type`
+    - `delete.retention.ms`
+    - `file.delete.delay.ms`
+    - `retention.bytes`
+    - `retention.ms`
+    - `segment.bytes`
+    - And many more
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-configuration.png" alt="Karafka Web UI topic configuration interface" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-configuration.png" alt="Karafka Web UI topic configuration interface" />
+    </p>
 
 ### Modifying Topic Configuration
 
 To modify a specific configuration parameter:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Configuration**
-2. Click on the specific parameter you want to modify
-3. Click **Edit**
-4. You'll see the "Configuration Update Warning":
+1. Click on the specific parameter you want to modify
+1. Click **Edit**
+1. You'll see the "Configuration Update Warning":
 
-!!! warning "Configuration Update Warning"
+    !!! warning "Configuration Update Warning"
 
-    - Changing topic configurations may affect topic behavior and performance
-    - Some changes may take time to propagate across the cluster
-    - Applications consuming from this topic may be impacted
+        - Changing topic configurations may affect topic behavior and performance
+        - Some changes may take time to propagate across the cluster
+        - Applications consuming from this topic may be impacted
 
-!!! info "Before updating this configuration"
+    !!! info "Before updating this configuration"
 
-    - Ensure you understand the impact of changing this value
-    - Consider testing the change in a non-production environment first
-    - Monitor the topic after the change to ensure expected behavior
+        - Ensure you understand the impact of changing this value
+        - Consider testing the change in a non-production environment first
+        - Monitor the topic after the change to ensure expected behavior
 
-5. You'll see:
+1. You'll see:
 
-- The property name (e.g., `cleanup.policy`)
-- Current value (e.g., `delete`)
-- A field to enter the new value
+    - The property name (e.g., `cleanup.policy`)
+    - Current value (e.g., `delete`)
+    - A field to enter the new value
 
-6. Enter the new value and submit the change
+1. Enter the new value and submit the change
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-edit.png" alt="Karafka Web UI topic configuration interface" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-edit.png" alt="Karafka Web UI topic configuration interface" />
+    </p>
 
 ## Managing Topic Partitions
 
@@ -144,35 +144,35 @@ Karafka Web UI Pro allows you to increase the number of partitions for existing 
 To increase the number of partitions:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Distribution**
-2. Click on **Increase Partitions**
-3. You'll see the "Partition Update Warning":
+1. Click on **Increase Partitions**
+1. You'll see the "Partition Update Warning":
 
-!!! warning "Partition Update Warning"
+    !!! warning "Partition Update Warning"
 
-    - Increasing partitions is a one-way operation - partition count cannot be decreased later
-    - Adding partitions affects message ordering and consistent hashing
-    - Consumers will need to detect the partition count change and rebalance
-    - Message distribution across partitions may become uneven until data rotates
-    - Changes may take several minutes to be visible in the UI but will be applied immediately
+        - Increasing partitions is a one-way operation - partition count cannot be decreased later
+        - Adding partitions affects message ordering and consistent hashing
+        - Consumers will need to detect the partition count change and rebalance
+        - Message distribution across partitions may become uneven until data rotates
+        - Changes may take several minutes to be visible in the UI but will be applied immediately
 
-!!! info "Before increasing partitions"
+    !!! info "Before increasing partitions"
 
-    - Ensure all consumers support dynamic partition detection
-    - Consider the impact on message ordering in your applications
-    - Plan for temporary rebalancing as consumers detect the change
-    - Monitor consumer lag during and after the operation
-    - Consider increasing partitions during low-traffic periods
+        - Ensure all consumers support dynamic partition detection
+        - Consider the impact on message ordering in your applications
+        - Plan for temporary rebalancing as consumers detect the change
+        - Monitor consumer lag during and after the operation
+        - Consider increasing partitions during low-traffic periods
 
-4. You'll see:
+1. You'll see:
 
-- Current partition count (e.g., `1`)
-- A field to enter the new partition count (must be greater than the current count)
+    - Current partition count (e.g., `1`)
+    - A field to enter the new partition count (must be greater than the current count)
 
-5. Enter the new partition count and submit the change
+1. Enter the new partition count and submit the change
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-increase.png" alt="Karafka Web UI partition management interface" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-increase.png" alt="Karafka Web UI partition management interface" />
+    </p>
 
 ## Best Practices
 

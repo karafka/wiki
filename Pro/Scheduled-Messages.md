@@ -255,39 +255,39 @@ Below, you can find exact details on how to do this:
 
 1. **Prepare Your Message**: Construct your message payload and any associated headers as usual for a Kafka message.
 
-```ruby
-message = {
-  topic: 'events',
-  payload: { type: 'inserted', count: 123 }.to_json
-}
-```
+    ```ruby
+    message = {
+      topic: 'events',
+      payload: { type: 'inserted', count: 123 }.to_json
+    }
+    ```
 
-2. **Define the Delivery Time**: Determine when the message should be dispatched. This time is specified as a Unix epoch timestamp and passed as the epoch parameter.
+1. **Define the Delivery Time**: Determine when the message should be dispatched. This time is specified as a Unix epoch timestamp and passed as the epoch parameter.
 
-```ruby
-# Make sure to use a Unix timestamp format
-future_unix_epoch_time = 15.minutes.from_now.to_i
-```
+    ```ruby
+    # Make sure to use a Unix timestamp format
+    future_unix_epoch_time = 15.minutes.from_now.to_i
+    ```
 
-3. **Wrap the Message**: Use the schedule method to wrap your message with the scheduling details:
+1. **Wrap the Message**: Use the schedule method to wrap your message with the scheduling details:
 
-```ruby
-enveloped = Karafka::Pro::ScheduledMessages.schedule(
-  message: message,
-  epoch: future_unix_epoch_time,
-  envelope: {
-    # The Kafka topic designated for scheduled messages
-    # Please read other sections on the envelope details available
-    topic: 'scheduled_messages_topic'
-  }
-)
-```
+    ```ruby
+    enveloped = Karafka::Pro::ScheduledMessages.schedule(
+      message: message,
+      epoch: future_unix_epoch_time,
+      envelope: {
+        # The Kafka topic designated for scheduled messages
+        # Please read other sections on the envelope details available
+        topic: 'scheduled_messages_topic'
+      }
+    )
+    ```
 
-4. **Dispatch the Wrapped Message**: Once the message is wrapped with all required scheduling details, the resulting hash represents a fully prepared scheduled message. This message can then be dispatched like any other message in Karafka:
+1. **Dispatch the Wrapped Message**: Once the message is wrapped with all required scheduling details, the resulting hash represents a fully prepared scheduled message. This message can then be dispatched like any other message in Karafka:
 
-```ruby
-Karafka.producer.produce_async(enveloped)
-```
+    ```ruby
+    Karafka.producer.produce_async(enveloped)
+    ```
 
 This call places the wrapped message into the designated scheduling topic, which remains until the specified epoch time is reached. At that time, Karafka's internal scheduling mechanism automatically processes and dispatches the message to its intended destination.
 
@@ -342,22 +342,22 @@ To cancel a scheduled message:
 
 1. **Identify the Message Key**: Locate the unique key of the message you intend to cancel. This is the key that was specified or generated when the message was initially scheduled.
 
-2. **Specify the Topic**: Provide the topic where the scheduled message resides. This is essential because Karafka can handle multiple scheduling topics, and specifying the correct topic ensures the message is accurately identified and targeted for cancellation.
+1. **Specify the Topic**: Provide the topic where the scheduled message resides. This is essential because Karafka can handle multiple scheduling topics, and specifying the correct topic ensures the message is accurately identified and targeted for cancellation.
 
-3. **Invoke the `cancel` Method**: Use the `cancel` method to create a cancellation request for the scheduled message. This method requires the unique key and the topic to formulate the cancellation command properly.
+1. **Invoke the `cancel` Method**: Use the `cancel` method to create a cancellation request for the scheduled message. This method requires the unique key and the topic to formulate the cancellation command properly.
 
-```ruby
-cancellation_message = Karafka::Pro::ScheduledMessages.cancel(
-  key: 'your_message_key',
-  envelope: { topic: 'your_scheduled_messages_topic' }
-)
-```
+    ```ruby
+    cancellation_message = Karafka::Pro::ScheduledMessages.cancel(
+      key: 'your_message_key',
+      envelope: { topic: 'your_scheduled_messages_topic' }
+    )
+    ```
 
-4. **Dispatch the Cancellation Message**: After generating the cancellation message, it must be dispatched using Karafka's producer to ensure the cancellation is processed. This step finalizes the cancellation by publishing the tombstone message to the scheduling topic.
+1. **Dispatch the Cancellation Message**: After generating the cancellation message, it must be dispatched using Karafka's producer to ensure the cancellation is processed. This step finalizes the cancellation by publishing the tombstone message to the scheduling topic.
 
-```ruby
-Karafka.producer.produce_sync(cancellation_message)
-```
+    ```ruby
+    Karafka.producer.produce_sync(cancellation_message)
+    ```
 
 The unique key is critical in the cancellation process for several reasons:
 
@@ -389,23 +389,23 @@ To update the scheduled message:
 
 1. **Use the `schedule` Method**: Employ the `schedule` method to wrap your updated message with the scheduling details, using the same key and specifying the new or unchanged dispatch time:
 
-```ruby
-updated_message = Karafka::Pro::ScheduledMessages.schedule(
-  message: new_message_to_replace_old,
-  epoch: new_future_unix_epoch_time,
-  envelope: {
-    topic: 'scheduled_messages_topic',
-    # Same key as the original message
-    key: original_envelope_key
-  }
-)
-```
+    ```ruby
+    updated_message = Karafka::Pro::ScheduledMessages.schedule(
+      message: new_message_to_replace_old,
+      epoch: new_future_unix_epoch_time,
+      envelope: {
+        topic: 'scheduled_messages_topic',
+        # Same key as the original message
+        key: original_envelope_key
+      }
+    )
+    ```
 
 1. **Dispatch the Updated Message**: Send the updated message using Karafka’s producer. This step replaces the original scheduled message with the new content and timing in the scheduling system:
 
-```ruby
-Karafka.producer.produce_async(updated_message)
-```
+    ```ruby
+    Karafka.producer.produce_async(updated_message)
+    ```
 
 ## Monitoring and Metrics
 
