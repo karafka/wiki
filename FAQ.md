@@ -1838,7 +1838,7 @@ It indicates that you're attempting an online/rolling migration between two diff
 
 In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
-You can read more about this process [here](Operations-Development-vs-Production#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
+You can read more about this process [here](Operations-Development-vs-Production#avoid-rolling-upgrades-for-rebalance-protocol-changes).
 
 ## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
 
