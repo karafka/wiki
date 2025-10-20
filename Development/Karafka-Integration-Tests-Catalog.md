@@ -34,6 +34,7 @@
 | `admin/configs_flow_spec.rb` | This integration spec illustrates the all the basic Admin configs flows. Detailed Configs API specs are in the unit RSpec specs. |
 | `admin/consumer_group_operations_spec.rb` | Karafka should handle consumer group operations with active consumers correctly |
 | `admin/consumer_groups/delete_existing_spec.rb` | We should be able to remove consumer group and start from beginning using the Admin API |
+| `admin/consumer_groups/kip_848_admin_operations_spec.rb` | Karafka Admin API should work correctly with KIP-848 consumer groups This tests that AdminClient operations like describe work with the new protocol |
 | `admin/consumer_groups/seek_consumer_group/few_partitions_few_topics_spec.rb` | We should be able to move the offset to requested location per topic partition |
 | `admin/consumer_groups/seek_consumer_group/mixed_time_and_real_offsets_spec.rb` | We should be able to mix moving of the same topic data and use different type of location in between partitions. |
 | `admin/consumer_groups/seek_consumer_group/time_spec.rb` | We should be able to move the offset to where we want on one partition directly by the time reference instead of an offset |
@@ -1112,6 +1113,7 @@
 | `pro/routing/patterns/excluded_by_name_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is part of the topics we do not want to include (by assigned name) it should not use it |
 | `pro/routing/patterns/included_by_automatic_name_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is part of the topics we want to include (by assigned name) it should be ok |
 | `pro/routing/patterns/included_by_own_name_spec.rb` | When we define a pattern that gets assigned a matcher topic and this matcher topic is part of the topics we want to include (by given name) it should be ok |
+| `pro/routing/patterns/kip_848_compatibility_spec.rb` | Karafka should work as expected with routing patterns using the KIP-848 consumer group protocol. This ensures that regex-based topic subscriptions work correctly with the consumer protocol, and that multiple consumer groups with same pattern can consume independently. |
 | `pro/routing/patterns/named_with_invalid_regexp_spec.rb` | When we have a valid name but provide regexp that is not a regexp, we should fail |
 | `pro/routing/patterns/named_with_same_in_many_consumer_groups_spec.rb` | It should be possible to use same named pattern twice in different consumer groups |
 | `pro/routing/patterns/named_with_same_in_one_consumer_group_spec.rb` | It should not be possible to use same named pattern twice in same consumer group with different names. In case of same name, it will be considered equivalent of a multiplex |
@@ -1246,11 +1248,13 @@
 | `rebalancing/exceeding_max_poll_interval_spec.rb` | When processing beyond the poll interval, we should be kicked out and we should loose the assigned partition. The revocation job should kick in with a proper revoked state. |
 | `rebalancing/exceeding_max_poll_with_fast_commit_spec.rb` | When processing beyond the poll interval, with fast offset commit, we should pick up from where we left without duplicates |
 | `rebalancing/exceeding_max_poll_with_late_commit_spec.rb` | When processing beyond the poll interval, with slower offset commit, we will restart processing and there should be duplicated messages. |
+| `rebalancing/kip_848/configurable_remote_assignor_spec.rb` | Test that KIP-848 works with configurable remote assignor The new consumer protocol supports different server-side assignors like 'uniform' and 'range' |
 | `rebalancing/kip_848/mixed_protocols_spec.rb` | Test that both old (eager/cooperative) and new (KIP-848) rebalance protocols can work simultaneously in different consumer groups within Karafka We'll set up multiple Karafka apps with different configurations to simulate different consumer groups with different protocols Consumer class for KIP-848 group |
 | `rebalancing/kip_848/multiple_groups_spec.rb` | Test multiple consumer groups using the new KIP-848 consumer group protocol This ensures different consumer groups can consume the same topic independently |
 | `rebalancing/kip_848/newly_joined_fencing_spec.rb` | Test rebalancing with KIP-848 by verifying that new consumer joining with same group instance id should be fenced If new consumer is not fenced, it will run forever and spec will timeout |
 | `rebalancing/kip_848/rebalancing_spec.rb` | Test rebalancing with KIP-848 by verifying partition assignment changes when a second consumer joins the group |
 | `rebalancing/kip_848/simple_spec.rb` | Test that KIP-848 consumer group protocol works with basic consumption |
+| `rebalancing/kip_848/static_membership_spec.rb` | Test that static group membership works correctly with KIP-848 consumer protocol Static membership allows a consumer to maintain its partition assignment across restarts |
 | `rebalancing/lifecycle_events_spec.rb` | When rebalance occurs, we should go through all the proper lifecycle events and only for the subscription group for which rebalance occurs. Details should be present and second group should be intact. |
 | `rebalancing/lost_partition_revoked_execution_time_spec.rb` | When partition is lost but our job is still running, it should be allowed to finish work and should not run while code execution is still running. Revocation code should wait on the whole job to finish before running `#revoked`. @note This works differently in the Pro LRJ. |
 | `rebalancing/message_order_with_sync_commit_spec.rb` | Messages should not be reprocessed out of order during a rebalance triggered by an unhealthy consumer with additional manual synchronous commits using #mark_as_consumed\!. |
