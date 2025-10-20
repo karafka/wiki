@@ -357,6 +357,10 @@ end
 
 This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
 
+!!! tip "Consider KIP-848 for Improved Rebalancing"
+
+    If you're using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
+
 ## What will happen with uncommitted offsets during a rebalance?
 
 When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
@@ -1394,6 +1398,8 @@ The `range` strategy has some advantages over the `round-robin` strategy, where 
 Since data is often related within the same partition, `range` can keep related data processing within the same consumer, which could lead to benefits like better caching or business logic efficiencies. This can be useful, for example, to join records from two topics with the same number of partitions and the same key-partitioning logic.
 
 The assignment strategy is not a one-size-fits-all solution and can be changed based on the specific use case. If you want to change the assignment strategy in Karafka, you can set the `partition.assignment.strategy` configuration value to either `range`, `roundrobin` or `cooperative-sticky`. It's important to consider your particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
+
+For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
 
 ## Why can't I see the assignment strategy/protocol for some Karafka consumer groups?
 

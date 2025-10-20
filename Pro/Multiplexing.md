@@ -284,7 +284,26 @@ Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs.
 
 There are two things you need to do to fully facilitate dynamic multiplexing:
 
-1. Make sure you use `cooperative-sticky` rebalance strategy either globally or within the selected subscription group:
+1. Make sure you use an advanced rebalance strategy either globally or within the selected subscription group:
+
+**Recommended (Kafka 4.0+ with KRaft):**
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      # Other kafka settings...
+      'group.protocol': 'consumer'  # KIP-848
+    }
+  end
+
+  routes.draw do
+    # ...
+  end
+end
+```
+
+**Alternative (Older Kafka versions):**
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -301,11 +320,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! warning "Always Use Cooperative-Sticky Rebalance with the Dynamic Mode"
+!!! warning "Always Use Advanced Rebalance Strategy with Dynamic Mode"
 
-    The `cooperative-sticky` rebalance strategy is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays. 
+    An advanced rebalance strategy ([KIP-848](Kafka-New-Rebalance-Protocol) or `cooperative-sticky`) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
 
-    `cooperative-sticky` strategy minimizes these disruptions by allowing more gradual and efficient rebalancing, ensuring smoother operation and more consistent throughput.
+    These strategies minimize disruptions by allowing more gradual and efficient rebalancing, ensuring smoother operation and more consistent throughput.
 
 !!! warning "Caution Against Using Dynamic Connection Multiplexing with Long-Running Jobs"
 
