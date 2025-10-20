@@ -10,85 +10,85 @@ To enable periodic jobs for a particular topic, specify it in the routing. This 
 
 1. **Using Default**: To use the default settings, enable periodic jobs for your topic as follows:
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # ...
-  end
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # ...
+      end
 
-  routes.draw do
-    topic :orders_states do
-      consumer OrdersStatesConsumer
+      routes.draw do
+        topic :orders_states do
+          consumer OrdersStatesConsumer
 
-      # Tick at most once every five seconds
-      periodic true
+          # Tick at most once every five seconds
+          periodic true
+        end
+      end
     end
-  end
-end
-```
+    ```
 
-2. **Custom Arguments**: If the default settings do not meet your requirements, you can always specify each of the options:
+1. **Custom Arguments**: If the default settings do not meet your requirements, you can always specify each of the options:
 
-```ruby
-class KarafkaApp < Karafka::App
-  setup do |config|
-    # ...
-  end
+    ```ruby
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        # ...
+      end
 
-  routes.draw do
-    topic :orders_states do
-      consumer OrdersStatesConsumer
+      routes.draw do
+        topic :orders_states do
+          consumer OrdersStatesConsumer
 
-      periodic(
-        # Tick at most once every 100 milliseconds
-        interval: 100,
-        # When paused (for any reason) run
-        during_pause: true,
-        # When consumption error occurred and we back-off and wait, do not run
-        during_retry: false
-      )
+          periodic(
+            # Tick at most once every 100 milliseconds
+            interval: 100,
+            # When paused (for any reason) run
+            during_pause: true,
+            # When consumption error occurred and we back-off and wait, do not run
+            during_retry: false
+          )
+        end
+      end
     end
-  end
-end
-```
+    ```
 
-The following options are available:
+    The following options are available:
 
-<table>
-  <tr>
-    <th>Option</th>
-    <th>Type</th>
-    <th>Default</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><code>:interval</code></td>
-    <td>Integer</td>
-    <td><code>5000</code></td>
-    <td>Minimum interval in milliseconds to run periodic jobs on the given topic.</td>
-  </tr>
-  <tr>
-    <td><code>:during_pause</code></td>
-    <td>Boolean, nil</td>
-    <td>
-      <ul>
-        <li>
-          <code>true</code> for regular jobs.
-        </li>
-        <li>
-          <code>false</code> for <a href="https://karafka.io/docs/Pro-Long-Running-Jobs/">LRJ</a>
-        </li>
-      </ul>
-    </td>
-    <td>Specifies whether periodic jobs should run when the partition is paused.</td>
-  </tr>
-  <tr>
-    <td><code>:during_retry</code></td>
-    <td>Boolean, nil</td>
-    <td><code>false</code></td>
-    <td>Indicates whether periodic jobs should run during a retry flow after an error. Note that <code>:during_pause</code> must also be <code>true</code> for this to function. The default is not to retry during retry flow unless explicitly set.</td>
-  </tr>
-</table>
+    <table>
+      <tr>
+        <th>Option</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+      <tr>
+        <td><code>:interval</code></td>
+        <td>Integer</td>
+        <td><code>5000</code></td>
+        <td>Minimum interval in milliseconds to run periodic jobs on the given topic.</td>
+      </tr>
+      <tr>
+        <td><code>:during_pause</code></td>
+        <td>Boolean, nil</td>
+        <td>
+          <ul>
+            <li>
+              <code>true</code> for regular jobs.
+            </li>
+            <li>
+              <code>false</code> for <a href="https://karafka.io/docs/Pro-Long-Running-Jobs/">LRJ</a>
+            </li>
+          </ul>
+        </td>
+        <td>Specifies whether periodic jobs should run when the partition is paused.</td>
+      </tr>
+      <tr>
+        <td><code>:during_retry</code></td>
+        <td>Boolean, nil</td>
+        <td><code>false</code></td>
+        <td>Indicates whether periodic jobs should run during a retry flow after an error. Note that <code>:during_pause</code> must also be <code>true</code> for this to function. The default is not to retry during retry flow unless explicitly set.</td>
+      </tr>
+    </table>
 
 ### Implementing the `#tick` Method
 

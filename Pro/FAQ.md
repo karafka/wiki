@@ -47,8 +47,8 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [Can I have multiple trials for my company?](#can-i-have-multiple-trials-for-my-company)
 1. [What happens if my payment fails or my credit card cannot be charged?](#what-happens-if-my-payment-fails-or-my-credit-card-cannot-be-charged)
 1. [Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
-100. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
-101. [Contact Info](#contact-info)
+1. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
+1. [Contact Info](#contact-info)
 
 ## Is Karafka suitable for production and enterprise use?
 

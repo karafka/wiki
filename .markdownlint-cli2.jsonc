@@ -20,8 +20,10 @@
   "config": {
     "default": true,
     "MD009": false,
-    "MD025": false,
-    "MD029": false,
+    "MD025": true,
+    "MD029": {
+      "style": "one_or_ordered"
+    },
     "MD033": false,
     "MD036": false,
     "MD041": false,
