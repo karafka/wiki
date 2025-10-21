@@ -86,9 +86,9 @@ end
 
 ## Accessing Topic Details
 
-If your logic depends on specific routing details, you can access them from the consumer, using the ```#topic``` method.
+If your logic depends on specific routing details, you can access them from the consumer, using the `#topic` method.
 
-!!! example Use Case
+!!! example "Use Case"
 
     You could use it, for example, when you want to perform a different logic within a single consumer based on the topic from which your messages come.
 
@@ -124,7 +124,7 @@ end
 
 By default, Karafka starts consuming messages from the earliest available offset. Use this procedure to configure the initial offset position for your consumers.
 
-**To configure the initial offset globally:**
+To configure the initial offset globally:
 
 1. Open your Karafka application configuration file.
 2. Set the `initial_offset` value in the setup block. 
@@ -151,7 +151,7 @@ end
 ```
 **Result:** All topics will use this offset position as the default.
 
-**To configure the initial offset for specific topics:**
+To configure the initial offset for specific topics:
 
 1. Open your Karafka routing configuration.
 2. Add the `initial_offset` setting to individual topic definitions:
@@ -211,7 +211,7 @@ In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running
 
 !!! note
 
-    With [Long-Running Jobs](Pro-Long-Running-Jobs), the `#revoked?` method still updates automatically, even when messages remain unmarked for extended periods.
+    With [Long-Running Jobs](Pro-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 
 
 ## Consumer Persistence
@@ -230,7 +230,7 @@ Karafka recreates the consumer instance only when a partition is lost and reassi
 
     When buffering messages in memory, use manual offset management. Without it, you'll lose buffered data, if the process crashes before flushing.
 
-For example, here's a consumer that buffers messages until it reaches 1,000 of them before flushing:
+The following example contains a consumer that buffers messages until it reaches 1,000 of them before flushing:
 
 ```ruby
 # A consumer that will buffer messages in memory until it reaches 1000 of them. Then it will flush
@@ -295,7 +295,7 @@ class LogsConsumer < ApplicationConsumer
 end
 ```
 
-!!! note
+!!! note "Shutdown Edge Case Alert"
 
    When you use `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty. 
 
@@ -305,7 +305,7 @@ Karafka consumers provide a dedicated `#initialized` method called automatically
 
 Use this method to set up any additional state, resources, or connections your consumer may need during its lifecycle. Karafka's consumer instance is not entirely bootstrapped during the `#initialize` method. This means crucial details, like routing information, topic details, and more, may not yet be available. Using `#initialize` to set up dependencies might result in incomplete or incorrect configurations. On the other hand, `#initialized` is executed once the consumer is fully ready and contains all the details it might need. By default, `#initialized` does nothing. Still, you can override it to include custom setup logic for your consumer.
 
-The following example shows two methods on how to override the #initialized method in a Karafka consumer to set up resources after the consumer is fully ready.
+The following example shows two methods on how to override the `#initialized"` method in a Karafka consumer to set up resources after the consumer is fully ready.
 
 
 ```ruby
@@ -385,7 +385,7 @@ end
 
 This configuration ensures that as soon as the end of a partition is reached, any accumulated messages are immediately processed, enhancing the system responsiveness and efficiency.
 
-## Inline API-Based Consumption
+## Consuming with the Iterator API
 
 Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
 
@@ -417,13 +417,14 @@ For more details on this feature, see [Iterator API](Pro-Iterator-API).
 
 ## Avoiding Accidental Overwriting of Consumer Instance Variables
 
-When working with Karafka consumers, it is essential to be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the web UI. Here are the primary instance variables used in consumers that you should be careful about:
+When working with Karafka consumers, it is essential to be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the Karafka Web UI. The following are the primary instance variables that you should be careful about:
 
 - `@id`: Consumer instance identifier
 - `@messages`: Messages batch for the subscribed topic
 - `@client`: Kafka connection client
 - `@coordinator`: Message processing coordinator
 - `@producer`: Producer instance
+- `@used`: Internal flag tracking whether the consumer has actively processed messages
 
 Accidental overwriting of any instance variables can disrupt the normal functioning of the consumer, leading to:
 
