@@ -249,3 +249,4 @@ It is recommended to do one major upgrade at a time.
 - [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
 - [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
+- [Technical Writing](Development-Technical-Writing)
