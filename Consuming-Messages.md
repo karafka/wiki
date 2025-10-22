@@ -27,7 +27,7 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
       - Process each message one by one
       - Process all payloads together to leverage batch database operations provided by many ORMs
 
-2. Access message payloads.
+1. Access message payloads.
 
     For individual message iteration, use the `#payload` method available for each received message:
 
