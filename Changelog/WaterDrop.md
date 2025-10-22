@@ -3,6 +3,27 @@
 
 # WaterDrop changelog
 
+## 2.8.13 (Unreleased)
+- [Enhancement] Make `fenced` error skip-reload behavior configurable via new `non_reloadable_errors` setting (defaults to `[:fenced]` for backward compatibility).
+- [Enhancement] Add `producer.reload` event allowing config modification before reload to escape fencing loops (#706).
+- [Enhancement] Do not early initialize the new instance on reload.
+
+## 2.8.12 (2025-10-10)
+- [Enhancement] Introduce `reload_on_idempotent_fatal_error` to automatically reload librdkafka producer after fatal errors on idempotent (non-transactional) producers.
+- [Enhancement] Add configurable backoff and retry limits for fatal error recovery to prevent infinite reload loops:
+  - `wait_backoff_on_idempotent_fatal_error` (default: 5000ms) - backoff before retrying after idempotent fatal error reload
+  - `max_attempts_on_idempotent_fatal_error` (default: 5) - max reload attempts for idempotent fatal errors
+  - `wait_backoff_on_transaction_fatal_error` (default: 1000ms) - backoff after transactional fatal error reload
+  - `max_attempts_on_transaction_fatal_error` (default: 10) - max reload attempts for transactional fatal errors
+- [Enhancement] Ensure `error.occurred` is instrumented before idempotent fatal error reload for visibility.
+- [Enhancement] Automatically reset fatal error reload attempts counter on successful produce/transaction to allow recovery.
+- [Refactor] Extract idempotence-related logic into separate `WaterDrop::Producer::Idempotence` module.
+- [Refactor] Initialize `@idempotent` and `@transactional` instance variables in Producer#initialize for consistent Ruby object shapes optimization.
+- [Refactor] Add `idempotent_reloadable?` and `idempotent_retryable?` methods to encapsulate idempotent fatal error reload checks.
+- [Refactor] Add `transactional_retryable?` method to encapsulate transactional fatal error reload retry checks.
+- [Fix] Waterdrop `config.kafka` errors on frozen hash.
+- [Fix] `Producer#transactional?` method now correctly computes transactional status when `@transactional` is initialized to nil.
+
 ## 2.8.11 (2025-09-27)
 - [Enhancement] Provide fast-track for middleware-less flows (20% faster) for single message, 5000x faster for batches.
 - [Enhancement] Optimize middlewares application by around 20%.

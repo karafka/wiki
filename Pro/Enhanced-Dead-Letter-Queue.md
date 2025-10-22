@@ -104,9 +104,9 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `source_consumer_group` - id of the consumer group that was consuming this message
 - `source_trace_id` - distributed tracing identifier from the original message processing. Can be used to correlate dispatches with errors visible in the Web UI
 
-!!! note "String Headers"
+!!! note "Headers Values"
 
-    Karafka headers values are **always** strings.
+    Karafka headers values can be either a **string** or an **array of strings**, following the Kafka KIP-82 specification.
 
 This can be used for debugging or for example when you want to have a single DLQ topic with per topic strategies:
 

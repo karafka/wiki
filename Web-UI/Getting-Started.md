@@ -6,65 +6,65 @@ To use it:
 
 1. Make sure Apache Kafka is running. You can start it by following instructions from [here](Kafka-Setting-Up).
 
-2. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
+1. Make sure you have the [listed OS commands](#external-shellos-required-commands) available; if not, install them. Not all Docker images and OSes have them out-of-the-box.
 
-3. Add Karafka Web UI to your `Gemfile`:
+1. Add Karafka Web UI to your `Gemfile`:
 
-```shell
-bundle add karafka-web
-```
+    ```shell
+    bundle add karafka-web
+    ```
 
-4. Run the following command to install the karafka-web in your project:
+1. Run the following command to install the karafka-web in your project:
 
-```ruby
-# For production you should add --replication-factor N
-# Where N is the replication factor you want to use in your cluster
-bundle exec karafka-web install
-```
+    ```shell
+    # For production you should add --replication-factor N
+    # Where N is the replication factor you want to use in your cluster
+    bundle exec karafka-web install
+    ```
 
-!!! warning "Karafka Web UI Installation Guidance"
+    !!! warning "Karafka Web UI Installation Guidance"
 
-    Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+        Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
-!!! warning "Essential Environment Migration Step"
+    !!! warning "Essential Environment Migration Step"
 
-    After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
+        After Web UI is installed, `bundle exec karafka-web migrate` has to be executed on **each** of the environments to create all the needed topics with appropriate configurations.
 
-5. Mount the Web interface in your Ruby on Rails application routing:
+1. Mount the Web interface in your Ruby on Rails application routing:
 
-```ruby
-require 'karafka/web'
+    ```ruby
+    require 'karafka/web'
 
-Rails.application.routes.draw do
-  # other routes...
+    Rails.application.routes.draw do
+      # other routes...
 
-  mount Karafka::Web::App, at: '/karafka'
-end
-```
+      mount Karafka::Web::App, at: '/karafka'
+    end
+    ```
 
-Or use it as a standalone Rack application by creating `karafka_web.ru` rackup file with the following content:
+    Or use it as a standalone Rack application by creating `karafka_web.ru` rackup file with the following content:
 
-```ruby
-# Require your application code here and then...
+    ```ruby
+    # Require your application code here and then...
 
-require_relative 'karafka.rb'
+    require_relative 'karafka.rb'
 
-run Karafka::Web::App
-```
+    run Karafka::Web::App
+    ```
 
-!!! tip "`config.ui.sessions.secret` Usage"
+    !!! tip "`config.ui.sessions.secret` Usage"
 
-    The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not utilized outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
+        The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not utilized outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
 
-    This secret is critical for cookie management and CSRF protection, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment.
+        This secret is critical for cookie management and CSRF protection, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment.
 
-6. Enjoy Karafka Web UI.
+1. Enjoy Karafka Web UI.
 
-If you do everything right, you should see this in your browser:
+    If you do everything right, you should see this in your browser:
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
+    </p>
 
 ## Karafka Web CLI commands
 

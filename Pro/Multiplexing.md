@@ -284,16 +284,16 @@ Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs.
 
 There are two things you need to do to fully facilitate dynamic multiplexing:
 
-1. Use an appropriate rebalance strategy that supports incremental rebalancing. Choose based on your Kafka version:
+1. Make sure you use an advanced rebalance strategy either globally or within the selected subscription group:
 
-**For Kafka 4.0+ - Recommended:**
+**Recommended (Kafka 4.0+ with KRaft):**
 
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
       # Other kafka settings...
-      'group.protocol': 'consumer'
+      'group.protocol': 'consumer'  # KIP-848
     }
   end
 
@@ -303,7 +303,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-**For older Kafka versions:**
+**Alternative (Older Kafka versions):**
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -320,11 +320,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! warning "Always Use Incremental Rebalancing with Dynamic Mode"
+!!! warning "Always Use Advanced Rebalance Strategy with Dynamic Mode"
 
-    An incremental rebalancing strategy (KIP-848 or cooperative-sticky) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
+    An advanced rebalance strategy ([KIP-848](Kafka-New-Rebalance-Protocol) or `cooperative-sticky`) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
 
-    KIP-848 (recommended for Kafka 4.0+) provides the fastest and most efficient rebalancing. The `cooperative-sticky` strategy (for older Kafka versions) also minimizes disruptions by allowing gradual rebalancing, ensuring smoother operation and consistent throughput.
+    These strategies minimize disruptions by allowing more gradual and efficient rebalancing, ensuring smoother operation and more consistent throughput.
 
 !!! warning "Caution Against Using Dynamic Connection Multiplexing with Long-Running Jobs"
 

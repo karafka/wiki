@@ -54,21 +54,24 @@
 - [Connection Management](WaterDrop-Connection-Management)
 - [Connection Pool](WaterDrop-Connection-Pool)
 - [Async Ecosystem Integration](WaterDrop-Async-Integration)
+- [Instrumentation Events](WaterDrop-Instrumentation-Events)
 
-## Production Usage
+## Operations
 
-- [Development vs Production](Development-vs-Production)
-- [Signals and States](Signals-and-States)
-- [Deployment](Deployment)
-    - [systemd (+ Capistrano)](Deployment#systemd-capistrano)
-    - [Docker](Deployment#docker)
-    - [AWS + MSK (Fully Managed Apache Kafka)](Deployment#aws-msk-fully-managed-apache-kafka)
-    - [Heroku](Deployment#heroku)
-    - [Kubernetes](Deployment#kubernetes)
-    - [Confluent Cloud](Deployment#confluent-cloud)
-    - [Custom OAuth Token Providers](Deployment#custom-oauth-token-providers)
-- [Monitoring and Logging](Monitoring-and-Logging)
-- [Error Handling and back off policy](Error-handling-and-back-off-policy)
+- [Development vs Production](Operations-Development-vs-Production)
+- [Deployment](Operations-Deployment)
+    - [systemd (+ Capistrano)](Operations-Deployment#systemd-capistrano)
+    - [Docker](Operations-Deployment#docker)
+    - [AWS + MSK (Fully Managed Apache Kafka)](Operations-Deployment#aws-msk-fully-managed-apache-kafka)
+    - [Heroku](Operations-Deployment#heroku)
+    - [Kubernetes](Operations-Deployment#kubernetes)
+    - [Confluent Cloud](Operations-Deployment#confluent-cloud)
+    - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
+- [Signals and States](Operations-Signals-and-States)
+- [Monitoring and Logging](Operations-Monitoring-and-Logging)
+- [Instrumentation Events](Operations-Instrumentation-Events)
+- [Error Handling and back off policy](Operations-Error-Handling-and-Back-Off-Policy)
+- [AWS MSK Guide](Operations-AWS-MSK-Guide)
 
 ## Advanced
 
@@ -182,9 +185,10 @@
 
 ## Kafka
 
-- [Setting Up](Kafka-Setting-Up)
+- [Setting Up Kafka](Kafka-Setting-Up)
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
+- [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
 
 ## Upgrade Notes
 

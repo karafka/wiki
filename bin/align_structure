@@ -23,6 +23,7 @@ puts "Working in directory: #{Dir.pwd}"
   Upgrades
   Development
   Changelog
+  Operations
 ].each do |namespace|
   Dir["#{namespace}/**/*.md"].each do |file|
     relative_path = file.sub("#{namespace}/", "")

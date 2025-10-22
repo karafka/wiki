@@ -8,11 +8,11 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 1. **Review the Changelogs**: Read the release notes and changelog for each new version of Karafka and its dependencies. This will help you understand the changes, improvements, and potential breaking changes introduced in the latest version.
 
-2. **Check Upgrade Guides and Recommendations**: Refer to the [upgrade guides](https://karafka.io/docs#upgrade-notes) and recommendations provided in the documentation for Karafka and its dependencies. These guides often highlight important considerations, steps, and best practices for the upgrade process. Following the recommended upgrade path can help ensure a smooth transition to the new version.
+1. **Check Upgrade Guides and Recommendations**: Refer to the [upgrade guides](https://karafka.io/docs#upgrade-notes) and recommendations provided in the documentation for Karafka and its dependencies. These guides often highlight important considerations, steps, and best practices for the upgrade process. Following the recommended upgrade path can help ensure a smooth transition to the new version.
 
-3. **Check Compatibility**: Verify the compatibility of your existing Karafka application and its dependencies with the new version. Look for deprecated features or breaking changes that might affect your code or configurations.
+1. **Check Compatibility**: Verify the compatibility of your existing Karafka application and its dependencies with the new version. Look for deprecated features or breaking changes that might affect your code or configurations.
 
-4. **Test Environment**: Set up a separate test environment that closely mirrors your production environment. Perform the upgrade and necessary tests in this environment before applying it to the production environment. This allows you to identify and resolve any potential issues or conflicts beforehand.
+1. **Test Environment**: Set up a separate test environment that closely mirrors your production environment. Perform the upgrade and necessary tests in this environment before applying it to the production environment. This allows you to identify and resolve any potential issues or conflicts beforehand.
 
 Considering these points, you'll be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
 
@@ -20,27 +20,27 @@ Considering these points, you'll be well-prepared for the upgrade process and ca
 
 1. **Read the upgrade guides**: Karafka provides detailed [upgrade guides](https://karafka.io/docs#upgrade-notes) for each major version release. These guides outline the steps required to upgrade from the previous version to the new version. Before proceeding with the upgrade, carefully read and follow the instructions in the upgrade guide.
 
-2. **Upgrade one version at a time**: Always upgrade by **one** version at a time. Move from `2.1` to `2.2`, `2.2` to `2.3`, `2.3` to `2.4`, etc. Do **not** ever jump versions, as it is not recommended. This approach ensures that you can address any version-specific deprecations, migrations, or changes in a controlled manner, minimizing the risk of introducing breaking changes or bugs.
+1. **Upgrade one version at a time**: Always upgrade by **one** version at a time. Move from `2.1` to `2.2`, `2.2` to `2.3`, `2.3` to `2.4`, etc. Do **not** ever jump versions, as it is not recommended. This approach ensures that you can address any version-specific deprecations, migrations, or changes in a controlled manner, minimizing the risk of introducing breaking changes or bugs.
 
-3. **Upgrade Karafka and its dependencies**: To upgrade the Karafka ecosystem, run the following command:
+1. **Upgrade Karafka and its dependencies**: To upgrade the Karafka ecosystem, run the following command:
 
-```shell
-bundle update karafka karafka-rdkafka karafka-core waterdrop karafka-web karafka-testing
-```
+    ```shell
+    bundle update karafka karafka-rdkafka karafka-core waterdrop karafka-web karafka-testing
+    ```
 
-It is **recommended** always to upgrade Karafka with its dependencies together and to always run the most recent resolvable versions of all the libraries creating the Karafka ecosystem.
+    It is **recommended** always to upgrade Karafka with its dependencies together and to always run the most recent resolvable versions of all the libraries creating the Karafka ecosystem.
 
-4. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
+1. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
 
-5. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, utilizing a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
+1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, utilizing a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
 
-6. **Deploy to production**: When deploying the upgraded Karafka application, it is recommended first to deploy all the consumers and only then deploy the Web UI component. This sequential deployment ensures that the consumers are up and running to process incoming messages from Kafka while the Web UI is being upgraded.
+1. **Deploy to production**: When deploying the upgraded Karafka application, it is recommended first to deploy all the consumers and only then deploy the Web UI component. This sequential deployment ensures that the consumers are up and running to process incoming messages from Kafka while the Web UI is being upgraded.
 
-If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
+    If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
-It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+    It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
-7. **Monitor**: During and after the upgrade, closely monitor the application's performance, logs, and error reports.
+1. **Monitor**: During and after the upgrade, closely monitor the application's performance, logs, and error reports.
 
 Following these upgrade recommendations will help ensure a successful upgrade process for your Karafka application while minimizing disruptions and maintaining compatibility with the latest version.
 

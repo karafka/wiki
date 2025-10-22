@@ -199,7 +199,7 @@ KAFKA_PRODUCER.produce_sync(topic: 'my-topic', payload: 'my message')
 
 ## Usage With Connection Pool
 
-WaterDrop provides a built-in [`ConnectionPool`](Connection-Pool.md) for efficient producer management in high-intensity applications. This eliminates the need for external connection pooling gems and provides optimized connection handling with instrumentation events.
+WaterDrop provides a built-in [`ConnectionPool`](WaterDrop-Connection-Pool.md) for efficient producer management in high-intensity applications. This eliminates the need for external connection pooling gems and provides optimized connection handling with instrumentation events.
 
 ```ruby
 # Configure the connection pool
@@ -230,7 +230,7 @@ WaterDrop.monitor.subscribe('connection_pool.shutdown') do |event|
 end
 ```
 
-For detailed information about connection pool usage, events, and lifecycle management, see the [Connection Pool documentation](Connection-Pool.md).
+For detailed information about connection pool usage, events, and lifecycle management, see the [Connection Pool documentation](WaterDrop-Connection-Pool.md).
 
 ## Buffering
 
@@ -320,7 +320,7 @@ While `#close!` can be helpful when you want to finalize your application quickl
 
 ### Connection Pool Shutdown
 
-If you're using [connection pools](Connection-Pool.md) in your application, you need to explicitly close them just like producers. Connection pools manage their own resources independently and must be shut down separately to prevent resource leaks:
+If you're using [connection pools](WaterDrop-Connection-Pool.md) in your application, you need to explicitly close them just like producers. Connection pools manage their own resources independently and must be shut down separately to prevent resource leaks:
 
 ```ruby
 # Close your connection pool instance
@@ -333,7 +333,7 @@ WaterDrop::ConnectionPool.close
 producer.close
 ```
 
-You can monitor connection pool shutdown operations using WaterDrop's connection pool instrumentation events. For detailed information about connection pool usage, lifecycle events, and proper shutdown procedures, see the [Connection Pool documentation](Connection-Pool.md).
+You can monitor connection pool shutdown operations using WaterDrop's connection pool instrumentation events. For detailed information about connection pool usage, lifecycle events, and proper shutdown procedures, see the [Connection Pool documentation](WaterDrop-Connection-Pool.md).
 
 ### Closing Producer Used in Karafka
 
@@ -415,7 +415,7 @@ In case of rake tasks, just invoke `MY_PRODUCER.close` at the end of your rake t
 desc 'My example rake task that sends all users data to Kafka'
 task send_users: :environment do
   User.find_each do |user|
-    MY_PRODUCER.producer.produce_async(
+    MY_PRODUCER.produce_async(
       topic: 'users',
       payload: user.to_json,
       key: user.id

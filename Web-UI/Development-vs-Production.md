@@ -16,29 +16,29 @@ To achieve this, you can either:
 
 1. **Use `config.processing.active`**: In the Karafka configuration, you can set `config.processing.active` to `false` for all processes that should exclude the Web UI consumer group. This will ensure that only dedicated processes handle Web UI topics while the rest focus on your application's primary consumers.
 
-2. **Use the `--include` and `--exclude` flags**: Alternatively, you can explicitly control which consumer groups run on each Karafka server instance using the `--include-consumer-groups` and `--exclude-consumer-groups` flags. This method provides more flexibility for explicitly including or excluding the Web UI consumer group in certain processes without modifying the global configuration.
+1. **Use the `--include` and `--exclude` flags**: Alternatively, you can explicitly control which consumer groups run on each Karafka server instance using the `--include-consumer-groups` and `--exclude-consumer-groups` flags. This method provides more flexibility for explicitly including or excluding the Web UI consumer group in certain processes without modifying the global configuration.
 
-```shell
-# Use the --include-consumer-groups flag to start a dedicated Web UI process
-bundle exec karafka server --include-consumer-groups karafka_web
+    ```shell
+    # Use the --include-consumer-groups flag to start a dedicated Web UI process
+    bundle exec karafka server --include-consumer-groups karafka_web
 
-# Use the --exclude-consumer-groups flag to start processes without the Web UI consumer group
-bundle exec karafka server --exclude-consumer-groups karafka_web
-```
+    # Use the --exclude-consumer-groups flag to start processes without the Web UI consumer group
+    bundle exec karafka server --exclude-consumer-groups karafka_web
+    ```
 
-For a production environment, the ideal setup would involve:
+    For a production environment, the ideal setup would involve:
 
-- Running one or more Karafka server instances dedicated **solely** to the Web UI consumer group. These processes should only handle the Web UI topics and not process any other consumer groups.
+    - Running one or more Karafka server instances dedicated **solely** to the Web UI consumer group. These processes should only handle the Web UI topics and not process any other consumer groups.
 
-- For the remaining Karafka server instances that handle your application's consumers, either:
-    - Set `config.processing.active` to `false` to exclude the Web UI consumer group, or
-    - Use the `--exclude-consumer-groups karafka_web` flag to ensure these instances ignore the Web UI consumer group.
+    - For the remaining Karafka server instances that handle your application's consumers, either:
+        - Set `config.processing.active` to `false` to exclude the Web UI consumer group, or
+        - Use the `--exclude-consumer-groups karafka_web` flag to ensure these instances ignore the Web UI consumer group.
 
-This approach ensures that the Web UI can consume and display data efficiently without being affected by the load on other consumers.
+    This approach ensures that the Web UI can consume and display data efficiently without being affected by the load on other consumers.
 
-3. **Dedicate a Swarm Node solely to the Web UI**: Configure your Karafka swarm to reserve a specific node exclusively for Web UI processing, completely isolating it from your application's consumer workloads.
+1. **Dedicate a Swarm Node solely to the Web UI**: Configure your Karafka swarm to reserve a specific node exclusively for Web UI processing, completely isolating it from your application's consumer workloads.
 
-4. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](Embedding) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
+1. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](Embedding) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
 
 ### Dedicated Web UI Swarm Node
 
@@ -52,40 +52,40 @@ To configure a dedicated node for the Web UI, follow these steps:
 
 1. First, define your total number of swarm nodes in your configuration:
 
-```ruby
-config.swarm.nodes = 4
-```
+    ```ruby
+    config.swarm.nodes = 4
+    ```
 
-2. Configure your default routes to use only the first three nodes, reserving the last one for Web UI:
+1. Configure your default routes to use only the first three nodes, reserving the last one for Web UI:
 
-```ruby
-# You can also do this on a per-topic basis for granular configuration
-routes.draw do
-  defaults do
-    swarm(nodes: [0, 1, 2])
-  end
+    ```ruby
+    # You can also do this on a per-topic basis for granular configuration
+    routes.draw do
+      defaults do
+        swarm(nodes: [0, 1, 2])
+      end
 
-  # consumer groups and topics definitions...
-end
-```
+      # consumer groups and topics definitions...
+    end
+    ```
 
-3. Enable Karafka Web UI:
+1. Enable Karafka Web UI:
 
-```ruby
-Karafka::Web.enable!
-```
+    ```ruby
+    Karafka::Web.enable!
+    ```
 
-4. After enabling the Web UI, assign the dedicated node to the Web UI consumer group's topics. Since the Web UI routes are injected after your application routes, you need to locate and modify them:
+1. After enabling the Web UI, assign the dedicated node to the Web UI consumer group's topics. Since the Web UI routes are injected after your application routes, you need to locate and modify them:
 
-```ruby
-Karafka::App
-  .routes
-  .last
-  .topics
-  .find('karafka_consumers_reports')
-  .swarm
-  .nodes = [3]
-```
+    ```ruby
+    Karafka::App
+      .routes
+      .last
+      .topics
+      .find('karafka_consumers_reports')
+      .swarm
+      .nodes = [3]
+    ```
 
 This configuration ensures that node `3` (the fourth node, as indexing starts at `0`) is exclusively dedicated to processing the Web UI consumer topics, while nodes `0`, `1`, and `2` handle your application's regular workload.
 
@@ -136,17 +136,17 @@ end
 
 ### Heroku Multi-Tenant Retention Policy Impact
 
-When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Deployment#heroku-retention-policy-impact-on-the-web-ui).
+When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Operations-Deployment#heroku-retention-policy-impact-on-the-web-ui).
 
-You can read about working with Heroku Kafka Multi-Tenant add-on [here](Deployment#heroku).
+You can read about working with Heroku Kafka Multi-Tenant add-on [here](Operations-Deployment#heroku).
 
 ## Upgrade Recommendations
 
 Upgrading your Karafka Web UI to a newer version is a three-step operation. You must be diligent about the order of operations to avoid unexpected errors. The process is as follows:
 
 1. **Update Karafka and Its Dependencies**: First, ensure that you're running the latest version of Karafka, along with its key dependencies, which include `karafka-core`, `karafka-rdkafka`, and `waterdrop`.
-2. **Deploy All Karafka Consumer Processes**: Your first step should be to deploy all the Karafka consumer processes on all nodes where the `karafka server` command runs. Ensure that all your consumers are up-to-date and working with the most recent consumer version.
-3. **Deploy the Web UI Update to Your Web Server**: After all the consumer processes have been upgraded, you can safely deploy the updated Web UI to your web server. The updated web UI will have the necessary code and schema changes to work with the latest consumer version.
+1. **Deploy All Karafka Consumer Processes**: Your first step should be to deploy all the Karafka consumer processes on all nodes where the `karafka server` command runs. Ensure that all your consumers are up-to-date and working with the most recent consumer version.
+1. **Deploy the Web UI Update to Your Web Server**: After all the consumer processes have been upgraded, you can safely deploy the updated Web UI to your web server. The updated web UI will have the necessary code and schema changes to work with the latest consumer version.
 
 Please take note of the following potential issue:
 

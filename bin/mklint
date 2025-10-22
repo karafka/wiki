@@ -13,7 +13,7 @@ rm -rf .lint/
 mkdir -p .lint/docs
 
 echo -e "${BLUE}📁 Copying docs content to .lint/docs/...${NC}"
-rsync -av --exclude='.lint/' --exclude='gh/' --exclude='.git/' ./ ./.lint/docs/ || {
+rsync -av --exclude='.lint/' --exclude='gh/' --exclude='.git/' --exclude='node_modules' ./ ./.lint/docs/ || {
     echo -e "${RED}❌ Failed to copy files${NC}"
     exit 1
 }
@@ -50,7 +50,15 @@ build_exit_code=$?
 set -e
 
 # Check for invalid anchor errors specifically
-anchor_errors=$(echo "$mkdocs_output" | grep -E "(does not contain an anchor|contains an unrecognized relative)" || true)
+patterns=(
+  "does not contain an anchor"
+  "contains an unrecognized relative"
+  "the target is not found among"
+)
+
+# Join array elements with |
+IFS='|' pattern="${patterns[*]}"
+anchor_errors=$(echo "$mkdocs_output" | grep -E "($pattern)" || true)
 
 echo "$mkdocs_output"
 

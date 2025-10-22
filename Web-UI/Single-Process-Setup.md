@@ -36,96 +36,96 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
 
 1. You need to enable the Embedding functionality that allows the karafka server to run directly within the Puma process. To do so, alter your `puma.rb` to start and stop Karafka during its lifecycle:
 
-1.1. Use this config when your Puma operates in a cluster mode:
+    1. Use this config when your Puma operates in a cluster mode:
 
-**For Puma < 7:**
+        **For Puma < 7:**
 
-```ruby
-# config/puma.rb
-# Use only when your Web UI Puma does not host your main application!
-# Use when you run your Puma in a cluster mode
+        ```ruby
+        # config/puma.rb
+        # Use only when your Web UI Puma does not host your main application!
+        # Use when you run your Puma in a cluster mode
 
-workers 2
-threads 1, 3
+        workers 2
+        threads 1, 3
 
-preload_app!
+        preload_app!
 
-on_worker_boot do
-  ::Karafka::Embedded.start
-end
+        on_worker_boot do
+          ::Karafka::Embedded.start
+        end
 
-on_worker_shutdown do
-  ::Karafka::Embedded.stop
-end
-```
+        on_worker_shutdown do
+          ::Karafka::Embedded.stop
+        end
+        ```
 
-**For Puma >= 7:**
+        **For Puma >= 7:**
 
-```ruby
-# config/puma.rb
-# Use only when your Web UI Puma does not host your main application!
-# Use when you run your Puma in a cluster mode
+        ```ruby
+        # config/puma.rb
+        # Use only when your Web UI Puma does not host your main application!
+        # Use when you run your Puma in a cluster mode
 
-workers 2
-threads 1, 3
+        workers 2
+        threads 1, 3
 
-preload_app!
+        preload_app!
 
-before_worker_boot do
-  ::Karafka::Embedded.start
-end
+        before_worker_boot do
+          ::Karafka::Embedded.start
+        end
 
-before_worker_shutdown do
-  ::Karafka::Embedded.stop
-end
-```
+        before_worker_shutdown do
+          ::Karafka::Embedded.stop
+        end
+        ```
 
-1.2. Use this configuration when running Puma in a single node mode:
+    1. Use this configuration when running Puma in a single node mode:
 
-**For Puma < 7:**
+        **For Puma < 7:**
 
-```ruby
-preload_app!
+        ```ruby
+        preload_app!
 
-@config.options[:events].on_booted do
-  ::Karafka::Embedded.start
-end
+        @config.options[:events].on_booted do
+          ::Karafka::Embedded.start
+        end
 
-# There is no `on_worker_shutdown` equivalent for single mode
-@config.options[:events].on_stopped do
-  ::Karafka::Embedded.stop
-end
-```
+        # There is no `on_worker_shutdown` equivalent for single mode
+        @config.options[:events].on_stopped do
+          ::Karafka::Embedded.stop
+        end
+        ```
 
-**For Puma >= 7:**
+        **For Puma >= 7:**
 
-```ruby
-preload_app!
+        ```ruby
+        preload_app!
 
-@config.options[:events].after_booted do
-  ::Karafka::Embedded.start
-end
+        @config.options[:events].after_booted do
+          ::Karafka::Embedded.start
+        end
 
-# There is no `before_worker_shutdown` equivalent for single mode
-@config.options[:events].after_stopped do
-  ::Karafka::Embedded.stop
-end
-```
+        # There is no `before_worker_shutdown` equivalent for single mode
+        @config.options[:events].after_stopped do
+          ::Karafka::Embedded.stop
+        end
+        ```
 
-2. It's vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
+1. It's vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
 
-```ruby
-# Other Karafka configuration here...
+    ```ruby
+    # Other Karafka configuration here...
 
-Karafka::Web.setup do |config|
-  # Other config of Web UI here...
+    Karafka::Web.setup do |config|
+      # Other config of Web UI here...
 
-  # Only set it to true 
-  config.processing.active = ENV.key?('WEB_UI_PUMA')
-end
-```
+      # Only set it to true 
+      config.processing.active = ENV.key?('WEB_UI_PUMA')
+    end
+    ```
 
-3. When running puma, set the `WEB_UI_PUMA` to `true`: `WEB_UI_PUMA=true bundle exec puma`, so Karafka will start consuming and materializing the Web UI inside of the Puma process.
+1. When running puma, set the `WEB_UI_PUMA` to `true`: `WEB_UI_PUMA=true bundle exec puma`, so Karafka will start consuming and materializing the Web UI inside of the Puma process.
 
 By taking these steps, you effectively configure the system for an optimal Single Process Setup experience.
 
