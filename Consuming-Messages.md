@@ -6,52 +6,52 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 
 1. To start the Karafka server process, use the following CLI command:
 
-```shell
-bundle exec karafka server
-```
+    ```shell
+    bundle exec karafka server
+    ```
 
-2. To access the message batch, use the `#messages` method:
+1. To access the message batch, use the `#messages` method:
    
-```ruby
-  
-  class EventsConsumer < ApplicationConsumer
-  def consume
-    # Access the batch via messages method
-    batch = messages
-  end
-end
-```
-
-3. Select one of two processing approaches based on your use case:
-
-   - Process each message one by one
-   - Process all payloads together to leverage batch database operations provided by many ORMs
-  
-4. Access message payloads.
-
-For individual message iteration, use the `#payload` method available for each received message:
-
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    # Print all the payloads one after another
-    messages.each do |message|
-      puts message.payload
+    ```ruby
+      
+      class EventsConsumer < ApplicationConsumer
+      def consume
+        # Access the batch via messages method
+        batch = messages
+      end
     end
-  end
-end
-```
+    ```
 
-For bulk operations, use the `#payloads` method to access all payloads at once:
+1. Select one of two processing approaches based on your use case:
 
-```ruby
-class EventsConsumer < ApplicationConsumer
-  def consume
-    # Insert all the events at once with a single query
-    Event.insert_all messages.payloads
-  end
-end
-```
+      - Process each message one by one
+      - Process all payloads together to leverage batch database operations provided by many ORMs
+
+2. Access message payloads.
+
+    For individual message iteration, use the `#payload` method available for each received message:
+
+    ```ruby
+    class EventsConsumer < ApplicationConsumer
+      def consume
+        # Print all the payloads one after another
+        messages.each do |message|
+          puts message.payload
+        end
+      end
+    end
+    ```
+
+    For bulk operations, use the `#payloads` method to access all payloads at once:
+
+    ```ruby
+    class EventsConsumer < ApplicationConsumer
+      def consume
+        # Insert all the events at once with a single query
+        Event.insert_all messages.payloads
+      end
+    end
+    ```
 
 ## Consuming Messages One At a Time
 
@@ -59,34 +59,34 @@ While batch processing is recommended to leverage in-memory computation and batc
 
 1. To start the Karafka server process, use the following CLI command:
 
-```shell
-bundle exec karafka server
-```
+    ```shell
+    bundle exec karafka server
+    ```
 
-2. Define a reusable base consumer that handles the single-message iteration pattern:
+1. Define a reusable base consumer that handles the single-message iteration pattern:
 
-```ruby
-class SingleMessageBaseConsumer < Karafka::BaseConsumer
-  attr_reader :message
+    ```ruby
+    class SingleMessageBaseConsumer < Karafka::BaseConsumer
+      attr_reader :message
 
-  def consume
-    messages.each do |message|
-      @message = message
-      consume_one
+      def consume
+        messages.each do |message|
+          @message = message
+          consume_one
 
-      mark_as_consumed(message)
+          mark_as_consumed(message)
+        end
+      end
     end
-  end
-end
 
-class Consumer < SingleMessageBaseConsumer
-  def consume_one
-    puts "I received following message: #{message.payload}"
-  end
-end
-```
+    class Consumer < SingleMessageBaseConsumer
+      def consume_one
+        puts "I received following message: #{message.payload}"
+      end
+    end
+    ```
 
-**Result:** The `#consume_one` method will be called for each message in the batch, allowing you to process messages individually while maintaining the benefits of Karafka's batch fetching.
+    **Result:** The `#consume_one` method will be called for each message in the batch, allowing you to process messages individually while maintaining the benefits of Karafka's batch fetching.
 
 ## Accessing Topic Details
 
@@ -98,31 +98,31 @@ If your logic depends on specific routing details, you can access them from the 
 
 1. To access the topic details, call the ```#topic``` method within the consume method:
 
-```ruby
-class UsersConsumer < ApplicationConsumer
-  def consume
-    send(:"topic_#{topic.name}")
-  end
+    ```ruby
+    class UsersConsumer < ApplicationConsumer
+      def consume
+        send(:"topic_#{topic.name}")
+      end
 
-  def topic_a
-    # do something
-  end
+      def topic_a
+        # do something
+      end
 
-  def topic_b
-    # do something else if it's a "b" topic
-  end
-end
-```
+      def topic_b
+        # do something else if it's a "b" topic
+      end
+    end
+    ```
 
-2. To extract all the details that are stored in the topic at once, use the ```#to_h``` method:
+1. To extract all the details that are stored in the topic at once, use the ```#to_h``` method:
 
-```ruby
-class UsersConsumer < ApplicationConsumer
-  def consume
-    puts topic.to_h #=> { name: 'x', ... }
-  end
-end
-```
+    ```ruby
+    class UsersConsumer < ApplicationConsumer
+      def consume
+        puts topic.to_h #=> { name: 'x', ... }
+      end
+    end
+    ```
 
 ## Setting Initial Offset Position
 
@@ -131,56 +131,56 @@ By default, Karafka starts consuming messages from the earliest available offset
 To configure the initial offset globally:
 
 1. Open your Karafka application configuration file.
-2. Set the `initial_offset` value in the setup block. 
+1. Set the `initial_offset` value in the setup block. 
 
-To start from the earliest offset (default behavior):
+    To start from the earliest offset (default behavior):
 
-```ruby
-# This will start from the earliest (default)
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.initial_offset = 'earliest'
-  end
-end
-```
+    ```ruby
+    # This will start from the earliest (default)
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        config.initial_offset = 'earliest'
+      end
+    end
+    ```
 
-To start from the latest offset:
+    To start from the latest offset:
 
-```ruby
-# This will make Karafka start consuming from the latest message on a given topic
-class KarafkaApp < Karafka::App
-  setup do |config|
-    config.initial_offset = 'latest'
-  end
-end
-```
+    ```ruby
+    # This will make Karafka start consuming from the latest message on a given topic
+    class KarafkaApp < Karafka::App
+      setup do |config|
+        config.initial_offset = 'latest'
+      end
+    end
+    ```
 
 **Result:** All topics will use this offset position as the default.
 
 To configure the initial offset for specific topics:
 
 1. Open your Karafka routing configuration.
-2. Add the `initial_offset` setting to individual topic definitions:
+1. Add the `initial_offset` setting to individual topic definitions:
 
-```ruby
-class KarafkaApp < Karafka::App
-  routes.draw do
-    topic :events do
-      consumer EventsConsumer
-      # Start from earliest for this specific topic
-      initial_offset 'earliest'
+    ```ruby
+    class KarafkaApp < Karafka::App
+      routes.draw do
+        topic :events do
+          consumer EventsConsumer
+          # Start from earliest for this specific topic
+          initial_offset 'earliest'
+        end
+
+        topic :notifications do
+          consumer NotificationsConsumer
+          # Start from latest for this specific topic
+          initial_offset 'latest'
+        end
+      end
     end
+    ```
 
-    topic :notifications do
-      consumer NotificationsConsumer
-      # Start from latest for this specific topic
-      initial_offset 'latest'
-    end
-  end
-end
-```
-
-**Result:** Each topic will use its configured offset position, overriding the global default.
+    **Result:** Each topic will use its configured offset position, overriding the global default.
 
 !!! note
 
@@ -207,6 +207,7 @@ def consume
   end
 end
 ```
+
 It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
