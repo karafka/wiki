@@ -10,6 +10,7 @@ Karafka.producer.produce_async(
   payload: Events.last.to_json
 )
 ```
+
 WaterDrop is thread-safe and operates well at scale.
 
 If you need to produce messages within Karafka consumers, you have several convenient alias methods at your disposal, including `#producer`, `#produce_sync`, `#produce_async`, `#produce_many_sync`, and `#produce_many_async`, as shown in the folllowing example:
@@ -32,6 +33,7 @@ class VisitsConsumer < ApplicationConsumer
   end
 end
 ```
+
 For more details on how to use the WaterDrop producer and its various message production methods, see [WaterDrop documentation](WaterDrop-Usage) .
 
 ## Messages Piping
@@ -44,19 +46,17 @@ Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or
 
 This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer. 
 
-!!! Info
+!!! info
 
     If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data. In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
-
 
 Overall, calling `#close` on the Karafka producer is a best practice that helps ensure reliable and efficient message delivery to Kafka while promoting your application stability and scalability.
 
 In the following sections, you can find an example of how to `#close` the producer used in various Ruby processes.
 
-!!! Warning
+!!! warning
 
     Note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
-
 
 ### Closing Producer Used in Karafka
 

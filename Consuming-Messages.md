@@ -9,7 +9,9 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 ```shell
 bundle exec karafka server
 ```
+
 2. To access the message batch, use the `#messages` method:
+   
 ```ruby
   
   class EventsConsumer < ApplicationConsumer
@@ -39,7 +41,7 @@ class EventsConsumer < ApplicationConsumer
   end
 end
 ```
-     
+
 For bulk operations, use the `#payloads` method to access all payloads at once:
 
 ```ruby
@@ -60,6 +62,7 @@ While batch processing is recommended to leverage in-memory computation and batc
 ```shell
 bundle exec karafka server
 ```
+
 2. Define a reusable base consumer that handles the single-message iteration pattern:
 
 ```ruby
@@ -82,6 +85,7 @@ class Consumer < SingleMessageBaseConsumer
   end
 end
 ```
+
 **Result:** The `#consume_one` method will be called for each message in the batch, allowing you to process messages individually while maintaining the benefits of Karafka's batch fetching.
 
 ## Accessing Topic Details
@@ -141,6 +145,7 @@ end
 ```
 
 To start from the latest offset:
+
 ```ruby
 # This will make Karafka start consuming from the latest message on a given topic
 class KarafkaApp < Karafka::App
@@ -149,6 +154,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
 **Result:** All topics will use this offset position as the default.
 
 To configure the initial offset for specific topics:
@@ -173,6 +179,7 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
 **Result:** Each topic will use its configured offset position, overriding the global default.
 
 !!! note
@@ -200,7 +207,6 @@ def consume
   end
 end
 ```
-
 It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
@@ -213,7 +219,6 @@ In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running
 
     With [Long-Running Jobs](Pro-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 
-
 ## Consumer Persistence
 
 Karafka consumer instances are persistent by default. A single consumer instance will "live" as long as a given process consumes a given topic partition. This allows you to:
@@ -224,7 +229,6 @@ Karafka consumer instances are persistent by default. A single consumer instance
 - Reuse expensive resources
 
 Karafka recreates the consumer instance only when a partition is lost and reassigned.
-
 
 !!! note
 
@@ -270,7 +274,7 @@ Karafka consumer, aside from the `#consume` method, allows you to define two add
 
 - `#revoked` - it will be executed when there is a rebalance resulting in the given partition being revoked from the current process.
 - `#shutdown` - it will be executed when the Karafka process is being shutdown.
-- 
+
 The following code demonstrates all three lifecycle methods:
 
 ```ruby
@@ -297,7 +301,7 @@ end
 
 !!! note "Shutdown Edge Case Alert"
 
-   When you use `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty. 
+    When you use `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
 
 ## Initial State Setup
 
@@ -306,7 +310,6 @@ Karafka consumers provide a dedicated `#initialized` method called automatically
 Use this method to set up any additional state, resources, or connections your consumer may need during its lifecycle. Karafka's consumer instance is not entirely bootstrapped during the `#initialize` method. This means crucial details, like routing information, topic details, and more, may not yet be available. Using `#initialize` to set up dependencies might result in incomplete or incorrect configurations. On the other hand, `#initialized` is executed once the consumer is fully ready and contains all the details it might need. By default, `#initialized` does nothing. Still, you can override it to include custom setup logic for your consumer.
 
 The following example shows two methods on how to override the `#initialized"` method in a Karafka consumer to set up resources after the consumer is fully ready.
-
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
