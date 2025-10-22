@@ -188,6 +188,7 @@
 - [Setting Up Kafka](Kafka-Setting-Up)
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
+- [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
 
 ## Upgrade Notes
 
