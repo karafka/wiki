@@ -64,7 +64,22 @@ Topics that are automatically created because of `allow.auto.create.topics` are 
 
 ## Consider the Impact of Rolling Deployments on Rebalances
 
-Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative-sticky` rebalance strategy can mitigate some of these issues.
+Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative-sticky` rebalance strategy or the next-generation consumer protocol (KIP-848) can significantly mitigate these issues.
+
+For Kafka 4.0+ with KRaft mode, the [next-generation consumer group protocol](Kafka-New-Rebalance-Protocol) is recommended:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'group.protocol': 'consumer'  # KIP-848 (requires Kafka 4.0+)
+    }
+  end
+end
+```
+
+For older Kafka versions, use `cooperative-sticky`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -96,9 +111,24 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Opt for the cooperative-sticky Rebalance Strategy in Production
+## Opt for Advanced Rebalance Strategies in Production
 
-The `cooperative-sticky` rebalance strategy set via the `partition.assignment.strategy` configuration is highly recommended for production environments. It offers better performance and stability compared to other rebalance strategies.
+For production environments, using advanced rebalance strategies significantly improves performance and stability during consumer group changes.
+
+**Recommended (Kafka 4.0+ with KRaft):** Use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) for rebalances with minimal disruption:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'group.protocol': 'consumer'
+    }
+  end
+end
+```
+
+**Alternative (Older Kafka versions):** Use the `cooperative-sticky` rebalance strategy:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -134,11 +164,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## Avoid Rolling Upgrades for `partition.assignment.strategy` Changes
+## Avoid Rolling Upgrades for Rebalance Protocol Changes
 
-The `partition.assignment.strategy` in Kafka determines how topic partitions are allocated amongst the consumers in a consumer group. Adjusting this strategy can influence the distribution of partitions and, thus, the performance and efficiency of your consumers.
+Whether changing the `partition.assignment.strategy` (classic protocol) or migrating to/from the `group.protocol` (KIP-848), rebalance protocol changes require careful coordination.
 
-When you switch between assignment strategies, be aware that:
+**Note:** Migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) **does** support rolling upgrades. See the migration guide for details.
+
+When you switch between classic protocol assignment strategies, be aware that:
 
 1. **Deployment Concerns**: Direct strategy shifts using rolling upgrades can result in conflicts. Running consumers with distinct assignment strategies within the same group will trigger an "Inconsistent group protocol" error, "assignors must have the same protocol type" error or similar
 
@@ -148,7 +180,7 @@ When you switch between assignment strategies, be aware that:
 
 1. **Compatibility Concerns**: Ensure the chosen strategy is compatible with your Kafka broker version. Some strategies might be exclusive to specific Kafka versions.
 
-To ensure a smooth transition when adjusting the assignment strategy, follow these steps:
+To ensure a smooth transition when adjusting the classic protocol assignment strategy, follow these steps:
 
 1. **Backup Configuration**: Initiate the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
 
@@ -159,8 +191,6 @@ To ensure a smooth transition when adjusting the assignment strategy, follow the
 1. **Update Strategy & Restart**: Modify the `partition.assignment.strategy` with **all** consumers offline. Once adjusted, you can bring all consumers back online.
 
 1. **Monitor Behavior**: Post-transition, maintain rigorous oversight of the consumer behaviors. Specifically, observe for unexpected rebalances or any imbalances in partition assignments.
-
-To recap, while modifying `partition.assignment.strategy` in Karafka may promise enhanced consumer efficiency, the transition demands solid planning and execution. With the insights and procedure outlined above, you're equipped to undertake the shift methodically and with minimal disruption.
 
 ## Messages from the Future / Time Drift Problem
 

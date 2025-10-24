@@ -188,6 +188,7 @@
 - [Setting Up Kafka](Kafka-Setting-Up)
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
+- [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
 
 ## Upgrade Notes
 
@@ -248,3 +249,4 @@ It is recommended to do one major upgrade at a time.
 - [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
 - [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
+- [Technical Writing](Development-Technical-Writing)

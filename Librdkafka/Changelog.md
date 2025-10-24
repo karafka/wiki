@@ -6,6 +6,24 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.12.1 (2025-10-21)
+
+librdkafka v2.12.1 is a maintenance release:
+
+* Restored macOS binaries compatibility with macOS 13 and 14 (#5219).
+
+
+### Fixes
+
+#### General fixes
+
+* Fix to restore macOS 13 and 14 compatibility in prebuilt binaries present in `librdkafka.redist`.
+  Happening since 2.12.0 (#5219).
+  
+### Checksums
+Release asset checksums:
+ * v2.12.1.zip SHA256 `da7571a0c1dc374aabb18af6ca01411d4bc597d321977980c8d3211ec5adf696`
+ * v2.12.1.tar.gz SHA256 `ec103fa05cb0f251e375f6ea0b6112cfc9d0acd977dc5b69fdc54242ba38a16f`
 ## 2.12.0 (2025-10-08)
 
 librdkafka v2.12.0 is a feature release:
@@ -2053,101 +2071,4 @@ librdkafka v1.5.3 is a maintenance release.
 Release asset checksums:
  * v1.5.3.zip SHA256 `3f24271232a42f2d5ac8aab3ab1a5ddbf305f9a1ae223c840d17c221d12fe4c1`
  * v1.5.3.tar.gz SHA256 `2105ca01fef5beca10c9f010bc50342b15d5ce6b73b2489b012e6d09a008b7bf`
-
-## 1.5.2 (2020-10-20)
-
-# librdkafka v1.5.2
-
-librdkafka v1.5.2 is a maintenance release.
-
-
-### Upgrade considerations
-
- * The default value for the producer configuration property `retries` has
-   been increased from 2 to infinity, effectively limiting Produce retries to
-   only `message.timeout.ms`.
-   As the reasons for the automatic internal retries vary (various broker error
-   codes as well as transport layer issues), it doesn't make much sense to limit
-   the number of retries for retriable errors, but instead only limit the
-   retries based on the allowed time to produce a message.
- * The default value for the producer configuration property
-   `request.timeout.ms` has been increased from 5 to 30 seconds to match
-   the Apache Kafka Java producer default.
-   This change yields increased robustness for broker-side congestion.
-
-
-### Enhancements
-
- * The generated `CONFIGURATION.md` (through `rd_kafka_conf_properties_show())`)
-   now include all properties and values, regardless if they were included in
-   the build, and setting a disabled property or value through
-   `rd_kafka_conf_set()` now returns `RD_KAFKA_CONF_INVALID` and provides
-   a more useful error string saying why the property can't be set.
- * Consumer configs on producers and vice versa will now be logged with
-   warning messages on client instantiation.
-
-
-### Fixes
-
-#### Security fixes
-
- * There was an incorrect call to zlib's `inflateGetHeader()` with
-   unitialized memory pointers that could lead to the GZIP header of a fetched
-   message batch to be copied to arbitrary memory.
-   This function call has now been completely removed since the result was
-   not used.
-   Reported by Ilja van Sprundel.
-
-
-#### General fixes
-
- * `rd_kafka_topic_opaque()` (used by the C++ API) would cause object
-   refcounting issues when used on light-weight (error-only) topic objects
-   such as consumer errors (#2693).
- * Handle name resolution failures when formatting IP addresses in error logs,
-   and increase printed hostname limit to ~256 bytes (was ~60).
- * Broker sockets would be closed twice (thus leading to potential race
-   condition with fd-reuse in other threads) if a custom `socket_cb` would
-   return error.
-
-#### Consumer fixes
-
- * The `roundrobin` `partition.assignment.strategy` could crash (assert)
-   for certain combinations of members and partitions.
-   This is a regression in v1.5.0. (#3024)
- * The C++ `KafkaConsumer` destructor did not destroy the underlying
-   C `rd_kafka_t` instance, causing a leak if `close()` was not used.
- * Expose rich error strings for C++ Consumer `Message->errstr()`.
- * The consumer could get stuck if an outstanding commit failed during
-   rebalancing (#2933).
- * Topic authorization errors during fetching are now reported only once (#3072).
-
-#### Producer fixes
-
- * Topic authorization errors are now properly propagated for produced messages,
-   both through delivery reports and as `ERR_TOPIC_AUTHORIZATION_FAILED`
-   return value from `produce*()` (#2215)
- * Treat cluster authentication failures as fatal in the transactional
-   producer (#2994).
- * The transactional producer code did not properly reference-count partition
-   objects which could in very rare circumstances lead to a use-after-free bug
-   if a topic was deleted from the cluster when a transaction was using it.
- * `ERR_KAFKA_STORAGE_ERROR` is now correctly treated as a retriable
-   produce error (#3026).
- * Messages that timed out locally would not fail the ongoing transaction.
-   If the application did not take action on failed messages in its delivery
-   report callback and went on to commit the transaction, the transaction would
-   be successfully committed, simply omitting the failed messages.
- * EndTxnRequests (sent on commit/abort) are only retried in allowed
-   states (#3041).
-   Previously the transaction could hang on commit_transaction() if an abortable
-   error was hit and the EndTxnRequest was to be retried.
-
-
-*Note: there was no v1.5.1 librdkafka release*
-
-### Checksums
-Release asset checksums:
- * v1.5.2.zip SHA256 `de70ebdb74c7ef8c913e9a555e6985bcd4b96eb0c8904572f3c578808e0992e1`
- * v1.5.2.tar.gz SHA256 `ca3db90d04ef81ca791e55e9eed67e004b547b7adedf11df6c24ac377d4840c6`
 

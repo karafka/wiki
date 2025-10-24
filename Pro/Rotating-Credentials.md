@@ -4,20 +4,20 @@ To do so:
 
 1. Go to your license credentials page.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_license_page.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_license_page.png" />
+    </p>
 
-2. Press the "Rotate credentials" button.
+1. Press the "Rotate credentials" button.
 
-3. Read the disclaimers.
+1. Read the disclaimers.
 
-<p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_rotate_page.png" />
-</p>
+    <p align="center">
+      <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_rotate_page.png" />
+    </p>
 
-4. Press the "I understand. Send me an email with the rotation link." button.
+1. Press the "I understand. Send me an email with the rotation link." button.
 
-5. Click on the link received in the email.
+1. Click on the link received in the email.
 
-6. View your new credentials and replace them in your Gemfile and any other place where you use them.
+1. View your new credentials and replace them in your Gemfile and any other place where you use them.

@@ -357,6 +357,10 @@ end
 
 This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
 
+!!! tip "Consider KIP-848 for Improved Rebalancing"
+
+    If you're using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
+
 ## What will happen with uncommitted offsets during a rebalance?
 
 When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
@@ -1395,6 +1399,8 @@ Since data is often related within the same partition, `range` can keep related 
 
 The assignment strategy is not a one-size-fits-all solution and can be changed based on the specific use case. If you want to change the assignment strategy in Karafka, you can set the `partition.assignment.strategy` configuration value to either `range`, `roundrobin` or `cooperative-sticky`. It's important to consider your particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
 
+For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
+
 ## Why can't I see the assignment strategy/protocol for some Karafka consumer groups?
 
 The assignment strategy or protocol for a Karafka consumer group might not be visible if a topic is empty, no data has been consumed, and no offsets were stored. These conditions indicate that no data has been produced to the topic and no consumer group has read any data, leaving no record of consumed data.
@@ -1832,7 +1838,7 @@ It indicates that you're attempting an online/rolling migration between two diff
 
 In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
-You can read more about this process [here](Operations-Development-vs-Production#avoid-rolling-upgrades-for-partitionassignmentstrategy-changes).
+You can read more about this process [here](Operations-Development-vs-Production#avoid-rolling-upgrades-for-rebalance-protocol-changes).
 
 ## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
 
