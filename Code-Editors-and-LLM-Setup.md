@@ -63,9 +63,9 @@ The following process describes alternative approaches depending on your IDE's c
 ✅ Get code examples tailored to your use case.  
 ✅ Understand the "why" behind configuration choices.  
 
-# Best Practices for AI Assitance
+## Best Practices for AI Assitance
 
-## Prompts for basic AI Assistance
+### Prompts for basic AI Assistance
 
 This section teaches you how to ask effective questions when working with AI assistants on basic Karafka-related problems. There are several rules to follow to optimize the replies.
 
@@ -180,7 +180,7 @@ In this section, you'll find a general list of dos and don'ts for prompting your
 - **Security implications** – Review security-related suggestions carefully
 - **Performance claims** – Benchmark in your environment
 
-# Automatic LLM Optimization
+## Automatic LLM Optimization
 
 Karafka's documentation automatically detects AI services (OpenAI, Anthropic, GitHub Copilot, Perplexity, etc.) through the User-Agent detection and intelligently routes them to the optimized content.
 

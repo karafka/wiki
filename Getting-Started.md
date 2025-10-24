@@ -2,11 +2,11 @@
 
 1. To verify that Apache Kafka is running, run the following command:
 
-```shell
-docker ps | grep kafka
-```
+    ```shell
+    docker ps | grep kafka
+    ```
 
-2. If it is not running, then set up Kafka. For instructions, see [Setting Up Kafka](Kafka-Setting-Up).
+1. If it is not running, then set up Kafka. For instructions, see [Setting Up Kafka](Kafka-Setting-Up).
 
 ## For Existing Applications
 
@@ -81,11 +81,11 @@ docker ps | grep kafka
     bundle exec karafka install
     ```
 
-  **Result**: All necessary files and directories are generated:
+    **Result**: All necessary files and directories are generated:
 
-  - `karafka.rb` — the main file where you configure Karafka and where you define which consumers should consume what topics.
-  - `app/consumers/example_consumer.rb` — an example consumer.
-  - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit.
+    - `karafka.rb` — the main file where you configure Karafka and where you define which consumers should consume what topics.
+    - `app/consumers/example_consumer.rb` — an example consumer.
+    - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit.
 
 1. Run a development console to produce messages to this example topic:
 
@@ -107,6 +107,7 @@ docker ps | grep kafka
     {"ping"=>"pong"}
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
     ```
+    
 1. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI](Web-UI-Getting-Started).
 
 ## Example applications
