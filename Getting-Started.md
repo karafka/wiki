@@ -1,6 +1,12 @@
 ## Prerequisites
 
-1. Verify that Apache Kafka is running. To set up Kafka, see the Instructions provided [here](Kafka-Setting-Up).
+1. To verify that Apache Kafka is running, run the following command:
+
+    ```shell
+    docker ps | grep kafka
+    ```
+
+1. If it is not running, then set up Kafka. For instructions, see [Setting Up Kafka](Kafka-Setting-Up).
 
 ## For Existing Applications
 
@@ -19,9 +25,9 @@
 
     **Result**: All necessary files and directories are generated:
 
-    - `karafka.rb` - main file where you configure Karafka and where you define which consumers should consume what topics.
-    - `app/consumers/example_consumer.rb` - example consumer.
-    - `app/consumers/application_consumer.rb` - base consumer from which all consumers should inherit.
+   - `karafka.rb` — the main file where you configure Karafka and define which consumers should consume what topics
+   - `app/consumers/example_consumer.rb` — an example consumer
+   - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit
 
 1. To produce test messages, open the development console and enter:
 
@@ -75,13 +81,13 @@
     bundle exec karafka install
     ```
 
-    the above command will create all the necessary files and directories to get you started:
+    **Result**: All necessary files and directories are generated:
 
-    - `karafka.rb` - main file where you configure Karafka and where you define which consumers should consume what topics.
-    - `app/consumers/example_consumer.rb` - example consumer.
-    - `app/consumers/application_consumer.rb` - base consumer from which all consumers should inherit.
+    - `karafka.rb` — the main file where you configure Karafka and where you define which consumers should consume what topics.
+    - `app/consumers/example_consumer.rb` — an example consumer.
+    - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit.
 
-1. After that, you can run a development console to produce messages to this example topic:
+1. Run a development console to produce messages to this example topic:
 
     ```ruby
     # Works from any place in your code and is thread-safe
@@ -101,17 +107,19 @@
     {"ping"=>"pong"}
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
     ```
+    
+1. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI](Web-UI-Getting-Started).
 
 ## Example applications
 
-If you have any problems setting up Karafka or want a ready application to play with, clone our examples repository:
+If you have any problems setting up Karafka or need a ready application to play with, clone our examples repository:
 
 ```shell
 git clone https://github.com/karafka/example-apps ./example_apps
 ```
 
-and follow the instructions from [example apps Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
+For instructions, see [Karafka Example Applications Wiki](https://github.com/karafka/example-apps/blob/master/README.md).
 
 ## Use cases, edge cases, and usage examples
 
-Karafka ships with a full integration test suite that illustrates various use cases and edge cases of working with Karafka and Kafka. Please visit [this directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository.
+Karafka ships with a full integration test suite that illustrates various use cases and edge cases of working with Karafka and Kafka. For comprehensive understanding of our framework, visit [Integrations directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository.
