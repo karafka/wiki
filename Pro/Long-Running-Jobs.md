@@ -117,6 +117,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+Both strategies help avoid unnecessary partition revocations when partitions would be re-assigned back to the same process.
+
 ### Revocation and re-assignment
 
 In the case of scenario `2`, there is nothing you need to do. Karafka will continue processing your messages and resume partition after it is done with the work.

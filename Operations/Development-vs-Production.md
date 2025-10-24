@@ -86,6 +86,7 @@ class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092',
+      # Fallback to cooperative-sticky for older brokers
       'partition.assignment.strategy': 'cooperative-sticky'
     }
   end
