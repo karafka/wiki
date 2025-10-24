@@ -25,7 +25,7 @@ For LLMs without web browsing:
 
 1. Get the documentation from [karafka.io/llms.txt](https://karafka.io/llms.txt)
 2. Copy the complete llms.txt content.  
-3. Paste the itllms.txt content into chat.
+3. Paste the the llms.txt content into the chat window.
 4. Request specific implementation help
 
 ### Method 3: Integrating IDE 
