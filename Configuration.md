@@ -1,10 +1,10 @@
-Karafka contains multiple configuration options. To keep everything organized, all the configuration options were divided into two groups:
+Karafka contains multiple configuration options. For better organization of logic and separation of concerns, all configuration options were divided into two groups:
 
 - root `karafka` options - options directly related to the Karafka framework and its components.
 
 - kafka scoped `librdkafka` options - options related to [librdkafka](Librdkafka-Configuration)
 
-To apply all those configuration options, you need to use the ```#setup``` method from the `Karafka::App` class:
+To apply these configuration options, use the ```#setup``` method from the `Karafka::App` class:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -20,26 +20,35 @@ end
 
 !!! note
 
-    Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you for example, to connect to multiple Kafka clusters.
+    Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you, for example, to connect to multiple Kafka clusters.
 
-!!! note
+!!! tip "Important"
 
-    kafka `client.id` is a string passed to the server when making requests. This is to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore the `client_id` should **not** be shared across multiple instances in a cluster or horizontally scaled application but distinct for each application instance.
+    kafka `client.id` is a string passed to the server when making requests. It is used to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore, the `client_id` should **not** be shared across multiple instances in a cluster or a horizontally scaled application but distinct for each application instance.
 
 ## Karafka configuration options
 
-A list of all the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).
+A comrehensive list of the karafka configuration options with their details and defaults can be found [here](https://github.com/karafka/karafka/blob/master/lib/karafka/setup/config.rb).
 
 ## librdkafka driver configuration options
 
-A list of all the configuration options related to `librdkafka` with their details and defaults can be found [here](Librdkafka-Configuration).
+A complete list of the configuration options related to `librdkafka` with their details and defaults can be found [here](Librdkafka-Configuration).
 
-## External components configurators
+## Configuring External components
 
-For additional setup and/or configuration tasks, you can use the `app.initialized` event hook. It is executed **once** per process, right after all the framework components are ready (including those dynamically built). It can be used, for example, to configure some external components that need to be based on Karafka internal settings.
+The `app.initialized` event hook allows you to perform additional setup and configuration tasks for external components that depend on the internal settings of Karafka. This event is executed once per process, immediat"ely after all framework components are ready, including dynamically built components.
 
-Because of how the Karafka framework lifecycle works, this event is triggered after the `#setup` is done. You need to subscribe to this event before that happens, either from the `#setup` block or before.
+**Prerequisites**
 
+1. Initiate the Karafka application setup 
+1. Verify if the external components requiring configuration are available
+
+**Procedure**
+
+1. Open your Karafka bootfile (karafka.rb).
+2. Find the setup block and add the event subscription inside your `setup` block
+3. Inside the event handler block, implement the configuration logic for your external components using available Karafka configuration values:
+   
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
@@ -55,22 +64,41 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+**Result**
+
+Your external components will be automatically configured once per process after Karafka completes its initialization sequence.
+
+!!! note "Note"
+    The configuration will have access to all finalized Karafka settings and can reliably use framework components like loggers, metrics, and other initialized resources.
+
 ## Environment variables settings
 
 There are several env settings you can use with Karafka. They are described under the [Env Variables](Env-Variables) section of this Wiki.
 
-## Messages compression
+## Compressing messages 
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports following compression types:
+!!! note
 
-- `gzip`
-- `zstd`
-- `lz4`
-- `snappy`
+    Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
 
-You can enable the compression by using the `compression.codec` and `compression.level` settings:
+    - `gzip`
+    - `zstd`
+    - `lz4`
+    - `snappy`
+
+**Prerequisites:**
+
+If you plan to to use `zstd`, you need to install `libzstd-dev`:
+
+```shell
+apt-get install -y libzstd-dev
+```
+
+**Procedure**
+
+1. To enable the compression, use the `compression.codec` and `compression.level` settings:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -94,7 +122,7 @@ end
 
 ## Types of Configuration in Karafka
 
-When working with Karafka, it is crucial to understand the different configurations available, as these settings directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
+When you work with Karafka, it is crucial to understand the different configurations available, as these settings directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
 
 ### Root Configuration in the Setup Block
 
@@ -111,7 +139,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-### Kafka Scoped `librdkafka` Options
+### Kafka-scoped `librdkafka` Options
 
 librdkafka configuration options are specified within the same setup block but scoped specifically under the `kafka` key. These settings are passed directly to the librdkafka library, the underlying Kafka client library that Karafka uses. This includes configurations for Kafka connections, such as bootstrap servers, SSL settings, and timeouts.
 
@@ -132,7 +160,7 @@ end
 
 Karafka also supports the Admin Configs API, which is designed to view and manage configurations at the Kafka broker and topic levels. These settings are different from the client configurations (root and Kafka scoped) as they pertain to the infrastructure level of Kafka itself rather than how your application interacts with it.
 
-Examples of these settings include:
+Example settings include:
 
 - **Broker Configurations**: Like log file sizes, message sizes, and default retention policies.
 
