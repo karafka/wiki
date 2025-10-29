@@ -148,6 +148,7 @@
 1. [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
 1. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
 1. [Can you control the batching process in WaterDrop?](#can-you-control-the-batching-process-in-waterdrop)
+1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 1. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
 1. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
 1. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
@@ -217,6 +218,7 @@
 1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
 1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
+1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 
 ---
 
@@ -2937,3 +2939,11 @@ Set your multiplexing `max` to be less than your partition count, allowing room 
 **Increase partition count:**
 
 If you need both high multiplexing and multiple processes, consider increasing your topic's partition count.
+
+## Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?
+
+**No**, rdkafka-ruby (and by extension Karafka and WaterDrop) does not include built-in support for schema registry patterns or magic byte framing logic. These libraries focus exclusively on Kafka protocol operations and do not handle message serialization formats or schema management.
+
+rdkafka-ruby is a pure Kafka protocol binding that remains agnostic about your data format. It treats message payloads as opaque byte streams, which provides maximum flexibility for any serialization approach.
+
+When consuming messages, you can manually deserialize using `raw_payload` or configure a custom deserializer. For detailed examples and best practices, see the [Deserialization](Deserialization) documentation.
