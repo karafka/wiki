@@ -1009,6 +1009,7 @@
 | `pro/iterator/negative_multiple_topics_lookups_spec.rb` | We should be able to subscribe to multiple topics with custom per topic negative lookups and they should work on all partitions |
 | `pro/iterator/negative_topic_multiple_partitions_spec.rb` | We should be able to use different negative offsets for different partitions of the same topic |
 | `pro/iterator/stop_start_with_marking_spec.rb` | We should be able with proper settings |
+| `pro/iterator/with_custom_group_id_spec.rb` | The iterator should use the group.id specified in the settings hash when provided. By default, the iterator uses its own admin group ID (not the routing-defined consumer group), but this can be overridden via the settings hash. This is useful when you want to: - Track iterator progress for resuming later - Use a specific consumer group for offset management - Share offset state between multiple iterator instances |
 | `pro/iterator/with_granular_cleaning_spec.rb` | We should be able to clean messages while keeping the metadata |
 | `pro/iterator/with_many_partitions_all_subscription_to_the_end_spec.rb` | When iterating over the topic and not providing partitions, it should stream all the messages one after another and should use JSON also for case where there are multiple partitions. |
 | `pro/iterator/with_many_partitions_from_different_times_spec.rb` | When iterating over different topics/partitions with different times, each should start from the expected one. |
