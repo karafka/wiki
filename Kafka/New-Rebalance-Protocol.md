@@ -1,11 +1,5 @@
 # Consumer Group Rebalance Protocol (KIP-848)
 
-!!! danger "Unreleased Feature - Not Yet Available"
-
-    **This document describes capabilities that are not yet released in Karafka.** The KIP-848 consumer group protocol requires rdkafka with librdkafka 2.12.0+ support, which is not yet available. This warning will be removed when the feature is officially released and ready for production use.
-
-    Do not attempt to use this feature until it is officially released.
-
 [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) introduces a next-generation consumer group rebalance protocol that can deliver up to 20x faster rebalances while eliminating stop-the-world pauses. This guide focuses specifically on using this protocol with Karafka - certain KIP-848 features and limitations not relevant to Karafka applications are intentionally omitted.
 
 !!! info "Low-Level Protocol Details"
