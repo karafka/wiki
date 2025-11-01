@@ -145,14 +145,6 @@ KIP-848 supports live migration without downtime. When the first consumer using 
     - Continue restarting remaining consumers one at a time
     - Monitor for any errors during the rollout
 
-1. Verify the migration completed successfully:
-
-    ```shell
-    kafka-consumer-groups.sh \
-      --bootstrap-server kafka-broker:9092 \
-      --describe --group your-consumer-group --state
-    ```
-
     !!! warning
 
         Complete the migration within a few hours. Don't leave the group in a mixed state for extended periods.
