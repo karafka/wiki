@@ -113,6 +113,147 @@ Allowing each job class to specify its producer offers the flexibility to tailor
 
 Pro ActiveJob adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
 
+## ActiveJob Continuation
+
+Karafka Pro provides enhanced support for Rails 8.1+ ActiveJob Continuation feature with additional capabilities beyond the OSS version. With Pro, you can leverage delayed resumption and partitioning within continuation jobs for advanced workflow management.
+
+!!! note "Scheduled Messages Not Required for Immediate Resumption"
+
+    If you only need immediate job resumption (without delays), you can use `resume_options = { wait: 0 }` without setting up the Scheduled Messages feature. This avoids the overhead of configuring Scheduled Messages when delayed resumption is not needed.
+
+### Configuration
+
+#### Immediate Resumption (No Scheduled Messages Required)
+
+For jobs that need to resume immediately without delays, you can use ActiveJob Continuation without setting up Scheduled Messages:
+
+```ruby
+class ProcessImportJob < ActiveJob::Base
+  include ActiveJob::Continuable
+
+  queue_as :default
+
+  # No scheduled_messages_topic needed for immediate resumption
+  self.resume_options = { wait: 0 }
+
+  def perform(import_id)
+    @import = Import.find(import_id)
+
+    step :validate do
+      @import.validate!
+    end
+
+    step :process_records do |step|
+      @import.records.find_each(start: step.cursor) do |record|
+        record.process
+        step.advance! from: record.id
+      end
+    end
+
+    step :finalize
+  end
+
+  def finalize
+    @import.finalize!
+  end
+end
+```
+
+#### Delayed Resumption (Requires Scheduled Messages)
+
+To use delayed resumption, configure your job class with the `resume_options`:
+
+```ruby
+class ProcessImportJob < ActiveJob::Base
+  include ActiveJob::Continuable
+
+  queue_as :default
+
+  # Configure delayed resume (requires Pro Scheduled Messages)
+  self.resume_options = { wait: 5.seconds }
+
+  def perform(import_id)
+    @import = Import.find(import_id)
+
+    step :validate do
+      @import.validate!
+    end
+
+    step :process_records do |step|
+      @import.records.find_each(start: step.cursor) do |record|
+        record.process
+        step.advance! from: record.id
+      end
+    end
+
+    step :finalize
+  end
+
+  def finalize
+    @import.finalize!
+  end
+end
+```
+
+### Partitioning in Continuation Jobs
+
+Pro allows you to combine continuation with partitioning to ensure ordered processing of multi-step jobs for specific resources:
+
+```ruby
+class ProcessUserDataJob < ActiveJob::Base
+  include ActiveJob::Continuable
+
+  queue_as :default
+
+  karafka_options(
+    scheduled_messages_topic: 'scheduled_jobs_topic',
+    dispatch_method: :produce_sync,
+    # Ensure all steps for the same user go to the same partition
+    partitioner: ->(job) { job.arguments.first.to_s },
+    partition_key_type: :key
+  )
+
+  self.resume_options = { wait: 5.seconds }
+
+  def perform(user_id)
+    @user = User.find(user_id)
+
+    step :process_profile do
+      @user.process_profile_data
+    end
+
+    step :process_transactions do |step|
+      @user.transactions.find_each(start: step.cursor) do |transaction|
+        transaction.process
+        step.advance! from: transaction.id
+      end
+    end
+
+    step :finalize do
+      @user.finalize_processing
+    end
+  end
+end
+```
+
+This configuration ensures that all continuation steps for a given user are processed in order on the same partition, preventing race conditions while allowing parallel processing of different users.
+
+### Requirements
+
+To use ActiveJob Continuation in Pro with **immediate resumption** (`wait: 0`):
+
+- No additional setup required beyond the standard ActiveJob adapter configuration
+
+To use ActiveJob Continuation in Pro with **delayed resumption**:
+
+1. **Scheduled Messages Feature**: Must be properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages)
+2. **Scheduled Messages Topic**: Each job class using delayed resumption must specify `scheduled_messages_topic` in `karafka_options`
+3. **Synchronous Dispatch**: Recommended to use `dispatch_method: :produce_sync` for reliable continuation
+
+### OSS Compatibility
+
+For details on using ActiveJob Continuation in the OSS version with immediate resumption, see [ActiveJob Continuation](Active-Job#activejob-continuation).
+
 ## Execution Warranties
 
 Same execution warranties apply as for standard [Active Job adapter](Active-Job#execution-warranties).

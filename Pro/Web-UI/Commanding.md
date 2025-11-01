@@ -262,12 +262,21 @@ Unlike standard data flows, this special connection is built to avoid saturation
 
 This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
 
+### Network Traffic Characteristics
+
+The `karafka_consumers_commands` topic is designed with a single partition and operates as a pub-sub mechanism. Each consumer process maintains an active subscription to this topic, creating continuous polling activity that generates consistent network traffic, even when no commands are actively being issued.
+
+This traffic pattern is normal and expected. While the volume is typically insignificant due to the low-intensity nature of the topic, it may appear more prominent on network monitoring graphs, particularly when other topics have lower traffic volumes. The constant polling ensures that administrative commands can be delivered and executed with minimal latency.
+
+If this network traffic is a concern or if commanding functionality is not needed in your environment, it can be disabled by setting `config.commanding.active` to `false` as shown in the Configuration section above.
+
 Key points include:
 
 - **Invisible Connection**: The pub-sub connection used by the commanding feature is not shown in the Web UI, avoiding unnecessary noise.
 - **Responsiveness**: Ensures high responsiveness by bypassing the standard data flow, crucial during debugging.
 - **Reliability**: Incorporates recovery and reconnection mechanisms for continuous operation.
 - **Error Reporting**: Publishes errors if they occur but does not track or publish statistics or other metrics.
+- **Network Traffic**: Generates consistent but typically insignificant traffic due to continuous polling of the commands topic by all consumer processes.
 
 ## Summary
 

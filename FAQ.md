@@ -136,6 +136,7 @@
 1. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
 1. [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
 1. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
+1. [Why does the `karafka_consumers_commands` topic generate constant network traffic?](#why-does-the-karafka_consumers_commands-topic-generate-constant-network-traffic)
 1. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
 1. [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
 1. [Is it acceptable to declare short-living producers in each app/jobs as needed?](#is-it-acceptable-to-declare-short-living-producers-in-each-appjobs-as-needed)
@@ -2048,6 +2049,24 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 ## What is the purpose of the `karafka_consumers_reports` topic?
 
 The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
+
+## Why does the `karafka_consumers_commands` topic generate constant network traffic?
+
+The `karafka_consumers_commands` topic generates consistent network traffic because it operates as a pub-sub mechanism for the commanding feature. When commanding is enabled (which is the default), each consumer process maintains an active subscription to this single-partition topic to receive administrative commands from the Web UI, such as pause, trace, quiet, and stop operations.
+
+Since all consumer processes subscribe to this topic simultaneously, it creates continuous polling activity that appears as constant network traffic, even when no commands are being issued. This traffic pattern is normal and expected behavior for the commanding system.
+
+The traffic volume is typically insignificant because the topic is low-intensity with minimal new data under normal circumstances. However, it may appear more prominent on network monitoring graphs when other topics have lower traffic volumes.
+
+If commanding functionality is not needed, it can be disabled to eliminate this traffic:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.commanding.active = false
+end
+```
+
+For more details, see the [Commanding](Pro-Web-UI-Commanding) documentation.
 
 ## Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?
 

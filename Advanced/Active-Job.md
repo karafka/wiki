@@ -242,3 +242,60 @@ Job.perform_later # the job will output "user_id: 1"
 Karafka handles CurrentAttributes by including them as part of the job serialization process before pushing them to Kafka. These attributes are then deserialized by the ActiveJob consumer and set back in your CurrentAttributes classes before executing the job.
 
 This approach is based on Sidekiq's approach to persisting current attributes: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
+
+## ActiveJob Continuation
+
+Karafka supports Rails 8.1+ ActiveJob Continuation feature, which allows jobs to pause and resume their execution. This is useful for long-running jobs that need to be broken down into smaller steps, enabling jobs to be interrupted and resumed across application restarts.
+
+### Configuration for OSS
+
+In the OSS (Open Source) version of Karafka, ActiveJob Continuation requires specific configuration because delayed resumption is not available without the Pro [Scheduled Messages](Pro-Scheduled-Messages) feature.
+
+To use ActiveJob Continuation in OSS Karafka, configure jobs to resume immediately without delay:
+
+```ruby
+class ProcessImportJob < ActiveJob::Base
+  include ActiveJob::Continuable
+
+  queue_as :default
+
+  # Configure immediate resume for OSS compatibility
+  self.resume_options = { wait: 0 }
+
+  def perform(import_id)
+    @import = Import.find(import_id)
+
+    step :validate do
+      @import.validate!
+    end
+
+    step :process_records do |step|
+      @import.records.find_each(start: step.cursor) do |record|
+        record.process
+        # Update cursor to track progress within this step
+        step.advance! from: record.id
+      end
+    end
+
+    step :finalize
+  end
+
+  def finalize
+    @import.finalize!
+  end
+end
+```
+
+The `resume_options = { wait: 0 }` configuration ensures that continuation jobs resume immediately, bypassing the need for scheduled message support.
+
+### Enhanced Continuation in Pro
+
+For advanced continuation capabilities including delayed resumes and partitioning within continuation jobs, consider upgrading to [Karafka Pro](Pro-Enhanced-Active-Job#activejob-continuation). Pro supports features such as:
+
+- Delayed resume times via Scheduled Messages
+- Partitioning within continuation jobs for ordered processing
+- Full integration with other Pro features
+
+!!! note "OSS and Pro Compatibility"
+
+    ActiveJob Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
