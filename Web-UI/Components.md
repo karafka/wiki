@@ -10,6 +10,16 @@ Karafka Web UI is an intuitive tool that visually represents the metrics related
 
 - **Presenting**: After processing the data, the final step is to display it via the Web UI. This involves presenting the structured and aggregated data visually appealing and comprehensibly, ensuring you can easily gauge the status and health of your Karafka processes.
 
+## Active Consumption vs. Storage Topics
+
+It's important to understand how Karafka Web UI interacts with different topics:
+
+- **Reports Topic (Active Consumption)**: Karafka Web UI actively consumes only the `karafka_consumers_reports` topic. You will see this consumer group subscription in your logs. This is the primary data source for tracking and processing consumer states.
+
+- **Error and Other Topics (Key-Value Storage)**: Topics such as `karafka_errors` and `karafka_consumers_states` serve as key-value stores. While consumer errors and state information are **sent** to these topics by your Karafka processes, the Web UI does **not actively consume** them. Instead, the Web UI reads from these topics on-demand when you access specific pages (e.g., viewing errors in the UI). This is expected behavior and not a misconfiguration.
+
+This design ensures efficient resource usage - only the reports topic requires continuous processing, while other data is accessed as needed.
+
 Below you can find the diagram of the whole data flow:
 
 <p align="center">
