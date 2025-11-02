@@ -1372,6 +1372,10 @@
 | `setup/debug_mode_spec.rb` | Karafka should switch all components int a debug mode when we use explicit debug\! |
 | `setup/load_poro/configure_spec.rb` | Karafka in a PORO project should load without any problems when regular (not pro) |
 | `setup/max_messages_format_as_string_spec.rb` | When max messages format is not as expected, we should fail |
+| `setup/producer_block_configuration_spec.rb` | Karafka should support configuring the producer via a block during setup. This allows users to customize producer settings without manually creating a producer instance. |
+| `setup/producer_block_execution_order_spec.rb` | Karafka should execute the producer configuration block AFTER all user settings are applied and AFTER the default producer is created. This ensures the block has access to the fully configured producer and can override any defaults. Karafka should also setup producer after ALL Karafka level configuration is available |
+| `setup/producer_block_with_middleware_spec.rb` | Karafka should allow adding middleware to the producer via the configuration block |
+| `setup/producer_without_block_spec.rb` | Karafka should work correctly when no producer configuration block is provided. The default producer should be created with standard settings. |
 | `setup/re_initialization_of_cached_resources_spec.rb` | Karafka should update the cached references to the monitor, logger and producer once those are altered during the configuration |
 | `setup/with_custom_worker_thread_priority_spec.rb` | When reconfiguring the worker thread priority, worker threads should have proper priority set When reconfiguring internal listener worker thread priority, it should also work |
 | `setup/with_kip_848_protocol_incorrect_config_spec.rb` | Karafka should crash when new and old rebalance protocol settings are mixed even if independently they are correct. Note that those errors only happen upon subscription, not during configuration. |
