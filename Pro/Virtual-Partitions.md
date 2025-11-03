@@ -771,3 +771,12 @@ Here are some use cases from various industries where Karafka's virtual partitio
 - **Social Media**: Social media platforms often need to process many user interactions, such as likes, comments, and shares, coming in from a single Kafka topic partition. By using virtual partitions to parallelize the processing of these events, they can improve the responsiveness of their platform and enhance the user experience.
 
 Overall, virtual partitions can be beneficial in any industry where large volumes of data need to be processed quickly and efficiently, particularly when processing is IO bound. By parallelizing the processing of data from a single Kafka topic partition, organizations can improve the performance and scalability of their systems, enabling them to make more informed decisions and deliver better results.
+
+---
+
+## See Also
+
+- [Parallel Segments](Pro-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads
+- [Long-Running Jobs](Pro-Long-Running-Jobs) - Use with Virtual Partitions for better throughput on IO-bound tasks
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding Karafka's threading model and Virtual Partitions
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - How errors are handled in Virtual Partitions

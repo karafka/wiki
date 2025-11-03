@@ -142,3 +142,12 @@ Here are some potential use cases for Delayed Topics:
 ## Summary
 
 Karafka's Delayed Topics is a powerful feature that allows for arbitrary delays when processing messages from specific topics. It can be used in various use cases, such as e-commerce, social media moderation, and finance. By delaying message processing, you can perform additional processing or validation, moderate user-generated content, and introduce a retry mechanism for failed messages. By using Delayed Topics in conjunction with a Dead Letter Queue, you can create a more robust and dynamic system that can handle various business and failure scenarios.
+
+---
+
+## See Also
+
+- [Scheduled Messages](Pro-Scheduled-Messages) - Alternative time-based message processing approach
+- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Using delays for DLQ retry strategies
+- [Expiring Messages](Pro-Expiring-Messages) - Skipping messages that become irrelevant over time
+- [Filtering API](Pro-Filtering-API) - Foundation for Delayed Topics implementation

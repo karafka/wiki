@@ -442,3 +442,12 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+---
+
+## See Also
+
+- [Dead Letter Queue](Dead-Letter-Queue) - Base DLQ feature and fundamental concepts
+- [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
+- [Virtual Partitions](Pro-Virtual-Partitions) - Enhanced DLQ behavior with parallel processing

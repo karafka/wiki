@@ -220,3 +220,12 @@ The Long-Running Jobs feature is designed to handle tasks that take longer to pr
 - Data Cleaning and Preprocessing: Data cleaning and preprocessing can take significant time, especially when dealing with large datasets. The processing of messages may involve tasks such as data validation, data normalization, or data standardization.
 
 These are just a few examples of how Long-Running Jobs can benefit different industries where processing messages takes a significant amount of time. Karafka's Long-Running Jobs feature can be used to develop and manage these jobs, enabling continuous data processing and analysis.
+
+---
+
+## See Also
+
+- [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Alias for Long-Running Jobs, same feature with different name
+- [Virtual Partitions](Pro-Virtual-Partitions) - Use with Long-Running Jobs for better throughput on IO-bound tasks
+- [Direct Assignments](Pro-Direct-Assignments) - Alternative consumption model for long-running background processing
+- [Adaptive Iterator](Pro-Adaptive-Iterator) - Efficient data processing for long-running batch operations

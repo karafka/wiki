@@ -697,3 +697,12 @@ Parallel Segments provide a way to scale CPU-intensive message processing in Kar
 While the trade-off in network bandwidth usage is important to consider, the performance gains for certain workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and monitoring, Parallel Segments offer a robust solution for high-throughput, CPU-intensive message processing scenarios.
 
 Remember to leverage the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
+
+---
+
+## See Also
+
+- [Virtual Partitions](Pro-Virtual-Partitions) - Alternative parallelization strategy optimized for IO-bound workloads
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding Karafka's threading model and parallelization
+- [Dead Letter Queue](Dead-Letter-Queue) - Error handling with Parallel Segments
+- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced error handling for parallel processing

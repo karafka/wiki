@@ -574,3 +574,12 @@ External factors, such as infrastructure setup, network conditions, and data pro
 Optimization strategies, including multiple subscription groups, connection multiplexing, and virtual partitions, help balance workloads and enhance parallel processing. Each use case demands a unique configuration, underscoring the need for a thorough understanding of the framework and application requirements.
 
 In conclusion, effective consumer management in Karafka requires considering various factors and regular adjustments to maintain efficiency and responsiveness.
+
+---
+
+## See Also
+
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
+- [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing for improved throughput
+- [Resources Management](Resources-Management) - Managing memory and CPU resources effectively
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Tracking performance metrics and identifying bottlenecks
