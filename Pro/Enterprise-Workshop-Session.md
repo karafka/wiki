@@ -58,3 +58,8 @@ By investing a few hours, you're setting yourself up to save weeks of collective
     - Operating System: Mac/Linux.
     - Software: Docker and Ruby 3.2.
     - Docker Kafka setup: This should already be in place. (Instructions will be provided.)
+
+## See also
+
+- [Enterprise](Pro-Enterprise) - For comprehensive information about Karafka Enterprise
+- [Support](Pro-Support) - For details about enterprise support offerings

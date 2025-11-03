@@ -21,3 +21,9 @@ To do so:
 1. Click on the link received in the email.
 
 1. View your new credentials and replace them in your Gemfile and any other place where you use them.
+
+## See also
+
+- [Pro Security](Pro-Security) - Security best practices
+- [Deployment](Deployment) - Deployment strategies and best practices
+- [AWS MSK Guide](AWS-MSK-Guide) - AWS MSK integration guide

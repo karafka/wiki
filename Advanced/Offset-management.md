@@ -128,3 +128,10 @@ class CountersConsumer < ApplicationConsumer
   end
 end
 ```
+
+## See also
+
+- [Consuming Messages](Consuming-Messages) - Understanding message consumption basics
+- [Pro Offset Metadata Storage](Pro-Offset-Metadata-Storage) - Store additional metadata with offsets
+- [Dead Letter Queue](Dead-Letter-Queue) - Handle failed messages without losing offset progress
+- [Virtual Partitions](Virtual-Partitions) - Parallel processing with offset management considerations

@@ -461,3 +461,8 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 - **Time-Based Feature Rollouts**: Publish events that trigger the gradual rollout or rollback of features to users based on time, enabling time-sensitive feature management.
 
 - **Content Expiry Notifications**: Trigger notifications or events when certain content (e.g., licenses, subscriptions, or promotions) is nearing its expiration, prompting renewal or other actions.
+
+## See also
+
+- [Pro Periodic Jobs](Pro-Periodic-Jobs) - Periodic job execution
+- [Pro Scheduled Messages](Pro-Scheduled-Messages) - Message scheduling capabilities

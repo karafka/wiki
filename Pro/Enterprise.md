@@ -61,3 +61,9 @@ Unlike Karafka Pro, which comes with standard terms and conditions, Karafka Ente
 Enterprise includes support for creating custom compliance and security documentation. This service ensures that the organization’s use of Karafka meets industry standards and regulatory requirements, which is essential for legal and compliance audits.
 
 By choosing Karafka Enterprise, organizations can ensure that their Kafka and Karafka implementations are robust, secure, and aligned with their specific business and operational needs.
+
+## See also
+
+- [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session) - For details about the included workshop session
+- [Support](Pro-Support) - For information about enterprise support offerings
+- [Compliance Certifications](Pro-Compliance-Certifications) - For understanding compliance in self-hosted software

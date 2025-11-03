@@ -141,3 +141,9 @@ end
 ```
 
 For more information about using instrumentation, please refer to the main documentation.
+
+## See also
+
+- [Monitoring and Logging](Monitoring-and-Logging) - Using instrumentation for monitoring
+- [Web UI About](Web-UI-About) - Web UI leverages instrumentation events
+- [Librdkafka Statistics](Librdkafka-Statistics) - Statistics events for detailed metrics

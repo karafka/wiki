@@ -48,3 +48,9 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+## See also
+
+- [Producing Messages](Producing-Messages)
+- [Multi Cluster Setup](Multi-Cluster-Setup)
+- [WaterDrop Configuration](WaterDrop-Configuration)

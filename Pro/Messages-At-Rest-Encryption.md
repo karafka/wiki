@@ -156,3 +156,9 @@ This feature is especially critical in industries subject to stringent regulatio
 - Human Resources: Human resources departments may store sensitive employee data such as social security numbers, payroll information, and performance reviews in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring regulatory compliance and maintaining employee trust.
 
 Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
+
+## See also
+
+- [Pro Security](Pro-Security) - Security best practices
+- [Pro HIPAA PHI PII Support](Pro-HIPAA-PHI-PII-Support) - Healthcare compliance support
+- [Deserialization](Deserialization) - Message deserialization configuration

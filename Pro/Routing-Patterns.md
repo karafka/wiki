@@ -434,3 +434,9 @@ This comparative testing method offers a straightforward way to ensure your regu
 ## Summary
 
 Karafka's Routing Patterns offers a dynamic solution for message routing, utilizing the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality ensures agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
+
+## See also
+
+- [Routing](Routing) - Standard routing configuration
+- [Testing](Testing) - Testing strategies for Karafka applications
+- [Deserialization](Deserialization) - Message deserialization configuration

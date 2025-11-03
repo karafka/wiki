@@ -139,3 +139,8 @@ In each of these business scenarios, the ability of Karafka's insights-aware con
 ## Summary
 
 Karafka's Inline Insights is a powerful feature that enhances data processing capabilities by allowing consumers to adapt based on real-time metrics. By integrating Inline Insights, developers can address issues such as lag or respond promptly to specific partition data changes, ensuring an efficient and swift adaptation to data fluctuations.
+
+## See also
+
+- [Pro Enhanced Inline Insights](Pro-Enhanced-Inline-Insights)
+- [Monitoring and Logging](Monitoring-and-Logging)

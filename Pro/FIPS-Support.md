@@ -100,3 +100,9 @@ When operating in FIPS mode, the following limitations apply:
 Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2 requirements through their implementation of validated cryptographic modules, secure communication channels, and robust at-rest encryption. 
 
 While we strive to maintain FIPS compatibility, we encourage users to contact us with any issues or suggestions for improvement to help us continue enhancing Karafka's security features.
+
+## See also
+
+- [Security](Pro-Security) - For comprehensive security guidelines and best practices
+- [Compliance Certifications](Pro-Compliance-Certifications) - For understanding compliance in self-hosted software
+- [Messages At-Rest Encryption](Pro-Messages-At-Rest-Encryption) - For encryption implementation details

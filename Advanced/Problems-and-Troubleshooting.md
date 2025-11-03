@@ -27,3 +27,13 @@ When you encounter issues with Karafka, there are several things you can do:
 ## Debugging
 
 Karafka now has a dedicated and comprehensive debugging guide that covers troubleshooting message duplication, offset handling, crashes, and other consumer-related issues. To keep things focused, debugging content has been moved out of this document and can be found in the new [Debugging](Debugging) document.
+
+---
+
+## See Also
+
+- [Debugging](Debugging) - Systematic approach to debugging consumer processing issues
+- [Error-Handling-and-Back-Off-Policy](Error-Handling-and-Back-Off-Policy) - Configure error handling and retry strategies
+- [Broker-Failures-and-Fault-Tolerance](Broker-Failures-and-Fault-Tolerance) - Understand how Karafka handles broker failures
+- [FAQ](FAQ) - Frequently asked questions about common Karafka issues
+- [Pro-Support](Pro-Support) - Get priority support for complex troubleshooting scenarios

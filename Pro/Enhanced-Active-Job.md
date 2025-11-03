@@ -277,3 +277,10 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
 
 For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).
+
+## See also
+
+- [Active Job](Active-Job) - Standard Active Job adapter documentation
+- [Pro Scheduled Messages](Pro-Scheduled-Messages) - Scheduling jobs for future execution
+- [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Non-blocking job processing
+- [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing within partitions

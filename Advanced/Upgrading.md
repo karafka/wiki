@@ -47,3 +47,9 @@ Following these upgrade recommendations will help ensure a successful upgrade pr
 ## Pro Upgrade Support
 
 If you encounter difficulties while upgrading Karafka, particularly when upgrading from unsupported versions, we have a [Pro offering](https://karafka.io/#become-pro) that includes dedicated support. Our [Pro support](Pro-Support) can provide you with the necessary assistance to address any upgrade challenges and ensure a successful upgrade process. Feel free to contact us to learn more about the Pro offering and how it can help you with your Karafka upgrade.
+
+## See also
+
+- [Upgrades Karafka](Upgrades-Karafka) - Version-specific Karafka upgrade guides
+- [Upgrades Web UI](Upgrades-Web-UI) - Web UI upgrade instructions
+- [Upgrades WaterDrop](Upgrades-WaterDrop) - WaterDrop version upgrade guides

@@ -63,3 +63,13 @@ end
 ## Conclusion
 
 Karafka provides automatic database connection management for standard setups. However, when using database replicas, it's crucial to manage those connections to maintain system performance and stability manually. This process involves subscribing to Karafka's `worker.completed` event and explicitly releasing connections, ensuring they are available for subsequent use.
+
+---
+
+## See Also
+
+- [Integrating-with-Ruby-on-Rails-and-other-frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks) - Set up Karafka with Rails and ActiveRecord
+- [Forking](Forking) - Understand connection handling when using forking and Swarm mode
+- [Concurrency-and-Multithreading](Concurrency-and-Multithreading) - Manage database connections across threads
+- [Resources-Management](Resources-Management) - Optimize overall resource usage including database connections
+- [Error-Handling-and-Back-Off-Policy](Error-Handling-and-Back-Off-Policy) - Handle database connection errors and implement retry strategies

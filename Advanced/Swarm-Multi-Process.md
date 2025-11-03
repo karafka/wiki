@@ -586,3 +586,13 @@ Implementing Swarm Mode for these use cases allows applications to fully utilize
 Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-intensive Kafka message processing in Ruby, effectively bypassing the Global Interpreter Lock (GIL). It leverages Ruby's Copy-On-Write (CoW) for efficient memory use, employing a "Supervisor-Worker" pattern for parallel execution and system health monitoring.
 
 Swarm Mode supports Static Group Membership to enhance consumer group stability and allows for quick node restarts without rebalancing, thanks to Karafka Pro's monitoring.
+
+---
+
+## See Also
+
+- [Pro-Enhanced-Swarm-Multi-Process](Pro-Enhanced-Swarm-Multi-Process) - Advanced swarm features including memory monitoring and health checks
+- [Concurrency-and-Multithreading](Concurrency-and-Multithreading) - Understand threading options and parallel processing strategies
+- [Resources-Management](Resources-Management) - Optimize memory, CPU, and connection usage in Karafka
+- [Deployment](Deployment) - Deploy Karafka in production environments with swarm mode
+- [Pro-Virtual-Partitions](Pro-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits

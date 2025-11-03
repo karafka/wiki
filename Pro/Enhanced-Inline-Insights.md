@@ -26,3 +26,9 @@ When the `required` option is activated in Karafka Pro's Inline Insights, it aut
 ## Summary
 
 In sum, the `required` option in Karafka Pro's Inline Insights is an invaluable asset for developers aiming to bolster and assure the reliability of their metrics availability.
+
+## See also
+
+- [Inline Insights](Inline-Insights) - Standard Inline Insights documentation
+- [Monitoring and Logging](Monitoring-and-Logging) - System monitoring capabilities
+- [Web UI Features](Web-UI-Features) - Web UI monitoring interface

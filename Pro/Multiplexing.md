@@ -420,3 +420,9 @@ This increased memory usage is particularly notable when messages are large or w
 ## Summary
 
 Karafka Multiplexing is a powerful tool designed to enhance the performance of your Kafka-based applications, especially under heavy load. Allowing multiple connections to the same topic from a single process provides a robust solution for handling high-volume data streams, optimizing resources, and ensuring high availability. Whether you're dealing with fluctuating workloads, aiming for high throughput, or seeking to improve fault tolerance, Multiplexing can provide significant benefits.
+
+## See also
+
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Concurrency configuration
+- [Pro Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-blocking job processing
+- [Routing](Routing) - Routing and subscription group configuration

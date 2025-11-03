@@ -153,3 +153,9 @@ Please take note of the following potential issue:
 If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
 It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+
+## See also
+
+- [Development vs Production](Development-vs-Production)
+- [Web UI Configuration](Web-UI-Configuration)
+- [Web UI Getting Started](Web-UI-Getting-Started)

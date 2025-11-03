@@ -259,3 +259,8 @@ The listener thread priority (internal setting `internal.connection.listener_thr
 !!! warning "Performance Trade-offs"
 
     Lower priorities reduce GVL time per quantum, which can slightly increase message processing latency. However, this trade-off usually improves overall system responsiveness. Monitor your specific workload and adjust priorities accordingly - the practical range is -3 to 3, with -3 providing the minimum 20ms quantum in practice due to Ruby's internal tick system.
+
+## See also
+
+- [CLI](CLI) - Command-line interface for running Karafka standalone
+- [Deployment](Deployment) - Strategies for deploying Karafka in various environments

@@ -472,3 +472,10 @@ Furthermore, it's worth noting that if Karafka Web UI detects older schema repor
 Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
 It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
+
+## See also
+
+- [Getting Started](Getting-Started)
+- [Web UI About](Web-UI-About)
+- [Web UI Features](Web-UI-Features)
+- [Web UI Configuration](Web-UI-Configuration)

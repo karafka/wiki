@@ -23,3 +23,8 @@ end
 - Always set a unique label for each environment (e.g., "Production", "Development") to avoid any accidental confusion.
 - Use the notice field to display critical environment-specific information, especially in production environments.
 - Choose an appropriate type to convey the importance or caution level of the environment visually.
+
+## See also
+
+- [Configuration](Web-UI-Configuration) - For comprehensive Web UI configuration options
+- [Pro Web UI](Pro-Web-UI) - For advanced Web UI features available in Karafka Pro
