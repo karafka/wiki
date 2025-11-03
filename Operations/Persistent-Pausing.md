@@ -40,16 +40,12 @@ class FlipperPauseFilter < Karafka::Pro::Processing::Filters::Base
   def apply!(messages)
     # Check Flipper flag for this topic
     flag_name = "pause_topic_#{@topic}"
+
     @paused = Flipper.enabled?(flag_name)
-    
-    if @paused
-      @applied = true
-      # Don't modify messages, just signal pause action
-    end
   end
 
   def applied?
-    @applied
+    @paused
   end
 
   def action
