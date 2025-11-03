@@ -137,5 +137,5 @@ This approach gives you **persistent, centrally-managed topic pausing** that's p
 - [Filtering API](Pro-Filtering-API) - Complete documentation on creating and using filters
 - [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
 - [Web UI Commanding: Pause and Resume Partitions](Pro-Web-UI-Commanding#pause-and-resume-partitions) - Emergency partition pausing via Web UI
-- [Error Handling and Back-Off Policy](Error-Handling-and-Back-Off-Policy) - How Karafka handles automatic pausing on errors
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - How Karafka handles automatic pausing on errors
 - [Transactional offsets pattern](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/) - Related pattern for reliable message processing
