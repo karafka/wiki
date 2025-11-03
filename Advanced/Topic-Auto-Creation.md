@@ -74,7 +74,7 @@ This behavior ensures topics are created only when there's actual data to store,
 
 ## See Also
 
-- [Declarative-Topics](Declarative-Topics) - Manage topic creation explicitly as code for production environments
-- [Admin-API](Admin-API) - Programmatically create and manage topics
-- [WaterDrop-Usage](WaterDrop-Usage) - Understand producer behavior that triggers topic auto-creation
+- [Declarative Topics](Declarative-Topics) - Manage topic creation explicitly as code for production environments
+- [Admin API](Admin-API) - Programmatically create and manage topics
+- [Usage](WaterDrop-Usage) - Understand producer behavior that triggers topic auto-creation
 - [Configuration](Configuration) - Configure allow.auto.create.topics and related settings

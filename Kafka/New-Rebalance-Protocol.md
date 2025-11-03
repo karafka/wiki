@@ -282,8 +282,10 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 
 - **Recommendation:** For new deployments on Kafka 4.0+, enable KIP-848 from the start. For existing deployments, test thoroughly in staging before migrating to production.
 
-## See also
+---
+
+## See Also
 
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
 - [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
-- [Deployment](Deployment) - For deployment strategies including rolling restarts
+- [Deployment](Operations-Deployment) - For deployment strategies including rolling restarts

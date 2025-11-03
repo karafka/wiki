@@ -53,7 +53,9 @@ end
 
 Once the dedicated Web UI producer is set up, it becomes the default for all Web UI components. It is pivotal in various tasks, from reporting consumer states and tracking producers' errors to publishing aggregated data states. Additionally, if there's a need to republish data, this producer facilitates the process directly from the Web UI.
 
-## See also
+---
+
+## See Also
 
 - [WaterDrop Transactions](WaterDrop-Transactions) - For detailed information on WaterDrop transactional producer behavior
 - [Pro Transactions](Pro-Transactions) - For advanced transactional features in Karafka Pro

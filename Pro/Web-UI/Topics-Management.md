@@ -203,7 +203,9 @@ The topic management features in Karafka Web UI Pro provide a comprehensive solu
 
 Combined with other Karafka Pro features like [Data Explorer](Pro-Web-UI-Explorer), [Topics Insights](Pro-Web-UI-Topics-Insights), and [Search](Pro-Web-UI-Search), topic management completes the toolset needed for efficient Kafka operations and maintenance.
 
-## See also
+---
+
+## See Also
 
 - [Declarative Topics](Declarative-Topics) - For declarative topic management in application code
 - [Admin API](Admin-API) - For programmatic topic management operations

@@ -1,6 +1,8 @@
 TBA
 
-## See also
+---
+
+## See Also
 
 - [Configuration](Configuration) - Configure Karafka for your application
 - [Routing](Routing) - Set up topic routing with proper naming

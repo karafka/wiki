@@ -278,7 +278,9 @@ When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** e
 
 For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).
 
-## See also
+---
+
+## See Also
 
 - [Active Job](Active-Job) - Standard Active Job adapter documentation
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Scheduling jobs for future execution

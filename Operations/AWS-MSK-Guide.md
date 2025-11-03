@@ -253,8 +253,10 @@ Karafka does **not** provide direct support for changing topic replication facto
 
     A Karafka Admin API feature is currently under development that will provide a more user-friendly interface for replication factor management.
 
-## See also
+---
 
-- [Deployment](Deployment) - General deployment strategies including AWS
+## See Also
+
+- [Deployment](Operations-Deployment) - General deployment strategies including AWS
 - [Pro Rotating Credentials](Pro-Rotating-Credentials) - Rotating IAM credentials for MSK
 - [Pro Security](Pro-Security) - Security features including SASL/SCRAM authentication

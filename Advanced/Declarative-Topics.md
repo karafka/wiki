@@ -216,7 +216,7 @@ This will ensure the correct exit code is returned based on the operation's outc
 ## See Also
 
 - [Routing](Routing) - Define routing and topic configurations together
-- [Admin-API](Admin-API) - Programmatically manage topics beyond declarative definitions
-- [Kafka-Topic-Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
-- [Topic-Auto-Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior
+- [Admin API](Admin-API) - Programmatically manage topics beyond declarative definitions
+- [Topic Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
+- [Topic Auto Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior
 - [CLI](CLI) - Complete reference of Karafka CLI commands for topic management

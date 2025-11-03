@@ -308,7 +308,9 @@ Karafka's Admin ACLs API provides a powerful yet user-friendly way to manage Kaf
 
 Whether securing a small project or an enterprise-scale system, understanding and utilizing Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
 
-## See also
+---
+
+## See Also
 
 - [Admin API](Admin-API) - General admin operations for Kafka management
 - [Pro Security](Pro-Security) - Advanced security features for Karafka

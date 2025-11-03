@@ -438,9 +438,11 @@ end
 
     However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.
 
-## See also
+---
 
-- [Deployment](Deployment) - Production deployment strategies and best practices
+## See Also
+
+- [Deployment](Operations-Deployment) - Production deployment strategies and best practices
 - [Configuration](Configuration) - Environment-specific configuration options
 - [Web UI Development vs Production](Web-UI-Development-vs-Production) - Web UI considerations for different environments
-- [Monitoring and Logging](Monitoring-and-Logging) - Setting up monitoring for production environments
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Setting up monitoring for production environments

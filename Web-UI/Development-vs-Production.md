@@ -154,8 +154,10 @@ If you attempt to deploy the updated Web UI before the Karafka consumer processe
 
 It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
-## See also
+---
 
-- [Development vs Production](Development-vs-Production)
+## See Also
+
+- [Development vs Production](Operations-Development-vs-Production)
 - [Web UI Configuration](Web-UI-Configuration)
 - [Web UI Getting Started](Web-UI-Getting-Started)

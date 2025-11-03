@@ -462,7 +462,9 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 
 - **Content Expiry Notifications**: Trigger notifications or events when certain content (e.g., licenses, subscriptions, or promotions) is nearing its expiration, prompting renewal or other actions.
 
-## See also
+---
+
+## See Also
 
 - [Pro Periodic Jobs](Pro-Periodic-Jobs) - Periodic job execution
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Message scheduling capabilities

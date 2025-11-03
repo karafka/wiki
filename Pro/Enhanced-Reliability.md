@@ -30,8 +30,10 @@ Karafka Pro enhances the stability and performance of distributed systems with i
 
 For more detailed information on how Enhanced Supervision for Swarm Nodes works and how to implement it in your Karafka Pro setup, please refer to the [Enhanced Swarm](Pro-Enhanced-Swarm-Multi-Process) documentation.
 
-## See also
+---
 
-- [Error Handling and Back-Off Policy](Error-Handling-and-Back-Off-Policy) - Error handling strategies
+## See Also
+
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Error handling strategies
 - [Pro Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ capabilities
 - [Pro Granular Backoffs](Pro-Granular-Backoffs) - Fine-tuned retry control

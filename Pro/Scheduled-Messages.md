@@ -664,7 +664,9 @@ Use Cases:
 
 - **Cache Expiration and Refresh**: Schedule a message to trigger the refresh of a specific cache segment right before its set expiration time. This ensures data remains current without manual monitoring and maintains system performance and reliability.
 
-## See also
+---
+
+## See Also
 
 - [Pro Delayed Topics](Pro-Delayed-Topics) - Delaying message consumption
 - [Pro Recurring Tasks](Pro-Recurring-Tasks) - Scheduling recurring operations

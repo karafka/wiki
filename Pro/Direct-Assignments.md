@@ -72,7 +72,9 @@ end
 
 Karafka Pro's Direct Assignments feature is a powerful tool that, when used effectively, can greatly enhance the performance, reliability, and security of Kafka-based applications. It allows for precise control over partition processing, enabling sophisticated data processing strategies that go beyond the capabilities of standard Kafka consumer groups. Whether you are building high-throughput data pipelines, implementing complex processing logic, or must comply with strict data security standards, Direct Assignments can provide the tools to achieve these goals efficiently and reliably.
 
-## See also
+---
+
+## See Also
 
 - [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Non-blocking job processing
 - [Pro Iterator API](Pro-Iterator-API) - Iterator-based message processing

@@ -22,8 +22,10 @@ To do so:
 
 1. View your new credentials and replace them in your Gemfile and any other place where you use them.
 
-## See also
+---
+
+## See Also
 
 - [Pro Security](Pro-Security) - Security best practices
-- [Deployment](Deployment) - Deployment strategies and best practices
-- [AWS MSK Guide](AWS-MSK-Guide) - AWS MSK integration guide
+- [Deployment](Operations-Deployment) - Deployment strategies and best practices
+- [AWS MSK Guide](Operations-AWS-MSK-Guide) - AWS MSK integration guide

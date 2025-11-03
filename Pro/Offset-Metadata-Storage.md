@@ -271,7 +271,9 @@ Here are some use cases from where Karafka's offset metadata storage feature can
 
 Offset Metadata Storage enriches message processing by allowing custom metadata to be attached to message offsets, providing additional context for enhanced monitoring, debugging, and complex workflow orchestration. This feature supports flexible metadata access within consumer instances and across application components, ensuring precise retrieval and management of offset metadata.
 
-## See also
+---
+
+## See Also
 
 - [Offset management](Offset-management) - Standard offset management
 - [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel partition processing

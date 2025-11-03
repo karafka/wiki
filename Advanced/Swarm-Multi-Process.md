@@ -591,8 +591,8 @@ Swarm Mode supports Static Group Membership to enhance consumer group stability 
 
 ## See Also
 
-- [Pro-Enhanced-Swarm-Multi-Process](Pro-Enhanced-Swarm-Multi-Process) - Advanced swarm features including memory monitoring and health checks
-- [Concurrency-and-Multithreading](Concurrency-and-Multithreading) - Understand threading options and parallel processing strategies
-- [Resources-Management](Resources-Management) - Optimize memory, CPU, and connection usage in Karafka
-- [Deployment](Deployment) - Deploy Karafka in production environments with swarm mode
-- [Pro-Virtual-Partitions](Pro-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits
+- [Enhanced Swarm Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Advanced swarm features including memory monitoring and health checks
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understand threading options and parallel processing strategies
+- [Resources Management](Resources-Management) - Optimize memory, CPU, and connection usage in Karafka
+- [Deployment](Operations-Deployment) - Deploy Karafka in production environments with swarm mode
+- [Virtual Partitions](Pro-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits

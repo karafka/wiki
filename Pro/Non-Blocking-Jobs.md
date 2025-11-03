@@ -30,7 +30,9 @@ Non-Blocking Jobs are Long-Running Jobs, and `#non_blocking_job` is just an alia
 
 Please refer to the [Long-Running Jobs documentation](Pro-Long-Running-Jobs) to better understand this feature.
 
-## See also
+---
+
+## See Also
 
 - [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Detailed long-running jobs documentation
 - [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing capabilities

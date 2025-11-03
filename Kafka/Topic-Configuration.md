@@ -276,7 +276,9 @@
 - **Sensitive**: Specifies if the parameter contains sensitive information that will not be accessible or visible using Karafka.
 - **Description**: A detailed explanation of the parameter's purpose and usage.
 
-## See also
+---
+
+## See Also
 
 - [Declarative Topics](Declarative-Topics) - For declarative topic management in application code
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - For cluster-level configuration options

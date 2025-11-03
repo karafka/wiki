@@ -20,7 +20,9 @@ It:
 
 Please visit the [Getting Started](WaterDrop-Getting-Started) page for instructions on installing, configuring, and using WaterDrop.
 
-## See also
+---
+
+## See Also
 
 - [Getting Started](WaterDrop-Getting-Started) - For installation and setup instructions
 - [Producing Messages](Producing-Messages) - For message production techniques

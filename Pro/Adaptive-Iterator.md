@@ -122,7 +122,9 @@ Moreover, the Adaptive Iterator's frequent stopping and resetting cause the cons
 
 While the Adaptive Iterator is an effective tool for managing sporadic long-processing messages, it introduces trade-offs in terms of performance and networking. The frequent stopping and seeking back can reduce processing efficiency, increase network traffic, and place a higher load on Kafka brokers. To minimize these impacts, it's crucial to carefully configure the safety margin and use the Adaptive Iterator in situations where processing times are relatively predictable, with only occasional spikes. For environments with consistently long processing times or high variability, consider using other features like Long-Running Jobs to maintain optimal performance and network usage.
 
-## See also
+---
+
+## See Also
 
 - [Pro Iterator API](Pro-Iterator-API) - Iterator API documentation
 - [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Handling long-running workloads

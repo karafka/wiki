@@ -54,7 +54,9 @@ To get started with WaterDrop:
 
     For additional WaterDrop usage examples, please refer to the [Usage](WaterDrop-Usage) section of this documentation.
 
-## See also
+---
+
+## See Also
 
 - [WaterDrop About](WaterDrop-About)
 - [WaterDrop Usage](WaterDrop-Usage)

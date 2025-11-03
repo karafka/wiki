@@ -113,7 +113,9 @@ Karafka and Karafka Web UI offer a secure and adaptable platform that can be con
 
 For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
-## See also
+---
+
+## See Also
 
 - [Messages At-Rest Encryption](Pro-Messages-At-Rest-Encryption) - For detailed information on encrypting sensitive data at rest
 - [Security](Pro-Security) - For comprehensive security guidelines and best practices

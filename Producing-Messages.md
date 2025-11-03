@@ -232,8 +232,8 @@ By leveraging this flexibility in Karafka, you can effectively manage and direct
 
 ## See Also
 
-- [WaterDrop-Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
-- [WaterDrop-Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
-- [Pro-Piping](Pro-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
-- [Multi-Cluster-Setup](Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
-- [Consuming-Messages](Consuming-Messages) - Learn how to consume the messages you produce
+- [Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
+- [Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
+- [Piping](Pro-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
+- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
+- [Consuming Messages](Consuming-Messages) - Learn how to consume the messages you produce

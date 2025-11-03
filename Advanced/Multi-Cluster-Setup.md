@@ -107,7 +107,9 @@ end
 
 While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're leveraging the multi-cluster configuration for valid business reasons.
 
-## See also
+---
+
+## See Also
 
 - [Configuration](Configuration) - Configure Karafka for multiple clusters
 - [Routing](Routing) - Set up routing for different clusters

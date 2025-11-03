@@ -26,9 +26,11 @@ On top of that, to ensure the stability and security of the system:
 
     If your organization policy prevents using **any** external dependency sources, a Karafka Pro license can be bundled into your application. This, however, requires a separate [Enterprise](Pro-Enterprise) agreement with us. Please [contact us](https://karafka.io#support) for more details.
 
-## See also
+---
+
+## See Also
 
 - [Pro Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Data encryption capabilities
 - [Pro Rotating Credentials](Pro-Rotating-Credentials) - Credential rotation procedures
-- [Deployment](Deployment) - Deployment strategies and best practices
+- [Deployment](Operations-Deployment) - Deployment strategies and best practices
 - [Pro HIPAA PHI PII Support](Pro-HIPAA-PHI-PII-Support) - Healthcare compliance support

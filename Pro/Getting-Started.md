@@ -149,7 +149,9 @@ To use it:
 
 In case the verification fails, script will exit with the exit code `1`.
 
-## See also
+---
+
+## See Also
 
 - [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about obtaining a Karafka Pro license
 - [Pro Features List](Pro-Features-List) - Complete list of available Pro features

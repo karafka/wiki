@@ -88,8 +88,10 @@ Declarative Topics managament via the CLI has its own section. You can read abou
 
 Routing Patterns managament via the CLI has its own section. You can read about that [here](Pro-Routing-Patterns#limiting-patterns-used-per-process).
 
-## See also
+---
+
+## See Also
 
 - [Getting Started](Getting-Started) - Initial setup and basic CLI usage
-- [Deployment](Deployment) - Using CLI commands in production environments
+- [Deployment](Operations-Deployment) - Using CLI commands in production environments
 - [Env Variables](Env-Variables) - Environment variables affecting CLI behavior

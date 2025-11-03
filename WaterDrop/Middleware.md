@@ -151,7 +151,9 @@ MY_PRODUCER.produce_async(
 
 - **Dynamic Routing Logic**: Middleware allows for the dynamic routing of messages based on content or context, directing messages to the appropriate topics or partitions on the fly. This adaptability is crucial in complex systems where message destinations might change based on factors like payload content, workload distribution, or system state, ensuring that the data flow remains efficient and contextually relevant.
 
-## See also
+---
+
+## See Also
 
 - [Pro Messages At-Rest Encryption](Pro-Messages-At-Rest-Encryption) - For implementing encryption via middleware
 - [Monitoring and Logging](WaterDrop-Monitoring-and-Logging) - For monitoring patterns with middleware

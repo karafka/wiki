@@ -304,8 +304,8 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
 ## See Also
 
-- [Pro-Enhanced-Active-Job](Pro-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
+- [Enhanced Active Job](Pro-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
 - [Testing](Testing) - Test your ActiveJob jobs with Karafka's testing helpers
-- [Dead-Letter-Queue](Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
-- [Pro-Long-Running-Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
-- [Error-Handling-and-Back-Off-Policy](Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs
+- [Dead Letter Queue](Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
+- [Long Running Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
+- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

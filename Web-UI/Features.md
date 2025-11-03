@@ -188,9 +188,11 @@ Each check may display one of the following statuses:
   <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
 
-## See also
+---
+
+## See Also
 
 - [Web UI Getting Started](Web-UI-Getting-Started)
 - [Pro Web UI](Pro-Web-UI)
-- [Monitoring and Logging](Monitoring-and-Logging)
+- [Monitoring and Logging](Operations-Monitoring-and-Logging)
 - [Web UI About](Web-UI-About)

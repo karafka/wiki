@@ -27,8 +27,10 @@ Karafka's behaviour can be altered with the following environment variables:
   </tbody>
 </table>
 
-## See also
+---
+
+## See Also
 
 - [Configuration](Configuration) - Complete configuration reference
-- [Deployment](Deployment) - Using environment variables in deployment
-- [Development vs Production](Development-vs-Production) - Environment-specific settings
+- [Deployment](Operations-Deployment) - Using environment variables in deployment
+- [Development vs Production](Operations-Development-vs-Production) - Environment-specific settings

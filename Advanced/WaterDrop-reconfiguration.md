@@ -49,7 +49,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-## See also
+---
+
+## See Also
 
 - [Producing Messages](Producing-Messages)
 - [Multi Cluster Setup](Multi-Cluster-Setup)
