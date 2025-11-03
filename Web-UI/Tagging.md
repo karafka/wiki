@@ -141,3 +141,10 @@ In the consumer jobs detailed view (Karafka Pro only):
 <p align="center">
   <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-job2.png" alt="karafka web tagging presentation" />
 </p>
+
+---
+
+## See Also
+
+- [Features](Web-UI-Features) - For an overview of Web UI capabilities including tagging
+- [Pro Web UI](Pro-Web-UI) - For advanced Web UI features available in Karafka Pro

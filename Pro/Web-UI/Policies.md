@@ -180,3 +180,10 @@ The filtering and sanitization feature can be handy in various scenarios, such a
 ## Summary
 
 This ability to filter and sanitize data provides a powerful tool to ensure data privacy and security while still giving the necessary visibility into the data flow within your Kafka topics.
+
+---
+
+## See Also
+
+- [Security](Pro-Security) - For comprehensive security guidelines and best practices
+- [Configuration](Web-UI-Configuration) - For configuring Web UI settings

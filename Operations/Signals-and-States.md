@@ -58,3 +58,11 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 - `stopping` - The process is finishing current work, no longer accepting more, and shutting down.
 - `stopped` - The process finished everything and closed all the Kafka connections.
 - `terminated` - The process is going to exit shortly.
+
+---
+
+## See Also
+
+- [Deployment](Operations-Deployment) - Using signals for graceful deployments
+- [Exit codes](Exit-codes) - Understanding exit codes after shutdown
+- [Long Running Jobs](Pro-Long-Running-Jobs) - Handling signals with long-running operations

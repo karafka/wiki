@@ -276,6 +276,8 @@ It's crucial to be aware, especially if you're using a third-party Kafka provide
 
 In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help leverage its benefits while mitigating downsides.
 
+---
+
 ## See Also
 
 - [Persistent Pausing](Operations-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API

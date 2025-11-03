@@ -37,3 +37,13 @@ bundle exec karafka install
 ```
 
 After that, ensure that your application is loaded before setting up and booting Karafka.
+
+---
+
+## See Also
+
+- [Active Job](Active-Job) - Integrate Karafka with Rails ActiveJob for background processing
+- [Active Record Connections Management](Active-Record-Connections-Management) - Manage database connections in Karafka consumers
+- [Producing Messages](Producing-Messages) - Send messages to Kafka from Rails controllers and models
+- [Deployment](Operations-Deployment) - Deploy Karafka alongside Rails applications in production
+- [Getting Started](Getting-Started) - Initial setup and installation instructions for Karafka

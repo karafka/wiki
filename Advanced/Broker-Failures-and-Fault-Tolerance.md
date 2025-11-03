@@ -438,3 +438,13 @@ Karafka **is designed** to handle Kafka broker failures gracefully. During maint
 The key is understanding that temporary connection errors during Kafka cluster maintenance are **expected behavior**, not application failures. Karafka's librdkafka foundation provides robust, production-ready handling of these scenarios without requiring application-level intervention.
 
 Connection refused errors during broker maintenance indicate the system is working correctly and attempting to reconnect to brokers as they become available again.
+
+---
+
+## See Also
+
+- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Configure retry strategies and backoff policies for consumer errors
+- [Dead Letter Queue](Dead-Letter-Queue) - Handle persistent failures by routing problematic messages to DLQ
+- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ features for complex failure scenarios
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Track broker connection health and system performance
+- [Admin API](Admin-API) - Programmatically inspect and manage Kafka cluster configuration

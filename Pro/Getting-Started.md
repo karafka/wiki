@@ -148,3 +148,12 @@ To use it:
 1. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
 In case the verification fails, script will exit with the exit code `1`.
+
+---
+
+## See Also
+
+- [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about obtaining a Karafka Pro license
+- [Pro Features List](Pro-Features-List) - Complete list of available Pro features
+- [Pro Features Compatibility](Pro-Features-Compatibility) - Feature compatibility matrix
+- [Getting Started](Getting-Started) - Standard Karafka installation guide

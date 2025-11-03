@@ -299,3 +299,13 @@ For advanced continuation capabilities including delayed resumes and partitionin
 !!! note "OSS and Pro Compatibility"
 
     ActiveJob Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
+
+---
+
+## See Also
+
+- [Enhanced Active Job](Pro-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
+- [Testing](Testing) - Test your ActiveJob jobs with Karafka's testing helpers
+- [Dead Letter Queue](Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
+- [Long Running Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
+- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

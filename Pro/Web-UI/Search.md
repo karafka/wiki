@@ -233,3 +233,10 @@ end
 ## Summary
 
 By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, ensuring that only the necessary matchers are applied to each topic, optimizing performance and relevance.
+
+---
+
+## See Also
+
+- [Explorer](Pro-Web-UI-Explorer) - For browsing and exploring topic data
+- [Pro Iterator API](Pro-Iterator-API) - For programmatic topic data exploration

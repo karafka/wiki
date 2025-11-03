@@ -307,3 +307,10 @@ end
 Karafka's Admin ACLs API provides a powerful yet user-friendly way to manage Kafka ACLs, ensuring secure and authorized access to Kafka resources. By leveraging Ruby symbols and a structured API, it simplifies the process of ACL management, making it more accessible and less error-prone for Ruby developers.
 
 Whether securing a small project or an enterprise-scale system, understanding and utilizing Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
+
+---
+
+## See Also
+
+- [Admin API](Admin-API) - General admin operations for Kafka management
+- [Pro Security](Pro-Security) - Advanced security features for Karafka

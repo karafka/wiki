@@ -27,3 +27,11 @@ end
 - **Performance Tuning**: Observing partition traffic can help identify hotspots or bottlenecks in data flow, enabling fine-tuning partition sizes or numbers to optimize performance.
 
 - **Dynamic Consumer Scaling**: For systems that dynamically scale consumers based on load, knowledge of partition assignments is necessary to redistribute partitions among the new set of consumers efficiently.
+
+---
+
+## See Also
+
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Track consumer assignments and partition distribution
+- [Web UI Features](Web-UI-Features) - Visualize partition assignments in the Web UI
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding thread safety with partition assignments

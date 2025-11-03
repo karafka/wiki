@@ -281,3 +281,11 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 - **Risk Level:** Low with production Kafka 4.0 and librdkafka 2.12.0 releases. Known issues are well-documented with workarounds.
 
 - **Recommendation:** For new deployments on Kafka 4.0+, enable KIP-848 from the start. For existing deployments, test thoroughly in staging before migrating to production.
+
+---
+
+## See Also
+
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
+- [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
+- [Deployment](Operations-Deployment) - For deployment strategies including rolling restarts

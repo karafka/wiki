@@ -225,11 +225,11 @@ class XmlDeserializer
 end
 ```
 
-By properly managing tombstone messages in your Kafka consumers, you can ensure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka’s log compaction feature.
+By properly managing tombstone messages in your Kafka consumers, you can ensure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka's log compaction feature.
 
 ## Dynamic Deserialization Based on Topic or Message Metadata
 
-In scenarios where messages originate from various topics and no explicit consumers are set up, you may want to dynamically resolve the deserializer based on some condition, like the topic name or metadata. 
+In scenarios where messages originate from various topics and no explicit consumers are set up, you may want to dynamically resolve the deserializer based on some condition, like the topic name or metadata.
 
 Instead of explicitly defining a deserializer for every topic, Karafka allows you to configure a "smarter" default deserializer that adapts dynamically.
 
@@ -430,3 +430,12 @@ topic :person do
   )
 end
 ```
+
+---
+
+## See Also
+
+- [Routing](Routing) - Learn how to configure topics and deserializers in routing
+- [Testing](Testing) - Test your custom deserializers and message processing
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Handle deserialization errors gracefully
+- [Dead Letter Queue](Dead-Letter-Queue) - Route messages with deserialization failures to a DLQ

@@ -48,3 +48,11 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+---
+
+## See Also
+
+- [Producing Messages](Producing-Messages) - Complete guide to producing messages with Karafka and WaterDrop
+- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure and manage multiple Kafka clusters
+- [WaterDrop Configuration](WaterDrop-Configuration) - Detailed WaterDrop producer configuration options

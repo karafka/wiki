@@ -97,3 +97,12 @@ Organizations with strict compliance requirements can benefit from Karafka Enter
 ## Summary
 
 SOC 2 and ISO 27001 certifications do **not** apply to Karafka because it is self-hosted software, not a service provider. Your organization maintains responsibility for compliance, and Karafka serves as a tool within your compliance infrastructure—similar to databases, operating systems, and other software you deploy.
+
+---
+
+## See Also
+
+- [Pro HIPAA PHI PII Support](Pro-HIPAA-PHI-PII-Support) - Healthcare compliance support
+- [Pro FIPS Support](Pro-FIPS-Support) - FIPS compliance information
+- [Pro Security](Pro-Security) - Security best practices
+- [Pro Enterprise](Pro-Enterprise) - Enterprise licensing and features
