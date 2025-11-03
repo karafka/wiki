@@ -43,9 +43,14 @@ class FlipperPauseFilter < Karafka::Pro::Processing::Filters::Base
 
     @cursor = nil
     @paused = false
-    
+
+    # Do not pause when no messages as it does not have any point
+    # unless you use periodic jobs
+    return if messages.empty?
+
     if Flipper.enabled?(flag_name)
       @paused = true
+      # Karafka needs to know where to pause
       @cursor = messages.first
       # You do not want to process any messages if pausing applied
       messages.clear
