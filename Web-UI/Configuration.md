@@ -171,7 +171,7 @@ In summary, while the in-memory cache in Karafka Web UI significantly enhances i
 
 ## See Also
 
-- [Web UI Getting Started](Web-UI-Getting-Started)
-- [Web UI About](Web-UI-About)
-- [Pro Web UI Policies](Pro-Web-UI-Policies)
-- [Pro Web UI Branding](Pro-Web-UI-Branding)
+- [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
+- [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI capabilities
+- [Pro Web UI Policies](Pro-Web-UI-Policies) - Configure access control and security policies
+- [Pro Web UI Branding](Pro-Web-UI-Branding) - Customize Web UI appearance and branding

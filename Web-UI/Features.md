@@ -192,7 +192,7 @@ Each check may display one of the following statuses:
 
 ## See Also
 
-- [Web UI Getting Started](Web-UI-Getting-Started)
-- [Pro Web UI](Pro-Web-UI)
-- [Monitoring and Logging](Operations-Monitoring-and-Logging)
-- [Web UI About](Web-UI-About)
+- [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
+- [Pro Web UI](Pro-Web-UI) - Advanced Pro features for Web UI
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies
+- [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI

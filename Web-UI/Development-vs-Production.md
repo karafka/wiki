@@ -158,6 +158,6 @@ It's critical to ensure the order of operations - Karafka consumers processes fi
 
 ## See Also
 
-- [Development vs Production](Operations-Development-vs-Production)
-- [Web UI Configuration](Web-UI-Configuration)
-- [Web UI Getting Started](Web-UI-Getting-Started)
+- [Development vs Production](Operations-Development-vs-Production) - Best practices for development and production environments
+- [Web UI Configuration](Web-UI-Configuration) - Detailed configuration options for Web UI
+- [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI

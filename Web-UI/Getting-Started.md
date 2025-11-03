@@ -477,7 +477,7 @@ It's therefore highly recommended to refrain from rolling upgrades when updating
 
 ## See Also
 
-- [Getting Started](Getting-Started)
-- [Web UI About](Web-UI-About)
-- [Web UI Features](Web-UI-Features)
-- [Web UI Configuration](Web-UI-Configuration)
+- [Getting Started](Getting-Started) - Quick start guide for Karafka framework
+- [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI
+- [Web UI Features](Web-UI-Features) - Comprehensive list of Web UI features and capabilities
+- [Web UI Configuration](Web-UI-Configuration) - Detailed configuration options for Web UI
