@@ -341,3 +341,13 @@ However, it is important to be aware of the limitations of `karafka-testing`:
 1. **Transactional Testing**: While `karafka-testing` supports transactional message production, it may not fully capture all the intricacies of Kafka transactions in a real cluster environment. It's important to be mindful of potential discrepancies between mocked transactions and their real-world counterparts.
 
 1. **Batch Size Ignored**: The `karafka-testing` library does not respect the `max_messages` setting configured for topics in the `karafka.rb` routes. It simply accumulates and consumes all messages sent to it during testing, bypassing the actual fetching engine of Karafka. This means that the behavior of batch processing may not be accurately reflected in your tests, as the library will consume all produced messages regardless of the configured batch size.
+
+---
+
+## See Also
+
+- [Active Job](Active-Job) - Testing Active Job integration with Karafka
+- [Enhanced Active Job](Pro-Enhanced-Active-Job) - Testing ordered and scheduled Active Jobs
+- [Dead Letter Queue](Dead-Letter-Queue) - Testing DLQ behavior and error handling
+- [Virtual Partitions](Pro-Virtual-Partitions) - Testing consumers with parallel processing
+- [Deserialization](Deserialization) - Testing custom deserializers and routing awareness

@@ -357,3 +357,12 @@ end
 ## Summary
 
 Overall, the Karafka Pro Iterator API provides a powerful and flexible way to access and process Kafka data from various Ruby processes. Its simplicity, flexibility, and scalability make it an essential tool for developers who need to work with Kafka data quickly and efficiently.
+
+---
+
+## See Also
+
+- [Adaptive Iterator](Pro-Adaptive-Iterator) - Enhanced iterator with automatic partition discovery and management
+- [Direct Assignments](Pro-Direct-Assignments) - Manual partition assignment for advanced consumption patterns
+- [Cleaner API](Pro-Cleaner-API) - Memory management for large message payloads
+- [Offset Management](Offset-management) - Understanding offset control with iterators

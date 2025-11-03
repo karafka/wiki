@@ -408,3 +408,12 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-
 - Gaming platforms: In gaming systems, DLQs can be used to capture game events that fail to process due to connectivity issues, data quality problems, or other issues.
 
 The Karafka Dead Letter Queue is worth using because it provides a way to handle messages that cannot be processed for any reason without losing data. The DLQ allows the failed messages to be reviewed and processed later, reducing the risk of data loss and providing greater reliability and resilience to the system. The DLQ in Karafka is easy to set up and can be configured to handle different scenarios, including retry mechanisms, error handling, and version incompatibilities. This makes it an essential feature for businesses that want to ensure the reliability of their messaging system and avoid data loss in case of errors.
+
+---
+
+## See Also
+
+- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Pro version with ordering preservation and advanced features
+- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
+- [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Virtual Partitions](Pro-Virtual-Partitions) - How DLQ behaves with parallel processing
