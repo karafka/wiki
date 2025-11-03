@@ -283,3 +283,9 @@ Key points include:
 Karafka Pro's consumer control capabilities are essential for any organization looking to leverage Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
 The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
+
+## See Also
+
+- [Persistent Pausing](Operations-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API
+- [Filtering API](Pro-Filtering-API) - Building custom filters for advanced consumption control
+- [Web UI Health](Pro-Web-UI-Health) - Monitoring consumer health and partition status

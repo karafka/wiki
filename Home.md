@@ -67,6 +67,7 @@
     - [Kubernetes](Operations-Deployment#kubernetes)
     - [Confluent Cloud](Operations-Deployment#confluent-cloud)
     - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
+- [Persistent Pausing](Operations-Persistent-Pausing)
 - [Signals and States](Operations-Signals-and-States)
 - [Monitoring and Logging](Operations-Monitoring-and-Logging)
 - [Instrumentation Events](Operations-Instrumentation-Events)
