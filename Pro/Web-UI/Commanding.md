@@ -284,6 +284,8 @@ Karafka Pro's consumer control capabilities are essential for any organization l
 
 The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
 
+---
+
 ## See Also
 
 - [Persistent Pausing](Operations-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API
