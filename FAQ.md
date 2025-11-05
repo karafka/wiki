@@ -1,5 +1,4 @@
 1. [Does Karafka require Ruby on Rails?](#does-karafka-require-ruby-on-rails)
-1. [Why there used to be an ApplicationController mentioned in the Wiki and some articles?](#why-there-used-to-be-an-applicationcontroller-mentioned-in-the-wiki-and-some-articles)
 1. [Does Karafka require Redis and/or Sidekiq to work?](#does-karafka-require-redis-andor-sidekiq-to-work)
 1. [Could an HTTP controller also consume a fetched message through the Karafka router?](#could-an-http-controller-also-consume-a-fetched-message-through-the-karafka-router)
 1. [Does Karafka require a separate process running?](#does-karafka-require-a-separate-process-running)
@@ -8,7 +7,6 @@
 1. [Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?](#why-karafka-does-not-pre-initializes-consumers-prior-to-first-message-from-a-given-topic-being-received)
 1. [Does Karafka restart dead PG connections?](#does-karafka-restart-dead-pg-connections)
 1. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
-1. [When Karafka is loaded via railtie in test env, SimpleCov does not track code changes](#when-karafka-is-loaded-via-a-railtie-in-test-env-simplecov-does-not-track-code-changes)
 1. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
 1. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
 1. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
@@ -40,7 +38,6 @@
 1. [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
 1. [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
 1. [Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?](#why-am-i-getting-error0a000086ssl-routinescertificate-verify-failed-after-upgrading-karafka)
-1. [Why am I seeing a `karafka_admin` consumer group with a constant lag present?](#why-am-i-seeing-a-karafka_admin-consumer-group-with-a-constant-lag-present)
 1. [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
 1. [Why am I seeing Broker failed to validate record (invalid_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
 1. [How can I make polling faster?](#how-can-i-make-polling-faster)
@@ -139,6 +136,7 @@
 1. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
 1. [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
 1. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
+1. [Why does the `karafka_consumers_commands` topic generate constant network traffic?](#why-does-the-karafka_consumers_commands-topic-generate-constant-network-traffic)
 1. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
 1. [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
 1. [Is it acceptable to declare short-living producers in each app/jobs as needed?](#is-it-acceptable-to-declare-short-living-producers-in-each-appjobs-as-needed)
@@ -148,10 +146,10 @@
 1. [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
 1. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
 1. [Can you control the batching process in WaterDrop?](#can-you-control-the-batching-process-in-waterdrop)
+1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 1. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
 1. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
 1. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
-1. [Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?](#why-am-i-experiencing-a-load-error-when-using-karafka-with-ruby-27-and-how-can-i-fix-it)
 1. [Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?](#why-am-i-getting-nscharacterset-initialize-may-have-been-in-progress-in-another-thread-when-fork-error-when-forking-on-macos)
 1. [How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?](#how-does-karafka-handle-messages-with-undefined-topics-and-can-they-be-routed-to-a-default-consumer)
 1. [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
@@ -217,16 +215,13 @@
 1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
 1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
+1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 
 ---
 
 ## Does Karafka require Ruby on Rails?
 
-**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](https://github.com/karafka/karafka/wiki/Integrating-with-Ruby-on-Rails-and-other-frameworks) Wiki section.
-
-## Why there used to be an ApplicationController mentioned in the Wiki and some articles?
-
-You can name the main application consumer with any name. You can even call it ```ApplicationController``` or anything else you want. Karafka will sort that out, as long as your root application consumer inherits from the ```Karafka::BaseConsumer```. It's not related to Ruby on Rails controllers. Karafka framework used to use the ```*Controller``` naming convention up until Karafka 1.2 where it was changed because many people had problems with name collisions.
+**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks) documentation.
 
 ## Does Karafka require Redis and/or Sidekiq to work?
 
@@ -238,7 +233,7 @@ You can name the main application consumer with any name. You can even call it `
 
 ## Does Karafka require a separate process running?
 
-No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](https://github.com/karafka/karafka/wiki/Consuming-Messages) section of the Wiki.
+No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](Consuming-Messages) section of the documentation.
 
 Karafka can also be embedded within another process so you do not need to run a separate process. You can read about it [here](Embedding).
 
@@ -268,15 +263,11 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Does Karafka restart dead PG connections?
 
-Karafka, starting from `2.0.16` will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Active-Record-Connections-Management#dealing-with-dead-database-connections).
+Karafka will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Active-Record-Connections-Management#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
 Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidekiq does it. The same rules apply.
-
-## When Karafka is loaded via a railtie in test env, SimpleCov does not track code changes
-
-Karafka hooks with railtie to load `karafka.rb`. Simplecov **needs** to be required [before](https://github.com/simplecov-ruby/simplecov#getting-started=) any code is loaded.
 
 ## Can I use Thread.current to store data between batches?
 
@@ -369,7 +360,7 @@ Upon rebalance, all uncommitted offsets will be committed before a given partiti
 
 ## Can I use Karafka with Ruby on Rails as a part of an internal gem?
 
-Karafka 2.x has [Rails auto-detection](https://github.com/karafka/karafka/blob/78ea23f7044b81b7e0c74bb02ad3d2e5a5fa1b7c/lib/karafka/railtie.rb#L19), and it is loaded early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
+Karafka has Rails auto-detection and loads early, so some components may be available later, e.g., when ApplicationConsumer inherits from BaseConsumer that is provided by the separate gem that needs an initializer.
 
 Moreover, despite the same code base, some processes (`rails s`, `rails db:migrate`, `sidekiq s`) may not need to know about karafka, and there is no need to load it.
 
@@ -573,7 +564,7 @@ To make Kafka accept messages bigger than 1MB, you must change both Kafka and Ka
 
 To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters controls the maximum size of a message the Kafka broker will accept.
 
-To allow [WaterDrop](https://github.com/karafka/waterdrop) (Karafka producer) to send bigger messages, you need to:
+To allow WaterDrop (Karafka producer) to send bigger messages, you need to:
 
 - set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
 - set `kafka` scoped `message.max.bytes` to the same value.
@@ -788,10 +779,6 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
-
-## Why am I seeing a `karafka_admin` consumer group with a constant lag present?
-
-The `karafka_admin` consumer group was created when using certain admin API operations. After upgrading to karafka `2.0.37` or higher, this consumer group is no longer needed and can be safely removed.
 
 ## Can I consume the same topic independently using two consumers within the same application?
 
@@ -1397,7 +1384,23 @@ The `range` strategy has some advantages over the `round-robin` strategy, where 
 
 Since data is often related within the same partition, `range` can keep related data processing within the same consumer, which could lead to benefits like better caching or business logic efficiencies. This can be useful, for example, to join records from two topics with the same number of partitions and the same key-partitioning logic.
 
-The assignment strategy is not a one-size-fits-all solution and can be changed based on the specific use case. If you want to change the assignment strategy in Karafka, you can set the `partition.assignment.strategy` configuration value to either `range`, `roundrobin` or `cooperative-sticky`. It's important to consider your particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
+The assignment strategy is not a one-size-fits-all solution and can be changed based on the specific use case.
+
+**Recommended approaches:**
+
+1. **KIP-848 Consumer Protocol (Kafka 4.0+)** - This is the recommended approach for new deployments:
+   - Set `group.protocol` to `consumer` to use the new protocol
+   - Configure `group.remote.assignor` (e.g., `uniform` or `range`)
+   - Benefits: Faster rebalancing, less disruption, simpler operation, better static membership handling
+
+2. **Cooperative-Sticky (for older Kafka versions)** - Use when KIP-848 is not available:
+   - Set `partition.assignment.strategy` to `cooperative-sticky`
+   - Provides incremental rebalancing benefits over eager protocols
+   - Good fallback option for teams on older infrastructure
+
+3. **Legacy strategies** - `range` or `roundrobin` for specific use cases or compatibility requirements
+
+It's important to consider your Kafka broker version, particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
 
 For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
 
@@ -1454,7 +1457,7 @@ Karafka provides ways to implement password protection, and you can find detaile
 
 Yes, it's possible to use a Karafka producer without a consumer in two ways:
 
-1. You can use [WaterDrop](https://github.com/karafka/waterdrop), a standalone Karafka component for producing Kafka messages. WaterDrop was explicitly designed for use cases where only message production is required, with no need for consumption.
+1. You can use WaterDrop, a standalone Karafka component for producing Kafka messages. WaterDrop was explicitly designed for use cases where only message production is required, with no need for consumption.
 
 1. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
 
@@ -1885,13 +1888,13 @@ It is indicative of a connectivity issue. Let's break down the meaning and impli
 
 1. **Implications for Karafka Web UI**:
 
-    - If you're experiencing this issue with topics related to Karafka Web UI, it's essential to note that Karafka improved its error handling in version 2.2.2. If you're using an older version, upgrading to the latest Karafka and Karafka Web UI versions might alleviate the issue.
+    - If you're experiencing this issue with topics related to Karafka Web UI, upgrading to the latest Karafka and Karafka Web UI versions is recommended as error handling has been continuously improved.
 
     - Another scenario where this error might pop up is during rolling upgrades of the Kafka cluster. If the Karafka Web UI topics have a replication factor 1, there's no redundancy for the partition data. During a rolling upgrade, as brokers are taken down sequentially for upgrades, there might be brief windows where the partition's data isn't available due to its residing broker being offline.
 
 Below, you can find a few recommendations in case you encounter this error:
 
-1. **Upgrade Karafka**: If you're running a version older than `2.2.2`, consider upgrading both Karafka and Karafka Web UI. This might resolve the issue if it's related to previous error-handling mechanisms.
+1. **Upgrade Karafka**: Always use the latest stable versions of Karafka and Karafka Web UI to benefit from improved error handling and bug fixes.
 
 1. **Review Configurations**: Examine your Karafka client configurations, especially timeouts and broker addresses, to ensure they're set appropriately.
 
@@ -2047,6 +2050,24 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 
 The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
 
+## Why does the `karafka_consumers_commands` topic generate constant network traffic?
+
+The `karafka_consumers_commands` topic generates consistent network traffic because it operates as a pub-sub mechanism for the commanding feature. When commanding is enabled (which is the default), each consumer process maintains an active subscription to this single-partition topic to receive administrative commands from the Web UI, such as pause, trace, quiet, and stop operations.
+
+Since all consumer processes subscribe to this topic simultaneously, it creates continuous polling activity that appears as constant network traffic, even when no commands are being issued. This traffic pattern is normal and expected behavior for the commanding system.
+
+The traffic volume is typically insignificant because the topic is low-intensity with minimal new data under normal circumstances. However, it may appear more prominent on network monitoring graphs when other topics have lower traffic volumes.
+
+If commanding functionality is not needed, it can be disabled to eliminate this traffic:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.commanding.active = false
+end
+```
+
+For more details, see the [Commanding](Pro-Web-UI-Commanding) documentation.
+
 ## Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?
 
 **Yes**, any ActiveJob job running in the karafka server can access and use the `Karafka.producer`.
@@ -2108,15 +2129,6 @@ Checking the `event[:type]` and recognizing the role of the `event[:caller]` wil
 This issue is likely due to the `offsets.retention.minutes` setting in Kafka. Kafka deletes the saved offsets if a consumer is stopped for longer than this set retention period (like your 2-week downtime). Without these offsets, the consumer restarts from the beginning. However, the offsets are still available for shorter downtimes (like your 15-minute test), allowing the consumer to resume from where it left off.
 
 You can read more about this behavior [here](Operations-Development-vs-Production#configure-your-brokers-offsetsretentionminutes-policy).
-
-## Why am I experiencing a load error when using Karafka with Ruby 2.7, and how can I fix it?
-
-If you're experiencing a load error with Karafka on Ruby 2.7, it's due to a bug in Bundler. To fix this:
-
-- **Install Bundler v2.4.22**: Run `gem install bundler -v 2.4.22 --no-document`.
-- **Update RubyGems to v3.4.22**: Run `gem update --system 3.4.22 --no-document`.
-
-Note: Ruby 2.7 is EOL and no longer supported. For better security and functionality, upgrading to Ruby 3.0 or higher is highly recommended.
 
 ## Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?
 
@@ -2937,3 +2949,11 @@ Set your multiplexing `max` to be less than your partition count, allowing room 
 **Increase partition count:**
 
 If you need both high multiplexing and multiple processes, consider increasing your topic's partition count.
+
+## Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?
+
+**No**, rdkafka-ruby (and by extension Karafka and WaterDrop) does not include built-in support for schema registry patterns or magic byte framing logic. These libraries focus exclusively on Kafka protocol operations and do not handle message serialization formats or schema management.
+
+rdkafka-ruby is a pure Kafka protocol binding that remains agnostic about your data format. It treats message payloads as opaque byte streams, which provides maximum flexibility for any serialization approach.
+
+When consuming messages, you can manually deserialize using `raw_payload` or configure a custom deserializer. For detailed examples and best practices, see the [Deserialization](Deserialization) documentation.

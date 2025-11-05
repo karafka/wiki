@@ -117,3 +117,10 @@ PRODUCER.produce_async(topic: 'users_events', payload: user)
 ## Summary
 
 In summary, the choice between an external custom partitioner and a middleware-based partitioner in WaterDrop hinges on your specific requirements, particularly regarding how and when your data needs to be processed for partitioning. If pre-serialization data manipulation is crucial for your partitioning logic, an external partitioner might be more suitable. On the other hand, if you prefer a more integrated approach and your partitioning logic can work with serialized data, using WaterDrop's middleware might be the optimal path.
+
+---
+
+## See Also
+
+- [Kafka Topic Configuration](Kafka-Topic-Configuration) - For understanding topic partitioning configuration
+- [Pro Virtual Partitions](Pro-Virtual-Partitions) - For parallel processing within single partitions

@@ -275,3 +275,12 @@ It's crucial to be aware, especially if you're using a third-party Kafka provide
 ### Summary
 
 In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help leverage its benefits while mitigating downsides.
+
+---
+
+## See Also
+
+- [Persistent Pausing](Operations-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API
+- [Filtering API](Pro-Filtering-API) - Building custom filters with pause and seek capabilities
+- [Web UI Commanding: Pause and Resume Partitions](Pro-Web-UI-Commanding#pause-and-resume-partitions) - Emergency partition pausing via Web UI
+- [Rate Limiting](Pro-Rate-Limiting) - Advanced rate limiting using the Filtering API

@@ -210,3 +210,13 @@ This will ensure the correct exit code is returned based on the operation's outc
 - Karafka will **never** alter any topics that are not defined in the routing.
 - `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
 - `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.
+
+---
+
+## See Also
+
+- [Routing](Routing) - Define routing and topic configurations together
+- [Admin API](Admin-API) - Programmatically manage topics beyond declarative definitions
+- [Topic Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
+- [Topic Auto Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior
+- [CLI](CLI) - Complete reference of Karafka CLI commands for topic management

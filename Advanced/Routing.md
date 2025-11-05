@@ -355,3 +355,13 @@ end
 ```
 
 By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
+
+---
+
+## See Also
+
+- [Configuration](Configuration) - Configure framework and librdkafka settings that affect routing
+- [Routing Patterns](Pro-Routing-Patterns) - Advanced routing patterns for dynamic topic subscriptions
+- [Deserialization](Deserialization) - Configure per-topic deserialization in routing definitions
+- [Multi Cluster Setup](Multi-Cluster-Setup) - Route topics from multiple Kafka clusters
+- [Declarative Topics](Declarative-Topics) - Define topic configurations alongside routing definitions

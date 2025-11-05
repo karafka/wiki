@@ -446,3 +446,11 @@ Here is a list of use cases where the Scheduling API can be useful:
 The Karafka Scheduling API provides advanced capabilities for managing consumption jobs within a process, emphasizing precise control and efficient resource distribution. It enables granular scheduling of tasks, sequencing of jobs, and adaptive scheduling based on the system's current state.
 
 It supports custom scheduler implementation, with stateful and stateless options, and includes a variety of methods for job management. The API's design ensures concurrency and frequency management. Its flexibility and efficiency make it ideal for diverse scenarios, including long-running job management, dynamic resource allocation, and adaptive scheduling based on traffic patterns or job complexity.
+
+---
+
+## See Also
+
+- [Pro Scheduled Messages](Pro-Scheduled-Messages) - Message scheduling capabilities
+- [Pro Recurring Tasks](Pro-Recurring-Tasks) - Recurring task execution
+- [Pro Periodic Jobs](Pro-Periodic-Jobs) - Periodic job processing

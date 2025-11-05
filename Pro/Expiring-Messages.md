@@ -82,3 +82,11 @@ In summary, while both features deal with message lifecycle management, they ope
 - Push notifications: In e-commerce applications, the expiring consumption of Kafka messages can be used to prevent sending push notifications based on old events. For example, skipping events that would trigger outdated push notifications to the user, such as a reminder to complete a no longer-relevant purchase.
 
 - Log analysis: In log analysis applications, the expiring consumption of Kafka messages can be used to prevent the processing of old logs that are no longer useful. For example, skipping logs that are older than a certain age or logs that have already been analyzed and processed.
+
+---
+
+## See Also
+
+- [Filtering API](Pro-Filtering-API) - Foundation for Expiring Messages and custom message filtering
+- [Delayed Topics](Pro-Delayed-Topics) - Processing messages at specific future times
+- [Dead Letter Queue](Dead-Letter-Queue) - Handling expired messages that need review

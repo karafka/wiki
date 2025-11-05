@@ -190,3 +190,13 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 - **Underlying librdkafka Multithreading**: The librdkafka library, which underpins Karafka's interaction with Kafka, is multithreaded. It can efficiently utilize multiple cores available on modern machines, enhancing the capability to manage multiple connections and perform various network and I/O operations concurrently.
 
 - **Optimization Opportunities**: Given its multithreaded nature and efficient asynchronous techniques, Karafka allows for significant optimization opportunities regarding CPU usage. Developers can fine-tune the number of threads and the operational parameters of Karafka to match the specific performance and resource requirements.
+
+---
+
+## See Also
+
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Configure threading and parallel processing for optimal performance
+- [Swarm Multi Process](Swarm-Multi-Process) - Use multi-process architecture for CPU-intensive workloads
+- [Latency and Throughput](Latency-and-Throughput) - Optimize message processing speed and system throughput
+- [Virtual Partitions](Pro-Virtual-Partitions) - Scale processing beyond Kafka partition limits
+- [Deployment](Operations-Deployment) - Deploy Karafka with appropriate resource allocation in production

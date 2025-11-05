@@ -345,3 +345,12 @@ Karafka's relationship between polling and ticking is vital for application desi
 Periodic Jobs in Karafka offer a versatile way to perform scheduled tasks at regular intervals, independent of message flow. This feature particularly benefits applications requiring consistent actions, like routine maintenance, data reporting, or heartbeat checks, even during low or no data activity periods.
 
 Periodic Jobs in Karafka provide a powerful tool for ensuring your application remains active and responsive, performing necessary tasks regularly. Whether you're maintaining system readiness, generating reports, or monitoring system status, periodic jobs can help keep your system efficient and reliable.
+
+---
+
+## See Also
+
+- [Recurring Tasks](Pro-Recurring-Tasks) - Scheduled task execution with cron-like patterns
+- [Long-Running Jobs](Pro-Long-Running-Jobs) - Using Periodic Jobs with long-running consumers
+- [Scheduled Messages](Pro-Scheduled-Messages) - Alternative time-based message processing
+- [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting) - Understanding pause behavior with Periodic Jobs

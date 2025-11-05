@@ -553,7 +553,48 @@ When deploying Karafka consumers using Kubernetes, it's generally not recommende
 
 For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue.
 
-Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka static group memberships and `cooperative.sticky` rebalance strategy settings, you can ensure that your Karafka application stays reliable and performant, even during large-scale deployments.
+Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
+
+### Choosing the Right Rebalance Strategy
+
+**For teams running Kafka 4.0+:**
+
+- Use the new **KIP-848 consumer protocol** (`group.protocol` set to `consumer`) as your primary choice
+- Benefits: Faster rebalancing, less disruption, simpler operation, improved static membership handling
+- This is the recommended approach for all new deployments with compatible infrastructure
+
+**For teams on older Kafka versions or with compatibility constraints:**
+
+- Use **`cooperative-sticky`** rebalance strategy
+- Still provides incremental rebalancing benefits over the older eager protocols
+- Migrate to KIP-848 when your infrastructure supports it
+
+Example configuration for KIP-848:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      # Use the new consumer protocol (KIP-848)
+      'group.protocol': 'consumer'
+    }
+  end
+end
+```
+
+Example configuration for cooperative-sticky (fallback option):
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.kafka = {
+      'bootstrap.servers': '127.0.0.1:9092',
+      'partition.assignment.strategy': 'cooperative-sticky'
+    }
+  end
+end
+```
 
 ### Liveness
 
@@ -849,3 +890,13 @@ CUSTOM_PRODUCER = WaterDrop::Producer.new do |config|
   config.oauth.token_provider_listener = OAuthTokenRefresher.new
 end
 ```
+
+---
+
+## See Also
+
+- [Development vs Production](Operations-Development-vs-Production) - Configuration differences between environments
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Setting up observability for deployed applications
+- [Swarm / Multi Process](Swarm-Multi-Process) - Process-level parallelization for Kubernetes deployments
+- [AWS MSK Guide](Operations-AWS-MSK-Guide) - Detailed AWS MSK troubleshooting and best practices
+- [Env Variables](Env-Variables) - Environment-based configuration management

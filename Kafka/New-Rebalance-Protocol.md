@@ -1,11 +1,5 @@
 # Consumer Group Rebalance Protocol (KIP-848)
 
-!!! danger "Unreleased Feature - Not Yet Available"
-
-    **This document describes capabilities that are not yet released in Karafka.** The KIP-848 consumer group protocol requires rdkafka with librdkafka 2.12.0+ support, which is not yet available. This warning will be removed when the feature is officially released and ready for production use.
-
-    Do not attempt to use this feature until it is officially released.
-
 [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) introduces a next-generation consumer group rebalance protocol that can deliver up to 20x faster rebalances while eliminating stop-the-world pauses. This guide focuses specifically on using this protocol with Karafka - certain KIP-848 features and limitations not relevant to Karafka applications are intentionally omitted.
 
 !!! info "Low-Level Protocol Details"
@@ -151,14 +145,6 @@ KIP-848 supports live migration without downtime. When the first consumer using 
     - Continue restarting remaining consumers one at a time
     - Monitor for any errors during the rollout
 
-1. Verify the migration completed successfully:
-
-    ```shell
-    kafka-consumer-groups.sh \
-      --bootstrap-server kafka-broker:9092 \
-      --describe --group your-consumer-group --state
-    ```
-
     !!! warning
 
         Complete the migration within a few hours. Don't leave the group in a mixed state for extended periods.
@@ -295,3 +281,11 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 - **Risk Level:** Low with production Kafka 4.0 and librdkafka 2.12.0 releases. Known issues are well-documented with workarounds.
 
 - **Recommendation:** For new deployments on Kafka 4.0+, enable KIP-848 from the start. For existing deployments, test thoroughly in staging before migrating to production.
+
+---
+
+## See Also
+
+- [Concurrency and Multithreading](Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
+- [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
+- [Deployment](Operations-Deployment) - For deployment strategies including rolling restarts

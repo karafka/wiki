@@ -45,3 +45,11 @@ For more detailed information on macOS forking issues and solutions, see [Phusio
 ## Conclusion
 
 Forking in Ruby applications that use Karafka and `librdkafka` requires careful planning and implementation to prevent resource leakage and ensure stable operation. This is especially true on macOS, where changes to the system's handling of forks can lead to critical issues. By following the outlined best practices, developers can effectively manage these challenges in a multi-process environment.
+
+---
+
+## See Also
+
+- [Swarm Multi-Process](Swarm-Multi-Process) - Karafka's multi-process mode using forking
+- [Resources Management](Resources-Management) - Managing resources across forked processes
+- [Active Record Connections Management](Active-Record-Connections-Management) - Handling database connections when forking

@@ -86,6 +86,7 @@ class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
       'bootstrap.servers': '127.0.0.1:9092',
+      # Fallback to cooperative-sticky for older brokers
       'partition.assignment.strategy': 'cooperative-sticky'
     }
   end
@@ -436,3 +437,12 @@ end
     We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](Pro-Multiplexing#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
 
     However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.
+
+---
+
+## See Also
+
+- [Deployment](Operations-Deployment) - Production deployment strategies and best practices
+- [Configuration](Configuration) - Environment-specific configuration options
+- [Web UI Development vs Production](Web-UI-Development-vs-Production) - Web UI considerations for different environments
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Setting up monitoring for production environments

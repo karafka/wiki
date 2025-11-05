@@ -558,3 +558,11 @@ Karafka::Admin.seek_consumer_group(
 ```
 
 Using `:earliest` and `:latest` is vital for managing consumer behavior, ensuring flexibility in data consumption strategies according to specific needs.
+
+---
+
+## See Also
+
+- [Admin Acls API](Admin-Acls-API) - Manage Kafka ACLs programmatically
+- [Admin Configs API](Admin-Configs-API) - Configure topics and brokers
+- [Declarative Topics](Declarative-Topics) - Higher-level topic management approach

@@ -132,3 +132,10 @@ Karafka::Admin::Configs.alter(resource)
 - **Dynamic Configuration Tuning**: Adjust topic or broker configurations in response to changes in usage patterns or operational requirements.
 
 - **Batch Configuration Management**: Simultaneously update configurations for multiple brokers or topics, improving efficiency in large-scale environments.
+
+---
+
+## See Also
+
+- [Admin API](Admin-API) - General admin operations and topic management
+- [Librdkafka Configuration](Librdkafka-Configuration) - Available librdkafka configuration options

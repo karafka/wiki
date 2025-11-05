@@ -590,3 +590,13 @@ Karafka Pro offers:
 You can contact us at `contact@karafka.io` or via the private Slack channel if you're a Pro customer.
 
 Don't hesitate to get in touch if you still need clarification after following this guide. We're happy to help.
+
+---
+
+## See Also
+
+- [Problems and Troubleshooting](Problems-and-Troubleshooting) - Common issues and their solutions for Karafka applications
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Configure comprehensive logging and monitoring for debugging
+- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understand error handling mechanisms and retry logic
+- [Support](Pro-Support) - Access priority support and direct assistance from the Karafka team
+- [FAQ](FAQ) - Frequently asked questions about Karafka functionality and troubleshooting

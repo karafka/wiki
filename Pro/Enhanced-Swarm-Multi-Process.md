@@ -174,3 +174,11 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+---
+
+## See Also
+
+- [Swarm Multi-Process](Swarm-Multi-Process) - Standard Swarm mode documentation
+- [Resources Management](Resources-Management) - Managing system resources
+- [Deployment](Operations-Deployment) - Deployment strategies and best practices

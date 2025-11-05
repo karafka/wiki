@@ -150,3 +150,10 @@ MY_PRODUCER.produce_async(
 - **Message Validation**: Middleware shines in its ability to ensure message integrity by validating each message against specific schemas or business rules before it reaches Kafka. This safeguard mechanism enhances data reliability by preventing invalid data from entering the stream and maintaining the high quality of the data within your topics.
 
 - **Dynamic Routing Logic**: Middleware allows for the dynamic routing of messages based on content or context, directing messages to the appropriate topics or partitions on the fly. This adaptability is crucial in complex systems where message destinations might change based on factors like payload content, workload distribution, or system state, ensuring that the data flow remains efficient and contextually relevant.
+
+---
+
+## See Also
+
+- [Pro Messages At-Rest Encryption](Pro-Messages-At-Rest-Encryption) - For implementing encryption via middleware
+- [Monitoring and Logging](WaterDrop-Monitoring-and-Logging) - For monitoring patterns with middleware
