@@ -1,14 +1,16 @@
-Karafka provides a dedicated testing library, [`karafka-testing`](https://github.com/karafka/karafka-testing), designed to facilitate the testing of Karafka producers and consumers without needing a running Kafka server. This library effectively mocks the interactions with Kafka, allowing developers to write and run tests for consumers and producers in an isolated environment. The primary aim of `karafka-testing` is to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
+Karafka provides a dedicated testing library, [`karafka-testing`](https://github.com/karafka/karafka-testing), designed to facilitate testing Karafka producers and consumers without the need to run Kafka server. This library effectively mocks Kafka interactions, allowing developers to write and run tests for consumers and producers in an isolated environment. The primary aim of `karafka-testing` is to eliminate the complexities and overhead of connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
 
-It is important to note that the scope of `karafka-testing` is limited to mocking consumer and producer user-facing behaviors. It does not cover testing other Kafka-related functionalities, such as Admin API or web UI features that might interact with Kafka. By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight and efficient solution for developers to ensure the integrity of message handling in their applications without the dependency on a live Kafka setup.
+By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight, efficient solution for developers to ensure the integrity of message handling in their applications without depending on a live Kafka setup.
 
-!!! tip "Limited Testing Scope of `karafka-testing`"
+!!! note "Testing Scope Limitations"
 
-    `karafka-testing` enables testing of Karafka producers and consumers without a live Kafka server, but be aware that its scope is limited. While it effectively mocks client connections to Kafka for consumer and producer operations, it does not support testing of all Kafka functionalities.
+    `karafka-testing` does not support testing of all Kafka functionalities.
 
-    Specifically, `karafka-testing` does not facilitate testing of Admin API or any web UI interactions. This library is focused solely on consumer and producer functionalities. Additionally, testing consumers does not trigger instrumentation events, so any instrumentation-based logging or monitoring will not be covered during tests.
+    Specifically, `karafka-testing` does not facilitate testing of the Admin API or any web UI interactions.  Additionally, testing consumers does not trigger instrumentation events, so any instrumentation-based logging or monitoring will not be covered during tests.
 
-## Usage with RSpec
+## Setting Up Karafka Testing with RSpec
+
+This section guides you through integrating the Karafka testing library with RSpec. Follow these straightforward setup steps to configure your testing environment.
 
 ### Installation
 
@@ -21,9 +23,9 @@ group :test do
 end
 ```
 
-and then in your `spec_helper.rb` file you must:
+In your `spec_helper.rb` file, perform the following steps:
 
-- require the karafka entrypoint (only when not using Ruby on Rails)
+- require the karafka entrypoint (only if you do not use Ruby on Rails)
 - require the helpers
 - include appropriate helpers
 
@@ -37,21 +39,23 @@ RSpec.configure do |config|
 end
 ```
 
-Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods that you can use within your specs:
+Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods which you can use within your specs:
 
-- `#consumer_for` - creates a consumer instance for the desired topic.
-- `#produce` - "sends" message to the consumer instance.
-- `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
+- `#consumer_for` - the method creates a consumer instance for the desired topic.
+- `#produce` - the method sends message to the consumer instance.
+- `#produced_messages` - the method contains all the messages "sent" to Kafka during spec execution.
 
-!!! note
+!!! important "Message Buffering"
 
-    Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer in case you want to test messages production.
+    Messages sent using the `#produce` method and directly from `Karafka.producer` are not sent to Kafka. They are buffered and accessible in a per-spec buffer in case you want to test messages production.
 
-!!! note
+!!! note "Consumer Delivery"
 
-    Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
+    Messages that target the topic built using the `karafka#consumer_for` method are additionally delivered to the consumer that you want to test.
 
 ### Testing Messages Consumption (Consumers)
+
+This section demonstrates how to effectively test your Karafka consumers using the testing library. You will learn how to create consumer instances, send test messages, and verify that your consumers process messages correctly. The following example shows a complete test case for an InlineBatchConsumer that receives multiple messages, processes them, and logs results. 
 
 ```ruby
 RSpec.describe InlineBatchConsumer do
@@ -99,7 +103,7 @@ end
 
 Since each [Routing Pattern](Pro-Routing-Patterns) has a name, you can test them like regular topics.
 
-Giving a pattern with the name `visits`:
+Give a pattern with the name `visits`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -115,7 +119,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-You can reference this name when using the `karafka.consumer_for` method:
+Reference this name when you use the `karafka.consumer_for` method:
 
 ```ruby
 subject(:consumer) { karafka.consumer_for(:visits) }
@@ -123,9 +127,9 @@ subject(:consumer) { karafka.consumer_for(:visits) }
 
 ### Testing Messages Production (Producer)
 
-When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
+When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer`, but will buffer them internally.
 
-This means you can check your application flow, making sure your logic acts as expected:
+This allows you to verify your application flow, ensuring that your logic functions as expected:
 
 ```ruby
 # Example class in which there is a message production
@@ -156,17 +160,17 @@ end
 
 #### Testing Transactions
 
-When testing producer transactions in Karafka, the approach is similar to how the non-transactional production of messages is tested. Within a transaction, messages you send are held and not immediately placed into the buffer. When the transactional block finishes successfully, these messages get moved into the buffers, ready to be produced to Kafka.
+When testing producer transactions in Karafka, the approach is similar to that for non-transactional message production. Within a transaction, messages you send are held rather than being placed in the buffer immediately. When the transactional block finishes successfully, these messages get moved into the buffers, ready to be produced to Kafka.
 
-If, for any reason, the transaction is aborted, messages inside that transaction won't reach the buffers. This mimics the real-world behavior where an aborted transaction would prevent messages from being sent to Kafka.
+If a transaction is aborted for any reason, the messages within it will not reach the buffers. This mimics real-world behavior, where an aborted transaction prevents messages from being sent to Kafka.
 
-Therefore, when you're writing tests for producer transactions in Karafka, you can:
+Therefore, when you write tests for producer transactions in Karafka, you can:
 
 1. Simulate the successful transaction completion and check if messages were placed into the buffers.
 
-2. Simulate an aborted transaction and ensure that no messages reach the buffers.
+1. Simulate an aborted transaction and ensure that no messages reach the buffers.
 
-This approach lets you verify the behavior of your code within transactional boundaries, ensuring that messages are handed as expected in both successful and aborted transaction scenarios.
+This approach allows you to verify the behavior of your code within transactional boundaries, ensuring that messages are handed as expected in both successful and aborted transaction scenarios.
 
 ```ruby
 class UsersBuilder
@@ -202,7 +206,7 @@ end
 
 ### Testing Consumer Groups and Topics Structure
 
-Sometimes you may need to spec out your consumer groups and topics structure. To do so, simply access the ```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the Karafka:```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.routes do
@@ -224,37 +228,67 @@ end
 
 ## Usage with Minitest
 
+Alternative testing framework supported by Karafaka is Minitest. While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest. The karafka-testing gem provides specialized helpers that simplify consumer testing regardless of your preferred testing framework.
+
 ### Installation
 
-Add this gem to your Gemfile in the `test` group:
+## Usage with Minitest
 
-```ruby
-group :test do
-  gem 'karafka-testing'
-  gem 'minitest'
-end
-```
+After learning how to test your consumer groups and topics structure with RSpec, you might prefer using Minitest as your testing framework. Karafka supports both testing approaches, allowing you to choose the framework that best fits your project's needs.
 
-And then:
+While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest.
 
-- require the helpers: `require 'karafka/testing/minitest/helpers'`
-- include the following helper in your tests:  `include Karafka::Testing::Minitest::Helpers`
+### Installation
 
-Once included in your Minitest setup, this library will provide you with a special `@karafka` object that contains three methods that you can use within your specs:
+To integrate Karafka testing with Minitest, perform the following steps:
 
-- `#consumer_for` - creates a consumer instance for the desired topic.
-- `#produce` - "sends" message to the consumer instance.
-- `#produced_messages` - contains all the messages "sent" to Kafka during spec execution.
+1. Add the required gems to your Gemfile in the `test` group:
 
-!!! note
+   ```ruby
+   group :test do
+     gem 'karafka-testing'
+     gem 'minitest'
+   end
+   ```
 
-    Messages sent using the `#produce` method and directly from `Karafka.producer` won't be sent to Kafka. They will be buffered and accessible in a per-spec buffer if you want to test message production.
+1. Run bundle install to install the new dependencies:
 
-!!! note
+   ```
+   bundle install
+   ```
+
+1. Require the Karafka testing helpers in your test setup file:
+
+   ```ruby
+   require 'karafka/testing/minitest/helpers'
+   ```
+
+1. Include the helpers module in your test class:
+
+   ```ruby
+   include Karafka::Testing::Minitest::Helpers
+   ```
+
+**Result:**
+
+Your Minitest environment is configured with Karafka testing capabilities. You have access to a `@karafka` object that provides three essential methods:
+
+- `#consumer_for` - Creates a consumer instance for the desired topic.
+- `#produce` - "Sends" messages to the consumer instance.
+- `#produced_messages` - Contains all messages "sent" to Kafka during test execution.
+
+!!! warning "Message Buffering"
+
+    Messages sent using the `#produce` method and directly from `Karafka.producer` will not be sent to Kafka. They will be buffered and accessible in a per-spec buffer if you want to test message production.
+
+!!! info "Consumer Testing Behavior"
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
-
+   
 ### Testing Messages Consumption (Consumers)
+
+This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers.The following example shows a complete test case for an inline batch consumer that processes numeric data: 
+
 
 ```ruby
 class InlineBatchConsumerTest < ActiveSupport::TestCase
@@ -298,7 +332,7 @@ end
 
 When running Minitest, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
 
-This means you can check your application flow, making sure your logic acts as expected:
+This allows you to review your application flow, ensuring your logic functions as intended:
 
 ```ruby
 class UsersBuilderTest < ActiveSupport::TestCase
@@ -324,23 +358,23 @@ end
 
 !!! note
 
-    If you're seeking guidance on testing transactions with Minitest, it's recommended to consult the RSpec transactions testing documentation, as the testing methods are similar for both.
+    If you're seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 
 ## Limitations
 
-`karafka-testing` primarily aims to eliminate the complexities and overhead associated with connecting to an actual Kafka cluster, initiating consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
+`karafka-testing` primarily aims to eliminate the complexities and overhead of connecting to an actual Kafka cluster, starting consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
 
-However, it is important to be aware of the limitations of `karafka-testing`:
+However, keep in mind the following limitations of `karafka-testing`:
 
 1. **No Real Kafka Interactions**: While `karafka-testing` effectively mocks the Kafka interactions, it does not replicate the behavior of a real Kafka cluster. As a result, certain edge cases and Kafka-specific behaviors may not be accurately represented in your tests.
 
 1. **No Admin API Testing**: The `karafka-testing` library does not support testing of Kafka Admin API functionalities. If your application relies on Admin API operations, such as topic management or cluster metadata retrieval, you must perform these tests against a real Kafka cluster.
 
-1. **No Web UI Interactions**: Any web UI interactions that might rely on actual Kafka data or state cannot be tested using `karafka-testing`. This limitation means that end-to-end UI component testing will still require a live Kafka setup.
+1. **No Web UI Interactions**: Any web UI interactions that might rely on actual Kafka data or state cannot be tested using `karafka-testing`. This limitation means that the end-to-end UI component testing will still require a live Kafka setup.
 
-1. **Transactional Testing**: While `karafka-testing` supports transactional message production, it may not fully capture all the intricacies of Kafka transactions in a real cluster environment. It's important to be mindful of potential discrepancies between mocked transactions and their real-world counterparts.
+1. **Transactional Testing**: While `karafka-testing` supports transactional message production, it may not fully capture all the intricacies of Kafka transactions in a real cluster environment. It is important to be mindful of potential discrepancies between mocked transactions and their real-world counterparts.
 
-1. **Batch Size Ignored**: The `karafka-testing` library does not respect the `max_messages` setting configured for topics in the `karafka.rb` routes. It simply accumulates and consumes all messages sent to it during testing, bypassing the actual fetching engine of Karafka. This means that the behavior of batch processing may not be accurately reflected in your tests, as the library will consume all produced messages regardless of the configured batch size.
+1. **Batch Size Ignored**: The `karafka-testing` library does not respect the `max_messages` setting configured for topics in the `karafka.rb` routes. It simply accumulates and consumes all messages sent to it during testing, bypassing the actual fetching engine of Karafka. This means that batch processing behavior may not be accurately reflected in your tests, as the library will consume all messages produced regardless of the configured batch size.
 
 ---
 
