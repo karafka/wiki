@@ -670,9 +670,9 @@
 | `pro/consumption/strategies/dlq/ftr_lrj/with_recoverable_error_spec.rb` | Errors should be handled normally. There should be a backoff and retry and recovery should start from the message on which we broke. Throttling should have nothing to do with this. The message should not go to the DLQ because the error has recovered. |
 | `pro/consumption/strategies/dlq/ftr_lrj/with_work_exceeding_throttle_spec.rb` | When doing work that is exceeding timeouts, we should not throttle. Instead we need to seek to the first throttled message and just move on. DLQ should not interact with this in any way. |
 | `pro/consumption/strategies/dlq/ftr_lrj/without_hitting_limits_spec.rb` | Karafka should be able to just consume when throttling limits are not reached. DLQ should have nothing to do with this. |
-| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward retrying from last one that was committed with duplicates in between comitted and crashed |
+| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | *No description available* |
-| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens. When operating on batches and no marking happens, we skip first message from the batch on which the error happened. |
+| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/with_manual_pause_on_early_spec.rb` | When pausing not on a last message, we should un-pause from it and not from the next incoming. |
@@ -728,9 +728,9 @@
 | `pro/consumption/strategies/dlq/lrj/with_long_manual_pause_spec.rb` | Karafka should not resume when manual pause is in use for DLQ LRJ |
 | `pro/consumption/strategies/dlq/lrj/with_manual_seek_spec.rb` | Manual seek per user request should super-seed the automatic LRJ movement. Configured DLQ should have nothing to do with this |
 | `pro/consumption/strategies/dlq/lrj/with_non_recoverable_slow_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj the same way as any normal consumer and after few incidents it should move data to the DLQ and just continue |
-| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward retrying from last one that was committed with duplicates in between comitted and crashed |
+| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens for each batch. Since we mark the message prior to its processing (stupid but valid) we go to DLQ with the next one, hence the skip |
-| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens. When operating on batches and no marking happens, we skip first message from the batch on which the error happened. |
+| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_with_dispatch_marking_spec.rb` | Upon non-recoverable errors and the DLQ dispatch with marking, Karafka should mark |
 | `pro/consumption/strategies/dlq/lrj_mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/dlq/lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
@@ -747,7 +747,7 @@
 | `pro/consumption/strategies/dlq/mom/at_most_once_skipping_on_error_spec.rb` | This example is a bit counter intuitive. Since we mark as consumed before we consume and raise error, Karafka will skip this message and move on. On another it will again encounter error and will dispatch to DLQ the next message because Karafka does not know, that marking happened prior to an error. This is however expected. If you want to alter this behaviour, you need to write your own custom strategy to compensate for this by moving the seek offset back for a DLQ dispatch case. |
 | `pro/consumption/strategies/dlq/mom/multi_partition_source_target_flow_spec.rb` | Same as pure DLQ version until rebalance |
 | `pro/consumption/strategies/dlq/mom/multi_partition_target_flow_spec.rb` | Same as pure DLQ version until rebalance Needs to go to same partition |
-| `pro/consumption/strategies/dlq/mom/non_recoverable_with_dispatch_marking_spec.rb` | Upon non-recoverable errors and the DLQ dispatch with marking, Karafka should mark |
+| `pro/consumption/strategies/dlq/mom/non_recoverable_with_dispatch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
 | `pro/consumption/strategies/dlq/mom/with_error_handling_pipeline_spec.rb` | Same as pure DLQ version until rebalance |
 | `pro/consumption/strategies/dlq/mom/with_non_recoverable_error_with_retries_spec.rb` | Same as pure DLQ version until rebalance |
@@ -1083,8 +1083,8 @@
 | `pro/recurring_tasks/defining_schedule_spec.rb` | We should be able to build up a schedule with recurring tasks that we can use |
 | `pro/recurring_tasks/disable_enable_all_spec.rb` | We should be able to disable and enable back all the jobs in one go |
 | `pro/recurring_tasks/disabled_state_replaying_spec.rb` | When we have an active schedule that got disabled, after a re-run we should be able to recover its inactive state |
-| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic even if those executions fail |
-| `pro/recurring_tasks/logging_data_published_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic This spec will hang if logs are not published |
+| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | *No description available* |
+| `pro/recurring_tasks/logging_data_published_spec.rb` | *No description available* |
 | `pro/recurring_tasks/routes_creation_spec.rb` | When we decide to use recurring tasks, in specs it should automatically migrate and create appropriate topics |
 | `pro/recurring_tasks/smarter_reconfiguration_spec.rb` | We should be able to reconfigure recurring tasks topics also via the direct config API This allows us to reconfigure things granularly. |
 | `pro/recurring_tasks/state_publishing_frequency_spec.rb` | When we start cron and publish several events, the state should always be published after each command execution. This allows us to make assumptions about the topic data structure when buildings things like UI. |
