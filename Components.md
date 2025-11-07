@@ -1,20 +1,14 @@
-# Karafka Framework Ecosystem
-
 Karafka is a robust, Ruby-based framework for building Kafka-driven applications. It provides a comprehensive suite of tools for message production, consumption, and monitoring within Apache Kafka environments. The ecosystem consists of several specialized components:
 
 - **[Karafka](https://github.com/karafka/karafka)** – core framework that handles message consumption from Kafka topics with advanced routing and processing capabilities
-  
 - **[WaterDrop](https://github.com/karafka/waterdrop)** – dedicated message production library optimized for high-performance and reliable delivery to Kafka clusters
-
 - **[Karafka-Web](https://github.com/karafka/karafka-web)** –  User Interface providing real-time visibility into application operations
-
 - **[Karafka-Rdkafka](https://github.com/karafka/karafka-rdkafka)** – custom fork of rdkafka-ruby that enhances functionality and stability for production environments
-
 - **[Rdkafka-Ruby](https://github.com/appsignal/rdkafka-ruby/)** – base driver providing low-level Ruby bindings for the librdkafka C/C++ library, maintained by our team
 
 ## Producer
 
-This section explores how to leverage the Producer API to send messages to your Kafka cluster from any Ruby process. 
+The producer can run in any Ruby process, allowing you to produce Kafka messages. 
 
 The following code demonstrates both synchronous and asynchronous message production methods available in Karafka, showcasing the recommended approach for different use cases:
 

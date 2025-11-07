@@ -226,17 +226,9 @@ RSpec.describe Karafka::App.routes do
 end
 ```
 
-## Usage with Minitest
+## Setting Up Karafka Testing with Minitest
 
 Alternative testing framework supported by Karafaka is Minitest. While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest. The karafka-testing gem provides specialized helpers that simplify consumer testing regardless of your preferred testing framework.
-
-### Installation
-
-## Usage with Minitest
-
-After learning how to test your consumer groups and topics structure with RSpec, you might prefer using Minitest as your testing framework. Karafka supports both testing approaches, allowing you to choose the framework that best fits your project's needs.
-
-While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest.
 
 ### Installation
 
@@ -285,10 +277,9 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
    
-### Testing Messages Consumption (Consumers)
+### Testing Messages Consumption (Consumers) - Minitest
 
 This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers.The following example shows a complete test case for an inline batch consumer that processes numeric data: 
-
 
 ```ruby
 class InlineBatchConsumerTest < ActiveSupport::TestCase
