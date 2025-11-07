@@ -45,7 +45,7 @@ Once included in your RSpec setup, this library will provide you with a special 
 - `#produce` - the method sends message to the consumer instance.
 - `#produced_messages` - the method contains all the messages "sent" to Kafka during spec execution.
 
-!!! important "Message Buffering"
+!!! warning "Message Buffering"
 
     Messages sent using the `#produce` method and directly from `Karafka.producer` are not sent to Kafka. They are buffered and accessible in a per-spec buffer in case you want to test messages production.
 
@@ -245,7 +245,7 @@ To integrate Karafka testing with Minitest, perform the following steps:
 
 1. Run bundle install to install the new dependencies:
 
-   ```
+   ```ruby
    bundle install
    ```
 
