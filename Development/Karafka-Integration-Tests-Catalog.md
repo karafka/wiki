@@ -119,9 +119,9 @@
 | `consumption/batch_processing/empty_batch_handling_spec.rb` | Karafka should handle empty batches correctly in different processing strategies |
 | `consumption/batch_processing/single_message_batches_spec.rb` | Karafka should handle single message batches correctly |
 | `consumption/batch_processing/variable_batch_sizes_spec.rb` | Karafka should handle very small and very large batches efficiently |
-| `consumption/compressions/using_gzip_spec.rb` | *No description available* |
-| `consumption/compressions/using_lz4_spec.rb` | *No description available* |
-| `consumption/compressions/using_snappy_spec.rb` | *No description available* |
+| `consumption/compressions/using_gzip_spec.rb` | Karafka should be able to produce and consume messages compressed with gzip codec |
+| `consumption/compressions/using_lz4_spec.rb` | Karafka should be able to produce and consume messages compressed with lz4 codec |
+| `consumption/compressions/using_snappy_spec.rb` | Karafka should be able to produce and consume messages compressed with snappy codec |
 | `consumption/concurrency/memory_visibility_spec.rb` | Karafka should handle memory visibility between processing threads correctly |
 | `consumption/concurrency/shared_consumer_state_spec.rb` | Karafka should handle concurrent access to shared consumer state safely |
 | `consumption/concurrency/shared_mutable_objects_spec.rb` | Karafka should handle message processing with shared mutable objects safely |
@@ -348,7 +348,7 @@
 | `instrumentation/vendors/datadog/metrics_with_eofed_spec.rb` | DD instrumentation should work with eof |
 | `instrumentation/vendors/datadog/with_original_client_pristine/with_proper_ddtrace_spec.rb` | This spec ensures, we do not use by accident ActiveSupport methods when working with listeners @see https://github.com/karafka/karafka/pull/1624 |
 | `instrumentation/vendors/datadog/with_reduced_metrics_and_frequency_flow_spec.rb` | We should be able to sub-class and limit the operational cost of DD listener if needed |
-| `instrumentation/vendors/datadog_native_pristine/consume_with_tracing_spec.rb` | *No description available* |
+| `instrumentation/vendors/datadog_native_pristine/consume_with_tracing_spec.rb` | Karafka should integrate with Datadog native tracing and enable distributed tracing for message consumption |
 | `instrumentation/vendors/kubernetes/consuming_liveness_parallel_regular_flow_spec.rb` | When consuming using multiple subscription groups and all of them are within time limits, we should never get 500 |
 | `instrumentation/vendors/kubernetes/consuming_liveness_parallel_timeout_flow_spec.rb` | When consuming using multiple subscription groups and only one hangs, k8s listener should be able to detect that. |
 | `instrumentation/vendors/kubernetes/consuming_liveness_timeout_flow_spec.rb` | When consuming takes more time then expected, we should see that in the status |
@@ -358,7 +358,7 @@
 | `instrumentation/vendors/kubernetes/polling_liveness_timeout_flow_spec.rb` | When the polling happens less frequently than expected, we should get a timeout indication out of the probing |
 | `instrumentation/vendors/kubernetes/swarm_liveness_all_good_spec.rb` | When all good, all should be ok in swarm |
 | `instrumentation/vendors/kubernetes/swarm_liveness_not_controlling_often_spec.rb` | When we expect to control nodes more often that it happens, it should be reflected |
-| `instrumentation/with_hammered_assignments_tracker_spec.rb` | *No description available* |
+| `instrumentation/with_hammered_assignments_tracker_spec.rb` | AssignmentsTracker should remain stable and not crash when inspected concurrently from multiple consumer groups during message processing |
 | `instrumentation/with_offset_querying_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages |
 | `instrumentation/with_replaced_monitor_spec.rb` | Karafka should allow for a monitor that can be used to run wrapped handling, as long as there is a delegation back to Karafka monitor afterwards. |
 | `instrumentation/with_watermarks_querying_spec.rb` | Karafka should be able to query watermark offsets for multiple topics and partitions using a single consumer instance |
@@ -544,7 +544,7 @@
 | `pro/consumption/periodic_jobs/with_eof_status_spec.rb` | We should be able to maintain eof status when ticking |
 | `pro/consumption/periodic_jobs/with_lost_partition_spec.rb` | When periodic ticking is on but we have lost a partition, we should stop ticking on that partition but we should continue on the one that we still have |
 | `pro/consumption/periodic_jobs/with_other_consumer_spec.rb` | When periodic ticking is on but other consumers have some partitions, we should not tick on them as they are not assigned to us |
-| `pro/consumption/periodic_jobs/with_saturated_execution_spec.rb` | *No description available* |
+| `pro/consumption/periodic_jobs/with_saturated_execution_spec.rb` | When consume takes longer than the periodic interval, tick should still execute after consume finishes and should not be skipped |
 | `pro/consumption/periodic_jobs/with_used_switched_spec.rb` | When consumer is being used at least once, we should be able to see it when ticking |
 | `pro/consumption/periodic_jobs/without_any_data_ever_many_partitons_spec.rb` | When periodic gets an assignment it should tick in intervals despite never having any data It should work as expected also for many partitions |
 | `pro/consumption/periodic_jobs/without_any_data_ever_spec.rb` | When periodic gets an assignment it should tick in intervals despite never having any data It should never indicate that it was used when it was not |
@@ -670,9 +670,9 @@
 | `pro/consumption/strategies/dlq/ftr_lrj/with_recoverable_error_spec.rb` | Errors should be handled normally. There should be a backoff and retry and recovery should start from the message on which we broke. Throttling should have nothing to do with this. The message should not go to the DLQ because the error has recovered. |
 | `pro/consumption/strategies/dlq/ftr_lrj/with_work_exceeding_throttle_spec.rb` | When doing work that is exceeding timeouts, we should not throttle. Instead we need to seek to the first throttled message and just move on. DLQ should not interact with this in any way. |
 | `pro/consumption/strategies/dlq/ftr_lrj/without_hitting_limits_spec.rb` | Karafka should be able to just consume when throttling limits are not reached. DLQ should have nothing to do with this. |
-| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward retrying from last one that was committed with duplicates in between comitted and crashed |
+| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | *No description available* |
-| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens. When operating on batches and no marking happens, we skip first message from the batch on which the error happened. |
+| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/with_manual_pause_on_early_spec.rb` | When pausing not on a last message, we should un-pause from it and not from the next incoming. |
@@ -728,9 +728,9 @@
 | `pro/consumption/strategies/dlq/lrj/with_long_manual_pause_spec.rb` | Karafka should not resume when manual pause is in use for DLQ LRJ |
 | `pro/consumption/strategies/dlq/lrj/with_manual_seek_spec.rb` | Manual seek per user request should super-seed the automatic LRJ movement. Configured DLQ should have nothing to do with this |
 | `pro/consumption/strategies/dlq/lrj/with_non_recoverable_slow_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj the same way as any normal consumer and after few incidents it should move data to the DLQ and just continue |
-| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward retrying from last one that was committed with duplicates in between comitted and crashed |
+| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens for each batch. Since we mark the message prior to its processing (stupid but valid) we go to DLQ with the next one, hence the skip |
-| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens. When operating on batches and no marking happens, we skip first message from the batch on which the error happened. |
+| `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/lrj_mom/non_recoverable_with_dispatch_marking_spec.rb` | Upon non-recoverable errors and the DLQ dispatch with marking, Karafka should mark |
 | `pro/consumption/strategies/dlq/lrj_mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/dlq/lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
@@ -747,7 +747,7 @@
 | `pro/consumption/strategies/dlq/mom/at_most_once_skipping_on_error_spec.rb` | This example is a bit counter intuitive. Since we mark as consumed before we consume and raise error, Karafka will skip this message and move on. On another it will again encounter error and will dispatch to DLQ the next message because Karafka does not know, that marking happened prior to an error. This is however expected. If you want to alter this behaviour, you need to write your own custom strategy to compensate for this by moving the seek offset back for a DLQ dispatch case. |
 | `pro/consumption/strategies/dlq/mom/multi_partition_source_target_flow_spec.rb` | Same as pure DLQ version until rebalance |
 | `pro/consumption/strategies/dlq/mom/multi_partition_target_flow_spec.rb` | Same as pure DLQ version until rebalance Needs to go to same partition |
-| `pro/consumption/strategies/dlq/mom/non_recoverable_with_dispatch_marking_spec.rb` | Upon non-recoverable errors and the DLQ dispatch with marking, Karafka should mark |
+| `pro/consumption/strategies/dlq/mom/non_recoverable_with_dispatch_marking_spec.rb` | *No description available* |
 | `pro/consumption/strategies/dlq/mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
 | `pro/consumption/strategies/dlq/mom/with_error_handling_pipeline_spec.rb` | Same as pure DLQ version until rebalance |
 | `pro/consumption/strategies/dlq/mom/with_non_recoverable_error_with_retries_spec.rb` | Same as pure DLQ version until rebalance |
@@ -920,7 +920,7 @@
 | `pro/consumption/strategies/vp/errors_tracking/consecutive_errors_spec.rb` | When using virtual partitions and tracking errors, under collapse they should be present collectively from many partitions |
 | `pro/consumption/strategies/vp/from_earliest_patterned_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) using multiple threads based on the used virtual partitioner. We should use more than one thread for processing of all the messages. This should also work as expected for pattern based topics. |
 | `pro/consumption/strategies/vp/from_earliest_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) using multiple threads based on the used virtual partitioner. We should use more than one thread for processing of all the messages |
-| `pro/consumption/strategies/vp/groups_aggregation_halt_on_recovery_spec.rb` | *No description available* |
+| `pro/consumption/strategies/vp/groups_aggregation_halt_on_recovery_spec.rb` | When using virtual partitions with errors during consumption, the virtual offset manager should limit group accumulation and halt further grouping during recovery to prevent memory issues |
 | `pro/consumption/strategies/vp/many_batches_same_key_spec.rb` | When using virtual partitions and having a partitioner that always provides the same key, we should always use one thread despite having more available |
 | `pro/consumption/strategies/vp/many_batches_spec.rb` | When using virtual partitions, we should easily consume data with the same instances on many batches and until there is a rebalance or critical error, the consumer instances should not change |
 | `pro/consumption/strategies/vp/many_distributed_batches_end_order_spec.rb` | When consuming data with virtual partitions from many batches, the order of messages in between the single partition batches should be preserved. |
@@ -944,10 +944,10 @@
 | `pro/consumption/strategies/vp/without_intermediate_marking_spec.rb` | Karafka should mark correctly the final offset of collective group upon finish |
 | `pro/consumption/time_based_non_blocking_locking_spec.rb` | We should be able to lock in a non-blocking fashion and then lock should expire based on time |
 | `pro/consumption/transactions/after_transaction_error_spec.rb` | If transaction finishes and the error is after it, it should not impact the offset nor the location where we retry |
-| `pro/consumption/transactions/connection_pool_pristine/flow_spec.rb` | *No description available* |
+| `pro/consumption/transactions/connection_pool_pristine/flow_spec.rb` | Karafka should correctly handle transactional producers from a ConnectionPool with multiplexing, ensuring transactional integrity across concurrent consumers |
 | `pro/consumption/transactions/dlq/with_crash_during_transational_dispatch_spec.rb` | In case transactional offset dispatch on post-error happens, Karafka should retry processing again and again. |
 | `pro/consumption/transactions/dlq/with_transactional_dispatch_spec.rb` | We should be able to use transactional producer for DLQ dispatches |
-| `pro/consumption/transactions/early_exit_spec.rb` | *No description available* |
+| `pro/consumption/transactions/early_exit_spec.rb` | When attempting to exit a transaction block early using break, Karafka should raise EarlyTransactionExitNotAllowedError to prevent incomplete transactions |
 | `pro/consumption/transactions/empty_transaction_spec.rb` | Running a transaction that does not publish data and does not store offsets should be ok |
 | `pro/consumption/transactions/lost_assignment_post_marking_late_produce_spec.rb` | We should be able to mark as consumed when we own the assignment and produce messages but if at the finalization moment we lost the assignment, we should fail the transaction with the assignment lost error |
 | `pro/consumption/transactions/lost_assignment_with_offset_storage_spec.rb` | We should NOT be able to mark as consumed within a transaction on a lost partition because the transaction is expected to fail. |
@@ -1083,8 +1083,8 @@
 | `pro/recurring_tasks/defining_schedule_spec.rb` | We should be able to build up a schedule with recurring tasks that we can use |
 | `pro/recurring_tasks/disable_enable_all_spec.rb` | We should be able to disable and enable back all the jobs in one go |
 | `pro/recurring_tasks/disabled_state_replaying_spec.rb` | When we have an active schedule that got disabled, after a re-run we should be able to recover its inactive state |
-| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic even if those executions fail |
-| `pro/recurring_tasks/logging_data_published_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic This spec will hang if logs are not published |
+| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | *No description available* |
+| `pro/recurring_tasks/logging_data_published_spec.rb` | *No description available* |
 | `pro/recurring_tasks/routes_creation_spec.rb` | When we decide to use recurring tasks, in specs it should automatically migrate and create appropriate topics |
 | `pro/recurring_tasks/smarter_reconfiguration_spec.rb` | We should be able to reconfigure recurring tasks topics also via the direct config API This allows us to reconfigure things granularly. |
 | `pro/recurring_tasks/state_publishing_frequency_spec.rb` | When we start cron and publish several events, the state should always be published after each command execution. This allows us to make assumptions about the topic data structure when buildings things like UI. |
@@ -1185,7 +1185,7 @@
 | `pro/web/commanding/trace_spec.rb` | Karafka should react to probing and should create trace result in the commands topic |
 | `pro/web/commanding/wildcard_quiet_spec.rb` | Karafka should react to wildcard quiet from commanding |
 | `pro/web/commanding/wildcard_stop_usage_spec.rb` | Karafka should react to stop in the wildcard mode |
-| `pro/web/dlq_dispatching_deadlock_flow_spec.rb` | *No description available* |
+| `pro/web/dlq_dispatching_deadlock_flow_spec.rb` | Karafka Web should handle high-concurrency DLQ message dispatching without deadlocking, ensuring tracking data is properly synchronized across many partitions |
 | `pro/web/dlq_tracing_match_spec.rb` | Error references should match the DLQ traces |
 | `pro/web/from_earliest_spec.rb` | Karafka should be able to consume and web tracking should not interfere |
 | `pro/web/with_errors_spec.rb` | Karafka should be able to recover from non-critical errors and web tracking instrumentation should not break anything and should not crash |
@@ -1380,7 +1380,7 @@
 | `setup/re_initialization_of_cached_resources_spec.rb` | Karafka should update the cached references to the monitor, logger and producer once those are altered during the configuration |
 | `setup/with_custom_worker_thread_priority_spec.rb` | When reconfiguring the worker thread priority, worker threads should have proper priority set When reconfiguring internal listener worker thread priority, it should also work |
 | `setup/with_kip_848_protocol_incorrect_config_spec.rb` | Karafka should crash when new and old rebalance protocol settings are mixed even if independently they are correct. Note that those errors only happen upon subscription, not during configuration. |
-| `setup/with_patched_object_spec.rb` | *No description available* |
+| `setup/with_patched_object_spec.rb` | Karafka setup should not crash even when Object class has been patched with logger methods that raise errors |
 | `shutdown/consumer_shutdown_during_processing_spec.rb` | Karafka should call shutdown hooks during server termination |
 | `shutdown/extremely_fast_stop_spec.rb` | When we stop right after run, it should not hang even on extreme edge cases |
 | `shutdown/fast_shutdown_on_long_polling_spec.rb` | Karafka should not wait full long polling cycle when shutdown is issued due to fast circuit breaker flow. No assertions are needed as it will just wait forever if not working correctly |
