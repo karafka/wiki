@@ -7,7 +7,7 @@ This document establishes comprehensive naming conventions for the Karafka ecosy
 Naming conventions serve several critical purposes:
 
 | Purpose | Benefit |
-|---------|---------|
+| ------- | ------- |
 | **Consistency** | Predictable patterns across the codebase |
 | **Clarity** | Self-documenting code that's easier to understand |
 | **Maintainability** | Easier refactoring and debugging |
@@ -19,7 +19,7 @@ Naming conventions serve several critical purposes:
 ### Core Principles
 
 | Principle | Description |
-|-----------|-------------|
+| --------- | ----------- |
 | **Consistency First** | Use the same format consistently within each context |
 | **Community Alignment** | Follow established Kafka ecosystem conventions |
 | **Context Awareness** | Different contexts may require different formats |
@@ -267,7 +267,7 @@ user-events-5-value
 ### Implementation Guidelines
 
 | Context | Format | Example |
-|---------|--------|---------|
+| ------- | ------ | ------- |
 | **Single specific reference** | `topic-partition` (dash) | `orders-0` |
 | **Single in assignment context** | `topic-[partition]` (brackets) | `orders-[0]` |
 | **Multiple partitions** | `topic-[partition,partition,...]` (brackets with commas) | `orders-[0,1,2]` |
@@ -388,7 +388,7 @@ There are a few existing special cases in the Karafka ecosystem where the `it-` 
 ### Best Practices Summary
 
 | Practice | Description |
-|----------|-------------|
+| -------- | ----------- |
 | **Always use `it-` prefix** | For all new test topics |
 | **Prefer UUID-based naming** | For maximum isolation and uniqueness |
 | **Use descriptive names sparingly** | Only when testing requires specific topic characteristics |
