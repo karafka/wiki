@@ -110,7 +110,7 @@ When setting up your connection pool, you can configure:
 | Option    | Required | Value type | Description                                    |
 |-----------|----------|------------|------------------------------------------------|
 | `size`    | true     | Integer    | Maximum number of producer connections in pool |
-| `timeout` | true     | Integer    | Connection timeout in milliseconds            |
+| `timeout` | true     | Integer    | Connection timeout in milliseconds             |
 
 Additional configuration can be provided through a block:
 
@@ -275,12 +275,12 @@ end
 
 WaterDrop provides events for monitoring connection pool lifecycle:
 
-| Event                           | Description                                    |
-|--------------------------------|------------------------------------------------|
-| `connection_pool.created`      | Emitted when a new connection pool is created |
-| `connection_pool.setup`        | Emitted when a connection pool is configured  |
-| `connection_pool.shutdown`     | Emitted when a connection pool shuts down     |
-| `connection_pool.reload`       | Emitted when a connection pool begins reload  |
+| Event                          | Description                                     |
+|--------------------------------|-------------------------------------------------|
+| `connection_pool.created`      | Emitted when a new connection pool is created   |
+| `connection_pool.setup`        | Emitted when a connection pool is configured    |
+| `connection_pool.shutdown`     | Emitted when a connection pool shuts down       |
+| `connection_pool.reload`       | Emitted when a connection pool begins reload    |
 | `connection_pool.reloaded`     | Emitted when a connection pool reload completes |
 
 Subscribe to these events for monitoring:
