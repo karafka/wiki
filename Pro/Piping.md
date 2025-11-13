@@ -34,12 +34,12 @@ end
 
 The following table describes the public methods available for message piping:
 
-| Method             | Description                                           |
-|--------------------|-------------------------------------------------------|
-| `pipe_async`       | Pipes a message to a specified topic asynchronously.  |
-| `pipe_sync`        | Pipes a message to a specified topic synchronously.   |
-| `pipe_many_async`  | Pipes multiple messages to a specified topic asynchronously. |
-| `pipe_many_sync`   | Pipes multiple messages to a specified topic synchronously. |
+| Method             | Description                                                      |
+|--------------------|------------------------------------------------------------------|
+| `pipe_async`       | Pipes a message to a specified topic asynchronously.             |
+| `pipe_sync`        | Pipes a message to a specified topic synchronously.              |
+| `pipe_many_async`  | Pipes multiple messages to a specified topic asynchronously.     |
+| `pipe_many_sync`   | Pipes multiple messages to a specified topic synchronously.      |
 
 ### Enhancing Messages with `#enhance_pipe_message`
 
