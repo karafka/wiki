@@ -19,9 +19,10 @@
 - [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
 - [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
 - [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
-- [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
+- [What does static consumer fenced by other consumer with the same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-the-same-groupinstanceid-mean)
 - [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
 - [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
+- [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages-1)
 - [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-use-revoked-when-not-using-long-running-jobs)
 - [Can I consume from more than one Kafka cluster simultaneously?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
 - [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
@@ -400,20 +401,20 @@ The mitigation presented above was prepared by [AleksanderSzyszka](https://githu
 
 ## Can I skip messages on errors?
 
-Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+Karafka Pro can bypass non-recoverable messages when errors occur, as part of the Enhanced Dead Letter Queue feature. For more information  on this capability, see the [Disabling Dispatch section](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
-## What does static consumer fenced by other consumer with same group.instance.id mean?
+## What does static consumer fenced by other consumer with the same group.instance.id mean?
 
-If you see such messages in your logs:
+When you encounter this error in your logs:
 
 ```shell
 Fatal error: Broker: Static consumer fenced by other consumer with same group.instance.id
 ```
+This error indicates one of two issues:
 
-It can mean two things:
+1. **Outdated Karafka version**: You're running Karafka version before `2.0.20`. Upgrade to version `2.0.20` or later to resolve this issue.
 
-1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
-1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+1. **Duplicate group.instance.id**: Your `group.instance.id` value is **not** unique within your consumer group. Each consumer in a group must have a unique `group.instance.id` across the **entire consumer group**, not just per process or machine. Verify that you're assigning distinct values to each consumer instance.
 
 ## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
 
@@ -421,37 +422,66 @@ The `#revoked` will be executed even though the `#consume` did not run upon revo
 
 ## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
-If you are seeing following error:
+When you encounter this error in your logs:
 
 ```ruby
 Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
+I'll fetch that documentation section and help you rewrite it.Here's a rewritten version of that section with improved clarity and structure:
 
-It may mean one of four things:
+---
 
-1. High probability: Broker can't keep up with the produce rate.
-1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
-1. Low probability: Slow network connection.
-1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
+## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
-WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
-
-Additionally, you may also:
-
-- Dispatch smaller batches using `#produce_many_sync`.Effectively it will throttle the process that way.
-- Establish a limit on how many messages you want to dispatch at once. This will prevent you from scenarios where you accidentally flush too much. If you dispatch based on an array of samples, you can do it that way:
+If you encounter the following error:
 
 ```ruby
-data_to_dispatch.each_slice(2_00) do |data_slice|
-  Karafka.producer.produce_many_sync(data_slice)
-end
+Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
+This timeout error typically indicates one of the following issues.
+
+**Most Common Causes:**
+1. **Broker cannot keep up with production rate** - The Kafka broker is overwhelmed by the volume of incoming messages and cannot process them quickly enough.
+1. **Broker temporarily overloaded** - If you use `partition_key`, then the broker cannot return topic structure information. Note that WaterDrop `2.4.4` and later includes a retry mechanism to mitigate this issue.
+
+**Less Common Causes:**
+1. **Slow network connection** - Network latency between your application and the Kafka broker.
+1. **SSL configuration issue** - If this is the cause, no messages will reach the broker at all.
+
+
+WaterDrop dispatches messages to `librdkafka`, which then constructs message batches every five milliseconds by default. When producing messages rapidly, this frequent batching can become inefficient—Kafka must process numerous small, separate message batches in quick succession.
+
+**Solutions**
+
+**Primary Solution**
+
+Increase the `queue.buffering.max.ms` configuration value. This allows `librdkafka` to accumulate messages for a longer period before constructing batches, resulting in larger, less frequent batches that Kafka can handle more efficiently.
+
+**Additional Strategies:**
+
+1.   Use `#produce_many_sync` to dispatch smaller batches, which naturally throttles the production rate:
+
+   ```ruby
+   data_to_dispatch.each_slice(200) do |data_slice|
+     Karafka.producer.produce_many_sync(data_slice)
+   end
+   ```
+
+2. Set a maximum number of messages to dispatch at once to prevent accidentally overwhelming the system with too many messages.
+
 
 ## Do I need to use `#revoked?` when not using Long-Running jobs?
 
-In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
+No, not in a stable system. The default [offset management](Offset-management) strategy of Karafka handles this automatically and is typically sufficient.
 
-You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Consuming-Messages#detecting-revocation-midway).
+This default strategy ensures that offsets are committed in two key scenarios:
+
+- After each batch of messages is processed
+- During rebalances, before partitions are reassigned to different consumers
+
+For more information on Karafka revocation/rebalance behaviors, see [Offset management (checkpointing)
+](Offset-management) and [Detecting Revocation Midway¶
+](Consuming-Messages#detecting-revocation-midway).
 
 ## Can I consume from more than one Kafka cluster simultaneously?
 
@@ -486,7 +516,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Please note that if your cluster configuration is complex, you may want to use set it up in the root scope and then alter it on a per-topic basis:
+For complex cluster configurations, define the base settings in the root scope and then override them on a per-topic basis as needed:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -521,7 +551,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Producing-Messages#producing-to-multiple-clusters).
+Also, keep in mind that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like the [Dead Letter Queue](Dead-Letter-Queue) feature as the producer will produce the default cluster DLQ topic despite the origin cluster. For more details on that behavior, see [Producing to Multiple Clusters¶
+](Producing-Messages#producing-to-multiple-clusters).
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
@@ -530,7 +561,7 @@ Also, please remember that those settings apply to consumers **only**. `Karafka#
 Worker processing failed due to an error: Implement this in a subclass
 ```
 
-This error occurs when you have defined your consumer but without a `#consume` method:
+This error occurs when you have defined your consumer without a `#consume` method:
 
 **BAD**:
 
@@ -556,20 +587,22 @@ end
 
 Karafka `client_id` is, by default, used for populating the Kafka `client.id` value.
 
-Kafka `client.id` is a string passed to the server when making requests. This allows the server to track the source of requests beyond just IP/port by including a logical application identifier in server-side request logging. The `client.id` should be unique for each application instance to enable effective debugging and operational monitoring.
+The `client.id` is a string identifier that Kafka includes in server-side request logs. This helps you track which application instance generated each request, going beyond basic IP and port information. 
+
+Set a unique `client.id` for each application instance. This makes debugging and monitoring much easier since you can identify exactly which instance is experiencing issues or generating specific traffic patterns.
 
 ## How can I increase Kafka and Karafka max message size?
 
-To make Kafka accept messages bigger than 1MB, you must change both Kafka and Karafka configurations.
+To make Kafka accept messages bigger than 1MB, change both Kafka and Karafka configurations.
 
-To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters controls the maximum size of a message the Kafka broker will accept.
+To increase the maximum accepted payload size in Kafka, adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters control the maximum size of a message the Kafka broker will accept.
 
 To allow WaterDrop (Karafka producer) to send bigger messages, you need to:
 
-- set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
-- set `kafka` scoped `message.max.bytes` to the same value.
+1. Set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
+1. Set `kafka` scoped `message.max.bytes` to the same value.
 
-You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during Karafka setup:
+You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during the Karafka setup:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -587,39 +620,38 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
+Keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so consider the trade-offs before making any changes carefully.
 
-!!! note
+!!! warning "Error Messages"
 
     If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
-
-```ruby
-WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
+```
+    WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
 ```
 
-or
-
-```ruby
-Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
+    or
 ```
+    Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
+```
+
 
 ## Why do DLQ messages in my system keep disappearing?
 
-DLQ messages may disappear due to many reasons. Some possible causes include the following:
+DLQ messages can disappear for various reasons. Some possible causes include:
 
 - The DLQ topic has a retention policy that causes them to expire and be deleted.
 - The DLQ topic is a compacted topic, which only retains the last message with a given key.
 - The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
 
-For more details, please look at the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
+For more details, see the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
 
 ## What is the optimal number of threads to use?
 
-The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing number of threads brings the most significant benefits for IO-bound operations.
+The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing the number of threads brings the most significant benefits for IO-bound operations.
 
-It's recommended to use the number of available cores to determine the optimal number of threads for an application.
+It is recommended to use the number of available cores to determine the optimal number of threads for an application.
 
-When working with Karafka, you also need to take into consideration things that may reduce the number of threads being in use, that is:
+When working with Karafka, consider factors that may reduce the number of active threads in use.
 
 - Your topics count.
 - Your partitions count.
@@ -628,15 +660,15 @@ When working with Karafka, you also need to take into consideration things that 
 
 Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
-You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-Multithreading).
+For more information on Karafka and Karafka Pro concurrency model, see [Concurrency and multithreading](Concurrency-and-Multithreading).
 
-It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
+It is also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
 Remember that the optimal number of threads may change as the workload and system resources change over time.
 
 ## Can I use several producers with different configurations with Karafka?
 
-**Yes**. You can create as many producers as you want using [WaterDrop API](WaterDrop-Getting-Started) directly:
+**Yes**. You can create as many producers as you want using [WaterDrop API](WaterDrop-Getting-Started) directly and you can use them:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -648,30 +680,28 @@ producer = WaterDrop::Producer.new do |config|
 end
 ```
 
-and you can use them.
+When you work with multiple producers, follow these guidelines:
 
-There are a few things to keep in mind, though:
-
-1. Producers should be long-lived.
-1. Producers should be closed before the process shutdown to ensure proper resource finalization.
-1. You need to instrument each producer using the WaterDrop instrumentation API.
-1. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
+1. Keep producers long-lived rather than creating and destroying them frequently.
+2. Close each producer before process shutdown to ensure proper resource finalization.
+3. Instrument each producer using the WaterDrop instrumentation API.
+4. Configure the default producer (`Karafka#producer`) to support Karafka's internal operations, including error tracking and DLQ dispatches.
 
 ## What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?
 
-If you are seeing the following error:
-
+!!! failure "OpenSSL Not Available"
 ```shell
-`validate!':
-{:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
- OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
+    validate!:
+    {:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
+    OpenSSL not available at build time"}
+     (Karafka::Errors::InvalidConfigurationError)
 ```
 
-It means you want to use SSL, but `librdkafka` was built without it. You have to:
+This error occurs when `librdkafka` was built without SSL support. To resolve the issue:
 
-1. Uninstal it by running `gem remove karafka-rdkafka`
-1. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
-1. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
+1. Uninstall the current version: `gem remove karafka-rdkafka`.
+2. Install `openssl` (on macOS, use `brew install openssl`).
+3. Run `bundle install` again to recompile `librdkafka` with SSL support.
 
 ## Can Karafka ask Kafka to list available topics?
 
