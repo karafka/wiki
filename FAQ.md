@@ -1,221 +1,223 @@
-1. [Does Karafka require Ruby on Rails?](#does-karafka-require-ruby-on-rails)
-1. [Does Karafka require Redis and/or Sidekiq to work?](#does-karafka-require-redis-andor-sidekiq-to-work)
-1. [Could an HTTP controller also consume a fetched message through the Karafka router?](#could-an-http-controller-also-consume-a-fetched-message-through-the-karafka-router)
-1. [Does Karafka require a separate process running?](#does-karafka-require-a-separate-process-running)
-1. [Can I start Karafka process with only particular consumer groups running for given topics?](#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
-1. [Can I use ```#seek``` to start processing topics partition from a certain point?](#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
-1. [Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?](#why-karafka-does-not-pre-initializes-consumers-prior-to-first-message-from-a-given-topic-being-received)
-1. [Does Karafka restart dead PG connections?](#does-karafka-restart-dead-pg-connections)
-1. [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
-1. [Can I use Thread.current to store data in between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
-1. [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
-1. [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
-1. [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
-1. [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
-1. [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
-1. [Why can't I connect to Kafka from another Docker container?](#why-cant-i-connect-to-kafka-from-another-docker-container)
-1. [How can I configure multiple bootstrap servers?](#how-can-i-configure-multiple-bootstrap-servers)
-1. [Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?](#why-when-using-cooperative-sticky-rebalance-strategy-all-topics-get-revoked-on-rebalance)
-1. [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
-1. [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
-1. [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
-1. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
-1. [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
-1. [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
-1. [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-use-revoked-when-not-using-long-running-jobs)
-1. [Can I consume from more than one Kafka cluster at the same time?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
-1. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
-1. [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
-1. [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
-1. [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
-1. [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
-1. [Can I use several producers with different configurations with Karafka?](#can-i-use-several-producers-with-different-configurations-with-karafka)
-1. [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
-1. [Can Karafka ask Kafka to list available topics?](#can-karafka-ask-kafka-to-list-available-topics)
-1. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
-1. [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
-1. [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
-1. [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
-1. [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
-1. [Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?](#why-am-i-getting-error0a000086ssl-routinescertificate-verify-failed-after-upgrading-karafka)
-1. [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
-1. [Why am I seeing Broker failed to validate record (invalid_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
-1. [How can I make polling faster?](#how-can-i-make-polling-faster)
-1. [Can I dynamically add consumer groups and topics to a running Karafka process?](#can-i-dynamically-add-consumer-groups-and-topics-to-a-running-karafka-process)
-1. [Can a consumer instance be called multiple times from multiple threads?](#can-a-consumer-instance-be-called-multiple-times-from-multiple-threads)
-1. [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
-1. [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
-1. [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
-1. [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
-1. [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
-1. [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
-1. [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
-1. [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
-1. [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
-1. [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-am-i-having-problems-running-karafka-and-karafka-web-with-remote-kafka)
-1. [Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
-1. [Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?](#why-am-i-getting-env-cant-execute-bash-when-installing-karafka-in-an-alpine-docker)
-1. [Can I intercept WaterDrop messages in tests?](#can-i-intercept-waterdrop-messages-in-tests)
-1. [Does Karafka Expiring Messages remove messages from Kafka?](#does-karafka-expiring-messages-remove-messages-from-kafka)
-1. [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
-1. [How do I specify Karafka's environment?](#how-do-i-specify-karafkas-environment)
-1. [How can I configure WaterDrop with SCRAM?](#how-can-i-configure-waterdrop-with-scram)
-1. [Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?](#why-am-i-getting-a-local-broker-transport-failure-transport-error-with-the-disconnected-info)
-1. [Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?](#why-am-i-getting-a-all-broker-connections-are-down-all_brokers_down-error-together-with-the-disconnected-info)
-1. [What is the difference between `partition_key` and `key` in the WaterDrop gem?](#what-is-the-difference-between-partition_key-and-key-in-the-waterdrop-gem)
-1. [How can I set up WaterDrop with SCRAM?](#how-can-i-set-up-waterdrop-with-scram)
-1. [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
-1. [How can I consume all the messages from a Kafka topic without a consumer process?](#how-can-i-consume-all-the-messages-from-a-kafka-topic-without-a-consumer-process)
-1. [What does `Broker: Invalid message (invalid_msg)` error mean?](#what-does-broker-invalid-message-invalid_msg-error-mean)
-1. [Is there an option in Karafka to re-consume all the messages from a topic even though all were already consumed?](#is-there-an-option-in-karafka-to-re-consume-all-the-messages-from-a-topic-even-though-all-were-already-consumed)
-1. [How can I make sure, that `Karafka.producer` does not block/delay my processing?](#how-can-i-make-sure-that-karafkaproducer-does-not-blockdelay-my-processing)
-1. [Can `at_exit` be used to close the WaterDrop producer?](#can-at_exit-be-used-to-close-the-waterdrop-producer)
-1. [Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?](#why-when-dlq-is-used-with-max_retries-set-to-0-karafka-also-applies-a-back-off)
-1. [Can I use `rdkafka` and `karafka-rdkafka` together in the same project?](#can-i-use-rdkafka-and-karafka-rdkafka-together-in-the-same-project)
-1. [Does using consumer `#seek` resets the committed offset?](#does-using-consumer-seek-resets-the-committed-offset)
-1. [Is it recommended to use public consumer methods from outside the consumer?](#is-it-recommended-to-use-public-consumer-methods-from-outside-the-consumer)
-1. [Why do I see `SASL authentication error` after AWS MSK finished the `Heal cluster` operation?](#why-do-i-see-sasl-authentication-error-after-aws-msk-finished-the-heal-cluster-operation)
-1. [Why Karafka and WaterDrop are behaving differently than `rdkafka`?](#why-karafka-and-waterdrop-are-behaving-differently-than-rdkafka)
-1. [Why am I seeing `Inconsistent group protocol` in Karafka logs?](#why-am-i-seeing-inconsistent-group-protocol-in-karafka-logs)
-1. [What is the difference between WaterDrop's `max_payload_size` and librdkafka's `message.max.bytes`?](#what-is-the-difference-between-waterdrops-max_payload_size-and-librdkafkas-messagemaxbytes)
-1. [What are consumer groups used for?](#what-are-consumer-groups-used-for)
-1. [Why am I getting the `all topic names within a single consumer group must be unique` error?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error)
-1. [Why am I getting `WaterDrop::Errors::ProduceError`, and how can I know the underlying cause?](#why-am-i-getting-waterdroperrorsproduceerror-and-how-can-i-know-the-underlying-cause)
-1. [Can extra information be added to the messages dispatched to the DLQ?](#can-extra-information-be-added-to-the-messages-dispatched-to-the-dlq)
-1. [Why does WaterDrop hang when I attempt to close it?](#why-does-waterdrop-hang-when-i-attempt-to-close-it)
-1. [Why Karafka commits offsets on rebalances and librdkafka does not?](#why-karafka-commits-offsets-on-rebalances-and-librdkafka-does-not)
-1. [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
-1. [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
-1. [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
-1. [Can I password-protect Karafka Web UI?](#can-i-password-protect-karafka-web-ui)
-1. [Can I use a Karafka producer without setting up a consumer?](#can-i-use-a-karafka-producer-without-setting-up-a-consumer)
-1. [What will happen when a message is dispatched to a dead letter queue topic that does not exist?](#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist)
-1. [Why do Karafka reports lag when processes are not overloaded and consume data in real-time?](#why-do-karafka-reports-lag-when-processes-are-not-overloaded-and-consume-data-in-real-time)
-1. [Does Kafka guarantee message processing orders within a single partition for single or multiple topics? And does this mean Kafka topics consumption run on a single thread?](#does-kafka-guarantee-message-processing-orders-within-a-single-partition-for-single-or-multiple-topics-and-does-this-mean-kafka-topics-consumption-run-on-a-single-thread)
-1. [Why can I produce messages to my local Kafka docker instance but cannot consume?](#why-can-i-produce-messages-to-my-local-kafka-docker-instance-but-cannot-consume)
-1. [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
-1. [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
-1. [Where can I find producer idempotence settings?](#where-can-i-find-producer-idempotence-settings)
-1. [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
-1. [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
-1. [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
-1. [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web UI?](#why-am-i-getting-no-such-file-or-directory-ps-errnoenoent-from-the-web-ui)
-1. [Can I retrieve all records produced in a single topic using Karafka?](#can-i-retrieve-all-records-produced-in-a-single-topic-using-karafka)
-1. [How can I get the total number of messages in a topic?](#how-can-i-get-the-total-number-of-messages-in-a-topic)
-1. [Why am I getting `Broker: Group authorization failed (group_authorization_failed)` when using Admin API or the Web UI?](#why-am-i-getting-broker-group-authorization-failed-group_authorization_failed-when-using-admin-api-or-the-web-ui)
-1. [Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?](#why-am-i-getting-an-argumenterror-undefined-classmodule-yamlsyck-when-trying-to-install-karafka-license)
-1. [Are Virtual Partitions effective in case of not having IO or not having a lot of data?](#are-virtual-partitions-effective-in-case-of-not-having-io-or-not-having-a-lot-of-data)
-1. [Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?](#is-the-one-process-per-one-topic-partition-recommendation-in-kafka-also-applicable-to-karafka)
-1. [Does running `#mark_as_consumed` increase the processing time?](#does-running-mark_as_consumed-increase-the-processing-time)
-1. [Does it make sense to have multiple worker threads when operating on one partition in Karafka?](#does-it-make-sense-to-have-multiple-worker-threads-when-operating-on-one-partition-in-karafka)
-1. [Why don't Virtual Partitions provide me with any performance benefits?](#why-dont-virtual-partitions-provide-me-with-any-performance-benefits)
-1. [What are Long Running Jobs in Kafka and Karafka, and when should I consider using them?](#what-are-long-running-jobs-in-kafka-and-karafka-and-when-should-i-consider-using-them)
-1. [What can I do to optimize the latency in Karafka?](#what-can-i-do-to-optimize-the-latency-in-karafka)
-1. [What is the maximum recommended concurrency value for Karafka?](#what-is-the-maximum-recommended-concurrency-value-for-karafka)
-1. [Are there concerns about having unused worker threads for a Karafka consumer process?](#are-there-concerns-about-having-unused-worker-threads-for-a-karafka-consumer-process)
-1. [How can you effectively scale Karafka during busy periods?](#how-can-you-effectively-scale-karafka-during-busy-periods)
-1. [What are the benefits of using Virtual Partitions (VPs) in Karafka?](#what-are-the-benefits-of-using-virtual-partitions-vps-in-karafka)
-1. [What's the difference between increasing topic partition count and using VPs in terms of concurrency?](#whats-the-difference-between-increasing-topic-partition-count-and-using-vps-in-terms-of-concurrency)
-1. [How do VPs compare to multiple subscription groups regarding performance?](#how-do-virtual-partitions-compare-to-multiple-subscription-groups-regarding-performance)
-1. [What is the principle of strong ordering in Kafka and its implications?](#what-is-the-principle-of-strong-ordering-in-kafka-and-its-implications)
-1. [Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?](#why-do-i-see-rdkafkaconfigclientcreationerror-when-changing-the-partitionassignmentstrategy)
-1. [Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?](#is-it-recommended-to-add-the-waterdrop-gem-to-the-gemfile-or-just-karafka-and-karafka-testing)
-1. [Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?](#can-i-use-karafkaproducer-to-produce-messages-that-will-then-be-consumed-by-activejob-jobs)
-1. [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
-1. [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
-1. [Why Karafka is consuming the same message multiple times?](#why-karafka-is-consuming-the-same-message-multiple-times)
-1. [Why do Karafka Web UI topics contain binary/Unicode data instead of text?](#why-do-karafka-web-ui-topics-contain-binaryunicode-data-instead-of-text)
-1. [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
-1. [Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?](#does-karafka-plan-to-submit-metrics-via-a-supported-datadog-integration-ensuring-the-metrics-arent-considered-custom-metrics)
-1. [How can I make Karafka not retry processing, and what are the implications?](#how-can-i-make-karafka-not-retry-processing-and-what-are-the-implications)
-1. [We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?](#we-faced-downtime-due-to-a-failure-in-updating-the-ssl-certs-how-can-we-retrieve-messages-that-were-sent-during-this-downtime)
-1. [How can the retention policy of Kafka affect the data sent during the downtime?](#how-can-the-retention-policy-of-kafka-affect-the-data-sent-during-the-downtime)
-1. [Is it possible to fetch messages per topic based on a specific time period in Karafka?](#is-it-possible-to-fetch-messages-per-topic-based-on-a-specific-time-period-in-karafka)
-1. [Where can I find details on troubleshooting and debugging for Karafka?](#where-can-i-find-details-on-troubleshooting-and-debugging-for-karafka)
-1. [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
-1. [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
-1. [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
-1. [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
-1. [Why does the `karafka_consumers_commands` topic generate constant network traffic?](#why-does-the-karafka_consumers_commands-topic-generate-constant-network-traffic)
-1. [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
-1. [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
-1. [Is it acceptable to declare short-living producers in each app/jobs as needed?](#is-it-acceptable-to-declare-short-living-producers-in-each-appjobs-as-needed)
-1. [What are the consequences if you call a `#produce_async` and immediately close the producer afterward?](#what-are-the-consequences-if-you-call-a-produce_async-and-immediately-close-the-producer-afterward)
-1. [Is it problematic if a developer creates a new producer, calls `#produce_async`, and then closes the producer whenever they need to send a message?](#is-it-problematic-if-a-developer-creates-a-new-producer-calls-produce_async-and-then-closes-the-producer-whenever-they-need-to-send-a-message)
-1. [Could the async process remain open somewhere, even after the producer has been closed?](#could-the-async-process-remain-open-somewhere-even-after-the-producer-has-been-closed)
-1. [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
-1. [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
-1. [Can you control the batching process in WaterDrop?](#can-you-control-the-batching-process-in-waterdrop)
-1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
-1. [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
-1. [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
-1. [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
-1. [Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?](#why-am-i-getting-nscharacterset-initialize-may-have-been-in-progress-in-another-thread-when-fork-error-when-forking-on-macos)
-1. [How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?](#how-does-karafka-handle-messages-with-undefined-topics-and-can-they-be-routed-to-a-default-consumer)
-1. [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
-1. [What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?](#what-does-setting-the-initial_offset-to-earliest-mean-in-karafka-does-it-mean-the-consumer-starts-consuming-from-the-earliest-message-that-has-not-been-consumed-yet)
-1. [Why is the "Dead" tab in Web UI empty in my Multi App setup?](#why-is-the-dead-tab-in-web-ui-empty-in-my-multi-app-setup)
-1. [What causes a "Broker: Policy violation (policy_violation)" error when using Karafka, and how can I resolve it?](#what-causes-a-broker-policy-violation-policy_violation-error-when-using-karafka-and-how-can-i-resolve-it)
-1. [Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-pause_with_exponential_backoff-enabled)
-1. [Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?](#does-karafka-store-the-kafka-server-address-anywhere-and-are-any-extra-steps-required-to-make-it-work-after-changing-the-server-iphostname)
-1. [What should I do if I encounter a loading issue with Karafka after upgrading Bundler to version `2.3.22`?](#what-should-i-do-if-i-encounter-a-loading-issue-with-karafka-after-upgrading-bundler-to-version-2322)
-1. [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
-1. [How can I namespace messages for producing in Karafka?](#how-can-i-namespace-messages-for-producing-in-karafka)
-1. [Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error-when-changing-the-location-of-the-boot-file-using-karafka_boot_file)
-1. [Why Is Kafka Using Only 7 Out of 12 Partitions Despite Specific Settings?](#why-is-kafka-using-only-7-out-of-12-partitions-despite-specific-settings)
-1. [Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?](#why-does-the-dead-letter-queue-dlq-use-the-default-deserializer-instead-of-the-one-specified-for-the-original-topic-in-karafka)
-1. [What should I consider when manually dispatching messages to the DLQ in Karafka?](#what-should-i-consider-when-manually-dispatching-messages-to-the-dlq-in-karafka)
-1. [How can I ensure that my Karafka consumers process data in parallel?](#how-can-i-ensure-that-my-karafka-consumers-process-data-in-parallel)
-1. [How should I handle the migration to different consumer groups for parallel processing?](#how-should-i-handle-the-migration-to-different-consumer-groups-for-parallel-processing)
-1. [What are the best practices for setting up consumer groups in Karafka for optimal parallel processing?](#what-are-the-best-practices-for-setting-up-consumer-groups-in-karafka-for-optimal-parallel-processing)
-1. [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
-1. [When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?](#when-karafka-reaches-maxpollintervalms-time-and-the-consumer-is-removed-from-the-group-does-this-mean-my-code-stops-executing)
-1. [Which component is responsible for committing the offset after consuming? Is it the listener or the worker?](#which-component-is-responsible-for-committing-the-offset-after-consuming-is-it-the-listener-or-the-worker)
-1. [Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?](#can-the-on_idle-and-handle_idle-methods-be-changed-for-a-specific-consumer)
-1. [Is Multiplexing an alternative to running multiple Karafka processes but using Threads?](#is-multiplexing-an-alternative-to-running-multiple-karafka-processes-but-using-threads)
-1. [Is it possible to get watermark offsets from inside a consumer class without using Admin?](#is-it-possible-to-get-watermark-offsets-from-inside-a-consumer-class-without-using-admin)
-1. [Why are message and batch numbers increasing even though I haven't sent any messages?](#why-are-message-and-batch-numbers-increasing-even-though-i-havent-sent-any-messages)
-1. [What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?](#what-does-configuisessionssecret-do-for-the-karafka-web-ui-do-we-need-it-if-we-are-using-our-authentication-layer)
-1. [Is there middleware for consuming messages similar to the middleware for producing messages?](#is-there-middleware-for-consuming-messages-similar-to-the-middleware-for-producing-messages)
-1. [Can we change the name of Karafka's internal topic for the Web UI?](#can-we-change-the-name-of-karafkas-internal-topic-for-the-web-ui)
-1. [Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?](#is-there-a-way-to-control-which-pages-we-show-in-the-karafka-web-ui-explorer-to-prevent-exposing-pii-data)
-1. [What does the `strict_topics_namespacing` configuration setting control?](#what-does-the-strict_topics_namespacing-configuration-setting-control)
-1. [Does librdkafka queue messages when using Waterdrop's `#produce_sync` method?](#does-librdkafka-queue-messages-when-using-waterdrops-produce_sync-method)
-1. [How reliable is the Waterdrop async produce? Will messages be recovered if the Karafka process dies before producing the message?](#how-reliable-is-the-waterdrop-async-produce-will-messages-be-recovered-if-the-karafka-process-dies-before-producing-the-message)
-1. [Will WaterDrop start dropping messages upon librdkafka buffer overflow?](#will-waterdrop-start-dropping-messages-upon-librdkafka-buffer-overflow)
-1. [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
-1. [What should I do if I encounter the `Broker: Not enough in-sync replicas` error?](#what-should-i-do-if-i-encounter-the-broker-not-enough-in-sync-replicas-error)
-1. [Is there any way to measure message sizes post-compression in Waterdrop?](#is-there-any-way-to-measure-message-sizes-post-compression-in-waterdrop)
-1. [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
-1. [How can Virtual Partitions help with handling increased consumer lag in Karafka?](#how-can-virtual-partitions-help-with-handling-increased-consumer-lag-in-karafka)
-1. [Is scaling more processes a viable alternative to using Virtual Partitions?](#is-scaling-more-processes-a-viable-alternative-to-using-virtual-partitions)
-1. [What is the optimal strategy for scaling in Karafka to handle high consumer lag?](#what-is-the-optimal-strategy-for-scaling-in-karafka-to-handle-high-consumer-lag)
-1. [How does Karafka behave under heavy lag, and what should be considered in configuration?](#how-does-karafka-behave-under-heavy-lag-and-what-should-be-considered-in-configuration)
-1. [Is there an undo of Quiet for a consumer to get it consuming again?](#is-there-an-undo-of-quiet-for-a-consumer-to-get-it-consuming-again)
-1. [Can two Karafka server processes with the same group_id consume messages from the same partition in parallel?](#can-two-karafka-server-processes-with-the-same-group_id-consume-messages-from-the-same-partition-in-parallel)
-1. [What are some good default settings for sending large "trace" batches of messages for load testing?](#what-are-some-good-default-settings-for-sending-large-trace-batches-of-messages-for-load-testing)
-1. [Is it worth pursuing transactions for a low throughput but high-importance topic?](#is-it-worth-pursuing-transactions-for-a-low-throughput-but-high-importance-topic)
-1. [Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?](#does-the-waterdrop-producer-retry-to-deliver-messages-after-errors-such-as-librdkafkaerror-and-librdkafkadispatch_error-or-are-the-messages-lost)
-1. [In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?](#in-a-rails-request-can-i-publish-a-message-asynchronously-continue-the-request-and-block-at-the-end-to-wait-for-the-publish-to-finish)
-1. [Why am I getting the error: "No provider for SASL mechanism GSSAPI: recompile librdkafka with libsasl2 or openssl support"?](#why-am-i-getting-the-error-no-provider-for-sasl-mechanism-gssapi-recompile-librdkafka-with-libsasl2-or-openssl-support)
-1. [How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?](#how-can-i-check-if-librdkafka-was-compiled-with-ssl-and-sasl-support-in-karafka)
-1. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
-1. [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
-1. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
-1. [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
-1. [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
-1. [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
-1. [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
-1. [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
-1. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
-1. [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
-1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
-1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
-1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
-1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
-1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
-1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
-1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
+- [Does Karafka require Ruby on Rails?](#does-karafka-require-ruby-on-rails)
+- [Does Karafka require Redis and/or Sidekiq to work?](#does-karafka-require-redis-andor-sidekiq-to-work)
+- [Could an HTTP controller also consume a fetched message through the Karafka router?](#could-an-http-controller-also-consume-a-fetched-message-through-the-karafka-router)
+- [Does Karafka require a separate process running?](#does-karafka-require-a-separate-process-running)
+- [Can I start Karafka process with only particular consumer groups running for given topics?](#can-i-start-karafka-process-with-only-particular-consumer-groups-running-for-given-topics)
+- [Can I use ```#seek``` to start processing topics partition from a certain point?](#can-i-use-seek-to-start-processing-topics-partition-from-a-certain-point)
+- [Why Karafka does not pre-initialize consumers prior to the first message from a given topic being received?](#why-karafka-does-not-pre-initialize-consumers-prior-to-the-first-message-from-a-given-topic-being-received)
+- [Does Karafka restart dead PG connections?](#does-karafka-restart-dead-pg-connections)
+- [Does Karafka require gems to be thread-safe?](#does-karafka-require-gems-to-be-thread-safe)
+- [Can I use Thread.current to store data between batches?](#can-i-use-threadcurrent-to-store-data-between-batches)
+- [Why Karafka process does not pick up newly created topics until restarted?](#why-karafka-process-does-not-pick-up-newly-created-topics-until-restarted)
+- [Why is Karafka not doing work in parallel when I started two processes?](#why-is-karafka-not-doing-work-in-parallel-when-i-started-two-processes)
+- [Can I remove a topic while the Karafka server is running?](#can-i-remove-a-topic-while-the-karafka-server-is-running)
+- [What is a forceful Karafka stop?](#what-is-a-forceful-karafka-stop)
+- [Can I use AWS MSK Serverless with IAM authentication?](#can-i-use-aws-msk-serverless-with-iam-authentication)
+- [Why am I unable to connect to Kafka from another Docker container?](#why-am-i-unable-to-connect-to-kafka-from-another-docker-container)
+- [How can I configure multiple bootstrap servers?](#how-can-i-configure-multiple-bootstrap-servers)
+- [Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?](#why-when-using-cooperative-sticky-rebalance-strategy-all-topics-get-revoked-on-rebalance)
+- [What will happen with uncommitted offsets during a rebalance?](#what-will-happen-with-uncommitted-offsets-during-a-rebalance)
+- [Can I use Karafka with Ruby on Rails as a part of an internal gem?](#can-i-use-karafka-with-ruby-on-rails-as-a-part-of-an-internal-gem)
+- [Can I skip messages on errors?](#can-i-skip-messages-on-errors)
+- [What does static consumer fenced by other consumer with the same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-the-same-groupinstanceid-mean)
+- [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
+- [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
+- [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages-1)
+- [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-use-revoked-when-not-using-long-running-jobs)
+- [Can I consume from more than one Kafka cluster simultaneously?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
+- [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
+- [What is Karafka `client_id` used for?](#what-is-karafka-client_id-used-for)
+- [How can I increase Kafka and Karafka max message size?](#how-can-i-increase-kafka-and-karafka-max-message-size)
+- [Why do DLQ messages in my system keep disappearing?](#why-do-dlq-messages-in-my-system-keep-disappearing)
+- [What is the optimal number of threads to use?](#what-is-the-optimal-number-of-threads-to-use)
+- [Can I use several producers with different configurations with Karafka?](#can-i-use-several-producers-with-different-configurations-with-karafka)
+- [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
+- [Can Karafka ask Kafka to list available topics?](#can-karafka-ask-kafka-to-list-available-topics)
+- [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
+- [Why is increasing `concurrency` not helping upon a sudden burst of messages?](#why-is-increasing-concurrency-not-helping-upon-a-sudden-burst-of-messages)
+- [Why am I seeing a "needs to be consistent namespacing style" error?](#why-am-i-seeing-a-needs-to-be-consistent-namespacing-style-error)
+- [Why, despite setting `initial_offset` to `earliest`, Karafka is not picking up messages from the beginning?](#why-despite-setting-initial_offset-to-earliest-karafka-is-not-picking-up-messages-from-the-beginning)
+- [Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?](#should-i-tstp-wait-a-while-then-send-term-or-set-a-longer-shutdown_timeout-and-only-send-a-term-signal)
+- [Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?](#why-am-i-getting-error0a000086ssl-routinescertificate-verify-failed-after-upgrading-karafka)
+- [Can I consume the same topic independently using two consumers within the same application?](#can-i-consume-the-same-topic-independently-using-two-consumers-within-the-same-application)
+- [Why am I seeing Broker failed to validate record (invalid\_record) error?](#why-am-i-seeing-broker-failed-to-validate-record-invalid_record-error)
+- [How can I make polling faster?](#how-can-i-make-polling-faster)
+- [Can I dynamically add consumer groups and topics to a running Karafka process?](#can-i-dynamically-add-consumer-groups-and-topics-to-a-running-karafka-process)
+- [Can a consumer instance be called multiple times from multiple threads?](#can-a-consumer-instance-be-called-multiple-times-from-multiple-threads)
+- [Can multiple threads reuse a single consumer instance?](#can-multiple-threads-reuse-a-single-consumer-instance)
+- [What does `Broker: Unknown topic or partition` error mean?](#what-does-broker-unknown-topic-or-partition-error-mean)
+- [Why some of consumer subscriptions are not visible in the Web UI?](#why-some-of-consumer-subscriptions-are-not-visible-in-the-web-ui)
+- [Is there a way to run Karafka in a producer-only mode?](#is-there-a-way-to-run-karafka-in-a-producer-only-mode)
+- [Why am I getting the `can't alloc thread (ThreadError)` error from the producer?](#why-am-i-getting-the-cant-alloc-thread-threaderror-error-from-the-producer)
+- [Can I create all the topics needed by the Web UI manually?](#can-i-create-all-the-topics-needed-by-the-web-ui-manually)
+- [Can I consume messages from a Rake task?](#can-i-consume-messages-from-a-rake-task)
+- [Do you provide an upgrade support when upgrading from EOL versions?](#do-you-provide-an-upgrade-support-when-upgrading-from-eol-versions)
+- [Why there are so many Karafka strategies in the codebase?](#why-there-are-so-many-karafka-strategies-in-the-codebase)
+- [Why am I having problems running Karafka and Karafka Web with remote Kafka?](#why-am-i-having-problems-running-karafka-and-karafka-web-with-remote-kafka)
+- [Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?](#why-after-moving-from-racecar-to-karafka-my-confluent-datadog-integration-stopped-working)
+- [Why am I getting `env: can't execute 'bash'` when installing Karafka in an Alpine Docker?](#why-am-i-getting-env-cant-execute-bash-when-installing-karafka-in-an-alpine-docker)
+- [Can I intercept WaterDrop messages in tests?](#can-i-intercept-waterdrop-messages-in-tests)
+- [Does Karafka Expiring Messages remove messages from Kafka?](#does-karafka-expiring-messages-remove-messages-from-kafka)
+- [Can you actively ping the cluster from Karafka to check the cluster availability?](#can-you-actively-ping-the-cluster-from-karafka-to-check-the-cluster-availability)
+- [How do I specify Karafka's environment?](#how-do-i-specify-karafkas-environment)
+- [How can I configure WaterDrop with SCRAM?](#how-can-i-configure-waterdrop-with-scram)
+- [Why am I getting a `Local: Broker transport failure (transport)` error with the `Disconnected` info?](#why-am-i-getting-a-local-broker-transport-failure-transport-error-with-the-disconnected-info)
+- [Why am I getting a `All broker connections are down (all_brokers_down)` error together with the `Disconnected` info?](#why-am-i-getting-a-all-broker-connections-are-down-all_brokers_down-error-together-with-the-disconnected-info)
+- [What is the difference between `partition_key` and `key` in the WaterDrop gem?](#what-is-the-difference-between-partition_key-and-key-in-the-waterdrop-gem)
+- [How can I set up WaterDrop with SCRAM?](#how-can-i-set-up-waterdrop-with-scram)
+- [Is there a way to mark messages as consumed in bulk?](#is-there-a-way-to-mark-messages-as-consumed-in-bulk)
+- [How can I consume all the messages from a Kafka topic without a consumer process?](#how-can-i-consume-all-the-messages-from-a-kafka-topic-without-a-consumer-process)
+- [What does `Broker: Invalid message (invalid_msg)` error mean?](#what-does-broker-invalid-message-invalid_msg-error-mean)
+- [Is there an option in Karafka to re-consume all the messages from a topic even though all were already consumed?](#is-there-an-option-in-karafka-to-re-consume-all-the-messages-from-a-topic-even-though-all-were-already-consumed)
+- [How can I make sure, that `Karafka.producer` does not block/delay my processing?](#how-can-i-make-sure-that-karafkaproducer-does-not-blockdelay-my-processing)
+- [Can `at_exit` be used to close the WaterDrop producer?](#can-at_exit-be-used-to-close-the-waterdrop-producer)
+- [Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?](#why-when-dlq-is-used-with-max_retries-set-to-0-karafka-also-applies-a-back-off)
+- [Can I use `rdkafka` and `karafka-rdkafka` together in the same project?](#can-i-use-rdkafka-and-karafka-rdkafka-together-in-the-same-project)
+- [Does using consumer `#seek` resets the committed offset?](#does-using-consumer-seek-resets-the-committed-offset)
+- [Is it recommended to use public consumer methods from outside the consumer?](#is-it-recommended-to-use-public-consumer-methods-from-outside-the-consumer)
+- [Why do I see `SASL authentication error` after AWS MSK finished the `Heal cluster` operation?](#why-do-i-see-sasl-authentication-error-after-aws-msk-finished-the-heal-cluster-operation)
+- [Why Karafka and WaterDrop are behaving differently than `rdkafka`?](#why-karafka-and-waterdrop-are-behaving-differently-than-rdkafka)
+- [Why am I seeing `Inconsistent group protocol` in Karafka logs?](#why-am-i-seeing-inconsistent-group-protocol-in-karafka-logs)
+- [What is the difference between WaterDrop's `max_payload_size` and librdkafka's `message.max.bytes`?](#what-is-the-difference-between-waterdrops-max_payload_size-and-librdkafkas-messagemaxbytes)
+- [What are consumer groups used for?](#what-are-consumer-groups-used-for)
+- [Why am I getting the `all topic names within a single consumer group must be unique` error?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error)
+- [Why am I getting `WaterDrop::Errors::ProduceError`, and how can I know the underlying cause?](#why-am-i-getting-waterdroperrorsproduceerror-and-how-can-i-know-the-underlying-cause)
+- [Can extra information be added to the messages dispatched to the DLQ?](#can-extra-information-be-added-to-the-messages-dispatched-to-the-dlq)
+- [Why does WaterDrop hang when I attempt to close it?](#why-does-waterdrop-hang-when-i-attempt-to-close-it)
+- [Why Karafka commits offsets on rebalances and `librdkafka` does not?](#why-karafka-commits-offsets-on-rebalances-and-librdkafka-does-not)
+- [What is Karafka's assignment strategy for topics and partitions?](#what-is-karafkas-assignment-strategy-for-topics-and-partitions)
+- [Why can't I see the assignment strategy/protocol for some Karafka consumer groups?](#why-cant-i-see-the-assignment-strategyprotocol-for-some-karafka-consumer-groups)
+- [What can be done to log why the `produce_sync` has failed?](#what-can-be-done-to-log-why-the-produce_sync-has-failed)
+- [Can I password-protect Karafka Web UI?](#can-i-password-protect-karafka-web-ui)
+- [Can I use a Karafka producer without setting up a consumer?](#can-i-use-a-karafka-producer-without-setting-up-a-consumer)
+- [What will happen when a message is dispatched to a dead letter queue topic that does not exist?](#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist)
+- [Why do Karafka reports lag when processes are not overloaded and consume data in real-time?](#why-do-karafka-reports-lag-when-processes-are-not-overloaded-and-consume-data-in-real-time)
+- [Does Kafka guarantee message processing orders within a single partition for single or multiple topics? And does this mean Kafka topics consumption run on a single thread?](#does-kafka-guarantee-message-processing-orders-within-a-single-partition-for-single-or-multiple-topics-and-does-this-mean-kafka-topics-consumption-run-on-a-single-thread)
+- [Why can I produce messages to my local Kafka docker instance but cannot consume?](#why-can-i-produce-messages-to-my-local-kafka-docker-instance-but-cannot-consume)
+- [What is the release schedule for Karafka and its components?](#what-is-the-release-schedule-for-karafka-and-its-components)
+- [Can I pass custom parameters during consumer initialization?](#can-i-pass-custom-parameters-during-consumer-initialization)
+- [Where can I find producer idempotence settings?](#where-can-i-find-producer-idempotence-settings)
+- [How can I control or limit the number of PostgreSQL database connections when using Karafka?](#how-can-i-control-or-limit-the-number-of-postgresql-database-connections-when-using-karafka)
+- [Why is my Karafka application consuming more memory than expected?](#why-is-my-karafka-application-consuming-more-memory-than-expected)
+- [How can I optimize memory usage in Karafka?](#how-can-i-optimize-memory-usage-in-karafka)
+- [Why am I getting `No such file or directory - ps (Errno::ENOENT)` from the Web UI?](#why-am-i-getting-no-such-file-or-directory---ps-errnoenoent-from-the-web-ui)
+- [Can I retrieve all records produced in a single topic using Karafka?](#can-i-retrieve-all-records-produced-in-a-single-topic-using-karafka)
+- [How can I get the total number of messages in a topic?](#how-can-i-get-the-total-number-of-messages-in-a-topic)
+- [Why am I getting `Broker: Group authorization failed (group_authorization_failed)` when using Admin API or the Web UI?](#why-am-i-getting-broker-group-authorization-failed-group_authorization_failed-when-using-admin-api-or-the-web-ui)
+- [Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?](#why-am-i-getting-an-argumenterror-undefined-classmodule-yamlsyck-when-trying-to-install-karafka-license)
+- [Are Virtual Partitions effective in case of not having IO or not having a lot of data?](#are-virtual-partitions-effective-in-case-of-not-having-io-or-not-having-a-lot-of-data)
+- [Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?](#is-the-one-process-per-one-topic-partition-recommendation-in-kafka-also-applicable-to-karafka)
+- [Does running #mark\_as\_consumed increase the processing time?](#does-running-mark_as_consumed-increase-the-processing-time)
+- [Does it make sense to have multiple worker threads when operating on one partition in Karafka?](#does-it-make-sense-to-have-multiple-worker-threads-when-operating-on-one-partition-in-karafka)
+- [Why don't Virtual Partitions provide me with any performance benefits?](#why-dont-virtual-partitions-provide-me-with-any-performance-benefits)
+- [What are Long Running Jobs in Kafka and Karafka, and when should I consider using them?](#what-are-long-running-jobs-in-kafka-and-karafka-and-when-should-i-consider-using-them)
+- [What can I do to optimize the latency in Karafka?](#what-can-i-do-to-optimize-the-latency-in-karafka)
+- [What is the maximum recommended concurrency value for Karafka?](#what-is-the-maximum-recommended-concurrency-value-for-karafka)
+- [Are there concerns about having unused worker threads for a Karafka consumer process?](#are-there-concerns-about-having-unused-worker-threads-for-a-karafka-consumer-process)
+- [How can you effectively scale Karafka during busy periods?](#how-can-you-effectively-scale-karafka-during-busy-periods)
+- [What are the benefits of using Virtual Partitions (VPs) in Karafka?](#what-are-the-benefits-of-using-virtual-partitions-vps-in-karafka)
+- [What's the difference between increasing topic partition count and using VPs in terms of concurrency?](#whats-the-difference-between-increasing-topic-partition-count-and-using-vps-in-terms-of-concurrency)
+- [How do Virtual Partitions compare to multiple subscription groups regarding performance?](#how-do-virtual-partitions-compare-to-multiple-subscription-groups-regarding-performance)
+- [What is the principle of strong ordering in Kafka and its implications?](#what-is-the-principle-of-strong-ordering-in-kafka-and-its-implications)
+- [Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?](#why-do-i-see-rdkafkaconfigclientcreationerror-when-changing-the-partitionassignmentstrategy)
+- [Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?](#is-it-recommended-to-add-the-waterdrop-gem-to-the-gemfile-or-just-karafka-and-karafka-testing)
+- [Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?](#can-i-use-karafkaproducer-to-produce-messages-that-will-then-be-consumed-by-activejob-jobs)
+- [Why am I getting the `Broker: Policy violation (policy_violation)` error?](#why-am-i-getting-the-broker-policy-violation-policy_violation-error)
+- [Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?](#why-am-i-getting-a-error-querying-watermark-offsets-for-partition-0-of-karafka_consumers_states-error)
+- [Why Karafka is consuming the same message multiple times?](#why-karafka-is-consuming-the-same-message-multiple-times)
+- [Why do Karafka Web UI topics contain binary/Unicode data instead of text?](#why-do-karafka-web-ui-topics-contain-binaryunicode-data-instead-of-text)
+- [Can I use same Karafka Web UI topics for multiple environments like production and staging?](#can-i-use-same-karafka-web-ui-topics-for-multiple-environments-like-production-and-staging)
+- [Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?](#does-karafka-plan-to-submit-metrics-via-a-supported-datadog-integration-ensuring-the-metrics-arent-considered-custom-metrics)
+- [How can I make Karafka not retry processing, and what are the implications?](#how-can-i-make-karafka-not-retry-processing-and-what-are-the-implications)
+- [We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?](#we-faced-downtime-due-to-a-failure-in-updating-the-ssl-certs-how-can-we-retrieve-messages-that-were-sent-during-this-downtime)
+- [How can the retention policy of Kafka affect the data sent during the downtime?](#how-can-the-retention-policy-of-kafka-affect-the-data-sent-during-the-downtime)
+- [Is it possible to fetch messages per topic based on a specific time period in Karafka?](#is-it-possible-to-fetch-messages-per-topic-based-on-a-specific-time-period-in-karafka)
+- [Where can I find details on troubleshooting and debugging for Karafka?](#where-can-i-find-details-on-troubleshooting-and-debugging-for-karafka)
+- [Does the open-source (OSS) version of Karafka offer time-based offset lookup features?](#does-the-open-source-oss-version-of-karafka-offer-time-based-offset-lookup-features)
+- [I see a "JoinGroup error: Broker: Invalid session timeout" error. What does this mean, and how can I resolve it?](#i-see-a-joingroup-error-broker-invalid-session-timeout-error-what-does-this-mean-and-how-can-i-resolve-it)
+- [The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?](#the-producer-network-latency-metric-in-dd-seems-too-high-is-there-something-wrong-with-it)
+- [What is the purpose of the `karafka_consumers_reports` topic?](#what-is-the-purpose-of-the-karafka_consumers_reports-topic)
+- [Why does the `karafka_consumers_commands` topic generate constant network traffic?](#why-does-the-karafka_consumers_commands-topic-generate-constant-network-traffic)
+- [Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?](#can-i-use-karafkaproducer-from-within-activejob-jobs-running-in-the-karafka-server)
+- [Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?](#do-you-recommend-using-the-singleton-producer-in-karafka-for-all-appsconsumersjobs-in-a-system)
+- [Is it acceptable to declare short-living producers in each app/jobs as needed?](#is-it-acceptable-to-declare-short-living-producers-in-each-appjobs-as-needed)
+- [What are the consequences if you call a `#produce_async` and immediately close the producer afterward?](#what-are-the-consequences-if-you-call-a-produce_async-and-immediately-close-the-producer-afterward)
+- [Is it problematic if a developer creates a new producer, calls `#produce_async`, and then closes the producer whenever they need to send a message?](#is-it-problematic-if-a-developer-creates-a-new-producer-calls-produce_async-and-then-closes-the-producer-whenever-they-need-to-send-a-message)
+- [Could the async process remain open somewhere, even after the producer has been closed?](#could-the-async-process-remain-open-somewhere-even-after-the-producer-has-been-closed)
+- [Could a single producer be saturated, and if so, what kind of max rate of message production would be the limit?](#could-a-single-producer-be-saturated-and-if-so-what-kind-of-max-rate-of-message-production-would-be-the-limit)
+- [How does the batching process in WaterDrop works?](#how-does-the-batching-process-in-waterdrop-works)
+- [Can you control the batching process in WaterDrop?](#can-you-control-the-batching-process-in-waterdrop)
+- [Is it possible to exclude `karafka-web` related reporting counts from the web UI dashboard?](#is-it-possible-to-exclude-karafka-web-related-reporting-counts-from-the-web-ui-dashboard)
+- [Can I log errors in Karafka with topic, partition, and other consumer details?](#can-i-log-errors-in-karafka-with-topic-partition-and-other-consumer-details)
+- [Why did our Kafka consumer start from the beginning after a 2-week downtime, but resumed correctly after a brief stop and restart?](#why-did-our-kafka-consumer-start-from-the-beginning-after-a-2-week-downtime-but-resumed-correctly-after-a-brief-stop-and-restart)
+- [Why am I getting `+[NSCharacterSet initialize] may have been in progress in another thread when fork()` error when forking on macOS?](#why-am-i-getting-nscharacterset-initialize-may-have-been-in-progress-in-another-thread-when-fork-error-when-forking-on-macos)
+- [How does Karafka handle messages with undefined topics, and can they be routed to a default consumer?](#how-does-karafka-handle-messages-with-undefined-topics-and-can-they-be-routed-to-a-default-consumer)
+- [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
+- [What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?](#what-does-setting-the-initial_offset-to-earliest-mean-in-karafka-does-it-mean-the-consumer-starts-consuming-from-the-earliest-message-that-has-not-been-consumed-yet)
+- [Why is the "Dead" tab in Web UI empty in my Multi App setup?](#why-is-the-dead-tab-in-web-ui-empty-in-my-multi-app-setup)
+- [What causes a "Broker: Policy violation (policy\_violation)" error when using Karafka, and how can I resolve it?](#what-causes-a-broker-policy-violation-policy_violation-error-when-using-karafka-and-how-can-i-resolve-it)
+- [Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-pause_with_exponential_backoff-enabled)
+- [Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?](#does-karafka-store-the-kafka-server-address-anywhere-and-are-any-extra-steps-required-to-make-it-work-after-changing-the-server-iphostname)
+- [What should I do if I encounter a loading issue with Karafka after upgrading Bundler to version `2.3.22`?](#what-should-i-do-if-i-encounter-a-loading-issue-with-karafka-after-upgrading-bundler-to-version-2322)
+- [Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?](#is-there-a-good-way-to-quiet-down-bundle-exec-karafka-server-extensive-logging-in-development)
+- [How can I namespace messages for producing in Karafka?](#how-can-i-namespace-messages-for-producing-in-karafka)
+- [Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?](#why-am-i-getting-the-all-topic-names-within-a-single-consumer-group-must-be-unique-error-when-changing-the-location-of-the-boot-file-using-karafka_boot_file)
+- [Why Is Kafka Using Only 7 Out of 12 Partitions Despite Specific Settings?](#why-is-kafka-using-only-7-out-of-12-partitions-despite-specific-settings)
+- [Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?](#why-does-the-dead-letter-queue-dlq-use-the-default-deserializer-instead-of-the-one-specified-for-the-original-topic-in-karafka)
+- [What should I consider when manually dispatching messages to the DLQ in Karafka?](#what-should-i-consider-when-manually-dispatching-messages-to-the-dlq-in-karafka)
+- [How can I ensure that my Karafka consumers process data in parallel?](#how-can-i-ensure-that-my-karafka-consumers-process-data-in-parallel)
+- [How should I handle the migration to different consumer groups for parallel processing?](#how-should-i-handle-the-migration-to-different-consumer-groups-for-parallel-processing)
+- [What are the best practices for setting up consumer groups in Karafka for optimal parallel processing?](#what-are-the-best-practices-for-setting-up-consumer-groups-in-karafka-for-optimal-parallel-processing)
+- [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
+- [When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?](#when-karafka-reaches-maxpollintervalms-time-and-the-consumer-is-removed-from-the-group-does-this-mean-my-code-stops-executing)
+- [Which component is responsible for committing the offset after consuming? Is it the listener or the worker?](#which-component-is-responsible-for-committing-the-offset-after-consuming-is-it-the-listener-or-the-worker)
+- [Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?](#can-the-on_idle-and-handle_idle-methods-be-changed-for-a-specific-consumer)
+- [Is Multiplexing an alternative to running multiple Karafka processes but using Threads?](#is-multiplexing-an-alternative-to-running-multiple-karafka-processes-but-using-threads)
+- [Is it possible to get watermark offsets from inside a consumer class without using Admin?](#is-it-possible-to-get-watermark-offsets-from-inside-a-consumer-class-without-using-admin)
+- [Why are message and batch numbers increasing even though I haven't sent any messages?](#why-are-message-and-batch-numbers-increasing-even-though-i-havent-sent-any-messages)
+- [What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?](#what-does-configuisessionssecret-do-for-the-karafka-web-ui-do-we-need-it-if-we-are-using-our-authentication-layer)
+- [Is there middleware for consuming messages similar to the middleware for producing messages?](#is-there-middleware-for-consuming-messages-similar-to-the-middleware-for-producing-messages)
+- [Can we change the name of Karafka's internal topic for the Web UI?](#can-we-change-the-name-of-karafkas-internal-topic-for-the-web-ui)
+- [Is there a way to control which pages we show in the Karafka Web UI Explorer to prevent exposing PII data?](#is-there-a-way-to-control-which-pages-we-show-in-the-karafka-web-ui-explorer-to-prevent-exposing-pii-data)
+- [What does the `strict_topics_namespacing` configuration setting control?](#what-does-the-strict_topics_namespacing-configuration-setting-control)
+- [Does librdkafka queue messages when using Waterdrop's `#produce_sync` method?](#does-librdkafka-queue-messages-when-using-waterdrops-produce_sync-method)
+- [How reliable is the Waterdrop async produce? Will messages be recovered if the Karafka process dies before producing the message?](#how-reliable-is-the-waterdrop-async-produce-will-messages-be-recovered-if-the-karafka-process-dies-before-producing-the-message)
+- [Will WaterDrop start dropping messages upon librdkafka buffer overflow?](#will-waterdrop-start-dropping-messages-upon-librdkafka-buffer-overflow)
+- [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
+- [What should I do if I encounter the `Broker: Not enough in-sync replicas` error?](#what-should-i-do-if-i-encounter-the-broker-not-enough-in-sync-replicas-error)
+- [Is there any way to measure message sizes post-compression in Waterdrop?](#is-there-any-way-to-measure-message-sizes-post-compression-in-waterdrop)
+- [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
+- [How can Virtual Partitions help with handling increased consumer lag in Karafka?](#how-can-virtual-partitions-help-with-handling-increased-consumer-lag-in-karafka)
+- [Is scaling more processes a viable alternative to using Virtual Partitions?](#is-scaling-more-processes-a-viable-alternative-to-using-virtual-partitions)
+- [What is the optimal strategy for scaling in Karafka to handle high consumer lag?](#what-is-the-optimal-strategy-for-scaling-in-karafka-to-handle-high-consumer-lag)
+- [How does Karafka behave under heavy lag, and what should be considered in configuration?](#how-does-karafka-behave-under-heavy-lag-and-what-should-be-considered-in-configuration)
+- [Is there an undo of Quiet for a consumer to get it consuming again?](#is-there-an-undo-of-quiet-for-a-consumer-to-get-it-consuming-again)
+- [Can two Karafka server processes with the same group\_id consume messages from the same partition in parallel?](#can-two-karafka-server-processes-with-the-same-group_id-consume-messages-from-the-same-partition-in-parallel)
+- [What are some good default settings for sending large "trace" batches of messages for load testing?](#what-are-some-good-default-settings-for-sending-large-trace-batches-of-messages-for-load-testing)
+- [Is it worth pursuing transactions for a low throughput but high-importance topic?](#is-it-worth-pursuing-transactions-for-a-low-throughput-but-high-importance-topic)
+- [Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?](#does-the-waterdrop-producer-retry-to-deliver-messages-after-errors-such-as-librdkafkaerror-and-librdkafkadispatch_error-or-are-the-messages-lost)
+- [In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?](#in-a-rails-request-can-i-publish-a-message-asynchronously-continue-the-request-and-block-at-the-end-to-wait-for-the-publish-to-finish)
+- [Why am I getting the error: "No provider for SASL mechanism GSSAPI: recompile librdkafka with libsasl2 or openssl support"?](#why-am-i-getting-the-error-no-provider-for-sasl-mechanism-gssapi-recompile-librdkafka-with-libsasl2-or-openssl-support)
+- [How can I check if `librdkafka` was compiled with SSL and SASL support in Karafka?](#how-can-i-check-if-librdkafka-was-compiled-with-ssl-and-sasl-support-in-karafka)
+- [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
+- [Why do I see WaterDrop error events but no raised exceptions in sync producer?](#why-do-i-see-waterdrop-error-events-but-no-raised-exceptions-in-sync-producer)
+- [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
+- [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
+- [Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?](#why-does-karafka-web-ui-stop-working-after-upgrading-the-ruby-slimalpine-docker-images)
+- [Why does installing `karafka-web` take exceptionally long?](#why-does-installing-karafka-web-take-exceptionally-long)
+- [Why does Karafka routing accept consumer classes rather than instances?](#why-does-karafka-routing-accept-consumer-classes-rather-than-instances)
+- [Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?](#why-does-karafka-define-routing-separate-from-consumer-classes-unlike-sidekiq-or-racecar)
+- [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
+  - [Key](#key)
+  - [Partition Key](#partition-key)
+- [Can I disable logging for Karafka Web UI consumer operations while keeping it for my application consumers?](#can-i-disable-logging-for-karafka-web-ui-consumer-operations-while-keeping-it-for-my-application-consumers)
+- [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
+- [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
+- [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
+- [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
+- [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
+- [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
+- [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 
 ---
 
@@ -239,7 +241,7 @@ Karafka can also be embedded within another process so you do not need to run a 
 
 ## Can I start Karafka process with only particular consumer groups running for given topics?
 
-Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--include-consumer-groups``` server flag as follows:
+**Yes**. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--include-consumer-groups``` server flag as follows:
 
 ```shell
 bundle exec karafka server --include-consumer-groups group_name1 group_name3
@@ -251,19 +253,19 @@ You can also exclude particular groups the same way:
 bundle exec karafka server --exclude-consumer-groups group_name1 group_name3
 ```
 
-Visit the [CLI](CLI) section of our docs to learn more about how to limit the scope of things to which the server subscribes.
+To learn more about how to limit the scope of things to which the server subscribes, see the [CLI](CLI) section of our docs. 
 
 ## Can I use ```#seek``` to start processing topics partition from a certain point?
 
 Karafka has a ```#seek``` consumer method that can be used to do that.
 
-## Why Karafka does not pre-initializes consumers prior to first message from a given topic being received?
+## Why Karafka does not pre-initialize consumers prior to the first message from a given topic being received?
 
-Because Karafka does not have knowledge about the whole topology of a given Kafka cluster. We work on what we receive dynamically building consumers when it is required.
+Karafka does not have complete knowledge of the Kafka cluster topology. Instead, it dynamically builds consumers as needed.
 
 ## Does Karafka restart dead PG connections?
 
-Karafka will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Active-Record-Connections-Management#dealing-with-dead-database-connections).
+Karafka will automatically release any unused ActiveRecord connections. These connections should be managed and reconnected by the Rails connection reaper. If necessary, you can implement custom logic to handle reconnections beyond the reaping frequency. For more details, see [Dealing with Dead Database Connections](Active-Record-Connections-Management#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
@@ -271,7 +273,7 @@ Yes. Karafka uses multiple threads to process data, similar to how Puma or Sidek
 
 ## Can I use Thread.current to store data between batches?
 
-**No**. The first available thread will pick up work from the queue to better distribute work. This means that you should **not** use `Thread.current` for any type of data storage.
+**No**. The next available thread will take on tasks from the queue to distribute the work more evenly. This means that you should **not** use `Thread.current` for any type of data storage.
 
 ## Why Karafka process does not pick up newly created topics until restarted?
 
@@ -282,7 +284,7 @@ The frequency of cluster metadata refreshes can be changed via `topic.metadata.r
 
 ## Why is Karafka not doing work in parallel when I started two processes?
 
-Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
+Please make sure your topic contains more than one partition. Only then can Karafka distribute the work to more processes. Keep in mind that all topics created automatically when the first message is sent will always contain only one partition. Use the Admin API to create topics with more partitions.
 
 ## Can I remove a topic while the Karafka server is running?
 
@@ -295,7 +297,7 @@ INFO -- : rdkafka: [thrd:main]: Topic extractor partition count changed from 1 t
 ERROR -- : librdkafka internal error occurred: Broker: Unknown topic or partition (unknown_topic_or_part)
 ```
 
-It is recommended to stop Karafka server instances and then remove and recreate the topic.
+It is advisable to first stop the Karafka server instances before removing and recreating the topic.
 
 ## What is a forceful Karafka stop?
 
@@ -306,30 +308,29 @@ Received SIGINT system signal
 Stopping Karafka server
 Forceful Karafka server stop
 ```
+When you ask Karafka to stop, it waits for all the currently running jobs to finish. The `shutdown_timeout` configuration setting limits the time it waits before shutting down. After this time passes and any work in listeners or workers is still in progress, Karafka will attempt to close itself, forcefully stopping all work in the middle. If you see it happen, it means you need to either:
 
-When you ask Karafka to stop, it will wait for all the currently running jobs to finish. The `shutdown_timeout` configuration setting limits the time it waits. After this time passes and any work in listeners or workers are still being performed, Karafka will attempt to forcefully close itself, stopping all the work in the middle. If you see it happen, it means you need to either:
-
-- extend the `shutdown_timeout` value to match your processing patterns
+- extend the `shutdown_timeout` value to match your processing patterns OR
 - debug your code to check what is causing the extensive processing beyond the `shutdown_timeout`
 
-In any case, it is **not** recommended to ignore this if it happens frequently.
+It is important not to ignore this issue if it occurs frequently.
 
 ## Can I use AWS MSK Serverless with IAM authentication?
 
-No. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
+**No**. IAM is a custom authentication engine that is not a part of the Kafka protocol and is not supported by `librdkafka`.
 
-Karafka supports following methods that work with AWS MSK:
+Karafka supports the following methods that work with AWS MSK:
 
 - [Standard SASL + SSL mechanisms](Operations-Deployment#aws-msk-cluster-setup).
 - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers) flow.
 
-## Why can't I connect to Kafka from another Docker container?
+## Why am I unable to connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setting-Up#connecting-to-kafka-from-other-docker-containers).
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. For detailed instructions, see [Connecting to Kafka from other Docker containers](Kafka-Setting-Up#connecting-to-kafka-from-other-docker-containers).
 
 ## How can I configure multiple bootstrap servers?
 
-You need to define them comma-separated under `kafka` `bootstrap.servers` configuration key:
+You must define the servers as a comma-separated list under the `kafka` configuration key for `bootstrap.servers`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -346,15 +347,15 @@ end
 
 ## Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?
 
-This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
+This behavior can occur if you are using the blocking `mark_as_consumed!` method and the offsets commit happens during a rebalance. With the `cooperative-sticky` strategy, use `mark_as_consumed` instead of  `mark_as_consumed!`.
 
 !!! tip "Consider KIP-848 for Improved Rebalancing"
 
-    If you're using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
+    If you use Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
 
 ## What will happen with uncommitted offsets during a rebalance?
 
-When using `mark_as_consumed`, offsets are stored locally and periodically flushed to Kafka asynchronously.
+When using `mark_as_consumed`, offsets are stored locally and asynchronously flushed to Kafka at periodic intervals.
 
 Upon rebalance, all uncommitted offsets will be committed before a given partition is re-assigned.
 
@@ -364,9 +365,9 @@ Karafka has Rails auto-detection and loads early, so some components may be avai
 
 Moreover, despite the same code base, some processes (`rails s`, `rails db:migrate`, `sidekiq s`) may not need to know about karafka, and there is no need to load it.
 
-The problem is presented in [this](https://github.com/karafka/example-apps/pull/190) example app PR.
+The problem is presented in [this example app PR](https://github.com/karafka/example-apps/pull/190) .
 
-To mitigate this, you can create an empty karafka bootfile. With a file structure like this:
+To mitigate this, you can create an empty karafka bootfile with a file structure like this:
 
 ```text
 +-- karafka_root_dir
@@ -375,7 +376,7 @@ To mitigate this, you can create an empty karafka bootfile. With a file structur
 |   +-- ...
 ```
 
-It is possible to postpone the definition of the Karafka app and do it manually whenever & wherever the user wants (`karafka_app.rb` could be loaded for example, in some initializer).
+It is possible to postpone the definition of the Karafka app and do it manually whenever and wherever you want to (`karafka_app.rb` can be loaded for example, in some initializer).
 
 ```ruby
 # karafka_app.rb
@@ -392,28 +393,28 @@ end
 require 'karafka_root_dir/karafka_app'
 ```
 
-Still not a perfect solution because karafka gem is still loaded.
+Yet, it is not a perfect solution, because karafka gem is still loaded.
 
-!!! note
+The mitigation presented above was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
 
-    This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
+
 
 ## Can I skip messages on errors?
 
-Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+Karafka Pro can bypass non-recoverable messages when errors occur, as part of the Enhanced Dead Letter Queue feature. For more information  on this capability, see the [Disabling Dispatch section](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
-## What does static consumer fenced by other consumer with same group.instance.id mean?
+## What does static consumer fenced by other consumer with the same group.instance.id mean?
 
-If you see such messages in your logs:
+When you encounter this error in your logs:
 
 ```shell
 Fatal error: Broker: Static consumer fenced by other consumer with same group.instance.id
 ```
+This error indicates one of two issues:
 
-It can mean two things:
+1. **Outdated Karafka version**: You're running Karafka version before `2.0.20`. Upgrade to version `2.0.20` or later to resolve this issue.
 
-1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
-1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+1. **Duplicate group.instance.id**: Your `group.instance.id` value is **not** unique within your consumer group. Each consumer in a group must have a unique `group.instance.id` across the **entire consumer group**, not just per process or machine. Verify that you're assigning distinct values to each consumer instance.
 
 ## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
 
@@ -421,37 +422,66 @@ The `#revoked` will be executed even though the `#consume` did not run upon revo
 
 ## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
-If you are seeing following error:
+When you encounter this error in your logs:
 
 ```ruby
 Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
+I'll fetch that documentation section and help you rewrite it.Here's a rewritten version of that section with improved clarity and structure:
 
-It may mean one of four things:
+---
 
-1. High probability: Broker can't keep up with the produce rate.
-1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
-1. Low probability: Slow network connection.
-1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
+## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
-WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
-
-Additionally, you may also:
-
-- Dispatch smaller batches using `#produce_many_sync`.Effectively it will throttle the process that way.
-- Establish a limit on how many messages you want to dispatch at once. This will prevent you from scenarios where you accidentally flush too much. If you dispatch based on an array of samples, you can do it that way:
+If you encounter the following error:
 
 ```ruby
-data_to_dispatch.each_slice(2_00) do |data_slice|
-  Karafka.producer.produce_many_sync(data_slice)
-end
+Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
+This timeout error typically indicates one of the following issues.
+
+**Most Common Causes:**
+1. **Broker cannot keep up with production rate** - The Kafka broker is overwhelmed by the volume of incoming messages and cannot process them quickly enough.
+1. **Broker temporarily overloaded** - If you use `partition_key`, then the broker cannot return topic structure information. Note that WaterDrop `2.4.4` and later includes a retry mechanism to mitigate this issue.
+
+**Less Common Causes:**
+1. **Slow network connection** - Network latency between your application and the Kafka broker.
+1. **SSL configuration issue** - If this is the cause, no messages will reach the broker at all.
+
+
+WaterDrop dispatches messages to `librdkafka`, which then constructs message batches every five milliseconds by default. When producing messages rapidly, this frequent batching can become inefficient—Kafka must process numerous small, separate message batches in quick succession.
+
+**Solutions**
+
+**Primary Solution**
+
+Increase the `queue.buffering.max.ms` configuration value. This allows `librdkafka` to accumulate messages for a longer period before constructing batches, resulting in larger, less frequent batches that Kafka can handle more efficiently.
+
+**Additional Strategies:**
+
+1.   Use `#produce_many_sync` to dispatch smaller batches, which naturally throttles the production rate:
+
+   ```ruby
+   data_to_dispatch.each_slice(200) do |data_slice|
+     Karafka.producer.produce_many_sync(data_slice)
+   end
+   ```
+
+2. Set a maximum number of messages to dispatch at once to prevent accidentally overwhelming the system with too many messages.
+
 
 ## Do I need to use `#revoked?` when not using Long-Running jobs?
 
-In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
+No, not in a stable system. The default [offset management](Offset-management) strategy of Karafka handles this automatically and is typically sufficient.
 
-You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Consuming-Messages#detecting-revocation-midway).
+This default strategy ensures that offsets are committed in two key scenarios:
+
+- After each batch of messages is processed
+- During rebalances, before partitions are reassigned to different consumers
+
+For more information on Karafka revocation/rebalance behaviors, see [Offset management (checkpointing)
+](Offset-management) and [Detecting Revocation Midway¶
+](Consuming-Messages#detecting-revocation-midway).
 
 ## Can I consume from more than one Kafka cluster simultaneously?
 
@@ -486,7 +516,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Please note that if your cluster configuration is complex, you may want to use set it up in the root scope and then alter it on a per-topic basis:
+For complex cluster configurations, define the base settings in the root scope and then override them on a per-topic basis as needed:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -521,7 +551,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Producing-Messages#producing-to-multiple-clusters).
+Also, keep in mind that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like the [Dead Letter Queue](Dead-Letter-Queue) feature as the producer will produce the default cluster DLQ topic despite the origin cluster. For more details on that behavior, see [Producing to Multiple Clusters¶
+](Producing-Messages#producing-to-multiple-clusters).
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
@@ -530,7 +561,7 @@ Also, please remember that those settings apply to consumers **only**. `Karafka#
 Worker processing failed due to an error: Implement this in a subclass
 ```
 
-This error occurs when you have defined your consumer but without a `#consume` method:
+This error occurs when you have defined your consumer without a `#consume` method:
 
 **BAD**:
 
@@ -556,20 +587,22 @@ end
 
 Karafka `client_id` is, by default, used for populating the Kafka `client.id` value.
 
-Kafka `client.id` is a string passed to the server when making requests. This allows the server to track the source of requests beyond just IP/port by including a logical application identifier in server-side request logging. The `client.id` should be unique for each application instance to enable effective debugging and operational monitoring.
+The `client.id` is a string identifier that Kafka includes in server-side request logs. This helps you track which application instance generated each request, going beyond basic IP and port information. 
+
+Set a unique `client.id` for each application instance. This makes debugging and monitoring much easier since you can identify exactly which instance is experiencing issues or generating specific traffic patterns.
 
 ## How can I increase Kafka and Karafka max message size?
 
-To make Kafka accept messages bigger than 1MB, you must change both Kafka and Karafka configurations.
+To make Kafka accept messages bigger than 1MB, change both Kafka and Karafka configurations.
 
-To increase the maximum accepted payload size in Kafka, you can adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters controls the maximum size of a message the Kafka broker will accept.
+To increase the maximum accepted payload size in Kafka, adjust the `message.max.bytes` and `replica.fetch.max.bytes` configuration parameters in the server.properties file. These parameters control the maximum size of a message the Kafka broker will accept.
 
 To allow WaterDrop (Karafka producer) to send bigger messages, you need to:
 
-- set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
-- set `kafka` scoped `message.max.bytes` to the same value.
+1. Set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
+1. Set `kafka` scoped `message.max.bytes` to the same value.
 
-You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during Karafka setup:
+You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during the Karafka setup:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -587,39 +620,38 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
+Keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so consider the trade-offs before making any changes carefully.
 
-!!! note
+!!! warning "Error Messages"
 
     If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
-
-```ruby
-WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
+```
+    WaterDrop::Errors::MessageInvalidError {:payload=>"is more than `max_payload_size` config value"}
 ```
 
-or
-
-```ruby
-Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
+    or
 ```
+    Rdkafka::RdkafkaError (Broker: Message size too large (msg_size_too_large)):
+```
+
 
 ## Why do DLQ messages in my system keep disappearing?
 
-DLQ messages may disappear due to many reasons. Some possible causes include the following:
+DLQ messages can disappear for various reasons. Some possible causes include:
 
 - The DLQ topic has a retention policy that causes them to expire and be deleted.
 - The DLQ topic is a compacted topic, which only retains the last message with a given key.
 - The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
 
-For more details, please look at the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
+For more details, see the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
 
 ## What is the optimal number of threads to use?
 
-The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing number of threads brings the most significant benefits for IO-bound operations.
+The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing the number of threads brings the most significant benefits for IO-bound operations.
 
-It's recommended to use the number of available cores to determine the optimal number of threads for an application.
+It is recommended to use the number of available cores to determine the optimal number of threads for an application.
 
-When working with Karafka, you also need to take into consideration things that may reduce the number of threads being in use, that is:
+When working with Karafka, consider factors that may reduce the number of active threads in use.
 
 - Your topics count.
 - Your partitions count.
@@ -628,15 +660,15 @@ When working with Karafka, you also need to take into consideration things that 
 
 Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
-You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-Multithreading).
+For more information on Karafka and Karafka Pro concurrency model, see [Concurrency and multithreading](Concurrency-and-Multithreading).
 
-It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
+It is also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
 Remember that the optimal number of threads may change as the workload and system resources change over time.
 
 ## Can I use several producers with different configurations with Karafka?
 
-**Yes**. You can create as many producers as you want using [WaterDrop API](WaterDrop-Getting-Started) directly:
+**Yes**. You can create as many producers as you want using [WaterDrop API](WaterDrop-Getting-Started) directly and you can use them:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -648,30 +680,28 @@ producer = WaterDrop::Producer.new do |config|
 end
 ```
 
-and you can use them.
+When you work with multiple producers, follow these guidelines:
 
-There are a few things to keep in mind, though:
-
-1. Producers should be long-lived.
-1. Producers should be closed before the process shutdown to ensure proper resource finalization.
-1. You need to instrument each producer using the WaterDrop instrumentation API.
-1. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
+1. Keep producers long-lived rather than creating and destroying them frequently.
+2. Close each producer before process shutdown to ensure proper resource finalization.
+3. Instrument each producer using the WaterDrop instrumentation API.
+4. Configure the default producer (`Karafka#producer`) to support Karafka's internal operations, including error tracking and DLQ dispatches.
 
 ## What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?
 
-If you are seeing the following error:
-
+!!! failure "OpenSSL Not Available"
 ```shell
-`validate!':
-{:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
- OpenSSL not available at build time"} (Karafka::Errors::InvalidConfigurationError)
+    validate!:
+    {:kafka=>"Unsupported value "SSL" for configuration property "security.protocol":
+    OpenSSL not available at build time"}
+     (Karafka::Errors::InvalidConfigurationError)
 ```
 
-It means you want to use SSL, but `librdkafka` was built without it. You have to:
+This error occurs when `librdkafka` was built without SSL support. To resolve the issue:
 
-1. Uninstal it by running `gem remove karafka-rdkafka`
-1. Install `openssl` (OS dependant but for macos, that would be `brew install openssl`)
-1. Run `bundle install` again, so `librdkafka` is recompiled with SSL support.
+1. Uninstall the current version: `gem remove karafka-rdkafka`.
+2. Install `openssl` (on macOS, use `brew install openssl`).
+3. Run `bundle install` again to recompile `librdkafka` with SSL support.
 
 ## Can Karafka ask Kafka to list available topics?
 
