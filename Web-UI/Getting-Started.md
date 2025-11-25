@@ -380,10 +380,6 @@ The Web UI uses two consumer groups that need ACL permissions:
 | `karafka_admin`  | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries.  |
 | `karafka_web`    | The dedicated consumer group for the Web UI consumer that materializes and processes reporting data.                    |
 
-!!! note "Consumer Group Naming"
-
-    If you're using a [Consumer Mapper](Routing#consumer-mappers) or have reconfigured `config.admin.group_id` or `Karafka::Web.setup { |config| config.group_id = '...' }`, ensure your ACLs match the actual consumer group names being used.
-
 !!! tip "Prefixed ACLs"
 
     If your Kafka ACLs use prefixed wildcard permissions (e.g., `karafka_*`), both the topics and consumer groups will be covered by a single prefix rule, simplifying ACL management.
