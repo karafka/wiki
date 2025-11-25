@@ -377,7 +377,7 @@ The Web UI uses two consumer groups that need ACL permissions:
 
 | Consumer Group   | Purpose                                                                                                                 |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `karafka_admin`  | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries. |
+| `karafka_admin`  | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries.  |
 | `karafka_web`    | The dedicated consumer group for the Web UI consumer that materializes and processes reporting data.                    |
 
 !!! note "Consumer Group Naming"
