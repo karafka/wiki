@@ -355,6 +355,39 @@ end
 
 By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
 
+## Kafka ACL Requirements
+
+When deploying Karafka Web UI in a Kafka cluster with explicit ACLs (Access Control Lists), you need to grant permissions for both the required **topics** and **consumer groups**.
+
+### Required Topics
+
+The following topics need appropriate ACL permissions (typically `Allow: ALL` or at minimum `Read`, `Write`, and `Describe`):
+
+| Topic Name | Required For |
+|------------|--------------|
+| `karafka_consumers_reports` | Core Web UI functionality |
+| `karafka_consumers_states` | Core Web UI functionality |
+| `karafka_consumers_metrics` | Core Web UI functionality |
+| `karafka_consumers_commands` | [Commanding](Pro-Web-UI-Commanding) feature (Pro) |
+| `karafka_errors` | Error tracking |
+
+### Required Consumer Groups
+
+The Web UI uses two consumer groups that need ACL permissions:
+
+| Consumer Group | Purpose |
+|----------------|---------|
+| `karafka_admin` | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries. |
+| `karafka_web` | The dedicated consumer group for the Web UI consumer that materializes and processes reporting data. |
+
+!!! note "Consumer Group Naming"
+
+    If you're using a [Consumer Mapper](Routing#consumer-mappers) or have reconfigured `config.admin.group_id` or `Karafka::Web.setup { |config| config.group_id = '...' }`, ensure your ACLs match the actual consumer group names being used.
+
+!!! tip "Prefixed ACLs"
+
+    If your Kafka ACLs use prefixed wildcard permissions (e.g., `karafka_*`), both the topics and consumer groups will be covered by a single prefix rule, simplifying ACL management.
+
 ## Troubleshooting
 
 As mentioned above, the initial setup **requires** you to run `bundle exec karafka-web install` once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
@@ -366,7 +399,7 @@ Before reporting an issue, please make sure that:
 - Use `bundle exec karafka-web migrate` to create missing topics
 - You have a working connection with your Kafka cluster
 - The resource you requested exists
-- You have granted correct ACL permissions to the `CLIENT_ID_karafka_admin` consumer group that Web UI uses internally in case of a `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error. You can find more about admin consumer group [here](Admin-API#configuration).
+- You have granted correct ACL permissions for all required topics and consumer groups. See [Kafka ACL Requirements](#kafka-acl-requirements) for details. A `Rdkafka::RdkafkaError: Broker: Group authorization failed (group_authorization_failed)` error typically indicates missing consumer group ACLs.
 
 If you were looking for a given process or other real-time information, the state might have changed, and the information you were looking for may no longer exist.
 
