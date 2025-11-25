@@ -363,22 +363,22 @@ When deploying Karafka Web UI in a Kafka cluster with explicit ACLs (Access Cont
 
 The following topics need appropriate ACL permissions (typically `Allow: ALL` or at minimum `Read`, `Write`, and `Describe`):
 
-| Topic Name | Required For |
-|------------|--------------|
-| `karafka_consumers_reports` | Core Web UI functionality |
-| `karafka_consumers_states` | Core Web UI functionality |
-| `karafka_consumers_metrics` | Core Web UI functionality |
+| Topic Name                   | Required For                                      |
+| ---------------------------- | ------------------------------------------------- |
+| `karafka_consumers_reports`  | Core Web UI functionality                         |
+| `karafka_consumers_states`   | Core Web UI functionality                         |
+| `karafka_consumers_metrics`  | Core Web UI functionality                         |
 | `karafka_consumers_commands` | [Commanding](Pro-Web-UI-Commanding) feature (Pro) |
-| `karafka_errors` | Error tracking |
+| `karafka_errors`             | Error tracking                                    |
 
 ### Required Consumer Groups
 
 The Web UI uses two consumer groups that need ACL permissions:
 
-| Consumer Group | Purpose |
-|----------------|---------|
-| `karafka_admin` | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries. |
-| `karafka_web` | The dedicated consumer group for the Web UI consumer that materializes and processes reporting data. |
+| Consumer Group   | Purpose                                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `karafka_admin`  | Used by the [Admin API](Admin-API) for administrative operations. The Web UI uses this internally for various queries. |
+| `karafka_web`    | The dedicated consumer group for the Web UI consumer that materializes and processes reporting data.                    |
 
 !!! note "Consumer Group Naming"
 
