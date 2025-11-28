@@ -563,4 +563,5 @@ Using `:earliest` and `:latest` is vital for managing consumer behavior, ensurin
 
 - [Admin Acls API](Admin-Acls-API) - Manage Kafka ACLs programmatically
 - [Admin Configs API](Admin-Configs-API) - Configure topics and brokers
+- [Admin Replication API](Admin-Replication-API) - Plan replication factor changes
 - [Declarative Topics](Declarative-Topics) - Higher-level topic management approach
