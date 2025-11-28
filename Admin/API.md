@@ -1,3 +1,5 @@
+# Admin API
+
 Karafka provides application administrative functions via the built-in `Karafka::Admin` module, including topic and consumer group management, cluster administration, and more.
 
 !!! tip "Asynchronous Operation Propagation"

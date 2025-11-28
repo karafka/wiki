@@ -1,3 +1,5 @@
+# Admin Configs API
+
 The Karafka Admin Configs API provides tools for managing configuration settings for Kafka brokers and topics. This API supports retrieving configuration details (`describe`) and incremental alterations (`alter`) to these configurations. The operations are designed to be flexible, supporting both individual and batch operations.
 
 !!! tip "Asynchronous Operation Propagation"
