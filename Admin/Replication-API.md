@@ -89,22 +89,22 @@ The `plan_topic_replication` and `rebalance` methods return a `Replication` obje
 
 ### Plan Attributes
 
-| Attribute | Description |
-|-----------|-------------|
-| `topic` | The target topic name |
-| `current_replication_factor` | The topic's current replication factor |
-| `target_replication_factor` | The desired replication factor |
-| `partitions_assignment` | Hash mapping partition IDs to arrays of broker IDs |
-| `reassignment_json` | Kafka-compatible JSON string (version 1 format) |
-| `execution_commands` | Hash with `:generate`, `:execute`, and `:verify` CLI commands |
-| `steps` | Array of human-readable step-by-step instructions |
+| Attribute                    | Description                                                     |
+|------------------------------|-----------------------------------------------------------------|
+| `topic`                      | The target topic name                                           |
+| `current_replication_factor` | The topic's current replication factor                          |
+| `target_replication_factor`  | The desired replication factor                                  |
+| `partitions_assignment`      | Hash mapping partition IDs to arrays of broker IDs              |
+| `reassignment_json`          | Kafka-compatible JSON string (version 1 format)                 |
+| `execution_commands`         | Hash with `:generate`, `:execute`, and `:verify` CLI commands   |
+| `steps`                      | Array of human-readable step-by-step instructions               |
 
 ### Plan Methods
 
-| Method | Description |
-|--------|-------------|
+| Method                 | Description                                            |
+|------------------------|--------------------------------------------------------|
 | `export_to_file(path)` | Writes the reassignment JSON to the specified file path |
-| `summary` | Returns a human-readable description of the plan |
+| `summary`              | Returns a human-readable description of the plan        |
 
 ### Example: Inspecting a Plan
 
@@ -181,13 +181,13 @@ The verify command will show progress for each partition. The reassignment is co
 
 The Replication API validates your request before generating a plan. Common validation errors include:
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| Target RF must exceed current | Attempting to decrease or maintain current RF | Use a higher replication factor value |
-| Target RF exceeds broker count | Not enough brokers available | Add more brokers or use a lower RF |
-| Missing partition assignments | Manual assignment doesn't cover all partitions | Include all partition IDs in the brokers hash |
-| Duplicate brokers in assignment | Same broker listed twice for a partition | Each broker ID must appear only once per partition |
-| Invalid broker ID | Referenced broker doesn't exist | Use only broker IDs present in the cluster |
+| Error                          | Cause                                          | Solution                                          |
+|--------------------------------|------------------------------------------------|---------------------------------------------------|
+| Target RF must exceed current  | Attempting to decrease or maintain current RF  | Use a higher replication factor value             |
+| Target RF exceeds broker count | Not enough brokers available                   | Add more brokers or use a lower RF                |
+| Missing partition assignments  | Manual assignment doesn't cover all partitions | Include all partition IDs in the brokers hash     |
+| Duplicate brokers in assignment | Same broker listed twice for a partition       | Each broker ID must appear only once per partition |
+| Invalid broker ID              | Referenced broker doesn't exist                | Use only broker IDs present in the cluster        |
 
 ### Example: Handling Validation Errors
 
