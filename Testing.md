@@ -39,10 +39,11 @@ RSpec.configure do |config|
 end
 ```
 
-Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains three methods which you can use within your specs:
+Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains four methods which you can use within your specs:
 
 - `#consumer_for` - the method creates a consumer instance for the desired topic.
 - `#produce` - the method sends message to the consumer instance.
+- `#produce_to` - the method sends a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - the method contains all the messages "sent" to Kafka during spec execution.
 
 !!! warning "Message Buffering"
@@ -124,6 +125,80 @@ Reference this name when you use the `karafka.consumer_for` method:
 ```ruby
 subject(:consumer) { karafka.consumer_for(:visits) }
 ```
+
+### Testing Multiple Consumer Groups on the Same Topic
+
+When multiple consumer groups listen to the same Kafka topic, you need to use the `#produce_to` method to explicitly target a specific consumer. This is necessary because the standard `#produce` method cannot determine which consumer should receive the message when multiple consumers subscribe to the same topic.
+
+Consider the following routing configuration where two consumer groups listen to the same `events` topic:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # config stuff...
+  end
+
+  routes.draw do
+    consumer_group :analytics do
+      topic :events do
+        consumer AnalyticsEventsConsumer
+      end
+    end
+
+    consumer_group :notifications do
+      topic :events do
+        consumer NotificationsEventsConsumer
+      end
+    end
+  end
+end
+```
+
+To test each consumer independently, use the `#produce_to` method which sends messages directly to a specific consumer instance:
+
+```ruby
+RSpec.describe AnalyticsEventsConsumer do
+  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :analytics) }
+
+  before do
+    # Use produce_to to send messages directly to this specific consumer
+    karafka.produce_to(consumer, { 'event_type' => 'page_view' }.to_json)
+  end
+
+  it 'processes analytics events' do
+    expect { consumer.consume }.to change { AnalyticsRecord.count }.by(1)
+  end
+end
+
+RSpec.describe NotificationsEventsConsumer do
+  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :notifications) }
+
+  before do
+    # Use produce_to to target this specific consumer
+    karafka.produce_to(consumer, { 'event_type' => 'user_signup' }.to_json)
+  end
+
+  it 'sends notification for signup events' do
+    expect { consumer.consume }.to change { Notification.count }.by(1)
+  end
+end
+```
+
+The `#produce_to` method accepts the same parameters as `#produce` for message metadata:
+
+```ruby
+karafka.produce_to(
+  consumer,
+  payload,
+  key: 'message-key',
+  partition: 0,
+  headers: { 'trace-id' => '123' }
+)
+```
+
+!!! note "When to Use produce_to"
+
+    Use `#produce_to` when you have multiple consumer groups subscribing to the same topic. For single-consumer scenarios, the standard `#produce` method works as expected.
 
 ### Testing Messages Production (Producer)
 
@@ -263,10 +338,11 @@ To integrate Karafka testing with Minitest, perform the following steps:
 
 **Result:**
 
-Your Minitest environment is configured with Karafka testing capabilities. You have access to a `@karafka` object that provides three essential methods:
+Your Minitest environment is configured with Karafka testing capabilities. You have access to a `@karafka` object that provides four essential methods:
 
 - `#consumer_for` - Creates a consumer instance for the desired topic.
 - `#produce` - "Sends" messages to the consumer instance.
+- `#produce_to` - "Sends" a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - Contains all messages "sent" to Kafka during test execution.
 
 !!! warning "Message Buffering"
@@ -317,6 +393,56 @@ it 'expects to dispatch async message to messages topic with value bigger by 1' 
 
   expect(@karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
 end
+```
+
+### Testing Multiple Consumer Groups on the Same Topic - Minitest
+
+When multiple consumer groups listen to the same Kafka topic, use the `#produce_to` method to explicitly target a specific consumer:
+
+```ruby
+class AnalyticsEventsConsumerTest < ActiveSupport::TestCase
+  include Karafka::Testing::Minitest::Helpers
+
+  def setup
+    @consumer = @karafka.consumer_for(:events, consumer_group: :analytics)
+  end
+
+  test 'processes analytics events' do
+    @karafka.produce_to(@consumer, { 'event_type' => 'page_view' }.to_json)
+
+    assert_difference 'AnalyticsRecord.count', 1 do
+      @consumer.consume
+    end
+  end
+end
+
+class NotificationsEventsConsumerTest < ActiveSupport::TestCase
+  include Karafka::Testing::Minitest::Helpers
+
+  def setup
+    @consumer = @karafka.consumer_for(:events, consumer_group: :notifications)
+  end
+
+  test 'sends notification for signup events' do
+    @karafka.produce_to(@consumer, { 'event_type' => 'user_signup' }.to_json)
+
+    assert_difference 'Notification.count', 1 do
+      @consumer.consume
+    end
+  end
+end
+```
+
+The `#produce_to` method accepts the same parameters as `#produce` for message metadata:
+
+```ruby
+@karafka.produce_to(
+  @consumer,
+  payload,
+  key: 'message-key',
+  partition: 0,
+  headers: { 'trace-id' => '123' }
+)
 ```
 
 ### Testing Messages Production (Producer)
