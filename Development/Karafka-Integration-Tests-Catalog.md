@@ -66,7 +66,18 @@
 | `admin/rename_consumer_group/when_previous_cg_does_not_exist_spec.rb` | When the previous consumer group does not exist, it should return false |
 | `admin/rename_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
 | `admin/rename_consumer_group/without_old_removal_spec.rb` | When we have old cg and new cg and topics with offsets to migrate, it should work When we indicate that old group should stay, it should not be removed. |
+| `admin/replication/plan_basic_spec.rb` | Karafka should generate basic replication plans with correct structure |
+| `admin/replication/plan_error_handling_spec.rb` | Karafka should validate replication plan parameters and provide clear errors |
+| `admin/replication/plan_kafka_tool_compatibility_spec.rb` | Karafka-generated JSON should work with kafka-reassign-partitions.sh This is a TRUE INTEGRATION TEST that validates our JSON is compatible with Kafka's official tooling by actually executing kafka-reassign-partitions.sh |
+| `admin/replication/plan_manual_assignment_spec.rb` | Karafka should support manual broker assignment for replication plans |
 | `admin/replication_info_fetch_spec.rb` | We should be able to fetch and use info about replication, in sync etc. |
+| `admin/replication_multi_broker_sequential/concurrent_operations_spec.rb` | Karafka should handle concurrent RF changes on multiple topics |
+| `admin/replication_multi_broker_sequential/increase_replication_factor_spec.rb` | Karafka should increase topic replication factor from 1 to 3 using kafka-reassign-partitions |
+| `admin/replication_multi_broker_sequential/insufficient_brokers_error_spec.rb` | Karafka should raise errors for invalid replication factor values |
+| `admin/replication_multi_broker_sequential/manual_broker_assignment_spec.rb` | Karafka should respect manual broker assignment when increasing replication factor |
+| `admin/replication_multi_broker_sequential/multi_partition_topic_spec.rb` | Karafka should increase replication factor for multi-partition topics |
+| `admin/replication_multi_broker_sequential/rebalance_replicas_spec.rb` | Karafka should rebalance replicas across brokers without changing replication factor |
+| `admin/replication_multi_broker_sequential/verify_isr_after_change_spec.rb` | Karafka should have valid ISR after replication factor change |
 | `admin/seeking_operations_active_spec.rb` | Karafka should handle seeking operations during active consumption correctly |
 | `admin/topic_operations_nonexistent_spec.rb` | Karafka should handle administrative operations on non-existent topics gracefully |
 | `cli/cli_start_spec.rb` | Karafka CLI should work and should just run help without command |
@@ -671,7 +682,7 @@
 | `pro/consumption/strategies/dlq/ftr_lrj/with_work_exceeding_throttle_spec.rb` | When doing work that is exceeding timeouts, we should not throttle. Instead we need to seek to the first throttled message and just move on. DLQ should not interact with this in any way. |
 | `pro/consumption/strategies/dlq/ftr_lrj/without_hitting_limits_spec.rb` | Karafka should be able to just consume when throttling limits are not reached. DLQ should have nothing to do with this. |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_batch_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward retrying from last one that was committed with duplicates in between comitted and crashed |
-| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | *No description available* |
+| `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_marking_spec.rb` | When using DLQ with FTR, LRJ, and MOM together, non-recoverable errors should skip failed messages and move forward, ensuring no duplicates when manual offset management is used |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/non_recoverable_moving_forward_no_marking_spec.rb` | Upon non-recoverable errors, Karafka should move forward skipping given message even if no marking happens. When operating on batches and no marking happens, we skip first message from the batch on which the error happened. |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
 | `pro/consumption/strategies/dlq/ftr_lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
@@ -1093,8 +1104,8 @@
 | `pro/recurring_tasks/defining_schedule_spec.rb` | We should be able to build up a schedule with recurring tasks that we can use |
 | `pro/recurring_tasks/disable_enable_all_spec.rb` | We should be able to disable and enable back all the jobs in one go |
 | `pro/recurring_tasks/disabled_state_replaying_spec.rb` | When we have an active schedule that got disabled, after a re-run we should be able to recover its inactive state |
-| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | *No description available* |
-| `pro/recurring_tasks/logging_data_published_spec.rb` | *No description available* |
+| `pro/recurring_tasks/logging_data_published_on_errors_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic even if those executions fail |
+| `pro/recurring_tasks/logging_data_published_spec.rb` | When tasks are triggered, by default it should publish events to the logs topic This spec will hang if logs are not published |
 | `pro/recurring_tasks/routes_creation_spec.rb` | When we decide to use recurring tasks, in specs it should automatically migrate and create appropriate topics |
 | `pro/recurring_tasks/smarter_reconfiguration_spec.rb` | We should be able to reconfigure recurring tasks topics also via the direct config API This allows us to reconfigure things granularly. |
 | `pro/recurring_tasks/state_publishing_frequency_spec.rb` | When we start cron and publish several events, the state should always be published after each command execution. This allows us to make assumptions about the topic data structure when buildings things like UI. |
