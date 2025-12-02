@@ -465,7 +465,7 @@ Increase the `queue.buffering.max.ms` configuration value. This allows `librdkaf
    end
    ```
 
-2. Set a maximum number of messages to dispatch at once to prevent accidentally overwhelming the system with too many messages.
+1. Set a maximum number of messages to dispatch at once to prevent accidentally overwhelming the system with too many messages.
 
 
 ## Do I need to use `#revoked?` when not using Long-Running jobs?
@@ -681,9 +681,9 @@ end
 When you work with multiple producers, follow these guidelines:
 
 1. Keep producers long-lived rather than creating and destroying them frequently.
-2. Close each producer before process shutdown to ensure proper resource finalization.
-3. Instrument each producer using the WaterDrop instrumentation API.
-4. Configure the default producer (`Karafka#producer`) to support Karafka's internal operations, including error tracking and DLQ dispatches.
+1. Close each producer before process shutdown to ensure proper resource finalization.
+1. Instrument each producer using the WaterDrop instrumentation API.
+1. Configure the default producer (`Karafka#producer`) to support Karafka's internal operations, including error tracking and DLQ dispatches.
 
 ## What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?
 
@@ -698,8 +698,8 @@ When you work with multiple producers, follow these guidelines:
 This error occurs when `librdkafka` was built without SSL support. To resolve the issue:
 
 1. Uninstall the current version: `gem remove karafka-rdkafka`.
-2. Install `openssl` (on macOS, use `brew install openssl`).
-3. Run `bundle install` again to recompile `librdkafka` with SSL support.
+1. Install `openssl` (on macOS, use `brew install openssl`).
+1. Run `bundle install` again to recompile `librdkafka` with SSL support.
 
 ## Can Karafka ask Kafka to list available topics?
 
@@ -1421,12 +1421,12 @@ The assignment strategy is not a one-size-fits-all solution and can be changed b
    - Configure `group.remote.assignor` (e.g., `uniform` or `range`)
    - Benefits: Faster rebalancing, less disruption, simpler operation, better static membership handling
 
-2. **Cooperative-Sticky (for older Kafka versions)** - Use when KIP-848 is not available:
+1. **Cooperative-Sticky (for older Kafka versions)** - Use when KIP-848 is not available:
    - Set `partition.assignment.strategy` to `cooperative-sticky`
    - Provides incremental rebalancing benefits over eager protocols
    - Good fallback option for teams on older infrastructure
 
-3. **Legacy strategies** - `range` or `roundrobin` for specific use cases or compatibility requirements
+1. **Legacy strategies** - `range` or `roundrobin` for specific use cases or compatibility requirements
 
 It's important to consider your Kafka broker version, particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
 
