@@ -74,6 +74,13 @@
 - [Error Handling and back off policy](Operations-Error-Handling-and-Back-Off-Policy)
 - [AWS MSK Guide](Operations-AWS-MSK-Guide)
 
+## Admin
+
+- [Admin API](Admin-API)
+- [ACLs API](Admin-Acls-API)
+- [Configs API](Admin-Configs-API)
+- [Replication API](Admin-Replication-API)
+
 ## Advanced
 
 - [Upgrading](Upgrading)
@@ -81,9 +88,6 @@
 - [Active Job](Active-Job)
 - [Dead Letter Queue](Dead-Letter-Queue)
 - [Declarative Topics](Declarative-Topics)
-- [Admin API](Admin-API)
-- [ACLs API](Admin-Acls-API)
-- [Configs API](Admin-Configs-API)
 - [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 - [CLI](CLI)
 - [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)

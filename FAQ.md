@@ -218,6 +218,7 @@
 - [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
 - [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
 - [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
+- [What Kafka ACLs are required for the Karafka Web UI to work?](#what-kafka-acls-are-required-for-the-karafka-web-ui-to-work)
 
 ---
 
@@ -2987,3 +2988,9 @@ If you need both high multiplexing and multiple processes, consider increasing y
 rdkafka-ruby is a pure Kafka protocol binding that remains agnostic about your data format. It treats message payloads as opaque byte streams, which provides maximum flexibility for any serialization approach.
 
 When consuming messages, you can manually deserialize using `raw_payload` or configure a custom deserializer. For detailed examples and best practices, see the [Deserialization](Deserialization) documentation.
+
+## What Kafka ACLs are required for the Karafka Web UI to work?
+
+When deploying Karafka Web UI in a Kafka cluster with explicit ACLs, you need to grant permissions for both the Web UI topics (`karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics`, `karafka_consumers_commands`, and `karafka_errors`) and the consumer groups (`karafka_admin` and `karafka_web`).
+
+For detailed information about required permissions and configuration options, see the [Kafka ACL Requirements](Web-UI-Getting-Started#kafka-acl-requirements) section in the Web UI documentation.

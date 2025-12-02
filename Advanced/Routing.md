@@ -218,20 +218,20 @@ end
 
 There are several options you can set inside of the ```topic``` block. All of them except ```consumer``` are optional. Here are the most important ones:
 
-| Option                            | Value type   | Description                                                                                                                 |
-|-----------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------|
-| active                            | Boolean      | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
-| [consumer](Consuming-Messages)    | Class        | Name of a consumer class that we want to use to consume messages from a given topic                                         |
-| [deserializers](Deserialization)  | Hash        | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                    |
-| [manual_offset_management](Offset-management#manual-offset-management)               | Boolean        | Should Karafka automatically mark messages as consumed or not          |
-| [long_running_job](Pro-Long-Running-Jobs)        | Boolean     | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                       |
-| [virtual_partitions](Pro-Virtual-Partitions)     | Hash        | Allows you to parallelize the processing of data from a single partition.                                     |
-| [dead_letter_queue](Dead-Letter-Queue)           | Hash        | Provides a systematic way of dealing with persistent consumption errors.                                      |
-| [delay_by](Pro-Delayed-Topics)    | Integer      | Feature that enables delaying message processing from specific topics for a specified time.                                 |
-| [expire_in](Pro-Expiring-Messages) | Integer     | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
-| [filter](Pro-Filtering-API)       | `#call`      | Feature that allows users to filter messages based on specific criteria.                                                    |
-| [config](Declarative-Topics)      | Hash         | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
-| [kafka](Multi-Cluster-Setup)                     | Hash         | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
+| Option                                                                 | Value type | Description                                                                                                                 |
+|------------------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------|
+| active                                                                 | Boolean    | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
+| [consumer](Consuming-Messages)                                         | Class      | Name of a consumer class that we want to use to consume messages from a given topic                                         |
+| [deserializers](Deserialization)                                       | Hash       | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                     |
+| [manual_offset_management](Offset-management#manual-offset-management) | Boolean    | Should Karafka automatically mark messages as consumed or not                                                               |
+| [long_running_job](Pro-Long-Running-Jobs)                              | Boolean    | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                                     |
+| [virtual_partitions](Pro-Virtual-Partitions)                           | Hash       | Allows you to parallelize the processing of data from a single partition.                                                   |
+| [dead_letter_queue](Dead-Letter-Queue)                                 | Hash       | Provides a systematic way of dealing with persistent consumption errors.                                                    |
+| [delay_by](Pro-Delayed-Topics)                                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
+| [expire_in](Pro-Expiring-Messages)                                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
+| [filter](Pro-Filtering-API)                                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
+| [config](Declarative-Topics)                                           | Hash       | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
+| [kafka](Multi-Cluster-Setup)                                           | Hash       | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
 
 ```ruby
 class KarafkaApp < Karafka::App

@@ -15,6 +15,7 @@ puts "Working in directory: #{Dir.pwd}"
 
 # Flatten namespaced directories with prefix
 %w[
+  Admin
   Pro
   Web-UI
   WaterDrop

@@ -1,3 +1,5 @@
+# Admin API
+
 Karafka provides application administrative functions via the built-in `Karafka::Admin` module, including topic and consumer group management, cluster administration, and more.
 
 !!! tip "Asynchronous Operation Propagation"
@@ -13,8 +15,6 @@ Karafka provides application administrative functions via the built-in `Karafka:
 `Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
 
 `Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
-
-For example, if you're using Kafka ACLs with prefixed wildcard permissions, `Karafka::Admin` will be subject to the naming patterns established by the Consumer Mapper, ensuring security and consistent access control.
 
 If you wish to reconfigure `Karafka::Admin`, you may alter the `config.admin` scope during the Karafka framework configuration. You may, for example, use an alternative `group_id` to replace the default `karafka_admin` part and alter the `kafka` scope settings.
 
@@ -565,4 +565,5 @@ Using `:earliest` and `:latest` is vital for managing consumer behavior, ensurin
 
 - [Admin Acls API](Admin-Acls-API) - Manage Kafka ACLs programmatically
 - [Admin Configs API](Admin-Configs-API) - Configure topics and brokers
+- [Admin Replication API](Admin-Replication-API) - Plan replication factor changes
 - [Declarative Topics](Declarative-Topics) - Higher-level topic management approach

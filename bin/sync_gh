@@ -21,6 +21,7 @@ Dir["#{Dir.pwd}/**.md"].each do |file|
 end
 
 %w[
+  Admin
   Pro
   Web-UI
   WaterDrop

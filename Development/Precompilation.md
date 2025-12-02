@@ -6,12 +6,12 @@ As of 2025, **native extensions (precompiled binaries) are now available** for t
 
 The `rdkafka` gem previously required 60-90 seconds of compilation during installation. Here's the before and after:
 
-| Area | Before | After |
-|------|--------|-------|
-| Docker build times | ❌ 60-90 seconds compilation | ✅ 3-10 seconds installation |
-| Development setup | ❌ Requires build dependencies | ✅ No build dependencies needed |
-| Deployment processes | ❌ Compilation failures possible | ✅ Reliable installation |
-| Developer productivity | ❌ Slow, error-prone installs | ✅ 10-100x faster installation |
+| Area                   | Before                            | After                             |
+|------------------------|-----------------------------------|-----------------------------------|
+| Docker build times     | ❌ 60-90 seconds compilation       | ✅ 3-10 seconds installation       |
+| Development setup      | ❌ Requires build dependencies     | ✅ No build dependencies needed    |
+| Deployment processes   | ❌ Compilation failures possible   | ✅ Reliable installation           |
+| Developer productivity | ❌ Slow, error-prone installs      | ✅ 10-100x faster installation     |
 
 ## Why This Was Complex
 
@@ -57,7 +57,7 @@ Precompiled native extensions presented legitimate security concerns:
 ## What Was Accomplished
 
 | Feature | Description |
-|---------|-------------|
+| ------- | ----------- |
 | ✅ Native extensions | Available for major platforms (Linux, macOS, Windows) |
 | ✅ Self-contained libraries | All dependencies statically linked |
 | ✅ Supply chain security | SHA256 verification for all dependencies |
@@ -68,7 +68,7 @@ Precompiled native extensions presented legitimate security concerns:
 ## Project Status
 
 | Phase | Description | Status |
-|-------|-------------|--------|
+| ----- | ----------- | ------ |
 | Phase 1 | Foundation (Trusted Publishing, Build Infrastructure) | ✅ **COMPLETED** |
 | Phase 2 | Core Platform Support (Linux, macOS) | ✅ **COMPLETED** |
 | Phase 3 | Extended Platform Support (ARM64, Additional Variants) | ✅ **COMPLETED** |

@@ -3,6 +3,10 @@
 
 # Karafka Testing Changelog
 
+## 2.5.5 (2025-11-28)
+- [Feature] Add `produce_to` method for explicit consumer targeting in multi-consumer scenarios.
+- [Fix] Fix consumer mapping collision when multiple consumer groups listen to the same topic.
+
 ## 2.5.4 (2025-10-03)
 - [Fix] Topic present in second dynamically built subscription group not available for dispatch (#291).
 - **[EOL]** Remove Ruby `3.1` according to the EOL schedule.
