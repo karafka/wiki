@@ -718,13 +718,13 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 Karafka `LoggerListener` dispatches messages to the logger immediately. You may be encountering buffering in the stdout itself. This is done because IO operations are slow, and usually it makes more sense to avoid writing every single character immediately to the console.
 
-To avoid this behavior and instead write immediately to stdout, you can set it to a sync mode:
+To avoid this behavior and write immediately to stdout, set it to synchronous mode.
 
 ```ruby
 $stdout.sync = true
 ```
 
-You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync).
+For more information on sync, see [this section of the offcial Ruby sync documnetation](https://ruby-doc.org/3.2.0/IO.html#method-i-sync).
 
 ## Why is increasing `concurrency` not helping upon a sudden burst of messages?
 
@@ -735,13 +735,13 @@ To handle such cases, you can:
 - Increase the number of partitions beyond the number of active consumer processes to achieve multiple assignments in a single consumer process. In a case like this, the given process will be able to work in parallel.
 - Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
 
-You can read more about the Karafka concurrency model [here](Concurrency-and-Multithreading).
+For more information on the Karafka concurrency model, see [Concurrency and multithreading](Concurrency-and-Multithreading).
 
 ## Why am I seeing a "needs to be consistent namespacing style" error?
 
-Due to limitations in metric names, topics with a period (`.`) or underscore (`_`) could collide. To avoid issues, it is best to use either but not both.
+To prevent conflicts with metric names, avoid using both periods (.) and underscores (_) in topics.
 
-Karafka validates that your topics' names are consistent to minimize the collision risk. If you work with pre-existing topics, you can disable this check by setting `config.strict_topics_namespacing` value to `false`:
+Karafka validates that your topic names are consistent to minimize the collision risk. If you work with pre-existing topics, disable this check by setting `config.strict_topics_namespacing` value to `false`:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -756,19 +756,19 @@ end
 
 There are a few reasons why Karafka may not be picking up messages from the beginning, even if you set `initial_offset` to `earliest`:
 
-1. Consumer group already exists: If the consumer group you are using to consume messages already exists, Karafka will not start consuming from the beginning by default. Instead, it will start consuming from the last committed offset for that group. To start from the beginning, you need to reset the offsets for the consumer group using the Kafka CLI or using the Karafka consumer `#seek` method.
-1. Topic retention period: If the messages you are trying to consume are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, setting `initial_offset` to `earliest` will not allow you to consume those messages.
-1. Message timestamps: If the messages you are trying to consume have timestamps that are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, even setting `initial_offset` to `earliest` will not allow you to consume those messages.
-1. Kafka configuration: There may be a misconfiguration in your Kafka setup that is preventing Karafka from consuming messages from the beginning. For example, the `log.retention.ms` or `log.retention.bytes` settings may be set too low, causing messages to be deleted before you can consume them.
+1. **Consumer group already exists**: If the consumer group you are using to consume messages already exists, Karafka will not start consuming from the beginning by default. Instead, it will start consuming from the last committed offset for that group. To start from the beginning, you need to reset the offsets for the consumer group using the Kafka CLI or using the Karafka consumer `#seek` method.
+1. **Topic retention period**: If the messages you are trying to consume are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, setting `initial_offset` to `earliest` will not allow you to consume those messages.
+1. **Message timestamps**: If the messages you are trying to consume have timestamps that are older than the retention period of the topic, they may have already been deleted from Kafka. In this case, even setting `initial_offset` to `earliest` will not allow you to consume those messages.
+1. **Kafka configuration**: There may be a misconfiguration in your Kafka setup that is preventing Karafka from consuming messages from the beginning. For example, the `log.retention.ms` or `log.retention.bytes` settings may be set too low, causing messages to be deleted before you can consume them.
 
 To troubleshoot the issue, you can try:
 
-- changing the Karafka `client_id` temporarily,
+- changing the Karafka `client_id` temporarily
 - renaming the consumer group,
-- resetting the offsets for the consumer group using `#seek`,
-- checking the retention period for the topic,
-- verifying the messages timestamps,
-- reviewing your Kafka configuration to ensure it is correctly set up for your use case.
+- resetting the offsets for the consumer group using `#seek`
+- checking the retention period for the topic
+- verifying the messages timestamps
+- reviewing your Kafka configuration to ensure it is correctly set up for your use case
 
 ## Should I TSTP, wait a while, then send TERM or set a longer `shutdown_timeout` and only send a TERM signal?
 
@@ -780,15 +780,15 @@ This depends on many factors:
 - are your jobs long-running?
 - are you ok with intermediate rebalances?
 
-The general rule is that if you want to ensure all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It won't accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
+The general rule is that if you want to ensure that all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives the `TSTP` signal, it enters `quiet` mode. It won't accept any new work, but **all** currently running and locally enqueued jobs will finish. It will also **not** close any Kafka connections, so rebalance will not be triggered.
 
-If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
+If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind that it may cause a forceful shutdown which kills the currently running jobs.
 
-If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor if using the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
+If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor it if you use the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
 
 ## Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?
 
-If you are getting following error after upgrading `karafka` and `karafka-core`:
+Error: 
 
 ```shell
 SSL handshake failed: error:0A000086:SSL routines::certificate verify failed:  
@@ -796,7 +796,7 @@ broker certificate could not be verified, verify that ssl.ca.location is correct
 root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
 ```
 
-Please disable the SSL verification in your configuration:
+If you get this error after upgrading `karafka` and `karafka-core, then disable the SSL verification in your configuration:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -812,7 +812,7 @@ end
 
 ## Can I consume the same topic independently using two consumers within the same application?
 
-Yes. You can define independent consumer groups operating within the same application. Let's say you want to consume messages from a topic called `event` using two consumers. You can do this as follows:
+Yes. You can define multiple independent consumer groups within a single application. This example shows two consumer groups consuming messages from an `event` topic:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -836,21 +836,21 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Such a setup will ensure that both of them can be processed independently in parallel. Error handling, dead letter queue, and all the other per-topic behaviors will remain independent despite consuming the same topic.
+This setup ensures each consumer group processes messages independently and in parallel. Each consumer group maintains its own error handling, dead letter queue, and topic-specific behaviors, even though both groups consume from the same topic.
 
 ## Why am I seeing Broker failed to validate record (invalid_record) error?
 
-The error `Broker failed to validate record (invalid_record)` in Kafka means that the broker received a record that it could not accept. This error can occur if the record is malformed or does not conform to the schema expected by the broker.
+The `Broker failed to validate record (invalid_record)`  error in Kafka means that the broker received a record that it could not accept. This error can occur if the record is malformed or does not conform to the schema expected by the broker.
 
 There are several reasons why a Kafka broker might reject some messages:
 
-- Invalid message format: If the message format does not match the expected format of the topic, the broker may reject the message.
-- Missing message key. If you use log compaction as your `cleanup.policy` Kafka will require you to provide the key. Log compaction ensures that Kafka will always retain at least the last known value for each message key within the log of data for a single topic partition. If you enable compaction for a topic, messages without a key may be rejected.
-- Schema validation failure: If the message contains data that does not conform to the schema, the broker may reject the message. This can happen if the schema has changed or the data was not properly validated before being sent to Kafka.
-- Authorization failure: If the client does not have the required permissions to write to the topic, the broker may reject the message.
-- Broker capacity limitations: If the broker has limited resources and cannot handle the incoming message traffic, it may reject some messages.
+- **Invalid message format**: If the message format does not match the expected format of the topic, the broker may reject the message.
+- **Missing message key**: If you use log compaction as your `cleanup.policy`, Kafka requires you to provide the key. Log compaction ensures that Kafka always retains at least the last known value for each message key within the log of data for a single topic partition. If you enable compaction for a topic, messages without a key are rejected.
+- **Schema validation failure**: The broker rejects messages that don't conform to the expected schema. This occurs when the schema has changed or when data wasn't validated before being sent to Kafka.
+- **Authorization failure**: The broker rejects messages when the client lacks write permissions for the topic.
+- **Broker capacity limitations**: The broker rejects messages when it cannot handle the incoming traffic due to resource constraints.
 
-To resolve this error, it is essential to identify the root cause of the issue. Checking the message format and schema, ensuring proper authorization and permission, checking broker capacity, and addressing network issues can help resolve the issue. Additionally, monitoring Karafka logs to identify and resolve problems as quickly as possible is crucial.
+To resolve this error, it is essential to identify the root cause of the issue. Checking the message format and schema, ensuring proper authorization and permission, checking broker capacity, and addressing network issues can help resolve the issue. Additionally, it is crucial to monitor Karafka logs in order to identify and resolve problems as quickly as possible.
 
 ## How can I make polling faster?
 
