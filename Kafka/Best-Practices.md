@@ -42,7 +42,7 @@ Messages are only ordered within a partition; cross-partition ordering is never 
 
 Set your replication factor to 3 or higher at topic creation time. Changing it later requires partition reassignment, which copies all data over the network - an expensive and risky operation you want to avoid.
 
-For production topics, configure `min.insync.replicas` to at least 2 and use `acks=all` on producers. This ensures messages are written to all in-sync replicas before the producer considers the write successful.
+For production topics, configure `min.insync.replicas` to at least 2 and use `acks=all` on producers. This ensures messages are acknowledged by all in-sync replicas before the producer considers the write successful. Pair this with `enable.idempotence=true` to prevent duplicate messages during retries - the producer will automatically deduplicate based on sequence numbers, giving you exactly-once producer semantics.
 
 One common misconfiguration: setting `min.insync.replicas` equal to `replication.factor`. This means all replicas must acknowledge every write, so if even one broker goes down, all writes fail. Leave yourself headroom.
 
@@ -135,6 +135,16 @@ Pick one separator style and stick with it. Mixing periods and underscores cause
 
 Disable `auto.create.topics.enable` in production and enforce naming through CI/CD. Ad-hoc topic creation inevitably leads to inconsistent names you'll regret later.
 
+## Serialization Format
+
+Choose your serialization format before producing your first message. Changing formats later requires migrating all consumers and potentially reprocessing historical data.
+
+JSON is the simplest option - human-readable and debuggable without special tooling. However, it lacks schema enforcement, wastes bytes on field names in every message, and provides no built-in compatibility guarantees. For production systems with multiple teams or services, schema-based formats like Avro or Protobuf with a schema registry provide significant advantages: schemas are versioned centrally, compatibility is enforced automatically, and payloads are more compact.
+
+When using a schema registry, decide on your compatibility mode upfront. `BACKWARD` compatibility (new schemas can read old data) is the most common choice - it allows consumers to upgrade before producers. `FORWARD` compatibility (old schemas can read new data) suits cases where producers upgrade first. Avoid `NONE` in production; it removes all safety guarantees.
+
+Whatever format you choose, include a schema version indicator in your messages or use the schema registry's wire format. This makes future migrations possible without requiring coordinated deployments across all producers and consumers.
+
 ## Managed Service Considerations
 
 Before committing to a managed Kafka provider, get clear answers to these questions:
@@ -146,3 +156,16 @@ Before committing to a managed Kafka provider, get clear answers to these questi
 - Which broker configurations can you modify?
 
 Different providers have distinct trade-offs that affect operational flexibility, version currency, and available features. Evaluate based on your specific requirements for availability, ecosystem integration, and operational overhead.
+
+---
+
+## See Also
+
+- [Kafka Topic Configuration](Kafka-Topic-Configuration) - Per-topic settings including retention, replication, and compaction
+- [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - Cluster-level broker settings and defaults
+- [New Consumer Group Protocol](Kafka-New-Rebalance-Protocol) - Faster rebalancing with the new consumer protocol
+- [AWS MSK Guide](Operations-AWS-MSK-Guide) - MSK-specific considerations and configuration
+- [Dead Letter Queue](Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
+- [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration
+- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability
+- [Latency and Throughput](Latency-and-Throughput) - Consumer performance tuning and optimization
