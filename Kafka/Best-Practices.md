@@ -6,9 +6,13 @@ This page covers critical decisions and recommendations when working with Apache
 
     Kafka's architecture makes certain decisions effectively permanent once made. Partition counts can only increase (never decrease), replication factors require complex reassignment to change, topic names cannot be renamed, and consumer group names are tied to offset storage. Getting these right from day one saves significant pain later.
 
+!!! Note "Karafka Users"
+
+    Karafka provides built-in solutions for several challenges described here - including DLQ handling, partition-bound scaling limitations, and offset management. However, this guide focuses on generic Kafka concepts and best practices that apply regardless of your client library. For Karafka-specific features and optimizations, refer to the relevant sections of the Karafka documentation.
+
 ## KRaft Mode
 
-ZooKeeper was removed entirely in Kafka 4.0, so all new deployments should use KRaft mode. If you're running an existing ZooKeeper-based cluster, use Kafka 3.9 as your bridge release for migration—and don't delay planning, as ZooKeeper security support ended in November 2025.
+ZooKeeper was removed entirely in Kafka 4.0, so all new deployments should use KRaft mode. If you're running an existing ZooKeeper-based cluster, use Kafka 3.9 as your bridge release for migration - and don't delay planning, as ZooKeeper security support ended in November 2025.
 
 KRaft provides substantial operational improvements: support for up to 2 million partitions (versus 200,000 with ZooKeeper), dramatically faster controller failovers, and a simplified architecture with a single system to configure and monitor.
 
@@ -16,17 +20,17 @@ KRaft provides substantial operational improvements: support for up to 2 million
 
 When upgrading to Kafka 4.0, ensure all brokers and clients are at version 2.1+ first, and migrate from MirrorMaker 1 to MirrorMaker 2 beforehand. Older message formats (v0/v1) were removed in 4.0.
 
-The new consumer group protocol (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available—worth enabling once your cluster supports it.
+The [new consumer group protocol](Kafka-New-Rebalance-Protocol) (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available - worth enabling once your cluster supports it.
 
 !!! Warning "Share Groups Are Preview Only"
 
-    Kafka 4.0 introduces Share Groups (KIP-932), which provide queue-like semantics where multiple consumers can read from the same partition with per-message acknowledgment—similar to RabbitMQ. However, clusters using this early-access feature cannot upgrade to Kafka 4.1 because the internal data format may change between versions. Keep Share Groups out of production for now.
+    Kafka 4.0 introduces Share Groups (KIP-932), which provide queue-like semantics where multiple consumers can read from the same partition with per-message acknowledgment - similar to RabbitMQ. However, clusters using this early-access feature cannot upgrade to Kafka 4.1 because the internal data format may change between versions. Keep Share Groups out of production for now.
 
 ## Choosing Partition Counts
 
-Partition count is effectively permanent—you can add partitions later but never remove them. More critically, adding partitions breaks key-based ordering since Kafka routes messages using `hash(key) % partition_count`. Once you change the count, existing keys may start landing in different partitions.
+Partition count is effectively permanent - you can add partitions later but never remove them. More critically, adding partitions breaks key-based ordering since Kafka routes messages using `hash(key) % partition_count`. Once you change the count, existing keys may start landing in different partitions.
 
-Pick a count with many divisors (6, 12, 24, 60) to give yourself flexible consumer scaling options. Avoid prime numbers like 3, 7, or 11—they severely limit how you can distribute consumers. Provision for 1-2 years of growth upfront rather than planning to increase later.
+Pick a count with many divisors (6, 12, 24, 60) to give yourself flexible consumer scaling options. Avoid prime numbers like 3, 7, or 11 - they severely limit how you can distribute consumers. Provision for 1-2 years of growth upfront rather than planning to increase later.
 
 Messages are only ordered within a partition; cross-partition ordering is never guaranteed. The tradeoffs: too few partitions limit parallelism, while too many increase end-to-end latency (roughly 20ms per 1,000 partitions replicated), create more file handles, and extend broker recovery time.
 
@@ -36,7 +40,7 @@ Messages are only ordered within a partition; cross-partition ordering is never 
 
 ## Replication and Durability
 
-Set your replication factor to 3 or higher at topic creation time. Changing it later requires partition reassignment, which copies all data over the network—an expensive and risky operation you want to avoid.
+Set your replication factor to 3 or higher at topic creation time. Changing it later requires partition reassignment, which copies all data over the network - an expensive and risky operation you want to avoid.
 
 For production topics, configure `min.insync.replicas` to at least 2 and use `acks=all` on producers. This ensures messages are written to all in-sync replicas before the producer considers the write successful.
 
@@ -50,7 +54,7 @@ For production workloads where write availability during maintenance matters, us
 
 ## Compression
 
-Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio—approximately 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
+Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio - approximately 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
 
 On the broker side, set `compression.type=producer` to store messages using whatever compression the producer applied. This avoids recompression overhead. Never compress at the broker level; it just adds unnecessary CPU load.
 
@@ -60,7 +64,7 @@ On the broker side, set `compression.type=producer` to store messages using what
 
 ## Consumer Scaling Model
 
-Kafka's scaling model differs fundamentally from traditional job queues like Sidekiq or RabbitMQ. In those systems, adding workers immediately increases parallelism. In Kafka, parallelism is bounded by partition count—one partition can only be consumed by one consumer within a consumer group.
+Kafka's scaling model differs fundamentally from traditional job queues like Sidekiq or RabbitMQ. In those systems, adding workers immediately increases parallelism. In Kafka, parallelism is bounded by partition count - one partition can only be consumed by one consumer within a consumer group.
 
 This means 10 consumers on a 3-partition topic leaves 7 consumers sitting idle. Match your partition count to your expected maximum consumer count, and don't expect adding consumers to solve performance problems once you've hit that ceiling.
 
@@ -74,7 +78,7 @@ Some frameworks, like Karafka, have capabilities to work around these partition-
 
 ## Dead Letter Queues
 
-Implement your DLQ strategy before sending your first production message. Kafka's offset model creates a blocking problem: consumers must process messages in order and commit offsets sequentially. If a message fails processing, the consumer cannot skip it—it must either succeed or move the message elsewhere. Without a DLQ, a single bad message causes the consumer to retry forever, while all newer messages in that partition pile up unprocessed.
+Implement your DLQ strategy before sending your first production message. Kafka's offset model creates a blocking problem: consumers must process messages in order and commit offsets sequentially. If a message fails processing, the consumer cannot skip it - it must either succeed or move the message elsewhere. Without a DLQ, a single bad message causes the consumer to retry forever, while all newer messages in that partition pile up unprocessed.
 
 Use a retry topic pattern with increasing delays:
 
@@ -82,7 +86,7 @@ Use a retry topic pattern with increasing delays:
 main-topic → topic-retry-1 → topic-retry-2 → topic-retry-3 → topic-dlq
 ```
 
-Limit retries to 3-5 attempts with exponential backoff before routing to the DLQ. Send non-retryable errors (deserialization failures, schema mismatches) directly to the DLQ—there's no point retrying something that will never succeed.
+Limit retries to 3-5 attempts with exponential backoff before routing to the DLQ. Send non-retryable errors (deserialization failures, schema mismatches) directly to the DLQ - there's no point retrying something that will never succeed.
 
 Include metadata in DLQ messages via headers: original topic, partition, offset, timestamp, and exception details. This context is invaluable when investigating failures later.
 
@@ -97,11 +101,11 @@ Choose your cleanup policy based on use case:
 
 One subtlety: Kafka writes to segment files and only deletes complete segments. The active segment being written to is never deleted, even if messages in it exceed retention time. For low-volume topics that require precise retention, set `segment.ms` to 1 hour to roll segments over more frequently.
 
-Avoid the `compact,delete` policy if you need the guarantee of keeping at least one record per key—the delete portion can remove records you expected compaction to preserve.
+Avoid the `compact,delete` policy if you need the guarantee of keeping at least one record per key - the delete portion can remove records you expected compaction to preserve.
 
 ## Naming Conventions
 
-Establish naming conventions before creating your first topic. Topics cannot be renamed, and consumer group names are tied to offset storage—changing either requires migration.
+Establish naming conventions before creating your first topic. Topics cannot be renamed, and consumer group names are tied to offset storage - changing either requires migration.
 
 A consistent pattern for topics works well:
 
