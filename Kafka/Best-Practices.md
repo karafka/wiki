@@ -2,11 +2,11 @@
 
 This page covers critical decisions and recommendations when working with Apache Kafka. The focus is on architectural and configuration choices that are easy to get right at the start but difficult or impossible to change later. These guidelines apply regardless of which Kafka client library you use.
 
-!!! Tip "Why This Matters"
+!!! tip "Why This Matters"
 
     Kafka's architecture makes certain decisions effectively permanent once made. Partition counts can only increase (never decrease), replication factors require complex reassignment to change, topic names cannot be renamed, and consumer group names are tied to offset storage. Getting these right from day one saves significant pain later.
 
-!!! Note "Karafka Users"
+!!! note "Karafka Users"
 
     Karafka provides built-in solutions for several challenges described here - including DLQ handling, partition-bound scaling limitations, and offset management. However, this guide focuses on generic Kafka concepts and best practices that apply regardless of your client library. For Karafka-specific features and optimizations, refer to the relevant sections of the Karafka documentation.
 
@@ -22,7 +22,7 @@ When upgrading to Kafka 4.0, ensure all brokers and clients are at version 2.1+ 
 
 The [new consumer group protocol](Kafka-New-Rebalance-Protocol) (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available - worth enabling once your cluster supports it.
 
-!!! Warning "Share Groups Are Preview Only"
+!!! warning "Share Groups Are Preview Only"
 
     Kafka 4.0 introduces Share Groups (KIP-932), which provide queue-like semantics where multiple consumers can read from the same partition with per-message acknowledgment - similar to RabbitMQ. However, clusters using this early-access feature cannot upgrade to Kafka 4.1 because the internal data format may change between versions. Keep Share Groups out of production for now.
 
@@ -34,7 +34,7 @@ Pick a count with many divisors (6, 12, 24, 60) to give yourself flexible consum
 
 Messages are only ordered within a partition; cross-partition ordering is never guaranteed. The tradeoffs: too few partitions limit parallelism, while too many increase end-to-end latency (roughly 20ms per 1,000 partitions replicated), create more file handles, and extend broker recovery time.
 
-!!! Warning
+!!! warning
 
     Stay under 4,000 partitions per broker. Beyond this, you'll see degraded performance and longer recovery times.
 
@@ -48,7 +48,7 @@ One common misconfiguration: setting `min.insync.replicas` equal to `replication
 
 For production workloads where write availability during maintenance matters, use at least 4 brokers. With three-broker clusters, you can tolerate one broker being down for maintenance and still accept writes if you set `min.insync.replicas=2` (with `replication.factor=3`). However, if `min.insync.replicas=3`, any single broker outage will make the cluster unavailable for writes.
 
-!!! Tip "AWS MSK Users"
+!!! tip "AWS MSK Users"
 
     MSK has unique maintenance behaviors, including the potential for dual-broker outages during maintenance windows. This makes 4+ broker clusters essential for production. See the [AWS MSK Guide](https://karafka.io/docs/Operations-AWS-MSK-Guide) for MSK-specific considerations.
 
@@ -58,7 +58,7 @@ Enable compression at the producer level using LZ4, which offers the best balanc
 
 On the broker side, set `compression.type=producer` to store messages using whatever compression the producer applied. This avoids recompression overhead. Never compress at the broker level; it just adds unnecessary CPU load.
 
-!!! Warning "Avoid ZSTD"
+!!! warning "Avoid ZSTD"
 
     ZSTD has known data corruption edge cases in certain librdkafka versions that can make data unrecoverable. Stick with LZ4.
 
@@ -70,7 +70,7 @@ This means 10 consumers on a 3-partition topic leaves 7 consumers sitting idle. 
 
 Watch for hot partitions caused by skewed key distribution. If most messages share similar keys, they end up in the same partition, creating a bottleneck that additional consumers cannot help with.
 
-!!! Note "librdkafka Prebuffering"
+!!! note "librdkafka Prebuffering"
 
     By default, librdkafka fetches up to 1MB of messages per partition into local memory. This prebuffering can mask the real bottleneck and make scaling appear ineffective when the actual problem lies elsewhere. Factor this into your performance analysis.
 
@@ -82,7 +82,7 @@ Implement your DLQ strategy before sending your first production message. Kafka'
 
 Use a retry topic pattern with increasing delays:
 
-```
+```text
 main-topic → topic-retry-1 → topic-retry-2 → topic-retry-3 → topic-dlq
 ```
 
@@ -109,7 +109,7 @@ Establish naming conventions before creating your first topic. Topics cannot be 
 
 A consistent pattern for topics works well:
 
-```
+```text
 <environment>.<domain>.<entity>.(optionally)<action>
 
 prod.orders.order
@@ -118,7 +118,7 @@ prod.payments.payment.processed
 
 For consumer groups:
 
-```
+```text
 <application>-<environment>[-<suffix>]
 
 order-service-prod
@@ -129,7 +129,7 @@ Use past tense for events (`created`, `updated`) and imperative for commands (`p
 
 Pick one separator style and stick with it. Mixing periods and underscores causes metric name collisions in monitoring systems. Avoid including fields that change, like team names or service owners.
 
-!!! Warning
+!!! warning
 
     Consumer group names must be globally unique within the cluster. Ensure your naming scheme prevents collisions between environments if they share a cluster.
 
