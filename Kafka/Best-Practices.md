@@ -46,7 +46,7 @@ For production topics, configure `min.insync.replicas` to at least 2 and use `ac
 
 One common misconfiguration: setting `min.insync.replicas` equal to `replication.factor`. This means all replicas must acknowledge every write, so if even one broker goes down, all writes fail. Leave yourself headroom.
 
-For production workloads where write availability during maintenance matters, use at least 4 brokers. Three-broker clusters become unavailable for writes when any single broker is down for maintenance.
+For production workloads where write availability during maintenance matters, use at least 4 brokers. With three-broker clusters, you can tolerate one broker being down for maintenance and still accept writes if you set `min.insync.replicas=2` (with `replication.factor=3`). However, if `min.insync.replicas=3`, any single broker outage will make the cluster unavailable for writes.
 
 !!! Tip "AWS MSK Users"
 
