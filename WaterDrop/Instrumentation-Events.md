@@ -98,18 +98,6 @@ WaterDrop also provides class-level instrumentation that allows you to monitor e
 - `producer.configured`
 - `producer.created`
 
-### Class-Level Event Payloads
-
-| Event | Payload Keys | Description |
-|-------|--------------|-------------|
-| `connection_pool.created` | `connection_pool`, `connection_pool_id` | Triggered when a new connection pool is created |
-| `connection_pool.reload` | `connection_pool`, `connection_pool_id` | Triggered before a connection pool reloads its connections |
-| `connection_pool.reloaded` | `connection_pool`, `connection_pool_id` | Triggered after a connection pool has reloaded its connections |
-| `connection_pool.setup` | `connection_pool`, `connection_pool_id` | Triggered when a connection pool is being set up |
-| `connection_pool.shutdown` | `connection_pool`, `connection_pool_id` | Triggered when a connection pool is shutting down |
-| `producer.created` | `producer`, `producer_id` | Triggered when a new producer instance is instantiated, before configuration |
-| `producer.configured` | `producer`, `producer_id`, `config` | Triggered after a producer completes setup and becomes ready |
-
 ### Class-Level Usage Example
 
 ```ruby
