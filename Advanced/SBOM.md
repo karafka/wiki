@@ -204,7 +204,7 @@ This page exists because of our commitment to security, compliance, and transpar
       tailwindcss
     </td>
     <td>
-      3.4.7
+      4.1.17
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE">MIT</a>
@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      4.12.10
+      5.5.5
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
@@ -243,7 +243,7 @@ This page exists because of our commitment to security, compliance, and transpar
       turbo
     </td>
     <td>
-      3.4.7
+      8.0.5
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/hotwired/turbo/blob/main/MIT-LICENSE">MIT</a>
@@ -256,7 +256,7 @@ This page exists because of our commitment to security, compliance, and transpar
       air datepicker
     </td>
     <td>
-      3.4.0
+      3.6.0
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/t1m0n/air-datepicker/blob/v3/LICENSE.md">MIT</a>
@@ -400,7 +400,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.8.0</td>
+    <td>2.12.1</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
