@@ -243,6 +243,39 @@ Karafka::App.monitor.subscribe('statistics.emitted') do |event|
 end
 ```
 
+### Event Payload Structure
+
+The `statistics.emitted` event provides more than just the statistics data. The full event payload includes:
+
+| Key                      | Type   | Description                                                      |
+| ------------------------ | ------ | ---------------------------------------------------------------- |
+| `:statistics`            | Hash   | The librdkafka statistics object with Karafka delta enrichments  |
+| `:consumer_group_id`     | String | The consumer group ID that emitted the statistics                |
+| `:subscription_group_id` | String | The subscription group ID that emitted the statistics            |
+
+### Understanding Statistics Scope
+
+Statistics are emitted at the **subscription group level**, not per-topic. Each subscription group maintains its own connection to Kafka and emits its own statistics every 5 seconds. The relationship hierarchy is:
+
+- **Consumer Group** → contains one or more **Subscription Groups** → each subscribes to one or more **Topics**
+
+To access per-topic metrics, iterate through the `topics` key in the statistics hash:
+
+```ruby
+Karafka::App.monitor.subscribe('statistics.emitted') do |event|
+  consumer_group_id = event[:consumer_group_id]
+  statistics = event[:statistics]
+
+  # Per-topic statistics are nested within the statistics hash
+  statistics['topics'].each do |topic_name, topic_stats|
+    topic_stats['partitions'].each do |partition_id, partition_stats|
+      lag = partition_stats['consumer_lag']
+      puts "CG: #{consumer_group_id}, Topic: #{topic_name}, Partition: #{partition_id}, Lag: #{lag}"
+    end
+  end
+end
+```
+
 ## Web UI monitoring and error tracking
 
 Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Karafka-based applications, without the need to use the command line or third party software. It does **not** require any additional database beyond Kafka itself.
@@ -383,6 +416,48 @@ Karafka.monitor.subscribe(dd_listener)
 You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import Datadog dashboard configuration file that you can use to monitor your consumers.
 
 ![Example Karafka DD dashboard](https://cdn.karafka.io/assets/misc/printscreens/karafka_dd_dashboard_example.png)
+
+#### Extending Datadog Metrics with Custom Tags
+
+By default, the Datadog MetricsListener only includes `consumer_group` as a tag to minimize cardinality costs. If you need additional tags like `topic`, you can subclass the listener:
+
+```ruby
+require 'datadog/statsd'
+require 'karafka/instrumentation/vendors/datadog/metrics_listener'
+
+class CustomDatadogListener < Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+  def on_statistics_emitted(event)
+    statistics = event[:statistics]
+    consumer_group_id = event[:consumer_group_id]
+
+    # Report per-topic lag with topic tag
+    statistics['topics'].each do |topic_name, topic_stats|
+      topic_stats['partitions'].each do |partition_id, partition_stats|
+        next if partition_stats['consumer_lag'] < 0 # Skip invalid lag values
+
+        tags = default_tags + [
+          "consumer_group:#{consumer_group_id}",
+          "topic:#{topic_name}",
+          "partition:#{partition_id}"
+        ]
+
+        gauge('consumer.lag', partition_stats['consumer_lag'], tags: tags)
+      end
+    end
+  end
+end
+
+dd_listener = CustomDatadogListener.new do |config|
+  config.client = Datadog::Statsd.new('localhost', 8125)
+  config.default_tags = ["host:#{Socket.gethostname}"]
+end
+
+Karafka.monitor.subscribe(dd_listener)
+```
+
+!!! warning "Tag Cardinality Costs"
+
+    Adding high-cardinality tags (like topic, partition) significantly increases Datadog costs. The default listener intentionally limits tags to keep costs manageable. Consider your monitoring budget before adding additional tags.
 
 #### Tracing Consumers using Datadog Logger Listener
 
