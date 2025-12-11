@@ -1,25 +1,48 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-# Script that makes sure, that the GH wiki header info is present in all the files.
-# Builds that and pushes the update to GH.
+# Script that syncs documentation to the GitHub wiki repository.
+# It copies markdown files, adds a header warning users to use the main docs site,
+# removes stale files that no longer exist in the source, and pushes changes to GitHub.
 
 require 'fileutils'
+require 'set'
+
+ROOT = Dir.pwd
+GH_DIR = "#{ROOT}/.gh"
+HEADER_PATH = "#{ROOT}/.gh-templates/_GH_Header.md"
+
+# Files to preserve in the wiki that don't come from source
+PRESERVED_FILES = %w[_Footer.md _Sidebar.md].to_set.freeze
 
 FailedCommand = Class.new(StandardError)
 
 def system!(cmd)
-  system(cmd) || raise(FailedCommand)
+  puts "Running: #{cmd}"
+  system(cmd) || raise(FailedCommand, "Command failed: #{cmd}")
 end
 
-raise ArgumentError, 'GH wiki version missing' unless File.exist?("#{Dir.pwd}/.gh")
+def copy_file(source, target, copied_files)
+  FileUtils.cp(source, target)
+  copied_files << File.basename(target)
+  puts "Copied: #{source} -> #{target}"
+end
 
-Dir["#{Dir.pwd}/**.md"].each do |file|
+# Validate required directories and files exist
+raise ArgumentError, 'GH wiki directory missing (.gh/)' unless File.exist?(GH_DIR)
+raise ArgumentError, 'Header template missing (.gh-templates/_GH_Header.md)' unless File.exist?(HEADER_PATH)
+
+# Track all files we copy to detect stale files later
+copied_files = Set.new
+
+# Copy root-level markdown files
+Dir["#{ROOT}/*.md"].each do |file|
   basename = File.basename(file)
-  target = "#{Dir.pwd}/.gh/#{basename}"
-
-  FileUtils.cp(file, target)
+  target = "#{GH_DIR}/#{basename}"
+  copy_file(file, target, copied_files)
 end
 
+# Copy namespaced files (flattened with namespace prefix)
 %w[
   Admin
   Pro
@@ -28,55 +51,77 @@ end
   Upgrades
   Operations
 ].each do |namespace|
-  # Find all markdown files in the namespace, including those in subdirectories
-  Dir["#{Dir.pwd}/#{namespace}/**/*.md"].each do |file|
-    relative_path = file.sub("#{Dir.pwd}/#{namespace}/", "")
-
+  Dir["#{ROOT}/#{namespace}/**/*.md"].each do |file|
+    relative_path = file.sub("#{ROOT}/#{namespace}/", '')
     path_parts = relative_path.split(File::SEPARATOR)
-    target_basename = path_parts.join("-")
-
-    target = "#{Dir.pwd}/.gh/#{namespace}-#{target_basename}"
-
-    FileUtils.cp(file, target)
-    puts "Copied #{file} to #{target}" # Optional logging
+    target_basename = path_parts.join('-')
+    target = "#{GH_DIR}/#{namespace}-#{target_basename}"
+    copy_file(file, target, copied_files)
   end
 end
 
-Dir["Pro/Web-UI/**.md"].each do |file|
+# Copy Pro/Web-UI files with special prefix
+Dir["#{ROOT}/Pro/Web-UI/**/*.md"].each do |file|
   basename = File.basename(file)
-  target = "#{Dir.pwd}/.gh/Pro-Web-UI-#{basename}"
-
-  FileUtils.cp(file, target)
+  target = "#{GH_DIR}/Pro-Web-UI-#{basename}"
+  copy_file(file, target, copied_files)
 end
 
-# Move this to root without a namespace.
-# In this case namespace is used only as a organization layer
+# Copy Advanced namespace files to root (no prefix)
 %w[
   Advanced
 ].each do |namespace|
-  Dir["#{Dir.pwd}/#{namespace}/**.md"].each do |file|
+  Dir["#{ROOT}/#{namespace}/**/*.md"].each do |file|
     basename = File.basename(file)
-    target = "#{Dir.pwd}/.gh/#{basename}"
-
-    FileUtils.cp(file, target)
+    target = "#{GH_DIR}/#{basename}"
+    copy_file(file, target, copied_files)
   end
 end
 
-HEADER_TEMPLATE_CONTENT = IO.read("#{Dir.pwd}/.gh/_GH_Header.md")
+# Add header template to all copied files
+header_content = File.read(HEADER_PATH)
 
-Dir["#{Dir.pwd}/.gh/**.md"].each do |file|
+Dir["#{GH_DIR}/*.md"].each do |file|
   basename = File.basename(file)
 
+  # Skip special files
   next if basename.start_with?('_')
 
-  rd = IO.read(file)
+  content = File.read(file)
 
-  name = basename[0..-4]
+  # Generate the page name for documentation links
+  name = basename.delete_suffix('.md')
   target_name = name == 'Home' ? '' : name
 
-  IO.write file, HEADER_TEMPLATE_CONTENT.gsub('PAGE_NAME', target_name) + "\n" + rd
+  File.write(file, header_content.gsub('PAGE_NAME', target_name) + "\n" + content)
 end
 
-system!('cd .gh/ && git add ./')
-system('cd .gh/ && git commit -m "docs update"')
-system!('cd .gh/ && git push origin master')
+# Remove stale files that no longer exist in source
+puts "\nChecking for stale files..."
+Dir["#{GH_DIR}/*.md"].each do |file|
+  basename = File.basename(file)
+
+  # Skip preserved wiki-specific files
+  next if basename.start_with?('_')
+  next if PRESERVED_FILES.include?(basename)
+
+  unless copied_files.include?(basename)
+    puts "Removing stale file: #{basename}"
+    FileUtils.rm(file)
+  end
+end
+
+# Commit and push changes
+puts "\nCommitting changes..."
+system!("cd #{GH_DIR} && git add --all")
+
+# Check if there are changes to commit
+status = `cd #{GH_DIR} && git status --porcelain`.strip
+if status.empty?
+  puts 'No changes to commit'
+  exit 0
+end
+
+puts "Changes detected:\n#{status}"
+system!("cd #{GH_DIR} && git commit -m 'docs update'")
+system!("cd #{GH_DIR} && git push origin master")
