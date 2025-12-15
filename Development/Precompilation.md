@@ -6,12 +6,12 @@ As of 2025, **native extensions (precompiled binaries) are now available** for t
 
 The `rdkafka` gem previously required 60-90 seconds of compilation during installation. Here's the before and after:
 
-| Area                   | Before                            | After                             |
-|------------------------|-----------------------------------|-----------------------------------|
-| Docker build times     | ❌ 60-90 seconds compilation       | ✅ 3-10 seconds installation       |
-| Development setup      | ❌ Requires build dependencies     | ✅ No build dependencies needed    |
-| Deployment processes   | ❌ Compilation failures possible   | ✅ Reliable installation           |
-| Developer productivity | ❌ Slow, error-prone installs      | ✅ 10-100x faster installation     |
+| Area | Before | After |
+| --- | --- | --- |
+| Docker build times | ❌ 60-90 seconds compilation | ✅ 3-10 seconds installation |
+| Development setup | ❌ Requires build dependencies | ✅ No build dependencies needed |
+| Deployment processes | ❌ Compilation failures possible | ✅ Reliable installation |
+| Developer productivity | ❌ Slow, error-prone installs | ✅ 10-100x faster installation |
 
 ## Why This Was Complex
 
