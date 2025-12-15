@@ -268,6 +268,10 @@
 </tr>
 </table>
 
+!!! warning "Common Misconfiguration"
+
+    Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
+
 ## Legend
 
 - **Names**: The name of the parameter or setting with its synonyms.
@@ -283,3 +287,4 @@
 - [Declarative Topics](Declarative-Topics) - For declarative topic management in application code
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - For cluster-level configuration options
 - [Admin API](Admin-API) - For programmatic topic management operations
+- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Impact of replication settings on availability during broker failures
