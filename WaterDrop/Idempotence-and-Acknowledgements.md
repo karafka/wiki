@@ -101,6 +101,12 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+!!! warning "Avoid Setting min.insync.replicas Equal to Replication Factor"
+
+    A common misconfiguration is setting `min.insync.replicas` equal to `replication_factor`. For example, if both are set to `2`, a single broker failure during maintenance will block all writes with `not_enough_replicas` errors because there won't be enough replicas to satisfy the requirement.
+
+    Always ensure `min.insync.replicas` is at least one less than `replication_factor` to maintain write availability during broker failures.
+
 ## Example Scenario
 
 - Replication Factor: `3` (three replicas of each partition)
@@ -162,3 +168,11 @@ In this scenario:
 - Use `acks` set to `all`: Combine idempotence with `acks` `all` to ensure that your data is acknowledged by all in-sync replicas.
 - Set appropriate `min.insync.replicas`: Ensure that `min.insync.replicas` is set to a value that matches your fault tolerance requirements (e.g., `2` for a replication factor of `3`).
 - Monitor replicas: Regularly monitor your Kafka cluster to ensure that all replicas are in sync and healthy.
+
+---
+
+## See Also
+
+- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Detailed scenarios for replication configuration impact on availability
+- [Kafka Best Practices](Kafka-Best-Practices) - General Kafka configuration recommendations
+- [Declarative Topics](Declarative-Topics) - Managing topic configuration in code

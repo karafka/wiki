@@ -268,6 +268,14 @@
 </tr>
 </table>
 
+!!! warning "Common Misconfiguration: min.insync.replicas Equal to Replication Factor"
+
+    Setting `min.insync.replicas` equal to `replication.factor` (e.g., both set to 2) is a common but dangerous configuration. This means all replicas must acknowledge every write, so if even one broker goes down during maintenance, all writes fail with `not_enough_replicas` errors.
+
+    **Recommended**: Set `min.insync.replicas` to at least one less than `replication.factor`. For production workloads, use `replication.factor=3` with `min.insync.replicas=2`.
+
+    See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance#critical-configuration-replication-factor-and-mininsync_replicas) for detailed scenarios and recommendations.
+
 ## Legend
 
 - **Names**: The name of the parameter or setting with its synonyms.
@@ -283,3 +291,4 @@
 - [Declarative Topics](Declarative-Topics) - For declarative topic management in application code
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - For cluster-level configuration options
 - [Admin API](Admin-API) - For programmatic topic management operations
+- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Impact of replication settings on availability during broker failures
