@@ -101,11 +101,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! warning "Avoid Setting min.insync.replicas Equal to Replication Factor"
+!!! warning "Common Misconfiguration"
 
-    A common misconfiguration is setting `min.insync.replicas` equal to `replication_factor`. For example, if both are set to `2`, a single broker failure during maintenance will block all writes with `not_enough_replicas` errors because there won't be enough replicas to satisfy the requirement.
-
-    Always ensure `min.insync.replicas` is at least one less than `replication_factor` to maintain write availability during broker failures.
+    Setting `min.insync.replicas` equal to `replication_factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
 
 ## Example Scenario
 

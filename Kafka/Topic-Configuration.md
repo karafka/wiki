@@ -268,13 +268,9 @@
 </tr>
 </table>
 
-!!! warning "Common Misconfiguration: min.insync.replicas Equal to Replication Factor"
+!!! warning "Common Misconfiguration"
 
-    Setting `min.insync.replicas` equal to `replication.factor` (e.g., both set to 2) is a common but dangerous configuration. This means all replicas must acknowledge every write, so if even one broker goes down during maintenance, all writes fail with `not_enough_replicas` errors.
-
-    **Recommended**: Always set `min.insync.replicas` to at least one less than `replication.factor` to allow the cluster to tolerate broker failures during maintenance.
-
-    See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
+    Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
 
 ## Legend
 
