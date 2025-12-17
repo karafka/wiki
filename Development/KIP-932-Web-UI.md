@@ -353,17 +353,22 @@ end
 
 ## Open Questions
 
-1. **Will librdkafka expose share group stats in the same `cgrp` structure?**
+1. Will librdkafka expose share group stats in the same `cgrp` structure?
+
    - This determines how much listener code changes
 
-2. **What metrics will librdkafka provide for share groups?**
+2. What metrics will librdkafka provide for share groups?
+
    - Affects partition contract and UI design
 
-3. **Should share groups have completely separate views or conditional rendering?**
+3. Should share groups have completely separate views or conditional rendering?
+
    - UX decision - separate views are cleaner but more maintenance
 
-4. **How should health/lag dashboards handle mixed group types?**
+4. How should health/lag dashboards handle mixed group types?
+
    - Aggregation semantics differ significantly
 
-5. **Will there be a `KafkaShareConsumer` class or modified `KafkaConsumer`?**
+5. Will there be a `KafkaShareConsumer` class or modified `KafkaConsumer`?
+
    - Affects how karafka core integrates, which affects web
