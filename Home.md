@@ -256,3 +256,6 @@ It is recommended to do one major upgrade at a time.
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
 - [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
 - [Technical Writing](Development-Technical-Writing)
+- [KIP-932 Karafka](Development-KIP-932-Karafka)
+- [KIP-932 Web UI](Development-KIP-932-Web-UI)
+- [KIP-932 Rdkafka](Development-KIP-932-Rdkafka)
