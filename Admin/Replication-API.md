@@ -1,9 +1,5 @@
 # Admin Replication API
 
-!!! warning "Work in Progress"
-
-    This documentation describes a feature that has not yet been released. The API and functionality described here may change before the official release.
-
 The Karafka Admin Replication API provides tools for planning topic replication factor changes. This API helps you generate partition reassignment plans that can be executed using Kafka's native CLI tools.
 
 !!! warning "External Tools Required"
