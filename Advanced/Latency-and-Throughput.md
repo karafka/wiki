@@ -58,9 +58,34 @@ vs.
 [waterdrop-e2c291b6b0f3] Sync producing (...) took 0.24221014976501465 ms
 ```
 
+!!! warning "Counter-Intuitive Insight: When Zero Delay Increases Latency"
+
+    The examples above show individual dispatch times, which are faster with `queue.buffering.max.ms=0`. However, under high-throughput conditions, setting this to `0` can actually **increase overall system latency**.
+
+    Kafka's network protocol operates with strict sequential processing: the broker processes requests from a single connection one-by-one and only begins the next request after completing the previous one. When a producer sends many unbatched requests rapidly, they queue up on the broker side, increasing end-to-end latency rather than reducing it.
+
+    For example, with 1,000 records/second and 5ms broker processing time:
+
+    - `queue.buffering.max.ms=0`: Average latency ~27.5ms (due to server-side queuing)
+    - `queue.buffering.max.ms=5`: Average latency ~7.5ms (better batching efficiency)
+
+    This insight led Apache Kafka 4.0 to change the default `linger.ms` (equivalent to `queue.buffering.max.ms`) from 0ms to 5ms.
+
+    **Recommendation**: Use `queue.buffering.max.ms=0` for low-volume, real-time scenarios where individual message latency matters. For high-throughput scenarios, a small delay (5ms or more) often reduces overall latency by enabling efficient batching. A good starting point is to set `queue.buffering.max.ms` to at least your expected broker processing time.
+
 #### `batch.size`
 
-The `batch.size` parameter determines the maximum size of a batch of messages. Larger batch sizes can improve throughput but might increase latency. Finding the right balance is key to optimal performance.
+The `batch.size` parameter determines the maximum size of a batch of messages (in bytes) destined for the same partition. Data is sent when either the `batch.size` limit is reached or `queue.buffering.max.ms` expires, whichever happens first.
+
+Larger batch sizes can improve throughput by reducing network request frequency but consume more memory through pre-allocated buffers. Smaller batch sizes reduce memory usage but may increase overhead due to more frequent network calls.
+
+**Sizing recommendation**: For high-throughput scenarios, consider setting `batch.size` to 256KB or higher to accommodate broker-side performance variations and prevent forced early sends. A rough formula for sizing:
+
+```text
+batch.size >= (Max Write Throughput per Client in bytes/sec) × (queue.buffering.max.ms / 1000) / (Number of Brokers)
+```
+
+For example, if your client produces 10MB/sec with `queue.buffering.max.ms=10` across 3 brokers: `batch.size >= 10,000,000 × 0.01 / 3 ≈ 33KB` minimum, though using 256KB provides headroom for traffic spikes.
 
 #### `compression.codec`
 
