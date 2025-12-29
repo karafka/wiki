@@ -55,6 +55,7 @@
 | `admin/copy_consumer_group/with_non_existing_topics_spec.rb` | When trying to migrate with non-existing topics, it should migrate those in use (none) |
 | `admin/lag_calculation_edge_cases_spec.rb` | Karafka should handle lag calculation edge cases correctly |
 | `admin/metadata_refresh_during_changes_spec.rb` | Karafka should handle metadata refresh correctly during topic changes |
+| `admin/multi_cluster_operations_spec.rb` | Karafka Admin should support operations on multiple Kafka clusters by allowing custom kafka configuration per admin instance. This test verifies that: 1. An admin instance with custom kafka config can connect to a specific cluster 2. The custom config overrides the default config 3. Operations work correctly with the custom cluster |
 | `admin/post_fork_behaviour_spec.rb` | When working with Admin API in post-forks we should have no issues. @see https://github.com/ffi/ffi/issues/1114 |
 | `admin/read_lags_with_offsets/inactive_topics_lags_spec.rb` | When configured with inactive visible, we should get their lags. |
 | `admin/read_lags_with_offsets/multi_cg_setup_spec.rb` | A set of cases that can be easily tested together to save time |
