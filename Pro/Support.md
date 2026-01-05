@@ -16,6 +16,12 @@ With Karafka, you can get priority support with a max response time of 2 working
 
 Please email using the same domain as the original license email or explain your connection to the licensed company.
 
+!!! warning "Support for EOL Versions"
+
+    While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies—especially those beyond their End-of-Life (EOL) dates.
+
+    Resolving issues in EOL versions may require backporting fixes to unsupported Ruby versions or deprecated dependencies, which may not be feasible or maintainable. We strongly recommend keeping your software stack current to ensure you can receive effective support and timely fixes.
+
 ## Onboarding
 
 Yearly Pro customers may request a two-hour video chat session with Maciej Mensfeld to discuss their application(s), requirements, and how best to leverage the various Karafka features. Contact us at `contact@karafka.io` to set up your session.
