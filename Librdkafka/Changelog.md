@@ -6,6 +6,54 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.13.0 (2026-01-05)
+
+librdkafka v2.13.0 is a feature release:
+
+* [KIP-482](https://cwiki.apache.org/confluence/display/KAFKA/KIP-482%3A+The+Kafka+Protocol+should+Support+Optional+Tagged+Fields) Upgrade CreateAcls, DescribeAcls, DeleteAcls to the first version supporting this KIP (#5081).
+* [KIP-482](https://cwiki.apache.org/confluence/display/KAFKA/KIP-482%3A+The+Kafka+Protocol+should+Support+Optional+Tagged+Fields) Upgrade DescribeGroups, DeleteTopics, DeleteRecords, CreatePartitions, DeleteGroups to the first version supporting this KIP (#5083).
+* Strip trailing dot of hostname to fix SSL certificate verification issue (#5253).
+* Fix memory management for interceptors in rd_kafka_conf to prevent
+double-free errors (#5240).
+* Fix for the pseudo-random generator seed on Windows involving as well
+  the uniqueness of the new consumer group protocol member id (#5265).
+* Add secure random generation functionality used for UUID uniqueness
+  and secure salt generation in `rd_kafka_UserScramCredentialUpsertion`
+  using OpenSSL or the POSIX or WIN32 equivalent calls when it
+  isn't available (#5265).
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #4348.
+  Strip trailing dot of hostname to fix SSL certificate verification issue.
+  Happening since 1.x (#5253).
+* Issues: #4142.
+  Fix memory management for interceptors in rd_kafka_conf to prevent double-free errors.
+  In case the client instance fails the users needs to destroy the configuration
+  data structure, it was causing a double-free because the interceptors were
+  already freed in the constructor.
+  Happening since 1.x (#5240).
+* Issues: #5263, #3929.
+  Fix for the pseudo-random seed on Windows. The function `rand_r` isn't present
+  on Windows and the global seed wasn't based on the current microseconds and thread
+  id. Also it wasn't called on every thread as required on this platform but
+  only once per process. The fix allows on this platform the uniqueness of client side 
+  member id generation in next-generation consumer group protocol.
+  Happening since 1.x (#5265).
+
+### Checksums
+Release asset checksums:
+ * v2.13.0.zip SHA256 `73d731322b34c59fb5245d27172c71824e9323acd934e214d70a77954749e79d`
+ * v2.13.0.tar.gz SHA256 `3bd351601d8ebcbc99b9a1316cae1b83b00edbcf9411c34287edf1791c507600`
+
+### New Contributors
+* @fangnx made their first contribution in https://github.com/confluentinc/librdkafka/pull/5231
+* @Ankith-Confluent made their first contribution in https://github.com/confluentinc/librdkafka/pull/5240
+
+**Full Changelog**: https://github.com/confluentinc/librdkafka/compare/v2.12.1...v2.13.0
 ## 2.12.1 (2025-10-21)
 
 librdkafka v2.12.1 is a maintenance release:
@@ -2036,39 +2084,4 @@ librdkafka v1.6.0 is feature release:
 Release asset checksums:
  * v1.6.0.zip SHA256 `af6f301a1c35abb8ad2bb0bab0e8919957be26c03a9a10f833c8f97d6c405aa8`
  * v1.6.0.tar.gz SHA256 `3130cbd391ef683dc9acf9f83fe82ff93b8730a1a34d0518e93c250929be9f6b`
-
-## 1.5.3 (2020-12-09)
-
-# librdkafka v1.5.3
-
-librdkafka v1.5.3 is a maintenance release.
-
-### Upgrade considerations
-
- * CentOS 6 is now EOL and is no longer included in binary librdkafka packages,
-   such as NuGet.
-
-### Fixes
-
-#### General fixes
-
- * Fix a use-after-free crash when certain coordinator requests were retried.
-
-
-#### Consumer fixes
-
- * Consumer would not filter out messages for aborted transactions
-   if the messages were compressed (#3020).
- * Consumer destroy without prior `close()` could hang in certain
-   cgrp states (@gridaphobe, #3127).
- * Fix possible null dereference in `Message::errstr()` (#3140).
- * The `roundrobin` partition assignment strategy could get stuck in an
-   endless loop or generate uneven assignments in case the group members
-   had asymmetric subscriptions (e.g., c1 subscribes to t1,t2 while c2
-   subscribes to t2,t3).  (#3159)
-
-### Checksums
-Release asset checksums:
- * v1.5.3.zip SHA256 `3f24271232a42f2d5ac8aab3ab1a5ddbf305f9a1ae223c840d17c221d12fe4c1`
- * v1.5.3.tar.gz SHA256 `2105ca01fef5beca10c9f010bc50342b15d5ce6b73b2489b012e6d09a008b7bf`
 
