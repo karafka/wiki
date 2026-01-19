@@ -4,7 +4,7 @@
   "description": "Documentation repository for the Karafka ecosystem",
   "private": true,
   "devDependencies": {
-    "markdownlint-cli2": "^0.19.0",
+    "markdownlint-cli2": "^0.20.0",
     "mkdocs-material-linter": "^1.5.3"
   },
   "scripts": {

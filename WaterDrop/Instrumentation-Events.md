@@ -77,3 +77,45 @@ end
 ```
 
 For more information about using instrumentation, please refer to the main documentation.
+
+## Class-Level Events
+
+WaterDrop also provides class-level instrumentation that allows you to monitor events across all producer instances. This is useful for external libraries and monitoring tools that need to hook into producer lifecycle events without requiring specific producer instance references.
+
+### Available Class-Level Events
+
+
+#### Connection_pool Events
+
+- `connection_pool.created`
+- `connection_pool.reload`
+- `connection_pool.reloaded`
+- `connection_pool.setup`
+- `connection_pool.shutdown`
+
+#### Producer Events
+
+- `producer.configured`
+- `producer.created`
+
+### Class-Level Usage Example
+
+```ruby
+# Subscribe to global producer lifecycle events
+WaterDrop.monitor.subscribe('producer.configured') do |event|
+  producer = event[:producer]
+  puts "Producer configured: #{producer.id}"
+
+  # Example: Add middleware after producer is fully configured
+  producer.middleware.append do |message|
+    message
+  end
+end
+
+# All producers will now trigger the above callback
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+```
+
+For more details on class-level instrumentation patterns, see the [Monitoring and Logging](WaterDrop-Monitoring-and-Logging#global-cross-producer-monitoring) documentation.

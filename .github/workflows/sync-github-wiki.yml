@@ -1,0 +1,45 @@
+name: Sync GitHub Wiki
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: sync-github-wiki
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    environment: automatic-content-refresh
+    steps:
+      - name: Checkout docs repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          path: wiki
+
+      - name: Checkout GitHub Wiki
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          repository: karafka/karafka.wiki
+          path: wiki/.gh
+          token: ${{ secrets.REPO_TOKEN }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@708024e6c902387ab41de36e1669e43b5ee7085e # v1.283.0
+        with:
+          ruby-version: '4.0.0'
+
+      - name: Configure Git
+        working-directory: wiki/.gh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync content to GitHub Wiki
+        working-directory: wiki
+        run: bin/sync_gh

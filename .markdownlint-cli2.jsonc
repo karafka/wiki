@@ -11,6 +11,7 @@
     "!Changelog/*.md",
     "!Pro/License-Comm.md",
     "!.gh/**",
+    "!.gh-templates/**",
     "!node_modules/**",
     "!.lint/**",
   ],

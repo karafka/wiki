@@ -2549,6 +2549,8 @@ This error indicates that there are not enough in-sync replicas to handle the me
 
 1. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
 
+1. **Check for RF=MinISR Misconfiguration:** Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
+
 By following these steps, you should be able to resolve the "Broker: Not enough in-sync replicas" error and ensure your Kafka cluster is correctly configured to handle the required replication.
 
 ## Is there any way to measure message sizes post-compression in Waterdrop?
