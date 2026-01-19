@@ -22,7 +22,6 @@
 - [What does static consumer fenced by other consumer with the same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-the-same-groupinstanceid-mean)
 - [Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?](#why-in-the-long-running-jobs-case-revoked-is-executed-even-if-consume-did-not-run-because-of-revocation)
 - [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages)
-- [Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?](#why-am-i-seeing-rdkafkardkafkaerror-local-timed-out-timed_out-error-when-producing-larger-quantities-of-messages-1)
 - [Do I need to use `#revoked?` when not using Long-Running jobs?](#do-i-need-to-use-revoked-when-not-using-long-running-jobs)
 - [Can I consume from more than one Kafka cluster simultaneously?](#can-i-consume-from-more-than-one-kafka-cluster-simultaneously)
 - [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
@@ -423,23 +422,11 @@ The `#revoked` will be executed even though the `#consume` did not run upon revo
 
 ## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
-When you encounter this error in your logs:
+**Timeout Error:**
 
 ```ruby
 Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 ```
-I'll fetch that documentation section and help you rewrite it.Here's a rewritten version of that section with improved clarity and structure:
-
----
-
-## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
-
-If you encounter the following error:
-
-```ruby
-Rdkafka::RdkafkaError (Local: Timed out (timed_out)
-```
-This timeout error typically indicates one of the following issues.
 
 **Most Common Causes:**
 1. **Broker cannot keep up with production rate** - The Kafka broker is overwhelmed by the volume of incoming messages and cannot process them quickly enough.
