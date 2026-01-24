@@ -16,7 +16,7 @@ Karafka is a robust framework that allows applications to interact with multiple
 
 4. Admin Operations and Web UI:
 
-    - All admin operations are performed on the primary cluster.
+    - By default, admin operations are performed on the primary cluster. However, you can create an Admin instance with custom kafka configuration to target a different cluster: `Karafka::Admin.new(kafka: { 'bootstrap.servers': 'other:9092' })`.
 
     - While the Web UI can work with multiple clusters, both reporting and processing of the Web UI data will take place on the primary cluster unless `Karafka::Web.producer` is redefined.
 
@@ -111,6 +111,7 @@ While Karafka's ability to operate with multiple clusters offers flexibility and
 
 ## See Also
 
+- [Admin API](Admin-API#multi-cluster-setup) - Perform admin operations on multiple clusters
 - [Configuration](Configuration) - Configure Karafka for multiple clusters
 - [Routing](Routing) - Set up routing for different clusters
 - [Producing Messages](Producing-Messages) - Produce to multiple clusters with WaterDrop

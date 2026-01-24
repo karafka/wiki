@@ -6,9 +6,9 @@ Karafka allows you to manage your topics in three ways:
 
 Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
-!!! tip "Default Cluster Limitation"
+!!! tip "Multi-Cluster Support"
 
-    All admin operations in Karafka always run on the default cluster. To run admin operations on multiple clusters, you need separate Karafka boot files for each cluster. For more details, visit the [Admin Multi-Cluster Setup](Admin-API#multi-cluster-setup) section.
+    Declarative Topics CLI commands operate on the default cluster. For CLI-based multi-cluster management, use the `KARAFKA_BOOT_FILE` environment variable to point to different cluster configurations. For programmatic admin operations, you can use `Karafka::Admin.new(kafka: {...})` to target different clusters directly. For more details, visit the [Admin Multi-Cluster Setup](Admin-API#multi-cluster-setup) section.
 
 Keeping Kafka topics configuration as code has several benefits:
 
