@@ -142,11 +142,35 @@ class KarafkaTestDocGenerator
 
   def is_license_comment?(comment_text)
     license_keywords = [
+      # Old header format
       'This code is part of Karafka Pro',
       'commercial component not licensed under LGPL',
       'See LICENSE for details',
-      'Karafka Pro',
-      'LICENSE for details'
+      # New header format (Ruby)
+      'Karafka Pro - Source Available Commercial Software',
+      'Copyright (c)',
+      'This software is NOT open source',
+      'source-available commercial software',
+      'requiring a paid license',
+      'NOT covered by LGPL',
+      'PROHIBITED:',
+      'PERMITTED:',
+      'Use without a valid commercial license',
+      'Redistribution, modification',
+      'Use as training data for AI/ML',
+      'Scraping, crawling',
+      'Reading, referencing',
+      'Runtime retrieval by AI assistants',
+      'contextual help to Karafka users',
+      'License: https://karafka.io',
+      'Contact: contact@karafka.io',
+      # New ERB header format (inline PROHIBITED/PERMITTED)
+      'PROHIBITED: Use without',
+      'PROHIBITED: Redistribution',
+      'PROHIBITED: Scraping',
+      'PERMITTED: Reading',
+      'PERMITTED: Runtime',
+      'PERMITTED: for the purpose'
     ]
 
     license_keywords.any? { |keyword| comment_text.include?(keyword) }
