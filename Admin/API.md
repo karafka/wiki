@@ -6,9 +6,9 @@ Karafka provides application administrative functions via the built-in `Karafka:
 
     Many Kafka administrative operations (ACLs, configs, topics) are asynchronous in nature. When an API call returns successfully, this means the controller has accepted the request, not that the change has been fully propagated across the cluster. Configuration changes, ACL updates, and topic modifications may take several seconds to be applied on all brokers, depending on cluster size and network conditions. Always allow time for propagation and verify changes are applied across your cluster before proceeding with dependent operations.
 
-!!! tip "Default Cluster Limitation"
+!!! tip "Multi-Cluster Support"
 
-    All admin operations in Karafka always run on the default cluster. To run admin operations on multiple clusters, you need separate Karafka boot files for each cluster. For more details, visit the [Multi-Cluster Setup](#multi-cluster-setup) section.
+    Karafka Admin supports operations on multiple Kafka clusters. You can either use the default cluster via class methods, or create an Admin instance with custom kafka configuration to target a different cluster. For more details, visit the [Multi-Cluster Setup](#multi-cluster-setup) section.
 
 ## Configuration
 
@@ -41,7 +41,52 @@ Please note that in the case of `kafka` settings, if a given setting is not foun
 
 ### Multi-Cluster Setup
 
-Karafka allows you to manage multiple Kafka clusters using the `KARAFKA_BOOT_FILE` environment variable. This variable can point to different Karafka boot files configured for a specific cluster. By changing the value of `KARAFKA_BOOT_FILE`, you can specify which cluster to use when performing any Karafka admin and declarative topics operations.
+Karafka Admin supports two approaches for working with multiple Kafka clusters:
+
+#### Instance-Based API (Recommended)
+
+Create an Admin instance with custom kafka configuration to perform operations on a different cluster:
+
+```ruby
+# Default cluster (backward compatible - uses class methods)
+Karafka::Admin.cluster_info
+Karafka::Admin.create_topic('my-topic', 1, 1)
+
+# Custom cluster via Admin instance
+admin = Karafka::Admin.new(kafka: { 'bootstrap.servers': 'other-cluster:9092' })
+admin.cluster_info
+admin.create_topic('my-topic', 1, 1)
+```
+
+All Admin operations are available on both the class (for the default cluster) and on instances (for custom clusters):
+
+```ruby
+# Working with a secondary cluster
+secondary_admin = Karafka::Admin.new(
+  kafka: { 'bootstrap.servers': 'secondary-cluster:9092' }
+)
+
+# Topic operations
+secondary_admin.create_topic('events', 6, 3)
+secondary_admin.delete_topic('old-events')
+secondary_admin.topic_info('events')
+
+# Consumer group operations
+secondary_admin.read_lags_with_offsets
+secondary_admin.seek_consumer_group('my-group', { 'events' => 0 })
+secondary_admin.delete_consumer_group('unused-group')
+
+# Read messages from the secondary cluster
+messages = secondary_admin.read_topic('events', 0, 10)
+```
+
+!!! note "Configuration Scope"
+
+    Only the `kafka` configuration is customizable per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
+
+#### Environment Variable Approach
+
+Alternatively, you can manage multiple Kafka clusters using the `KARAFKA_BOOT_FILE` environment variable. This variable can point to different Karafka boot files configured for a specific cluster. By changing the value of `KARAFKA_BOOT_FILE`, you can specify which cluster to use when performing any Karafka admin and declarative topics operations.
 
 ```ruby
 # cluster1.rb
