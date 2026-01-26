@@ -539,6 +539,6 @@ bundle exec rubocop     # Review remaining issues
 
 ## See Also
 
-- [Technical Writing](Technical-Writing.md) - Documentation style guidelines
-- [Naming Conventions](Naming-Conventions.md) - Naming patterns across Karafka
-- [Gems Publishing](Gems-Publishing.md) - Release process for Karafka gems
+- [Technical Writing](Development-Technical-Writing.md) - Documentation style guidelines
+- [Naming Conventions](Development-Naming-Conventions.md) - Naming patterns across Karafka
+- [Gems Publishing](Development-Gems-Publishing.md) - Release process for Karafka gems
