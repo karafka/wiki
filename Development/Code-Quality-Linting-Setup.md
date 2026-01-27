@@ -8,7 +8,8 @@ The Karafka ecosystem uses a unified approach to code quality with the following
 
 | Component | Purpose | Coverage |
 | --------- | ------- | -------- |
-| **StandardRB** | Ruby code style and linting | All Ruby code, specs, gemspecs |
+| **RuboCop** | Ruby code style enforcement and linting | All Ruby code, specs, gemspecs |
+| **StandardRB** | Base configuration for RuboCop | Provides opinionated defaults |
 | **yard-lint** | Documentation quality checks | YARD documentation comments |
 | **Separate Gemfile.lint** | Isolation of linting dependencies | CI and development linting tasks |
 | **CI Integration** | Automated enforcement | All pull requests and scheduled runs |
