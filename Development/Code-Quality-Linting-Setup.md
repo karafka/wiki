@@ -86,7 +86,8 @@ However, for **critical dependency updates** that have been validated and tested
 To run code linting locally:
 
 ```shell
-bundle exec rubocop
+BUNDLE_GEMFILE=Gemfile.lint bundle install
+BUNDLE_GEMFILE=Gemfile.lint bundle exec rubocop
 ```
 
 To run documentation linting:
@@ -94,104 +95,6 @@ To run documentation linting:
 ```shell
 BUNDLE_GEMFILE=Gemfile.lint bundle install
 BUNDLE_GEMFILE=Gemfile.lint bundle exec yard-lint lib/
-```
-
-### Auto-fixing Issues
-
-StandardRB can automatically fix many style issues:
-
-```shell
-bundle exec rubocop -a
-```
-
-For more aggressive auto-correction (including unsafe fixes):
-
-```shell
-bundle exec rubocop -A
-```
-
-### Checking Specific Files
-
-To lint specific files or directories:
-
-```shell
-bundle exec rubocop lib/specific_file.rb
-bundle exec rubocop spec/
-```
-
-### Listing Target Files
-
-To verify which files are being checked:
-
-```shell
-bundle exec rubocop --list-target-files
-```
-
-This is particularly useful to confirm that `Gemfile.lint` is included in the linting scope.
-
-## Best Practices
-
-### Adding New Components
-
-When adding new Karafka ecosystem components, follow this setup:
-
-1. **Create Gemfile.lint**: Include all standard linting dependencies
-1. **Configure .rubocop.yml**: Inherit from Standard with minimal overrides
-1. **Update .rubocop.yml AllCops**: Explicitly include `Gemfile.lint`
-1. **Set up CI jobs**: Create separate `rubocop` and `yard-lint` jobs
-1. **Configure Renovate**: Add `Gemfile.lint` to `includePaths`
-1. **Run initial checks**: Execute `bundle exec rubocop -A` to align existing code
-
-### Maintaining Consistency
-
-To ensure consistency across the ecosystem:
-
-- **Minimize custom rules**: Only override StandardRB when absolutely necessary
-- **Document exceptions**: Comment why specific cops are disabled
-- **Share configurations**: Keep RuboCop configs similar across components
-- **Review updates together**: Coordinate StandardRB version updates across repos
-- **Use same Ruby version**: Align linting Ruby version across components (currently 4.0.1)
-
-### Handling Exceptions
-
-When you need to disable cops:
-
-```ruby
-# Good: Inline disable with explanation
-def legacy_method
-  # rubocop:disable Style/GlobalVars - Required for backward compatibility
-  $global_config = Config.new
-  # rubocop:enable Style/GlobalVars
-end
-
-# Good: File-level exception with justification
-# rubocop:disable Lint/RescueException
-# This file intentionally catches Exception for transaction rollback
-def transaction_wrapper
-  yield
-rescue Exception => e
-  rollback!
-  raise
-end
-# rubocop:enable Lint/RescueException
-```
-
-### Documentation Standards
-
-For YARD documentation to pass yard-lint:
-
-```ruby
-# Good: Complete documentation
-# Processes messages from Kafka topic
-#
-# @param messages [Array<Message>] messages to process
-# @param options [Hash] processing options
-# @option options [Boolean] :async (false) process asynchronously
-# @return [Array<Result>] processing results
-# @raise [ProcessingError] if messages cannot be processed
-def process_messages(messages, options = {})
-  # implementation
-end
 ```
 
 ## Additional Resources
