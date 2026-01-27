@@ -18,37 +18,28 @@ The Karafka ecosystem uses a unified approach to code quality with the following
 
 ### Background
 
-In January 2026, the Karafka ecosystem migrated from custom Coditsu linting standards to StandardRB. This decision was driven by:
+In January 2026, the Karafka ecosystem migrated to StandardRB as the foundation for code quality standards. This decision was driven by:
 
 - **Reduced maintenance burden**: Delegating style decisions to the community-maintained Standard
 - **Self-contained tooling**: Minimal custom configuration requirements
 - **Community alignment**: Following established Ruby community practices
 - **Consistency**: Unified style across all Karafka components
 
-### What is StandardRB?
+### Why RuboCop with StandardRB?
 
-StandardRB is a Ruby code style guide, linter, and formatter built on RuboCop. It provides:
+The Karafka ecosystem uses **RuboCop directly** with StandardRB as the base configuration, rather than using StandardRB's command-line tool exclusively. This approach is necessary because:
 
-- Opinionated defaults with minimal configuration
-- Automatic code formatting capabilities
-- Integration with popular Ruby tooling
-- Regular updates aligned with Ruby community practices
+- **Customized style preferences**: Karafka has slightly different style preferences than fully enforced StandardRB defaults
+- **Project-specific requirements**: Some RuboCop cops need to be configured differently for Karafka's architecture (e.g., thread safety, performance optimizations)
+- **Additional cop families**: Integration of specialized RuboCop extensions like `rubocop-thread_safety` and `rubocop-performance` with custom settings
+- **Fine-grained control**: Ability to selectively enable/disable specific cops while maintaining StandardRB as the foundation
 
-### Migration Status
+By using `bundle exec rubocop` with StandardRB configurations inherited via `inherit_gem`, Karafka maintains:
 
-All major components in the Karafka ecosystem have been migrated to StandardRB:
-
-| Repository | Status | Notes |
-| ---------- | ------ | ----- |
-| waterdrop | ✓ Migrated | Reference implementation |
-| karafka-core | ✓ Migrated | |
-| karafka-testing | ✓ Migrated | |
-| karafka | ✓ Migrated | |
-| wiki | ✓ Migrated | Documentation repository |
-| website | ✓ Migrated | Marketing site |
-| rdkafka | ✓ Migrated | Ruby bindings |
-| karafka-web | ✓ Migrated | Web UI |
-| karafka-rdkafka | Pending | In progress |
+- StandardRB's solid defaults as the baseline
+- Flexibility to override specific rules when needed
+- Full access to RuboCop's extensive cop ecosystem
+- Consistent style across the ecosystem with minimal deviation from Standard
 
 ## Gemfile.lint Pattern
 
@@ -61,27 +52,6 @@ The Karafka ecosystem uses a dedicated `Gemfile.lint` file to separate linting a
 - **Independent versioning**: Linting tools can be updated without affecting application dependencies
 - **CI optimization**: Linting jobs can use different Ruby versions and dependency sets
 
-### Structure
-
-A typical `Gemfile.lint` in the Karafka ecosystem contains:
-
-```ruby
-# frozen_string_literal: true
-
-source "https://rubygems.org"
-
-# Documentation linting
-gem "yard-lint"
-
-# Code style (StandardRB via RuboCop)
-gem "standard"
-gem "standard-performance"
-gem "rubocop-performance"
-gem "rubocop-rspec"
-gem "standard-rspec"
-gem "rubocop-thread_safety"
-```
-
 ### Key Components
 
 | Gem | Purpose |
@@ -93,102 +63,6 @@ gem "rubocop-thread_safety"
 | **rubocop-performance** | Performance optimization cops |
 | **rubocop-rspec** | RSpec best practices enforcement |
 | **rubocop-thread_safety** | Thread safety checks for concurrent code |
-
-## RuboCop Configuration
-
-### Base Configuration
-
-The `.rubocop.yml` file inherits from Standard gem configurations with minimal project-specific overrides:
-
-```yaml
-# frozen_string_literal: true
-
-plugins:
-  - rubocop-capybara
-  - rubocop-factory_bot
-  - rubocop-performance
-  - rubocop-rspec
-  - rubocop-rspec_rails
-  - rubocop-thread_safety
-
-inherit_gem:
-  standard: config/base.yml
-  standard-performance: config/base.yml
-  standard-rspec: config/base.yml
-
-AllCops:
-  NewCops: enable
-  TargetRubyVersion: 3.2
-  Include:
-    - "**/*.rb"
-    - "**/*.gemspec"
-    - "**/Gemfile"
-    - "**/Rakefile"
-    - Gemfile.lint
-```
-
-### Critical Configuration Elements
-
-#### Include Gemfile.lint
-
-The `Gemfile.lint` file must be explicitly included in `AllCops` to ensure it receives linting checks:
-
-```yaml
-AllCops:
-  Include:
-    - Gemfile.lint
-```
-
-This ensures that linting dependencies themselves follow the same code style standards.
-
-#### NewCops Setting
-
-```yaml
-AllCops:
-  NewCops: enable
-```
-
-This setting automatically enables new RuboCop cops as they are released, ensuring the codebase benefits from new quality checks without manual configuration updates.
-
-#### Project-Specific Overrides
-
-While StandardRB provides opinionated defaults, Karafka components may include minimal overrides for specific use cases:
-
-```yaml
-# Layout
-Layout/LineLength:
-  Max: 100
-
-# Disable checks for non-applicable features
-Capybara:
-  Enabled: false
-
-FactoryBot:
-  Enabled: false
-
-RSpecRails:
-  Enabled: false
-
-# RSpec customizations
-RSpec/ExampleLength:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Enabled: false
-
-RSpec/MultipleMemoizedHelpers:
-  Max: 20
-
-RSpec/NestedGroups:
-  Max: 4
-
-# Thread safety customizations
-ThreadSafety/ClassAndModuleAttributes:
-  Enabled: false
-
-ThreadSafety/ClassInstanceVariable:
-  Enabled: false
-```
 
 ## CI Integration
 
