@@ -17,15 +17,6 @@ The Karafka ecosystem uses a unified approach to code quality with the following
 
 ## StandardRB Adoption
 
-### Background
-
-In January 2026, the Karafka ecosystem migrated to StandardRB as the foundation for code quality standards. This decision was driven by:
-
-- **Reduced maintenance burden**: Delegating style decisions to the community-maintained Standard
-- **Self-contained tooling**: Minimal custom configuration requirements
-- **Community alignment**: Following established Ruby community practices
-- **Consistency**: Unified style across all Karafka components
-
 ### Why RuboCop with StandardRB?
 
 The Karafka ecosystem uses **RuboCop directly** with StandardRB as the base configuration, rather than using StandardRB's command-line tool exclusively. This approach is necessary because:
