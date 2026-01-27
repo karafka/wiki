@@ -62,29 +62,22 @@ All linting checks are enforced through GitHub Actions CI workflows. Separate jo
 
 ## Renovate Integration
 
-### Configuration
-
-The `renovate.json` file includes `Gemfile.lint` in its tracked paths:
-
-```json
-{
-  "extends": ["config:base"],
-  "includePaths": ["Gemfile", "Gemfile.lint", "*.gemspec"],
-  "packageRules": [
-    {
-      "matchFiles": ["Gemfile.lint"],
-      "groupName": "linting dependencies"
-    }
-  ]
-}
-```
-
 ### Benefits
 
 - **Automatic updates**: Linting tool updates are proposed automatically
 - **Grouped updates**: Linting dependencies are updated together for easier review
 - **Dependency tracking**: `Gemfile.lint.lock` is maintained and updated
 - **Security patches**: Quick notification of security issues in linting tools
+
+### Update Stability Policy
+
+By default, Renovate is configured with a **7-day cooldown period** for dependency updates. This means new versions of linting tools are not automatically proposed until they have been available for at least 7 days. This policy exists for:
+
+- **Security**: Allows time for the community to discover and report critical issues in new releases
+- **Stability**: Ensures that newly released versions are stable and don't contain showstopper bugs
+- **Quality**: Gives maintainers time to address early-adopter feedback before wider adoption
+
+However, for **critical dependency updates** that have been validated and tested, early updates can be and are performed manually when needed, bypassing the cooldown period. This provides flexibility for urgent security patches or important bug fixes while maintaining conservative defaults for routine updates.
 
 ## Local Development Usage
 
