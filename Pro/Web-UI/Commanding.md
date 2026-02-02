@@ -16,6 +16,10 @@ Commanding is **turned on by default**. During each consumer process startup, it
 
 To turn off this feature, you can set the `config.commanding.active` configuration option to `false`. Disabling commanding removes the extra Kafka connection dedicated to these administrative tasks. Consequently, it also disables the ability to execute these commands from the Web UI.
 
+!!! warning "Commands Topic Required"
+
+    The commanding feature requires the `karafka_consumers_commands` topic to be present in your Kafka cluster. If this topic is missing, the Web UI will display an alert notifying you that pause, resume, and trace functionality is unavailable. Ensure this topic exists and is properly configured before attempting to use commanding features.
+
 ```ruby
 # Completely disable commanding from Web UI
 Karafka::Web.setup do |config|
@@ -142,6 +146,37 @@ Partition-level controls are accessible from two main locations:
 </p>
 
 ### Pause and Resume Partitions
+
+The partition pause feature allows you to temporarily stop message processing for specific partitions without stopping the entire consumer process. Karafka provides two levels of pause control:
+
+- **Partition-level**: Pause individual partitions one at a time
+- **Topic-level**: Pause all partitions of a topic at once across all consumer processes
+
+#### Topic-Level Pause/Resume
+
+For scenarios where you need to pause all partitions of a topic simultaneously, Karafka provides topic-level pause controls accessible from the Health Overview page.
+
+To pause all partitions of a topic:
+
+1. Navigate to **Health → Overview**
+2. Locate the topic you want to pause
+3. Click the **Pause Topic** button
+4. Configure pause settings (duration and safety options)
+5. Confirm the operation
+
+The command is broadcast to all consumer processes, with each process applying the pause to the partitions it owns within the specified consumer group. This is particularly useful for:
+
+- **Coordinated maintenance**: Stopping all processing for a topic during planned maintenance
+- **Emergency response**: Quickly halting all consumption when issues are detected
+- **Resource management**: Freeing up resources across all consumers processing a topic
+
+To resume all paused partitions of a topic, use the corresponding **Resume Topic** button from the same Health Overview interface.
+
+!!! info "Cross-Process Coordination"
+
+    Topic-level pause/resume commands are distributed to all active consumer processes. Each process will apply the command only to the partitions it currently owns. This ensures consistent behavior across your consumer fleet without requiring manual intervention on each process.
+
+#### Partition-Level Pause/Resume
 
 The partition pause feature allows you to temporarily stop message processing for a specific partition without stopping the entire consumer process.
 
