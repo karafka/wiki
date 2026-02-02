@@ -2,6 +2,19 @@ The health views of the Web UI display the current status of all the running Kar
 
 ![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-health.png)
 
+## Static Membership Identification
+
+When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in both the subscription views and the Health Overview, making it easier to identify specific consumer instances.
+
+Static membership IDs are particularly useful for:
+
+- **Identifying specific consumers**: Quickly locate a particular consumer instance across restarts
+- **Debugging rebalance issues**: Understand which consumers are involved in rebalance events
+- **Deployment tracking**: Correlate consumer instances with deployment identifiers
+- **Operational monitoring**: Track consumer instances that maintain stable group membership
+
+When a consumer is configured with a `group.instance.id`, this value is displayed alongside other subscription information. For consumers without static membership configured, this field will not appear.
+
 ## LSO Freezes Awareness
 
 In the world of Kafka, the Last Stable Offset (LSO) is pivotal in ensuring message integrity and order, especially for idempotent producers. However, at times, the LSO may hang, affecting the consumption of messages and potentially bringing to a standstill any consumers operating at a `read_committed` isolation level. This documentation will shed light on the concept, the problems it may cause, and how the Karafka Web UI can be a lifesaver during such situations.
