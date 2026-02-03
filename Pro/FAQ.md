@@ -127,6 +127,7 @@ Newer Karafka versions (2.4+) require Ruby 3.0+ due to several critical technica
 The license was initially locked to Ruby 3.0+, which was a mistake. This restriction prevented existing Karafka users with legacy Ruby deployments from upgrading to Pro - a use case that should be supported.
 
 Organizations running:
+
 - Ruby 2.7 can use **Karafka 2.3.4** (the last version supporting Ruby 2.7) with Pro features
 - Even older Ruby versions may use earlier compatible Karafka versions with Pro
 
