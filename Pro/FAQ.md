@@ -7,6 +7,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [Is there a trial version?](#is-there-a-trial-version)
 1. [What is the license?](#what-is-the-license)
 1. [How does Pro licensing work?](#how-does-pro-licensing-work)
+1. [Why does the Pro license support Ruby versions beyond their End-of-Life (EOL)?](#why-does-the-pro-license-support-ruby-versions-beyond-their-end-of-life-eol)
 1. [Do I require to change source of the package?](#do-i-require-to-change-source-of-the-package)
 1. [What happens if my subscription lapses?](#what-happens-if-my-subscription-lapses)
 1. [Do I need to replace the license for my running processes?](#do-i-need-to-replace-the-license-for-my-running-processes)
@@ -108,6 +109,38 @@ See [LICENSE-COMM](Pro-License-Comm) on our documentation website.
 ## How does Pro licensing work?
 
 Every organization running Karafka Pro on its servers must purchase a subscription. There's no limit to the number of servers or environments used by that organization. Your subscription will automatically renew every year.
+
+## Why does the Pro license support Ruby versions beyond their End-of-Life (EOL)?
+
+The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, even though newer Karafka versions require Ruby 3.0+. This design choice enables organizations with legacy deployments to upgrade to Pro features while using compatible older Karafka versions.
+
+### Technical Context
+
+Newer Karafka versions (2.4+) require Ruby 3.0+ due to several critical technical reasons:
+
+- **Critical bugs in older Ruby versions** that affect features like swarm forking
+- **C layer FFI bugs** that can crash Karafka under certain scenarios
+- **Missing features** like fiber scheduler and fiber context that are essential for newer functionality
+
+### Why the License Supports Older Ruby
+
+The license was initially locked to Ruby 3.0+, which was a mistake. This restriction prevented existing Karafka users with legacy Ruby deployments from upgrading to Pro - a use case that should be supported.
+
+Organizations running:
+
+- Ruby 2.7 can use **Karafka 2.3.4** (the last version supporting Ruby 2.7) with Pro features
+- Even older Ruby versions may use earlier compatible Karafka versions with Pro
+
+### Key Principle
+
+The license does not enforce Ruby version requirements because that's a **technical compatibility concern**, not a licensing concern. By keeping the license unlocked, we allow organizations to:
+
+1. Maintain their existing Ruby infrastructure
+2. Upgrade to Karafka Pro features
+3. Use the newest Karafka version compatible with their Ruby version
+4. Plan Ruby upgrades on their own timeline while still benefiting from Pro
+
+This approach respects that legacy systems exist in production environments and that upgrading Ruby may not always be immediately feasible, even when upgrading to Karafka Pro is desired.
 
 ## Do I require to change source of the package?
 
