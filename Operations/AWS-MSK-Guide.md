@@ -156,9 +156,9 @@ For MSK deployments with transactional producers, increase all related timeouts 
 config.kafka = {
   'transactional.id': 'my-transactional-producer',
   # All three timeouts must be configured together for transactional producers
-  'transaction.timeout.ms': 300_000, # 5 minutes
-  'message.timeout.ms': 300_000,     # Must be <= transaction.timeout.ms
-  'socket.timeout.ms': 299_900       # Must be at least 100ms less than transaction.timeout.ms
+  'message.timeout.ms': 300_000,     # 5 minutes
+  'transaction.timeout.ms': 305_000, # Must be >= message.timeout.ms
+  'socket.timeout.ms': 304_900       # Must be at least 100ms less than transaction.timeout.ms
 }
 ```
 
