@@ -79,12 +79,26 @@ config.kafka = {
 
 The `message.timeout.ms` setting controls how long a producer waits for message delivery acknowledgment before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delivery delays.
 
-**Default values differ between libraries:**
+Default values differ between libraries:
 
-| Library    | Default `message.timeout.ms` |
-|------------|------------------------------|
-| librdkafka | 300,000ms (5 minutes)        |
-| WaterDrop  | 50,000ms (50 seconds)        |
+<table>
+  <thead>
+    <tr>
+      <th>Library</th>
+      <th>Default <code>message.timeout.ms</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>librdkafka</td>
+      <td>300,000ms (5 minutes)</td>
+    </tr>
+    <tr>
+      <td>WaterDrop</td>
+      <td>50,000ms (50 seconds)</td>
+    </tr>
+  </tbody>
+</table>
 
 WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 50 seconds, particularly during dual-broker outages.
 
@@ -104,13 +118,30 @@ When using transactional producers, timeout configuration requires additional at
 - `message.timeout.ms` is automatically adjusted to match `transaction.timeout.ms` when a `transactional.id` is configured
 - `socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms` if explicitly configured
 
-**Default transactional timeout values:**
+Default transactional timeout values:
 
-| Setting                  | librdkafka Default                          |
-|--------------------------|---------------------------------------------|
-| `transaction.timeout.ms` | 60,000ms (60s)                              |
-| `message.timeout.ms`     | Adjusted to 60,000ms when transactional     |
-| `socket.timeout.ms`      | Must be < `transaction.timeout.ms` - 100ms  |
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>librdkafka Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>transaction.timeout.ms</code></td>
+      <td>60,000ms (60s)</td>
+    </tr>
+    <tr>
+      <td><code>message.timeout.ms</code></td>
+      <td>Adjusted to 60,000ms when transactional</td>
+    </tr>
+    <tr>
+      <td><code>socket.timeout.ms</code></td>
+      <td>Must be &lt; <code>transaction.timeout.ms</code> - 100ms</td>
+    </tr>
+  </tbody>
+</table>
 
 For MSK deployments with transactional producers, increase `transaction.timeout.ms` to accommodate maintenance delays:
 
