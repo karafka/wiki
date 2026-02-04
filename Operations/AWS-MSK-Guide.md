@@ -75,6 +75,41 @@ config.kafka = {
 }
 ```
 
+### Message Timeout Configuration
+
+The `message.timeout.ms` setting controls how long a producer waits for message delivery acknowledgment before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delivery delays.
+
+**Default values differ between libraries:**
+
+| Library    | Default `message.timeout.ms` |
+|------------|------------------------------|
+| librdkafka | 300,000ms (5 minutes)        |
+| WaterDrop  | 50,000ms (50 seconds)        |
+
+WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 50 seconds, particularly during dual-broker outages.
+
+**Recommended MSK configuration:**
+
+```ruby
+config.kafka = {
+  # Increase message timeout to handle MSK maintenance delays
+  'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
+}
+```
+
+When the message timeout expires, the producer reports a `msg_timed_out` error. This error abstracts several underlying causes, all indicating that the producer was unable to successfully deliver the message to the broker within the timeout period.
+
+**Common causes of `msg_timed_out`:**
+
+- **Leader unavailable** - The partition leader is not available, either because leader election failed (no eligible replicas) or the leader broker is down
+- **Connection failures** - Network problems preventing connection to the partition leader
+- **Insufficient in-sync replicas** - The cluster cannot satisfy `min.insync.replicas` requirements (see [Not Enough Replicas](#not-enough-replicas))
+- **Broker overload** - The broker is too slow to acknowledge messages within the timeout
+
+!!! warning "Increase Timeout Before Investigating Further"
+
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone, as it provides sufficient buffer for maintenance operations and temporary cluster instability.
+
 ### All Brokers Down - Why Consumers Recover
 
 The `All brokers are down` error is particularly alarming but usually self-resolving. Understanding why consumers can recover from this state helps distinguish between temporary issues and actual failures.
@@ -229,6 +264,92 @@ With 4 brokers and `min.insync.replicas=2`, the cluster can tolerate two simulta
 !!! warning "3-Broker Clusters Are Not Maintenance-Safe"
 
     While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to ensure write availability during maintenance operations.
+
+### Verifying Actual Topic Configuration
+
+MSK cluster-level defaults for `default.replication.factor` and `min.insync.replicas` may not be applied to all topics. Topics created through different methods (Karafka Admin APIs, external tools, auto-creation) may have different settings than the cluster defaults.
+
+Always verify actual topic configuration rather than assuming cluster defaults are in effect:
+
+```ruby
+# Check a specific topic's configuration
+topic_name = 'my_topic'
+
+# Get partition info including replica count
+topic_info = Karafka::Admin.cluster_info.topics.find { |t| t[:topic_name] == topic_name }
+replication_factor = topic_info[:partitions].first[:replica_count]
+
+# Get topic-level config including min.insync.replicas
+configs = Karafka::Admin::Configs.describe(
+  Karafka::Admin::Configs::Resource.new(type: :topic, name: topic_name)
+).first.configs
+
+min_isr = configs.find { |c| c.name == 'min.insync.replicas' }&.value&.to_i
+
+puts "Topic: #{topic_name}"
+puts "  Replication Factor: #{replication_factor}"
+puts "  min.insync.replicas: #{min_isr}"
+```
+
+!!! tip "Use Karafka Web UI for Quick Inspection"
+
+    The [Karafka Web UI](Web-UI-Getting-Started) provides visual inspection of topic replication settings in the Health or Topics sections, making it easy to spot misconfigured topics without writing custom scripts.
+
+### Replication Health Check Script
+
+Use this script to audit all topics for replication issues that could cause write failures during MSK maintenance:
+
+```ruby
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Checks all Kafka topics for replication issues
+# Usage: bundle exec ruby bin/check_replication.rb
+
+require 'bundler/setup'
+require 'karafka'
+
+karafka_boot = File.exist?('karafka.rb') ? 'karafka.rb' : '../karafka.rb'
+require File.expand_path(karafka_boot)
+
+issues = []
+
+Karafka::Admin.cluster_info.topics.each do |topic|
+  topic_name = topic[:topic_name]
+  next if topic_name.start_with?('__')
+
+  rf = topic[:partitions].first&.fetch(:replica_count) || 0
+
+  configs = Karafka::Admin::Configs.describe(
+    Karafka::Admin::Configs::Resource.new(type: :topic, name: topic_name)
+  ).first.configs
+
+  min_isr = configs.find { |c| c.name == 'min.insync.replicas' }&.value&.to_i || 1
+
+  if rf == 1
+    issues << "#{topic_name}: RF=#{rf} (no redundancy)"
+  elsif rf <= min_isr
+    issues << "#{topic_name}: RF=#{rf}, min.insync=#{min_isr} (zero fault tolerance)"
+  elsif min_isr == 1
+    issues << "#{topic_name}: RF=#{rf}, min.insync=#{min_isr} (low durability)"
+  end
+end
+
+if issues.any?
+  puts 'Issues found:'
+  issues.each { |issue| puts "  - #{issue}" }
+  exit 1
+else
+  puts 'All topics OK'
+  exit 0
+end
+```
+
+The script identifies three risk categories:
+
+- **No redundancy** (RF=1): Single point of failure, any broker loss causes data unavailability
+- **Zero fault tolerance** (RF <= MinISR): Cannot tolerate any broker failure during writes
+- **Low durability** (MinISR=1): Messages acknowledged with only one replica, risking data loss
 
 ## AWS Health Dashboard Alerts for Replication Factor
 
