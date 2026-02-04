@@ -75,6 +75,96 @@ config.kafka = {
 }
 ```
 
+### Message Timeout Configuration
+
+Producer timeout settings control how long various operations wait before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delays that exceed default timeout values.
+
+WaterDrop default timeout values differ from librdkafka:
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>librdkafka Default</th>
+      <th>WaterDrop Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>message.timeout.ms</code></td>
+      <td>300,000ms (5 minutes)</td>
+      <td>50,000ms (50 seconds)</td>
+    </tr>
+    <tr>
+      <td><code>transaction.timeout.ms</code> (transactional producers only)</td>
+      <td>60,000ms (60 seconds)</td>
+      <td>55,000ms (55 seconds)</td>
+    </tr>
+  </tbody>
+</table>
+
+WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 50 seconds, particularly during dual-broker outages.
+
+**Recommended MSK configuration for standard producers:**
+
+```ruby
+config.kafka = {
+  # Increase message timeout to handle MSK maintenance delays
+  # For transactional producers, also set transaction.timeout.ms (see below)
+  'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
+}
+```
+
+#### Transactional Producer Timeout Configuration
+
+When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. This setting must be greater than or equal to `message.timeout.ms`.
+
+WaterDrop defaults for transactional producers are `message.timeout.ms` of 50,000ms (50 seconds) and `transaction.timeout.ms` of 55,000ms (55 seconds). These shorter defaults may be insufficient for MSK environments during maintenance operations.
+
+Default transactional timeout values:
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>WaterDrop Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>message.timeout.ms</code></td>
+      <td>50,000ms (50s)</td>
+    </tr>
+    <tr>
+      <td><code>transaction.timeout.ms</code></td>
+      <td>55,000ms (55s)</td>
+    </tr>
+  </tbody>
+</table>
+
+For MSK deployments with transactional producers, increase all related timeouts to accommodate maintenance delays:
+
+```ruby
+config.kafka = {
+  'transactional.id': 'my-transactional-producer',
+  'message.timeout.ms': 300_000,     # 5 minutes
+  'transaction.timeout.ms': 305_000  # Must be >= message.timeout.ms
+}
+```
+
+When the message timeout expires, the producer reports a `msg_timed_out` error. This error abstracts several underlying causes, all indicating that the producer was unable to successfully deliver the message to the broker within the timeout period.
+
+**Common causes of `msg_timed_out`:**
+
+- **Leader unavailable** - The partition leader is not available, either because leader election failed (no eligible replicas) or the leader broker is down
+- **Connection failures** - Network problems preventing connection to the partition leader
+- **Insufficient in-sync replicas** - The cluster cannot satisfy `min.insync.replicas` requirements (see [Not Enough Replicas](#not-enough-replicas))
+- **Broker overload** - The broker is too slow to acknowledge messages within the timeout
+
+!!! warning "Increase Timeout Before Investigating Further"
+
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone, as it provides sufficient buffer for maintenance operations and temporary cluster instability.
+
 ### All Brokers Down - Why Consumers Recover
 
 The `All brokers are down` error is particularly alarming but usually self-resolving. Understanding why consumers can recover from this state helps distinguish between temporary issues and actual failures.
