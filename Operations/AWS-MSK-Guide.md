@@ -328,36 +328,6 @@ With 4 brokers and `min.insync.replicas=2`, the cluster can tolerate two simulta
 
     While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to ensure write availability during maintenance operations.
 
-### Verifying Actual Topic Configuration
-
-MSK cluster-level defaults for `default.replication.factor` and `min.insync.replicas` may not be applied to all topics. Topics created through different methods (Karafka Admin APIs, external tools, auto-creation) may have different settings than the cluster defaults.
-
-Always verify actual topic configuration rather than assuming cluster defaults are in effect:
-
-```ruby
-# Check a specific topic's configuration
-topic_name = 'my_topic'
-
-# Get partition info including replica count
-topic_info = Karafka::Admin.cluster_info.topics.find { |t| t[:topic_name] == topic_name }
-replication_factor = topic_info[:partitions].first[:replica_count]
-
-# Get topic-level config including min.insync.replicas
-configs = Karafka::Admin::Configs.describe(
-  Karafka::Admin::Configs::Resource.new(type: :topic, name: topic_name)
-).first.configs
-
-min_isr = configs.find { |c| c.name == 'min.insync.replicas' }&.value&.to_i
-
-puts "Topic: #{topic_name}"
-puts "  Replication Factor: #{replication_factor}"
-puts "  min.insync.replicas: #{min_isr}"
-```
-
-!!! tip "Use Karafka Web UI for Quick Inspection"
-
-    The [Karafka Web UI](Web-UI-Getting-Started) provides visual inspection of topic replication settings in the Health or Topics sections, making it easy to spot misconfigured topics without writing custom scripts.
-
 ## AWS Health Dashboard Alerts for Replication Factor
 
 AWS actively monitors MSK clusters for availability risks and sends notifications through the AWS Health Dashboard when it detects topics with suboptimal replication configurations. These alerts typically indicate that one or more topics have `min.insync.replicas` (MinISR) configured equal to the `replication.factor` (RF), creating a situation where write/read failures can occur during maintenance, broker failures, or other transient issues.
