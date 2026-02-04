@@ -116,8 +116,10 @@ config.kafka = {
 
 When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. Multiple timeout settings must be configured together and satisfy specific constraints:
 
-- `message.timeout.ms` must be less than or equal to `transaction.timeout.ms`
+- `transaction.timeout.ms` must be greater than or equal to `message.timeout.ms`
 - `socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms`
+
+WaterDrop defaults for transactional producers are `message.timeout.ms` of 50,000ms (50 seconds) and `transaction.timeout.ms` of 55,000ms (55 seconds). These shorter defaults may be insufficient for MSK environments during maintenance operations.
 
 Default transactional timeout values:
 
@@ -125,21 +127,17 @@ Default transactional timeout values:
   <thead>
     <tr>
       <th>Setting</th>
-      <th>librdkafka Default</th>
+      <th>WaterDrop Default</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>transaction.timeout.ms</code></td>
-      <td>60,000ms (60s)</td>
-    </tr>
-    <tr>
       <td><code>message.timeout.ms</code></td>
-      <td>300,000ms (capped to <code>transaction.timeout.ms</code> when transactional)</td>
+      <td>50,000ms (50s)</td>
     </tr>
     <tr>
-      <td><code>socket.timeout.ms</code></td>
-      <td>Must be &lt; <code>transaction.timeout.ms</code> - 100ms</td>
+      <td><code>transaction.timeout.ms</code></td>
+      <td>55,000ms (55s)</td>
     </tr>
   </tbody>
 </table>
