@@ -217,6 +217,9 @@
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
 1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 1. [What Kafka ACLs are required for the Karafka Web UI to work?](#what-kafka-acls-are-required-for-the-karafka-web-ui-to-work)
+1. [What are poison pill messages, and how should I handle them in Karafka?](#what-are-poison-pill-messages-and-how-should-i-handle-them-in-karafka)
+1. [How can I validate messages before processing them?](#how-can-i-validate-messages-before-processing-them)
+1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
 
 ---
 
@@ -2966,3 +2969,254 @@ When consuming messages, you can manually deserialize using `raw_payload` or con
 When deploying Karafka Web UI in a Kafka cluster with explicit ACLs, you need to grant permissions for both the Web UI topics (`karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics`, `karafka_consumers_commands`, and `karafka_errors`) and the consumer groups (`karafka_admin` and `karafka_web`).
 
 For detailed information about required permissions and configuration options, see the [Kafka ACL Requirements](Web-UI-Getting-Started#kafka-acl-requirements) section in the Web UI documentation.
+
+## What are poison pill messages, and how should I handle them in Karafka?
+
+A poison pill message is a message that causes your consumer to fail repeatedly, blocking the processing of all subsequent messages in that partition. Common causes include malformed JSON, incompatible schema changes, corrupt binary data, or messages that trigger application bugs.
+
+**Handling strategies in Karafka:**
+
+1. **Dead Letter Queue (DLQ)** - The recommended approach for production systems. After a configurable number of retries, the problematic message is moved to a separate topic for later analysis:
+
+    ```ruby
+    class KarafkaApp < Karafka::App
+      routes.draw do
+        topic :orders do
+          consumer OrdersConsumer
+          dead_letter_queue(
+            topic: 'orders_dlq',
+            max_retries: 3
+          )
+        end
+      end
+    end
+    ```
+
+2. **Skip without dispatch (Pro)** - Karafka Pro's [Enhanced DLQ](Pro-Enhanced-Dead-Letter-Queue) allows skipping messages without sending them anywhere by setting `topic: false`:
+
+    ```ruby
+    dead_letter_queue(
+      topic: false,
+      max_retries: 2
+    )
+    ```
+
+3. **Defensive coding patterns** - Handle potential failures gracefully within your consumer:
+
+    ```ruby
+    class OrdersConsumer < ApplicationConsumer
+      def consume
+        messages.each do |message|
+          process_order(message)
+          mark_as_consumed(message)
+        rescue JSON::ParserError => e
+          # Log and skip malformed messages
+          Karafka.logger.error("Malformed message at offset #{message.offset}: #{e.message}")
+          mark_as_consumed(message)
+        end
+      end
+    end
+    ```
+
+4. **Attempt-based handling** - Use `#attempt` to implement custom recovery logic after multiple failures:
+
+    ```ruby
+    class OrdersConsumer < ApplicationConsumer
+      def consume
+        if attempt > 5
+          # After 5 failures, log and skip the problematic message
+          messages.each do |message|
+            Karafka.logger.warn("Skipping message after #{attempt} attempts: #{message.offset}")
+            mark_as_consumed(message)
+          end
+        else
+          # Normal processing - let errors propagate for retry
+          messages.each do |message|
+            process_order(message)
+            mark_as_consumed(message)
+          end
+        end
+      end
+    end
+    ```
+
+For comprehensive error handling documentation, see [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) and [Dead Letter Queue](Dead-Letter-Queue).
+
+## How can I validate messages before processing them?
+
+Validating messages before processing helps catch malformed or invalid data early, preventing downstream errors and making debugging easier.
+
+The ideal long-term approach is to use formal schema definitions (such as Avro, JSON Schema, or Protobuf) that enforce structure at the serialization level. However, as a simple first step - especially for teams not yet ready to adopt a schema registry - you can implement validation using Ruby's built-in tools or libraries like ActiveModel.
+
+**Using ActiveModel validations:**
+
+```ruby
+class OrderValidator
+  include ActiveModel::Validations
+
+  attr_accessor :order_id, :amount, :customer_id, :status
+
+  validates :order_id, presence: true
+  validates :amount, presence: true, numericality: { greater_than: 0 }
+  validates :customer_id, presence: true
+  validates :status, inclusion: { in: %w[pending confirmed shipped] }
+
+  def initialize(attributes = {})
+    attributes.each { |key, value| send("#{key}=", value) if respond_to?("#{key}=") }
+  end
+end
+```
+
+**Using validation in your consumer:**
+
+```ruby
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      validator = OrderValidator.new(message.payload)
+
+      if validator.valid?
+        process_order(message.payload)
+        mark_as_consumed(message)
+      else
+        handle_invalid_message(message, validator.errors)
+      end
+    end
+  end
+
+  private
+
+  def handle_invalid_message(message, errors)
+    Karafka.logger.warn(
+      "Invalid message at offset #{message.offset}: #{errors.full_messages.join(', ')}"
+    )
+
+    # Option 1: Skip and mark as consumed
+    mark_as_consumed(message)
+
+    # Option 2: Dispatch to DLQ manually for inspection
+    # dispatch_to_dlq(message)
+
+    # Option 3: Re-raise to trigger retry (if error might be transient)
+    # raise ValidationError, errors.full_messages.join(', ')
+  end
+end
+```
+
+**Validation in custom deserializer:**
+
+For schema validation during deserialization, implement a custom deserializer:
+
+```ruby
+class ValidatingJsonDeserializer
+  def call(message)
+    payload = JSON.parse(message.raw_payload)
+    validate!(payload)
+    payload
+  rescue JSON::ParserError => e
+    raise Karafka::Errors::DeserializationError, "Invalid JSON: #{e.message}"
+  end
+
+  private
+
+  def validate!(payload)
+    required_fields = %w[id type timestamp]
+    missing = required_fields - payload.keys
+
+    if missing.any?
+      raise Karafka::Errors::DeserializationError, "Missing required fields: #{missing.join(', ')}"
+    end
+  end
+end
+```
+
+For more details on custom deserializers, see the [Deserialization](Deserialization) documentation.
+
+## How should I handle missing or invalid records during message processing?
+
+When processing messages that reference external records (database rows, API resources, etc.), you may encounter situations where the referenced record doesn't exist or is in an unexpected state. The correct handling depends on whether the missing record is expected or indicates a problem.
+
+**Pattern 1: Return early when records are optional or legitimately missing**
+
+Use this when the absence of a record is a valid business case (e.g., record was deleted, optional relationship):
+
+```ruby
+class OrderUpdatesConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      order_id = message.payload['order_id']
+      order = Order.find_by(id: order_id)
+
+      # Skip if order doesn't exist - it may have been deleted
+      unless order
+        Karafka.logger.info("Order #{order_id} not found, skipping update")
+        mark_as_consumed(message)
+        next
+      end
+
+      update_order(order, message.payload)
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
+**Pattern 2: Re-raise when records should exist (race condition)**
+
+Use this when a missing record indicates a timing issue that may resolve itself (e.g., message arrived before the database transaction committed):
+
+```ruby
+class OrderNotificationsConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      order_id = message.payload['order_id']
+      order = Order.find_by(id: order_id)
+
+      # Order MUST exist - if not, it's likely a race condition
+      # Re-raising will trigger a retry after back-off
+      unless order
+        raise RecordNotFoundError, "Order #{order_id} not found - possible race condition"
+      end
+
+      send_notification(order)
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
+**Pattern 3: Combine with attempt tracking for race conditions**
+
+Handle race conditions with limited retries before giving up:
+
+```ruby
+class OrderEventsConsumer < ApplicationConsumer
+  MAX_RACE_CONDITION_RETRIES = 3
+
+  def consume
+    messages.each do |message|
+      order_id = message.payload['order_id']
+      order = Order.find_by(id: order_id)
+
+      unless order
+        if attempt <= MAX_RACE_CONDITION_RETRIES
+          # Likely a race condition - retry
+          raise RecordNotFoundError, "Order #{order_id} not found, attempt #{attempt}"
+        else
+          # After multiple retries, treat as legitimately missing
+          Karafka.logger.warn(
+            "Order #{order_id} not found after #{attempt} attempts, skipping"
+          )
+          mark_as_consumed(message)
+          next
+        end
+      end
+
+      process_event(order, message.payload)
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
+For comprehensive error handling strategies, see [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy).
