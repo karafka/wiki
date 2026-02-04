@@ -77,7 +77,7 @@ config.kafka = {
 
 ### Message Timeout Configuration
 
-The `message.timeout.ms` setting controls how long a producer waits for message delivery acknowledgment before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delivery delays.
+Producer timeout settings control how long various operations wait before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delays that exceed default timeout values.
 
 WaterDrop default timeout values differ from librdkafka:
 
