@@ -79,23 +79,31 @@ config.kafka = {
 
 The `message.timeout.ms` setting controls how long a producer waits for message delivery acknowledgment before giving up. This is critical for MSK deployments where maintenance operations and network issues can cause temporary delivery delays.
 
-Default values differ between libraries:
+WaterDrop default timeout values differ from librdkafka:
 
 <table>
   <thead>
     <tr>
-      <th>Library</th>
-      <th>Default <code>message.timeout.ms</code></th>
+      <th>Setting</th>
+      <th>librdkafka Default</th>
+      <th>WaterDrop Default</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>librdkafka</td>
+      <td><code>message.timeout.ms</code></td>
       <td>300,000ms (5 minutes)</td>
+      <td>50,000ms (50 seconds)</td>
     </tr>
     <tr>
-      <td>WaterDrop</td>
-      <td>50,000ms (50 seconds)</td>
+      <td><code>socket.timeout.ms</code></td>
+      <td>60,000ms (60 seconds)</td>
+      <td>30,000ms (30 seconds)</td>
+    </tr>
+    <tr>
+      <td><code>transaction.timeout.ms</code> (transactional producers only)</td>
+      <td>60,000ms (60 seconds)</td>
+      <td>55,000ms (55 seconds)</td>
     </tr>
   </tbody>
 </table>
