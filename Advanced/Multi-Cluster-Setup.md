@@ -79,6 +79,22 @@ SECONDARY_CLUSTER_PRODUCER = WaterDrop::Producer.new do |config|
 end
 ```
 
+Once configured, use the secondary producer directly to send messages to that cluster:
+
+```ruby
+# Produce asynchronously to the secondary cluster
+SECONDARY_CLUSTER_PRODUCER.produce_async(
+  topic: 'events',
+  payload: { event: 'user_created' }.to_json
+)
+
+# Or produce synchronously
+SECONDARY_CLUSTER_PRODUCER.produce_sync(
+  topic: 'events',
+  payload: { event: 'user_created' }.to_json
+)
+```
+
 ## Common Mistakes
 
 - **Ignoring Primary Default**: Forgetting that `Karafka.producer` and ActiveJob jobs default to the primary cluster can lead to unexpected routing of messages.
