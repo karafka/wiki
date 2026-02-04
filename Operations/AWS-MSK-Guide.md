@@ -359,62 +359,6 @@ puts "  min.insync.replicas: #{min_isr}"
 
     The [Karafka Web UI](Web-UI-Getting-Started) provides visual inspection of topic replication settings in the Health or Topics sections, making it easy to spot misconfigured topics without writing custom scripts.
 
-### Replication Health Check Script
-
-Use this script to audit all topics for replication issues that could cause write failures during MSK maintenance:
-
-```ruby
-#!/usr/bin/env ruby
-# frozen_string_literal: true
-
-# Checks all Kafka topics for replication issues
-# Usage: bundle exec ruby bin/check_replication.rb
-
-require 'bundler/setup'
-require 'karafka'
-
-karafka_boot = File.exist?('karafka.rb') ? 'karafka.rb' : '../karafka.rb'
-require File.expand_path(karafka_boot)
-
-issues = []
-
-Karafka::Admin.cluster_info.topics.each do |topic|
-  topic_name = topic[:topic_name]
-  next if topic_name.start_with?('__')
-
-  rf = topic[:partitions].first&.fetch(:replica_count) || 0
-
-  configs = Karafka::Admin::Configs.describe(
-    Karafka::Admin::Configs::Resource.new(type: :topic, name: topic_name)
-  ).first.configs
-
-  min_isr = configs.find { |c| c.name == 'min.insync.replicas' }&.value&.to_i || 1
-
-  if rf == 1
-    issues << "#{topic_name}: RF=#{rf} (no redundancy)"
-  elsif rf <= min_isr
-    issues << "#{topic_name}: RF=#{rf}, min.insync=#{min_isr} (zero fault tolerance)"
-  elsif min_isr == 1
-    issues << "#{topic_name}: RF=#{rf}, min.insync=#{min_isr} (low durability)"
-  end
-end
-
-if issues.any?
-  puts 'Issues found:'
-  issues.each { |issue| puts "  - #{issue}" }
-  exit 1
-else
-  puts 'All topics OK'
-  exit 0
-end
-```
-
-The script identifies three risk categories:
-
-- **No redundancy** (RF=1): Single point of failure, any broker loss causes data unavailability
-- **Zero fault tolerance** (RF <= MinISR): Cannot tolerate any broker failure during writes
-- **Low durability** (MinISR=1): Messages acknowledged with only one replica, risking data loss
-
 ## AWS Health Dashboard Alerts for Replication Factor
 
 AWS actively monitors MSK clusters for availability risks and sends notifications through the AWS Health Dashboard when it detects topics with suboptimal replication configurations. These alerts typically indicate that one or more topics have `min.insync.replicas` (MinISR) configured equal to the `replication.factor` (RF), creating a situation where write/read failures can occur during maintenance, broker failures, or other transient issues.
