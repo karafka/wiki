@@ -412,6 +412,15 @@
 | `pausing/with_manual_pause_same_message_loop_spec.rb` | We should be able pause on a message we've already seen from the batch and should always start from it after resuming. This will mean, we just process same message over and over again. |
 | `pausing/with_pause_and_resume_after_reclaim_spec.rb` | We can pause and after revocation and re-claim we should continue processing like pause did not happen. We should not keep the pause after a rebalance. Messages that were consumed by another process should not be re-consumed. |
 | `pausing/with_pause_and_resume_spec.rb` | We should be able to do things like pausing and resume in the same consumer flow. This should not break the ordering |
+| `pro/cli/declaratives/health_multi_broker_sequential/all_healthy_multi_broker_spec.rb` | Integration test for topics health command when all topics are healthy |
+| `pro/cli/declaratives/health_multi_broker_sequential/critical_rf_one_spec.rb` | Integration test for topics health command detecting RF=1 (no redundancy) |
+| `pro/cli/declaratives/health_multi_broker_sequential/critical_zero_fault_tolerance_multi_broker_spec.rb` | Integration test for topics health command detecting RF <= min.insync (zero fault tolerance) |
+| `pro/cli/declaratives/health_multi_broker_sequential/mixed_issues_multi_broker_spec.rb` | Integration test for topics health command with mixed critical and warning issues |
+| `pro/cli/declaratives/health_multi_broker_sequential/single_broker_staging_spec.rb` | Integration test for topics health command in single-broker cluster (common staging setup) This test expects to detect RF=1 as a critical issue, which is typical in single-broker setups |
+| `pro/cli/declaratives/health_multi_broker_sequential/skips_internal_topics_multi_broker_spec.rb` | Integration test verifying that health command skips internal Kafka topics (starting with __) |
+| `pro/cli/declaratives/health_multi_broker_sequential/warning_low_durability_multi_broker_spec.rb` | Integration test for topics health command detecting min.insync=1 (low durability warning) |
+| `pro/cli/declaratives/health_multi_broker_sequential/with_detailed_exitcode_healthy_multi_broker_spec.rb` | Integration test for topics health command with --detailed-exitcode when all topics are healthy |
+| `pro/cli/declaratives/health_multi_broker_sequential/with_detailed_exitcode_issues_spec.rb` | Integration test for topics health command with --detailed-exitcode when issues are found |
 | `pro/cli/declaratives/ignore_patterns_in_declaratives_spec.rb` | karafka declarative topics management should ignore pattern topics because they are dynamic subscriptions for which we do not know the target name until the regexp match |
 | `pro/cli/declaratives/strict_setup_requirement_spec.rb` | When we have strict_declarative_topics set to true, we should ensure all non-pattern definitions of topics have their declarative references |
 | `pro/cli/parallel_segments/collapse/with_conclusive_offsets_spec.rb` | Karafka parallel segments collapse should work when there is a topic that was consumed with parallel segments and their offset assignment is even |
