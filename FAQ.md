@@ -220,6 +220,7 @@
 1. [What are poison pill messages, and how should I handle them in Karafka?](#what-are-poison-pill-messages-and-how-should-i-handle-them-in-karafka)
 1. [How can I validate messages before processing them?](#how-can-i-validate-messages-before-processing-them)
 1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
+1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
 
 ---
 
@@ -3220,3 +3221,32 @@ end
 ```
 
 For comprehensive error handling strategies, see [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy).
+
+## How do I produce messages to a secondary Kafka cluster?
+
+When working with multiple Kafka clusters, `Karafka.producer` always targets the primary cluster. To produce messages to a secondary cluster, create a dedicated WaterDrop producer instance configured for that cluster and use it directly:
+
+```ruby
+# Create a producer for the secondary cluster (typically in an initializer)
+SECONDARY_CLUSTER_PRODUCER = WaterDrop::Producer.new do |config|
+  config.deliver = true
+  config.kafka = {
+    'bootstrap.servers': 'secondary-cluster.example.com:9092',
+    'request.required.acks': 1
+  }
+end
+
+# Use it to produce messages
+SECONDARY_CLUSTER_PRODUCER.produce_async(
+  topic: 'events',
+  payload: { event: 'user_created' }.to_json
+)
+
+# Or synchronously
+SECONDARY_CLUSTER_PRODUCER.produce_sync(
+  topic: 'events',
+  payload: { event: 'user_created' }.to_json
+)
+```
+
+For detailed configuration and considerations when working with multiple clusters, see the [Multi-Cluster Setup](Multi-Cluster-Setup) documentation.
