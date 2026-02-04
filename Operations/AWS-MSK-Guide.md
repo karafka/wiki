@@ -107,6 +107,7 @@ WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/mas
 ```ruby
 config.kafka = {
   # Increase message timeout to handle MSK maintenance delays
+  # For transactional producers, use transaction.timeout.ms instead (see below)
   'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
 }
 ```
