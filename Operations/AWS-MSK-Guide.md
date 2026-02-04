@@ -107,17 +107,17 @@ WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/mas
 ```ruby
 config.kafka = {
   # Increase message timeout to handle MSK maintenance delays
-  # For transactional producers, use transaction.timeout.ms instead (see below)
+  # For transactional producers, also set transaction.timeout.ms (see below)
   'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
 }
 ```
 
 #### Transactional Producer Timeout Configuration
 
-When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. Critically, librdkafka automatically adjusts related timeout settings based on `transaction.timeout.ms`:
+When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. Multiple timeout settings must be configured together and satisfy specific constraints:
 
-- `message.timeout.ms` is automatically adjusted to match `transaction.timeout.ms` when a `transactional.id` is configured
-- `socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms` if explicitly configured
+- `message.timeout.ms` must be less than or equal to `transaction.timeout.ms`
+- `socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms`
 
 Default transactional timeout values:
 
@@ -135,7 +135,7 @@ Default transactional timeout values:
     </tr>
     <tr>
       <td><code>message.timeout.ms</code></td>
-      <td>Adjusted to 60,000ms when transactional</td>
+      <td>300,000ms (capped to <code>transaction.timeout.ms</code> when transactional)</td>
     </tr>
     <tr>
       <td><code>socket.timeout.ms</code></td>
@@ -144,22 +144,21 @@ Default transactional timeout values:
   </tbody>
 </table>
 
-For MSK deployments with transactional producers, increase `transaction.timeout.ms` to accommodate maintenance delays:
+For MSK deployments with transactional producers, increase all related timeouts to accommodate maintenance delays:
 
 ```ruby
 config.kafka = {
   'transactional.id': 'my-transactional-producer',
-  # Increase transaction timeout for MSK maintenance tolerance
+  # All three timeouts must be configured together for transactional producers
   'transaction.timeout.ms': 300_000, # 5 minutes
-  # message.timeout.ms will be automatically adjusted to match
-  # socket.timeout.ms if set explicitly must be at least 100ms less
-  'socket.timeout.ms': 299_900
+  'message.timeout.ms': 300_000,     # Must be <= transaction.timeout.ms
+  'socket.timeout.ms': 299_900       # Must be at least 100ms less than transaction.timeout.ms
 }
 ```
 
-!!! warning "Transactional Timeouts Override Message Timeouts"
+!!! warning "Configure All Timeouts for Transactional Producers"
 
-    When using transactions, setting only `message.timeout.ms` is insufficient. The transactional timeout takes precedence, and `message.timeout.ms` is automatically capped to `transaction.timeout.ms`. Always configure `transaction.timeout.ms` directly for transactional producers in MSK environments.
+    When using transactions, setting only `message.timeout.ms` is **not** sufficient. You must configure all three timeout settings together: `transaction.timeout.ms`, `message.timeout.ms`, and `socket.timeout.ms`, ensuring `message.timeout.ms` does not exceed `transaction.timeout.ms`.
 
 When the message timeout expires, the producer reports a `msg_timed_out` error. This error abstracts several underlying causes, all indicating that the producer was unable to successfully deliver the message to the broker within the timeout period.
 
