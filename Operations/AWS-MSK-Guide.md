@@ -98,7 +98,7 @@ WaterDrop default timeout values differ from librdkafka:
     <tr>
       <td><code>socket.timeout.ms</code></td>
       <td>60,000ms (60 seconds)</td>
-      <td>30,000ms (30 seconds)</td>
+      <td>60,000ms (60 seconds)</td>
     </tr>
     <tr>
       <td><code>transaction.timeout.ms</code> (transactional producers only)</td>
