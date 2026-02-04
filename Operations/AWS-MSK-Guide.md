@@ -96,11 +96,6 @@ WaterDrop default timeout values differ from librdkafka:
       <td>50,000ms (50 seconds)</td>
     </tr>
     <tr>
-      <td><code>socket.timeout.ms</code></td>
-      <td>60,000ms (60 seconds)</td>
-      <td>60,000ms (60 seconds)</td>
-    </tr>
-    <tr>
       <td><code>transaction.timeout.ms</code> (transactional producers only)</td>
       <td>60,000ms (60 seconds)</td>
       <td>55,000ms (55 seconds)</td>
@@ -122,10 +117,7 @@ config.kafka = {
 
 #### Transactional Producer Timeout Configuration
 
-When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. Multiple timeout settings must be configured together and satisfy specific constraints:
-
-- `transaction.timeout.ms` must be greater than or equal to `message.timeout.ms`
-- `socket.timeout.ms` must be at least 100ms lower than `transaction.timeout.ms`
+When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. This setting must be greater than or equal to `message.timeout.ms`.
 
 WaterDrop defaults for transactional producers are `message.timeout.ms` of 50,000ms (50 seconds) and `transaction.timeout.ms` of 55,000ms (55 seconds). These shorter defaults may be insufficient for MSK environments during maintenance operations.
 
@@ -155,16 +147,10 @@ For MSK deployments with transactional producers, increase all related timeouts 
 ```ruby
 config.kafka = {
   'transactional.id': 'my-transactional-producer',
-  # All three timeouts must be configured together for transactional producers
   'message.timeout.ms': 300_000,     # 5 minutes
-  'transaction.timeout.ms': 305_000, # Must be >= message.timeout.ms
-  'socket.timeout.ms': 304_900       # Must be at least 100ms less than transaction.timeout.ms
+  'transaction.timeout.ms': 305_000  # Must be >= message.timeout.ms
 }
 ```
-
-!!! warning "Configure All Timeouts for Transactional Producers"
-
-    When using transactions, setting only `message.timeout.ms` is **not** sufficient. You must configure all three timeout settings together: `transaction.timeout.ms`, `message.timeout.ms`, and `socket.timeout.ms`, ensuring `message.timeout.ms` does not exceed `transaction.timeout.ms`.
 
 When the message timeout expires, the producer reports a `msg_timed_out` error. This error abstracts several underlying causes, all indicating that the producer was unable to successfully deliver the message to the broker within the timeout period.
 
