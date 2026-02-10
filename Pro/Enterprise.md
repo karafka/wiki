@@ -12,7 +12,7 @@ Enterprise customers receive an elevated support tier with a maximum response ti
 
 ### Dedicated Architecture Consultation
 
-Enterprise subscriptions include **4 hours per year** of dedicated architecture consultation with Maciej Mensfeld. These sessions can be used for architecture reviews, performance optimization guidance, migration planning, or strategic technical discussions about your Kafka and Karafka implementation.
+Enterprise subscriptions include **4 hours per year** of dedicated architecture consultation with Maciej Mensfeld. These sessions can be used for architecture reviews, performance optimization guidance, migration planning, or strategic technical discussions about your Kafka and Karafka implementation. You can read more about this benefit [here](Pro-Enterprise-Architecture-Consultation).
 
 ### Workshop Session
 
@@ -74,6 +74,7 @@ By choosing Karafka Enterprise, organizations can ensure that their Kafka and Ka
 
 ## See Also
 
+- [Enterprise Architecture Consultation](Pro-Enterprise-Architecture-Consultation) - For details about the included architecture consultation sessions
 - [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session) - For details about the included workshop session
 - [Support](Pro-Support) - For information about enterprise support offerings
 - [Compliance Certifications](Pro-Compliance-Certifications) - For understanding compliance in self-hosted software
