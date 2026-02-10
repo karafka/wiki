@@ -93,32 +93,6 @@ Moving to Karafka from another framework or upgrading major versions:
 - Transitioning from OSS to Pro features with minimal disruption
 - Rolling deployment approaches that minimize rebalancing impact
 
-## Example Consultation Scenarios
-
-### Scenario: E-commerce Order Processing
-
-A retail company processes 50,000 orders daily through Kafka. They're experiencing occasional duplicate order processing and aren't sure if it's a Kafka configuration issue or application logic.
-
-**Consultation focus**: Review delivery guarantee configuration, examine offset commit patterns, discuss idempotency strategies, and design a verification approach.
-
-### Scenario: Financial Data Pipeline
-
-A fintech startup needs to ensure exactly-once processing for transaction records while maintaining sub-100ms latency for 95th percentile.
-
-**Consultation focus**: Analyze latency/throughput trade-offs in their configuration, review transaction usage patterns, optimize batching parameters, and design monitoring for SLA verification.
-
-### Scenario: Multi-Region Deployment
-
-An enterprise is expanding from single-region to multi-region Kafka deployment and needs to understand the implications for their Karafka consumers.
-
-**Consultation focus**: Multi-cluster configuration review, consumer group strategies across regions, failover and disaster recovery planning, and data consistency considerations.
-
-### Scenario: High-Volume Event Streaming
-
-A SaaS platform ingests millions of events daily and is planning to migrate from a custom Kafka consumer to Karafka Pro.
-
-**Consultation focus**: Migration planning, Virtual Partitions strategy for their workload, resource estimation, and phased rollout approach.
-
 ## How to Use Your Consultation Hours
 
 The 4 hours can be used flexibly throughout your subscription year:
@@ -128,15 +102,6 @@ The 4 hours can be used flexibly throughout your subscription year:
 - **Mixed approach** - Initial 2-hour planning session, with remaining hours for follow-up
 
 Sessions are conducted remotely via video call. You can share your screen to walk through code, configuration, and monitoring dashboards for real-time analysis.
-
-## Preparing for Your Session
-
-To maximize the value of consultation time:
-
-1. **Document your current architecture** - Topology diagrams, topic structures, consumer group configurations
-2. **Gather metrics** - Consumer lag trends, throughput numbers, latency percentiles
-3. **List specific questions** - Prioritize the issues you most need guidance on
-4. **Prepare access** - Have staging/development environment access ready for live review if needed
 
 ## Terms & Conditions
 
