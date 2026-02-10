@@ -41,6 +41,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [What is the response and resolution time for priority support with Karafka?](#what-is-the-response-and-resolution-time-for-priority-support-with-karafka)
 1. [Where can I find a list of OSS components that the Karafka ecosystem uses?](#where-can-i-find-a-list-of-oss-components-that-the-karafka-ecosystem-uses)
 1. [Can I use one Karafka license across multiple companies within a corporate group?](#can-i-use-one-karafka-license-across-multiple-companies-within-a-corporate-group)
+1. [Can contractors and agencies use my Karafka license?](#can-contractors-and-agencies-use-my-karafka-license)
 1. [Do you provide hard commitments on feature development for Karafka Pro?](#do-you-provide-hard-commitments-on-feature-development-for-karafka-pro)
 1. [Do you provide consulting or contracting services?](#do-you-provide-consulting-or-contracting-services)
 1. [How reliable is Karafka as a long-term solution?](#how-reliable-is-karafka-as-a-long-term-solution)
@@ -48,6 +49,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [Can I have multiple trials for my company?](#can-i-have-multiple-trials-for-my-company)
 1. [What happens if my payment fails or my credit card cannot be charged?](#what-happens-if-my-payment-fails-or-my-credit-card-cannot-be-charged)
 1. [Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
+1. [What are the pricing adjustment terms for Enterprise agreements?](#what-are-the-pricing-adjustment-terms-for-enterprise-agreements)
 1. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 1. [Contact Info](#contact-info)
 
@@ -353,13 +355,37 @@ Karafka maintains a [documentation page](SBOM) with its runtime Software Bill of
 
 ## Can I use one Karafka license across multiple companies within a corporate group?
 
-Both Pro and Enterprise licenses ares limited to a single legal entity that purchased it. Using the license across multiple companies, even if they are part of your group or owned by your organization, requires either:
+Both Pro and Enterprise licenses are limited to a single legal entity that purchased it. Using the license across multiple companies, even if they are part of your group or owned by your organization, requires either:
 
 1. Each company purchasing its own license, or
 2. Upgrading to an Appliance license ($18,995/yr), or
 3. Requesting a custom group companies amendment that explicitly permits usage across affiliated companies with defined ownership threshold.
 
-Contact us to discuss group licensing options.
+For corporate groups with multiple entities, contact us at `contact@karafka.io` to discuss group licensing arrangements that may be more suitable for your organizational structure.
+
+## Can contractors and agencies use my Karafka license?
+
+The answer depends on the working relationship:
+
+**Contractors Working on Your Project:**
+
+Contractors who work directly on your project and your infrastructure are covered by your Karafka license. They can use your license credentials while developing and maintaining your Kafka-based applications. This is considered part of your normal development operations.
+
+**Agencies Working Across Multiple Clients:**
+
+Development agencies that work across multiple client projects have different requirements:
+
+- **Client Projects**: Each client that uses Karafka in their production environment needs their own license. The agency cannot share one license across multiple client deployments.
+- **Agency's Own License**: The agency only needs its own Karafka license if they are using Karafka for their own internal products or services, not for client work.
+
+**Example Scenarios:**
+
+- A freelance developer working on your project full-time → Covered by your license
+- An agency building a Kafka-based system for your company → Covered by your license
+- An agency deploying Karafka-based solutions for three different clients → Each of the three clients needs their own license
+- An agency using Karafka for their own internal monitoring system → The agency needs its own license
+
+If you have questions about your specific contractor or agency arrangement, contact us at `contact@karafka.io` to clarify the licensing requirements.
 
 ## Do you provide hard commitments on feature development for Karafka Pro?
 
@@ -467,16 +493,46 @@ If you experience any billing issues, please contact us immediately to avoid any
 
 ## Will Karafka Pro prices increase in the future?
 
-We are committed to transparent and predictable pricing for our customers. While we cannot guarantee that prices will never change, we maintain a customer-friendly approach to any pricing adjustments.
+**Yes**, Karafka Pro prices may increase over time to reflect ongoing development, inflation, and the continuous addition of new features and capabilities.
 
-- All price increases will be communicated openly with **at least 3 months' advance notice**
-- No surprise price changes or sudden adjustments
-- Clear communication about reasons for any pricing changes
-- Existing customers receive priority consideration during pricing transitions
+### Pricing Adjustment Policy
 
-We believe in building long-term relationships with our customers, which means maintaining fair and predictable pricing practices. Any pricing decisions are made carefully, considering both customer impact and the continued development of Karafka features.
+- **Advance Notice**: All price increases will be communicated openly with **at least 3 months' advance notice** before they take effect
+- **Annual Renewal**: Price changes apply at your annual renewal date, never mid-subscription
+- **Transparent Communication**: Clear communication about reasons for any pricing changes
+- **Fair and Predictable**: Pricing decisions are made carefully, balancing customer impact with continued framework development
 
-You'll always have sufficient time to plan and budget for any potential changes to your Karafka subscription costs.
+### What This Means for You
+
+- You'll always have sufficient time to plan and budget for any changes to your subscription costs
+- Your current subscription price is locked in until your next renewal
+- No surprise price changes or sudden mid-term adjustments
+- Existing customers are valued, and pricing transitions are handled with consideration for long-term relationships
+
+I believe in building sustainable, long-term partnerships with our customers. Fair pricing practices support the continuous development and improvement of Karafka while maintaining transparency and predictability for your business planning.
+
+## What are the pricing adjustment terms for Enterprise agreements?
+
+For Enterprise agreements, pricing adjustments are handled through negotiated terms that provide structure while maintaining flexibility for long-term partnerships.
+
+### Standard Enterprise Pricing Terms
+
+Enterprise agreements include the following pricing adjustment framework:
+
+- **Annual Adjustments**: Pricing may be adjusted annually with **3 months' advance notice**
+- **Renewal-Based Changes**: Adjustments take effect at renewal, never mid-term during an active contract period
+- **No Predetermined Caps**: There is no preset limit on adjustments, allowing pricing to reflect market conditions, inflation, and development investments
+- **Transparent Communication**: All pricing changes are communicated clearly and with sufficient notice for budget planning
+
+### Why This Approach
+
+This pricing structure ensures:
+
+1. **Sustainable Development**: Pricing can adapt to reflect ongoing R&D, new features, and market conditions
+2. **Fair Adjustments**: Annual adjustments provide predictability while avoiding locked-in pricing that becomes unsustainable
+3. **Long-Term Partnerships**: Both parties can plan for the future without artificially constrained pricing that might force service changes
+
+Enterprise customers seeking specific pricing terms should contact `contact@karafka.io` to discuss arrangements that work for both parties while maintaining the sustainability of Karafka's development.
 
 ## Ethics, Privacy, and Information Usage
 
