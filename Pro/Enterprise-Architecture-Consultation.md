@@ -16,7 +16,7 @@ Common issues that seem straightforward but have significant implications includ
 
 A single architectural decision made early can save (or cost) your team weeks of debugging and refactoring later.
 
-## What We Can Help With
+## What I Can Help With
 
 ### Performance Optimization
 
@@ -28,7 +28,7 @@ Production Kafka systems often exhibit unexpected behavior that's difficult to d
 - Throughput plateaus that resist straightforward scaling attempts
 - Network utilization patterns suggesting inefficient batching or compression
 
-We can review your configuration, identify bottlenecks, and recommend specific tuning parameters based on your workload characteristics.
+I can review your configuration, identify bottlenecks, and recommend specific tuning parameters based on your workload characteristics.
 
 ### Architecture Review
 
