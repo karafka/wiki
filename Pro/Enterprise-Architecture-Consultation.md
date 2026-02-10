@@ -1,6 +1,6 @@
 # Enterprise Architecture Consultation
 
-Karafka Enterprise includes **4 hours per year** of dedicated architecture consultation with Maciej Mensfeld, the creator and lead maintainer of Karafka. These sessions provide direct access to deep Kafka and Karafka expertise, helping you navigate complex architectural decisions, optimize performance, and avoid common pitfalls that can cost weeks of engineering time.
+Karafka Enterprise includes **4 hours per year** of dedicated architecture consultation with Maciej Mensfeld, the creator and lead maintainer of Karafka ecosystem. These sessions provide direct access to deep Kafka and Karafka expertise that can help you navigate complex architectural decisions, optimize performance, and avoid common pitfalls that can cost weeks of engineering time.
 
 ## Why Architecture Consultation Matters
 
@@ -18,27 +18,71 @@ A single architectural decision made early can save (or cost) your team weeks of
 
 ## What I Can Help With
 
+### Karafka Application Architecture
+
+Designing your Karafka application for maintainability and performance:
+
+- **Routing structure design** - Organizing consumers, topics, and subscription groups for clarity and efficiency
+- **Consumer class organization** - Balancing single-responsibility principles with practical code structure
+- **Dead Letter Queue design** - Structuring error handling flows and retry strategies
+- **Transactional processing patterns** - Coordinating Kafka transactions with database operations
+- **Multi-app topology** - Splitting responsibilities across multiple Karafka applications
+
+### Pro Features Strategy
+
+Maximizing value from Karafka Pro capabilities:
+
+- **Virtual Partitions** - When they help vs. when physical partitions are better for your workload
+- **Long-Running Jobs** - Handling jobs that exceed poll intervals without losing progress
+- **Enhanced Dead Letter Queue** - Advanced retry patterns and error categorization
+- **Scheduled Messages** - Implementing delayed processing and time-based workflows
+- **Filtering API** - Building efficient filters for high-volume topics
+- **Periodic Jobs** - Scheduling recurring tasks within Karafka
+- **Multiplexing and Piping** - Complex message routing between topics
+- **Adaptive Iterator** - Processing large batches with memory efficiency
+
+### Web UI Deployment and Operations
+
+Getting the most out of Karafka's Web UI:
+
+- **Deployment architecture** - Standalone vs. embedded deployment, multi-app visibility
+- **Topic configuration optimization** - Retention, compaction, and partition settings for Web UI topics
+- **Multi-cluster monitoring** - Configuring Web UI for visibility across multiple Kafka clusters
+- **Access control and security** - Authentication and authorization strategies for production dashboards
+- **Operational cost optimization** - Minimizing network and storage costs while maintaining visibility
+- **Explorer and data inspection** - Using Web UI for debugging and message inspection
+
+### Integration Patterns
+
+Connecting Karafka with your existing stack:
+
+- **Rails integration** - Proper initialization, connection management, and request/background separation
+- **ActiveJob backend** - When to use Karafka as a job backend vs. dedicated message processing
+- **ActiveRecord connections** - Managing database connection pools with concurrent consumers
+- **Testing strategies** - Unit testing consumers, integration testing with Kafka, and CI/CD setup
+- **Monitoring integration** - DataDog, AppSignal, StatsD, and custom instrumentation
+
 ### Performance Optimization
 
-Production Kafka systems often exhibit unexpected behavior that's difficult to diagnose:
+Production systems often exhibit unexpected behavior:
 
 - Latency spikes during batch processing that don't correlate with load
 - Consumer lag accumulating despite adequate resources
 - Memory growth patterns that don't match expected consumption
 - Throughput plateaus that resist straightforward scaling attempts
-- Network utilization patterns suggesting inefficient batching or compression
+- Network utilization suggesting inefficient batching or compression
 
 I can review your configuration, identify bottlenecks, and recommend specific tuning parameters based on your workload characteristics.
 
-### Architecture Review
+### Scaling and Deployment
 
-Before committing to an architecture, validate your approach:
+Planning for growth and production operations:
 
-- Topic and partition design for your specific access patterns
-- Consumer group structure and subscription group optimization
-- Error handling and Dead Letter Queue strategies
-- Multi-cluster and disaster recovery considerations
-- Integration patterns with Rails, ActiveJob, and other frameworks
+- **Horizontal scaling** - Partition assignment strategies and consumer group sizing
+- **Swarm mode** - Multi-process deployments with copy-on-write optimization
+- **Kubernetes patterns** - Container orchestration, health checks, and graceful shutdown
+- **Graceful deployments** - Minimizing rebalancing impact during releases
+- **Multi-cluster setup** - Disaster recovery and geographic distribution
 
 ### Migration Planning
 
@@ -48,25 +92,6 @@ Moving to Karafka from another framework or upgrading major versions:
 - Upgrade strategies between Karafka major versions
 - Transitioning from OSS to Pro features with minimal disruption
 - Rolling deployment approaches that minimize rebalancing impact
-
-### Troubleshooting Complex Issues
-
-Some problems require deep expertise to diagnose:
-
-- Intermittent message processing failures
-- Unexpected rebalancing behavior
-- Connection management and broker failover issues
-- Thread safety concerns with gem dependencies
-- Database connection pool exhaustion patterns
-
-### Scaling Strategy
-
-Planning for growth requires understanding Kafka's scaling characteristics:
-
-- Horizontal scaling approaches and their trade-offs
-- Virtual Partitions vs. physical partition strategies
-- Swarm mode and multi-process deployment patterns
-- Concurrency tuning for I/O-bound vs. CPU-bound workloads
 
 ## Example Consultation Scenarios
 
