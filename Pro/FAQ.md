@@ -345,7 +345,7 @@ You can read more about those differences [here](Pro-Enterprise).
 
 ## What is the response and resolution time for priority support with Karafka?
 
-With Karafka's priority support, you'll receive an initial assessment and reply within a maximum of 2 working days. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
+With Karafka Pro priority support, you'll receive an initial assessment and reply within a maximum of **4 business days**. Enterprise customers receive even faster support with a maximum response time of **2 business days**. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
 
 Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
 

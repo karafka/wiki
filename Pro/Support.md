@@ -12,7 +12,7 @@ Please check out the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) fo
 
 Thinking about introducing Kafka to your Ruby and Rails stack?
 
-With Karafka, you can get priority support with a max response time of 2 working days. For support, email `contact@karafka.io` or send us a message using one of the dedicated private channels using our [Slack](http://karafka.slack.com/).
+With Karafka Pro, you can get priority support with a max response time of **4 business days**. Enterprise customers receive even faster support with a max response time of **2 business days**. For support, email `contact@karafka.io` or send us a message using one of the dedicated private channels using our [Slack](http://karafka.slack.com/).
 
 Please email using the same domain as the original license email or explain your connection to the licensed company.
 

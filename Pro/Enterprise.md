@@ -6,6 +6,14 @@ Additionally, the offline/embedded mode available in the Enterprise version is s
 
 ## Key Differences between Karafka Pro and Enterprise
 
+### Enhanced Priority Support
+
+Enterprise customers receive an elevated support tier with a maximum response time of **2 business days** (compared to 4 business days for Pro). This faster response time ensures critical issues are addressed with even greater urgency for enterprise deployments.
+
+### Dedicated Architecture Consultation
+
+Enterprise subscriptions include **4 hours per year** of dedicated architecture consultation with Maciej Mensfeld. These sessions can be used for architecture reviews, performance optimization guidance, migration planning, or strategic technical discussions about your Kafka and Karafka implementation.
+
 ### Workshop Session
 
 Our Enterprise Subscription includes a remote 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka. This session provides a comprehensive dive into the event-driven architecture, Kafka and Karafka. This live, interactive session dedicated to both novice and seasoned developers will provide you with the knowledge needed to quickly kick-start your projects, sidestep common pitfalls, and truly harness the full power of the Karafka framework. You can read more about this workshop [here](Pro-Enterprise-Workshop-Session).
