@@ -164,7 +164,7 @@ Follow the instructions on our [website](https://karafka.io/#become-pro).
 
 This is a common requirement for "on-site installs" or "appliances" sold to large corporations.
 
-The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $12,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email `contact@karafka.io` to purchase.
+The standard license is only appropriate for SaaS usage as it does **not** allow distribution. Karafka Pro has an Appliance license option which does allow you to distribute it. The Appliance license is $18,995/yr. It allows you to distribute the Pro gem as part of your application and each of your customers to run Karafka Pro as part of your application only. Email `contact@karafka.io` to purchase.
 
 ## Can I use Karafka Pro in my public project?
 
@@ -356,7 +356,7 @@ Karafka maintains a [documentation page](SBOM) with its runtime Software Bill of
 Both Pro and Enterprise licenses ares limited to a single legal entity that purchased it. Using the license across multiple companies, even if they are part of your group or owned by your organization, requires either:
 
 1. Each company purchasing its own license, or
-2. Upgrading to an Appliance license ($12,995/yr), or
+2. Upgrading to an Appliance license ($18,995/yr), or
 3. Requesting a custom group companies amendment that explicitly permits usage across affiliated companies with defined ownership threshold.
 
 Contact us to discuss group licensing options.
