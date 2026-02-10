@@ -327,19 +327,23 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 ## Are there any feature related differences in between Karafka Pro and Enterprise?
 
-**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, workshop session, and support for compliance documentation. With Enterprise:
+**Not in terms of technical features**. The primary differences between Pro and Enterprise pertain to licensing, usage permissions, payment methods, support response times, architecture consultation, workshop session, and support for compliance documentation. With Enterprise:
 
-1. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
+1. You receive faster priority support with a maximum response time of 2 business days (compared to 4 business days for Pro).
 
-2. You can legally utilize Karafka without needing my gem server for license gem download and verification.
+2. You get 4 hours per year of dedicated architecture consultation with Maciej Mensfeld for architecture reviews, performance optimization, migration planning, or strategic technical discussions.
 
-3. You are granted extended permission to continue using your private fork of Karafka even after your license expires or your subscription ends.
+3. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
 
-4. Payments can be made via invoicing.
+4. You can legally utilize Karafka without needing my gem server for license gem download and verification.
 
-5. I am available to assist with any security or compliance documentation required for your organization's needs. 
+5. You are granted extended permission to continue using your private fork of Karafka even after your license expires or your subscription ends.
 
-6. You can request a 4-hour-long live workshop specifically tailored for those embarking on their journey with Kafka and Karafka
+6. Payments can be made via invoicing.
+
+7. I am available to assist with any security or compliance documentation required for your organization's needs.
+
+8. You can request a 4-hour-long live workshop specifically tailored for those embarking on your journey with Kafka and Karafka.
 
 You can read more about those differences [here](Pro-Enterprise).
 
