@@ -129,6 +129,7 @@
 - [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support)
 - [FIPS Support](Pro-FIPS-Support)
 - [Enterprise](Pro-Enterprise)
+- [Enterprise Architecture Consultation](Pro-Enterprise-Architecture-Consultation)
 - [Enterprise Workshop Session](Pro-Enterprise-Workshop-Session)
 - [Enterprise License Setup](https://karafka.io/docs/Pro-Enterprise-License-Setup)
 
