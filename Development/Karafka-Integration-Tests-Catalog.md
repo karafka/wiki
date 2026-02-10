@@ -1445,7 +1445,7 @@
 | `swarm/cli_validations_for_inclusions_spec.rb` | Karafka should fail if we specify a consumer group that was not defined also when working in the swarm mode. |
 | `swarm/dead_node_cleanup_spec.rb` | After node dies (for any reason), it should be cleaned up and not left hanging as a zombie |
 | `swarm/dead_node_recovery_spec.rb` | After node dies (for any reason), it should be restarted by the supervisor |
-| `swarm/forceful_nodes_restart_graceful_supervisor_stop_spec.rb` | When supervisor restarts nodes that are hanging it should emit a status and when nodes are no longer hanging it should gracefully stop |
+| `swarm/forceful_nodes_restart_graceful_supervisor_stop_spec.rb` | When supervisor restarts nodes that are hanging it should emit a status and when nodes are no longer hanging it should gracefully stop macOS ARM64 needs more generous timeouts due to slower process startup |
 | `swarm/forceful_shutdown_of_hanging_spec.rb` | When supervisor stops work, hanging processes should be killed |
 | `swarm/liveness_failure_restart_spec.rb` | If we use liveness API to report issue, Karafka should restart the node |
 | `swarm/regular_flow_with_post_fork_producer_spec.rb` | We should be able to use the regular producer with the inherited config to operate and send messages |
