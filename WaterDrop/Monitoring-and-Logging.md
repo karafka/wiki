@@ -139,6 +139,12 @@ producer.produce_sync(topic: 'my.topic', payload: 'my.message')
 
 ## Usage Statistics
 
+!!! warning "Always keep `statistics.emitted` handlers concise and non-blocking"
+
+    When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking. Long-running handlers can impede the message production process and overall producer performance. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your production process.
+
+    Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
+
 WaterDrop is configured to emit internal `librdkafka` metrics every five seconds. You can change this by setting the `kafka` `statistics.interval.ms` configuration property to a value greater than of equal `0`. Emitted statistics are available after subscribing to the `statistics.emitted` publisher event. If set to `0`, metrics will not be published.
 
 The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.

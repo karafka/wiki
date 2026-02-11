@@ -210,6 +210,8 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
     When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking, as this runs every 5 seconds and during active processing. Long-running handlers can impede the polling process, affecting message consumption. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your consumption process.
 
+    Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
+
 !!! note
 
     Karafka emits metrics every 5 seconds by default, governed by the Kafka setting `statistics.interval.ms`. Metrics are also published during processing and long polling. Whether you are processing data or waiting on more information being shipped from Kafka, metrics publishing will occur.
