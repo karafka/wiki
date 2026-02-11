@@ -26,7 +26,14 @@
 
     **Response:** The automated disaster recovery system successfully performed server rotation, though the 15-minute threshold before activation meant some users experienced service interruption. Users requiring immediate access during the incident were offered offline (embedded) license setup as a workaround.
 
-    **Resolution:** The issue has been fully resolved. A comprehensive postmortem will be published in the upcoming days, detailing the root cause analysis and additional preventive measures to ensure this type of disruption does not affect users in the future.
+    **Improvements Implemented:**
+
+    - Reduced failover activation threshold from 15 minutes to approximately 60 seconds
+    - Relocated the standby server to a fully independent provider and datacenter, ensuring infrastructure-level isolation from the primary
+    - Upgraded health checks from periodic to continuous 60-second interval monitoring with automatic traffic rerouting
+    - Improved data synchronization frequency between primary and standby servers
+
+    **Resolution:** These changes mean that a similar infrastructure failure would now result in under 1 minute of automatic failover, transparent to end users, compared to the ~25 minutes experienced during this incident.
 
 !!! success "[RESOLVED] August 4, 2025 - OpenSSL 3.0.17 Segmentation Faults"
 
