@@ -471,42 +471,52 @@ The default Datadog MetricsListener reports a comprehensive set of metrics acros
 
 ##### Excluding Specific Metrics from Defaults
 
-If you want to keep most default metrics but exclude a few, you can filter the default list:
+If you want to keep most default metrics but exclude a few, you can use this extended listener class that provides an `exclude_rd_kafka_metrics` setting:
 
 ```ruby
 require 'datadog/statsd'
 require 'karafka/instrumentation/vendors/datadog/metrics_listener'
 
-# Reference to the listener class for shorter access
-listener_class = Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+# Extended listener with metric exclusion support
+class CustomDatadogListener < Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+  # Metric names to exclude from the default rdkafka metrics
+  setting :exclude_rd_kafka_metrics, default: []
 
-# Get the default metrics from the setting definition
-default_metrics = listener_class.config.rd_kafka_metrics
+  # Override to apply exclusions dynamically
+  def rd_kafka_metrics
+    metrics = config.rd_kafka_metrics
+    exclusions = config.exclude_rd_kafka_metrics
 
-# Define which metrics to exclude
-excluded_metric_names = [
-  "network.latency.avg",
-  "network.latency.p99",
-  "connection.connects",
-  "connection.disconnects"
-]
+    return metrics if exclusions.empty?
 
-# Filter out the excluded metrics
-filtered_metrics = default_metrics.reject do |metric|
-  excluded_metric_names.include?(metric.name)
+    # Only apply exclusions when using the default metrics
+    # If user provided custom metrics, we don't touch them
+    if metrics == self.class.superclass.config.rd_kafka_metrics
+      metrics.reject { |metric| exclusions.include?(metric.name) }
+    else
+      metrics
+    end
+  end
 end
 
-# Configure listener with filtered metrics
-dd_listener = listener_class.new do |config|
+# Use the extended listener
+dd_listener = CustomDatadogListener.new do |config|
   config.client = Datadog::Statsd.new('localhost', 8125)
   config.default_tags = ["host:#{Socket.gethostname}"]
-  config.rd_kafka_metrics = filtered_metrics
+
+  # Exclude specific metrics
+  config.exclude_rd_kafka_metrics = [
+    "network.latency.avg",
+    "network.latency.p99",
+    "connection.connects",
+    "connection.disconnects"
+  ]
 end
 
 Karafka.monitor.subscribe(dd_listener)
 ```
 
-This approach is ideal when you want to keep most default metrics but remove a few high-cardinality or unnecessary ones.
+This approach is ideal when you want to keep most default metrics but remove a few high-cardinality or unnecessary ones. The exclusions only apply when using the default metrics - if you provide a custom `rd_kafka_metrics` list, exclusions are ignored.
 
 ##### Customizing librdkafka Statistics Metrics
 
