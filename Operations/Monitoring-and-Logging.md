@@ -467,11 +467,50 @@ Karafka.monitor.subscribe(dd_listener)
 
 #### Reducing Datadog Metrics to Lower Costs
 
-The default Datadog MetricsListener reports a comprehensive set of metrics across multiple dimensions (rdkafka statistics, consumer events, worker metrics, errors). While this provides excellent observability, it can significantly increase Datadog costs, especially in high-throughput environments. You can subclass the listener to report fewer metrics and reduce costs.
+The default Datadog MetricsListener reports a comprehensive set of metrics across multiple dimensions (rdkafka statistics, consumer events, worker metrics, errors). While this provides excellent observability, it can significantly increase Datadog costs, especially in high-throughput environments. You can reduce costs by excluding specific metrics or customizing which metrics to report.
 
-##### Reducing librdkafka Statistics Metrics
+##### Excluding Specific Metrics from Defaults
 
-By default, the listener reports multiple rdkafka metrics from statistics events. You can configure which metrics to report by overriding the `rd_kafka_metrics` setting:
+If you want to keep most default metrics but exclude a few, you can filter the default list:
+
+```ruby
+require 'datadog/statsd'
+require 'karafka/instrumentation/vendors/datadog/metrics_listener'
+
+# Reference to the listener class for shorter access
+listener_class = Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+
+# Get the default metrics from the setting definition
+default_metrics = listener_class.config.rd_kafka_metrics
+
+# Define which metrics to exclude
+excluded_metric_names = [
+  "network.latency.avg",
+  "network.latency.p99",
+  "connection.connects",
+  "connection.disconnects"
+]
+
+# Filter out the excluded metrics
+filtered_metrics = default_metrics.reject do |metric|
+  excluded_metric_names.include?(metric.name)
+end
+
+# Configure listener with filtered metrics
+dd_listener = listener_class.new do |config|
+  config.client = Datadog::Statsd.new('localhost', 8125)
+  config.default_tags = ["host:#{Socket.gethostname}"]
+  config.rd_kafka_metrics = filtered_metrics
+end
+
+Karafka.monitor.subscribe(dd_listener)
+```
+
+This approach is ideal when you want to keep most default metrics but remove a few high-cardinality or unnecessary ones.
+
+##### Customizing librdkafka Statistics Metrics
+
+For complete control, you can configure exactly which metrics to report by providing a custom list:
 
 ```ruby
 require 'datadog/statsd'
