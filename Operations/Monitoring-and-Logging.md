@@ -388,6 +388,10 @@ end
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
 
+!!! info "Default Instrumentation Reporting Can Be Extensive"
+
+    The default Datadog MetricsListener provides comprehensive metrics coverage, reporting rdkafka statistics, consumer events, worker metrics, and errors. While excellent for development and initial production monitoring, this can significantly increase Datadog costs in high-throughput environments. We recommend revisiting your instrumentation setup before deploying to production at scale. See the [Reducing Datadog Metrics to Lower Costs](#reducing-datadog-metrics-to-lower-costs) section below for guidance on customizing the listener to report only the metrics you need.
+
 ### Karafka Native DataDog Integration
 
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
@@ -460,6 +464,69 @@ Karafka.monitor.subscribe(dd_listener)
 !!! warning "Tag Cardinality Costs"
 
     Adding high-cardinality tags (like topic, partition) significantly increases Datadog costs. The default listener intentionally limits tags to keep costs manageable. Consider your monitoring budget before adding additional tags.
+
+#### Reducing Datadog Metrics to Lower Costs
+
+The default Datadog MetricsListener reports a comprehensive set of metrics across multiple dimensions (rdkafka statistics, consumer events, worker metrics, errors). While this provides excellent observability, it can significantly increase Datadog costs, especially in high-throughput environments. You can subclass the listener to report fewer metrics and reduce costs.
+
+##### Reducing librdkafka Statistics Metrics
+
+By default, the listener reports multiple rdkafka metrics from statistics events. You can configure which metrics to report by overriding the `rd_kafka_metrics` setting:
+
+```ruby
+require 'datadog/statsd'
+require 'karafka/instrumentation/vendors/datadog/metrics_listener'
+
+class ReducedDatadogListener < Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+  configure do |config|
+    # Only report essential lag metrics, skip network latency and connection metrics
+    config.rd_kafka_metrics = [
+      RdKafkaMetric.new(:gauge, :topics, "consumer.lags", "consumer_lag_stored")
+    ]
+  end
+end
+
+dd_listener = ReducedDatadogListener.new do |config|
+  config.client = Datadog::Statsd.new('localhost', 8125)
+  config.default_tags = ["host:#{Socket.gethostname}"]
+end
+
+Karafka.monitor.subscribe(dd_listener)
+```
+
+##### Disabling Specific Event Handlers
+
+You can also disable specific event handlers entirely by overriding them with empty methods:
+
+```ruby
+class MinimalDatadogListener < Karafka::Instrumentation::Vendors::Datadog::MetricsListener
+  configure do |config|
+    # Disable all rdkafka statistics metrics
+    config.rd_kafka_metrics = []
+  end
+
+  # Disable worker metrics by overriding with empty methods
+  def on_worker_process(event); end
+  def on_worker_processed(event); end
+
+  # Disable polling metrics
+  def on_connection_listener_fetch_loop_received(event); end
+
+  # Keep only essential consumption metrics
+  def on_consumer_consumed(event)
+    consumer = event.payload[:caller]
+    messages = consumer.messages
+    tags = consumer_tags(consumer) + default_tags
+
+    # Only report message count and batch count, skip histograms
+    count("consumer.messages", messages.size, tags: tags)
+    count("consumer.batches", 1, tags: tags)
+  end
+
+  # Keep error tracking (recommended)
+  # on_error_occurred is inherited and remains active
+end
+```
 
 #### Tracing Consumers using Datadog Logger Listener
 
