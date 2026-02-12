@@ -12,13 +12,14 @@
 
 !!! success "[RESOLVED] February 11, 2026 - Pro License Server Hardware Failure"
 
-    **Status:** Fully Resolved
-    **Impact:** Moderate
-    **Affected:** Karafka Pro users attempting to access the license server during the incident window
+    - **Status:** Fully Resolved
+    - **Impact:** Moderate
+    - **Affected:** Karafka Pro users attempting to access the license server during the incident window
 
     A hardware failure on a network switch at Hetzner's infrastructure caused a temporary outage of the Karafka Pro license server. The incident began at approximately 2:47 PM CET and was fully resolved by 3:12 PM CET, resulting in approximately 25 minutes of downtime.
 
     **Incident Timeline (CET):**
+
     - 2:47 PM - Initial detection of Hetzner infrastructure issues
     - 2:51 PM - Migration process initiated
     - 3:09 PM - Backup server deployment started
@@ -37,9 +38,9 @@
 
 !!! success "[RESOLVED] August 4, 2025 - OpenSSL 3.0.17 Segmentation Faults"
 
-    **Status:** Resolved  
-    **Impact:** High  
-    **Affected:** All Karafka and rdkafka-ruby applications with OpenSSL 3.0.17
+    - **Status:** Resolved
+    - **Impact:** High
+    - **Affected:** All Karafka and rdkafka-ruby applications with OpenSSL 3.0.17
 
     OpenSSL 3.0.17 introduced a critical regression in X509_LOOKUP methods that caused widespread segmentation faults in applications using native SSL connections, including rdkafka-ruby and all Karafka applications.
 
