@@ -262,7 +262,25 @@ We do not hold your credit card information. All subscription management is done
 
 ## Where is the hosting infrastructure located?
 
-Karafka Pro gem license server is hosted on Hetzner in Germany (Frankfurt) with DigitalOcean as a failover provider. The networking layer is managed by Cloudflare. Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
+Karafka Pro gem license server operates on a high-availability infrastructure designed for high availability:
+
+**Primary Infrastructure:**
+
+- Hosted on Hetzner in Germany (Frankfurt)
+- Served through Cloudflare's global network for performance and reliability
+
+**Disaster Recovery & High Availability:**
+
+- Automatic failover to geographically separated backup servers
+- Health checks every 60 seconds with automatic traffic routing
+- Expected downtime in case of primary servers failure: **under 2 minutes**
+- Failover is load-balancer based (not DNS-based), eliminating DNS propagation delays
+- During failover: existing license gems remain accessible (read-only mode)
+- Your running production environments are not affected by infrastructure issues
+
+The infrastructure uses Cloudflare for DNS management, load balancing, and automatic failover between server locations, ensuring enterprise-grade reliability for your license delivery.
+
+Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
 
 ## Can I use Karafka Pro with an offline license without using the Karafka gem server?
 
