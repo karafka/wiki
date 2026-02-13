@@ -262,7 +262,7 @@ We do not hold your credit card information. All subscription management is done
 
 ## Where is the hosting infrastructure located?
 
-Karafka Pro gem license server is located in Hetzner, Germany, Frankfurt. Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
+Karafka Pro gem license server is hosted on Hetzner in Germany (Frankfurt) with DigitalOcean as a failover provider. The networking layer is managed by Cloudflare. Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
 
 ## Can I use Karafka Pro with an offline license without using the Karafka gem server?
 
