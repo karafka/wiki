@@ -106,7 +106,7 @@ end
 
 Karafka [Web UI](Web-UI-Getting-Started) is a user interface for the Karafka framework. The Web UI provides a convenient way for monitor all producers related errors out of the box.
 
-![Example producer errors in Karafka Web-UI](https://cdn.karafka.io/assets/misc/printscreens/web-ui/errors-producer.png)
+![Example producer errors in Karafka Web-UI](https://karafka.io/assets/misc/printscreens/web-ui/errors-producer.png)
 
 ## Logger Listener
 
@@ -306,7 +306,7 @@ producer.monitor.subscribe(listener)
 
 You can also find [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/instrumentation/vendors/datadog/dashboard.json) a ready to import DataDog dashboard configuration file that you can use to monitor all of your producers.
 
-![Example WaterDrop DD dashboard](https://cdn.karafka.io/assets/misc/printscreens/waterdrop_dd_dashboard_example.png)
+![Example WaterDrop DD dashboard](https://karafka.io/assets/misc/printscreens/waterdrop_dd_dashboard_example.png)
 
 ### Metrics Reporting Enhancement
 

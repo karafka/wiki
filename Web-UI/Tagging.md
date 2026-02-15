@@ -17,7 +17,7 @@ Karafka::Process.tags.add(:machine_type, machine_type)
 ```
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-emoji.png" alt="karafka web emoji tagging presentation" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/tags-emoji.png" alt="karafka web emoji tagging presentation" />
 </p>
 
 ## Taggable resources
@@ -92,13 +92,13 @@ Process tags will be visible in the following places:
 In the consumers' main view for each process:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-process1.png" alt="karafka web tagging presentation" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/tags-process1.png" alt="karafka web tagging presentation" />
 </p>
 
 In the consumer detailed view (Karafka Pro only):
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-process2.png" alt="karafka web tagging presentation" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/tags-process2.png" alt="karafka web tagging presentation" />
 </p>
 
 ## Managing consumer work-related tags
@@ -133,13 +133,13 @@ Consumer tags will be visible in the following places:
 In the jobs overview page:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-job1.png" alt="karafka web tagging presentation" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/tags-job1.png" alt="karafka web tagging presentation" />
 </p>
 
 In the consumer jobs detailed view (Karafka Pro only):
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/tags-job2.png" alt="karafka web tagging presentation" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/tags-job2.png" alt="karafka web tagging presentation" />
 </p>
 
 ---

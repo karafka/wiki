@@ -11,7 +11,7 @@ Each day at midnight, Karafka's scheduler, a dedicated consumer, reloads and sca
 One key aspect of Karafka's handling of scheduled messages is its treatment of message payloads. It ensures the payload and user headers remain untouched by simply proxy-passing them with added trace headers.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/scheduled_messages/flow.svg" />
+  <img src="https://karafka.io/assets/misc/charts/scheduled_messages/flow.svg" />
 </p>
 <p align="center">
   <small>*Illustration presenting how Scheduled Messages work.
@@ -454,7 +454,7 @@ Karafka's Web UI displays daily dispatch estimates and the current loading state
 Additionally, the Web UI offers a detailed exploration of scheduled messages, showing specific information about each message queued for future dispatch. Users can view scheduled times, payload content, and other relevant metadata, aiding in monitoring and verifying the scheduling system's effectiveness.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/scheduled_messages.png" alt="karafka web scheduled messages state" />
 </p>
 
 !!! warning "Future Day Cancellation Reporting Limitations"

@@ -49,7 +49,7 @@ Karafka Web UI is a user interface for the [Karafka framework](https://github.co
 The following image provides a visual preview of the Karafka Web UI interface, showcasing its dashboard for monitoring Kafka consumers, producers, and topics in a centralized view:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
 ## Karafka-Rdkafka

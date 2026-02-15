@@ -16,7 +16,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/branding1.png)
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/branding1.png)
 
 ## Best Practices
 

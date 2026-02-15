@@ -495,7 +495,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
     Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
 
     <p align="center">
-      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
     </p>
 
 These limitations underline the importance of a thorough understanding and careful implementation when leveraging Kafka transactions, especially with tools like WaterDrop.

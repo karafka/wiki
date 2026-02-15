@@ -9,7 +9,7 @@ When you define a route using a regexp pattern, Karafka monitors the Kafka topic
 Below, you can find a conceptual diagram of how the discovery process works:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/routing_patterns/detection_flow.svg" />
+  <img src="https://karafka.io/assets/misc/charts/routing_patterns/detection_flow.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how the detection process works. When Karafka detects new topics in Kafka, it will try to match them, expand routes, and process incoming data.
@@ -41,7 +41,7 @@ Subsequently, this newly registered topic is created as the `:discovered` type. 
 Diagram below represents the relationship between topics of various types and how they operate within Karafka routing:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/routing_patterns/routes.svg" />
+  <img src="https://karafka.io/assets/misc/charts/routing_patterns/routes.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates how a single consumer group and subscription group can incorporate multiple topics of various types. All `:discovered` topics always use the same settings as their base `:matcher` topic.

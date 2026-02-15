@@ -7,7 +7,7 @@ Delay is implemented by pausing the consumption of the partitions for a specifie
 This makes the Delayed Topic feature a great choice for applications that need to delay the processing of specific messages without impacting the processing of other messages in the system. By using Karafka's built-in partition pausing mechanism, delayed messages can be processed in a way that is both efficient and reliable.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/delayed_topics/flow.svg" />
+  <img src="https://karafka.io/assets/misc/charts/delayed_topics/flow.svg" />
 </p>
 <p align="center">
   <small>*Illustration presenting how Delayed Topics delays too young messages.
@@ -45,7 +45,7 @@ Using `#sleep` inside consumers is **not** recommended. Sleep can heavily impact
 Using `#sleep` on one of the partitions:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/delayed_topics/sleep-lag.png" />
+  <img src="https://karafka.io/assets/misc/charts/delayed_topics/sleep-lag.png" />
 </p>
 <p align="center">
   <small>*Sleep can affect other topics and partitions running in parallel in other threads.
@@ -55,7 +55,7 @@ Using `#sleep` on one of the partitions:
 vs. delaying via the `#delay_by` API:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/delayed_topics/pause-lag.png" />
+  <img src="https://karafka.io/assets/misc/charts/delayed_topics/pause-lag.png" />
 </p>
 <p align="center">
   <small><code>#delay_by</code> is affecting only the desired topic/partition while others are processed as fast as possible.
@@ -75,7 +75,7 @@ This limitation also means that messages may be delayed slightly more than the r
 Below is an example distribution of the extra lag beyond the tested and expected ten seconds. In most cases, it is equal to or less than 10% of Karafkas' max wait time.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/delayed_topics/histogram.png" />
+  <img src="https://karafka.io/assets/misc/charts/delayed_topics/histogram.png" />
 </p>
 
 ## Revocation and Shutdown

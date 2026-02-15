@@ -160,7 +160,7 @@ end
 Below you can find an example of the effect of the usage of a similar sanitizer that removes the `visitor_id` from the displayed data:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
 </p>
 
 ## Example Use Cases

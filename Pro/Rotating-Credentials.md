@@ -5,7 +5,7 @@ To do so:
 1. Go to your license credentials page.
 
     <p align="center">
-      <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_license_page.png" />
+      <img src="https://karafka.io/assets/misc/printscreens/gems_license_page.png" />
     </p>
 
 1. Press the "Rotate credentials" button.
@@ -13,7 +13,7 @@ To do so:
 1. Read the disclaimers.
 
     <p align="center">
-      <img src="https://cdn.karafka.io/assets/misc/printscreens/gems_rotate_page.png" />
+      <img src="https://karafka.io/assets/misc/printscreens/gems_rotate_page.png" />
     </p>
 
 1. Press the "I understand. Send me an email with the rotation link." button.

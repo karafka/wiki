@@ -55,7 +55,7 @@ Alongside these details, the "Controls" tab also provides actionable commands th
 This tab serves as the operational center for managing consumers, allowing administrators to apply commands individually or in bulk, depending on the situation.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-commanding-controls.png" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-controls.png" />
 </p>
 
 #### Commands Tab
@@ -75,7 +75,7 @@ Each command in the Commands tab progresses through multiple states in its lifec
 3. **Result**: Final outcome of the command execution
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-commanding-commands.png" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-commands.png" />
 </p>
 
 ### Tracing
@@ -85,7 +85,7 @@ Tracing is a diagnostic feature that allows administrators to request backtraces
 A special command message is dispatched to the targeted consumer when the "Trace" button is pressed in the Web UI. Upon receiving this message, the consumer iterates over all Ruby threads currently running within the process and records the backtrace of each thread. These backtraces provide a snapshot of the execution stack for each thread, which can be invaluable for debugging and understanding the consumer's behavior at a particular moment. After collecting the backtraces, the consumer compiles these into a special result message that is published back to Kafka. This result message is accessible for inspection, providing real-time diagnostic information about the consumer's state.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-commanding-trace.png" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-trace.png" />
 </p>
 
 #### Use Cases
@@ -142,7 +142,7 @@ Partition-level controls are accessible from two main locations:
 2. **Consumer Subscriptions**: Navigating to a specific consumer process shows its subscriptions with partition management options
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI partition controls in Health overview" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI partition controls in Health overview" />
 </p>
 
 ### Pause and Resume Partitions
@@ -195,7 +195,7 @@ To pause a partition:
 5. Click **Set or Update Pause**
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-pause.png" alt="Karafka Web UI partition pause dialog" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-pause.png" alt="Karafka Web UI partition pause dialog" />
 </p>
 
 !!! warning "Running Consumer Process Operation"
@@ -224,7 +224,7 @@ To resume a paused partition:
 5. Click **Resume Processing**
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-resume.png" alt="Karafka Web UI partition resume dialog" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-resume.png" alt="Karafka Web UI partition resume dialog" />
 </p>
 
 Resuming a partition restores normal message processing operations. The resumption takes effect after the current processing cycle completes and before the next polling operation.
@@ -249,7 +249,7 @@ To adjust a partition offset:
 5. Click **Adjust Offset**
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-move.png" alt="Karafka Web UI offset editing interface" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-move.png" alt="Karafka Web UI offset editing interface" />
 </p>
 
 !!! warning "Running Consumer Process Operation"
