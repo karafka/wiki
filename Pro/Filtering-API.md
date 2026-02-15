@@ -53,7 +53,7 @@ If you are looking for more extensive examples, you can check out the implementa
 Filter instance is created when Karafka encounters a given topic partition for the first time and is long-lived. While their primary responsibility is to filter the incoming data, they can also alter the flow behavior. Hence it is essential to remember that part of their operations happens **after** all the data is being processed at the moment of post-execution strategy application. This means that there may be a significant delay between the filtering and the invocation of `#action` that is equal to the collective processing time of all the data of a given topic partition.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/filtering_api_action_application.svg" />
+  <img src="https://karafka.io/assets/misc/charts/filtering_api_action_application.svg" />
 </p>
 <p align="center">
   <small>*Lifecycle of filters, illustrating their post-processing usage for action altering.

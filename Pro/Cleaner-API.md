@@ -9,7 +9,7 @@ Remarkably, this memory clearance occurs before the entire batch is processed, e
 The below example illustrates how the Cleaner API releases both `payload` and `raw_payload` after each of the processed messages.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/flow.svg" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/flow.svg" />
 </p>
 
 !!! note "Cleaner API and Kafka Message Immutability"
@@ -127,11 +127,11 @@ Each fetched batch contained at most 500 messages.
 ### Message size of 1MB
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/1mb_memory.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/1mb_memory.png" />
 </p>
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/1mb_stdev.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/1mb_stdev.png" />
 </p>
 
 **Conclusion**: For messages approximately 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
@@ -139,11 +139,11 @@ Each fetched batch contained at most 500 messages.
 ### Message size of 100KB
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/100kb_memory.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/100kb_memory.png" />
 </p>
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/100kb_stdev.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/100kb_stdev.png" />
 </p>
 
 **Conclusion**: For messages around 100KB in size, the Cleaner API still demonstrates a notable impact. While the memory savings might not be as dramatic as with 1MB messages, the reduction in memory usage and stabilization of consumption patterns remain significant, underscoring the API's effectiveness also at this size.
@@ -151,11 +151,11 @@ Each fetched batch contained at most 500 messages.
 ### Message size of 10KB
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/10kb_memory.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/10kb_memory.png" />
 </p>
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/10kb_stdev.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/10kb_stdev.png" />
 </p>
 
 **Conclusion**: When processing messages of approximately 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
@@ -163,11 +163,11 @@ Each fetched batch contained at most 500 messages.
 ### Message size of 1KB
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/1kb_memory.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/1kb_memory.png" />
 </p>
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/cleaner_api/1kb_stdev.png" />
+  <img src="https://karafka.io/assets/misc/charts/cleaner_api/1kb_stdev.png" />
 </p>
 
 **Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application doesn't notably affect the memory usage metrics for such small messages. However, it's worth noting that even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there's an anticipation of intermittently receiving messages with increased payloads.

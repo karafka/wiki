@@ -14,7 +14,7 @@ A senior developer is typically $10,000/mo. One with Kafka knowledge even more. 
 Baremetrics has a [Build vs. Buy calculator](https://baremetrics.com/build-vs-buy).  Here are some **extremely** optimistic projections, now let the numbers speak for themselves:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/printscreens/build-vs-buy.png" />
+  <img src="https://karafka.io/assets/misc/printscreens/build-vs-buy.png" />
 </p>
 
 ## Features

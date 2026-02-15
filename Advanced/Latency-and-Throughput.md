@@ -362,7 +362,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
 Below is an example latency impact of enabling `enable.partition.eof` and lowering `fetch.wait.max.ms` to `100`ms, compared to the default values, on a low-traffic topic (1 message per second). In both cases, `max_wait_time` was set to `2000`ms (less is better).
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/latency_and_throughput/consumption_lag_eof.png" />
+  <img src="https://karafka.io/assets/misc/charts/latency_and_throughput/consumption_lag_eof.png" />
 </p>
 <p align="center">
   <small>*Latency in ms on low-volume topic with different configurations (less is better).
@@ -505,7 +505,7 @@ Below, you can find a table summarizing the key aspects of Karafka's parallel pr
 Below is an example latency impact of enabling Virtual Partitions compared to the default values on a partition with 10 messages per second and an IO cost of around 150ms per message. In both cases, the same settings are used.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/latency_and_throughput/no_vps_vs_vps.png" />
+  <img src="https://karafka.io/assets/misc/charts/latency_and_throughput/no_vps_vs_vps.png" />
 </p>
 <p align="center">
   <small>*Latency in ms on a partition with and without Virtual Partitions enabled (same traffic) with around 150ms of IO per message.
@@ -525,7 +525,7 @@ Karafka is designed to prefetch data from Kafka while previously obtained messag
 Under normal operations, when there are no significant lags, Karafka prefetches some data from each assigned topic partition. This is because there is little data ahead to process. For example, if 200 messages are available for processing from 10 partitions, Karafka might prefetch these messages in small batches, resulting in 10 independent jobs with 20 messages each.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/latency_and_throughput/regular_work_distribution.svg" />
+  <img src="https://karafka.io/assets/misc/charts/latency_and_throughput/regular_work_distribution.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the work distribution of prefetched data coming from two partitions.
@@ -539,7 +539,7 @@ The situation changes when Karafka experiences data spikes or when a significant
 This behavior is driven by the need to process data quickly. Still, it can lead to reduced parallelism when large batches from a single partition dominate the internal buffer.
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/latency_and_throughput/non_distributed_work.svg" />
+  <img src="https://karafka.io/assets/misc/charts/latency_and_throughput/non_distributed_work.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the lack of work distribution of prefetched data when batch comes from a single partition.

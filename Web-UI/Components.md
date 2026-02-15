@@ -23,7 +23,7 @@ This design ensures efficient resource usage - only the reports topic requires c
 Below you can find the diagram of the whole data flow:
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
+  <img src="https://karafka.io/assets/misc/charts/web-ui-flow.svg" alt="karafka web ui data flow"/>
 </p>
 
 !!! note

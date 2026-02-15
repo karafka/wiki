@@ -10,7 +10,7 @@ Below you can find the primary features of the Karafka Data Explorer.
 
 Before diving deep into the data, having a bird's eye view of all available topics is essential. This feature offers a list of all the topics, allowing users to select and focus on specific ones. It serves as a starting point for data exploration, giving a clear overview of the topics landscape.
 
-![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-explorer1.png)
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer1.png)
 
 ### Per Topic View
 
@@ -38,7 +38,7 @@ Ever wanted to see a message generated at a particular moment? This feature faci
 
 Need to investigate messages from a specific moment in time? Karafka Web UI provides Kafka messages timestamp-based offset lookups that enable you to jump directly to messages produced at exact Unix timestamps. This feature is invaluable for incident analysis, allowing you to correlate message production with system events or errors. Enter the timestamp, and the Explorer will navigate to the corresponding offset, making historical data exploration efficient and precise.
 
-![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/explorer_timestamp_input.png)
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/explorer_timestamp_input.png)
 
 ### Real-Time Display of the Recent Message
 
@@ -48,7 +48,7 @@ Stay updated with the latest information. The explorer can display the most rece
 
 Every message is more than just its content. With the Karafka Data Explorer, you can access the complete details of any message. This includes its payload, headers, and associated metadata, ensuring a comprehensive understanding of the data.
 
-![karafka web ui](https://cdn.karafka.io/assets/misc/printscreens/web-ui/pro-explorer3.png)
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer3.png)
 
 ### Message Republishing
 

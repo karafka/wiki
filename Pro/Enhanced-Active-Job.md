@@ -39,7 +39,7 @@ The above code will ensure that jobs related to the same user will always be dis
 We recommend using the `:key` as then it can be used for combining Enhanced Active Job with [Virtual Partitions](Pro-Virtual-Partitions).
 
 <p align="center">
-  <img src="https://cdn.karafka.io/assets/misc/charts/enhanced_aj_ordering.svg" />
+  <img src="https://karafka.io/assets/misc/charts/enhanced_aj_ordering.svg" />
 </p>
 <p align="center">
   <small>*This example illustrates the end distribution of jobs based on the user id.

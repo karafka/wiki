@@ -27,7 +27,7 @@ Here are the steps necessary to configure Karafka Web-UI to work in a multi-app 
 1. Deploy all the applications, open the Web UI, and enjoy.
 
     <p align="center">
-      <img src="https://cdn.karafka.io/assets/misc/printscreens/web-ui/multi-app.png" alt="karafka web multi-app processes view" />
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/multi-app.png" alt="karafka web multi-app processes view" />
     </p>
 
 !!! warning "Critical Setup Requirement"
