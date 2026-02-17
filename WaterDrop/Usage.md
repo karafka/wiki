@@ -318,6 +318,10 @@ producer.close!
 
 While `#close!` can be helpful when you want to finalize your application quickly, be aware that it may result in messages not being successfully delivered or acknowledged, potentially leading to data loss. Therefore, use `#close!` with caution and only when you understand the implications of potentially losing undelivered messages.
 
+!!! warning "Avoid Closing Producers from Notification Callbacks"
+
+    It is not recommended to close a producer from within its own notification callbacks, such as `message.acknowledged`, `statistics.emitted`, or other instrumentation events. When using FD polling mode, these callbacks execute on the poller thread. Closing the producer from within the callback can lead to synchronization issues or deadlocks, as the close operation waits for the poller thread to complete while the poller thread is blocked executing the callback. If you need to close a producer based on certain conditions detected in callbacks (e.g., too many errors), signal the main thread to perform the close operation asynchronously instead of invoking `#close` directly within the callback.
+
 ### Connection Pool Shutdown
 
 If you're using [connection pools](WaterDrop-Connection-Pool.md) in your application, you need to explicitly close them just like producers. Connection pools manage their own resources independently and must be shut down separately to prevent resource leaks:
