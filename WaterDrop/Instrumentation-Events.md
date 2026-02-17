@@ -42,6 +42,11 @@ Below is the complete list of instrumentation events available in WaterDrop:
 
 - `oauthbearer.token_refresh`
 
+### Poller Events
+
+- `poller.producer_registered`
+- `poller.producer_unregistered`
+
 ### Producer Events
 
 - `producer.closed`
