@@ -153,7 +153,7 @@ Running Kafka clusters with adequate capacity headroom is critical for fault tol
 
 As a general rule, your average CPU load should not exceed your available CPU cores (whether physical cores on bare metal or vCPUs in cloud environments). When load consistently exceeds available processing capacity, the system becomes oversaturated and response times degrade. For Kafka clusters specifically:
 
-- **Target 50-60% average CPU utilization** across brokers in production
+- **Target 40-50% average CPU utilization** across brokers in production to maintain headroom for traffic spikes and broker failures
 - **Never exceed 80% sustained utilization** - this leaves no margin for traffic spikes or failure scenarios
 - **Monitor load averages** relative to your core/vCPU count, not just percentage - a load average of 8 on a 6-core machine indicates saturation
 
@@ -211,7 +211,7 @@ At 90% utilization, the cluster has no headroom for traffic spikes, rebalancing 
 
 !!! warning "Three-Broker Clusters Require Extra Caution"
 
-    With only 3 brokers, you cannot safely run above 50% average CPU utilization. At 50%, losing one broker puts remaining brokers at 75% - tight but survivable. At 60%, you hit 90% after a failure. At 70%, you exceed capacity entirely. For production workloads where availability during maintenance matters, consider 4+ brokers.
+    With only 3 brokers, you should not exceed 45% average CPU utilization. At 45%, losing one broker puts remaining brokers at 67.5% - manageable. At 50%, you hit 75% after a failure - tight but survivable. At 60%, you hit 90% - likely to cause cascading failures. For production workloads where availability during maintenance matters, consider 4+ brokers.
 
 ### Symptoms of Running Over Capacity
 
@@ -241,9 +241,9 @@ When you observe these symptoms during or after a broker failure, the root cause
 
 **Sizing for fault tolerance:**
 
-- With 3 brokers at 50% each, losing one puts remaining at 75% - survivable but tight
-- With 4 brokers at 50% each, losing one puts remaining at 67% - reasonable headroom
-- With 6 brokers at 50% each, losing one puts remaining at 60% - comfortable margin
+- With 3 brokers at 45% each, losing one puts remaining at 67.5% - reasonable headroom
+- With 4 brokers at 45% each, losing one puts remaining at 60% - comfortable margin
+- With 6 brokers at 45% each, losing one puts remaining at 54% - excellent fault tolerance
 
 ### Scaling Strategies
 
