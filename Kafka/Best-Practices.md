@@ -151,27 +151,73 @@ Running Kafka clusters with adequate capacity headroom is critical for fault tol
 
 ### CPU Utilization Guidelines
 
-As a general rule, your average CPU load should not exceed your vCPU count. When load consistently exceeds available vCPUs, the system becomes oversaturated and response times degrade. For Kafka clusters specifically:
+As a general rule, your average CPU load should not exceed your available CPU cores (whether physical cores on bare metal or vCPUs in cloud environments). When load consistently exceeds available processing capacity, the system becomes oversaturated and response times degrade. For Kafka clusters specifically:
 
 - **Target 50-60% average CPU utilization** across brokers in production
 - **Never exceed 80% sustained utilization** - this leaves no margin for traffic spikes or failure scenarios
-- **Monitor load averages** relative to vCPU count, not just percentage
+- **Monitor load averages** relative to your core/vCPU count, not just percentage - a load average of 8 on a 6-core machine indicates saturation
 
 ### Node Failure Impact
 
-Calculate the impact of losing a broker before it happens. With a 3-broker cluster running at 60% CPU each:
+The criticality of capacity headroom depends heavily on cluster size. When a broker goes down, remaining brokers must absorb its load - and the proportional impact varies dramatically based on how many brokers you have.
+
+**The small cluster problem:**
+
+In a 3-broker cluster, losing one broker means losing **1/3 of your total capacity**. The remaining two brokers must each absorb an additional 50% of their current load to compensate. This is a massive spike that leaves almost no room for error.
+
+In a 6-broker cluster, losing one broker means losing only **1/6 of your capacity**. The remaining five brokers each absorb just 20% additional load - a far more manageable increase.
+
+<table>
+  <thead>
+    <tr>
+      <th>Cluster Size</th>
+      <th>Capacity Lost Per Failure</th>
+      <th>Load Increase Per Remaining Broker</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3 brokers</td>
+      <td>33% (1/3)</td>
+      <td>+50%</td>
+    </tr>
+    <tr>
+      <td>4 brokers</td>
+      <td>25% (1/4)</td>
+      <td>+33%</td>
+    </tr>
+    <tr>
+      <td>6 brokers</td>
+      <td>17% (1/6)</td>
+      <td>+20%</td>
+    </tr>
+    <tr>
+      <td>9 brokers</td>
+      <td>11% (1/9)</td>
+      <td>+12.5%</td>
+    </tr>
+  </tbody>
+</table>
+
+**Why 3-broker clusters are risky:**
+
+Consider a 3-broker cluster running at 60% CPU each:
 
 - Total cluster capacity: 3 brokers × 100% = 300% capacity units
 - Current utilization: 3 brokers × 60% = 180% capacity units
 - After losing one broker: 180% load ÷ 2 brokers = **90% per remaining broker**
 
-This 90% utilization leaves no headroom for traffic spikes and may cause the remaining brokers to become unresponsive, triggering cascading failures as the cluster cannot acknowledge messages quickly enough.
+At 90% utilization, the cluster has no headroom for traffic spikes, rebalancing overhead, or the increased coordination required during failover. Brokers may become too slow to acknowledge messages, triggering `msg_timed_out` errors and potentially cascading failures.
+
+!!! warning "Three-Broker Clusters Require Extra Caution"
+
+    With only 3 brokers, you cannot safely run above 50% average CPU utilization. At 50%, losing one broker puts remaining brokers at 75% - tight but survivable. At 60%, you hit 90% after a failure. At 70%, you exceed capacity entirely. For production workloads where availability during maintenance matters, consider 4+ brokers.
 
 **Sizing for fault tolerance:**
 
-- With 3 brokers at 45% each, losing one puts remaining at 67.5% - manageable
-- With 6 brokers at 30% each, losing one puts remaining at 36% - comfortable headroom
-- More brokers mean each failure has proportionally less impact (1/6 vs 1/3 of capacity)
+- With 3 brokers at 50% each, losing one puts remaining at 75% - survivable but tight
+- With 4 brokers at 50% each, losing one puts remaining at 67% - reasonable headroom
+- With 6 brokers at 50% each, losing one puts remaining at 60% - comfortable margin
 
 ### Scaling Strategies
 
