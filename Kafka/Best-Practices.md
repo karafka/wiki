@@ -145,6 +145,137 @@ When using a schema registry, decide on your compatibility mode upfront. `BACKWA
 
 Whatever format you choose, include a schema version indicator in your messages or use the schema registry's wire format. This makes future migrations possible without requiring coordinated deployments across all producers and consumers.
 
+## Cluster Capacity Planning
+
+Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without sufficient headroom, this redistribution can cascade into cluster-wide issues.
+
+### CPU Utilization Guidelines
+
+As a general rule, your average CPU load should not exceed your available CPU cores (whether physical cores on bare metal or vCPUs in cloud environments). When load consistently exceeds available processing capacity, the system becomes oversaturated and response times degrade. For Kafka clusters specifically:
+
+- **Target 40-50% average CPU utilization** across brokers in production to maintain headroom for traffic spikes and broker failures
+- **Never exceed 80% sustained utilization** - this leaves no margin for traffic spikes or failure scenarios
+- **Monitor load averages** relative to your core/vCPU count, not just percentage - a load average of 8 on a 6-core machine indicates saturation
+
+### Node Failure Impact
+
+The criticality of capacity headroom depends heavily on cluster size. When a broker goes down, remaining brokers must absorb its load - and the proportional impact varies dramatically based on how many brokers you have.
+
+**The small cluster problem:**
+
+In a 3-broker cluster, losing one broker means losing **1/3 of your total capacity**. The remaining two brokers must each absorb an additional 50% of their current load to compensate. This is a massive spike that leaves almost no room for error.
+
+In a 6-broker cluster, losing one broker means losing only **1/6 of your capacity**. The remaining five brokers each absorb just 20% additional load - a far more manageable increase.
+
+<table>
+  <thead>
+    <tr>
+      <th>Cluster Size</th>
+      <th>Capacity Lost Per Failure</th>
+      <th>Load Increase Per Remaining Broker</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>3 brokers</td>
+      <td>33% (1/3)</td>
+      <td>+50%</td>
+    </tr>
+    <tr>
+      <td>4 brokers</td>
+      <td>25% (1/4)</td>
+      <td>+33%</td>
+    </tr>
+    <tr>
+      <td>6 brokers</td>
+      <td>17% (1/6)</td>
+      <td>+20%</td>
+    </tr>
+    <tr>
+      <td>9 brokers</td>
+      <td>11% (1/9)</td>
+      <td>+12.5%</td>
+    </tr>
+  </tbody>
+</table>
+
+**Why 3-broker clusters are risky:**
+
+Consider a 3-broker cluster running at 60% CPU each:
+
+- Total cluster capacity: 3 brokers × 100% = 300% capacity units
+- Current utilization: 3 brokers × 60% = 180% capacity units
+- After losing one broker: 180% load ÷ 2 brokers = **90% per remaining broker**
+
+At 90% utilization, the cluster has no headroom for traffic spikes, rebalancing overhead, or the increased coordination required during failover. Brokers may become too slow to acknowledge messages, triggering `msg_timed_out` errors and potentially cascading failures.
+
+!!! warning "Three-Broker Clusters Require Extra Caution"
+
+    With only 3 brokers, you should not exceed 45% average CPU utilization. At 45%, losing one broker puts remaining brokers at 67.5% - manageable. At 50%, you hit 75% after a failure - tight but survivable. At 60%, you hit 90% - likely to cause cascading failures. For production workloads where availability during maintenance matters, consider 4+ brokers.
+
+### Symptoms of Running Over Capacity
+
+When brokers become overloaded, Kafka does not fail immediately - it degrades progressively. Recognizing early warning signs helps you act before a full outage:
+
+**Producer-side symptoms:**
+
+- **`msg_timed_out` errors** - The most common sign. Brokers are too slow to acknowledge messages within `message.timeout.ms`. The producer retried for the full timeout period but never received confirmation.
+- **`request_timed_out` errors** - Broker failed to respond to metadata or produce requests in time.
+- **`queue_full` errors** - Producer's internal buffer filled up because messages are not being acknowledged fast enough.
+- **Increased produce latency** - Even successful produces take longer as brokers struggle to keep up.
+
+**Consumer-side symptoms:**
+
+- **Consumer lag increases** - Consumers fall behind because fetch requests are slow or brokers cannot serve data quickly enough.
+- **Frequent rebalances** - Overloaded brokers may fail to respond to heartbeats, causing consumers to be marked dead and triggering unnecessary rebalances.
+- **`coordinator_not_available` errors** - The group coordinator broker is too overloaded to manage consumer group membership.
+
+**Cluster-wide symptoms:**
+
+- **Under-replicated partitions** - Followers cannot keep up with the leader, causing ISR (in-sync replica) count to drop.
+- **`not_enough_replicas` errors** - ISR falls below `min.insync.replicas`, blocking writes entirely.
+- **Leader election delays** - Controller is too slow to reassign leadership when brokers fail.
+- **Cascading failures** - One overloaded broker causes increased load on others, which then also become overloaded.
+
+When you observe these symptoms during or after a broker failure, the root cause is almost always insufficient capacity headroom - not a bug in your application or Kafka itself.
+
+**Sizing for fault tolerance:**
+
+- With 3 brokers at 45% each, losing one puts remaining at 67.5% - reasonable headroom
+- With 4 brokers at 45% each, losing one puts remaining at 60% - comfortable margin
+- With 6 brokers at 45% each, losing one puts remaining at 54% - excellent fault tolerance
+
+### Scaling Strategies
+
+When capacity becomes constrained, you have two options - but only one may actually be viable depending on your current utilization.
+
+**Vertical scaling** (larger instances) seems simpler but creates a dangerous catch-22 when you are already CPU-constrained. Vertical scaling requires taking each broker offline to resize it (replace with a larger instance, add CPUs, upgrade hardware). During this window, the remaining brokers must absorb that node's load.
+
+If your 3-broker cluster is already running at 60% CPU and you take one broker down to upgrade it, the remaining two brokers jump to 90% CPU - exactly the overload scenario you are trying to prevent. You cannot vertically scale a cluster that is already at capacity without risking the very outage you are trying to avoid.
+
+**Horizontal scaling** (more brokers) is the only safe option when CPU is the bottleneck. By adding new brokers first, you increase total cluster capacity before removing or stressing any existing nodes:
+
+1. Add new brokers to the cluster (capacity increases immediately for new partitions)
+2. Gradually migrate partitions from overloaded brokers to new ones
+3. Each migration reduces load on existing brokers rather than increasing it
+4. Once load is balanced, the cluster has both more headroom and better fault tolerance
+
+This approach:
+
+- Adds capacity before removing any
+- Allows incremental partition migration to avoid overwhelming nodes
+- Reduces per-broker failure impact going forward (1/6 vs 1/3 of capacity)
+
+After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster. Migrate partitions one at a time to minimize additional load during the transition.
+
+!!! warning "The Vertical Scaling Trap"
+
+    If you wait until CPU is the bottleneck to consider scaling, vertical scaling is no longer an option - you are effectively locked into horizontal scaling. Plan capacity increases before you hit this point. The best time to vertically scale is when you still have 30-40% headroom, not when you are already constrained.
+
+!!! tip "Managed Kafka Provider Notes"
+
+    Different providers handle scaling differently. Some (like Confluent) have self-balancing features that automatically redistribute partitions. Others require manual partition reassignment after adding brokers. Check your provider's documentation before scaling operations. Also verify whether your provider supports adding individual brokers or only scaling in fixed increments (for example, 3 to 6 nodes).
+
 ## Managed Service Considerations
 
 Before committing to a managed Kafka provider, get clear answers to these questions:
