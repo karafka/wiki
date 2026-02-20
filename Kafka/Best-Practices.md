@@ -213,6 +213,32 @@ At 90% utilization, the cluster has no headroom for traffic spikes, rebalancing 
 
     With only 3 brokers, you cannot safely run above 50% average CPU utilization. At 50%, losing one broker puts remaining brokers at 75% - tight but survivable. At 60%, you hit 90% after a failure. At 70%, you exceed capacity entirely. For production workloads where availability during maintenance matters, consider 4+ brokers.
 
+### Symptoms of Running Over Capacity
+
+When brokers become overloaded, Kafka does not fail immediately - it degrades progressively. Recognizing early warning signs helps you act before a full outage:
+
+**Producer-side symptoms:**
+
+- **`msg_timed_out` errors** - The most common sign. Brokers are too slow to acknowledge messages within `message.timeout.ms`. The producer retried for the full timeout period but never received confirmation.
+- **`request_timed_out` errors** - Broker failed to respond to metadata or produce requests in time.
+- **`queue_full` errors** - Producer's internal buffer filled up because messages are not being acknowledged fast enough.
+- **Increased produce latency** - Even successful produces take longer as brokers struggle to keep up.
+
+**Consumer-side symptoms:**
+
+- **Consumer lag increases** - Consumers fall behind because fetch requests are slow or brokers cannot serve data quickly enough.
+- **Frequent rebalances** - Overloaded brokers may fail to respond to heartbeats, causing consumers to be marked dead and triggering unnecessary rebalances.
+- **`coordinator_not_available` errors** - The group coordinator broker is too overloaded to manage consumer group membership.
+
+**Cluster-wide symptoms:**
+
+- **Under-replicated partitions** - Followers cannot keep up with the leader, causing ISR (in-sync replica) count to drop.
+- **`not_enough_replicas` errors** - ISR falls below `min.insync.replicas`, blocking writes entirely.
+- **Leader election delays** - Controller is too slow to reassign leadership when brokers fail.
+- **Cascading failures** - One overloaded broker causes increased load on others, which then also become overloaded.
+
+When you observe these symptoms during or after a broker failure, the root cause is almost always insufficient capacity headroom - not a bug in your application or Kafka itself.
+
 **Sizing for fault tolerance:**
 
 - With 3 brokers at 50% each, losing one puts remaining at 75% - survivable but tight
