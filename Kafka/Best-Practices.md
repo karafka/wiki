@@ -145,6 +145,52 @@ When using a schema registry, decide on your compatibility mode upfront. `BACKWA
 
 Whatever format you choose, include a schema version indicator in your messages or use the schema registry's wire format. This makes future migrations possible without requiring coordinated deployments across all producers and consumers.
 
+## Cluster Capacity Planning
+
+Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without sufficient headroom, this redistribution can cascade into cluster-wide issues.
+
+### CPU Utilization Guidelines
+
+As a general rule, your average CPU load should not exceed your vCPU count. When load consistently exceeds available vCPUs, the system becomes oversaturated and response times degrade. For Kafka clusters specifically:
+
+- **Target 50-60% average CPU utilization** across brokers in production
+- **Never exceed 80% sustained utilization** - this leaves no margin for traffic spikes or failure scenarios
+- **Monitor load averages** relative to vCPU count, not just percentage
+
+### Node Failure Impact
+
+Calculate the impact of losing a broker before it happens. With a 3-broker cluster running at 60% CPU each:
+
+- Total cluster capacity: 3 brokers × 100% = 300% capacity units
+- Current utilization: 3 brokers × 60% = 180% capacity units
+- After losing one broker: 180% load ÷ 2 brokers = **90% per remaining broker**
+
+This 90% utilization leaves no headroom for traffic spikes and may cause the remaining brokers to become unresponsive, triggering cascading failures as the cluster cannot acknowledge messages quickly enough.
+
+**Sizing for fault tolerance:**
+
+- With 3 brokers at 45% each, losing one puts remaining at 67.5% - manageable
+- With 6 brokers at 30% each, losing one puts remaining at 36% - comfortable headroom
+- More brokers mean each failure has proportionally less impact (1/6 vs 1/3 of capacity)
+
+### Scaling Strategies
+
+When capacity becomes constrained, you have two options:
+
+**Vertical scaling** (larger instances) is simpler but riskier when already capacity-constrained. Resizing typically requires taking brokers offline one at a time, and if you cannot afford to lose a broker, you cannot safely resize.
+
+**Horizontal scaling** (more brokers) is safer when at capacity. Add new brokers first, then redistribute partitions gradually. This approach:
+
+- Adds capacity before removing any
+- Allows incremental partition migration to avoid overwhelming nodes
+- Reduces per-broker failure impact going forward
+
+After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster.
+
+!!! tip "Managed Kafka Provider Notes"
+
+    Different providers handle scaling differently. Some (like Confluent) have self-balancing features that automatically redistribute partitions. Others require manual partition reassignment after adding brokers. Check your provider's documentation before scaling operations.
+
 ## Managed Service Considerations
 
 Before committing to a managed Kafka provider, get clear answers to these questions:

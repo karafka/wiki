@@ -6,6 +6,10 @@ Over time, users of the Karafka and rdkafka ecosystems have reported numerous re
 
 While some documented issues may occur with other Kafka deployments, this guide is built on the collective experience of production MSK incidents, workarounds, and solutions discovered by the community. Each pattern and solution has been validated in real MSK environments where these problems consistently manifested.
 
+!!! note "Applicability to Other Managed Kafka Services"
+
+    While this guide focuses on AWS MSK, many of the principles and configurations apply to other managed Kafka services such as DigitalOcean Managed Kafka, Confluent Cloud, Aiven, and others. All managed services share common characteristics: rolling maintenance operations, potential for temporary broker unavailability, and the need for appropriate timeout and retry configurations. The specific timeout values and cluster sizing recommendations in this guide serve as reasonable starting points for any managed Kafka deployment.
+
 !!! note "Help Improve This Guide"
 
     This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, please reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
@@ -242,6 +246,10 @@ These settings force more frequent metadata updates and enable automatic recover
 !!! info "Capacity Planning for Metadata Stability"
 
     Always maintain at least 30-40% headroom on MSK and MSK Express instances. Running close to maximum recommended capacity significantly increases the risk of metadata synchronization failures, particularly with high partition counts. Monitor CPU utilization and partition counts against AWS recommended limits to ensure adequate operational margin.
+
+    As a general rule, average CPU load should not exceed your vCPU count. With a 3-broker cluster running at 60% CPU each, losing one broker during maintenance forces the remaining two to handle 90% load each - leaving no headroom for the increased coordination overhead during failover. This can trigger cascading failures where brokers cannot acknowledge messages quickly enough, resulting in `msg_timed_out` errors even with increased timeout values.
+
+    For production MSK clusters, target 40-50% average CPU utilization. This ensures that losing one broker (whether planned or unplanned) keeps remaining brokers at manageable load levels. If you consistently see 60%+ CPU utilization, consider scaling horizontally to 6+ brokers rather than vertically upgrading instance sizes - horizontal scaling provides better fault isolation and reduces the proportional impact of any single broker failure.
 
 Two MSK Express users reported cases where this error did **not** recover, requiring manual intervention. Both involved topics had more than 1000 partitions. In at least one confirmed case, MSK Express instances were running close to the recommended maximum capacity. The combination of high partition counts and near-capacity operation creates conditions where metadata becomes permanently skewed, possibly due to MSK Express's internal handling during automatic maintenance operations when resources are already constrained.
 
