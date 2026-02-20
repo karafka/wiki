@@ -247,21 +247,34 @@ When you observe these symptoms during or after a broker failure, the root cause
 
 ### Scaling Strategies
 
-When capacity becomes constrained, you have two options:
+When capacity becomes constrained, you have two options - but only one may actually be viable depending on your current utilization.
 
-**Vertical scaling** (larger instances) is simpler but riskier when already capacity-constrained. Resizing typically requires taking brokers offline one at a time, and if you cannot afford to lose a broker, you cannot safely resize.
+**Vertical scaling** (larger instances) seems simpler but creates a dangerous catch-22 when you are already CPU-constrained. Vertical scaling requires taking each broker offline to resize it (replace with a larger instance, add CPUs, upgrade hardware). During this window, the remaining brokers must absorb that node's load.
 
-**Horizontal scaling** (more brokers) is safer when at capacity. Add new brokers first, then redistribute partitions gradually. This approach:
+If your 3-broker cluster is already running at 60% CPU and you take one broker down to upgrade it, the remaining two brokers jump to 90% CPU - exactly the overload scenario you are trying to prevent. You cannot vertically scale a cluster that is already at capacity without risking the very outage you are trying to avoid.
+
+**Horizontal scaling** (more brokers) is the only safe option when CPU is the bottleneck. By adding new brokers first, you increase total cluster capacity before removing or stressing any existing nodes:
+
+1. Add new brokers to the cluster (capacity increases immediately for new partitions)
+2. Gradually migrate partitions from overloaded brokers to new ones
+3. Each migration reduces load on existing brokers rather than increasing it
+4. Once load is balanced, the cluster has both more headroom and better fault tolerance
+
+This approach:
 
 - Adds capacity before removing any
 - Allows incremental partition migration to avoid overwhelming nodes
-- Reduces per-broker failure impact going forward
+- Reduces per-broker failure impact going forward (1/6 vs 1/3 of capacity)
 
-After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster.
+After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster. Migrate partitions one at a time to minimize additional load during the transition.
+
+!!! warning "The Vertical Scaling Trap"
+
+    If you wait until CPU is the bottleneck to consider scaling, vertical scaling is no longer an option - you are effectively locked into horizontal scaling. Plan capacity increases before you hit this point. The best time to vertically scale is when you still have 30-40% headroom, not when you are already constrained.
 
 !!! tip "Managed Kafka Provider Notes"
 
-    Different providers handle scaling differently. Some (like Confluent) have self-balancing features that automatically redistribute partitions. Others require manual partition reassignment after adding brokers. Check your provider's documentation before scaling operations.
+    Different providers handle scaling differently. Some (like Confluent) have self-balancing features that automatically redistribute partitions. Others require manual partition reassignment after adding brokers. Check your provider's documentation before scaling operations. Also verify whether your provider supports adding individual brokers or only scaling in fixed increments (for example, 3 to 6 nodes).
 
 ## Managed Service Considerations
 
