@@ -76,6 +76,45 @@ Watch for hot partitions caused by skewed key distribution. If most messages sha
 
 Some frameworks, like Karafka, have capabilities to work around these partition-bound scaling limitations.
 
+## How Partitions, Consumers, and Brokers Interact
+
+Understanding how these three dimensions relate helps you size your Kafka deployment correctly. The short answer: **at typical scale, your consumer/producer count has minimal impact on broker sizing** - what matters is data volume and partition distribution.
+
+### The Three Dimensions
+
+**Partitions** determine parallelism. Each partition can be consumed by exactly one consumer in a consumer group. If you have 12 partitions and 20 consumer processes, 8 consumers sit idle. Partitions are distributed across brokers, so more partitions means better load distribution.
+
+**Consumers (app workers/dynos)** process messages. Adding more consumers only helps until you match your partition count. Beyond that, extra consumers are idle standby capacity - useful for failover but not for throughput. Each consumer maintains TCP connections to brokers hosting its assigned partitions.
+
+**Brokers** store and serve data. Broker count affects fault tolerance (losing 1 of 3 vs 1 of 6), storage capacity, and the cluster's ability to handle concurrent connections and requests.
+
+### When Consumer Count Affects Broker Sizing
+
+At typical application scale, the number of consumer or producer processes does **not** directly drive broker sizing. A cluster of 3-6 brokers can easily handle hundreds of consumer connections without breaking a sweat.
+
+Consumer/producer count starts mattering at extreme scale - roughly **50,000 to 100,000 TCP connections** to the cluster. At that point, connection handling overhead becomes significant, and you may need additional brokers purely for connection capacity rather than storage or throughput.
+
+For most applications, broker sizing is driven by:
+
+- **Storage requirements** - How much data you retain and at what replication factor
+- **Throughput requirements** - How much data flows through per second
+- **Fault tolerance requirements** - How many simultaneous broker failures you need to survive
+- **CPU headroom** - Maintaining capacity for broker failures (see [Cluster Capacity Planning](#cluster-capacity-planning))
+
+### Practical Sizing Guidelines
+
+**Start with partitions**: Choose a partition count based on your expected maximum parallelism. Use numbers with many divisors (12, 24, 60) for flexible consumer scaling.
+
+**Size brokers for fault tolerance**: Use at least 3 brokers with replication factor 3. For production workloads requiring high availability during maintenance, use 4+ brokers. Size for 40-50% CPU utilization to handle broker failures gracefully.
+
+**Scale consumers to match partitions**: Run enough consumer processes to cover your partition count. Additional processes beyond partition count provide failover capacity but not additional throughput.
+
+**Don't over-correlate**: You can safely run 50 consumer processes against a 3-broker cluster, or 3 consumer processes against a 12-broker cluster. These dimensions scale independently until you hit extreme connection counts.
+
+!!! tip "Connection Pooling at Scale"
+
+    If you do reach high connection counts, consider connection pooling strategies. WaterDrop supports sharing a single producer instance across threads, reducing the connection multiplier effect. For consumers, subscription groups help organize connections efficiently. See [Resources Management](https://karafka.io/docs/Resources-Management) for detailed connection formulas.
+
 ## Dead Letter Queues
 
 Implement your DLQ strategy before sending your first production message. Kafka's offset model creates a blocking problem: consumers must process messages in order and commit offsets sequentially. If a message fails processing, the consumer cannot skip it - it must either succeed or move the message elsewhere. Without a DLQ, a single bad message causes the consumer to retry forever, while all newer messages in that partition pile up unprocessed.
