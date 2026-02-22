@@ -197,10 +197,17 @@ As a general rule, your average CPU load should not exceed your available CPU co
 - **Monitor load averages** relative to your core/vCPU count, not just percentage - a load average of 8 on a 6-core machine indicates saturation
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/kafka-overload-do.png" alt="Kafka 3-broker cluster monitoring dashboard showing CPU usage averaging 60-70% with spikes to 100% and load averages exceeding 6 vCPUs — a cluster at risk of cascading failure if any broker goes down" />
+  <img src="https://karafka.io/assets/misc/printscreens/kafka-overload-dont.png" 
+       alt="Kafka 3-broker cluster monitoring dashboard showing CPU usage averaging 
+       60-70% with spikes to 100% and load averages exceeding 6 vCPUs - a cluster 
+       at risk of cascading failure if any broker goes down" />
 </p>
 <p align="center">
-  <em>A production 3-broker Kafka 3.8 cluster (6 vCPU each) running at 60–70% average CPU utilization. At this level, losing one broker would push the remaining two to ~90% — well into the danger zone for cascading failures. The load average chart confirms saturation, with values regularly exceeding the 6 available vCPUs.</em>
+  <em>A production 3-broker Kafka 3.8 cluster (6 vCPU each) running at 60-70% 
+  average CPU utilization. At this level, losing one broker would push the 
+  remaining two to 90-105% - at or beyond total saturation. The load average 
+  chart confirms the cluster is already strained, with values regularly 
+  exceeding the 6 available vCPUs.</em>
 </p>
 
 ### Node Failure Impact
