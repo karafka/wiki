@@ -113,7 +113,7 @@ Static Group Membership is an advanced feature that enhances the efficiency and 
 
 Swarm Mode supports Static Group Membership, seamlessly integrating this capability into its distributed architecture. This integration means that the `group.instance.id` configuration is preserved across multiple subscription groups and intelligently mapped onto the nodes within the swarm. This mapping ensures that each node maintains a unique identity, preventing conflicts that could arise from multiple nodes inadvertently sharing the same `group.instance.id`.
 
-When deploying your application in Swarm Mode, Karafka takes care of the underlying complexity associated with static group memberships. 
+When deploying your application in Swarm Mode, Karafka takes care of the underlying complexity associated with static group memberships.
 
 Here's how Karafka ensures consistency and efficiency in this process:
 

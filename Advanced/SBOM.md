@@ -531,7 +531,7 @@ This page exists because of our commitment to security, compliance, and transpar
       1.1.0
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.snappy">BSD-3-Clause</a> 
+      <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.snappy">BSD-3-Clause</a>
     </td>
     <td>
       Intel Corporation

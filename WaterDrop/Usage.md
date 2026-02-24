@@ -348,7 +348,7 @@ When you shut down Karafka consumer, the `Karafka.producer` WaterDrop instance a
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
@@ -359,7 +359,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 # There is no `before_worker_shutdown` equivalent for single mode
 @config.options[:events].after_stopped do
@@ -372,7 +372,7 @@ end
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 on_worker_shutdown do
   MY_PRODUCER.close
@@ -382,7 +382,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 before_worker_shutdown do
   MY_PRODUCER.close
@@ -485,7 +485,7 @@ Several core settings cannot be modified through variants and require distinct p
 
 - `queue.buffering.max.ms` - Controls batching frequency
 - `queue.buffering.max.messages` - Affects memory usage and batching behavior
-- `socket.timeout.ms` - Impacts how producers handle network issues 
+- `socket.timeout.ms` - Impacts how producers handle network issues
 - `queue.buffering.max.ms` - Controls artificial delays added for improved batching
 - `delivery.timeout.ms` - May need different timeouts for different message priorities
 
@@ -570,9 +570,9 @@ end
 
 # Create variants for specific requirements
 critical_variant = producer.with(topic_config: { acks: 'all' })
-bulk_variant = producer.with(topic_config: { 
-  compression.type: 'snappy', 
-  message.timeout.ms: 300_000 
+bulk_variant = producer.with(topic_config: {
+  compression.type: 'snappy',
+  message.timeout.ms: 300_000
 })
 
 # Use variants based on message characteristics

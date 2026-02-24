@@ -11,9 +11,9 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
     ```
 
 1. To access the message batch, use the `#messages` method:
-   
+
     ```ruby
-      
+
       class EventsConsumer < ApplicationConsumer
       def consume
         # Access the batch via messages method
@@ -131,7 +131,7 @@ By default, Karafka starts consuming messages from the earliest available offset
 To configure the initial offset globally:
 
 1. Open your Karafka application configuration file.
-1. Set the `initial_offset` value in the setup block. 
+1. Set the `initial_offset` value in the setup block.
 
     To start from the earliest offset (default behavior):
 
@@ -213,7 +213,7 @@ It is worth noting, however, that under normal operating conditions, Karafka wil
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
 !!! note
-    
+
     The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
 
 !!! note
@@ -337,7 +337,7 @@ end
 
 Using `#initialized` provides access to the whole consumer context, as it is called after the consumer has been fully set up. This offers several benefits, such as establishing database connections, setting up loggers, or initializing API clients that require topic-specific information. By deferring resource setup to `#initialized`, you avoid potential issues that can arise when specific resources or states are unavailable during the construction phase.
 
-## Early Message Yielding (`enable.partition.eof`) 
+## Early Message Yielding (`enable.partition.eof`)
 
 In typical Karafka consumption scenarios, when a consumer reaches the end of a partition, it might still wait for new messages to arrive. This behavior is governed by settings such as `max_wait_time` or `max_messages`, which dictate how long a consumer should wait for new data before the polling operation completes or returns. While this can benefit continuous data streams, it may introduce unnecessary latency in scenarios where real-time data processing and responsiveness are critical.
 
@@ -441,7 +441,7 @@ Such disruptions often manifest as "worker.process.error" in the web UI, indicat
 
 ## Reaching the End of a Partition (EOF)
 
-Karafka includes dedicated handling for end-of-partition (EOF) scenarios, allowing you to execute specific logic when the end of a partition is reached. For this feature to work, you must enable the `enable.partition.eof` kafka setting in your configuration.    
+Karafka includes dedicated handling for end-of-partition (EOF) scenarios, allowing you to execute specific logic when the end of a partition is reached. For this feature to work, you must enable the `enable.partition.eof` kafka setting in your configuration.
 
 ### Enabling EOF Handling
 
@@ -533,7 +533,7 @@ Knowing when a partition has reached EOF can be helpful in several scenarios:
 - **Batch Processing Completion**: When processing data in batches, knowing when you have processed all available data allows you to finalize batch operations, such as committing transactions or aggregating results.
 
 - **Data Synchronization**: When synchronizing data between different systems, you can use EOF as a signal that all current data has been consumed and it is safe to start a new synchronization cycle.
-  
+
 - **Resource Cleanup**: After reaching the end of a partition, you may want to release or reallocate resources that are no longer needed, optimizing your application performance.
 
 - **Logging and Monitoring**: EOF events help track data consumption and detect when no more messages are available to process, aiding in debugging and performance tuning.

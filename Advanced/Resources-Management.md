@@ -147,7 +147,7 @@ number_of_brokers = 5
 total = number_of_producers_per_process * number_of_processes * number_of_brokers
 
 puts total #=> 25 000
-``` 
+```
 
 ## Database Connections Usage
 

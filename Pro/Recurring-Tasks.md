@@ -292,7 +292,7 @@ If you don't specify a version, Karafka will operate without this safeguard. Reg
 
 ## Tasks Execution Logging
 
-By default, after each task is executed, Karafka produces a log entry in the recurring tasks logs topic. This log entry is created regardless of whether the task execution was successful or failed. 
+By default, after each task is executed, Karafka produces a log entry in the recurring tasks logs topic. This log entry is created regardless of whether the task execution was successful or failed.
 
 ### Benefits of Task Execution Logging
 

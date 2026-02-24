@@ -4,11 +4,12 @@ Karafka is a robust, Ruby-based framework for building Kafka-driven applications
 - **[WaterDrop](https://github.com/karafka/waterdrop)** – dedicated message production library optimized for high-performance and reliable delivery to Kafka clusters
 - **[Karafka-Web](https://github.com/karafka/karafka-web)** –  User Interface providing real-time visibility into application operations
 - **[Karafka-Rdkafka](https://github.com/karafka/karafka-rdkafka)** – custom fork of rdkafka-ruby that enhances functionality and stability for production environments
+- **[Karafka-Testing](https://github.com/karafka/karafka-testing)** – testing library providing RSpec and Minitest helpers for testing Karafka consumers and producers without a live Kafka cluster
 - **[Rdkafka-Ruby](https://github.com/appsignal/rdkafka-ruby/)** – base driver providing low-level Ruby bindings for the librdkafka C/C++ library, maintained by our team
 
 ## Producer
 
-The producer can run in any Ruby process, allowing you to produce Kafka messages. 
+The producer can run in any Ruby process, allowing you to produce Kafka messages.
 
 The following code demonstrates both synchronous and asynchronous message production methods available in Karafka, showcasing the recommended approach for different use cases:
 

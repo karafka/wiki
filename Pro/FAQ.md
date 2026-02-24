@@ -319,7 +319,7 @@ Yes, with the Karafka Pro license, you must fetch the license from the Source UR
 
 However, the Enterprise license would be more suitable if your use case requires total offline usage or involves private gem registries.
 
-Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended. 
+Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
 
 ## Can I use Karafka Pro with a private gem server / private registry?
 

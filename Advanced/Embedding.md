@@ -25,7 +25,7 @@ In a cluster mode:
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 workers 2
 threads 1, 3
@@ -44,7 +44,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 workers 2
 threads 1, 3
@@ -65,7 +65,7 @@ In a single node mode:
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 preload_app!
 
@@ -82,7 +82,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 preload_app!
 
@@ -153,7 +153,7 @@ Before you initiate the embedded Karafka server, your application code must be p
 
 ### Critical Error Handling
 
-When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to ensure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored. 
+When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to ensure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored.
 
 ### Partial/Silent Crashes
 
@@ -241,7 +241,7 @@ end
 ```
 
 ```ruby
-# Sidekiq configuration  
+# Sidekiq configuration
 Sidekiq.configure_server do |config|
   config.on(:startup) do
     Karafka.setup do |config|

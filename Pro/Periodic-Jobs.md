@@ -167,7 +167,7 @@ class Consumer < Karafka::BaseConsumer
 
     @paused_because_of_flipper = false
     # Resume processing of this topic when it is time
-    resume 
+    resume
   end
 end
 ```
@@ -203,7 +203,7 @@ Ticking relates to the scheduling of periodic jobs at regular intervals. The nua
 
 Karafka doesn't start Periodic Jobs for a given topic partition when a Long-Running Job (LRJ) is active by default. However, this doesn't prevent an LRJ from initiating while a periodic job runs, as these are non-blocking and can overlap. While this overlapping can be advantageous for independent tasks, it might cause issues for tasks sharing resources or influencing each other.
 
-To prevent concurrent executions and potential conflicts, consider using the `#synchronize` method. This feature ensures that only one job instance runs simultaneously, safeguarding against overlapping. 
+To prevent concurrent executions and potential conflicts, consider using the `#synchronize` method. This feature ensures that only one job instance runs simultaneously, safeguarding against overlapping.
 
 ```ruby
 class LongRunningConsumer < ApplicationConsumer

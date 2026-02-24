@@ -223,12 +223,12 @@ should_not_match = [
 ]
 
 should_match.each do |topic|
-  assert ruby_posix_regexp_same?(topic, exclusion_regex), 
+  assert ruby_posix_regexp_same?(topic, exclusion_regex),
          "Expected '#{topic}' to match in both Ruby and POSIX"
 end
 
 should_not_match.each do |topic|
-  assert !ruby_posix_regexp_same?(topic, exclusion_regex), 
+  assert !ruby_posix_regexp_same?(topic, exclusion_regex),
          "Expected '#{topic}' to NOT match in both Ruby and POSIX"
 end
 ```

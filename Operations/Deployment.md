@@ -271,8 +271,8 @@ If you want to verify that this is indeed an ACL issue, try running `::Karafka::
 
 ```ruby
 ::Karafka::Admin.cluster_info =>
-#<Rdkafka::Metadata:0x00007fea8e3a43c0                                           
- @brokers=[{:broker_id=>1001, :broker_name=>"your-kafka-host", :broker_port=>9092}],   
+#<Rdkafka::Metadata:0x00007fea8e3a43c0
+ @brokers=[{:broker_id=>1001, :broker_name=>"your-kafka-host", :broker_port=>9092}],
  @topics=[]
 >
 ```

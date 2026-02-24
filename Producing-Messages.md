@@ -44,7 +44,7 @@ If you are looking for seamless message piping in Kafka-based systems, see [Pipi
 
 Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or rake tasks, make sure to call the `#close` method on the producer.
 
-This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer. 
+This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
 
 !!! info
 
@@ -69,7 +69,7 @@ The following examples show how to properly close Karafka producers in various R
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 # There is no `on_worker_shutdown` equivalent for single mode
 @config.options[:events].on_stopped do
@@ -80,7 +80,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 # There is no `before_worker_shutdown` equivalent for single mode
 @config.options[:events].after_stopped do
@@ -93,7 +93,7 @@ end
 **For Puma < 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 on_worker_shutdown do
   ::Karafka.producer.close
@@ -103,7 +103,7 @@ end
 **For Puma >= 7:**
 
 ```ruby
-# config/puma.rb 
+# config/puma.rb
 
 before_worker_shutdown do
   ::Karafka.producer.close
@@ -174,7 +174,7 @@ end
 
 While integrating Karafka producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
 
-However, there might be scenarios where such specific hooks are not available or suitable. In these cases, employ Ruby's `at_exit` hook as a universal fallback to close the producer before the Ruby process exits. 
+However, there might be scenarios where such specific hooks are not available or suitable. In these cases, employ Ruby's `at_exit` hook as a universal fallback to close the producer before the Ruby process exits.
 
 The following basic example demonstrates using at_exit with a Karafka producer:
 

@@ -5,7 +5,7 @@ It is the maximum delay between invocations of `poll()` commands. This places an
 After exceeding this time, an error will be raised, the process will be removed from the group, and you may notice the following message:
 
 ```text
-Maximum poll interval (300000ms) exceeded by 255ms 
+Maximum poll interval (300000ms) exceeded by 255ms
 (adjust max.poll.interval.ms for long-running message processing): leaving group
 ```
 
@@ -161,7 +161,7 @@ def consume
 end
 ```
 
-## Using Long-Running Jobs alongside regular jobs in the same subscription group 
+## Using Long-Running Jobs alongside regular jobs in the same subscription group
 
 By default, Long-Running Jobs defined alongside regular jobs will be grouped in a single subscription group. This means they will share an underlying connection to Kafka and be subject to the same blocking polling limitations.
 

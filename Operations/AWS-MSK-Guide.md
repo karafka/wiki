@@ -53,7 +53,7 @@ These errors typically self-recover once network connectivity is restored or bro
 Transport errors should be expected during:
 
 - **MSK maintenance windows** - Each broker restart triggers connection failures
-- **Heal cluster operations** - Automatic broker replacements cause unexpected disconnections  
+- **Heal cluster operations** - Automatic broker replacements cause unexpected disconnections
 - **Network infrastructure events** - AWS networking updates or failures
 - **Cross-AZ communication** - Temporary network partitions between availability zones
 - **Security group propagation** - Changes to security groups can take 30-60 seconds to propagate
@@ -215,7 +215,7 @@ Across all reported cases, this error affected only individual consumer instance
 Karafka.monitor.subscribe('error.occurred') do |event|
   next unless event[:error].is_a?(Rdkafka::RdkafkaError)
   next unless event[:error].code == :unknown_partition
-  
+
   # A bit of backoff and a graceful shutdown
   sleep(rand(60))
   Process.kill('TERM', Process.pid)
@@ -231,10 +231,10 @@ config.kafka = {
   # More aggressive metadata refresh to detect issues sooner
   'topic.metadata.refresh.interval.ms': 60000,       # 1 minute instead of 5
   'metadata.max.age.ms': 180000,                     # 3 minutes instead of 15
-  
+
   # Account for MSK's propagation delays
   'topic.metadata.propagation.max.ms': 120000,        # 2 minutes
-  
+
   # Recovery strategy if metadata becomes corrupted
   'metadata.recovery.strategy': 'rebootstrap',       # Re-bootstrap on metadata loss
   'metadata.recovery.rebootstrap.trigger.ms': 60000  # Trigger after 1 minute
