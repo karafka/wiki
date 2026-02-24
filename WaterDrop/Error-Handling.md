@@ -117,7 +117,7 @@ end
 ```ruby
 producer.monitor.subscribe('error.occurred') do |event|
   case event[:type]
-  # Every single message that received a handler is either delivered or fails 
+  # Every single message that received a handler is either delivered or fails
   when 'librdkafka.dispatch_error'
     puts "Message with label: #{event[:delivery_report].label} failed to be delivered"
     ErrorsTracker.track(event[:error])
@@ -154,7 +154,7 @@ end
 ```ruby
 producer.monitor.subscribe('error.occurred') do |event|
   case event[:type]
-  # Every single message that received a handle is delivered or fails event 
+  # Every single message that received a handle is delivered or fails event
   when 'librdkafka.dispatch_error'
     puts "Message with label: #{event[:delivery_report].label} failed to be delivered"
     ErrorsTracker.track(event[:error])

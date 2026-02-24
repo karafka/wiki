@@ -63,7 +63,7 @@ def consume
 end
 ```
 
-Karafka offers two additional methods to commit already stored but not committed offsets to Kafka: `#commit_offsets` and `#commit_offsets!`. 
+Karafka offers two additional methods to commit already stored but not committed offsets to Kafka: `#commit_offsets` and `#commit_offsets!`.
 
 These two methods allow you to manage your consumer's offsets, ensuring Kafka knows the last message your consumer has processed.
 

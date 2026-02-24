@@ -42,7 +42,7 @@ We acknowledge that understanding your specific applications and their configura
 
 ## Issue Reporting Guide
 
-When reporting an issue within the Karafka ecosystem, providing detailed information is crucial for diagnosing and resolving the problem efficiently. 
+When reporting an issue within the Karafka ecosystem, providing detailed information is crucial for diagnosing and resolving the problem efficiently.
 
 !!! warning "Complete Information Required"
 

@@ -185,7 +185,7 @@ handles.each(&:wait)
 
 ### Risks of Early Exiting Transactional Block
 
-In all versions of WaterDrop, using `return`, `break`, or `throw` to exit a transactional block early is not allowed. 
+In all versions of WaterDrop, using `return`, `break`, or `throw` to exit a transactional block early is not allowed.
 
 However, the behavior differs between versions:
 

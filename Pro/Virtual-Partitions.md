@@ -564,7 +564,7 @@ end
 
 Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design ensures that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
 
-One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control. 
+One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control.
 
 The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key ensures that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
 
@@ -700,7 +700,7 @@ Parallel Segments (Scenario #3) excel when batches contain large groups of relat
 
 ### Conclusion
 
-While increasing the number of Kafka partitions offers a more native way to parallelize data processing, both Virtual Partitions and Parallel Segments provide more efficient, flexible, and Karafka-optimized approaches. Your choice should be based on your application's specific needs, the nature of your data, and the load you anticipate. 
+While increasing the number of Kafka partitions offers a more native way to parallelize data processing, both Virtual Partitions and Parallel Segments provide more efficient, flexible, and Karafka-optimized approaches. Your choice should be based on your application's specific needs, the nature of your data, and the load you anticipate.
 
 Virtual Partitions are ideal for IO-bound workloads and scenarios where messages can be evenly distributed within a single consumer group. Parallel Segments excel for CPU-intensive processing and situations where batches contain large groups of related messages that need to be processed together but can be filtered at the consumer group level.
 

@@ -180,7 +180,7 @@ With this setting enabled, Karafka will fail to start if any topics in the routi
 
 ## Detailed Exit Codes
 
-When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode` option can be configured. This option alters the exit codes based on the operation's result. This option provides more granular information, making integrating Karafka's topic management into automated systems like CI/CD pipelines easier. 
+When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode` option can be configured. This option alters the exit codes based on the operation's result. This option provides more granular information, making integrating Karafka's topic management into automated systems like CI/CD pipelines easier.
 
 When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes will work as follows:
 

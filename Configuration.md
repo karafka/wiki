@@ -40,7 +40,7 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 
 **Prerequisites**
 
-1. Initiate the Karafka application setup 
+1. Initiate the Karafka application setup
 1. Verify if the external components requiring configuration are available
 
 **Procedure**
@@ -48,7 +48,7 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 1. Open your Karafka bootfile (karafka.rb).
 2. Find the setup block and add the event subscription inside your `setup` block
 3. Inside the event handler block, implement the configuration logic for your external components using available Karafka configuration values:
-   
+
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
@@ -75,7 +75,7 @@ Your external components will be automatically configured once per process after
 
 There are several env settings you can use with Karafka. They are described under the [Env Variables](Env-Variables) section of this Wiki.
 
-## Compressing messages 
+## Compressing messages
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 

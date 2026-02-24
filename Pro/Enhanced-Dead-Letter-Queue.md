@@ -256,7 +256,7 @@ def consume
     messages.each_with do |message, index|
       if index.zero? && skip_first
         mark_as_consumed(message)
-        next 
+        next
       end
 
       DbStorage.save!(message.payload)

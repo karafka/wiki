@@ -19,7 +19,7 @@ The Karafka ecosystem prioritizes **stability over speed** when it comes to libr
 
 **Policy**: All librdkafka releases undergo a mandatory 2-week observation period before any upgrade process begins.
 
-**Rationale**: 
+**Rationale**:
 
 - New releases may contain undiscovered issues that surface within the first two weeks of community usage
 - This period allows the broader librdkafka community to identify and report critical issues

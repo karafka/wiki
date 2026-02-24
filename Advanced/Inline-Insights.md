@@ -50,7 +50,7 @@ class LogEventsConsumer < ApplicationConsumer
     # Buffering decisions are made based on current lag and buffer size.
     return if current_lag > LAG_THRESHOLD && @buffer.size < FLUSH_SIZE
 
-    @buffer.flush 
+    @buffer.flush
     mark_as_consumed(messages.last)
   end
 

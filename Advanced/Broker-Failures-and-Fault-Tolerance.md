@@ -430,7 +430,7 @@ Alert on these conditions:
 Karafka **is designed** to handle Kafka broker failures gracefully. During maintenance operations and unexpected outages:
 
 - **Messages will continue to be consumed** (from available brokers)
-- **Producers will queue messages** until brokers are available  
+- **Producers will queue messages** until brokers are available
 - **Automatic reconnection** handles broker transitions
 - **Connection refused errors** are expected and normal
 - **Recovery typically occurs within 1-15 seconds** of broker restoration

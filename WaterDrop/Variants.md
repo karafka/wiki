@@ -9,7 +9,7 @@ To leverage variants in WaterDrop, you initialize a standard producer with defau
 Variants are created using the `#with` and `#variant` methods. It is critical in enabling topic-specific configurations through variants while using a single producer instance. The `#with` and `#variant` methods are designed to accept two types of arguments:
 
 - `max_wait_timeout`: This is a root-scoped setting.
-- `topic_config` hash: This is where all topic-specific configurations are defined. 
+- `topic_config` hash: This is where all topic-specific configurations are defined.
 
 Attributes placed inside the `topic_config` hash during variant creation are referred to as `topic_config` scoped. Conversely, settings like `max_wait_timeout`, which reside outside the `topic_config hash`, are considered root-scoped.
 

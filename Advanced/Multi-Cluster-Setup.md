@@ -1,6 +1,6 @@
 # Multi-Cluster Setup
 
-Karafka is a robust framework that allows applications to interact with multiple Kafka clusters simultaneously. This provides enhanced scalability, redundancy, and flexibility, enabling developers to optimize data processing and manage message streams across various clusters with ease. 
+Karafka is a robust framework that allows applications to interact with multiple Kafka clusters simultaneously. This provides enhanced scalability, redundancy, and flexibility, enabling developers to optimize data processing and manage message streams across various clusters with ease.
 
 ## Overview
 

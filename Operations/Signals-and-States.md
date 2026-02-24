@@ -54,7 +54,7 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 - `initialized` - The process is configured in this state but has yet to start listeners and workers.
 - `running` - The process started Kafka clients and is polling data.
 - `quieting` - The process received the `TSTP` signal and is finishing the current work.
-- `quiet` - The process no longer processes work and will keep running in quiet mode. 
+- `quiet` - The process no longer processes work and will keep running in quiet mode.
 - `stopping` - The process is finishing current work, no longer accepting more, and shutting down.
 - `stopped` - The process finished everything and closed all the Kafka connections.
 - `terminated` - The process is going to exit shortly.
