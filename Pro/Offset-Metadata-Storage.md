@@ -102,7 +102,7 @@ def consume
       # forget to define a custom deserializer
       {
         process_id: Process.uid,
-        aggregated_state: @aggregator.to_h, 
+        aggregated_state: @aggregator.to_h,
       }.to_json
     )
   end
@@ -130,7 +130,7 @@ def consume
   store_offset_metadata(
     {
       process_id: Process.uid,
-      aggregated_state: @aggregator.to_h, 
+      aggregated_state: @aggregator.to_h,
     }.to_json
   )
 end

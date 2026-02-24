@@ -262,13 +262,13 @@ Here's a breakdown of how it operates when the dynamic mode is enabled:
 
 - **Guaranteed Connectivity**: At no point will there be a scenario where a given consumer group is left without connections. This persistent connectivity ensures that the consumer group is always able to receive and process messages, maintaining the flow of data and the system's reliability.
 
-Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs. It scales down to conserve resources when the load is low but remains ready to scale up as soon as the demand increases. This balance ensures that resources are used efficiently without compromising the system's ability to handle incoming data effectively. 
+Dynamic Multiplexing in Karafka is about smartly adapting to the system's needs. It scales down to conserve resources when the load is low but remains ready to scale up as soon as the demand increases. This balance ensures that resources are used efficiently without compromising the system's ability to handle incoming data effectively.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/multiplexing/flow.svg" />
 </p>
 <p align="center">
-  <small>*This diagram illustrates the upscaling and downscaling flow for dynamic multiplexing. 
+  <small>*This diagram illustrates the upscaling and downscaling flow for dynamic multiplexing.
   </small>
 </p>
 

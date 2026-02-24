@@ -336,7 +336,7 @@ end
 #     Partition: 2, Offset: 181414, Lag: 5
 #     Partition: 3, Offset: 181070, Lag: 8
 #     Partition: 4, Offset: 180974, Lag: 4
-# 
+#
 # Consumer group: karafka_web
 #   Topic: karafka_consumers_reports
 #     Partition: 0, Offset: 48669, Lag: 2
@@ -372,7 +372,7 @@ end
 #     Partition: 2, Offset: 181511, Lag: 11
 #     Partition: 3, Offset: 181163, Lag: 3
 #     Partition: 4, Offset: 181075, Lag: 14
-# 
+#
 # Consumer group: karafka_web
 #   Topic: karafka_consumers_reports
 #     Partition: 0, Offset: 48689, Lag: 3

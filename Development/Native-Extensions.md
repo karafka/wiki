@@ -131,7 +131,7 @@ All dependencies are verified with SHA256 checksums during the build process:
 Native extensions are built using GitHub Actions with:
 
 1. **Dependency Download**: All dependencies downloaded from official sources
-2. **Checksum Verification**: SHA256 verification for supply chain security  
+2. **Checksum Verification**: SHA256 verification for supply chain security
 3. **Static Compilation**: All dependencies statically linked
 4. **Self-Contained Packaging**: No external dependencies required
 5. **Automated Testing**: Comprehensive test suite across Ruby versions

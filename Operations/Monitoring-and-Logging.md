@@ -204,7 +204,7 @@ For example, a custom event to monitor external API calls could be named `app.ex
 Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 ```
 
-## Usage Statistics and Subscribing to `statistics.emitted` Event 
+## Usage Statistics and Subscribing to `statistics.emitted` Event
 
 !!! warning "Always keep `statistics.emitted` handlers concise and non-blocking"
 
@@ -682,7 +682,7 @@ By leveraging these mechanisms, you can maintain a continuous trace from the poi
 
 ### DataDog Ruby APM Integration
 
-DataDog also provides their own Ruby APM integration that can automatically instrument Karafka applications. 
+DataDog also provides their own Ruby APM integration that can automatically instrument Karafka applications.
 
 This integration offers broader Ruby application monitoring capabilities beyond just Kafka metrics. However, since this instrumentation is maintained by DataDog, we do not control its release cycles or compatibility updates with new Karafka versions.
 
@@ -831,7 +831,7 @@ class CustomMonitor < ::Karafka::Instrumentation::Monitor
 
     # Maintain core functionality
     super
-  ensure 
+  ensure
     # Post-processing (runs even after errors)
     MyMetrics.increment("karafka.#{event_id}")
   end

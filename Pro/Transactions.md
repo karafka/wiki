@@ -146,7 +146,7 @@ def consume
 end
 ```
 
-Karafka's design capitalizes on Kafka's transactional mechanisms, intricately linking the consumption of messages with the output of subsequent messages within a singular, indivisible operation. 
+Karafka's design capitalizes on Kafka's transactional mechanisms, intricately linking the consumption of messages with the output of subsequent messages within a singular, indivisible operation.
 
 Consequently, if a transaction is prematurely aborted or encounters a failure, the offsets of the consumed messages remain uncommitted. As a result, the same batch of messages is queued for reprocessing, effectively nullifying data loss and strictly adhering to the principles of exactly-once processing semantics. Thus, the integration of automatic offset management with transactions is seamless and devoid of risk, ensuring the integrity and consistency of message processing.
 
@@ -154,7 +154,7 @@ Consequently, if a transaction is prematurely aborted or encounters a failure, t
 
 !!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
-    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
 
 When using Manual Offset Management, you can provide a custom producer to the `#transaction` method as its first argument. This allows for greater flexibility in managing transactions, particularly in scenarios requiring advanced control over producers and offsets.
 
@@ -264,7 +264,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
 !!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
-    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ). 
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
 
     In these scenarios, the Karafka framework might invoke the transactional producer after the main consumption logic completes. This implicit usage could lead to unintended transactional behavior or conflicts, undermining the integrity of your processing logic.
 
@@ -415,7 +415,7 @@ def consume
       # forget to define a custom deserializer
       {
         process_id: Process.uid,
-        aggregated_state: @aggregator.to_h, 
+        aggregated_state: @aggregator.to_h,
       }.to_json
     )
   end
@@ -548,4 +548,4 @@ Karafka's Kafka transactions provide a robust mechanism for ensuring atomicity a
 
 The framework supports Kafka's Exactly-Once Semantics, ensuring each message impacts the system state precisely once. This is crucial for operations like financial transactions or real-time analytics. However, performance implications like increased latency and resource demands must be considered.
 
-Karafka ensures comprehensive transaction management, including automatic offset management, dedicated transactional producers, and effective handling in revocation and Dead-Letter queue scenarios. 
+Karafka ensures comprehensive transaction management, including automatic offset management, dedicated transactional producers, and effective handling in revocation and Dead-Letter queue scenarios.

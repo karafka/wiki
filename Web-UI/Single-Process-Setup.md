@@ -120,7 +120,7 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
     Karafka::Web.setup do |config|
       # Other config of Web UI here...
 
-      # Only set it to true 
+      # Only set it to true
       config.processing.active = ENV.key?('WEB_UI_PUMA')
     end
     ```

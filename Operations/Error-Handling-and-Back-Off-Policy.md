@@ -53,7 +53,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
       <th>Description</th>
     </tr>
   </thead>
-  <tbody>    
+  <tbody>
     <tr>
       <td><code>#consume</code></td>
       <td>Yes</td>
@@ -87,7 +87,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
   </tbody>
 </table>
 
-It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable. 
+It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable.
 
 Errors in the other methods (`#revoked`, `#shutdown`, `#tick` and `#eofed`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
 

@@ -56,7 +56,7 @@ Once included in your RSpec setup, this library will provide you with a special 
 
 ### Testing Messages Consumption (Consumers)
 
-This section demonstrates how to effectively test your Karafka consumers using the testing library. You will learn how to create consumer instances, send test messages, and verify that your consumers process messages correctly. The following example shows a complete test case for an InlineBatchConsumer that receives multiple messages, processes them, and logs results. 
+This section demonstrates how to effectively test your Karafka consumers using the testing library. You will learn how to create consumer instances, send test messages, and verify that your consumers process messages correctly. The following example shows a complete test case for an InlineBatchConsumer that receives multiple messages, processes them, and logs results.
 
 ```ruby
 RSpec.describe InlineBatchConsumer do
@@ -352,10 +352,10 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 !!! info "Consumer Testing Behavior"
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
-   
+
 ### Testing Messages Consumption (Consumers) - Minitest
 
-This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers.The following example shows a complete test case for an inline batch consumer that processes numeric data: 
+This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers.The following example shows a complete test case for an inline batch consumer that processes numeric data:
 
 ```ruby
 class InlineBatchConsumerTest < ActiveSupport::TestCase

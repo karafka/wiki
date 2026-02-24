@@ -9,7 +9,7 @@ Karafka is a robust, Ruby-based framework for building Kafka-driven applications
 
 ## Producer
 
-The producer can run in any Ruby process, allowing you to produce Kafka messages. 
+The producer can run in any Ruby process, allowing you to produce Kafka messages.
 
 The following code demonstrates both synchronous and asynchronous message production methods available in Karafka, showcasing the recommended approach for different use cases:
 

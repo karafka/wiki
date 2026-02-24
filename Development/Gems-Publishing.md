@@ -103,7 +103,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 1. **Approve the Workflow**: The workflow will be waiting for approval
     - Click on the workflow run
-    - Click "Review deployments" 
+    - Click "Review deployments"
     - Select the "deployment" environment
     - Click "Approve and deploy"
 

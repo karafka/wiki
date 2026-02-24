@@ -99,7 +99,7 @@ The listener reports to the supervisor the following failure statuses for monito
 
 The Node Assignments feature in Karafka's Enhanced Swarm / Multi-Process Mode addresses the need for more granular control over topic processing across different nodes within the swarm. By default, Karafka Swarm assigns all topics to all nodes uniformly. This means each node attempts to connect to and subscribe to the same set of topics. This approach ensures that the processing load is distributed across all available nodes, providing a balanced workload under typical conditions. However, this can lead to inefficiencies in specific scenarios.
 
-Granular control over node assignments becomes crucial when topics have varying loads, message volumes, or numbers of partitions. 
+Granular control over node assignments becomes crucial when topics have varying loads, message volumes, or numbers of partitions.
 
 Allocating specific topics to specific nodes allows for more efficient resource utilization and can significantly enhance performance by:
 
