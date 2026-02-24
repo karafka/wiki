@@ -4,7 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/karafka-web.svg)](http://badge.fury.io/rb/karafka-web)
 [![Join the chat at https://slack.karafka.io](https://karafka.io/assets/misc/slack.svg)](https://slack.karafka.io)
 
-Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Kafka-based applications without using the command line or third-party software. It does **not** require any additional database beyond Kafka itself. 
+Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Kafka-based applications without using the command line or third-party software. It does **not** require any additional database beyond Kafka itself.
 
 The user interface displays:
 
