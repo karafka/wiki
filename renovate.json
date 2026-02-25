@@ -22,5 +22,6 @@
       ],
       "groupName": "ruby setup"
     }
-  ]
+  ],
+  "minimumReleaseAge": "7 days"
 }
