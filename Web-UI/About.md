@@ -4,7 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/karafka-web.svg)](http://badge.fury.io/rb/karafka-web)
 [![Join the chat at https://slack.karafka.io](https://karafka.io/assets/misc/slack.svg)](https://slack.karafka.io)
 
-Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Kafka-based applications without using the command line or third-party software. It does **not** require any additional database beyond Kafka itself. 
+Karafka Web UI is a user interface for the [Karafka framework](https://github.com/karafka/karafka). The Web UI provides a convenient way for developers to monitor and manage their Kafka-based applications without using the command line or third-party software. It does **not** require any additional database beyond Kafka itself.
 
 The user interface displays:
 
@@ -13,9 +13,11 @@ The user interface displays:
 - errors details
 - performance statistics
 - trends
-- allows for Kafka topics data exploration
-- routing and system information
+- Kafka topics data explorer
+- routing pattern matched topics subscriptions
 - status of Web UI integration within your application
+- stale partitions detection (LSO hangs)
+
 
 Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-web) with minimal dependencies.
 
@@ -30,4 +32,4 @@ Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-
 - [Getting Started](Web-UI-Getting-Started) – For installation and setup instructions
 - [Features](Web-UI-Features) – For an overview of Web UI capabilities
 - [Pro Web UI](Pro-Web-UI) – For advanced features available in Karafka Pro
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) – For monitoring best practices
+- [Monitoring and Logging](Operations-Monitoring-and-Logging) – For monitoring setup and logging configuration
