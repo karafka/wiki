@@ -191,7 +191,7 @@
 
 ## Kafka
 
-- [Setting Up Kafka](Kafka-Setting-Up)
+- [Kafka Setup](Kafka-Setting-Up)
 - [Best Practices](Kafka-Best-Practices)
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
