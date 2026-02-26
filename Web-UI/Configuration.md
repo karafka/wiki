@@ -2,7 +2,7 @@
 
 Karafka Web offers several configuration options, similar to Karafka. These settings allow you to control topic names, data report frequency, encrypted data visibility, pagination, and other features.
 
-You can find the whole list of settings [here](https://github.com/karafka/karafka-web/blob/master/lib/karafka/web/config.rb).
+For the comprehensive list of settings, see [here](https://github.com/karafka/karafka-web/blob/master/lib/karafka/web/config.rb).
 
 You can configure Web UI by using the `#setup` method in your `karafka.rb`:
 
