@@ -330,7 +330,7 @@ Karafka supports following methods that work with AWS MSK:
 
 ## Why can't I connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setting-Up#connecting-to-kafka-from-other-docker-containers).
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).
 
 ## How can I configure multiple bootstrap servers?
 
