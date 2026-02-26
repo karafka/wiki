@@ -20,7 +20,12 @@ Upon detecting a new topic, Karafka seamlessly integrates its operations just as
 
 !!! warning "Regexp Implementation Differences"
 
-    The underlying `librdkafka` library utilizes a regexp engine from a `libc` library. It's crucial to note that this engine supports a POSIX-compatible regular expression format, which is not fully aligned with the regexp engine used by Ruby. Given these differences, it's highly advisable to conduct thorough testing of your regexp patterns to confirm that the dynamic topics you intend to match are not only visible within Karafka and the Karafka Web UI but are also being consumed as expected. The discrepancies between the regexp engines could lead to unexpected behaviors. You can read more about this topic in [this](Pro-Routing-Patterns#differences-in-regexp-evaluation-between-ruby-and-libc) section.
+    The regexp engine used for pattern matching depends on your rebalance protocol:
+
+    - **Classic protocol**: librdkafka evaluates regexes locally using the **libc** POSIX regex engine.
+    - **Consumer protocol (KIP-848)**: Regex evaluation moves to the broker side, which uses the **Google RE2/J** engine.
+
+    Both engines differ from Ruby's Oniguruma engine. Additionally, the RE2/J engine requires that regexes match the **complete** topic name, while `libc` only checks if the pattern is found within the topic name. This means patterns like `^topic` that worked with the classic protocol may silently stop matching topics like `topic-1` under the consumer protocol — use `^topic.*` instead. See the [Regexp Implementation Differences](Pro-Routing-Patterns#regexp-implementation-differences) section and the [KIP-848 Regex Subscription Changes](Kafka-New-Rebalance-Protocol#regex-subscription-changes) for details.
 
 ### Representation of Routing Patterns
 
@@ -144,7 +149,7 @@ Sometimes, you may need to route messages from topics that match a pattern but w
 
 When working with topic naming conventions like `[app_name].data_results`, you might want to process most topics matching this pattern with one consumer while directing a specific topic (e.g., `activities.data_results`) to a different consumer.
 
-Since POSIX regular expressions used by `librdkafka` don't support negative lookahead assertions (`?!`) available in Ruby's regex engine, you'll need to use alternative approaches for exclusion patterns.
+Since neither the POSIX regular expressions used by `librdkafka` (classic protocol) nor the RE2/J engine used by the broker (consumer protocol) support negative lookahead assertions (`?!`) available in Ruby's regex engine, you'll need to use alternative approaches for exclusion patterns.
 
 One effective method is to use character-by-character negative matching to exclude specific prefixes:
 
@@ -338,17 +343,40 @@ To prevent such loops, it's essential to:
 
 While routing patterns offer a dynamic and powerful method to manage topic consumption in Karafka, they demand careful consideration and testing, especially when integrating DLQ mechanisms.
 
-## Differences in Regexp Evaluation Between Ruby and libc
+## Regexp Implementation Differences
 
-When dealing with regular expressions in Karafka, it's important to understand the underlying differences between the regex engines used by Ruby and the one used by `librdkafka`. `librdkafka`, which is a core component of Karafka for interacting with Kafka, defaults to the POSIX regex engine provided by `libc`. On the other hand, Ruby employs a different format for regular expressions, specifically the Oniguruma engine, known for its extensive feature set and flexibility.
+When dealing with regular expressions in Karafka, it's important to understand the underlying differences between the regex engines involved. The engine used depends on your rebalance protocol:
 
-### Key Differences
+- **Classic protocol**: `librdkafka` evaluates regexes locally using the **POSIX regex engine** provided by `libc`.
+- **Consumer protocol (KIP-848)**: Regex evaluation is performed on the **broker side** using the **Google RE2/J** engine.
+
+Ruby uses the **Oniguruma engine**, which differs from both of the above.
+
+### Key Differences Between Ruby and libc/RE2/J
 
 1. **Syntax and Features**: The Oniguruma engine (Ruby) supports a broader range of syntaxes and features than the POSIX regex engine. These include look-ahead and look-behind assertions, non-greedy matching, and named groups, among others.
 
 1. **Character Classes**: Ruby's regex engine supports POSIX bracket expressions but also includes additional character class shorthands (like `\d`, `\w`, `\s`, and their uppercase counterparts), which are not part of the POSIX standard.
 
 1. **Grouping and Capturing**: Ruby supports non-capturing groups with `?:`, named groups with `?<name>`, and atomic groups, which are unavailable in the POSIX regex engine.
+
+### Full-Match vs Partial-Match Behavior (Consumer Protocol)
+
+!!! warning "Critical Difference When Using KIP-848"
+
+    The most impactful difference when migrating to the `consumer` protocol (KIP-848) is how regex matching is applied:
+
+    - **Classic protocol (libc)**: The regex only needs to **match within** the topic name (partial match). A pattern like `^topic` matches `topic-1` because the prefix is found.
+    - **Consumer protocol (RE2/J)**: The regex must match the **complete** topic name (full match). The pattern `^topic` does **not** match `topic-1` because it doesn't cover the entire string.
+
+    **Example:** Given topics `topic-1` and `topic-2`:
+
+    - `^topic` or `^topic*` — matches in classic protocol, **fails** in consumer protocol
+    - `^topic.*` — works correctly in **both** protocols
+
+    Since Karafka internally prepends `^` to pattern regex sources, a pattern like `pattern(/prefix/)` produces `^prefix`, which will fail under the consumer protocol for topics like `prefix-1`. Use `pattern(/prefix.*/)` instead, which produces `^prefix.*` and works with both protocols.
+
+    Review all your regex patterns before migrating to the consumer protocol to ensure they use explicit wildcards where needed.
 
 ### Testing Regular Expressions
 
@@ -440,5 +468,6 @@ Karafka's Routing Patterns offers a dynamic solution for message routing, utiliz
 ## See Also
 
 - [Routing](Routing) - Standard routing configuration
+- [Consumer Group Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol) - Important regex behavior changes with the new consumer protocol
 - [Testing](Testing) - Testing strategies for Karafka applications
 - [Deserialization](Deserialization) - Message deserialization configuration
