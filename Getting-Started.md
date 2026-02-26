@@ -6,7 +6,7 @@
     docker ps | grep kafka
     ```
 
-1. If it is not running, then set up Kafka. For instructions, see [Kafka Setup](Kafka-Setting-Up).
+1. If it is not running, then set up Kafka. For instructions, see [Kafka Setup](Kafka-Setup).
 
 ## For Existing Applications
 
