@@ -38,7 +38,7 @@ Unlike simpler gems, rdkafka has a complex dependency web that created ABI (Appl
 Supporting precompiled gems properly required:
 
 - **Ruby versions**: All actively maintained versions
-- **Primary platforms**: 
+- **Primary platforms**:
     - x86_64-linux-gnu (Ubuntu/Debian/RHEL)
     - x86_64-linux-musl (Alpine)
     - arm64-darwin (Apple Silicon Mac)

@@ -1,6 +1,6 @@
 Iterator API allows developers to subscribe to Kafka topics and perform data lookups from various Ruby processes, including Rake tasks, custom scripts, and the Rails console. This API provides a powerful and flexible way to access Kafka data without the need for complex setup, configuration, `karafka server` processes deployment or creating consumers.
 
-The Iterator API is designed to be simple and easy to use. It allows developers to subscribe to specific Kafka topics and partitions and perform data lookups using a simple and intuitive Ruby interface. 
+The Iterator API is designed to be simple and easy to use. It allows developers to subscribe to specific Kafka topics and partitions and perform data lookups using a simple and intuitive Ruby interface.
 
 Developers can customize their data processing logic and perform data lookups according to their specific needs, such as retrieving data from a particular offset, processing data from the beginning of the topic, or processing only the most recent messages.
 
@@ -27,7 +27,7 @@ iterator.each do |message|
 end
 ```
 
-Please read the sections below for more details. 
+Please read the sections below for more details.
 
 ### Subscription Modes
 
@@ -58,7 +58,7 @@ When subscribing with a negative offset, Karafka will compute the offset from wh
 # partition of the topic users_events
 iterator = Karafka::Pro::Iterator.new(
   {
-    'users_events' => -10_000 
+    'users_events' => -10_000
   }
 )
 
@@ -187,14 +187,14 @@ buffer = []
 iterator.each do |message|
   break if buffer.count >= limit
 
-  # Message may be a nil when `yield_nil` is set to true  
+  # Message may be a nil when `yield_nil` is set to true
   buffer << message if message
 end
 ```
 
 !!! tip "Recommended Approach for Long-Living Iterators"
 
-    If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption. 
+    If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption.
 
 ### Routing Awareness
 
@@ -237,7 +237,7 @@ To early stop one partition without stopping the iterator process, you can use t
 ```ruby
 iterator = Karafka::Pro::Iterator.new(
   {
-    'users_events' => -10_000 
+    'users_events' => -10_000
   }
 )
 
@@ -272,7 +272,7 @@ iterator.each do |message|
   process_message(message)
 
   # Clean the message payload from memory after processing
-  # Message may be a nil when `yield_nil` is set to true  
+  # Message may be a nil when `yield_nil` is set to true
   message.clean!
 end
 ```

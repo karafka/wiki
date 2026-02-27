@@ -2,7 +2,7 @@ Cleaner API is a feature designed to enhance the performance and efficiency of b
 
 ## How does it work
 
-This functionality extends both the message batch and individual message objects. Messages can indicate when their payload is no longer necessary. Once a message conveys this information, the Cleaner API completely removes both the payload and the raw payload from memory. 
+This functionality extends both the message batch and individual message objects. Messages can indicate when their payload is no longer necessary. Once a message conveys this information, the Cleaner API completely removes both the payload and the raw payload from memory.
 
 Remarkably, this memory clearance occurs before the entire batch is processed, effectively allowing only a single deserialized payload to be kept in memory. This mechanism is particularly advantageous when sequentially processing messages, especially within large batches containing hundreds of messages or more. This ensures optimal memory management and faster processing, as no longer needed data is eradicated immediately after processing, rather than waiting for the entire batch to conclude.
 
@@ -46,7 +46,7 @@ end
 
 !!! note "Metadata Cleaning Behavior"
 
-    By default, the Cleaner API removes both the message’s payload and its metadata (`headers`, `key`).  
+    By default, the Cleaner API removes both the message’s payload and its metadata (`headers`, `key`).
     If you only want to clean the payload and keep the metadata available, use `message.clean!(metadata: false)`.
 
 ### Automatic Cleaning with `#each`
@@ -92,7 +92,7 @@ Regardless of where you are in your code, as long as the message object is acces
 
 ## Statistics
 
-The efficacy and benefits of the Cleaner API are closely linked to the sizes of the raw payload and the deserialized payload of messages. 
+The efficacy and benefits of the Cleaner API are closely linked to the sizes of the raw payload and the deserialized payload of messages.
 
 The magnitude of memory management gains directly correlates with the average size of these payloads and the number of messages obtained in a single batch.
 

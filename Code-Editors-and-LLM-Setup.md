@@ -1,4 +1,4 @@
-# Configuring Code Editors and LLMs 
+# Configuring Code Editors and LLMs
 
 Karafka provides LLM-optimized documentation following the [llms.txt standard](https://llmstxt.org). There are three ways to configure your development environment in order to get better code assistance and solve problems faster when working with Karafka. You can feed AI tools with Karafka documentation either by providing them with a URL, copying and pasting the docs, or setting up your code editor to do it automatically.
 
@@ -11,7 +11,7 @@ For LLMs with web browsing capabilities, insert the following prompt containing 
 ```text
 https://karafka.io/llms.txt
 
-I'm building a Rails app that processes user events from Kafka. 
+I'm building a Rails app that processes user events from Kafka.
 What's the best way to get started with Karafka?
 ```
 
@@ -19,16 +19,16 @@ What's the best way to get started with Karafka?
 Please read https://karafka.io/llms.txt and then help me implement a Karafka consumer with error handling and retries.
 ```
 
-### Method 2: Uploading Karafka documentation content 
+### Method 2: Uploading Karafka documentation content
 
 For LLMs without web browsing:
 
 1. Get the documentation from [karafka.io/llms.txt](https://karafka.io/llms.txt)
-2. Copy the complete llms.txt content.  
+2. Copy the complete llms.txt content.
 3. Paste the the llms.txt content into the chat window.
 4. Request specific implementation help
 
-### Method 3: Integrating IDE 
+### Method 3: Integrating IDE
 
 To configure your code editor to use Karafka documentation as context for AI-assisted development, follow the path specific to your IDE.
 
@@ -38,7 +38,7 @@ The following process describes alternative approaches depending on your IDE's c
 
 1. Depending on your IDE capabilities, perform one of the following steps:
    - Add `https://karafka.io/llms.txt` to the documentation sources or knowledge base of your IDE
-   - Download and save `https://karafka.io/llms.txt` in your project documents folder  
+   - Download and save `https://karafka.io/llms.txt` in your project documents folder
 2. To reference project documentation, configure the AI assistant, unless your IDE automatically detects and uses documentation files in your project.
 3. To complete the integration, enable the "use docs for context" feature in your IDE's AI settings.
 
@@ -50,18 +50,18 @@ The following process describes alternative approaches depending on your IDE's c
 
 **When you work with traditional documentation search, you:**
 
-❌ Hunt through multiple pages.  
-❌ Miss important configuration details.  
-❌ Struggle with framework-specific patterns.  
-❌ Get generic Kafka advice instead of Karafka-specific guidance . 
+❌ Hunt through multiple pages.
+❌ Miss important configuration details.
+❌ Struggle with framework-specific patterns.
+❌ Get generic Kafka advice instead of Karafka-specific guidance .
 
 **When you optimize your work with AI-enhanced documentation, you:**
 
-✅ Get comprehensive answers that reference multiple docs.  
-✅ Receive Karafka-specific best practices.  
-✅ Learn about Pro features when they solve your problems.  
-✅ Get code examples tailored to your use case.  
-✅ Understand the "why" behind configuration choices.  
+✅ Get comprehensive answers that reference multiple docs.
+✅ Receive Karafka-specific best practices.
+✅ Learn about Pro features when they solve your problems.
+✅ Get code examples tailored to your use case.
+✅ Understand the "why" behind configuration choices.
 
 ## Best Practices for AI Assitance
 
@@ -112,7 +112,7 @@ This section is a prompt engineering guide to help you cooperate with AI assista
 ### Development Planning
 
 ```text
-"I need to build an event-driven system for [description]. 
+"I need to build an event-driven system for [description].
 What Karafka components should I use and how should I structure it?"
 ```
 
@@ -125,14 +125,14 @@ What Karafka components should I use and how should I structure it?"
 ### Production Troubleshooting
 
 ```text
-"I'm seeing these errors in production: [paste logs]. 
+"I'm seeing these errors in production: [paste logs].
 My setup is [describe setup]. What's the likely cause and fix?"
 ```
 
 ### Architecture Review
 
 ```text
-"Review my Karafka setup: [describe architecture]. 
+"Review my Karafka setup: [describe architecture].
 Are there any anti-patterns or optimization opportunities?"
 ```
 

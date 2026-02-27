@@ -6,7 +6,7 @@
     docker ps | grep kafka
     ```
 
-1. If it is not running, then set up Kafka. For instructions, see [Setting Up Kafka](Kafka-Setting-Up).
+1. If it is not running, then set up Kafka. For instructions, see [Kafka Setup](Kafka-Setup).
 
 ## For Existing Applications
 
@@ -107,7 +107,7 @@
     {"ping"=>"pong"}
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
     ```
-    
+
 1. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI](Web-UI-Getting-Started).
 
 ## Example applications

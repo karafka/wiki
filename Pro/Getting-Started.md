@@ -23,7 +23,7 @@ To activate Karafka Pro, you need to do three things:
 
 !!! tip "Crucial Gemfile Tip for Karafka Pro Users"
 
-    You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license. 
+    You still need to have the standard `gem 'karafka'` definition in your `Gemfile`. License gem is just providing the license.
 
 !!! warning "Enterprise License Required for Offline or Private Registry Setup"
 

@@ -26,7 +26,7 @@ Kafka brokers themselves also manage connections through their own connection re
 
 The automatic idle producer disconnection feature allows WaterDrop to automatically disconnect entire producers, along with all their connections, when they have been inactive for a specified period. This feature offers more effective resource management compared to the native idle connection handling provided by librdkafka.
 
-### Configuring automatic idle producer disconnection 
+### Configuring automatic idle producer disconnection
 
 To enable automatic idle producer disconnection, create a new WaterDrop producer instance and set the timeout with a configuration block:
 

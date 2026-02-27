@@ -97,7 +97,7 @@ The `request.required.acks` parameter determines the number of acknowledgments t
 
 - **0 (No Acknowledgement)**: The broker does not respond to the producer, and the message is considered delivered the moment it is dispatched. This setting provides the lowest latency since the producer doesn't wait for acknowledgments. It's highly performant, allowing for rapid message dispatch, but it risks data loss because there's no confirmation that the broker received the message. Suitable for non-critical data where speed is crucial.
 
-- **1 (Leader Acknowledgement)**: The leader broker responds once it has written the message to its log. This setting balances latency and durability, providing a quick acknowledgment while ensuring the leader broker logs the message. It offers a good trade-off for most use cases, ensuring reasonable reliability with moderate latency. 
+- **1 (Leader Acknowledgement)**: The leader broker responds once it has written the message to its log. This setting balances latency and durability, providing a quick acknowledgment while ensuring the leader broker logs the message. It offers a good trade-off for most use cases, ensuring reasonable reliability with moderate latency.
 
 - **-1 or all (All ISR Acknowledgements)**: The leader broker waits until all in-sync replicas have acknowledged the message. This setting ensures maximum durability, minimizing the risk of data loss as the message is replicated across multiple brokers. However, it results in higher latency and reduced throughput. It is best for critical applications where data integrity is essential.
 
@@ -155,7 +155,7 @@ end
 
 ### Asynchronous Producing
 
-Asynchronous dispatch reduces waiting time for acknowledgments, allowing your application to continue processing tasks immediately. This significantly lowers end-to-end latency within your application and increases WaterDrop throughput. 
+Asynchronous dispatch reduces waiting time for acknowledgments, allowing your application to continue processing tasks immediately. This significantly lowers end-to-end latency within your application and increases WaterDrop throughput.
 
 Asynchronous producing is the recommended way for any non-critical messages.
 

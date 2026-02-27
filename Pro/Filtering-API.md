@@ -18,7 +18,7 @@ If you plan to implement action-altering filters, you need to define two additio
 
 !!! warning "Timeout Should Always Return `nil` for Non-Pause Actions"
 
-    When implementing filters with action-altering capabilities, ensure that the `#timeout` method **always returns `nil`** for non-`:pause` actions. 
+    When implementing filters with action-altering capabilities, ensure that the `#timeout` method **always returns `nil`** for non-`:pause` actions.
 
     **Do not set `0` as a default value for `#timeout`**, as this may interfere with the behavior of other filters when multiple filters are in use. Returning `nil` explicitly prevents unintended interactions between filters and ensures the correct application of pause logic in scenarios where multiple filters contribute to action selection.
 
@@ -26,7 +26,7 @@ If you plan to implement action-altering filters, you need to define two additio
 
 It is essential to remember that post-processing actions may also be applied when no data is left after filtering.
 
-Below is an example implementation of a filter that continuously removes messages with odd offsets. This filter sets the `@applied` in case even one message has been removed. 
+Below is an example implementation of a filter that continuously removes messages with odd offsets. This filter sets the `@applied` in case even one message has been removed.
 
 ```ruby
 class OddRemoval < Karafka::Pro::Processing::Filters::Base
@@ -190,7 +190,7 @@ class KarafkaApp < Karafka::App
   routes.draw do
     topic :example do
       consumer ExampleConsumer
-      # 
+      #
       filter ->(*) { MyCustomFilter.new }
     end
   end
@@ -208,7 +208,7 @@ class KarafkaApp < Karafka::App
   routes.draw do
     topic :example do
       consumer ExampleConsumer
-      # 
+      #
       filter ->(topic, partition) { MyCustomFilter.new(topic, partition) }
     end
   end
@@ -287,7 +287,7 @@ By following these best practices, you can ensure that your Karafka Pro Filterin
 
 ## Example Use Cases
 
-- **Throttling**: You can use filters to throttle and rate limit messages, including process or system-wide limitation solutions. 
+- **Throttling**: You can use filters to throttle and rate limit messages, including process or system-wide limitation solutions.
 
 - **Data Reliability**: You can use the Filtering API to build a [transactional offset management](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/) system, improving the reliability of your processing pipelines.
 

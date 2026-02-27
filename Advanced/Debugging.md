@@ -213,7 +213,7 @@ class KarafkaApp < Karafka::App
       # this will start processing from beginning each time new
       # karafka process starts
       consumer_group "app_group_#{Process.pid}" do
-        topic :orders do 
+        topic :orders do
           consumer OrdersConsumer
         end
       end

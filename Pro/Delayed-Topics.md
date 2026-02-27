@@ -1,6 +1,6 @@
 Karafka's Delayed Topics is a feature that enables delaying message processing from specific topics for a specified time. It can be beneficial to delay message processing for various reasons. For example, to allow additional processing or validation time, avoid overloading the system during high-traffic periods, or provide a retry mechanism for failed messages. Delayed Topics offer greater flexibility and control over message processing.
 
-One of the benefits of the Karafka Delayed Topic feature is that it allows for arbitrary delay without impacting the processing of other topics. 
+One of the benefits of the Karafka Delayed Topic feature is that it allows for arbitrary delay without impacting the processing of other topics.
 
 Delay is implemented by pausing the consumption of the partitions for a specified amount of time. This means that there is no explicit sleep or anything of that nature involved that would clog or impact other topics' operations, and all the available resources are free to process messages that are not expected to be delayed.
 

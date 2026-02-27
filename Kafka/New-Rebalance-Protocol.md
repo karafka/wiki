@@ -61,7 +61,7 @@ KIP-848 in librdkafka 2.12.0+ supports all major consumer features:
 - **Manual and automatic offset management**: Both commit modes work as expected
 - **Rolling upgrades**: Seamless migration from classic protocol without downtime
 
-Regex subscriptions work identically to the classic protocol - topics matching the pattern will be automatically discovered and assigned.
+Regex subscriptions are supported but behave differently from the classic protocol - see [Regex Subscription Changes](#regex-subscription-changes) for important details.
 
 ## Configuration
 
@@ -171,6 +171,12 @@ Use this checklist to ensure a smooth migration to KIP-848:
 - [ ] Remove `'heartbeat.interval.ms'` if present
 - [ ] Remove `'group.protocol.type'` if present
 
+**Code Review (if using regex subscriptions):**
+
+- [ ] Review all regex patterns to ensure they match complete topic names (e.g., use `^topic.*` instead of `^topic`)
+- [ ] Test regex patterns against the RE2/J engine behavior (full-match, not partial-match)
+- [ ] Update [Routing Patterns](Pro-Routing-Patterns) regexes if needed (e.g., `pattern(/prefix.*/)` instead of `pattern(/prefix/)`)
+
 **Code Review (if using static membership):**
 
 - [ ] Review static membership usage (`group.instance.id`) and understand new fencing behavior
@@ -254,6 +260,30 @@ KIP-848 introduces several important behavioral changes compared to the classic 
 
 - **Implication:** This reversal prevents accidental takeovers. Ensure clean consumer shutdown before starting replacements with the same `group.instance.id`. If a consumer crashes without graceful shutdown, the replacement will be blocked until the broker's session timeout expires and removes the existing member.
 
+### Regex Subscription Changes
+
+Regex matching in the `consumer` protocol is performed on the broker side, using the **Google RE2/J** regex engine. This differs from the `classic` protocol, where librdkafka and derived clients performed regex evaluation locally using the **libc regex** engine.
+
+As part of adopting the `consumer` protocol, librdkafka (and derived clients) now rely on the broker's RE2/J engine for regex-based subscriptions, effectively replacing the previous `libc`-based matching behavior.
+
+!!! warning "Regex Patterns May Need Updating"
+
+    The RE2/J engine used by the broker requires that regexes match the **complete** topic name, while the `libc` engine used by the classic protocol only checks if the pattern is found within the topic name (including as a prefix). This means patterns that worked with the classic protocol may silently stop matching topics under the consumer protocol.
+
+    **Example:** Given topics `topic-1` and `topic-2`:
+
+    - `^topic` or `^topic*` — matches both topics in the `classic` protocol, but **no partitions are assigned** with the `consumer` protocol
+    - `^topic.*` — works correctly with **both** protocols
+
+    Always ensure your regex patterns use explicit wildcards (like `.*`) to match the full topic name.
+
+In Karafka, the [Routing Patterns](Pro-Routing-Patterns) feature internally prepends `^` to the regex source. This means:
+
+- `pattern(/prefix/)` produces `^prefix` — **fails** under the consumer protocol for topics like `prefix-1`
+- `pattern(/prefix.*/)` produces `^prefix.*` — **works** under both protocols
+
+If you are migrating to the consumer protocol and use regex-based subscriptions, review all your patterns to ensure they include explicit wildcards where needed. See the [Routing Patterns documentation](Pro-Routing-Patterns#regexp-implementation-differences) for more details.
+
 ### Unknown and Unauthorized Topics
 
 - **KIP-848 Behavior:**
@@ -286,6 +316,7 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 
 ## See Also
 
+- [Routing Patterns](Pro-Routing-Patterns) - Regex-based dynamic topic routing and regexp engine differences
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
 - [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
 - [Deployment](Operations-Deployment) - For deployment strategies including rolling restarts

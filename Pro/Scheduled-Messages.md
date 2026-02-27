@@ -427,7 +427,7 @@ Karafka enhances monitoring capabilities by publishing regular messages to a sta
 
 - **Daily Schedules**: Messages sent to the states topic include data on the number of messages scheduled for dispatch on a given day. This provides a clear metric to gauge the volume of upcoming message dispatches and prepare for potential load increases.
 
-- **Consumer State Reporting**: Each message in the state topic also reports the current state of the consumer handling a given partition. 
+- **Consumer State Reporting**: Each message in the state topic also reports the current state of the consumer handling a given partition.
 
 The states can be:
 

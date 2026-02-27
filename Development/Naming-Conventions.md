@@ -201,7 +201,7 @@ Use appropriate format based on context - dash for specific references, brackets
 # Specific partition error
 logger.error "Failed to process message from orders-3"
 
-# Assignment context error  
+# Assignment context error
 logger.error "Cannot assign orders-[0,1,2] to consumer: already assigned"
 
 # Rebalancing context

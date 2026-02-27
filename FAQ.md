@@ -295,7 +295,7 @@ Please make sure your topic contains more than one partition. Only then Karafka 
 
 ```text
 ERROR -- : librdkafka internal error occurred: Local: Unknown partition (unknown_partition)
-ERROR -- : 
+ERROR -- :
 INFO -- : rdkafka: [thrd:main]: Topic extractor partition count changed from 1 to 0
 ERROR -- : librdkafka internal error occurred: Broker: Unknown topic or partition (unknown_topic_or_part)
 ```
@@ -330,7 +330,7 @@ Karafka supports following methods that work with AWS MSK:
 
 ## Why can't I connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setting-Up#connecting-to-kafka-from-other-docker-containers).
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).
 
 ## How can I configure multiple bootstrap servers?
 
@@ -766,8 +766,8 @@ If you decide to do a full deployment, you can send `TSTP` to all the processes,
 If you are getting following error after upgrading `karafka` and `karafka-core`:
 
 ```shell
-SSL handshake failed: error:0A000086:SSL routines::certificate verify failed:  
-broker certificate could not be verified, verify that ssl.ca.location is correctly configured or  
+SSL handshake failed: error:0A000086:SSL routines::certificate verify failed:
+broker certificate could not be verified, verify that ssl.ca.location is correctly configured or
 root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
 ```
 
@@ -1034,7 +1034,7 @@ The error message you mentioned may be related to the connection reaper in Kafka
 
 If the client application is not sending or receiving data over the TCP connection for a long time, the connection reaper may kick in and disconnect the client from the broker.
 
-However, this disconnection does not mean that any produced data will be lost. When the client application reconnects to the broker, it can resume sending or receiving messages from where it left off. 
+However, this disconnection does not mean that any produced data will be lost. When the client application reconnects to the broker, it can resume sending or receiving messages from where it left off.
 
 Suppose your data production patterns are not stable, and there are times when your client application is not producing any data to Kafka for over 10 minutes. In that case, you may want to consider setting the `log.connection.close` value to `false` in your configuration. This configuration parameter controls whether the client logs a message when a connection is closed by the broker. By default, the client will log a message indicating that the connection was closed, which can generate false alarms if the connection was closed due to inactivity by the connection reaper.
 
@@ -1074,7 +1074,7 @@ Error occurred: Local: All broker connections are down (all_brokers_down) - libr
 In the WaterDrop gem, `partition_key` and `key` are two distinct options that can be used to set message keys, but they have different purposes and work slightly differently.
 
 - `partition_key` is used to determine the partition to which a message is sent and computes the destination partition in the Ruby process using the configured `partitioner` algorithm. The partitioner calculates a hash value based on the partition_key value and uses this hash value to select a partition for the message.
-- `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which ensures that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment. 
+- `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which ensures that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment.
 
 ## How can I set up WaterDrop with SCRAM?
 
@@ -1193,7 +1193,7 @@ No, using the `#seek` method in a Karafka consumer does not reset the committed 
 
 In Karafka, the `#seek` method is used to manually set the position of the next record that should be fetched, i.e., it changes the current position of the consumer. However, it does not affect the committed offset stored in Kafka.
 
-The committed offset is the position of the last record that Kafka will not read again in the event of recovery or failover. 
+The committed offset is the position of the last record that Kafka will not read again in the event of recovery or failover.
 
 So, you can think of the position set by `#seek` as a volatile, in-memory value, while the committed offset is a more durable, stored value.
 
@@ -1472,7 +1472,7 @@ Remember, if you're using Karafka without a consumer and encounter errors, ensur
 
 When a message is dispatched to a [dead letter queue](Dead-Letter-Queue) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
 
-On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled. 
+On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled.
 
 !!! note
 
@@ -1653,7 +1653,7 @@ Please ensure you have **all** the Karafka Web UI required OS commands installed
 
 ## Can I retrieve all records produced in a single topic using Karafka?
 
-Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Iterator-API). 
+Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Iterator-API).
 
 If your primary aim is to get the count of messages, you might have to maintain a counter as you consume the messages.
 
@@ -2045,7 +2045,7 @@ Remember to make sure that the timeout value you set is suitable for your use ca
 
 ## The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?
 
-In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind. 
+In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
@@ -2440,7 +2440,7 @@ One of the key strengths of Karafka is its support for pluggable components. The
 
 ## Can we change the name of Karafka's internal topic for the Web UI?
 
-Yes, you can change the name of Karafka's internal topic for the Web UI. 
+Yes, you can change the name of Karafka's internal topic for the Web UI.
 
 For instance, if you need to prepend a unique combination before the topic's name, such as `12303-karafka_consumers_states`, this is feasible.
 
@@ -2681,7 +2681,7 @@ This is because the primary purpose of EOF handling is to deal with scenarios wh
 
 You can use:
 
-- `#attempt` - shows retry attempt number  
+- `#attempt` - shows retry attempt number
 - `#retrying?` - boolean indicating if message is being retried
 
 Note that:
@@ -2935,7 +2935,7 @@ This is typically caused by a multiplexing configuration that creates more conne
 Here's what may happen:
 
 - Topic has 4 partitions
-- Single consumer process with `multiplexing(max: 4)` 
+- Single consumer process with `multiplexing(max: 4)`
 - Kafka sees this as 4 separate consumers, each getting 1 partition
 - When you scale up by adding more processes, there are no unassigned partitions left
 

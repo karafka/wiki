@@ -41,7 +41,7 @@ Acknowledgements (`acks`) dictate how the producer and the broker agree that a m
 
 !!! tip "Per-Topic Acknowledgement Configuration in WaterDrop Variants"
 
-    WaterDrop Variants support configuring acknowledgements on a **per-topic basis** while using the **same producer instance**. This flexibility allows different topics to have custom acknowledgement settings depending on the reliability and performance needs of the specific topic. 
+    WaterDrop Variants support configuring acknowledgements on a **per-topic basis** while using the **same producer instance**. This flexibility allows different topics to have custom acknowledgement settings depending on the reliability and performance needs of the specific topic.
 
     It is recommended to check the [WaterDrop Variants documentation](WaterDrop-Variants) for more details on how to configure this.
 
