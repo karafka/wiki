@@ -194,6 +194,7 @@
 | `consumption/strategies/aj_mom_dlq/offset_marking_on_long_running_stop_spec.rb` | Karafka upon long running jobs shutdown in this scenario, should early stop but should not mark the non-processed messages as consumed. |
 | `consumption/strategies/aj_mom_dlq/offset_skip_on_non_recoverable_error_spec.rb` | When there is ActiveJob processing error that cannot recover, upon moving to DLQ, the offset should be moved as well. |
 | `consumption/strategies/aj_mom_dlq/processing_on_non_recoverable_error_spec.rb` | When there is ActiveJob processing error that cannot recover, upon moving to DLQ, the offset should be moved as well and we should continue. |
+| `consumption/strategies/aj_mom_dlq/with_recoverable_error_spec.rb` | When AJ + MoM + DLQ job encounters a recoverable error (fails N times then succeeds), no messages should be dispatched to DLQ and all jobs should eventually be processed. |
 | `consumption/strategies/default/attempts_tracking_without_errors_spec.rb` | When running jobs without problems, there should always be only one attempt |
 | `consumption/strategies/default/constant_error_should_not_clog_others_spec.rb` | Karafka should process other partitions data using same worker in which a job failed Workers should not hang when a job within them fails but should be available for other jobs Workers should not be clogged by a failing job |
 | `consumption/strategies/default/from_earliest_simple_routing_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) when simple routing is in use |
@@ -301,6 +302,7 @@
 | `deserialization/large_nested_objects_spec.rb` | Karafka should handle large nested objects and deep JSON structures |
 | `deserialization/malformed_json_handling_spec.rb` | Karafka should handle malformed JSON gracefully without crashing |
 | `deserialization/mixed_formats_single_topic_spec.rb` | Karafka should handle mixed serialization formats in a single topic |
+| `deserialization/null_and_empty_payload_handling_spec.rb` | Messages with nil payload (tombstones) and empty string payloads should be handled gracefully by Karafka consumers without crashing. |
 | `deserialization/routing_default_deserializer_usage_spec.rb` | Karafka should be able to use routing default deserializers |
 | `embedding/puma_single_poro/flow_spec.rb` | Karafka should run from a Puma server easily |
 | `embedding/puma_with_worker_poro/flow_spec.rb` | Karafka should run from a Puma server easily |
@@ -382,6 +384,7 @@
 | `instrumentation/with_replaced_monitor_spec.rb` | Karafka should allow for a monitor that can be used to run wrapped handling, as long as there is a delegation back to Karafka monitor afterwards. |
 | `instrumentation/with_watermarks_querying_spec.rb` | Karafka should be able to query watermark offsets for multiple topics and partitions using a single consumer instance |
 | `lags/consumption_delayed_spec.rb` | Karafka should correctly report consumption_lag when there is a delay in between publishing messages and their consumption |
+| `lags/consumption_lag_with_paused_partition_spec.rb` | When a partition is paused (e.g., during retry backoff), consumption lag should increase because messages are not being actively consumed during the pause period. |
 | `lags/consumption_real_time_spec.rb` | Karafka should correctly report consumption_lag when we consume messages fast and it should never be bigger than couple hundred ms with the defaults for integration specs |
 | `lags/processing_fast_spec.rb` | When processing data fast, the processing lag should not be big and things should be processed almost real time |
 | `lags/processing_not_enough_threads_spec.rb` | In case there are not enough threads to parallelize work from multiple topics/partitions we can expect a processing lag, as work will wait in a queue to be picked up once resources are available |
@@ -476,6 +479,7 @@
 | `pro/consumption/direct_assignments/multi_topic_transactional_spec.rb` | We should be able to open a multi-topic transaction as long as we know which consumer is the source of underlying messages so we can track their offsets This works with an assumption that we have one producer @note There is code for consumer marking commented out because we want to ensure, that we mark as consumed only in the transaction and that it works as expected but in a production-grade system you also want to always synchronize internal state of consumers instances. |
 | `pro/consumption/direct_assignments/starting_from_where_it_left_spec.rb` | We should start from where the offset was with direct assignments |
 | `pro/consumption/direct_assignments/transactions_support_spec.rb` | We should be able to assign what we want and mark offsets in a transaction |
+| `pro/consumption/eofed/eof_with_error_recovery_spec.rb` | When a consumer encounters an error, retries, and then hits EOF, the eofed callback should be invoked after successful processing and recovery. |
 | `pro/consumption/eofed/vps_with_eof_spec.rb` | When using virtual partitions with eof, each VP should receive its own `#eofed` execution. |
 | `pro/consumption/fast_non_blocking_unlock_spec.rb` | Because when we set time based locks that can bypass default ticking, we should be able to jump over ticking faster that the ticking interval We do not not instrument wait unlocks on the queue but since listener events are published, we can use next poll start to notice that it unlocks faster than the tick interval but slower than post-job immediate unlock |
 | `pro/consumption/from_earliest_direct_iterator_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) exactly the same way with pro as it does without |
@@ -498,6 +502,7 @@
 | `pro/consumption/offset_metadata/basic_automatic_flow_overwritten_spec.rb` | When offset metadata is stored but a custom forced value is used, the forced on should be used. |
 | `pro/consumption/offset_metadata/basic_automatic_flow_spec.rb` | Karafka should be able to take the offset from the `store_metadata_offset` invocation and use it |
 | `pro/consumption/offset_metadata/basic_flow_spec.rb` | Karafka should be able to get offset metadata when non-existing, save it and force refresh with defaults and cache on @note We use mark_as_consumed\! to instantly flush |
+| `pro/consumption/offset_metadata/dlq/metadata_preserved_after_dlq_dispatch_spec.rb` | After DLQ dispatch, offset metadata should be correctly persisted with the new offset position, ensuring metadata continuity across DLQ skip boundaries. |
 | `pro/consumption/offset_metadata/dlq/recovery_with_metadata_spec.rb` | When stored metadata exists, it should be used in the DLQ flow. |
 | `pro/consumption/offset_metadata/ftr/usage_from_filter_spec.rb` | Karafka should allow for usage of the offset metadata from filters as well. Since filters can accept routing topic and partition reference from the builder, they can store them and use the fetcher to obtain needed offset metadata. This can allow them to use the pre-rebalance context awareness. |
 | `pro/consumption/offset_metadata/iterative_marking_cached_flow_spec.rb` | Offset should move forward with metadata but because we cache result, it should not update in memory as there is no rebalance. |
@@ -549,6 +554,7 @@
 | `pro/consumption/periodic_jobs/during_error_with_recovery_spec.rb` | If we explicitely want to tick during recovery, it should be possible |
 | `pro/consumption/periodic_jobs/filtering/on_constant_idle_spec.rb` | When we idle all the time on incoming data, we should never tick It is end user FTR makes this decision to skip |
 | `pro/consumption/periodic_jobs/filtering/on_idle_and_nothing_spec.rb` | When we idle all and move on but no more messages for a while, tick should kick in |
+| `pro/consumption/periodic_jobs/filtering/with_skip_filter_and_periodic_tick_spec.rb` | When a filter applies :skip action, periodic tick should still fire and no partition freeze should occur. |
 | `pro/consumption/periodic_jobs/initialized_prior_to_ticking_spec.rb` | We should run the initialized hook prior to ticking |
 | `pro/consumption/periodic_jobs/long_running_jobs/no_parallel_ticking_when_not_during_pause_spec.rb` | When running on LRJ, ticking should not happen alongside long processing when it is not turned on (default is off). Note that LRJ consume can start when tick is running. Only the other way around is not allowed |
 | `pro/consumption/periodic_jobs/long_running_jobs/non_blocking_ticking_spec.rb` | When running on LRJ, ticking should not block and not cause max.poll.interval.ms to kick in |
@@ -611,6 +617,7 @@
 | `pro/consumption/strategies/aj/dlq_lrj_mom/without_dispatch_to_dlq_spec.rb` | Karafka should run the same strategy for AJ DLQ LRJ MOM as for DLQ LRJ MOM. Karafka should NOT dispatch the message to the DLQ topic because it's set to false. |
 | `pro/consumption/strategies/aj/dlq_lrj_mom_vp/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the jobs one after another |
 | `pro/consumption/strategies/aj/dlq_lrj_mom_vp/with_non_recoverable_job_error_spec.rb` | Karafka should allow to run long AJ jobs with MOM, VPs and LRJ because we collapse upon errors. |
+| `pro/consumption/strategies/aj/dlq_lrj_mom_vp/with_partial_slow_job_failure_spec.rb` | When some AJ slow jobs fail permanently while others succeed with LRJ enabled, only the failing jobs should be dispatched to DLQ after max retries. |
 | `pro/consumption/strategies/aj/dlq_lrj_mom_vp/with_recoverable_slow_jobs_error_spec.rb` | Karafka should recover from this error and move on without publishing anything to the DLQ |
 | `pro/consumption/strategies/aj/dlq_mom/offset_marking_on_long_running_stop_spec.rb` | Karafka upon long running jobs shutdown in this scenario, should early stop but should not mark the non-processed messages as consumed. |
 | `pro/consumption/strategies/aj/dlq_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the jobs one after another |
@@ -620,6 +627,7 @@
 | `pro/consumption/strategies/aj/dlq_mom/with_recoverable_jobs_error_spec.rb` | Karafka should recover from this error and move on without publishing anything to the DLQ |
 | `pro/consumption/strategies/aj/dlq_mom_vp/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the jobs one after another |
 | `pro/consumption/strategies/aj/dlq_mom_vp/with_non_recoverable_job_error_spec.rb` | Karafka should run the same strategy for AJ DLQ MOM VP as for AJ DLQ MOM as we collapse the state and can move in a linear manner. |
+| `pro/consumption/strategies/aj/dlq_mom_vp/with_partial_job_failure_spec.rb` | When some AJ jobs fail permanently while others succeed, only the failing jobs should be dispatched to DLQ after max retries, while successful jobs complete normally. |
 | `pro/consumption/strategies/aj/dlq_mom_vp/with_recoverable_jobs_error_spec.rb` | Karafka should recover from this error and move on without publishing anything to the DLQ |
 | `pro/consumption/strategies/aj/ftr_lrj_mom/offset_marking_on_long_running_stop_spec.rb` | Karafka upon long running jobs shutdown in this scenario, should early stop but should not mark the non-processed messages as consumed. |
 | `pro/consumption/strategies/aj/ftr_lrj_mom/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the jobs one after another Throttling may throttle but should not impact order or anything else |
@@ -784,8 +792,10 @@
 | `pro/consumption/strategies/dlq/lrj_mom_vp/last_marking_without_intermediate_on_vp_spec.rb` | When marking in VP mode, when we mark only last message, the offset should not be comitted because we did not mark previous messages. This should apply only to the current batch though We make sure here that DLQ does not interact when no errors. |
 | `pro/consumption/strategies/dlq/lrj_mom_vp/with_dispatch_after_max_retries_spec.rb` | DLQ + LRJ + MoM + VP should dispatch to DLQ after max retries when using a custom max_retries value, verifying the retry counting works correctly with VP collapse |
 | `pro/consumption/strategies/dlq/lrj_mom_vp/with_non_recoverable_slow_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj with VP the same way as any normal consumer and after few incidents it should move data to the DLQ and just continue We collapse VP and retry in a collapsed mode, thus reducing this strategy to DlqLrjMom |
+| `pro/consumption/strategies/dlq/lrj_mom_vp/with_recoverable_error_spec.rb` | When using DLQ + LRJ + MoM + VP and a recoverable error occurs, the consumer should recover before hitting max_retries and no messages should go to DLQ. |
 | `pro/consumption/strategies/dlq/lrj_vp/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
 | `pro/consumption/strategies/dlq/lrj_vp/with_non_recoverable_slow_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj with VP the same way as any normal consumer and after few incidents it should move data to the DLQ and just continue We collapse VP and retry in a collapsed mode, thus reducing this strategy to DlqLrj |
+| `pro/consumption/strategies/dlq/lrj_vp/with_recoverable_error_spec.rb` | When using DLQ + LRJ + VP and a recoverable error occurs, the consumer should recover after a few retries without dispatching to DLQ. VP collapses on error and retries in collapsed mode until successful. |
 | `pro/consumption/strategies/dlq/lrj_vp/without_intermediate_marking_spec.rb` | Karafka should mark correctly the final offset of collective group upon finish |
 | `pro/consumption/strategies/dlq/mom/at_most_once_skipping_on_error_poll_one_spec.rb` | This example is a bit counter intuitive. Since we mark as consumed before we consume and raise error, Karafka will skip this message and move on. On another it will again encounter error and will dispatch to DLQ the next message because Karafka does not know, that marking happened prior to an error. This is however expected. If you want to alter this behaviour, you need to write your own custom strategy to compensate for this by moving the seek offset back for a DLQ dispatch case. |
 | `pro/consumption/strategies/dlq/mom/at_most_once_skipping_on_error_spec.rb` | This example is a bit counter intuitive. Since we mark as consumed before we consume and raise error, Karafka will skip this message and move on. On another it will again encounter error and will dispatch to DLQ the next message because Karafka does not know, that marking happened prior to an error. This is however expected. If you want to alter this behaviour, you need to write your own custom strategy to compensate for this by moving the seek offset back for a DLQ dispatch case. |
@@ -927,6 +937,7 @@
 | `pro/consumption/strategies/lrj/ftr_mom_vp/with_throttle_and_error_spec.rb` | Karafka should be able to recover from non-critical error when using lrj the same way as any normal consumer even if throttled. Error flow should be the same as non-throttled. |
 | `pro/consumption/strategies/lrj/ftr_mom_vp/without_marking_spec.rb` | When using manual offset management and not marking anything at all, we should not change offsets but we should keep moving forward in the processing. |
 | `pro/consumption/strategies/lrj/ftr_vp/regular_processing_spec.rb` | Karafka should process all messages using LRJ + FTR + VP with throttling |
+| `pro/consumption/strategies/lrj/ftr_vp/with_error_recovery_spec.rb` | When LRJ + FTR + VP encounter a single error, VP should collapse and retry with throttling still active. After recovery, all messages should be processed. |
 | `pro/consumption/strategies/lrj/ftr_vp/with_skip_filter_applied_not_freezing_partition_spec.rb` | When LRJ + FTR + VP are combined and a filter returns applied? true with action :skip, the partition should NOT become permanently frozen. |
 | `pro/consumption/strategies/lrj/immediate_completion_spec.rb` | LRJ should handle jobs that complete immediately without any actual long-running work, ensuring proper resource management and offset handling. |
 | `pro/consumption/strategies/lrj/mom/occasional_marking_spec.rb` | When using manual offset management and not marking often, we should have a smooth processing flow without extra messages or anything. |
@@ -937,9 +948,11 @@
 | `pro/consumption/strategies/lrj/mom_vp/without_marking_spec.rb` | When using manual offset management and not marking anything at all, we should not change offsets but we should keep moving forward in the processing. VPs should not interact with this flow |
 | `pro/consumption/strategies/lrj/vp/lrj_with_vp_from_earliest_spec.rb` | Virtual partitions and long-running jobs should not have any problems working together |
 | `pro/consumption/strategies/lrj/vp/regular_processing_one_by_one_without_errors_spec.rb` | Karafka should be able to just process all the messages one after another |
+| `pro/consumption/strategies/lrj/vp/with_error_recovery_spec.rb` | When LRJ + VP encounter a single error, VP should collapse and retry in collapsed mode. After the error condition clears, all messages should be processed successfully. |
 | `pro/consumption/strategies/lrj/vp/with_in_the_middle_revoked_spec.rb` | When we start processing VP work with LRJ and some of the virtual partitions get revoked, they should not run if they were in the jobs queue. |
 | `pro/consumption/strategies/mom/ftr/continuity_after_throttle_expires_spec.rb` | When we throttle with MoM enabled and we process longer than the throttle, it should not have any impact on the processing order. It should also not mark offsets in any way. |
 | `pro/consumption/strategies/mom/ftr/regular_processing_spec.rb` | With MoM + FTR enabled, messages should process correctly with throttling and offsets should not be auto-committed when mark_as_consumed is not called |
+| `pro/consumption/strategies/mom/ftr/with_error_recovery_spec.rb` | When MoM + FTR consumer encounters an error, it should recover via retry and process all messages. Since MoM is enabled, offsets should not be auto-committed. |
 | `pro/consumption/strategies/mom/ftr/with_manual_offset_and_error_spec.rb` | When using manual offset management with throttling, an error should move us back to where we had the last offset, but throttle backoff should continue linear. |
 | `pro/consumption/strategies/mom/ftr_vp/continuity_after_throttle_expires_spec.rb` | When we throttle with MoM enabled and we process longer than the throttle, it should not have any impact on the processing order. It should also not mark offsets in any way. |
 | `pro/consumption/strategies/mom/ftr_vp/marking_ahead_with_no_previous_in_batch_start_spec.rb` | When marking ahead, where there is no current offset to materialize on first batch, no offset should be marked and we should start from zero again Throttling should not impact it in any way |
@@ -971,6 +984,7 @@
 | `pro/consumption/strategies/vp/empty_and_nil_keys_spec.rb` | Virtual partitions should handle edge cases with empty keys, nil keys, and keys that result in invalid partitioning scenarios without crashing the consumer. |
 | `pro/consumption/strategies/vp/errors_tracking/collapsed_consecutive_errors_accumulation_spec.rb` | When using virtual partitions and tracking errors, they under consecutive collapse should grow in terms of size |
 | `pro/consumption/strategies/vp/errors_tracking/consecutive_errors_spec.rb` | When using virtual partitions and tracking errors, under collapse they should be present collectively from many partitions |
+| `pro/consumption/strategies/vp/errors_tracking/with_error_clearing_on_recovery_spec.rb` | When VP encounters an error, it collapses and retries in collapsed mode. The errors_tracker should start empty on the initial VP batch and contain errors during collapsed processing. |
 | `pro/consumption/strategies/vp/from_earliest_patterned_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) using multiple threads based on the used virtual partitioner. We should use more than one thread for processing of all the messages. This should also work as expected for pattern based topics. |
 | `pro/consumption/strategies/vp/from_earliest_spec.rb` | Karafka should be able to easily consume all the messages from earliest (default) using multiple threads based on the used virtual partitioner. We should use more than one thread for processing of all the messages |
 | `pro/consumption/strategies/vp/groups_aggregation_halt_on_recovery_spec.rb` | When using virtual partitions with errors during consumption, the virtual offset manager should limit group accumulation and halt further grouping during recovery to prevent memory issues |
@@ -1004,6 +1018,7 @@
 | `pro/consumption/transactions/concurrent_async_produce_stress_spec.rb` | Stress test for concurrent async productions within transactions. This test simulates high-throughput scenarios with: 1. Large message batches 2. Multiple async productions per message 3. Multiple concurrent consumers processing in parallel This verifies that under concurrent load: - All async productions complete successfully - No messages are lost - Offsets are correctly tracked - Transaction atomicity is maintained Note: This spec works correctly regardless of how Kafka batches messages for delivery. |
 | `pro/consumption/transactions/connection_pool_pristine/flow_spec.rb` | Karafka should correctly handle transactional producers from a ConnectionPool with multiplexing, ensuring transactional integrity across concurrent consumers |
 | `pro/consumption/transactions/dlq/with_crash_during_transational_dispatch_spec.rb` | In case transactional offset dispatch on post-error happens, Karafka should retry processing again and again. |
+| `pro/consumption/transactions/dlq/with_max_retries_exhausted_spec.rb` | When a transactional consumer exhausts max_retries, the message should be dispatched to DLQ within a transaction with offsets committed transactionally. |
 | `pro/consumption/transactions/dlq/with_transactional_dispatch_spec.rb` | We should be able to use transactional producer for DLQ dispatches |
 | `pro/consumption/transactions/early_exit_spec.rb` | When attempting to exit a transaction block early using break, Karafka should raise EarlyTransactionExitNotAllowedError to prevent incomplete transactions |
 | `pro/consumption/transactions/empty_transaction_spec.rb` | Running a transaction that does not publish data and does not store offsets should be ok |
@@ -1143,6 +1158,7 @@
 | `pro/rebalancing/transactions/revoke_reclaim_continuity_spec.rb` | When a consumer goes into a non-cooperative-sticky rebalance and gets the partitions back, it should not have duplicated data. |
 | `pro/rebalancing/virtual_partitions/coordinator_replacement_after_rebalance_spec.rb` | Karafka should replace coordinator for consumer of a given topic partition after partition was taken away from us and assigned back |
 | `pro/rebalancing/virtual_partitions/rebalance_continuity_spec.rb` | When a job is marked as vp and there is a rebalance, we should be aware that our current instance had the partition revoked even if it is assigned back. The assignment back should again start from where it left |
+| `pro/rebalancing/virtual_partitions/rebalance_during_collapse_spec.rb` | When VP is collapsed (retrying after error) and a rebalance triggers partition revocation, Karafka should handle the transition cleanly. After reclaiming the partition, messages should continue to be processed correctly. |
 | `pro/rebalancing/with_static_membership_reconnect_spec.rb` | Karafka process when stopped and started and configured with static membership should pick up the assigned work. It should not be reassigned to a different process. Karafka should maintain all the ordering and should not have duplicated. |
 | `pro/recurring_tasks/defining_schedule_spec.rb` | We should be able to build up a schedule with recurring tasks that we can use |
 | `pro/recurring_tasks/disable_enable_all_spec.rb` | We should be able to disable and enable back all the jobs in one go |
@@ -1234,8 +1250,10 @@
 | `pro/scheduled_messages/within_swarm_spec.rb` | When running in swarm things should work as expected |
 | `pro/scheduled_messages/without_any_messages_spec.rb` | When there are no messages at all, we should publish nothing except an empty state |
 | `pro/shutdown/long_running_jobs/revocation_awareness_on_shutdown_spec.rb` | When running LRJ jobs upon shutdown, those jobs will keep running until finished or until reached max wait time. During this time, the rebalance changes should propagate and we should be able to make decisions also based on the revocation status. |
+| `pro/shutdown/long_running_jobs/shutdown_with_in_flight_work_spec.rb` | When an LRJ consumer is mid-processing (in a sleep/work loop) when shutdown signal arrives, it should detect the stopping state and exit cleanly. |
 | `pro/shutdown/long_running_jobs/stopping_awareness_spec.rb` | When running a long running job, we should be able to detect that Karafka is stopping so we can early exit the job. Note, that for this to work correctly in regards to offsets, manual offset management need to be turned on. |
 | `pro/shutdown/on_reached_quiet_spec.rb` | When we have reached quiet state, we should still be subscribed to what we had |
+| `pro/shutdown/virtual_partitions/shutdown_during_collapse_spec.rb` | When VP is in collapsed mode (retrying after error) and shutdown is triggered, Karafka should shut down gracefully without hanging. |
 | `pro/shutdown/virtual_partitions/shutdown_on_all_consumers_spec.rb` | Karafka should run the shutdown on all the consumers that processed virtual partitions. |
 | `pro/swarm/direct_granular_assignments_spec.rb` | We should be able to use direct assignments per node |
 | `pro/swarm/direct_granular_ranges_spec.rb` | We should be able to use direct assignments per node with ranges |
@@ -1267,7 +1285,9 @@
 | `production/waterdrop_connection_pool_pristine/connection_pool_spec.rb` | User should be able to use WaterDrop default connection pool from within consumers This allows for producer pooling and reuse across different consumers |
 | `production/waterdrop_transactional_direct_pristine/transactional_pool_spec.rb` | User should be able to use WaterDrop connection pool with transactional direct api Each producer in the pool should have a unique transactional.id |
 | `production/waterdrop_transactional_pool_pristine/transactional_pool_spec.rb` | User should be able to use WaterDrop connection pool with transactional producers Each producer in the pool should have a unique transactional.id |
+| `production/with_custom_headers_spec.rb` | Custom headers should be correctly produced and consumed end-to-end, including string values, empty values, and unicode content. |
 | `production/with_key_and_partition_key_spec.rb` | When using both key and partition key to target partition, partition key should take precedence |
+| `production/with_large_payload_spec.rb` | Producer should handle messages near the broker size limit correctly. A ~500KB payload (below the default 1MB limit) should be produced and consumed intact. |
 | `rails/rails72_pristine/just-a-dependency/rails_setup_spec.rb` | Karafka should work fine with Rails 7.2 even when it is just a transitive dependency and is not in active use. In case like this KARAFKA_BOOT_FILE needs to be set to "false" @see https://github.com/karafka/karafka/issues/813 Load all the Railtie stuff like when `rails server` |
 | `rails/rails72_pristine/just-a-dependency/with_potential_name_collision_spec.rb` | Karafka should work fine when someone has root level components named based on the features @see https://github.com/karafka/karafka/issues/1144 Load all the Railtie stuff like when `rails server` |
 | `rails/rails72_pristine/just-a-loaded-dependency/rails_setup_spec.rb` | Karafka should be default require Rails when `KARAFKA_REQUIRE_RAILS` is not set to `"false"` |
@@ -1470,7 +1490,9 @@
 | `shutdown/via_idle_timeout_listener_spec.rb` | We should be able to build a listener that will monitor how long karafka is running without receiving any new messages and that it will stop after the expected time by sending the stop signal |
 | `signals/on_sigint_spec.rb` | When Karafka receives sigint, it should stop |
 | `signals/on_sigquit_spec.rb` | When Karafka receives sigquit, it should stop |
+| `signals/on_sigterm_during_consume_spec.rb` | When SIGTERM is sent while a consumer is actively processing messages, Karafka should shut down gracefully with offset tracking. |
 | `signals/on_sigterm_spec.rb` | When Karafka receives sigterm, it should stop |
+| `signals/on_sigtstp_followed_by_sigterm_spec.rb` | When SIGTSTP (quiet) is followed quickly by SIGTERM (stop), Karafka should handle the transition cleanly. Shutdown hooks should be called and the process should exit. |
 | `signals/on_sigtstp_spec.rb` | When Karafka receives sigstp it should finish all the work and keep polling not to trigger rebalances, however the shutdown hooks should happen and new work should not be picked up |
 | `signals/on_sigttin_spec.rb` | When Karafka receives sigttin, it should print some backtrace details using logger when logger listener is enabled Here it is enabled by default |
 | `specs_naming_spec.rb` | This spec iterates over all the files in the `spec/integrations` and makes sure, that all specs containing specs end with `_spec.rb` to make sure they are executed. It happened to me few times already, that I would forget about the postfix and the spec would not run. |
@@ -1488,6 +1510,8 @@
 | `testing/minitest_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
 | `testing/rspec/dynamic_sg_dispatch_spec.rb` | We should be able to use testing lib with rspec for topics that belong to one of few SGs from a single CG |
 | `testing/rspec/simple_integration_spec.rb` | We should be able to use testing lib with rspec in a simple manner |
+| `testing/rspec/with_batch_processing_spec.rb` | We should be able to use the testing library with batch processing, verifying that multiple messages in a batch are handled correctly. |
+| `testing/rspec/with_dlq_consumer_spec.rb` | We should be able to use the testing library with DLQ-configured topics and verify that normal consumer processing works with DLQ routing configured. |
 | `testing/rspec_pristine/test_flow_with_marking_spec.rb` | Karafka when used with minitest should work as expected when using a client reference Covers this case: https://github.com/karafka/karafka-testing/pull/198 |
 | `web/end_to_end_install_flow_pristine/install_with_rails_spec.rb` | Karafka 2.4+ should work ok with 0.9.0+ |
 | `web/from_earliest_drifted_spec.rb` | Karafka should be able to handle a case where the cluster and consumer times drifted Some metrics may not be 100% accurate and this should not happen often but may |
