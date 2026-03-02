@@ -63,6 +63,10 @@ There are the following commands supported:
     <td><code>karafka topics migrate</code></td>
     <td>creates missing topics, repartitions existing to match expected partitions count and aligns the configuration.</td>
   </tr>
+  <tr>
+    <td><code>karafka topics health</code></td>
+    <td>checks topics for replication and durability issues, detecting no redundancy, zero fault tolerance, and low durability configurations with actionable recommendations (Pro).</td>
+  </tr>
 </table>
 
 The below example illustrates the usage of the `migrate` command to align the number of partitions and to add one additional topic:
