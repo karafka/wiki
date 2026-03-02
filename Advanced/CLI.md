@@ -92,8 +92,8 @@ bundle exec karafka topics health
 The command checks for the following conditions:
 
 - **No Redundancy** — Topics with a replication factor of 1, meaning no replicas exist. Any single broker failure will cause data loss.
-- **Zero Fault Tolerance** — Topics where the replication factor is less than or equal to `min.insync.replicas`, meaning no broker can fail without causing the topic to become unavailable for writes.
-- **Low Durability** — Topics where `min.insync.replicas` is set to 1, meaning acknowledged writes only require a single broker, increasing the risk of data loss if that broker fails before replication completes.
+- **Zero Fault Tolerance** — Topics where the replication factor is less than or equal to `min.insync.replicas`, meaning no broker can fail without causing the topic to become unavailable for writes when producers use `acks=all`.
+- **Low Durability** — Topics where `min.insync.replicas` is set to 1, meaning acknowledged writes using `acks=all` only require a single broker, increasing the risk of data loss if that broker fails before replication completes.
 
 Results are grouped by severity using color-coded output. Each finding includes a recommendation to help you address the detected risk, such as increasing the replication factor or adjusting the `min.insync.replicas` setting.
 

@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+- [One Thread to Poll Them All: How a Single Pipe Made WaterDrop 50% Faster](https://mensfeld.pl/2026/02/waterdrop-fd-polling-50-percent-faster/)
 - [WaterDrop Meets Ruby’s Async Ecosystem: Lightweight Concurrency Done Right](https://mensfeld.pl/2025/09/ruby-async-waterdrop-concurrency/)
 - [The 60-Second Wait: How I Spent Months Solving the Ruby’s Most Annoying Gem Installation Problem](https://mensfeld.pl/2025/07/solving-ruby-rdkafka-installation-problem/)
 - [Deimos — The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)

@@ -214,13 +214,14 @@ WaterDrop provides the `#queue_size` method (also aliased as `#queue_length`) on
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
+  config.deliver = true
   config.kafka = { 'bootstrap.servers': 'localhost:9092' }
 end
 
 producer.produce_async(topic: 'events', payload: 'hello')
 
-puts producer.queue_size
-# => 1
+# Returns the number of messages waiting for delivery
+producer.queue_size
 ```
 
 This is useful for monitoring backpressure, implementing custom flow control, or building health checks around producer readiness.
