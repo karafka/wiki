@@ -129,6 +129,102 @@ The reload mechanism helps ensure that transient fatal errors don't permanently 
 
     For transactional producers, similar configuration options are available with different defaults. See the [Transactional Producer documentation](WaterDrop-Transactions) for more details.
 
+## Polling Configuration
+
+WaterDrop supports two polling modes that control how librdkafka delivery callbacks are processed: `:thread` (default) and `:fd`.
+
+### Thread Mode (Default)
+
+In thread mode, each producer spawns a dedicated background Ruby thread that continuously calls `rd_kafka_poll` in a loop. This is the simplest approach and works well for most use cases.
+
+No additional configuration is required to use thread mode, as it is the default.
+
+### FD Mode
+
+FD mode uses OS-level pipes and `IO.select` multiplexing to monitor all producers from a single Ruby thread, avoiding GVL contention. This approach provides **39-54% higher throughput** compared to thread mode, making it ideal for high-performance applications or environments with many producers.
+
+To enable FD mode:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.deliver = true
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092'
+  }
+
+  config.polling.mode = :fd
+end
+```
+
+### Polling Configuration Options
+
+The following options are available under the `config.polling` namespace:
+
+| Option                | Description                                                                                        | Default   |
+|-----------------------|----------------------------------------------------------------------------------------------------|-----------|
+| `polling.mode`        | Polling mode to use: `:thread` (dedicated thread per producer) or `:fd` (`IO.select` multiplexing) | `:thread` |
+| `polling.fd.max_time` | Maximum time in milliseconds spent polling a single producer per cycle in FD mode                  | `100`     |
+| `polling.poller`      | Custom `WaterDrop::Polling::Poller` instance for callback isolation                                | `nil`     |
+
+### Priority Differentiation
+
+In FD mode, you can use `polling.fd.max_time` to differentiate polling priority between producers. Producers with a higher `max_time` value will receive more polling time per cycle:
+
+```ruby
+# High-priority producer: more time per polling cycle
+high_priority = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+  config.polling.mode = :fd
+  config.polling.fd.max_time = 200
+end
+
+# Low-priority producer: less time per polling cycle
+low_priority = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+  config.polling.mode = :fd
+  config.polling.fd.max_time = 50
+end
+```
+
+### Dedicated Poller
+
+By default, all FD-mode producers share a single global poller thread. If you need callback isolation between groups of producers, you can assign a dedicated poller:
+
+```ruby
+dedicated_poller = WaterDrop::Polling::Poller.new
+
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+  config.polling.mode = :fd
+  config.polling.poller = dedicated_poller
+end
+```
+
+### FD Mode Caveats
+
+When using FD mode, keep in mind:
+
+- **Callbacks execute on the poller thread.** Avoid performing blocking or expensive operations inside delivery callbacks, as they will delay polling of other producers sharing the same poller.
+- **Do not close a producer from within its own callbacks.** This can cause deadlocks or undefined behavior.
+- **Slow callbacks can starve other producers.** If one producer's callbacks take a long time, other producers on the same poller will not be polled until those callbacks complete.
+
+### Queue Size
+
+WaterDrop provides the `#queue_size` method (also aliased as `#queue_length`) on the producer instance. It returns the number of messages currently pending in the librdkafka internal queue, waiting to be delivered to the broker.
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
+
+producer.produce_async(topic: 'events', payload: 'hello')
+
+puts producer.queue_size
+# => 1
+```
+
+This is useful for monitoring backpressure, implementing custom flow control, or building health checks around producer readiness.
+
 ## Compression
 
 WaterDrop supports following compression types:

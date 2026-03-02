@@ -9,6 +9,7 @@ Karafka has a simple CLI built in. It provides the following commands:
 | server         | Start the Karafka server (short-cut aliases: "s", "consumer")                     |
 | swarm          | Start the Karafka server in the swarm mode (multiple forked processes)            |
 | topics         | Allows for topics management (create, delete, repartition, reset, migrate)        |
+| topics health  | Check Kafka topics for replication and durability issues (Pro)                    |
 
 All the commands are executed the same way:
 
@@ -75,6 +76,26 @@ You can also exclude certain topics by using the `--exclude-topics` flag:
 ```shell
 bundle exec karafka server --exclude-topics topic_name2,topic_name5
 ```
+
+## Karafka Topics Health
+
+!!! note "Pro Feature"
+
+    The `topics health` command is a Pro feature available exclusively to Karafka Pro users.
+
+The `topics health` command analyzes your Kafka topics for replication and durability issues. It inspects each topic's replication factor and `min.insync.replicas` setting to detect potential risks, grouping findings by color-coded severity with actionable recommendations.
+
+```shell
+bundle exec karafka topics health
+```
+
+The command checks for the following conditions:
+
+- **No Redundancy** — Topics with a replication factor of 1, meaning no replicas exist. Any single broker failure will cause data loss.
+- **Zero Fault Tolerance** — Topics where the replication factor is less than or equal to `min.insync.replicas`, meaning no broker can fail without causing the topic to become unavailable for writes.
+- **Low Durability** — Topics where `min.insync.replicas` is set to 1, meaning acknowledged writes only require a single broker, increasing the risk of data loss if that broker fails before replication completes.
+
+Results are grouped by severity using color-coded output. Each finding includes a recommendation to help you address the detected risk, such as increasing the replication factor or adjusting the `min.insync.replicas` setting.
 
 ## Karafka Swarm
 
