@@ -1477,6 +1477,7 @@
 | `shutdown/consumer_shutdown_during_processing_spec.rb` | Karafka should call shutdown hooks during server termination |
 | `shutdown/extremely_fast_stop_spec.rb` | When we stop right after run, it should not hang even on extreme edge cases |
 | `shutdown/fast_shutdown_on_long_polling_spec.rb` | Karafka should not wait full long polling cycle when shutdown is issued due to fast circuit breaker flow. No assertions are needed as it will just wait forever if not working correctly |
+| `shutdown/on_forceful_shutdown_reports_blocking_details_spec.rb` | When Karafka forcefully terminates due to a hanging consumer, the app.stopping.error event should include details about what was blocking: active listeners, alive workers, and jobs still in processing. The logger listener should also output these details. |
 | `shutdown/on_hanging_jobs_and_a_shutdown_spec.rb` | When Karafka is being shutdown and the consumer is hanging, it should force a shutdown |
 | `shutdown/on_hanging_listener_and_shutdown_spec.rb` | When Karafka is being shutdown and the consumer thread is hanging for too long, it should force a shutdown despite having active connections to Kafka |
 | `shutdown/on_hanging_on_shutdown_job_and_a_shutdown_spec.rb` | When Karafka is being shutdown and the consumer is hanging, it should force a shutdown |
