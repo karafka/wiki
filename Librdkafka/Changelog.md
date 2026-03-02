@@ -6,6 +6,34 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.13.2 (2026-03-02)
+
+librdkafka v2.13.2 is a maintenance release:
+
+- The librdkafka.redist NuGet package now includes binary for alpine-arm64 (https://github.com/confluentinc/librdkafka/pull/5237, [@mclayton7](https://github.com/mclayton7))
+- Remove CPU usage regression when a subscription matches no topics (#5324).
+- Fix rd_kafka_consume_batch_queue incorrectly updating the application position on EOF or error messages (#5213).
+- Fix compilation without getentropy (@olegrok, @lpsinger, #5288).
+- Use a truly random seed for pseudo-random number generation whenever available (#5288).
+- Fix rd_list destroy callback type mismatch by changing rd_kafka_assignor_destroy to take a void * argument, as expected by rd_list_init() destroy callbacks, and casting internally to rd_kafka_assignor_t * (#5195) (#5278).
+
+
+### Fixes
+
+#### General fixes
+
+- Issues: #5283. Fix compilation without getentropy. glibc versions lacking support are those less than 2.25 (2017). Happening since 2.13.0 (@olegrok, @lpsinger, #5288).
+
+#### Consumer fixes
+
+- Issues: #5324. Remove CPU usage regression when a subscription matches no topics. The increased CPU usage (~30%) was seen in particular when there are many topics in the clusters and the given subscription regex doesn't match any. Happening since 2.10.0 (#5324).
+- Issues: #4844. Fix rd_kafka_consume_batch_queue incorrectly updating the application position when receiving EOF or error messages, causing the position to move forward and likely be stored and committed. When storing the application offset the leader epoch is also considered for correct offset ordering in case of log truncation. Happening since 2.2.0 (#5213).
+
+### Checksums
+
+Release asset checksums:
+ * v2.13.2.zip SHA256 `1b71b01a33f54c5d3e359935f73445fde4010215efdb899e3a746475d6aa178a`
+ * v2.13.2.tar.gz SHA256 `14972092e4115f6e99f798a7cb420cbf6daa0c73502b3c52ae42fb5b418eea8f`
 ## 2.13.0 (2026-01-05)
 
 librdkafka v2.13.0 is a feature release:
@@ -1953,135 +1981,4 @@ librdkafka v1.6.1 is a maintenance release.
    were attempted when outstanding transactions were blocking OffsetFetch
    requests with `ERR_UNSTABLE_OFFSET_COMMIT`. #3265
 
-
-## 1.6.0 (2021-01-26)
-
-# librdkafka v1.6.0
-
-librdkafka v1.6.0 is feature release:
-
- * [KIP-429 Incremental rebalancing](https://cwiki.apache.org/confluence/display/KAFKA/KIP-429%3A+Kafka+Consumer+Incremental+Rebalance+Protocol) with sticky consumer group partition assignor (KIP-54) (by @mhowlett).
- * [KIP-480 Sticky producer partitioning](https://cwiki.apache.org/confluence/display/KAFKA/KIP-480%3A+Sticky+Partitioner) (`sticky.partitioning.linger.ms`) - achieves higher throughput and lower latency through sticky selection of random partition (by @abbycriswell).
- * AdminAPI: Add support for `DeleteRecords()`, `DeleteGroups()` and `DeleteConsumerGroupOffsets()` (by @gridaphobe)
- * [KIP-447 Producer scalability for exactly once semantics](https://cwiki.apache.org/confluence/display/KAFKA/KIP-447%3A+Producer+scalability+for+exactly+once+semantics) - allows a single transactional producer to be used for multiple input partitions. Requires Apache Kafka 2.5 or later.
- * Transactional producer fixes and improvements, see **Transactional Producer fixes** below.
- * The [librdkafka.redist](https://www.nuget.org/packages/librdkafka.redist/) NuGet package now supports Linux ARM64/Aarch64.
-
-
-### Upgrade considerations
-
- * Sticky producer partitioning (`sticky.partitioning.linger.ms`) is
-   enabled by default (10 milliseconds) which affects the distribution of
-   randomly partitioned messages, where previously these messages would be
-   evenly distributed over the available partitions they are now partitioned
-   to a single partition for the duration of the sticky time
-   (10 milliseconds by default) before a new random sticky partition
-   is selected.
- * The new KIP-447 transactional producer scalability guarantees are only
-   supported on Apache Kafka 2.5 or later, on earlier releases you will
-   need to use one producer per input partition for EOS. This limitation
-   is not enforced by the producer or broker.
- * Error handling for the transactional producer has been improved, see
-   the **Transactional Producer fixes** below for more information.
-
-
-### Known issues
-
- * The Transactional Producer's API timeout handling is inconsistent with the
-   underlying protocol requests, it is therefore strongly recommended that
-   applications call `rd_kafka_commit_transaction()` and
-   `rd_kafka_abort_transaction()` with the `timeout_ms` parameter
-   set to `-1`, which will use the remaining transaction timeout.
-
-
-### Enhancements
-
- * KIP-107, KIP-204: AdminAPI: Added `DeleteRecords()` (by @gridaphobe).
- * KIP-229: AdminAPI: Added `DeleteGroups()` (by @gridaphobe).
- * KIP-496: AdminAPI: Added `DeleteConsumerGroupOffsets()`.
- * KIP-464: AdminAPI: Added support for broker-side default partition count
-   and replication factor for `CreateTopics()`.
- * Windows: Added `ssl.ca.certificate.stores` to specify a list of
-   Windows Certificate Stores to read CA certificates from, e.g.,
-   `CA,Root`. `Root` remains the default store.
- * Use reentrant `rand_r()` on supporting platforms which decreases lock
-   contention (@azat).
- * Added `assignor` debug context for troubleshooting consumer partition
-   assignments.
- * Updated to OpenSSL v1.1.1i when building dependencies.
- * Update bundled lz4 (used when `./configure --disable-lz4-ext`) to v1.9.3
-   which has vast performance improvements.
- * Added `rd_kafka_conf_get_default_topic_conf()` to retrieve the
-   default topic configuration object from a global configuration object.
- * Added `conf` debugging context to `debug` - shows set configuration
-   properties on client and topic instantiation. Sensitive properties
-   are redacted.
- * Added `rd_kafka_queue_yield()` to cancel a blocking queue call.
- * Will now log a warning when multiple ClusterIds are seen, which is an
-   indication that the client might be erroneously configured to connect to
-   multiple clusters which is not supported.
- * Added `rd_kafka_seek_partitions()` to seek multiple partitions to
-   per-partition specific offsets.
-
-
-### Fixes
-
-#### General fixes
-
- * Fix a use-after-free crash when certain coordinator requests were retried.
- * The C++ `oauthbearer_set_token()` function would call `free()` on
-   a `new`-created pointer, possibly leading to crashes or heap corruption (#3194)
-
-#### Consumer fixes
-
- * The consumer assignment and consumer group implementations have been
-   decoupled, simplified and made more strict and robust. This will sort out
-   a number of edge cases for the consumer where the behaviour was previously
-   undefined.
- * Partition fetch state was not set to STOPPED if OffsetCommit failed.
- * The session timeout is now enforced locally also when the coordinator
-   connection is down, which was not previously the case.
-
-
-#### Transactional Producer fixes
-
- * Transaction commit or abort failures on the broker, such as when the
-   producer was fenced by a newer instance, were not propagated to the
-   application resulting in failed commits seeming successful.
-   This was a critical race condition for applications that had a delay after
-   producing messages (or sendings offsets) before committing or
-   aborting the transaction. This issue has now been fixed and test coverage
-   improved.
- * The transactional producer API would return `RD_KAFKA_RESP_ERR__STATE`
-   when API calls were attempted after the transaction had failed, we now
-   try to return the error that caused the transaction to fail in the first
-   place, such as `RD_KAFKA_RESP_ERR__FENCED` when the producer has
-   been fenced, or `RD_KAFKA_RESP_ERR__TIMED_OUT` when the transaction
-   has timed out.
- * Transactional producer retry count for transactional control protocol
-   requests has been increased from 3 to infinite, retriable errors
-   are now automatically retried by the producer until success or the
-   transaction timeout is exceeded. This fixes the case where
-   `rd_kafka_send_offsets_to_transaction()` would fail the current
-   transaction into an abortable state when `CONCURRENT_TRANSACTIONS` was
-   returned by the broker (which is a transient error) and the 3 retries
-   were exhausted.
-
-
-#### Producer fixes
-
- * Calling `rd_kafka_topic_new()` with a topic config object with
-   `message.timeout.ms` set could sometimes adjust the global `linger.ms`
-   property (if not explicitly configured) which was not desired, this is now
-   fixed and the auto adjustment is only done based on the
-   `default_topic_conf` at producer creation.
- * `rd_kafka_flush()` could previously return `RD_KAFKA_RESP_ERR__TIMED_OUT`
-   just as the timeout was reached if the messages had been flushed but
-   there were now no more messages. This has been fixed.
-
-
-### Checksums
-Release asset checksums:
- * v1.6.0.zip SHA256 `af6f301a1c35abb8ad2bb0bab0e8919957be26c03a9a10f833c8f97d6c405aa8`
- * v1.6.0.tar.gz SHA256 `3130cbd391ef683dc9acf9f83fe82ff93b8730a1a34d0518e93c250929be9f6b`
 
