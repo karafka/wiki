@@ -118,7 +118,7 @@ When you see `Connect to ipv4#XX.XXX.XXX.XXX:XXXX failed: Connection refused`, t
 
 ### Message Timeout Behavior
 
-This waiting time is governed by the `message.timeout.ms` setting in the `kafka` scope configuration. This setting determines how long the producer should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 50 seconds. Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering messages until after the default timeout period of 50 seconds has elapsed.
+This waiting time is governed by the `message.timeout.ms` setting in the `kafka` scope configuration. This setting determines how long the producer should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 150 seconds. Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering messages until after the default timeout period of 150 seconds has elapsed.
 
 ## Karafka-Specific Behavior During Broker Failures
 
