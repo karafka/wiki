@@ -97,17 +97,17 @@ WaterDrop default timeout values differ from librdkafka:
     <tr>
       <td><code>message.timeout.ms</code></td>
       <td>300,000ms (5 minutes)</td>
-      <td>50,000ms (50 seconds)</td>
+      <td>150,000ms (150 seconds)</td>
     </tr>
     <tr>
       <td><code>transaction.timeout.ms</code> (transactional producers only)</td>
       <td>60,000ms (60 seconds)</td>
-      <td>55,000ms (55 seconds)</td>
+      <td>165,000ms (165 seconds)</td>
     </tr>
   </tbody>
 </table>
 
-WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 50 seconds, particularly during dual-broker outages.
+WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) than librdkafka to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 150 seconds, particularly during dual-broker outages.
 
 **Recommended MSK configuration for standard producers:**
 
@@ -123,7 +123,7 @@ config.kafka = {
 
 When using transactional producers, timeout configuration requires additional attention. The `transaction.timeout.ms` setting controls how long the transaction coordinator waits before aborting an incomplete transaction. This setting must be greater than or equal to `message.timeout.ms`.
 
-WaterDrop defaults for transactional producers are `message.timeout.ms` of 50,000ms (50 seconds) and `transaction.timeout.ms` of 55,000ms (55 seconds). These shorter defaults may be insufficient for MSK environments during maintenance operations.
+WaterDrop defaults for transactional producers are `message.timeout.ms` of 150,000ms (150 seconds) and `transaction.timeout.ms` of 165,000ms (165 seconds). These defaults may be insufficient for MSK environments during extended maintenance operations.
 
 Default transactional timeout values:
 
@@ -137,11 +137,11 @@ Default transactional timeout values:
   <tbody>
     <tr>
       <td><code>message.timeout.ms</code></td>
-      <td>50,000ms (50s)</td>
+      <td>150,000ms (150s)</td>
     </tr>
     <tr>
       <td><code>transaction.timeout.ms</code></td>
-      <td>55,000ms (55s)</td>
+      <td>165,000ms (165s)</td>
     </tr>
   </tbody>
 </table>
