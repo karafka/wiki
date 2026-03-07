@@ -411,7 +411,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       cJSON
     </td>
-    <td>1.7.14</td>
+    <td>1.7.19</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.cjson">MIT</a>
     </td>
@@ -570,7 +570,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>OpenSSL</td>
-    <td>3.0.16</td>
+    <td>3.0.19</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/openssl/openssl/blob/master/LICENSE.txt">Apache-2.0</a></td>
     <td>The OpenSSL Project</td>
   </tr>
@@ -593,7 +593,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>zlib</td>
-    <td>1.3.1</td>
+    <td>1.3.2</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/madler/zlib/blob/master/LICENSE">Zlib</a></td>
     <td>Jean-loup Gailly and Mark Adler</td>
   </tr>
