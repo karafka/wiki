@@ -1503,6 +1503,7 @@
 | `swarm/forceful_nodes_restart_graceful_supervisor_stop_spec.rb` | When supervisor restarts nodes that are hanging it should emit a status and when nodes are no longer hanging it should gracefully stop macOS ARM64 needs more generous timeouts due to slower process startup |
 | `swarm/forceful_shutdown_of_hanging_spec.rb` | When supervisor stops work, hanging processes should be killed |
 | `swarm/liveness_failure_restart_spec.rb` | If we use liveness API to report issue, Karafka should restart the node |
+| `swarm/post_fork_idempotent_producer_reinitialization_spec.rb` | When we fork a process and use an idempotent producer with reload settings, the producer should properly reinitialize in the forked child and be able to produce messages. @see https://github.com/karafka/karafka/issues/3054 Reproduction for: after fork, idempotent producer fails to reinitialize |
 | `swarm/regular_flow_with_post_fork_producer_spec.rb` | We should be able to use the regular producer with the inherited config to operate and send messages |
 | `swarm/start_stop_after_time_spec.rb` | We should be able to create a swarm where one of the processes gets assignment and consumes messages. After this we should be able to stop everything. |
 | `swarm/static_memberships_without_a_conflict_spec.rb` | We should be able to create a swarm with static members that can go up and down and receive same assignments. They also should not conflict with each other meaning each of them should consume some data and there should be no fencing |
