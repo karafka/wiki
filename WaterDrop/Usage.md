@@ -600,6 +600,34 @@ Managing multiple topic delivery requirements in WaterDrop often requires a comb
 
 If you work with forked processes, make sure you **don't** use the producer before the fork. You can easily configure the producer and then fork and use it.
 
+!!! info "Closed Producers Do Not Resurrect After Fork"
+
+    If you close a producer before forking and then attempt to use it in the child process, it will **not** be automatically re-created. A `WaterDrop::Errors::ProducerClosedError` will be raised. This is by design — a closed producer remains closed regardless of forking.
+
+    If you need a working producer in a forked child process, you must explicitly reinitialize it by creating a new `WaterDrop::Producer` instance. Use `Karafka::Setup::AttributesMap.producer` to carry over the relevant Kafka settings:
+
+    ```ruby
+    # Close the producer before forking
+    Karafka.producer.close
+
+    child_pid = Process.fork do
+      # Reinitialize the producer in the child process
+      config = Karafka::App.config
+
+      config.producer = ::WaterDrop::Producer.new do |p_config|
+        p_config.kafka = ::Karafka::Setup::AttributesMap.producer(config.kafka.dup)
+        p_config.logger = config.logger
+      end
+
+      # Now Karafka.producer is a fresh, usable instance
+      Karafka.producer.produce_sync(topic: 'my_topic', payload: 'hello')
+    end
+
+    Process.wait(child_pid)
+    ```
+
+    Only producers that were **never used and never closed** before forking can be safely used in the child process without reinitialization, as WaterDrop detects their unconnected state and establishes a fresh connection in the forked process.
+
 To tackle this [obstacle](https://github.com/appsignal/rdkafka-ruby/issues/15) related to rdkafka, WaterDrop adds finalizer to each of the producers to close the rdkafka client before the Ruby process is shutdown. Due to the [nature of the finalizers](https://www.mikeperham.com/2010/02/24/the-trouble-with-ruby-finalizers/), this implementation prevents producers from being GCed (except upon VM shutdown) and can cause memory leaks if you don't use persistent/long-lived producers in a long-running process or if you don't use the `#close` method of a producer when it is no longer needed. Creating a producer instance for each message is anyhow a rather bad idea, so we recommend not to.
 
 ---
