@@ -604,23 +604,20 @@ If you work with forked processes, make sure you **don't** use the producer befo
 
     If you close a producer before forking and then attempt to use it in the child process, it will **not** be automatically re-created. A `WaterDrop::Errors::ProducerClosedError` will be raised. This is by design — a closed producer remains closed regardless of forking.
 
-    If you need a working producer in a forked child process, you must explicitly reinitialize it. You can use the `Karafka::Swarm::ProducerReplacer` to build a new producer that inherits the configuration from the old one:
+    If you need a working producer in a forked child process, you must explicitly reinitialize it by creating a new `WaterDrop::Producer` instance. Use `Karafka::Setup::AttributesMap.producer` to carry over the relevant Kafka settings:
 
     ```ruby
-    old_producer = Karafka.producer
-
     # Close the producer before forking
-    old_producer.close
+    Karafka.producer.close
 
     child_pid = Process.fork do
       # Reinitialize the producer in the child process
-      app_config = Karafka::App.config
+      config = Karafka::App.config
 
-      app_config.producer = Karafka::Swarm::ProducerReplacer.new.call(
-        old_producer,
-        app_config.kafka.dup,
-        app_config.logger
-      )
+      config.producer = ::WaterDrop::Producer.new do |p_config|
+        p_config.kafka = ::Karafka::Setup::AttributesMap.producer(config.kafka.dup)
+        p_config.logger = config.logger
+      end
 
       # Now Karafka.producer is a fresh, usable instance
       Karafka.producer.produce_sync(topic: 'my_topic', payload: 'hello')
