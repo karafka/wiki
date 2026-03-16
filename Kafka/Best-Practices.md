@@ -197,7 +197,7 @@ As a general rule, your average CPU load should not exceed your available CPU co
 - **Monitor load averages** relative to your core/vCPU count, not just percentage - a load average of 8 on a 6-core machine indicates saturation
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/kafka-overload-dont.png"
+  <img src="https://karafka.io/assets/misc/printscreens/kafka-overload-do.png"
        alt="Kafka 3-broker cluster monitoring dashboard showing CPU usage averaging
        60-70% with spikes to 100% and load averages exceeding 6 vCPUs - a cluster
        at risk of cascading failure if any broker goes down" />
