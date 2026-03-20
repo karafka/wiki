@@ -9,8 +9,8 @@
 - [Web UI](Web-UI-Getting-Started)
 - [Testing](Testing)
 - [Components](Basics-Components)
-- [FAQ](FAQ)
-- [Support](Support)
+- [FAQ](Basics-FAQ)
+- [Support](Basics-Support)
 - [Status](Status)
 - [Articles and Other References](Basics-Articles-and-Other-References)
 

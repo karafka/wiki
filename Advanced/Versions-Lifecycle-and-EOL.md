@@ -168,4 +168,4 @@ The following table outlines Kafka-compatible platforms that have been reported 
 ## See Also
 
 - [Upgrading](Upgrading) - Upgrade strategies and best practices
-- [Support](Support) - Get help with compatibility and version issues
+- [Support](Basics-Support) - Get help with compatibility and version issues
