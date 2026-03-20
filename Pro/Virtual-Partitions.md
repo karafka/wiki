@@ -429,7 +429,7 @@ This behavior is advantageous in scenarios where message processing involves ext
 
 ## Behaviour on Errors
 
-For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Operations-Error-Handling-and-Back-Off-Policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
+For a single partition-based Virtual Partitions group, offset management and retries policies are entangled. They behave [on errors](Consumer-Groups-Error-Handling-and-Back-Off-Policy#runtime) precisely the same way as regular partitions with one difference: back-offs and retries are applied to the underlying regular partition. This means that if an error occurs in one of the virtual partitions, Karafka will pause based on the highest possible Virtual Offset computed using the [Virtual Offset Management](#virtual-offset-management) feature and will exclude all the messages that were marked as consumed in any of the virtual partitions.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/virtual_partitions/error_handling.svg" />
@@ -779,4 +779,4 @@ Overall, virtual partitions can be beneficial in any industry where large volume
 - [Parallel Segments](Pro-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Use with Virtual Partitions for better throughput on IO-bound tasks
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding Karafka's threading model and Virtual Partitions
-- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - How errors are handled in Virtual Partitions
+- [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - How errors are handled in Virtual Partitions

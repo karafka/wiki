@@ -162,7 +162,7 @@ Karafka marks each job as consumed using `#mark_as_consumed` after successfully 
 
 ## Behaviour on Errors
 
-Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Operations-Error-Handling-and-Back-Off-Policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
+Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Consumer-Groups-Error-Handling-and-Back-Off-Policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
 
 Please keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
 
@@ -308,4 +308,4 @@ For advanced continuation capabilities including delayed resumes and partitionin
 - [Testing](Basics-Testing) - Test your ActiveJob jobs with Karafka's testing helpers
 - [Dead Letter Queue](Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
 - [Long Running Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
-- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs
+- [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

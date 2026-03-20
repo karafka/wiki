@@ -59,6 +59,11 @@
 - [Instrumentation Events](WaterDrop-Instrumentation-Events)
 - [Reconfiguration](WaterDrop-Reconfiguration)
 
+## Consumer Groups
+
+- [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
+- [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
+
 ## Operations
 
 - [Development vs Production](Operations-Development-vs-Production)
@@ -70,14 +75,12 @@
     - [Kubernetes](Operations-Deployment#kubernetes)
     - [Confluent Cloud](Operations-Deployment#confluent-cloud)
     - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
-- [Persistent Pausing](Operations-Persistent-Pausing)
 - [Signals and States](Operations-Signals-and-States)
 - [Monitoring and Logging](Operations-Monitoring-and-Logging)
 - [Instrumentation Events](Operations-Instrumentation-Events)
-- [Error Handling and back off policy](Operations-Error-Handling-and-Back-Off-Policy)
 - [AWS MSK Guide](Operations-AWS-MSK-Guide)
 
-## Admin
+## Infrastructure
 
 - [Admin API](Infrastructure-Admin-API)
 - [ACLs API](Infrastructure-Admin-Acls-API)

@@ -414,6 +414,6 @@ The Karafka Dead Letter Queue is worth using because it provides a way to handle
 ## See Also
 
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Pro version with ordering preservation and advanced features
-- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
+- [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
 - [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
 - [Virtual Partitions](Pro-Virtual-Partitions) - How DLQ behaves with parallel processing

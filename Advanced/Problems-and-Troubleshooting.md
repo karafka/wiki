@@ -33,7 +33,7 @@ Karafka now has a dedicated and comprehensive debugging guide that covers troubl
 ## See Also
 
 - [Debugging](Debugging) - Systematic approach to debugging consumer processing issues
-- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Configure error handling and retry strategies
+- [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Configure error handling and retry strategies
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Understand how Karafka handles broker failures
 - [FAQ](Basics-FAQ) - Frequently asked questions about common Karafka issues
 - [Support](Pro-Support) - Get priority support for complex troubleshooting scenarios

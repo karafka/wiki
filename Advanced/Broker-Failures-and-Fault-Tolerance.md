@@ -443,7 +443,7 @@ Connection refused errors during broker maintenance indicate the system is worki
 
 ## See Also
 
-- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Configure retry strategies and backoff policies for consumer errors
+- [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Configure retry strategies and backoff policies for consumer errors
 - [Dead Letter Queue](Dead-Letter-Queue) - Handle persistent failures by routing problematic messages to DLQ
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ features for complex failure scenarios
 - [Monitoring and Logging](Operations-Monitoring-and-Logging) - Track broker connection health and system performance
