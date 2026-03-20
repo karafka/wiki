@@ -128,8 +128,8 @@ Karafka ships with a full integration test suite that illustrates various use ca
 
 ## See Also
 
-- [Configuration](Configuration) - Configure your Karafka application with framework and librdkafka settings
-- [Consuming Messages](Consuming-Messages) - Learn how to process messages from Kafka topics
-- [Producing Messages](Producing-Messages) - Send messages to Kafka topics using WaterDrop
-- [Testing](Testing) - Test your Karafka consumers and ensure correct message processing
+- [Configuration](Basics-Configuration) - Configure your Karafka application with framework and librdkafka settings
+- [Consuming Messages](Basics-Consuming-Messages) - Learn how to process messages from Kafka topics
+- [Producing Messages](Basics-Producing-Messages) - Send messages to Kafka topics using WaterDrop
+- [Testing](Basics-Testing) - Test your Karafka consumers and ensure correct message processing
 - [Getting Started](Web-UI-Getting-Started) - Set up the Web UI for monitoring and managing your Karafka applications

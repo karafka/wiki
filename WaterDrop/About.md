@@ -25,5 +25,5 @@ Please visit the [Getting Started](WaterDrop-Getting-Started) page for instructi
 ## See Also
 
 - [Getting Started](WaterDrop-Getting-Started) - For installation and setup instructions
-- [Producing Messages](Producing-Messages) - For message production techniques
+- [Producing Messages](Basics-Producing-Messages) - For message production techniques
 - [Usage](WaterDrop-Usage) - For detailed usage examples and patterns

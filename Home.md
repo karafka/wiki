@@ -1,13 +1,13 @@
 ## Basics
 
 - [Why Kafka and Karafka](Basics-Why-Kafka-and-Karafka)
-- [Getting Started](Getting-Started)
+- [Getting Started](Basics-Getting-Started)
 - [Code Editors and LLM Setup](Basics-Code-Editors-and-LLM-Setup)
-- [Configuration](Configuration)
-- [Producing Messages](Producing-Messages)
-- [Consuming Messages](Consuming-Messages)
+- [Configuration](Basics-Configuration)
+- [Producing Messages](Basics-Producing-Messages)
+- [Consuming Messages](Basics-Consuming-Messages)
 - [Web UI](Web-UI-Getting-Started)
-- [Testing](Testing)
+- [Testing](Basics-Testing)
 - [Components](Basics-Components)
 - [FAQ](Basics-FAQ)
 - [Support](Basics-Support)

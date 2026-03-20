@@ -274,7 +274,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
     It is critical to ensure that the `#wrap` method always calls `yield`, even if operations like selecting a producer from a pool fail. The `yield` statement in `#wrap` executes the entire operational flow within Karafka, including not only your custom logic but also essential framework-level synchronization and processing code.
 
-    You can read more about this requirement [here](Consuming-Messages#wrapping-the-execution-flow).
+    You can read more about this requirement [here](Basics-Consuming-Messages#wrapping-the-execution-flow).
 
 ### Risks of Early Exiting Transactional Block
 

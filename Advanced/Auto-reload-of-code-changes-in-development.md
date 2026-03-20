@@ -28,4 +28,4 @@ Keep in mind, though, that there are a couple of limitations to it:
 ## See Also
 
 - [Development vs Production](Operations-Development-vs-Production) - Best practices for different environments
-- [Getting Started](Getting-Started) - Initial setup and configuration basics
+- [Getting Started](Basics-Getting-Started) - Initial setup and configuration basics

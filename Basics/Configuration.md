@@ -184,7 +184,7 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 ## See Also
 
-- [Getting Started](Getting-Started) - Initial setup and installation of Karafka for your application
+- [Getting Started](Basics-Getting-Started) - Initial setup and installation of Karafka for your application
 - [Routing](Routing) - Define how messages from topics are received and consumed
 - [Librdkafka Configuration](Librdkafka-Configuration) - Complete reference of librdkafka configuration options
 - [Multi Cluster Setup](Multi-Cluster-Setup) - Configure Karafka to work with multiple Kafka clusters

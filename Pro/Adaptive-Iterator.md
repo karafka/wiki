@@ -128,4 +128,4 @@ While the Adaptive Iterator is an effective tool for managing sporadic long-proc
 
 - [Pro Iterator API](Pro-Iterator-API) - Iterator API documentation
 - [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Handling long-running workloads
-- [Consuming Messages](Consuming-Messages) - Message consumption basics
+- [Consuming Messages](Basics-Consuming-Messages) - Message consumption basics

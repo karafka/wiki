@@ -303,7 +303,7 @@ class ClusterXConsumer
 end
 ```
 
-You can read more about producing to multiple clusters [here](Producing-Messages#producing-to-multiple-clusters).
+You can read more about producing to multiple clusters [here](Basics-Producing-Messages#producing-to-multiple-clusters).
 
 ## Dispatch and Marking Warranties
 

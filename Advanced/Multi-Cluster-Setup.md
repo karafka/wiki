@@ -128,6 +128,6 @@ While Karafka's ability to operate with multiple clusters offers flexibility and
 ## See Also
 
 - [Admin API](Admin-API#multi-cluster-setup) - Perform admin operations on multiple clusters
-- [Configuration](Configuration) - Configure Karafka for multiple clusters
+- [Configuration](Basics-Configuration) - Configure Karafka for multiple clusters
 - [Routing](Routing) - Set up routing for different clusters
-- [Producing Messages](Producing-Messages) - Produce to multiple clusters with WaterDrop
+- [Producing Messages](Basics-Producing-Messages) - Produce to multiple clusters with WaterDrop

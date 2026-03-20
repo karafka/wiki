@@ -635,6 +635,6 @@ To tackle this [obstacle](https://github.com/appsignal/rdkafka-ruby/issues/15) r
 ## See Also
 
 - [WaterDrop Getting Started](WaterDrop-Getting-Started) - Quick start guide for WaterDrop producer
-- [Producing Messages](Producing-Messages) - Complete guide to producing messages with Karafka
+- [Producing Messages](Basics-Producing-Messages) - Complete guide to producing messages with Karafka
 - [WaterDrop Transactions](WaterDrop-Transactions) - Transactional message production with WaterDrop
 - [WaterDrop Middleware](WaterDrop-Middleware) - Implement custom middleware for message processing
