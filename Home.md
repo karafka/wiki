@@ -12,6 +12,7 @@
 - [FAQ](FAQ)
 - [Support](Support)
 - [Status](Status)
+- [Articles and Other References](Basics-Articles-and-Other-References)
 
 ## Web UI
 
@@ -111,7 +112,7 @@
 - [Latency and Throughput](Latency-and-Throughput)
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance)
 - [Topic Auto Creation](Topic-Auto-Creation)
-- [Articles and other references](Articles-and-other-references)
+
 - [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
 - [Problems and Troubleshooting](Problems-and-Troubleshooting)
 - [Debugging](Debugging)
