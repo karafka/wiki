@@ -119,8 +119,8 @@
 
 ## Karafka Pro
 
-- [Build vs. Buy](Build-vs-Buy)
-- [Purchase Karafka Pro](Purchase-Karafka-Pro)
+- [Build vs. Buy](Pro-Build-vs-Buy)
+- [Purchase Karafka Pro](Pro-Purchase-Karafka-Pro)
 - [Getting Started](Pro-Getting-Started)
 - [Rotating credentials](Pro-Rotating-Credentials)
 - [Pro FAQ](Pro-FAQ)
