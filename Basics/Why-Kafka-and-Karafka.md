@@ -389,7 +389,7 @@ The search team, recommendations team, browse team, and analytics team each depl
 - [Getting Started](https://karafka.io/docs/Basics-Getting-Started) - Install and configure Karafka in a new or existing Rails application
 - [WaterDrop](https://karafka.io/docs/WaterDrop-Usage) - Produce messages from Ruby and Rails
 - [Karafka Web UI](https://karafka.io/docs/Web-UI-Getting-Started) - Real-time monitoring for consumers, topics, and partition lag
-- [Admin API](https://karafka.io/docs/Admin-API) - Manage topics, consumer groups, and offsets from Ruby
+- [Admin API](https://karafka.io/docs/Infrastructure-Admin-API) - Manage topics, consumer groups, and offsets from Ruby
 - [Consumer Groups and Topics](https://karafka.io/docs/Basics-Consuming-Messages) - How Karafka maps consumer groups to Kafka topics
 - [Pro Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) - Multi-threaded processing within a single partition
 - [Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue) - Handle unprocessable messages without blocking consumption

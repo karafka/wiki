@@ -312,5 +312,5 @@ Whether securing a small project or an enterprise-scale system, understanding an
 
 ## See Also
 
-- [Admin API](Admin-API) - General admin operations for Kafka management
+- [Admin API](Infrastructure-Admin-API) - General admin operations for Kafka management
 - [Pro Security](Pro-Security) - Advanced security features for Karafka

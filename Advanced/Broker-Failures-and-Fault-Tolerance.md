@@ -336,7 +336,7 @@ Broker: Messages are rejected since there are fewer in-sync replicas than requir
 
 #### Check Current Topic Configuration
 
-You can obtain relevant details about your topics by using the following combination of the [Admin](Admin-API#getting-cluster-info) and [Configs](Admin-Configs-API) APIs:
+You can obtain relevant details about your topics by using the following combination of the [Admin](Infrastructure-Admin-API#getting-cluster-info) and [Configs](Infrastructure-Admin-Configs-API) APIs:
 
 ```ruby
 topic_name = 'YOUR_TOPIC_NAME'
@@ -447,4 +447,4 @@ Connection refused errors during broker maintenance indicate the system is worki
 - [Dead Letter Queue](Dead-Letter-Queue) - Handle persistent failures by routing problematic messages to DLQ
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ features for complex failure scenarios
 - [Monitoring and Logging](Operations-Monitoring-and-Logging) - Track broker connection health and system performance
-- [Admin API](Admin-API) - Programmatically inspect and manage Kafka cluster configuration
+- [Admin API](Infrastructure-Admin-API) - Programmatically inspect and manage Kafka cluster configuration

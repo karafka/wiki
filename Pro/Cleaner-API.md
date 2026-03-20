@@ -207,5 +207,5 @@ In all these use cases, the key value of the Cleaner API is in enhancing memory 
 ## See Also
 
 - [Pro Iterator API](Pro-Iterator-API) - Iterator API for message processing
-- [Admin API](Admin-API) - Administrative operations
+- [Admin API](Infrastructure-Admin-API) - Administrative operations
 - [Pro Offset Metadata Storage](Pro-Offset-Metadata-Storage) - Storing metadata with offsets

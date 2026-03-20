@@ -208,5 +208,5 @@ Combined with other Karafka Pro features like [Data Explorer](Pro-Web-UI-Explore
 ## See Also
 
 - [Declarative Topics](Declarative-Topics) - For declarative topic management in application code
-- [Admin API](Admin-API) - For programmatic topic management operations
+- [Admin API](Infrastructure-Admin-API) - For programmatic topic management operations
 - [Pro Topics Insights](Pro-Web-UI-Topics-Insights) - For viewing detailed topic metrics and insights
