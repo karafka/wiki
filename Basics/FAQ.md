@@ -238,7 +238,7 @@
 
 ## Does Karafka require a separate process running?
 
-No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](Consuming-Messages) section of the documentation.
+No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](Basics-Consuming-Messages) section of the documentation.
 
 Karafka can also be embedded within another process so you do not need to run a separate process. You can read about it [here](Embedding).
 
@@ -456,7 +456,7 @@ end
 
 In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
 
-You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Consuming-Messages#detecting-revocation-midway).
+You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Basics-Consuming-Messages#detecting-revocation-midway).
 
 ## Can I consume from more than one Kafka cluster simultaneously?
 
@@ -526,7 +526,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Producing-Messages#producing-to-multiple-clusters).
+Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Basics-Producing-Messages#producing-to-multiple-clusters).
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
@@ -908,7 +908,7 @@ If you see this error from your Ruby process that is **not** a running Karafka p
 
 It is recommended to **always** run `Karafka.producer.close` before finishing processes like rake tasks, Puma server, or Sidekiq, so Karafka producer has a chance to dispatch all pending messages and gracefully close.
 
-You can read more about producer shutdown [here](Producing-Messages#producer-shutdown).
+You can read more about producer shutdown [here](Basics-Producing-Messages#producer-shutdown).
 
 ## Can I create all the topics needed by the Web UI manually?
 
@@ -1170,7 +1170,7 @@ If you aim for maximum performance in your Karafka application, you can disable 
 
 Instead of relying on `at_exit`, it is generally better to handle the cleanup and proper closing of the WaterDrop producer explicitly in your code. For example, you can use signal handlers from other Ruby libraries like Sidekiq or Puma.
 
-You can read more about this [here](Producing-Messages#producer-shutdown).
+You can read more about this [here](Basics-Producing-Messages#producer-shutdown).
 
 ## Why, when DLQ is used with `max_retries` set to `0`, Karafka also applies a back-off?
 

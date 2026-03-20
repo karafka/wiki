@@ -11,7 +11,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 
 !!! note
 
-    Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Configuration) of the app itself.
+    Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Basics-Configuration) of the app itself.
 
 Karafka provides two ways of defining topics on which you want to listen:
 
@@ -221,7 +221,7 @@ There are several options you can set inside of the ```topic``` block. All of th
 | Option                                                                 | Value type | Description                                                                                                                 |
 |------------------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------|
 | active                                                                 | Boolean    | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
-| [consumer](Consuming-Messages)                                         | Class      | Name of a consumer class that we want to use to consume messages from a given topic                                         |
+| [consumer](Basics-Consuming-Messages)                                  | Class      | Name of a consumer class that we want to use to consume messages from a given topic                                         |
 | [deserializers](Deserialization)                                       | Hash       | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                     |
 | [manual_offset_management](Offset-management#manual-offset-management) | Boolean    | Should Karafka automatically mark messages as consumed or not                                                               |
 | [long_running_job](Pro-Long-Running-Jobs)                              | Boolean    | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                                     |
@@ -360,7 +360,7 @@ By leveraging the ability to draw routes multiple times, Karafka seamlessly fits
 
 ## See Also
 
-- [Configuration](Configuration) - Configure framework and librdkafka settings that affect routing
+- [Configuration](Basics-Configuration) - Configure framework and librdkafka settings that affect routing
 - [Routing Patterns](Pro-Routing-Patterns) - Advanced routing patterns for dynamic topic subscriptions
 - [Deserialization](Deserialization) - Configure per-topic deserialization in routing definitions
 - [Multi Cluster Setup](Multi-Cluster-Setup) - Route topics from multiple Kafka clusters

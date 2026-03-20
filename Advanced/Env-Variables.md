@@ -31,6 +31,6 @@ Karafka's behaviour can be altered with the following environment variables:
 
 ## See Also
 
-- [Configuration](Configuration) - Complete configuration reference
+- [Configuration](Basics-Configuration) - Complete configuration reference
 - [Deployment](Operations-Deployment) - Using environment variables in deployment
 - [Development vs Production](Operations-Development-vs-Production) - Environment-specific settings

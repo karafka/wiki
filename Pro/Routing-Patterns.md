@@ -469,5 +469,5 @@ Karafka's Routing Patterns offers a dynamic solution for message routing, utiliz
 
 - [Routing](Routing) - Standard routing configuration
 - [Consumer Group Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol) - Important regex behavior changes with the new consumer protocol
-- [Testing](Testing) - Testing strategies for Karafka applications
+- [Testing](Basics-Testing) - Testing strategies for Karafka applications
 - [Deserialization](Deserialization) - Message deserialization configuration
