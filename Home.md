@@ -1,6 +1,6 @@
 ## Basics
 
-- [Why Kafka and Karafka](Why-Kafka-and-Karafka)
+- [Why Kafka and Karafka](Basics-Why-Kafka-and-Karafka)
 - [Getting Started](Getting-Started)
 - [Code Editors and LLM Setup](Basics-Code-Editors-and-LLM-Setup)
 - [Configuration](Configuration)
