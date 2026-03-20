@@ -139,5 +139,5 @@ Karafka::Admin::Configs.alter(resource)
 
 ## See Also
 
-- [Admin API](Admin-API) - General admin operations and topic management
+- [Admin API](Infrastructure-Admin-API) - General admin operations and topic management
 - [Librdkafka Configuration](Librdkafka-Configuration) - Available librdkafka configuration options

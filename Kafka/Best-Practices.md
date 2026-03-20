@@ -319,7 +319,7 @@ This approach:
 - Allows incremental partition migration to avoid overwhelming nodes
 - Reduces per-broker failure impact going forward (1/6 vs 1/3 of capacity)
 
-After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster. Migrate partitions one at a time to minimize additional load during the transition.
+After adding brokers, use the [Admin Replication API](https://karafka.io/docs/Infrastructure-Admin-Replication-API#rebalancing-replicas) to rebalance partition assignments across the expanded cluster. Migrate partitions one at a time to minimize additional load during the transition.
 
 !!! warning "The Vertical Scaling Trap"
 

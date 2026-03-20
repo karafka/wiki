@@ -1139,7 +1139,7 @@ Yes.
 There are a few ways to do that:
 
 1. Use the [Iterator API](Pro-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
-1. Use the `#seek` consumer method in combination with [Admin watermark API](Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
+1. Use the `#seek` consumer method in combination with [Admin watermark API](Infrastructure-Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 1. Create a new consumer group that will start from the beginning.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?

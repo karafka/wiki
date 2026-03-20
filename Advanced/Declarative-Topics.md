@@ -1,14 +1,14 @@
 Karafka allows you to manage your topics in three ways:
 
 - Using the built-in [Declarative Topics](Declarative-Topics) routing + CLI functionality (recommended)
-- Directly via the [Admin API](Admin-API)
+- Directly via the [Admin API](Infrastructure-Admin-API)
 - From the Pro Web UI via the [Topics Management feature](Pro-Web-UI-Topics-Management)
 
 Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
 !!! tip "Multi-Cluster Support"
 
-    Declarative Topics CLI commands operate on the default cluster. For CLI-based multi-cluster management, use the `KARAFKA_BOOT_FILE` environment variable to point to different cluster configurations. For programmatic admin operations, you can use `Karafka::Admin.new(kafka: {...})` to target different clusters directly. For more details, visit the [Admin Multi-Cluster Setup](Admin-API#multi-cluster-setup) section.
+    Declarative Topics CLI commands operate on the default cluster. For CLI-based multi-cluster management, use the `KARAFKA_BOOT_FILE` environment variable to point to different cluster configurations. For programmatic admin operations, you can use `Karafka::Admin.new(kafka: {...})` to target different clusters directly. For more details, visit the [Admin Multi-Cluster Setup](Infrastructure-Admin-API#multi-cluster-setup) section.
 
 Keeping Kafka topics configuration as code has several benefits:
 
@@ -220,7 +220,7 @@ This will ensure the correct exit code is returned based on the operation's outc
 ## See Also
 
 - [Routing](Routing) - Define routing and topic configurations together
-- [Admin API](Admin-API) - Programmatically manage topics beyond declarative definitions
+- [Admin API](Infrastructure-Admin-API) - Programmatically manage topics beyond declarative definitions
 - [Topic Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
 - [Topic Auto Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior
 - [CLI](CLI) - Complete reference of Karafka CLI commands for topic management

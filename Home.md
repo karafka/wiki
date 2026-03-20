@@ -79,10 +79,10 @@
 
 ## Admin
 
-- [Admin API](Admin-API)
-- [ACLs API](Admin-Acls-API)
-- [Configs API](Admin-Configs-API)
-- [Replication API](Admin-Replication-API)
+- [Admin API](Infrastructure-Admin-API)
+- [ACLs API](Infrastructure-Admin-Acls-API)
+- [Configs API](Infrastructure-Admin-Configs-API)
+- [Replication API](Infrastructure-Admin-Replication-API)
 
 ## Advanced
 

@@ -193,7 +193,7 @@ end
 
 ### Consolidate Consumer Groups
 
-Use the [Admin API](Admin-API#copying-a-consumer-group) to merge consumer groups and reduce base connection count:
+Use the [Admin API](Infrastructure-Admin-API#copying-a-consumer-group) to merge consumer groups and reduce base connection count:
 
 ```ruby
 # Migrate multiple groups into one to reduce base connection count
