@@ -45,6 +45,7 @@ end
 # Copy namespaced files (flattened with namespace prefix)
 %w[
   Admin
+  Basics
   Pro
   Web-UI
   WaterDrop
