@@ -591,6 +591,6 @@ end
 
 - [Offset management](Offset-management) - Control when and how message offsets are committed to Kafka
 - [Deserialization](Deserialization) - Transform raw message data into structured Ruby objects
-- [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Handle consumer errors and implement retry strategies
+- [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Handle consumer errors and implement retry strategies
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understand parallel processing and threading in Karafka
 - [Testing](Basics-Testing) - Write tests for your message consumers to ensure correct behavior

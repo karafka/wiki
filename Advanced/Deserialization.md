@@ -437,5 +437,5 @@ end
 
 - [Routing](Routing) - Learn how to configure topics and deserializers in routing
 - [Testing](Basics-Testing) - Test your custom deserializers and message processing
-- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Handle deserialization errors gracefully
+- [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Handle deserialization errors gracefully
 - [Dead Letter Queue](Dead-Letter-Queue) - Route messages with deserialization failures to a DLQ

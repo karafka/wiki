@@ -45,6 +45,7 @@ end
 # Copy namespaced files (flattened with namespace prefix)
 %w[
   Basics
+  Consumer-Groups
   Infrastructure
   Pro
   Web-UI

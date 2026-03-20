@@ -2689,7 +2689,7 @@ Note that:
 1. This works per offset location, not per individual message, unless you mark each message as consumed
 1. The error causing the retry may differ between retry attempts
 
-You can find more details about this [here](Operations-Error-Handling-and-Back-Off-Policy#altering-the-consumer-behaviour-upon-reprocessing).
+You can find more details about this [here](Consumer-Groups-Error-Handling-and-Back-Off-Policy#altering-the-consumer-behaviour-upon-reprocessing).
 
 ## Why does Karafka Web UI stop working after upgrading the Ruby slim/alpine Docker images?
 
@@ -3041,7 +3041,7 @@ A poison pill message is a message that causes your consumer to fail repeatedly,
     end
     ```
 
-For comprehensive error handling documentation, see [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) and [Dead Letter Queue](Dead-Letter-Queue).
+For comprehensive error handling documentation, see [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) and [Dead Letter Queue](Dead-Letter-Queue).
 
 ## How can I validate messages before processing them?
 
@@ -3220,7 +3220,7 @@ class OrderEventsConsumer < ApplicationConsumer
 end
 ```
 
-For comprehensive error handling strategies, see [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy).
+For comprehensive error handling strategies, see [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy).
 
 ## How do I produce messages to a secondary Kafka cluster?
 

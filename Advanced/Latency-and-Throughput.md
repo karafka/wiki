@@ -212,7 +212,7 @@ To effectively understand Karafka consumer processes latency and the topics disc
 
 - [Routing DSL](Routing) including multi-consumer group and multi-subscription group operations.
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) design of the framework.
-- [Error Handling](Operations-Error-Handling-and-Back-Off-Policy) (Especially Backoff Policies)
+- [Error Handling](Consumer-Groups-Error-Handling-and-Back-Off-Policy) (Especially Backoff Policies)
 - [Offset Management Strategies](Offset-management)
 - [Monitoring and Logging](Operations-Monitoring-and-Logging) basics.
 - [Web UI Usage](Web-UI-Getting-Started) for monitoring.

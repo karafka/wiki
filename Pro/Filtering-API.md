@@ -311,6 +311,6 @@ Karafka Filtering API is a powerful tool that allows developers to process incom
 
 ## See Also
 
-- [Persistent Pausing](Operations-Persistent-Pausing) - Implementing persistent topic pausing using Filtering API with feature flags
+- [Persistent Pausing](Consumer-Groups-Persistent-Pausing) - Implementing persistent topic pausing using Filtering API with feature flags
 - [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
 - [Rate Limiting](Pro-Rate-Limiting) - Another feature built on top of the Filtering API

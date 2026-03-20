@@ -34,6 +34,6 @@ For more detailed information on how Enhanced Supervision for Swarm Nodes works 
 
 ## See Also
 
-- [Error Handling and Back-Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Error handling strategies
+- [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Error handling strategies
 - [Pro Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ capabilities
 - [Pro Granular Backoffs](Pro-Granular-Backoffs) - Fine-tuned retry control
