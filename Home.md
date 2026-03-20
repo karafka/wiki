@@ -56,6 +56,7 @@
 - [Connection Pool](WaterDrop-Connection-Pool)
 - [Async Ecosystem Integration](WaterDrop-Async-Integration)
 - [Instrumentation Events](WaterDrop-Instrumentation-Events)
+- [Reconfiguration](WaterDrop-Reconfiguration)
 
 ## Operations
 
@@ -97,7 +98,7 @@
 - [Offset management (checkpointing)](Offset-management)
 - [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
 - [Inline Insights](Inline-Insights)
-- [WaterDrop reconfiguration](WaterDrop-reconfiguration)
+
 - [Exit codes](Exit-codes)
 - [Embedding](Embedding)
 - [Swarm / Multi Process](Swarm-Multi-Process)

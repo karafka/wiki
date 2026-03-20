@@ -574,7 +574,7 @@ To allow WaterDrop (Karafka producer) to send bigger messages, you need to:
 - set the `max_payload_size` config option to value in bytes matching your maximum expected payload.
 - set `kafka` scoped `message.max.bytes` to the same value.
 
-You can do this by [reconfiguring WaterDrop](WaterDrop-reconfiguration) during Karafka setup:
+You can do this by [reconfiguring WaterDrop](WaterDrop-Reconfiguration) during Karafka setup:
 
 ```ruby
 class KarafkaApp < Karafka::App
