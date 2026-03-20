@@ -599,4 +599,4 @@ Don't hesitate to get in touch if you still need clarification after following t
 - [Monitoring and Logging](Operations-Monitoring-and-Logging) - Configure comprehensive logging and monitoring for debugging
 - [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Understand error handling mechanisms and retry logic
 - [Support](Pro-Support) - Access priority support and direct assistance from the Karafka team
-- [FAQ](FAQ) - Frequently asked questions about Karafka functionality and troubleshooting
+- [FAQ](Basics-FAQ) - Frequently asked questions about Karafka functionality and troubleshooting

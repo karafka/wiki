@@ -4,7 +4,7 @@ Read below for tips.  If you still need help, you can:
 
 - Ask your question in [The Karafka official Slack channel](https://slack.karafka.io)
 - [Open a GitHub issue](https://github.com/karafka/karafka/issues/new).  (Don't be afraid to open an issue, even if it's not a Karafka bug.  An issue is just a conversation, not an accusation!)
-- Check our [FAQ](FAQ) and the [Pro FAQ](Pro-FAQ)
+- Check our [FAQ](Basics-FAQ) and the [Pro FAQ](Pro-FAQ)
 
 You **should not** email any Karafka committer privately.
 
@@ -14,7 +14,7 @@ Please consider buying the Pro subscription for additional priority Pro support 
 
 ## OSS Support Policy
 
-Karafka Official Support Policy can be found [here](Support).
+Karafka Official Support Policy can be found [here](Basics-Support).
 
 ## Reporting problems
 
@@ -35,5 +35,5 @@ Karafka now has a dedicated and comprehensive debugging guide that covers troubl
 - [Debugging](Debugging) - Systematic approach to debugging consumer processing issues
 - [Error Handling and Back Off Policy](Operations-Error-Handling-and-Back-Off-Policy) - Configure error handling and retry strategies
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Understand how Karafka handles broker failures
-- [FAQ](FAQ) - Frequently asked questions about common Karafka issues
+- [FAQ](Basics-FAQ) - Frequently asked questions about common Karafka issues
 - [Support](Pro-Support) - Get priority support for complex troubleshooting scenarios
