@@ -97,7 +97,7 @@
 - [Offset management (checkpointing)](Offset-management)
 - [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
 - [Inline Insights](Inline-Insights)
-- [WaterDrop reconfiguration](WaterDrop-reconfiguration)
+- [WaterDrop reconfiguration](WaterDrop-Reconfiguration)
 - [Exit codes](Exit-codes)
 - [Embedding](Embedding)
 - [Swarm / Multi Process](Swarm-Multi-Process)
