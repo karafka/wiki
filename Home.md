@@ -217,7 +217,6 @@
 It is recommended to do one major upgrade at a time.
 
 - [Karafka](Upgrades-Karafka)
-    - [3.0](Upgrades-Karafka-3.0)
     - [2.5](Upgrades-Karafka-2.5)
     - [2.4](Upgrades-Karafka-2.4)
     - [2.3](Upgrades-Karafka-2.3)
