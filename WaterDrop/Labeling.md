@@ -163,4 +163,4 @@ Labeling in WaterDrop is a powerful feature that enhances message tracking, debu
 ## See Also
 
 - [Monitoring and Logging](WaterDrop-Monitoring-and-Logging) - For comprehensive monitoring and logging strategies
-- [Pro Piping](Pro-Piping) - For advanced message routing and transformation with labeling
+- [Pro Piping](Pro-Consumer-Groups-Piping) - For advanced message routing and transformation with labeling

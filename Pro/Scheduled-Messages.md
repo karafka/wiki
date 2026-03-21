@@ -595,7 +595,7 @@ When implementing an external producer to schedule messages for Karafka, ensure 
 
 ## Alternatives
 
-When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) and [Piping](Pro-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
+When considering alternatives to Scheduled Messages feature, two other options provide distinct approaches to delaying or controlling the timing of message processing: [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) and [Piping](Pro-Consumer-Groups-Piping). Each method has its own advantages and use cases, depending on the specific requirements of your application, so they may also be a viable option worth considering.
 
 ### Delayed Topics
 
@@ -618,7 +618,7 @@ Delayed Topics in Karafka provide a mechanism to delay message consumption from 
 
 ### Delayed Piping
 
-[Piping](Pro-Piping) with [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
+[Piping](Pro-Consumer-Groups-Piping) with [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
 
 Use Cases:
 

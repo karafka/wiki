@@ -140,7 +140,6 @@
 - [Features Compatibility](Pro-Features-Compatibility)
 - [Routing Patterns](Pro-Routing-Patterns)
 - [Cleaner API](Pro-Cleaner-API)
-- [Piping](Pro-Piping)
 - [Recurring Tasks](Pro-Recurring-Tasks)
 - [Scheduled Messages](Pro-Scheduled-Messages)
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
@@ -169,6 +168,7 @@
 - [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages)
 - [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting)
 - [Filtering API](Pro-Consumer-Groups-Filtering-API)
+- [Piping](Pro-Consumer-Groups-Piping)
 
 ### Share Groups Features
 

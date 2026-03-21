@@ -42,7 +42,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 
-- [Piping](Pro-Piping) - Feature allowing applications to forward processing results seamlessly to subsequent stages or other applications.
+- [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results seamlessly to subsequent stages or other applications.
 
 - [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, ensuring consistent and reliable execution.
 
