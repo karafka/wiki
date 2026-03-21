@@ -1103,7 +1103,7 @@ This section describes **new** things and concepts introduced with Karafka 2.0.
 Karafka 2.0:
 
 - Introduces multi-threaded support for [concurrent work](https://github.com/karafka/karafka/wiki/Concurrency-and-multithreading) consumption for separate partitions as well as for single partition work via [Virtual Partitions](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions).
-- Introduces [Active Job adapter](https://github.com/karafka/karafka/wiki/Consumer-Groups-Active-Job) for using Karafka as a jobs backend with Ruby on Rails Active Job.
+- Introduces [Active Job adapter](https://github.com/karafka/karafka/wiki/Active-Job) for using Karafka as a jobs backend with Ruby on Rails Active Job.
 - Introduces fully automatic integration end-to-end [test suite](https://github.com/karafka/karafka/tree/master/spec/integrations) that checks any case I could imagine.
 - Introduces [Virtual Partitions](https://github.com/karafka/karafka/wiki/Pro-Virtual-Partitions) for ability to parallelize work of a single partition.
 - Introduces [Long-Running Jobs](https://github.com/karafka/karafka/wiki/Pro-Long-Running-Jobs) to allow for work that would otherwise exceed the `max.poll.interval.ms`.
@@ -1113,7 +1113,7 @@ Karafka 2.0:
 - Provides `#revoked` [method](https://github.com/karafka/karafka/wiki/Consuming-messages#shutdown-and-partition-revocation-handlers) for taking actions upon topic revocation.
 - Emits underlying async errors emitted from `librdkafka` via the standardized `error.occurred` [monitor channel](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy#error-tracking).
 - Replaces `ruby-kafka` with `librdkafka` as an underlying driver.
-- Introduces official [EOL policies](https://github.com/karafka/karafka/wiki/Upgrades-Versions-Lifecycle-and-EOL).
+- Introduces official [EOL policies](https://github.com/karafka/karafka/wiki/Versions-Lifecycle-and-EOL).
 - Introduces [benchmarks](https://github.com/karafka/karafka/tree/master/spec/benchmarks) that can be used to profile Karafka.
 - Introduces a requirement that the end user code **needs** to be [thread-safe](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-gems-to-be-thread-safe).
 - Introduces a [Pro subscription](https://github.com/karafka/karafka/wiki/Build-vs-Buy) with a [commercial license](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) to fund further ecosystem development.
