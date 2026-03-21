@@ -265,4 +265,4 @@ The listener thread priority (internal setting `internal.connection.listener_thr
 ## See Also
 
 - [CLI](CLI) - Command-line interface for running Karafka standalone
-- [Deployment](Operations-Deployment) - Strategies for deploying Karafka in various environments
+- [Deployment](Infrastructure-Deployment) - Strategies for deploying Karafka in various environments

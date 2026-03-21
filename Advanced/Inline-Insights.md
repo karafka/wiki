@@ -145,4 +145,4 @@ Karafka's Inline Insights is a powerful feature that enhances data processing ca
 ## See Also
 
 - [Pro Enhanced Inline Insights](Pro-Enhanced-Inline-Insights) - Advanced inline insights with enhanced metrics and performance tracking
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies for Karafka applications
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies for Karafka applications

@@ -87,6 +87,6 @@ Focusing on the lag data directly from Kafka lets you gain insights into system 
 
 ## See Also
 
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - For comprehensive monitoring best practices
-- [Deployment](Operations-Deployment) - For deployment strategies and operational considerations
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - For comprehensive monitoring best practices
+- [Deployment](Infrastructure-Deployment) - For deployment strategies and operational considerations
 - [Features](Web-UI-Features) - For an overview of Web UI capabilities

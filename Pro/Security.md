@@ -32,5 +32,5 @@ On top of that, to ensure the stability and security of the system:
 
 - [Pro Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Data encryption capabilities
 - [Pro Rotating Credentials](Pro-Rotating-Credentials) - Credential rotation procedures
-- [Deployment](Operations-Deployment) - Deployment strategies and best practices
+- [Deployment](Infrastructure-Deployment) - Deployment strategies and best practices
 - [Pro HIPAA PHI PII Support](Pro-HIPAA-PHI-PII-Support) - Healthcare compliance support

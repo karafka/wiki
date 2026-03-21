@@ -1940,5 +1940,5 @@
 ## See Also
 
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - For topic-level configuration options
-- [Deployment](Operations-Deployment) - For deployment strategies and operational considerations
+- [Deployment](Infrastructure-Deployment) - For deployment strategies and operational considerations
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - For understanding cluster resilience

@@ -51,7 +51,6 @@ end
   Web-UI
   WaterDrop
   Upgrades
-  Operations
 ].each do |namespace|
   Dir["#{ROOT}/#{namespace}/**/*.md"].each do |file|
     relative_path = file.sub("#{ROOT}/#{namespace}/", '')

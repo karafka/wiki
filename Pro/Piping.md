@@ -112,4 +112,4 @@ Karafka Pro's message piping feature significantly enhances the flexibility and 
 
 - [Producing Messages](Basics-Producing-Messages) - Basic message production
 - [WaterDrop Usage](WaterDrop-Usage) - Producer usage and configuration
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - System monitoring capabilities
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - System monitoring capabilities

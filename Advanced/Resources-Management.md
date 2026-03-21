@@ -199,4 +199,4 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 - [Swarm Multi Process](Swarm-Multi-Process) - Use multi-process architecture for CPU-intensive workloads
 - [Latency and Throughput](Latency-and-Throughput) - Optimize message processing speed and system throughput
 - [Virtual Partitions](Pro-Virtual-Partitions) - Scale processing beyond Kafka partition limits
-- [Deployment](Operations-Deployment) - Deploy Karafka with appropriate resource allocation in production
+- [Deployment](Infrastructure-Deployment) - Deploy Karafka with appropriate resource allocation in production

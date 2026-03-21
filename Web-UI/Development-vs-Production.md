@@ -136,9 +136,9 @@ end
 
 ### Heroku Multi-Tenant Retention Policy Impact
 
-When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Operations-Deployment#heroku-retention-policy-impact-on-the-web-ui).
+When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Infrastructure-Deployment#heroku-retention-policy-impact-on-the-web-ui).
 
-You can read about working with Heroku Kafka Multi-Tenant add-on [here](Operations-Deployment#heroku).
+You can read about working with Heroku Kafka Multi-Tenant add-on [here](Infrastructure-Deployment#heroku).
 
 ## Upgrade Recommendations
 
@@ -158,6 +158,6 @@ It's critical to ensure the order of operations - Karafka consumers processes fi
 
 ## See Also
 
-- [Development vs Production](Operations-Development-vs-Production) - Best practices for development and production environments
+- [Development vs Production](Infrastructure-Application-Development-vs-Production) - Best practices for development and production environments
 - [Web UI Configuration](Web-UI-Configuration) - Detailed configuration options for Web UI
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI

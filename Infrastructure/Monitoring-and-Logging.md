@@ -694,7 +694,7 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
 ## Kubernetes
 
-Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Operations-Deployment#kubernetes).
+Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
 
 ## OpenTelemetry
 
@@ -871,8 +871,8 @@ In conclusion, maintaining the stability, performance, and reliability of Karafk
 
 ## See Also
 
-- [Instrumentation Events](Operations-Instrumentation-Events) - Complete reference of all available instrumentation events
-- [Deployment](Operations-Deployment) - Setting up liveness probes and health checks in production
+- [Instrumentation Events](Infrastructure-Instrumentation-Events) - Complete reference of all available instrumentation events
+- [Deployment](Infrastructure-Deployment) - Setting up liveness probes and health checks in production
 - [Web UI Getting Started](Web-UI-Getting-Started) - Visual monitoring and observability with Web UI
 - [Enhanced Inline Insights](Pro-Enhanced-Inline-Insights) - Metrics-based processing and monitoring
 - [Latency and Throughput](Latency-and-Throughput) - Performance monitoring and optimization

@@ -64,24 +64,21 @@
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
 
-## Operations
-
-- [Development vs Production](Operations-Development-vs-Production)
-- [Deployment](Operations-Deployment)
-    - [systemd (+ Capistrano)](Operations-Deployment#systemd-capistrano)
-    - [Docker](Operations-Deployment#docker)
-    - [AWS + MSK (Fully Managed Apache Kafka)](Operations-Deployment#aws-msk-fully-managed-apache-kafka)
-    - [Heroku](Operations-Deployment#heroku)
-    - [Kubernetes](Operations-Deployment#kubernetes)
-    - [Confluent Cloud](Operations-Deployment#confluent-cloud)
-    - [Custom OAuth Token Providers](Operations-Deployment#custom-oauth-token-providers)
-- [Signals and States](Operations-Signals-and-States)
-- [Monitoring and Logging](Operations-Monitoring-and-Logging)
-- [Instrumentation Events](Operations-Instrumentation-Events)
-- [AWS MSK Guide](Operations-AWS-MSK-Guide)
-
 ## Infrastructure
 
+- [Development vs Production](Infrastructure-Application-Development-vs-Production)
+- [Deployment](Infrastructure-Deployment)
+    - [systemd (+ Capistrano)](Infrastructure-Deployment#systemd-capistrano)
+    - [Docker](Infrastructure-Deployment#docker)
+    - [AWS + MSK (Fully Managed Apache Kafka)](Infrastructure-Deployment#aws-msk-fully-managed-apache-kafka)
+    - [Heroku](Infrastructure-Deployment#heroku)
+    - [Kubernetes](Infrastructure-Deployment#kubernetes)
+    - [Confluent Cloud](Infrastructure-Deployment#confluent-cloud)
+    - [Custom OAuth Token Providers](Infrastructure-Deployment#custom-oauth-token-providers)
+- [Signals and States](Infrastructure-Signals-and-States)
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging)
+- [Instrumentation Events](Infrastructure-Instrumentation-Events)
+- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide)
 - [Admin API](Infrastructure-Admin-API)
 - [ACLs API](Infrastructure-Admin-Acls-API)
 - [Configs API](Infrastructure-Admin-Configs-API)
