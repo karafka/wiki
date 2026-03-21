@@ -4,7 +4,7 @@ Karafka provides several features that can work together. Unless explicitly stat
 
 ## Long Running Jobs + Virtual Partitions
 
-Long-Running Jobs work together with [Virtual Partitions](Pro-Virtual-Partitions). All the Virtual Partitions consumers will respond to `#revoked?` if the partition is lost, similar to regular consumers.
+Long-Running Jobs work together with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). All the Virtual Partitions consumers will respond to `#revoked?` if the partition is lost, similar to regular consumers.
 
 ## Enhanced Active Job + Virtual Partitions
 
@@ -83,7 +83,7 @@ end
 
 ## Virtual Partitions + Offset Metadata Storage
 
-In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configurable during routing, dictates whether the system should use the most recent (`:current`) or the exact (`:exact`) metadata associated with a materialized offset, a choice crucial for aligning processing logic with data consistency requirements. For detailed usage and configuration, refer to [this](Pro-Offset-Metadata-Storage#interaction-with-virtual-partitions) Karafka documentation section.
+In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configurable during routing, dictates whether the system should use the most recent (`:current`) or the exact (`:exact`) metadata associated with a materialized offset, a choice crucial for aligning processing logic with data consistency requirements. For detailed usage and configuration, refer to [this](Pro-Consumer-Groups-Offset-Metadata-Storage#interaction-with-virtual-partitions) Karafka documentation section.
 
 ## Routing Patterns + Dead Letter Queue
 

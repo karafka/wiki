@@ -48,7 +48,7 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 !!! tip "Advanced DLQ Management in Karafka Pro"
 
-    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
+    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
 
 !!! warning "Default Behavior with `manual_offset_management`"
 
@@ -169,7 +169,7 @@ Another benefit of delaying the processing of messages dispatched to a DLQ topic
 
 Overall, delaying the processing of messages dispatched to a DLQ topic can help ensure the stability and reliability of your system while also giving your team the time and resources needed to address underlying issues and prevent future failures.
 
-You can read more about the Karafka Delayed Topics feature [here](Pro-Delayed-Topics).
+You can read more about the Karafka Delayed Topics feature [here](Pro-Consumer-Groups-Delayed-Topics).
 
 ## Disabling Retries
 
@@ -196,7 +196,7 @@ Messages will never be re-processed with the following settings and will be move
 
 For some use cases, you may want to skip messages after retries without dispatching them to an alternative topic.
 
-This functionality is available in Karafka Pro, and you can read about it [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+This functionality is available in Karafka Pro, and you can read about it [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
 ## Dispatch Warranties
 
@@ -204,9 +204,9 @@ Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They
 
 !!! note
 
-    The original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue).
+    The original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue).
 
-If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) implementation.
+If you need messages dispatched to the DLQ topic to preserve order, you either need to use a DLQ topic with a single partition, or you need to use the [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) implementation.
 
 ## Manual DLQ Dispatch
 
@@ -261,7 +261,7 @@ Karafka Pro sets the `key` value based on the errored message partition to ensur
 
 We recommend either:
 
-- Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Enhanced-Dead-Letter-Queue#dlq-message-key-enhancements-for-a-compacted-dlq-topic) feature.
+- Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#dlq-message-key-enhancements-for-a-compacted-dlq-topic) feature.
 - Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
@@ -383,7 +383,7 @@ This approach ensures that you can manage the DLQ topic configurations independe
 
 ## Pro Enhanced Dead Letter Queue
 
-We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue), especially if you:
+We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue), especially if you:
 
 - expect a higher quantity of messages being moved to the DLQ topic,
 - need to preserve original topic, partition, and offset,
@@ -413,7 +413,7 @@ The Karafka Dead Letter Queue is worth using because it provides a way to handle
 
 ## See Also
 
-- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Pro version with ordering preservation and advanced features
+- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Pro version with ordering preservation and advanced features
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
-- [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
-- [Virtual Partitions](Pro-Virtual-Partitions) - How DLQ behaves with parallel processing
+- [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - How DLQ behaves with parallel processing

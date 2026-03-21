@@ -210,7 +210,7 @@ end
 
 It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
-In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
 !!! note
 
@@ -218,7 +218,7 @@ In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running
 
 !!! note
 
-    With [Long-Running Jobs](Pro-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
+    With [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 
 ## Consumer Persistence
 
@@ -302,7 +302,7 @@ end
 
 !!! note "Shutdown Edge Case Alert"
 
-    When you use `#shutdown` with the filtering API or [Delayed Topics](Pro-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
+    When you use `#shutdown` with the filtering API or [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics), there are scenarios where `#shutdown` and `#revoked` may be invoked without prior `#consume` running and the `#messages` batch may be empty.
 
 ## Initial State Setup
 
@@ -391,7 +391,7 @@ This configuration ensures that as soon as the end of a partition is reached, an
 
 ## Consuming with the Iterator API
 
-Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
+Karafka Pro provides the [Iterator API](Pro-Consumer-Groups-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
 
 The following example demonstrates searching for messages with a specific header value:
 
@@ -417,7 +417,7 @@ end
 puts "There were #{user_5_events.count} messages"
 ```
 
-For more details on this feature, see [Iterator API](Pro-Iterator-API).
+For more details on this feature, see [Iterator API](Pro-Consumer-Groups-Iterator-API).
 
 ## Avoiding Accidental Overwriting of Consumer Instance Variables
 

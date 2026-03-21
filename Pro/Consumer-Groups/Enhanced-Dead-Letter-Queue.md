@@ -272,7 +272,7 @@ end
 
 ### Error Tracking with Virtual Partitions
 
-When using [Virtual Partitions](Pro-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it ensures that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
+When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it ensures that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
 
 ## Accessing Error Context in DLQ Message Enhancement
 
@@ -448,6 +448,6 @@ end
 ## See Also
 
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Base DLQ feature and fundamental concepts
-- [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
-- [Virtual Partitions](Pro-Virtual-Partitions) - Enhanced DLQ behavior with parallel processing
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Enhanced DLQ behavior with parallel processing

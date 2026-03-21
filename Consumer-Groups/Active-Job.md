@@ -63,7 +63,7 @@ end
 
 !!! note
 
-    [Pro Enhanced ActiveJob](Pro-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
+    [Pro Enhanced ActiveJob](Pro-Consumer-Groups-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
 
 ## Usage
 
@@ -204,7 +204,7 @@ Revocation awareness is not part of the standard Active Job adapter. We recommen
 1. Have short-running jobs.
 2. Build your jobs to work in an at-least-once fashion.
 3. Set `max_messages` to a small value, so fewer jobs are fetched.
-4. Use [Pro Enhanced Active Job](Pro-Enhanced-Active-Job) with revocation awareness and other Pro features.
+4. Use [Pro Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) with revocation awareness and other Pro features.
 
 ## Queue Prefixes
 
@@ -290,7 +290,7 @@ The `resume_options = { wait: 0 }` configuration ensures that continuation jobs 
 
 ### Enhanced Continuation in Pro
 
-For advanced continuation capabilities including delayed resumes and partitioning within continuation jobs, consider upgrading to [Karafka Pro](Pro-Enhanced-Active-Job#activejob-continuation). Pro supports features such as:
+For advanced continuation capabilities including delayed resumes and partitioning within continuation jobs, consider upgrading to [Karafka Pro](Pro-Consumer-Groups-Enhanced-Active-Job#activejob-continuation). Pro supports features such as:
 
 - Delayed resume times via Scheduled Messages
 - Partitioning within continuation jobs for ordered processing
@@ -304,8 +304,8 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
 ## See Also
 
-- [Enhanced Active Job](Pro-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
+- [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
 - [Testing](Basics-Testing) - Test your ActiveJob jobs with Karafka's testing helpers
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
-- [Long Running Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
+- [Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

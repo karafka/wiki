@@ -1,8 +1,8 @@
 Karafka uses native Ruby threads to achieve concurrent processing in four scenarios:
 
 - for concurrent processing of messages from different topics partitions.
-- for concurrent processing of messages from same topic different partitions (via [Multiplexing](Pro-Multiplexing) or [Non-Blocking Jobs](Pro-Non-Blocking-Jobs)).
-- for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Virtual-Partitions) feature.
+- for concurrent processing of messages from same topic different partitions (via [Multiplexing](Pro-Consumer-Groups-Multiplexing) or [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)).
+- for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) feature.
 - to handle consumer groups management (each consumer group defined will be managed by a separate thread).
 
 Additionally, Karafka supports [Swarm Mode](Infrastructure-Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
@@ -130,7 +130,7 @@ You can read more about this feature [here](https://github.com/karafka/karafka/w
 
 ### Parallel Consuming and Processing of the Same Topic Partitions
 
-Parallel consumption and processing of the same topic partitions in Karafka can be achieved through Multiplying the connections or using Non-Blocking Jobs feature. Multiplexing creates connections to Kafka, allowing for concurrent consumption, which is ideal for different operations or scaling needs. Non-Blocking Jobs, conversely, utilize the same connection but employ a sophisticated pausing strategy to handle processing efficiently. The choice between these approaches depends on the specific requirements, such as operation type and scale. For a comprehensive understanding, visiting the dedicated documentation pages for [Multiplexing](Pro-Multiplexing) and [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) is recommended.
+Parallel consumption and processing of the same topic partitions in Karafka can be achieved through Multiplying the connections or using Non-Blocking Jobs feature. Multiplexing creates connections to Kafka, allowing for concurrent consumption, which is ideal for different operations or scaling needs. Non-Blocking Jobs, conversely, utilize the same connection but employ a sophisticated pausing strategy to handle processing efficiently. The choice between these approaches depends on the specific requirements, such as operation type and scale. For a comprehensive understanding, visiting the dedicated documentation pages for [Multiplexing](Pro-Consumer-Groups-Multiplexing) and [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) is recommended.
 
 ## Consumer Group Multi-Threading
 
@@ -164,11 +164,11 @@ To address these challenges and enhance parallel processing, Karafka offers seve
 
 - **Optimizing Polling**: Adjusting the `fetch.message.max.bytes` setting can reduce the number of messages fetched per partition in each poll. This ensures a more effective round-robin distribution of work and prevents any single partition from overwhelming the system.
 
-- **[Non-Blocking Jobs](Pro-Non-Blocking-Jobs)**: This approach allows the same connection to fetch new messages while previous messages are still being processed. It uses a sophisticated pausing strategy to manage the flow, ensuring processing stays caught up in polling.
+- **[Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)**: This approach allows the same connection to fetch new messages while previous messages are still being processed. It uses a sophisticated pausing strategy to manage the flow, ensuring processing stays caught up in polling.
 
-- **[Virtual Partitions](Pro-Virtual-Partitions)**: By subdividing actual Kafka partitions into smaller, virtual ones, Karafka can parallelize the processing of messages from a single physical partition. This can significantly increase the processing throughput and efficiency.
+- **[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)**: By subdividing actual Kafka partitions into smaller, virtual ones, Karafka can parallelize the processing of messages from a single physical partition. This can significantly increase the processing throughput and efficiency.
 
-- **[Connection Multiplexing](Pro-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, ensuring that a lag in one doesn't halt the polling of others.
+- **[Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, ensuring that a lag in one doesn't halt the polling of others.
 
 - **[Subscription Groups](Consumer-Groups-Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)**: Organizes topics into groups for parallel data polling from multiple topics, mitigating lag effects and improving performance by utilizing multiple threads.
 
@@ -207,7 +207,7 @@ Lowering thread priority (e.g., negative values like `-1`, `-3`) can significant
 
 ## See Also
 
-- [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing within single partition using multiple threads
-- [Parallel Segments](Pro-Parallel-Segments) - Parallel processing across multiple consumer groups
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Parallel processing within single partition using multiple threads
+- [Parallel Segments](Pro-Consumer-Groups-Parallel-Segments) - Parallel processing across multiple consumer groups
 - [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Performance optimization and concurrency tuning
 - [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process) - Process-level parallelization alternative to threading

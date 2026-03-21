@@ -76,6 +76,6 @@ Karafka Pro's Direct Assignments feature is a powerful tool that, when used effe
 
 ## See Also
 
-- [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Non-blocking job processing
-- [Pro Iterator API](Pro-Iterator-API) - Iterator-based message processing
+- [Pro Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Non-blocking job processing
+- [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - Iterator-based message processing
 - [Routing](Consumer-Groups-Routing) - Routing configuration and patterns

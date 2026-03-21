@@ -1,6 +1,6 @@
 # Parallel Segments
 
-Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads and those that cannot be effectively parallelized using [Virtual Partitions](Pro-Virtual-Partitions) alone.
+Parallel Segments are a feature in Karafka that enables you to process data from a single topic partition across multiple processes simultaneously. This approach allows you to achieve horizontal scaling for CPU-intensive workloads and those that cannot be effectively parallelized using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) alone.
 
 Unlike Virtual Partitions, which operate within a single consumer group and are optimized for IO-bound operations, Parallel Segments create multiple independent consumer groups that each process a subset of messages from the same topic partition. This makes it particularly effective for CPU-intensive processing scenarios where the computational overhead is the primary bottleneck, as well as in cases where data clustering makes Virtual Partitions ineffective.
 
@@ -702,7 +702,7 @@ Remember to leverage the CLI commands for smooth migrations and ongoing manageme
 
 ## See Also
 
-- [Virtual Partitions](Pro-Virtual-Partitions) - Alternative parallelization strategy optimized for IO-bound workloads
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Alternative parallelization strategy optimized for IO-bound workloads
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding Karafka's threading model and parallelization
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Error handling with Parallel Segments
-- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced error handling for parallel processing
+- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Advanced error handling for parallel processing

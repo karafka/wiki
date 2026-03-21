@@ -230,7 +230,7 @@ end
 
 Karafka's multi-threaded processing benefits significantly from KIP-848. During rebalances, only threads consuming or processing affected partitions will pause briefly. Other threads will continue processing messages uninterrupted.
 
-[Virtual Partitions](Pro-Virtual-Partitions) (parallel processing within a partition) will also experience less disruption during rebalances.
+[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) (parallel processing within a partition) will also experience less disruption during rebalances.
 
 ## Protocol Behavior Differences
 
@@ -318,5 +318,5 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 
 - [Routing Patterns](Pro-Routing-Patterns) - Regex-based dynamic topic routing and regexp engine differences
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
-- [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
+- [Pro Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - For handling long-running work during rebalances
 - [Deployment](Infrastructure-Deployment) - For deployment strategies including rolling restarts

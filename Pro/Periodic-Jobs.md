@@ -76,7 +76,7 @@ To enable periodic jobs for a particular topic, specify it in the routing. This 
               <code>true</code> for regular jobs.
             </li>
             <li>
-              <code>false</code> for <a href="https://karafka.io/docs/Pro-Long-Running-Jobs/">LRJ</a>
+              <code>false</code> for <a href="https://karafka.io/docs/Pro-Consumer-Groups-Long-Running-Jobs/">LRJ</a>
             </li>
           </ul>
         </td>
@@ -351,6 +351,6 @@ Periodic Jobs in Karafka provide a powerful tool for ensuring your application r
 ## See Also
 
 - [Recurring Tasks](Pro-Recurring-Tasks) - Scheduled task execution with cron-like patterns
-- [Long-Running Jobs](Pro-Long-Running-Jobs) - Using Periodic Jobs with long-running consumers
+- [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Using Periodic Jobs with long-running consumers
 - [Scheduled Messages](Pro-Scheduled-Messages) - Alternative time-based message processing
 - [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause behavior with Periodic Jobs

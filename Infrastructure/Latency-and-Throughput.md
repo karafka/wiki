@@ -217,8 +217,8 @@ To effectively understand Karafka consumer processes latency and the topics disc
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) basics.
 - [Web UI Usage](Web-UI-Getting-Started) for monitoring.
 - [Swarm/Multi-Process Mode](Infrastructure-Swarm-Multi-Process)
-- [Connection Multiplexing](Pro-Multiplexing)
-- [Virtual Partitions](Pro-Virtual-Partitions)
+- [Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)
 
 ### Latency Types
 
@@ -560,7 +560,7 @@ To mitigate the impact of large batch prefetching under lag conditions and to en
 
 #### Prefetching with Single Partition Assignments
 
-If a Karafka consumer process is assigned only one topic partition, the prefetching behavior is straightforward and consistently fetches data from that single partition. In such cases, there are no concerns about parallelism or the need to distribute the processing load across multiple partitions or subscription groups. Your processing can still greatly benefit by using [Virtual Partitions](Pro-Virtual-Partitions).
+If a Karafka consumer process is assigned only one topic partition, the prefetching behavior is straightforward and consistently fetches data from that single partition. In such cases, there are no concerns about parallelism or the need to distribute the processing load across multiple partitions or subscription groups. Your processing can still greatly benefit by using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
 #### Conclusion
 
@@ -605,6 +605,6 @@ In conclusion, effective consumer management in Karafka requires considering var
 ## See Also
 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
-- [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing for improved throughput
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Parallel processing for improved throughput
 - [Resources Management](Infrastructure-Resources-Management) - Managing memory and CPU resources effectively
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Tracking performance metrics and identifying bottlenecks

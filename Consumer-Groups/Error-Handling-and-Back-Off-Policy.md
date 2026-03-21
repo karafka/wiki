@@ -203,7 +203,7 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
 
 !!! note
 
-    This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Virtual-Partitions#behaviour-on-errors) for more details.
+    This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
 
 ### Offset Management Errors
 
@@ -271,6 +271,6 @@ In cases of unexpected errors within the listeners' loops, Karafka applies a fin
 ## See Also
 
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handling messages that consistently fail processing
-- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ with ordering preservation
-- [Granular Backoffs](Pro-Granular-Backoffs) - Fine-tuned exponential backoff strategies
-- [Virtual Partitions](Pro-Virtual-Partitions) - Understanding error handling in parallel processing
+- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Advanced DLQ with ordering preservation
+- [Granular Backoffs](Pro-Consumer-Groups-Granular-Backoffs) - Fine-tuned exponential backoff strategies
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Understanding error handling in parallel processing

@@ -595,4 +595,4 @@ Swarm Mode supports Static Group Membership to enhance consumer group stability 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understand threading options and parallel processing strategies
 - [Resources Management](Infrastructure-Resources-Management) - Optimize memory, CPU, and connection usage in Karafka
 - [Deployment](Infrastructure-Deployment) - Deploy Karafka in production environments with swarm mode
-- [Virtual Partitions](Pro-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits
