@@ -38,7 +38,7 @@ For more details on how to use the WaterDrop producer and its various message pr
 
 ## Messages Piping
 
-If you are looking for seamless message piping in Kafka-based systems, see [Piping](Pro-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+If you are looking for seamless message piping in Kafka-based systems, see [Piping](Pro-Consumer-Groups-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
 
 ## Producer Shutdown
 
@@ -234,6 +234,6 @@ By leveraging this flexibility in Karafka, you can effectively manage and direct
 
 - [Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
 - [Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
-- [Piping](Pro-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
+- [Piping](Pro-Consumer-Groups-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
 - [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
 - [Consuming Messages](Basics-Consuming-Messages) - Learn how to consume the messages you produce

@@ -67,6 +67,6 @@ In summary, the Rate Limiting mechanism in Karafka provides a flexible way to co
 
 ## See Also
 
-- [Filtering API](Pro-Filtering-API) - Foundation for Rate Limiting and custom consumption flow control
+- [Filtering API](Pro-Consumer-Groups-Filtering-API) - Foundation for Rate Limiting and custom consumption flow control
 - [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms and network impact
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing) - Implementing persistent topic pausing for maintenance

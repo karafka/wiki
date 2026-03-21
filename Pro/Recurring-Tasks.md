@@ -466,5 +466,5 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 
 ## See Also
 
-- [Pro Periodic Jobs](Pro-Periodic-Jobs) - Periodic job execution
+- [Pro Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs) - Periodic job execution
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Message scheduling capabilities

@@ -997,7 +997,7 @@ You can find the `SpecProducerClient` API [here](https://karafka.io/docs/code/ka
 
 When a message is produced to a Kafka topic, it is stored in Kafka until it expires based on the retention policy of the topic. The retention policy determines how long messages are kept in Kafka before they are deleted.
 
-Karafka's [Expiring Messages](Pro-Expiring-Messages) functionality removes messages from Karafka's internal processing queue after a specified amount of time has passed since the message was produced. This functionality is useful when processing messages with a limited lifetime, such as messages with time-sensitive data or messages that should not be processed after a certain amount of time has passed.
+Karafka's [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) functionality removes messages from Karafka's internal processing queue after a specified amount of time has passed since the message was produced. This functionality is useful when processing messages with a limited lifetime, such as messages with time-sensitive data or messages that should not be processed after a certain amount of time has passed.
 
 However, it's important to note that Karafka's Expiring Messages functionality does not remove messages from Kafka itself, and it only removes messages from Karafka's internal processing queue. Therefore, the retention policy of the Kafka topic will still apply, and the message will remain in Kafka until it expires based on the topic's retention policy.
 
@@ -2406,7 +2406,7 @@ In the Karafka framework, the worker contains a consumer that handles the offset
 
 ## Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?
 
-**No**. The `on_idle` and `handle_idle` methods are part of Karafka's internal API and are not editable. Internal components use these methods for periodic jobs within the Karafka framework. They are not intended for user modification or are not part of the official public API. If you need to execute a specific method when the consumer is idle or when the last message from the topic has been consumed, you should use Karafka's [periodic jobs](Pro-Periodic-Jobs) feature. This feature is designed to handle such use cases effectively.
+**No**. The `on_idle` and `handle_idle` methods are part of Karafka's internal API and are not editable. Internal components use these methods for periodic jobs within the Karafka framework. They are not intended for user modification or are not part of the official public API. If you need to execute a specific method when the consumer is idle or when the last message from the topic has been consumed, you should use Karafka's [periodic jobs](Pro-Consumer-Groups-Periodic-Jobs) feature. This feature is designed to handle such use cases effectively.
 
 ## Is Multiplexing an alternative to running multiple Karafka processes but using Threads?
 
@@ -2434,7 +2434,7 @@ Since you have your own authentication, this configuration becomes secondary, th
 
 Due to the complexity of the data flow, there are only a few middleware layers for consuming messages in Karafka, but several layers can function similarly. These are referred to as "strategies" in Karafka, and there are around 80 different combinations available.
 
-Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](Pro-Filtering-API), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
+Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](Pro-Consumer-Groups-Filtering-API), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
 
 One of the key strengths of Karafka is its support for pluggable components. These components can be tailored to meet your specific requirements, offering a high degree of customization. Detailed information about these components and their configurations can be found in the Karafka documentation.
 

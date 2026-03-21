@@ -138,13 +138,8 @@
 
 - [Features List](Pro-Features-List)
 - [Features Compatibility](Pro-Features-Compatibility)
-- [Periodic Jobs](Pro-Periodic-Jobs)
-- [Expiring Messages](Pro-Expiring-Messages)
 - [Routing Patterns](Pro-Routing-Patterns)
-- [Rate Limiting](Pro-Rate-Limiting)
-- [Filtering API](Pro-Filtering-API)
 - [Cleaner API](Pro-Cleaner-API)
-- [Piping](Pro-Piping)
 - [Recurring Tasks](Pro-Recurring-Tasks)
 - [Scheduled Messages](Pro-Scheduled-Messages)
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
@@ -169,6 +164,11 @@
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability)
 - [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights)
+- [Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs)
+- [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages)
+- [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting)
+- [Filtering API](Pro-Consumer-Groups-Filtering-API)
+- [Piping](Pro-Consumer-Groups-Piping)
 
 ### Share Groups Features
 
@@ -176,22 +176,22 @@
 
 ### Enhanced Web UI
 
-- [Enhanced Web UI](Pro-Web-UI)
-    - [Getting Started](Pro-Web-UI#getting-started)
-    - [Consumers](Pro-Web-UI#consumers)
-    - [Commanding](Pro-Web-UI-Commanding)
-    - [Health](Pro-Web-UI-Health)
-    - [Explorer](Pro-Web-UI#explorer)
-    - [Policies](Pro-Web-UI-Policies)
-    - [Search](Pro-Web-UI-Search)
-    - [Recurring Tasks](Pro-Web-UI#recurring-tasks)
-    - [Scheduled Messages](Pro-Web-UI#scheduled-messages)
-    - [Topics Insights](Pro-Web-UI-Topics-Insights)
-    - [Errors](Pro-Web-UI#errors)
-    - [DLQ / Dead](Pro-Web-UI#dlq-dead)
-    - [Branding](Pro-Web-UI#branding)
-    - [Custom Styling](Pro-Web-UI#custom-styling)
-    - [Topics Management](Pro-Web-UI-Topics-Management)
+- [About](Pro-Web-UI)
+- [Getting Started](Pro-Web-UI#getting-started)
+- [Consumers](Pro-Web-UI#consumers)
+- [Commanding](Pro-Web-UI-Commanding)
+- [Health](Pro-Web-UI-Health)
+- [Explorer](Pro-Web-UI#explorer)
+- [Policies](Pro-Web-UI-Policies)
+- [Search](Pro-Web-UI-Search)
+- [Recurring Tasks](Pro-Web-UI#recurring-tasks)
+- [Scheduled Messages](Pro-Web-UI#scheduled-messages)
+- [Topics Insights](Pro-Web-UI-Topics-Insights)
+- [Errors](Pro-Web-UI#errors)
+- [DLQ / Dead](Pro-Web-UI#dlq-dead)
+- [Branding](Pro-Web-UI#branding)
+- [Custom Styling](Pro-Web-UI#custom-styling)
+- [Topics Management](Pro-Web-UI-Topics-Management)
 
 ## Librdkafka
 

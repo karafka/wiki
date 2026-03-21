@@ -45,8 +45,8 @@ end
 If you are looking for more extensive examples, you can check out the implementations of:
 
 - `Karafka::Pro::Processing::Filters::Delayer` - used as a part of the [Delayed Jobs](Pro-Consumer-Groups-Delayed-Topics) feature.
-- `Karafka::Pro::Processing::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Expiring-Messages) feature
-- `Karafka::Pro::Processing::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Rate-Limiting) feature.
+- `Karafka::Pro::Processing::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) feature
+- `Karafka::Pro::Processing::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) feature.
 
 ### Filters Lifecycle
 
@@ -313,4 +313,4 @@ Karafka Filtering API is a powerful tool that allows developers to process incom
 
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing) - Implementing persistent topic pausing using Filtering API with feature flags
 - [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
-- [Rate Limiting](Pro-Rate-Limiting) - Another feature built on top of the Filtering API
+- [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) - Another feature built on top of the Filtering API
