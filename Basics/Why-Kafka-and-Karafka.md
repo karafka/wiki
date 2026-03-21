@@ -304,13 +304,13 @@ Karafka.producer.produce_async(
 )
 ```
 
-Karafka's [Active Job](Active-Job) adapter lets you keep the standard `UpdateProfileJob.perform_later(user_id, changes)` pattern while gaining Kafka's ordering guarantees underneath.
+Karafka's [Active Job](Consumer-Groups-Active-Job) adapter lets you keep the standard `UpdateProfileJob.perform_later(user_id, changes)` pattern while gaining Kafka's ordering guarantees underneath.
 
 ### E-Commerce Fraud Detection With a Cancellation Window
 
 An online store processes thousands of orders per hour. Some are fraudulent. The team wants a short window - say 5 minutes - between when an order is placed and when fulfillment begins, so the fraud detection model can score it. If the order is flagged, it gets moved to a review queue. If the customer cancels within the window, the cancellation is free.
 
-[Delayed Topics](Pro-Delayed-Topics) handle this naturally: order events are delayed by 5 minutes before the fulfillment consumer sees them. During that window, a separate fraud-scoring consumer evaluates each order in real time. Flagged orders are moved to a [Dead Letter Queue](Dead-Letter-Queue) for human review. Clean orders proceed to fulfillment after the delay.
+[Delayed Topics](Pro-Delayed-Topics) handle this naturally: order events are delayed by 5 minutes before the fulfillment consumer sees them. During that window, a separate fraud-scoring consumer evaluates each order in real time. Flagged orders are moved to a [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) for human review. Clean orders proceed to fulfillment after the delay.
 
 ![Delayed topics processing flow](https://karafka.io/assets/misc/charts/delayed_topics/flow.svg)
 
@@ -392,5 +392,5 @@ The search team, recommendations team, browse team, and analytics team each depl
 - [Admin API](https://karafka.io/docs/Infrastructure-Admin-API) - Manage topics, consumer groups, and offsets from Ruby
 - [Consumer Groups and Topics](https://karafka.io/docs/Basics-Consuming-Messages) - How Karafka maps consumer groups to Kafka topics
 - [Pro Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) - Multi-threaded processing within a single partition
-- [Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue) - Handle unprocessable messages without blocking consumption
+- [Dead Letter Queue](https://karafka.io/docs/Consumer-Groups-Dead-Letter-Queue) - Handle unprocessable messages without blocking consumption
 - [Kafka Best Practices](https://karafka.io/docs/Kafka-Best-Practices) - Topic design, partition sizing, and operational guidance

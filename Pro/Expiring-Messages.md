@@ -89,4 +89,4 @@ In summary, while both features deal with message lifecycle management, they ope
 
 - [Filtering API](Pro-Filtering-API) - Foundation for Expiring Messages and custom message filtering
 - [Delayed Topics](Pro-Delayed-Topics) - Processing messages at specific future times
-- [Dead Letter Queue](Dead-Letter-Queue) - Handling expired messages that need review
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handling expired messages that need review

@@ -4,7 +4,7 @@ Enhanced Active Job adapter provides extra capabilities to regular Active Job to
 
 ## Enabling Enhanced Active Job
 
-No action needs to be taken. Please follow the [Active Job setup](Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
+No action needs to be taken. Please follow the [Active Job setup](Consumer-Groups-Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
 
 ## Ordered Jobs
 
@@ -252,17 +252,17 @@ To use ActiveJob Continuation in Pro with **delayed resumption**:
 
 ### OSS Compatibility
 
-For details on using ActiveJob Continuation in the OSS version with immediate resumption, see [ActiveJob Continuation](Active-Job#activejob-continuation).
+For details on using ActiveJob Continuation in the OSS version with immediate resumption, see [ActiveJob Continuation](Consumer-Groups-Active-Job#activejob-continuation).
 
 ## Execution Warranties
 
-Same execution warranties apply as for standard [Active Job adapter](Active-Job#execution-warranties).
+Same execution warranties apply as for standard [Active Job adapter](Consumer-Groups-Active-Job#execution-warranties).
 
 ## Behaviour on Errors
 
 When using the ActiveJob adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
 
-For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Active-Job#behaviour-on-errors).
+For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-errors).
 
 !!! note
 
@@ -276,13 +276,13 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 
 When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
 
-For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Active-Job#behaviour-on-shutdown).
+For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-shutdown).
 
 ---
 
 ## See Also
 
-- [Active Job](Active-Job) - Standard Active Job adapter documentation
+- [Active Job](Consumer-Groups-Active-Job) - Standard Active Job adapter documentation
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Scheduling jobs for future execution
 - [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Non-blocking job processing
 - [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing within partitions

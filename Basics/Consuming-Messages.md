@@ -210,7 +210,7 @@ end
 
 It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
-In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+In most cases, especially if you do not use [Long-Running Jobs](Pro-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
 !!! note
 
@@ -589,8 +589,8 @@ end
 
 ## See Also
 
-- [Offset management](Offset-management) - Control when and how message offsets are committed to Kafka
-- [Deserialization](Deserialization) - Transform raw message data into structured Ruby objects
+- [Offset management](Consumer-Groups-Offset-management) - Control when and how message offsets are committed to Kafka
+- [Deserialization](Consumer-Groups-Deserialization) - Transform raw message data into structured Ruby objects
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Handle consumer errors and implement retry strategies
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understand parallel processing and threading in Karafka
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understand parallel processing and threading in Karafka
 - [Testing](Basics-Testing) - Write tests for your message consumers to ensure correct behavior

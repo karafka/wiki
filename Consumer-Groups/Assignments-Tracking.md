@@ -34,4 +34,4 @@ end
 
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Track consumer assignments and partition distribution
 - [Web UI Features](Web-UI-Features) - Visualize partition assignments in the Web UI
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding thread safety with partition assignments
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding thread safety with partition assignments

@@ -69,7 +69,7 @@ end
 
 !!! warning "Long-Running Job Impact on Internal Queues"
 
-    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
+    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
 
 ## Processing during revocation
 
@@ -142,7 +142,7 @@ end
 
 ## Processing during shutdown
 
-Karafka will wait for your Long-Running Jobs to finish within the limits of `shutdown_timeout`. Either set it to a value big enough for the jobs to finish or implement periodic shutdown checks and enable [manual offset management](Offset-management#manual-offset-management). Otherwise, Karafka may forcefully stop workers in the middle of processing after the `shutdown_timeout` is exceeded.
+Karafka will wait for your Long-Running Jobs to finish within the limits of `shutdown_timeout`. Either set it to a value big enough for the jobs to finish or implement periodic shutdown checks and enable [manual offset management](Consumer-Groups-Offset-management#manual-offset-management). Otherwise, Karafka may forcefully stop workers in the middle of processing after the `shutdown_timeout` is exceeded.
 
 During the shutdown, polling occurs, so there is **no** risk of exceeding the `max.poll.interval.ms`.
 

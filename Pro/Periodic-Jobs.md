@@ -353,4 +353,4 @@ Periodic Jobs in Karafka provide a powerful tool for ensuring your application r
 - [Recurring Tasks](Pro-Recurring-Tasks) - Scheduled task execution with cron-like patterns
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Using Periodic Jobs with long-running consumers
 - [Scheduled Messages](Pro-Scheduled-Messages) - Alternative time-based message processing
-- [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting) - Understanding pause behavior with Periodic Jobs
+- [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause behavior with Periodic Jobs

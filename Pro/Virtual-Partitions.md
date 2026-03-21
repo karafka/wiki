@@ -151,7 +151,7 @@ end
 
 !!! tip "Lazy Deserialization Advisory"
 
-    Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
+    Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Consumer-Groups-Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
 ### Partitioning Randomly
 
@@ -491,7 +491,7 @@ end
 
 !!! tip "DLQ independent mode usage with Virtual Partitions"
 
-    The [`independent` DLQ flag](Dead-Letter-Queue#independent-error-counting) in Karafka can be used with the Virtual Partitions. When an error occurs in virtual partitions, pause, retry, and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties, meaning that the `independent` flag can operate in the same fashion as if virtual partitions were not used.
+    The [`independent` DLQ flag](Consumer-Groups-Dead-Letter-Queue#independent-error-counting) in Karafka can be used with the Virtual Partitions. When an error occurs in virtual partitions, pause, retry, and collapse will occur. Collapsing allows virtual partitions to temporarily restore all the Kafka ordering warranties, meaning that the `independent` flag can operate in the same fashion as if virtual partitions were not used.
 
 ## Manual Collapsing
 
@@ -778,5 +778,5 @@ Overall, virtual partitions can be beneficial in any industry where large volume
 
 - [Parallel Segments](Pro-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads
 - [Long-Running Jobs](Pro-Long-Running-Jobs) - Use with Virtual Partitions for better throughput on IO-bound tasks
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding Karafka's threading model and Virtual Partitions
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding Karafka's threading model and Virtual Partitions
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - How errors are handled in Virtual Partitions

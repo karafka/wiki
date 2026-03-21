@@ -172,7 +172,7 @@ Please keep in mind that **as long as** the error persists, **no** other jobs fr
 
 ## Usage With the Dead Letter Queue
 
-The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](Dead-Letter-Queue) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
+The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -306,6 +306,6 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
 - [Enhanced Active Job](Pro-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
 - [Testing](Basics-Testing) - Test your ActiveJob jobs with Karafka's testing helpers
-- [Dead Letter Queue](Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
 - [Long Running Jobs](Pro-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

@@ -13,7 +13,7 @@ For **planned migrations, maintenance windows, or controlled rollouts**, you nee
 The [Filtering API](Pro-Filtering-API) provides pre-processing hooks that can alter consumption behavior before messages reach your consumer code. Filters are **long-lived objects** created per partition that can return three actions:
 
 - **`:skip`** - Normal processing (default)
-- **`:pause`** - Halt consumption for a specified timeout (see [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting))
+- **`:pause`** - Halt consumption for a specified timeout (see [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting))
 - **`:seek`** - Move to a different offset
 
 Critically, filters run **before** message processing and persist across poll cycles, making them ideal for implementing durable pausing logic based on external state like feature flags.
@@ -144,7 +144,7 @@ This approach gives you **persistent, centrally-managed topic pausing** that's p
 ## See Also
 
 - [Filtering API](Pro-Filtering-API) - Complete documentation on creating and using filters
-- [Pausing, Seeking and Rate Limiting](Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
+- [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
 - [Web UI Commanding: Pause and Resume Partitions](Pro-Web-UI-Commanding#pause-and-resume-partitions) - Emergency partition pausing via Web UI
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - How Karafka handles automatic pausing on errors
 - [Transactional offsets pattern](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/) - Related pattern for reliable message processing

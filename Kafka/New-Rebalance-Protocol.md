@@ -317,6 +317,6 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 ## See Also
 
 - [Routing Patterns](Pro-Routing-Patterns) - Regex-based dynamic topic routing and regexp engine differences
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - For understanding how threading interacts with rebalancing
 - [Pro Long Running Jobs](Pro-Long-Running-Jobs) - For handling long-running work during rebalances
 - [Deployment](Infrastructure-Deployment) - For deployment strategies including rolling restarts

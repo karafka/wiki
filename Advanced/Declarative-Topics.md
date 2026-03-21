@@ -24,7 +24,7 @@ Keeping Kafka topics configuration as code has several benefits:
 
 Overall, keeping Kafka topics settings as code can make it easier to manage, automate, and collaborate on Kafka topics, saving time and reducing the risk of errors.
 
-Karafka [routing](Routing) allows you to do that via per topic `#config` method that you can use to describe your Kafka topic configuration.
+Karafka [routing](Consumer-Groups-Routing) allows you to do that via per topic `#config` method that you can use to describe your Kafka topic configuration.
 
 This configuration is used by a set of Karafka [CLI](CLI) commands you can invoke to operate on your application's topics.
 
@@ -219,7 +219,7 @@ This will ensure the correct exit code is returned based on the operation's outc
 
 ## See Also
 
-- [Routing](Routing) - Define routing and topic configurations together
+- [Routing](Consumer-Groups-Routing) - Define routing and topic configurations together
 - [Admin API](Infrastructure-Admin-API) - Programmatically manage topics beyond declarative definitions
 - [Topic Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
 - [Topic Auto Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior

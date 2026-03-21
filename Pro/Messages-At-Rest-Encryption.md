@@ -163,4 +163,4 @@ Karafka Pro's at-rest encryption is worth using because it provides a layer of s
 
 - [Pro Security](Pro-Security) - Security best practices
 - [Pro HIPAA PHI PII Support](Pro-HIPAA-PHI-PII-Support) - Healthcare compliance support
-- [Deserialization](Deserialization) - Message deserialization configuration
+- [Deserialization](Consumer-Groups-Deserialization) - Message deserialization configuration
