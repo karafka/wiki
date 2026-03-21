@@ -6,13 +6,13 @@
 - [Configuration](Basics-Configuration)
 - [Producing Messages](Basics-Producing-Messages)
 - [Consuming Messages](Basics-Consuming-Messages)
+- [Consumer Groups vs Share Groups](Basics-Consumer-Groups-vs-Share-Groups)
 - [Web UI](Web-UI-Getting-Started)
 - [Testing](Basics-Testing)
 - [Components](Basics-Components)
 - [FAQ](Basics-FAQ)
 - [Support](Basics-Support)
 - [Status](Status)
-- [Consumer Groups vs Share Groups](Basics-Consumer-Groups-vs-Share-Groups)
 - [Articles and Other References](Basics-Articles-and-Other-References)
 
 ## Web UI
@@ -81,6 +81,8 @@
 
 ## Infrastructure
 
+### Operations
+
 - [Development vs Production](Infrastructure-Application-Development-vs-Production)
 - [Deployment](Infrastructure-Deployment)
     - [systemd (+ Capistrano)](Infrastructure-Deployment#systemd-capistrano)
@@ -93,28 +95,37 @@
 - [Signals and States](Infrastructure-Signals-and-States)
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging)
 - [Instrumentation Events](Infrastructure-Instrumentation-Events)
-- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide)
+- [CLI](Infrastructure-CLI)
+- [Exit codes](Infrastructure-Exit-codes)
+
+### Configuration
+
+- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks)
+- [Declarative Topics](Infrastructure-Declarative-Topics)
+- [Env Variables](Infrastructure-Env-Variables)
+- [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup)
+- [Active Record Connections Management](Infrastructure-Active-Record-Connections-Management)
+- [Embedding](Infrastructure-Embedding)
+- [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process)
+- [Forking](Infrastructure-Forking)
+- [Auto reload of code changes in development](Infrastructure-Auto-reload-of-code-changes-in-development)
 - [Admin API](Infrastructure-Admin-API)
 - [ACLs API](Infrastructure-Admin-Acls-API)
 - [Configs API](Infrastructure-Admin-Configs-API)
 - [Replication API](Infrastructure-Admin-Replication-API)
-- [Declarative Topics](Infrastructure-Declarative-Topics)
-- [Auto reload of code changes in development](Infrastructure-Auto-reload-of-code-changes-in-development)
-- [CLI](Infrastructure-CLI)
-- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks)
-- [Exit codes](Infrastructure-Exit-codes)
-- [Embedding](Infrastructure-Embedding)
-- [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process)
-- [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup)
-- [Env Variables](Infrastructure-Env-Variables)
-- [Active Record Connections Management](Infrastructure-Active-Record-Connections-Management)
-- [Forking](Infrastructure-Forking)
-- [Resources Management](Infrastructure-Resources-Management)
+
+### Reliability
+
 - [Latency and Throughput](Infrastructure-Latency-and-Throughput)
+- [Resources Management](Infrastructure-Resources-Management)
 - [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance)
-- [Topic Auto Creation](Infrastructure-Topic-Auto-Creation)
+- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide)
+
+### Troubleshooting
+
 - [Problems and Troubleshooting](Infrastructure-Problems-and-Troubleshooting)
 - [Debugging](Infrastructure-Debugging)
+- [Topic Auto Creation](Infrastructure-Topic-Auto-Creation)
 
 ## Karafka Pro
 
