@@ -93,31 +93,23 @@
 - [ACLs API](Infrastructure-Admin-Acls-API)
 - [Configs API](Infrastructure-Admin-Configs-API)
 - [Replication API](Infrastructure-Admin-Replication-API)
-
-## Advanced
-
-- [Upgrading](Upgrading)
-- [Declarative Topics](Declarative-Topics)
-- [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
-- [CLI](CLI)
-- [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
-
-- [Exit codes](Exit-codes)
-- [Embedding](Embedding)
-- [Swarm / Multi Process](Swarm-Multi-Process)
-- [Multi-Cluster Setup](Multi-Cluster-Setup)
-- [Env Variables](Env-Variables)
-- [Active Record Connections Management](Active-Record-Connections-Management)
-- [Forking](Forking)
-- [Resources Management](Resources-Management)
-- [Latency and Throughput](Latency-and-Throughput)
-- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance)
-- [Topic Auto Creation](Topic-Auto-Creation)
-
-- [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL)
-- [Problems and Troubleshooting](Problems-and-Troubleshooting)
-- [Debugging](Debugging)
-- [Software Bill of Materials (SBOM)](SBOM)
+- [Declarative Topics](Infrastructure-Declarative-Topics)
+- [Auto reload of code changes in development](Infrastructure-Auto-reload-of-code-changes-in-development)
+- [CLI](Infrastructure-CLI)
+- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks)
+- [Exit codes](Infrastructure-Exit-codes)
+- [Embedding](Infrastructure-Embedding)
+- [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process)
+- [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup)
+- [Env Variables](Infrastructure-Env-Variables)
+- [Active Record Connections Management](Infrastructure-Active-Record-Connections-Management)
+- [Forking](Infrastructure-Forking)
+- [Resources Management](Infrastructure-Resources-Management)
+- [Latency and Throughput](Infrastructure-Latency-and-Throughput)
+- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance)
+- [Topic Auto Creation](Infrastructure-Topic-Auto-Creation)
+- [Problems and Troubleshooting](Infrastructure-Problems-and-Troubleshooting)
+- [Debugging](Infrastructure-Debugging)
 
 ## Karafka Pro
 
@@ -203,6 +195,9 @@
 
 ## Upgrade Notes
 
+- [Upgrading](Upgrades-Upgrading)
+- [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL)
+
 It is recommended to do one major upgrade at a time.
 
 - [Karafka](Upgrades-Karafka)
@@ -260,6 +255,7 @@ It is recommended to do one major upgrade at a time.
 - [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
 - [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
+- [Software Bill of Materials (SBOM)](Development-SBOM)
 - [Technical Writing](Development-Technical-Writing)
 - [KIP-932 Karafka](Development-KIP-932-Karafka)
 - [KIP-932 Web UI](Development-KIP-932-Web-UI)

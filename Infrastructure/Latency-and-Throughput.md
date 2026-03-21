@@ -216,7 +216,7 @@ To effectively understand Karafka consumer processes latency and the topics disc
 - [Offset Management Strategies](Consumer-Groups-Offset-management)
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) basics.
 - [Web UI Usage](Web-UI-Getting-Started) for monitoring.
-- [Swarm/Multi-Process Mode](Swarm-Multi-Process)
+- [Swarm/Multi-Process Mode](Infrastructure-Swarm-Multi-Process)
 - [Connection Multiplexing](Pro-Multiplexing)
 - [Virtual Partitions](Pro-Virtual-Partitions)
 
@@ -606,5 +606,5 @@ In conclusion, effective consumer management in Karafka requires considering var
 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
 - [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing for improved throughput
-- [Resources Management](Resources-Management) - Managing memory and CPU resources effectively
+- [Resources Management](Infrastructure-Resources-Management) - Managing memory and CPU resources effectively
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Tracking performance metrics and identifying bottlenecks

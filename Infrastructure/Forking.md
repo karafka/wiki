@@ -10,7 +10,7 @@ When forking Ruby processes, ensuring there are no active connections to Kafka i
 
 ## Karafka's Swarm Forking Strategy
 
-Karafka uses forking in its [Swarm Mode](Swarm-Multi-Process). This process is carefully designed to ensure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
+Karafka uses forking in its [Swarm Mode](Infrastructure-Swarm-Multi-Process). This process is carefully designed to ensure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
 
 ## Forking Issues on macOS
 
@@ -50,6 +50,6 @@ Forking in Ruby applications that use Karafka and `librdkafka` requires careful 
 
 ## See Also
 
-- [Swarm Multi-Process](Swarm-Multi-Process) - Karafka's multi-process mode using forking
-- [Resources Management](Resources-Management) - Managing resources across forked processes
-- [Active Record Connections Management](Active-Record-Connections-Management) - Handling database connections when forking
+- [Swarm Multi-Process](Infrastructure-Swarm-Multi-Process) - Karafka's multi-process mode using forking
+- [Resources Management](Infrastructure-Resources-Management) - Managing resources across forked processes
+- [Active Record Connections Management](Infrastructure-Active-Record-Connections-Management) - Handling database connections when forking

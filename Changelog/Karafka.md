@@ -1113,7 +1113,7 @@ Karafka 2.0:
 - Provides `#revoked` [method](https://github.com/karafka/karafka/wiki/Consuming-messages#shutdown-and-partition-revocation-handlers) for taking actions upon topic revocation.
 - Emits underlying async errors emitted from `librdkafka` via the standardized `error.occurred` [monitor channel](https://github.com/karafka/karafka/wiki/Error-handling-and-back-off-policy#error-tracking).
 - Replaces `ruby-kafka` with `librdkafka` as an underlying driver.
-- Introduces official [EOL policies](https://github.com/karafka/karafka/wiki/Versions-Lifecycle-and-EOL).
+- Introduces official [EOL policies](https://github.com/karafka/karafka/wiki/Upgrades-Versions-Lifecycle-and-EOL).
 - Introduces [benchmarks](https://github.com/karafka/karafka/tree/master/spec/benchmarks) that can be used to profile Karafka.
 - Introduces a requirement that the end user code **needs** to be [thread-safe](https://github.com/karafka/karafka/wiki/FAQ#does-karafka-require-gems-to-be-thread-safe).
 - Introduces a [Pro subscription](https://github.com/karafka/karafka/wiki/Build-vs-Buy) with a [commercial license](https://github.com/karafka/karafka/blob/master/LICENSE-COMM) to fund further ecosystem development.

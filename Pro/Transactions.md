@@ -500,7 +500,7 @@ For advanced monitoring or custom integrations, remember that the Karafka consum
 
 ## Using Transactions in Swarm Mode
 
-For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](Swarm-Multi-Process#transactional-producer-handling-in-swarm-mode).
+For detailed information about working with transactional producers in Swarm Mode, including configuration inheritance, transactional ID management, and best practices, please refer to our dedicated documentation section on [Transactional Producer Handling in Swarm Mode](Infrastructure-Swarm-Multi-Process#transactional-producer-handling-in-swarm-mode).
 
 ## Performance Implications
 

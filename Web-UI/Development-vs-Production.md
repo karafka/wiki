@@ -38,7 +38,7 @@ To achieve this, you can either:
 
 1. **Dedicate a Swarm Node solely to the Web UI**: Configure your Karafka swarm to reserve a specific node exclusively for Web UI processing, completely isolating it from your application's consumer workloads.
 
-1. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](Embedding) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
+1. **Use Embedded Mode for the Web UI**: Run the Karafka Web UI consumer in [Embedded Mode](Infrastructure-Embedding) within a Puma process. This approach is convenient for sharing resources between the Web UI consumer and web server, but should only be used when the Puma process is **dedicated exclusively** to the Web UI and not part of a larger, world-facing application.
 
 ### Dedicated Web UI Swarm Node
 

@@ -6,7 +6,7 @@ Karafka Pro offers priority support via a dedicated per-organization private Sla
 
 ## Version Support
 
-Please check out the [Versions Lifecycle and EOL](Versions-Lifecycle-and-EOL) for information about supported versions.
+Please check out the [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) for information about supported versions.
 
 ## Priority Support
 

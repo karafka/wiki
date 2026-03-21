@@ -373,7 +373,7 @@ Please note that our software is provided "as is." We recommend utilizing the tr
 
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 
-Karafka maintains a [documentation page](SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
+Karafka maintains a [documentation page](Development-SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
 
 ## Can I use one Karafka license across multiple companies within a corporate group?
 

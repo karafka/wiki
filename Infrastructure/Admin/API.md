@@ -148,7 +148,7 @@ Karafka::Admin.delete_topic(topic_name)
 
 Karafka provides two distinct approaches for managing and altering topic configurations:
 
-- [Declarative Topics](Declarative-Topics) (Recommended for most cases)
+- [Declarative Topics](Infrastructure-Declarative-Topics) (Recommended for most cases)
 - [Admin Configs API](Infrastructure-Admin-Configs-API) (For lower-level control)
 
 ### Declarative Topics Approach
@@ -611,4 +611,4 @@ Using `:earliest` and `:latest` is vital for managing consumer behavior, ensurin
 - [Admin Acls API](Infrastructure-Admin-Acls-API) - Manage Kafka ACLs programmatically
 - [Admin Configs API](Infrastructure-Admin-Configs-API) - Configure topics and brokers
 - [Admin Replication API](Infrastructure-Admin-Replication-API) - Plan replication factor changes
-- [Declarative Topics](Declarative-Topics) - Higher-level topic management approach
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Higher-level topic management approach

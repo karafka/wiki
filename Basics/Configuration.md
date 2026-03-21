@@ -73,7 +73,7 @@ Your external components will be automatically configured once per process after
 
 ## Environment variables settings
 
-There are several env settings you can use with Karafka. They are described under the [Env Variables](Env-Variables) section of this Wiki.
+There are several env settings you can use with Karafka. They are described under the [Env Variables](Infrastructure-Env-Variables) section of this Wiki.
 
 ## Compressing messages
 
@@ -178,7 +178,7 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 !!! tip "Managing Topics Configuration with Declarative Topics API"
 
-    If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Declarative-Topics).
+    If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Infrastructure-Declarative-Topics).
 
 ---
 
@@ -187,5 +187,5 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 - [Getting Started](Basics-Getting-Started) - Initial setup and installation of Karafka for your application
 - [Routing](Consumer-Groups-Routing) - Define how messages from topics are received and consumed
 - [Librdkafka Configuration](Librdkafka-Configuration) - Complete reference of librdkafka configuration options
-- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure Karafka to work with multiple Kafka clusters
-- [Declarative Topics](Declarative-Topics) - Manage Kafka topic configurations as code
+- [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure Karafka to work with multiple Kafka clusters
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Manage Kafka topic configurations as code

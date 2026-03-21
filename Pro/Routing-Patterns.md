@@ -248,7 +248,7 @@ While exclusion patterns provide a powerful way to route messages, they should b
 
 ### Limiting Patterns used per process
 
-Karafka's named and anonymous patterns are associated with a specific matcher topic name. This uniform naming system allows more flexibility when using the Karafka Command Line Interface (CLI). As with standard topics, you can include or exclude matcher topics when running Karafka processes by referencing their name.
+Karafka's named and anonymous patterns are associated with a specific matcher topic name. This uniform naming system allows more flexibility when using the Karafka Command Line Interface (Infrastructure-CLI). As with standard topics, you can include or exclude matcher topics when running Karafka processes by referencing their name.
 
 Giving the below routing setup:
 

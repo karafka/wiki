@@ -1,6 +1,6 @@
 Karafka allows you to manage your topics in three ways:
 
-- Using the built-in [Declarative Topics](Declarative-Topics) routing + CLI functionality (recommended)
+- Using the built-in [Declarative Topics](Infrastructure-Declarative-Topics) routing + CLI functionality (recommended)
 - Directly via the [Admin API](Infrastructure-Admin-API)
 - From the Pro Web UI via the [Topics Management feature](Pro-Web-UI-Topics-Management)
 
@@ -26,7 +26,7 @@ Overall, keeping Kafka topics settings as code can make it easier to manage, aut
 
 Karafka [routing](Consumer-Groups-Routing) allows you to do that via per topic `#config` method that you can use to describe your Kafka topic configuration.
 
-This configuration is used by a set of Karafka [CLI](CLI) commands you can invoke to operate on your application's topics.
+This configuration is used by a set of Karafka [CLI](Infrastructure-CLI) commands you can invoke to operate on your application's topics.
 
 There are the following commands supported:
 
@@ -222,5 +222,5 @@ This will ensure the correct exit code is returned based on the operation's outc
 - [Routing](Consumer-Groups-Routing) - Define routing and topic configurations together
 - [Admin API](Infrastructure-Admin-API) - Programmatically manage topics beyond declarative definitions
 - [Topic Configuration](Kafka-Topic-Configuration) - Understanding Kafka topic-level configuration options
-- [Topic Auto Creation](Topic-Auto-Creation) - Understand automatic topic creation behavior
-- [CLI](CLI) - Complete reference of Karafka CLI commands for topic management
+- [Topic Auto Creation](Infrastructure-Topic-Auto-Creation) - Understand automatic topic creation behavior
+- [CLI](Infrastructure-CLI) - Complete reference of Karafka CLI commands for topic management

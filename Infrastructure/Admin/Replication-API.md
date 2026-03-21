@@ -233,5 +233,5 @@ end
 ## See Also
 
 - [Admin API](Infrastructure-Admin-API) - General admin operations and topic management
-- [Declarative Topics](Declarative-Topics) - Code-based topic configuration management
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Code-based topic configuration management
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - Available topic configuration options

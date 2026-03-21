@@ -99,11 +99,11 @@ Results are grouped by severity using color-coded output. Each finding includes 
 
 ## Karafka Swarm
 
-Swarm has its own section. You can read about it [here](Swarm-Multi-Process).
+Swarm has its own section. You can read about it [here](Infrastructure-Swarm-Multi-Process).
 
 ## Declarative Topics
 
-Declarative Topics managament via the CLI has its own section. You can read about that [here](Declarative-Topics).
+Declarative Topics managament via the CLI has its own section. You can read about that [here](Infrastructure-Declarative-Topics).
 
 ## Routing Patterns
 
@@ -115,4 +115,4 @@ Routing Patterns managament via the CLI has its own section. You can read about 
 
 - [Getting Started](Basics-Getting-Started) - Initial setup and basic CLI usage
 - [Deployment](Infrastructure-Deployment) - Using CLI commands in production environments
-- [Env Variables](Env-Variables) - Environment variables affecting CLI behavior
+- [Env Variables](Infrastructure-Env-Variables) - Environment variables affecting CLI behavior

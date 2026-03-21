@@ -68,8 +68,8 @@ Karafka provides automatic database connection management for standard setups. H
 
 ## See Also
 
-- [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks) - Set up Karafka with Rails and ActiveRecord
-- [Forking](Forking) - Understand connection handling when using forking and Swarm mode
+- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) - Set up Karafka with Rails and ActiveRecord
+- [Forking](Infrastructure-Forking) - Understand connection handling when using forking and Swarm mode
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Manage database connections across threads
-- [Resources Management](Resources-Management) - Optimize overall resource usage including database connections
+- [Resources Management](Infrastructure-Resources-Management) - Optimize overall resource usage including database connections
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Handle database connection errors and implement retry strategies

@@ -377,5 +377,5 @@ Understanding the nuances of message size validation is crucial to ensure smooth
 
 - [WaterDrop Getting Started](WaterDrop-Getting-Started) - Quick start guide for WaterDrop producer
 - [Librdkafka Configuration](Librdkafka-Configuration) - Complete librdkafka configuration reference
-- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure and manage multiple Kafka clusters
+- [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and manage multiple Kafka clusters
 - [WaterDrop Variants](WaterDrop-Variants) - Different producer variants and their use cases

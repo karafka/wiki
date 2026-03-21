@@ -875,4 +875,4 @@ In conclusion, maintaining the stability, performance, and reliability of Karafk
 - [Deployment](Infrastructure-Deployment) - Setting up liveness probes and health checks in production
 - [Web UI Getting Started](Web-UI-Getting-Started) - Visual monitoring and observability with Web UI
 - [Enhanced Inline Insights](Pro-Enhanced-Inline-Insights) - Metrics-based processing and monitoring
-- [Latency and Throughput](Latency-and-Throughput) - Performance monitoring and optimization
+- [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Performance monitoring and optimization

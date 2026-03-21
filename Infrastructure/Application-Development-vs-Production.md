@@ -19,7 +19,7 @@ end
 
 ## Pre-create Necessary Topics in the Production Kafka Cluster
 
-Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](Declarative-Topics) functionality for that.
+Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](Infrastructure-Declarative-Topics) functionality for that.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -297,7 +297,7 @@ Forking processes on macOS, especially from macOS High Sierra (10.13) onwards, c
 
 - Segmentation faults similar to: `[BUG] Segmentation fault at 0x0000000000000110`
 
-You can find an extensive explanation of Karafka ecosystem components forking support [here](Forking).
+You can find an extensive explanation of Karafka ecosystem components forking support [here](Infrastructure-Forking).
 
 ## Be Aware of WaterDrop Default Producer Middleware Modifications
 
