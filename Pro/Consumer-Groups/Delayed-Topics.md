@@ -149,5 +149,5 @@ Karafka's Delayed Topics is a powerful feature that allows for arbitrary delays 
 
 - [Scheduled Messages](Pro-Scheduled-Messages) - Alternative time-based message processing approach
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Using delays for DLQ retry strategies
-- [Expiring Messages](Pro-Expiring-Messages) - Skipping messages that become irrelevant over time
-- [Filtering API](Pro-Filtering-API) - Foundation for Delayed Topics implementation
+- [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) - Skipping messages that become irrelevant over time
+- [Filtering API](Pro-Consumer-Groups-Filtering-API) - Foundation for Delayed Topics implementation

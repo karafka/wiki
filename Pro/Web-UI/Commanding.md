@@ -324,5 +324,5 @@ The combination of process-level commands (trace, quiet, stop) and partition-lev
 ## See Also
 
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API
-- [Filtering API](Pro-Filtering-API) - Building custom filters for advanced consumption control
+- [Filtering API](Pro-Consumer-Groups-Filtering-API) - Building custom filters for advanced consumption control
 - [Web UI Health](Pro-Web-UI-Health) - Monitoring consumer health and partition status

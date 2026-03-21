@@ -453,4 +453,4 @@ It supports custom scheduler implementation, with stateful and stateless options
 
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Message scheduling capabilities
 - [Pro Recurring Tasks](Pro-Recurring-Tasks) - Recurring task execution
-- [Pro Periodic Jobs](Pro-Periodic-Jobs) - Periodic job processing
+- [Pro Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs) - Periodic job processing

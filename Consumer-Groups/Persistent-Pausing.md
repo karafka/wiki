@@ -6,11 +6,11 @@
 
 Karafka's [Web UI pausing](Pro-Web-UI-Commanding#pause-and-resume-partitions) is **not** persistent - it's designed for emergency "oh gosh, there's a bug" scenarios where you need immediate, temporary relief. When the process restarts or rebalances, Web UI pauses are lost.
 
-For **planned migrations, maintenance windows, or controlled rollouts**, you need persistent pausing that survives restarts and affects all consumers. This is where the [Filtering API](Pro-Filtering-API), combined with feature toggles like Flipper, comes into play.
+For **planned migrations, maintenance windows, or controlled rollouts**, you need persistent pausing that survives restarts and affects all consumers. This is where the [Filtering API](Pro-Consumer-Groups-Filtering-API), combined with feature toggles like Flipper, comes into play.
 
 ## How Karafka's Filtering API enables persistent control
 
-The [Filtering API](Pro-Filtering-API) provides pre-processing hooks that can alter consumption behavior before messages reach your consumer code. Filters are **long-lived objects** created per partition that can return three actions:
+The [Filtering API](Pro-Consumer-Groups-Filtering-API) provides pre-processing hooks that can alter consumption behavior before messages reach your consumer code. Filters are **long-lived objects** created per partition that can return three actions:
 
 - **`:skip`** - Normal processing (default)
 - **`:pause`** - Halt consumption for a specified timeout (see [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting))
@@ -143,7 +143,7 @@ This approach gives you **persistent, centrally-managed topic pausing** that's p
 
 ## See Also
 
-- [Filtering API](Pro-Filtering-API) - Complete documentation on creating and using filters
+- [Filtering API](Pro-Consumer-Groups-Filtering-API) - Complete documentation on creating and using filters
 - [Pausing, Seeking and Rate Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) - Understanding pause mechanisms in Karafka
 - [Web UI Commanding: Pause and Resume Partitions](Pro-Web-UI-Commanding#pause-and-resume-partitions) - Emergency partition pausing via Web UI
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - How Karafka handles automatic pausing on errors

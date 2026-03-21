@@ -1,6 +1,6 @@
 # Pausing, Seeking and Rate-Limiting
 
-[Karafka Pro](Pro-Getting-Started) provides an excellent filtering and [rate-limiting](Pro-Rate-Limiting) APIs, making it a highly recommended option over manually managing message processing flow. By using Karafka Pro, developers can easily configure filtering and rate limiting on a per-topic basis, which allows them to fine-tune the message processing flow according to the requirements of their application.
+[Karafka Pro](Pro-Getting-Started) provides an excellent filtering and [rate-limiting](Pro-Consumer-Groups-Rate-Limiting) APIs, making it a highly recommended option over manually managing message processing flow. By using Karafka Pro, developers can easily configure filtering and rate limiting on a per-topic basis, which allows them to fine-tune the message processing flow according to the requirements of their application.
 
 Using Karafka Pro for filtering and rate limiting also eliminates the need for developers to manually manage message processing, which can be time-consuming and error-prone. With Karafka Pro, you can rely on a robust and efficient system that automatically takes care of these tasks.
 
@@ -281,6 +281,6 @@ In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuabl
 ## See Also
 
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing) - Implementing persistent topic pausing for planned maintenance using Filtering API
-- [Filtering API](Pro-Filtering-API) - Building custom filters with pause and seek capabilities
+- [Filtering API](Pro-Consumer-Groups-Filtering-API) - Building custom filters with pause and seek capabilities
 - [Web UI Commanding: Pause and Resume Partitions](Pro-Web-UI-Commanding#pause-and-resume-partitions) - Emergency partition pausing via Web UI
-- [Rate Limiting](Pro-Rate-Limiting) - Advanced rate limiting using the Filtering API
+- [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) - Advanced rate limiting using the Filtering API

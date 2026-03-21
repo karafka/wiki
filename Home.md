@@ -138,11 +138,7 @@
 
 - [Features List](Pro-Features-List)
 - [Features Compatibility](Pro-Features-Compatibility)
-- [Periodic Jobs](Pro-Periodic-Jobs)
-- [Expiring Messages](Pro-Expiring-Messages)
 - [Routing Patterns](Pro-Routing-Patterns)
-- [Rate Limiting](Pro-Rate-Limiting)
-- [Filtering API](Pro-Filtering-API)
 - [Cleaner API](Pro-Cleaner-API)
 - [Piping](Pro-Piping)
 - [Recurring Tasks](Pro-Recurring-Tasks)
@@ -169,6 +165,10 @@
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability)
 - [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights)
+- [Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs)
+- [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages)
+- [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting)
+- [Filtering API](Pro-Consumer-Groups-Filtering-API)
 
 ### Share Groups Features
 

@@ -228,8 +228,8 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [virtual_partitions](Pro-Consumer-Groups-Virtual-Partitions)           | Hash       | Allows you to parallelize the processing of data from a single partition.                                                   |
 | [dead_letter_queue](Consumer-Groups-Dead-Letter-Queue)                 | Hash       | Provides a systematic way of dealing with persistent consumption errors.                                                    |
 | [delay_by](Pro-Consumer-Groups-Delayed-Topics)                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
-| [expire_in](Pro-Expiring-Messages)                                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
-| [filter](Pro-Filtering-API)                                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
+| [expire_in](Pro-Consumer-Groups-Expiring-Messages)                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
+| [filter](Pro-Consumer-Groups-Filtering-API)                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
 | [config](Infrastructure-Declarative-Topics)                            | Hash       | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
 | [kafka](Infrastructure-Multi-Cluster-Setup)                            | Hash       | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
 
