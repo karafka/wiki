@@ -282,6 +282,7 @@ It is recommended to do one major upgrade at a time.
 - [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
 - [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
 - [Software Bill of Materials (SBOM)](Development-SBOM)
+- [Code Quality and Linting Setup](Development-Code-Quality-Linting-Setup)
 - [Technical Writing](Development-Technical-Writing)
 - [KIP-932 Karafka](Development-KIP-932-Karafka)
 - [KIP-932 Web UI](Development-KIP-932-Web-UI)
