@@ -176,22 +176,22 @@
 
 ### Enhanced Web UI
 
-- [Enhanced Web UI](Pro-Web-UI)
-    - [Getting Started](Pro-Web-UI#getting-started)
-    - [Consumers](Pro-Web-UI#consumers)
-    - [Commanding](Pro-Web-UI-Commanding)
-    - [Health](Pro-Web-UI-Health)
-    - [Explorer](Pro-Web-UI#explorer)
-    - [Policies](Pro-Web-UI-Policies)
-    - [Search](Pro-Web-UI-Search)
-    - [Recurring Tasks](Pro-Web-UI#recurring-tasks)
-    - [Scheduled Messages](Pro-Web-UI#scheduled-messages)
-    - [Topics Insights](Pro-Web-UI-Topics-Insights)
-    - [Errors](Pro-Web-UI#errors)
-    - [DLQ / Dead](Pro-Web-UI#dlq-dead)
-    - [Branding](Pro-Web-UI#branding)
-    - [Custom Styling](Pro-Web-UI#custom-styling)
-    - [Topics Management](Pro-Web-UI-Topics-Management)
+- [About](Pro-Web-UI)
+- [Getting Started](Pro-Web-UI#getting-started)
+- [Consumers](Pro-Web-UI#consumers)
+- [Commanding](Pro-Web-UI-Commanding)
+- [Health](Pro-Web-UI-Health)
+- [Explorer](Pro-Web-UI#explorer)
+- [Policies](Pro-Web-UI-Policies)
+- [Search](Pro-Web-UI-Search)
+- [Recurring Tasks](Pro-Web-UI#recurring-tasks)
+- [Scheduled Messages](Pro-Web-UI#scheduled-messages)
+- [Topics Insights](Pro-Web-UI-Topics-Insights)
+- [Errors](Pro-Web-UI#errors)
+- [DLQ / Dead](Pro-Web-UI#dlq-dead)
+- [Branding](Pro-Web-UI#branding)
+- [Custom Styling](Pro-Web-UI#custom-styling)
+- [Topics Management](Pro-Web-UI-Topics-Management)
 
 ## Librdkafka
 
