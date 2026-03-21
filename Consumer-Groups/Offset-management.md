@@ -134,6 +134,6 @@ end
 ## See Also
 
 - [Consuming Messages](Basics-Consuming-Messages) - Understanding message consumption basics
-- [Pro Offset Metadata Storage](Pro-Offset-Metadata-Storage) - Store additional metadata with offsets
+- [Pro Offset Metadata Storage](Pro-Consumer-Groups-Offset-Metadata-Storage) - Store additional metadata with offsets
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handle failed messages without losing offset progress
-- [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing with offset management considerations
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Parallel processing with offset management considerations

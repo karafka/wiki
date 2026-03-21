@@ -10,8 +10,8 @@ Do not use the Adaptive Iterator if:
 
 - Your processing cost of a single message can exceed the `max.poll.interval.ms`.
 - You are processing messages in batches instead of one after another, as the Adaptive Iterator is designed for individual message processing.
-- You are using the [Virtual Partitions](Pro-Virtual-Partitions) feature, as it is not compatible with the Adaptive Iterator.
-- Your application consistently handles long-running jobs. In that case, use the [Long-Running Jobs](Pro-Long-Running-Jobs) feature.
+- You are using the [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) feature, as it is not compatible with the Adaptive Iterator.
+- Your application consistently handles long-running jobs. In that case, use the [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature.
 - Your consumer requires strict control over offset management outside the default provided by the Adaptive Iterator.
 
 <p align="center">
@@ -24,7 +24,7 @@ Do not use the Adaptive Iterator if:
 
 !!! tip "Handling Consistent Long-Running Jobs"
 
-    Consider using Karafka's [Long-Running Jobs](Pro-Long-Running-Jobs) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
+    Consider using Karafka's [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature instead for consistently long-running jobs, as the Adaptive Iterator is primarily designed to handle sporadic long-processing cases.
 
 ## Benefits of Adaptive Iterator
 
@@ -126,6 +126,6 @@ While the Adaptive Iterator is an effective tool for managing sporadic long-proc
 
 ## See Also
 
-- [Pro Iterator API](Pro-Iterator-API) - Iterator API documentation
-- [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Handling long-running workloads
+- [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - Iterator API documentation
+- [Pro Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Handling long-running workloads
 - [Consuming Messages](Basics-Consuming-Messages) - Message consumption basics

@@ -14,7 +14,7 @@ Virtual Partitions solve this problem by providing you with the means to further
 
 !!! tip "Alternative Scaling Approach"
 
-    For CPU-intensive workloads or scenarios where data clustering makes Virtual Partitions less effective, consider [Parallel Segments](Pro-Parallel-Segments), which operate at the consumer group level.
+    For CPU-intensive workloads or scenarios where data clustering makes Virtual Partitions less effective, consider [Parallel Segments](Pro-Consumer-Groups-Parallel-Segments), which operate at the consumer group level.
 
 ## Using Virtual Partitions
 
@@ -776,7 +776,7 @@ Overall, virtual partitions can be beneficial in any industry where large volume
 
 ## See Also
 
-- [Parallel Segments](Pro-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads
-- [Long-Running Jobs](Pro-Long-Running-Jobs) - Use with Virtual Partitions for better throughput on IO-bound tasks
+- [Parallel Segments](Pro-Consumer-Groups-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads
+- [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Use with Virtual Partitions for better throughput on IO-bound tasks
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding Karafka's threading model and Virtual Partitions
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - How errors are handled in Virtual Partitions

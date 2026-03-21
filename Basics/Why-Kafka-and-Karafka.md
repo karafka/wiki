@@ -178,7 +178,7 @@ This closes the gap between Kafka and classic message queues for workloads that 
 !!! note "Kafka Queues support in Karafka is under development"
     Karafka has committed to supporting Kafka Queues (KIP-932 / share groups) once the underlying librdkafka driver implements the protocol. The feature reached production-ready status in Kafka 4.2 (February 2026). librdkafka support is on the near-term roadmap. Karafka will add support as soon as the driver is ready - follow [GitHub issue #2953](https://github.com/karafka/karafka/issues/2953) for updates.
 
-    In the meantime, Karafka Pro's [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) and [Parallel Segments](https://karafka.io/docs/Pro-Parallel-Segments) provide high-concurrency processing options for workloads that would benefit from queue-like parallelism.
+    In the meantime, Karafka Pro's [Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions) and [Parallel Segments](https://karafka.io/docs/Pro-Consumer-Groups-Parallel-Segments) provide high-concurrency processing options for workloads that would benefit from queue-like parallelism.
 
 ## Where Karafka Fits
 
@@ -310,7 +310,7 @@ Karafka's [Active Job](Consumer-Groups-Active-Job) adapter lets you keep the sta
 
 An online store processes thousands of orders per hour. Some are fraudulent. The team wants a short window - say 5 minutes - between when an order is placed and when fulfillment begins, so the fraud detection model can score it. If the order is flagged, it gets moved to a review queue. If the customer cancels within the window, the cancellation is free.
 
-[Delayed Topics](Pro-Delayed-Topics) handle this naturally: order events are delayed by 5 minutes before the fulfillment consumer sees them. During that window, a separate fraud-scoring consumer evaluates each order in real time. Flagged orders are moved to a [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) for human review. Clean orders proceed to fulfillment after the delay.
+[Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) handle this naturally: order events are delayed by 5 minutes before the fulfillment consumer sees them. During that window, a separate fraud-scoring consumer evaluates each order in real time. Flagged orders are moved to a [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) for human review. Clean orders proceed to fulfillment after the delay.
 
 ![Delayed topics processing flow](https://karafka.io/assets/misc/charts/delayed_topics/flow.svg)
 
@@ -391,6 +391,6 @@ The search team, recommendations team, browse team, and analytics team each depl
 - [Karafka Web UI](https://karafka.io/docs/Web-UI-Getting-Started) - Real-time monitoring for consumers, topics, and partition lag
 - [Admin API](https://karafka.io/docs/Infrastructure-Admin-API) - Manage topics, consumer groups, and offsets from Ruby
 - [Consumer Groups and Topics](https://karafka.io/docs/Basics-Consuming-Messages) - How Karafka maps consumer groups to Kafka topics
-- [Pro Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions) - Multi-threaded processing within a single partition
+- [Pro Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions) - Multi-threaded processing within a single partition
 - [Dead Letter Queue](https://karafka.io/docs/Consumer-Groups-Dead-Letter-Queue) - Handle unprocessable messages without blocking consumption
 - [Kafka Best Practices](https://karafka.io/docs/Kafka-Best-Practices) - Topic design, partition sizing, and operational guidance

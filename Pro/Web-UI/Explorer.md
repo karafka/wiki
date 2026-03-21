@@ -67,5 +67,5 @@ The Karafka Data Explorer is your go-to solution for an in-depth exploration of 
 ## See Also
 
 - [Search](Pro-Web-UI-Search) - For advanced search capabilities within topics
-- [Pro Iterator API](Pro-Iterator-API) - For programmatic topic data exploration
+- [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - For programmatic topic data exploration
 - [Features](Web-UI-Features) - For an overview of Web UI capabilities

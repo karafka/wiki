@@ -58,5 +58,5 @@ Once the dedicated Web UI producer is set up, it becomes the default for all Web
 ## See Also
 
 - [WaterDrop Transactions](WaterDrop-Transactions) - For detailed information on WaterDrop transactional producer behavior
-- [Pro Transactions](Pro-Transactions) - For advanced transactional features in Karafka Pro
+- [Pro Transactions](Pro-Consumer-Groups-Transactions) - For advanced transactional features in Karafka Pro
 - [Features](Web-UI-Features) - For an overview of Web UI capabilities

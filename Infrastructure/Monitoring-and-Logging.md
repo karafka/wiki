@@ -874,5 +874,5 @@ In conclusion, maintaining the stability, performance, and reliability of Karafk
 - [Instrumentation Events](Infrastructure-Instrumentation-Events) - Complete reference of all available instrumentation events
 - [Deployment](Infrastructure-Deployment) - Setting up liveness probes and health checks in production
 - [Web UI Getting Started](Web-UI-Getting-Started) - Visual monitoring and observability with Web UI
-- [Enhanced Inline Insights](Pro-Enhanced-Inline-Insights) - Metrics-based processing and monitoring
+- [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights) - Metrics-based processing and monitoring
 - [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Performance monitoring and optimization

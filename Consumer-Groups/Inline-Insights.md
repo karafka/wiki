@@ -83,7 +83,7 @@ end
 
 For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities regarding Inline Insights, you can ensure that insights are always available when you need them.
 
-In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Enhanced-Inline-Insights).
+In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Consumer-Groups-Enhanced-Inline-Insights).
 
 ## Insights Freshness
 
@@ -144,5 +144,5 @@ Karafka's Inline Insights is a powerful feature that enhances data processing ca
 
 ## See Also
 
-- [Pro Enhanced Inline Insights](Pro-Enhanced-Inline-Insights) - Advanced inline insights with enhanced metrics and performance tracking
+- [Pro Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights) - Advanced inline insights with enhanced metrics and performance tracking
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies for Karafka applications

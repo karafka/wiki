@@ -405,7 +405,7 @@ Still not a perfect solution because karafka gem is still loaded.
 
 ## Can I skip messages on errors?
 
-Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Enhanced-Dead-Letter-Queue#disabling-dispatch).
+Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-dispatch).
 
 ## What does static consumer fenced by other consumer with same group.instance.id mean?
 
@@ -631,7 +631,7 @@ When working with Karafka, you also need to take into consideration things that 
 - Number of processes within a given consumer group.
 - To how many topics and partitions a particular process is subscribed to.
 
-Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
+Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
 You can read more about Karafka and Karafka Pro concurrency model [here](Consumer-Groups-Concurrency-and-Multithreading).
 
@@ -708,7 +708,7 @@ Karafka uses multiple threads to process messages from multiple partitions or to
 To handle such cases, you can:
 
 - Increase the number of partitions beyond the number of active consumer processes to achieve multiple assignments in a single consumer process. In a case like this, the given process will be able to work in parallel.
-- Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
+- Use [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) to parallelize the work of a single topic partition.
 
 You can read more about the Karafka concurrency model [here](Consumer-Groups-Concurrency-and-Multithreading).
 
@@ -922,7 +922,7 @@ If you need to create them manually, please include the settings listed [here](W
 
 ## Can I consume messages from a Rake task?
 
-**Yes**. Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.
+**Yes**. Karafka Pro provides the [Iterator API](Pro-Consumer-Groups-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.
 
 ## Do you provide an upgrade support when upgrading from EOL versions?
 
@@ -1104,11 +1104,11 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 !!! note
 
-    When using Karafka [Virtual Partitions](Pro-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Virtual-Partitions#virtual-offset-management) works.
+    When using Karafka [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Consumer-Groups-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
-Karafka has an Iterator API for that. You can read about it [here](Pro-Iterator-API).
+Karafka has an Iterator API for that. You can read about it [here](Pro-Consumer-Groups-Iterator-API).
 
 ## What does `Broker: Invalid message (invalid_msg)` error mean?
 
@@ -1138,7 +1138,7 @@ Yes.
 
 There are a few ways to do that:
 
-1. Use the [Iterator API](Pro-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
+1. Use the [Iterator API](Pro-Consumer-Groups-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
 1. Use the `#seek` consumer method in combination with [Admin watermark API](Infrastructure-Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 1. Create a new consumer group that will start from the beginning.
 
@@ -1357,7 +1357,7 @@ sleep(30)
 
 ## Can extra information be added to the messages dispatched to the DLQ?
 
-**Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](Pro-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message).
+**Yes**. Karafka Enhanced DLQ provides the ability to add custom details to any message dispatched to the DLQ. You can read about this feature [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message).
 
 ## Why does WaterDrop hang when I attempt to close it?
 
@@ -1653,7 +1653,7 @@ Please ensure you have **all** the Karafka Web UI required OS commands installed
 
 ## Can I retrieve all records produced in a single topic using Karafka?
 
-Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Iterator-API).
+Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Consumer-Groups-Iterator-API).
 
 If your primary aim is to get the count of messages, you might have to maintain a counter as you consume the messages.
 
@@ -1688,7 +1688,7 @@ Getting the exact number of messages in a Kafka topic is more complicated due to
       end
     ```
 
-1. Using the [Iterator API](Pro-Iterator-API) and counting all the messages:
+1. Using the [Iterator API](Pro-Consumer-Groups-Iterator-API) and counting all the messages:
 
     ```ruby
     iterator = Karafka::Pro::Iterator.new('my_topic_name')
@@ -1731,7 +1731,7 @@ Once you've done this, attempt to install the `karafka-license` gem again. If th
 
 ## Are Virtual Partitions effective in case of not having IO or not having a lot of data?
 
-Karafka's [Virtual Partitions](Pro-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there's minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there's a data buildup due to processing delays.
+Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there's minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there's a data buildup due to processing delays.
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
@@ -1739,7 +1739,7 @@ Having one process per one topic partition in Kafka is a solid recommendation, e
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations – database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
-Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
+Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
 
 In summary, while the "one process per partition" recommendation is sound for CPU-intensive tasks when IO operations are the predominant factor, Karafka's multi-threaded design combined with the capability of Virtual Partitions can offer a more efficient processing strategy.
 
@@ -1753,7 +1753,7 @@ We recommend using `#mark_as_consumed` for most cases because of its non-blockin
 
 ## Does it make sense to have multiple worker threads when operating on one partition in Karafka?
 
-Yes, but only when you employ [Virtual Partitions](Pro-Virtual-Partitions).
+Yes, but only when you employ [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
 Without utilizing Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you're operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
 
@@ -1765,7 +1765,7 @@ In summary, while operating on a single partition typically uses just one worker
 
 ## Why don't Virtual Partitions provide me with any performance benefits?
 
-[Virtual Partitions](Pro-Virtual-Partitions) in Karafka are primarily designed to increase parallelism when processing messages, which can significantly improve throughput in the right circumstances. However, there are several scenarios where the benefits of Virtual Partitions might not be evident:
+[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) in Karafka are primarily designed to increase parallelism when processing messages, which can significantly improve throughput in the right circumstances. However, there are several scenarios where the benefits of Virtual Partitions might not be evident:
 
 1. **Not Enough Messages in Batches**: If there aren't many messages within the batches you're processing, splitting these already-small batches among multiple virtual partitions won't yield noticeable performance gains. There needs to be more work to be shared among the virtual partitions, leading to underutilization.
 
@@ -1781,7 +1781,7 @@ In conclusion, while Virtual Partitions can be a potent tool for improving throu
 
 Despite its name, "Long Running Jobs" doesn't refer to the longevity of the underlying Ruby process (like a typical long-running Linux process). Instead, it denotes the duration of message processing. The term "Long Running Jobs" was chosen due to its popularity, even though a more accurate name might have been "Long Running Consumers".
 
-The [Long Running Jobs](Pro-Long-Running-Jobs) feature adheres to the strategy recommended by Confluent. It involves "pausing" a given partition during message processing and then "resuming" the processing of that partition once the task is completed. This ensures that as long as no rebalances occur (which would result in the partition being revoked), the `poll()` command can happen within the confines of the `max.poll.interval.ms`, preventing unwanted rebalances and errors.
+The [Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature adheres to the strategy recommended by Confluent. It involves "pausing" a given partition during message processing and then "resuming" the processing of that partition once the task is completed. This ensures that as long as no rebalances occur (which would result in the partition being revoked), the `poll()` command can happen within the confines of the `max.poll.interval.ms`, preventing unwanted rebalances and errors.
 
 However, it's essential to use this feature properly. If your regular workloads don't push the limits of `max.poll.interval.ms`, enabling Long Running Jobs might degrade performance. This is because pausing the partition prevents data polling, which can lead to inefficiencies in situations where message processing is typically fast.
 
@@ -1813,11 +1813,11 @@ The overhead of unused worker threads is minimal because they are blocked on pop
 
 ## How can you effectively scale Karafka during busy periods?
 
-If you plan to auto-scale for busy periods, be aware that increasing scale might lead to reduced concurrency, especially if you are IO-intensive. With Karafka, how data is polled from Kafka can be a critical factor. For instance, thread utilization might be at most 50% even if you process two partitions in parallel because the batches you are getting consist primarily of data from a single partition. For handling of such cases, we recommend using [Virtual Partitions](Pro-Virtual-Partitions).
+If you plan to auto-scale for busy periods, be aware that increasing scale might lead to reduced concurrency, especially if you are IO-intensive. With Karafka, how data is polled from Kafka can be a critical factor. For instance, thread utilization might be at most 50% even if you process two partitions in parallel because the batches you are getting consist primarily of data from a single partition. For handling of such cases, we recommend using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
 ## What are the benefits of using Virtual Partitions (VPs) in Karafka?
 
-[Virtual Partitions](Pro-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
+[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
 
 ## What's the difference between increasing topic partition count and using VPs in terms of concurrency?
 
@@ -1825,7 +1825,7 @@ Increasing topic partition count and Karafka concurrency (so that total worker t
 
 ## How do Virtual Partitions compare to multiple subscription groups regarding performance?
 
-Using [Virtual Partitions](Pro-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
+Using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
 
 ## What is the principle of strong ordering in Kafka and its implications?
 
@@ -1976,7 +1976,7 @@ If you make Karafka not retry, the system will not attempt retries on errors but
     end
     ```
 
-1. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](Pro-Enhanced-Dead-Letter-Queue) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
+1. **Using Enhanced DLQ Capabilities**: With this method, messages will be moved to the [Dead Letter Queue (DLQ)](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) immediately, without retrying them, and an appropriate backoff policy will be invoked, preventing you from further overloading your system in case of external resources' temporary unavailability.
 
     ```ruby
     class KarafkaApp < Karafka::App
@@ -2013,7 +2013,7 @@ However, it's essential to be aware of the potential risks associated with these
 
 If the SSL certificates failed on the producer side, the data might not have been produced to Kafka in the first place. If your data is still present and not compacted due to the retention policy, then you should be able to read it.
 
-You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
+You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Consumer-Groups-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
 
 ## How can the retention policy of Kafka affect the data sent during the downtime?
 
@@ -2021,7 +2021,7 @@ If your data retention policy has compacted the data, then the data from the dow
 
 ## Is it possible to fetch messages per topic based on a specific time period in Karafka?
 
-Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Iterator-API) or the [Enhanced Web UI](Web-UI-Features#explorer) to perform time-based offset lookups.
+Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Consumer-Groups-Iterator-API) or the [Enhanced Web UI](Web-UI-Features#explorer) to perform time-based offset lookups.
 
 ## Where can I find details on troubleshooting and debugging for Karafka?
 
@@ -2993,7 +2993,7 @@ A poison pill message is a message that causes your consumer to fail repeatedly,
     end
     ```
 
-2. **Skip without dispatch (Pro)** - Karafka Pro's [Enhanced DLQ](Pro-Enhanced-Dead-Letter-Queue) allows skipping messages without sending them anywhere by setting `topic: false`:
+2. **Skip without dispatch (Pro)** - Karafka Pro's [Enhanced DLQ](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) allows skipping messages without sending them anywhere by setting `topic: false`:
 
     ```ruby
     dead_letter_queue(

@@ -335,7 +335,7 @@ end
 
 ### Balancing Transactions and Long-Running Jobs
 
-Providing a custom producer to the `#transaction` method temporarily overwrites the default producer for that specific consumer instance. This behavior is relevant in scenarios involving [Long-Running Jobs](Pro-Long-Running-Jobs) that execute alongside the message consumption process, such as handling `#revoked` under Long Running Jobs (LRJ).
+Providing a custom producer to the `#transaction` method temporarily overwrites the default producer for that specific consumer instance. This behavior is relevant in scenarios involving [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) that execute alongside the message consumption process, such as handling `#revoked` under Long Running Jobs (LRJ).
 
 It's crucial to understand the implications of this producer reassignment:
 
@@ -399,7 +399,7 @@ end
 
 ### Offset Metadata Storage
 
-The [Offset Metadata Storage](Pro-Offset-Metadata-Storage) feature allows you to attach custom metadata to message offsets, enhancing the traceability and context of message processing. Crucially, this metadata can be included when you use the `#mark_as_consumed` method within transactions, ensuring the metadata is committed alongside the successful transaction. This feature is fully functional within and outside of transactional contexts, providing a consistent and flexible approach to enriching your message with valuable contextual data.
+The [Offset Metadata Storage](Pro-Consumer-Groups-Offset-Metadata-Storage) feature allows you to attach custom metadata to message offsets, enhancing the traceability and context of message processing. Crucially, this metadata can be included when you use the `#mark_as_consumed` method within transactions, ensuring the metadata is committed alongside the successful transaction. This feature is fully functional within and outside of transactional contexts, providing a consistent and flexible approach to enriching your message with valuable contextual data.
 
 ```ruby
 def consume
@@ -444,7 +444,7 @@ This section explains how transactions interact with the DLQ and the implication
 
     !!! note "Disabling Transactions During DLQ Dispatches"
 
-        It's worth noting that this behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](Pro-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
+        It's worth noting that this behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
 1. **Error Handling and Retries**: If an error occurs during the DLQ operation, such as partition revocation or networking issues, Karafka's default behavior is to retry processing the same batch. This retry mechanism ensures that transient failures don't lead to message loss or unacknowledged message consumption. The system attempts to process the batch again, allowing the operation to succeed.
 

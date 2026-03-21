@@ -59,7 +59,7 @@ bundle exec karafka server --exclude-subscription-groups group_name2,group_name3
 
 !!! note "Handling Multiplexed Subscription Groups in CLI Commands"
 
-    When using CLI commands to include or exclude subscription groups, it is important to remember that [multiplexed](Pro-Multiplexing) subscription group names carry a `_multiplex_NR` postfix matching the multiplexing level. This postfix distinguishes these groups from others and ensures proper identification and handling within the system. For accurate command execution, always verify and include the correct `_multiplex_NR` postfix for the intended multiplexed subscription groups.
+    When using CLI commands to include or exclude subscription groups, it is important to remember that [multiplexed](Pro-Consumer-Groups-Multiplexing) subscription group names carry a `_multiplex_NR` postfix matching the multiplexing level. This postfix distinguishes these groups from others and ensures proper identification and handling within the system. For accurate command execution, always verify and include the correct `_multiplex_NR` postfix for the intended multiplexed subscription groups.
 
 ### Limiting topics used per process
 

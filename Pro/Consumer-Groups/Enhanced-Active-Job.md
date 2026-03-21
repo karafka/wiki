@@ -36,7 +36,7 @@ end
 
 The above code will ensure that jobs related to the same user will always be dispatched to the same consumer.
 
-We recommend using the `:key` as then it can be used for combining Enhanced Active Job with [Virtual Partitions](Pro-Virtual-Partitions).
+We recommend using the `:key` as then it can be used for combining Enhanced Active Job with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/enhanced_aj_ordering.svg" />
@@ -266,7 +266,7 @@ For non-VP setup, same error behaviors apply as for standard [Active Job adapter
 
 !!! note
 
-    Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
+    Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
 ## Behaviour on Revocation
 
@@ -284,5 +284,5 @@ For a non-VP setup, the same shutdown behavior applies as for standard [Active J
 
 - [Active Job](Consumer-Groups-Active-Job) - Standard Active Job adapter documentation
 - [Pro Scheduled Messages](Pro-Scheduled-Messages) - Scheduling jobs for future execution
-- [Pro Long-Running Jobs](Pro-Long-Running-Jobs) - Non-blocking job processing
-- [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing within partitions
+- [Pro Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Non-blocking job processing
+- [Pro Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Parallel processing within partitions

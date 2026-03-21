@@ -445,6 +445,6 @@ Connection refused errors during broker maintenance indicate the system is worki
 
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Configure retry strategies and backoff policies for consumer errors
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handle persistent failures by routing problematic messages to DLQ
-- [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ features for complex failure scenarios
+- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Advanced DLQ features for complex failure scenarios
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Track broker connection health and system performance
 - [Admin API](Infrastructure-Admin-API) - Programmatically inspect and manage Kafka cluster configuration

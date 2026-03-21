@@ -23,9 +23,9 @@ To mitigate this, you can do a few things:
 
 1. Extend the `max.poll.interval.ms`.
 2. Decrease `max_messages`.
-3. Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work further.
-4. Use [Adaptive Iterator](Pro-Adaptive-Iterator) to mitigate occasional spikes in processing time.
-5. Use [Long-Running Jobs](Pro-Long-Running-Jobs) and not worry about that.
+3. Use [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) to parallelize the work further.
+4. Use [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) to mitigate occasional spikes in processing time.
+5. Use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) and not worry about that.
 
 The strategy you want to go with heavily depends on your data and processing patterns. If you encounter this issue while maintaining a sane number of messages and decent `max.poll.interval.ms`, you should further parallelize the processing or enable this feature.
 
@@ -45,7 +45,7 @@ This feature is great for scenarios where your processing may last for a longer 
 
 !!! tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
 
-    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
+    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Consumer-Groups-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Consumer-Groups-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
 
 ## Using Long-Running Jobs
 
@@ -207,7 +207,7 @@ Overall, it is crucial to be mindful of the potential risks and issues associate
 
 ## Non-Blocking Jobs: Complementing Long-Running Job Pausing
 
-The Long-Running Jobs feature is designed to handle tasks that take longer to process than the standard Kafka message batch. Using the pausing strategy allows for efficient parallel processing across multiple partitions of the same topic. This approach helps manage longer tasks without risking the stability of the consumer group due to frequent rebalances. For users looking to optimize their parallel processing further, reviewing the [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) documentation for additional strategies and best practices is recommended.
+The Long-Running Jobs feature is designed to handle tasks that take longer to process than the standard Kafka message batch. Using the pausing strategy allows for efficient parallel processing across multiple partitions of the same topic. This approach helps manage longer tasks without risking the stability of the consumer group due to frequent rebalances. For users looking to optimize their parallel processing further, reviewing the [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) documentation for additional strategies and best practices is recommended.
 
 ## Example Use Cases
 
@@ -225,7 +225,7 @@ These are just a few examples of how Long-Running Jobs can benefit different ind
 
 ## See Also
 
-- [Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Alias for Long-Running Jobs, same feature with different name
-- [Virtual Partitions](Pro-Virtual-Partitions) - Use with Long-Running Jobs for better throughput on IO-bound tasks
-- [Direct Assignments](Pro-Direct-Assignments) - Alternative consumption model for long-running background processing
-- [Adaptive Iterator](Pro-Adaptive-Iterator) - Efficient data processing for long-running batch operations
+- [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Alias for Long-Running Jobs, same feature with different name
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Use with Long-Running Jobs for better throughput on IO-bound tasks
+- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments) - Alternative consumption model for long-running background processing
+- [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) - Efficient data processing for long-running batch operations

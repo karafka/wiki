@@ -178,7 +178,7 @@ end
 
 ### Use Virtual Partitions Instead of Multiplexing
 
-For single-partition workloads, [Virtual Partitions](Pro-Virtual-Partitions) provide parallelism **without extra connections**:
+For single-partition workloads, [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) provide parallelism **without extra connections**:
 
 ```ruby
 topic :single_partition_heavy_io do
@@ -372,7 +372,7 @@ end
 **Consider Alternatives When:**
 
 - Minimizing connection count is a priority
-- Working with single-partition topics (use [Virtual Partitions](Pro-Virtual-Partitions) instead)
+- Working with single-partition topics (use [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) instead)
 - librdkafka tuning can achieve similar fairness improvements
 
 ### Limitations
@@ -398,7 +398,7 @@ The Dynamic Multiplexing feature in Karafka represents a refined approach to man
 **Without Multiplexing**: Lower memory usage, but potentially less parallel processing capability. Compensate with:
 
 - Higher [concurrency settings](Consumer-Groups-Concurrency-and-Multithreading)
-- [Virtual Partitions](Pro-Virtual-Partitions) for single-partition parallelism
+- [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) for single-partition parallelism
 - Better librdkafka tuning for fairness
 
 ### Memory Usage Impact
@@ -426,5 +426,5 @@ Karafka Multiplexing is a powerful tool designed to enhance the performance of y
 ## See Also
 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Concurrency configuration
-- [Pro Non-Blocking Jobs](Pro-Non-Blocking-Jobs) - Non-blocking job processing
+- [Pro Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Non-blocking job processing
 - [Routing](Consumer-Groups-Routing) - Routing and subscription group configuration

@@ -79,7 +79,7 @@ All the subscription groups define within a single consumer group will operate w
 
 !!! note "Pro Subscription Group Multiplexing"
 
-    Karafka's Open Source version supports one connection per subscription group without ability to subscribe to the same topic multiple times from the same process. If you want to establish many connections to the same topic from a single process, upgrade to Karafka Pro. [Multiplexing](Pro-Multiplexing) allows multiple connections to the same topic within a single subscription group, enhancing performance and parallel processing.
+    Karafka's Open Source version supports one connection per subscription group without ability to subscribe to the same topic multiple times from the same process. If you want to establish many connections to the same topic from a single process, upgrade to Karafka Pro. [Multiplexing](Pro-Consumer-Groups-Multiplexing) allows multiple connections to the same topic within a single subscription group, enhancing performance and parallel processing.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -115,7 +115,7 @@ You can read more about the concurrency implications of using subscription group
 
 ### Subscription Group Multiplexing
 
-For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, please check out the [Multiplexing](Pro-Multiplexing) documentation.
+For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, please check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -224,10 +224,10 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [consumer](Basics-Consuming-Messages)                                  | Class      | Name of a consumer class that we want to use to consume messages from a given topic                                         |
 | [deserializers](Consumer-Groups-Deserialization)                       | Hash       | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                     |
 | [manual_offset_management](Consumer-Groups-Offset-management)          | Boolean    | Should Karafka automatically mark messages as consumed or not                                                               |
-| [long_running_job](Pro-Long-Running-Jobs)                              | Boolean    | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                                     |
-| [virtual_partitions](Pro-Virtual-Partitions)                           | Hash       | Allows you to parallelize the processing of data from a single partition.                                                   |
+| [long_running_job](Pro-Consumer-Groups-Long-Running-Jobs)              | Boolean    | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                                     |
+| [virtual_partitions](Pro-Consumer-Groups-Virtual-Partitions)           | Hash       | Allows you to parallelize the processing of data from a single partition.                                                   |
 | [dead_letter_queue](Consumer-Groups-Dead-Letter-Queue)                 | Hash       | Provides a systematic way of dealing with persistent consumption errors.                                                    |
-| [delay_by](Pro-Delayed-Topics)                                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
+| [delay_by](Pro-Consumer-Groups-Delayed-Topics)                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
 | [expire_in](Pro-Expiring-Messages)                                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
 | [filter](Pro-Filtering-API)                                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
 | [config](Infrastructure-Declarative-Topics)                            | Hash       | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
