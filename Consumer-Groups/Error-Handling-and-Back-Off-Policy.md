@@ -158,7 +158,7 @@ end
 
 Karafka provides out-of-the-box Dead Letter Queue pattern implementation that can be used to move failing messages to a separate topic.
 
-You can read about it [here](Dead-Letter-Queue).
+You can read about it [here](Consumer-Groups-Dead-Letter-Queue).
 
 ### Finding the Failing Message
 
@@ -270,7 +270,7 @@ In cases of unexpected errors within the listeners' loops, Karafka applies a fin
 
 ## See Also
 
-- [Dead Letter Queue](Dead-Letter-Queue) - Handling messages that consistently fail processing
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handling messages that consistently fail processing
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced DLQ with ordering preservation
 - [Granular Backoffs](Pro-Granular-Backoffs) - Fine-tuned exponential backoff strategies
 - [Virtual Partitions](Pro-Virtual-Partitions) - Understanding error handling in parallel processing

@@ -1,8 +1,8 @@
-Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Dead-Letter-Queue) feature. It aims to complement it with additional dispatch warranties and additional messages metadata information.
+Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) feature. It aims to complement it with additional dispatch warranties and additional messages metadata information.
 
 This documentation only covers extra functionalities enhancing the Dead Letter Queue feature.
 
-Please refer to the [Dead Letter Queue](Dead-Letter-Queue) documentation for more details on its core principles.
+Please refer to the [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) documentation for more details on its core principles.
 
 ## Using Enhanced Dead Letter Queue
 
@@ -183,7 +183,7 @@ end
 
 ## DLQ Message `key` Enhancements For a Compacted DLQ Topic
 
-If you use a `compact` value for Kafka `log.cleanup.policy`, you may lose messages dispatched to the DLQ topic due to the [DLQ compacting limitations](Dead-Letter-Queue#compacting-limitations).
+If you use a `compact` value for Kafka `log.cleanup.policy`, you may lose messages dispatched to the DLQ topic due to the [DLQ compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations).
 
 You can mitigate this by enhancing the DLQ message with a unique key using the `#enhance_dlq_message` consumer method:
 
@@ -447,7 +447,7 @@ end
 
 ## See Also
 
-- [Dead Letter Queue](Dead-Letter-Queue) - Base DLQ feature and fundamental concepts
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Base DLQ feature and fundamental concepts
 - [Delayed Topics](Pro-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
 - [Virtual Partitions](Pro-Virtual-Partitions) - Enhanced DLQ behavior with parallel processing

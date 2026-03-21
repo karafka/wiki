@@ -111,7 +111,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-You can read more about the concurrency implications of using subscription groups [here](Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
+You can read more about the concurrency implications of using subscription groups [here](Consumer-Groups-Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
 
 ### Subscription Group Multiplexing
 
@@ -222,11 +222,11 @@ There are several options you can set inside of the ```topic``` block. All of th
 |------------------------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------|
 | active                                                                 | Boolean    | Set to `false` if you want to have the given topic defined but not consumed. Helpful when working with topics via admin API |
 | [consumer](Basics-Consuming-Messages)                                  | Class      | Name of a consumer class that we want to use to consume messages from a given topic                                         |
-| [deserializers](Deserialization)                                       | Hash       | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                     |
-| [manual_offset_management](Offset-management#manual-offset-management) | Boolean    | Should Karafka automatically mark messages as consumed or not                                                               |
+| [deserializers](Consumer-Groups-Deserialization)                       | Hash       | Names of deserializers that we want to use to deserializes the incoming data (payload, key and headers)                     |
+| [manual_offset_management](Consumer-Groups-Offset-management)          | Boolean    | Should Karafka automatically mark messages as consumed or not                                                               |
 | [long_running_job](Pro-Long-Running-Jobs)                              | Boolean    | Converts this topic consumer into a job that can run longer than `max.poll.interval.ms`                                     |
 | [virtual_partitions](Pro-Virtual-Partitions)                           | Hash       | Allows you to parallelize the processing of data from a single partition.                                                   |
-| [dead_letter_queue](Dead-Letter-Queue)                                 | Hash       | Provides a systematic way of dealing with persistent consumption errors.                                                    |
+| [dead_letter_queue](Consumer-Groups-Dead-Letter-Queue)                 | Hash       | Provides a systematic way of dealing with persistent consumption errors.                                                    |
 | [delay_by](Pro-Delayed-Topics)                                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
 | [expire_in](Pro-Expiring-Messages)                                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
 | [filter](Pro-Filtering-API)                                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
@@ -362,6 +362,6 @@ By leveraging the ability to draw routes multiple times, Karafka seamlessly fits
 
 - [Configuration](Basics-Configuration) - Configure framework and librdkafka settings that affect routing
 - [Routing Patterns](Pro-Routing-Patterns) - Advanced routing patterns for dynamic topic subscriptions
-- [Deserialization](Deserialization) - Configure per-topic deserialization in routing definitions
+- [Deserialization](Consumer-Groups-Deserialization) - Configure per-topic deserialization in routing definitions
 - [Multi Cluster Setup](Multi-Cluster-Setup) - Route topics from multiple Kafka clusters
 - [Declarative Topics](Declarative-Topics) - Define topic configurations alongside routing definitions

@@ -497,8 +497,8 @@ However, keep in mind the following limitations of `karafka-testing`:
 
 ## See Also
 
-- [Active Job](Active-Job) - Testing Active Job integration with Karafka
+- [Active Job](Consumer-Groups-Active-Job) - Testing Active Job integration with Karafka
 - [Enhanced Active Job](Pro-Enhanced-Active-Job) - Testing ordered and scheduled Active Jobs
-- [Dead Letter Queue](Dead-Letter-Queue) - Testing DLQ behavior and error handling
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Testing DLQ behavior and error handling
 - [Virtual Partitions](Pro-Virtual-Partitions) - Testing consumers with parallel processing
-- [Deserialization](Deserialization) - Testing custom deserializers and routing awareness
+- [Deserialization](Consumer-Groups-Deserialization) - Testing custom deserializers and routing awareness

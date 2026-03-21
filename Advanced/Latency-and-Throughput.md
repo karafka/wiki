@@ -210,10 +210,10 @@ The strategy and methods selected for consumer management can vary significantly
 
 To effectively understand Karafka consumer processes latency and the topics discussed in this document, it is essential to be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
 
-- [Routing DSL](Routing) including multi-consumer group and multi-subscription group operations.
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) design of the framework.
+- [Routing DSL](Consumer-Groups-Routing) including multi-consumer group and multi-subscription group operations.
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) design of the framework.
 - [Error Handling](Consumer-Groups-Error-Handling-and-Back-Off-Policy) (Especially Backoff Policies)
-- [Offset Management Strategies](Offset-management)
+- [Offset Management Strategies](Consumer-Groups-Offset-management)
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) basics.
 - [Web UI Usage](Web-UI-Getting-Started) for monitoring.
 - [Swarm/Multi-Process Mode](Swarm-Multi-Process)
@@ -604,7 +604,7 @@ In conclusion, effective consumer management in Karafka requires considering var
 
 ## See Also
 
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
 - [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing for improved throughput
 - [Resources Management](Resources-Management) - Managing memory and CPU resources effectively
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Tracking performance metrics and identifying bottlenecks

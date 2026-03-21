@@ -275,5 +275,5 @@ Offset Metadata Storage enriches message processing by allowing custom metadata 
 
 ## See Also
 
-- [Offset management](Offset-management) - Standard offset management
+- [Offset management](Consumer-Groups-Offset-management) - Standard offset management
 - [Pro Virtual Partitions](Pro-Virtual-Partitions) - Parallel partition processing

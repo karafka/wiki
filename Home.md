@@ -61,6 +61,16 @@
 
 ## Consumer Groups
 
+- [Routing](Consumer-Groups-Routing)
+- [Consuming Messages](Basics-Consuming-Messages)
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading)
+- [Deserialization](Consumer-Groups-Deserialization)
+- [Offset Management (Checkpointing)](Consumer-Groups-Offset-management)
+- [Pausing, Seeking and Rate-Limiting](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting)
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue)
+- [Active Job](Consumer-Groups-Active-Job)
+- [Inline Insights](Consumer-Groups-Inline-Insights)
+- [Assignments Tracking](Consumer-Groups-Assignments-Tracking)
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
 
@@ -87,25 +97,16 @@
 ## Advanced
 
 - [Upgrading](Upgrading)
-- [Routing](Routing)
-- [Active Job](Active-Job)
-- [Dead Letter Queue](Dead-Letter-Queue)
 - [Declarative Topics](Declarative-Topics)
 - [Auto reload of code changes in development](Auto-reload-of-code-changes-in-development)
 - [CLI](CLI)
 - [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks)
-- [Concurrency and multithreading](Concurrency-and-Multithreading)
-- [Deserialization](Deserialization)
-- [Offset management (checkpointing)](Offset-management)
-- [Pausing, Seeking and Rate-Limiting](Pausing-Seeking-and-Rate-Limiting)
-- [Inline Insights](Inline-Insights)
 
 - [Exit codes](Exit-codes)
 - [Embedding](Embedding)
 - [Swarm / Multi Process](Swarm-Multi-Process)
 - [Multi-Cluster Setup](Multi-Cluster-Setup)
 - [Env Variables](Env-Variables)
-- [Assignments Tracking](Assignments-Tracking)
 - [Active Record Connections Management](Active-Record-Connections-Management)
 - [Forking](Forking)
 - [Resources Management](Resources-Management)

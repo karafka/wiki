@@ -195,7 +195,7 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 
 ## See Also
 
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Configure threading and parallel processing for optimal performance
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Configure threading and parallel processing for optimal performance
 - [Swarm Multi Process](Swarm-Multi-Process) - Use multi-process architecture for CPU-intensive workloads
 - [Latency and Throughput](Latency-and-Throughput) - Optimize message processing speed and system throughput
 - [Virtual Partitions](Pro-Virtual-Partitions) - Scale processing beyond Kafka partition limits

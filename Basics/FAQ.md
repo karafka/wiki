@@ -454,9 +454,9 @@ end
 
 ## Do I need to use `#revoked?` when not using Long-Running jobs?
 
-In a stable system, **no**. The Karafka default [offset management](Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
+In a stable system, **no**. The Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that after batch processing as well as upon rebalances, before partition reassignment, all the offsets are committed.
 
-You can read about Karafka's revocation/rebalance behaviors [here](Offset-management) and [here](Basics-Consuming-Messages#detecting-revocation-midway).
+You can read about Karafka's revocation/rebalance behaviors [here](Consumer-Groups-Offset-management) and [here](Basics-Consuming-Messages#detecting-revocation-midway).
 
 ## Can I consume from more than one Kafka cluster simultaneously?
 
@@ -526,7 +526,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Basics-Producing-Messages#producing-to-multiple-clusters).
+Also, please remember that those settings apply to consumers **only**. `Karafka#producer` will **always** produce to the default cluster using the default settings. This may be confusing when working with things like [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) as the producer will produce the default cluster DLQ topic despite the origin cluster. You can read more about that behavior [here](Basics-Producing-Messages#producing-to-multiple-clusters).
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
@@ -616,7 +616,7 @@ DLQ messages may disappear due to many reasons. Some possible causes include the
 - The DLQ topic is a compacted topic, which only retains the last message with a given key.
 - The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
 
-For more details, please look at the [Compacting limitations](Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
+For more details, please look at the [Compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.
 
 ## What is the optimal number of threads to use?
 
@@ -633,7 +633,7 @@ When working with Karafka, you also need to take into consideration things that 
 
 Karafka can parallelize work in a couple of scenarios, but unless you are a [Karafka Pro](https://karafka.io/#become-pro) user and you use [Virtual Partitions](Pro-Virtual-Partitions), in a scenario where your process is assigned to a single topic partition, the work will always happen only in a single thread.
 
-You can read more about Karafka and Karafka Pro concurrency model [here](Concurrency-and-Multithreading).
+You can read more about Karafka and Karafka Pro concurrency model [here](Consumer-Groups-Concurrency-and-Multithreading).
 
 It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
@@ -710,7 +710,7 @@ To handle such cases, you can:
 - Increase the number of partitions beyond the number of active consumer processes to achieve multiple assignments in a single consumer process. In a case like this, the given process will be able to work in parallel.
 - Use [Virtual Partitions](Pro-Virtual-Partitions) to parallelize the work of a single topic partition.
 
-You can read more about the Karafka concurrency model [here](Concurrency-and-Multithreading).
+You can read more about the Karafka concurrency model [here](Consumer-Groups-Concurrency-and-Multithreading).
 
 ## Why am I seeing a "needs to be consistent namespacing style" error?
 
@@ -1470,7 +1470,7 @@ Remember, if you're using Karafka without a consumer and encounter errors, ensur
 
 ## What will happen when a message is dispatched to a dead letter queue topic that does not exist?
 
-When a message is dispatched to a [dead letter queue](Dead-Letter-Queue) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
+When a message is dispatched to a [dead letter queue](Consumer-Groups-Dead-Letter-Queue) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled.
 
@@ -2007,7 +2007,7 @@ If you make Karafka not retry, the system will not attempt retries on errors but
     end
     ```
 
-However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
 ## We faced downtime due to a failure in updating the SSL certs. How can we retrieve messages that were sent during this downtime?
 
@@ -2182,7 +2182,7 @@ Karafka Pro's Routing Patterns feature allows for flexible routing using regular
 
 ## What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?
 
-In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be utilized. This feature allows a message to be retried several times before it's moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Dead-Letter-Queue).
+In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be utilized. This feature allows a message to be retried several times before it's moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Consumer-Groups-Dead-Letter-Queue).
 
 ## What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?
 
@@ -2414,7 +2414,7 @@ No, multiplexing serves a different use case. It's primarily for handling IO-bou
 
 ## Is it possible to get watermark offsets from inside a consumer class without using Admin?
 
-You can get watermark offsets and other metrics directly from within a consumer class using Karafka's Inline Insights. This feature provides a range of metrics, including watermark offsets, without using the Admin API. For more details, refer to the [Inline Insights](Inline-Insights) documentation.
+You can get watermark offsets and other metrics directly from within a consumer class using Karafka's Inline Insights. This feature provides a range of metrics, including watermark offsets, without using the Admin API. For more details, refer to the [Inline Insights](Consumer-Groups-Inline-Insights) documentation.
 
 ## Why are message and batch numbers increasing even though I haven't sent any messages?
 
@@ -2482,7 +2482,7 @@ This behavior can be aligned by changing appropriate configuration settings.
 
 ## How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
 
-If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Dead-Letter-Queue), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
+If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
 
 In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This ensures that specific methods are not used outside their intended context, maintaining a clean and safe API.
 
@@ -2963,7 +2963,7 @@ If you need both high multiplexing and multiple processes, consider increasing y
 
 rdkafka-ruby is a pure Kafka protocol binding that remains agnostic about your data format. It treats message payloads as opaque byte streams, which provides maximum flexibility for any serialization approach.
 
-When consuming messages, you can manually deserialize using `raw_payload` or configure a custom deserializer. For detailed examples and best practices, see the [Deserialization](Deserialization) documentation.
+When consuming messages, you can manually deserialize using `raw_payload` or configure a custom deserializer. For detailed examples and best practices, see the [Deserialization](Consumer-Groups-Deserialization) documentation.
 
 ## What Kafka ACLs are required for the Karafka Web UI to work?
 
@@ -3041,7 +3041,7 @@ A poison pill message is a message that causes your consumer to fail repeatedly,
     end
     ```
 
-For comprehensive error handling documentation, see [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) and [Dead Letter Queue](Dead-Letter-Queue).
+For comprehensive error handling documentation, see [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) and [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue).
 
 ## How can I validate messages before processing them?
 
@@ -3131,7 +3131,7 @@ class ValidatingJsonDeserializer
 end
 ```
 
-For more details on custom deserializers, see the [Deserialization](Deserialization) documentation.
+For more details on custom deserializers, see the [Deserialization](Consumer-Groups-Deserialization) documentation.
 
 ## How should I handle missing or invalid records during message processing?
 

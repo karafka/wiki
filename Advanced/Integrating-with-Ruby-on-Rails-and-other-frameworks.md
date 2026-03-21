@@ -42,7 +42,7 @@ After that, ensure that your application is loaded before setting up and booting
 
 ## See Also
 
-- [Active Job](Active-Job) - Integrate Karafka with Rails ActiveJob for background processing
+- [Active Job](Consumer-Groups-Active-Job) - Integrate Karafka with Rails ActiveJob for background processing
 - [Active Record Connections Management](Active-Record-Connections-Management) - Manage database connections in Karafka consumers
 - [Producing Messages](Basics-Producing-Messages) - Send messages to Kafka from Rails controllers and models
 - [Deployment](Infrastructure-Deployment) - Deploy Karafka alongside Rails applications in production

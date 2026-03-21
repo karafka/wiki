@@ -349,7 +349,7 @@ Different providers have distinct trade-offs that affect operational flexibility
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - Cluster-level broker settings and defaults
 - [New Consumer Group Protocol](Kafka-New-Rebalance-Protocol) - Faster rebalancing with the new consumer protocol
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
-- [Dead Letter Queue](Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability
 - [Latency and Throughput](Latency-and-Throughput) - Consumer performance tuning and optimization

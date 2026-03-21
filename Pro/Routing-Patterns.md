@@ -310,7 +310,7 @@ Please ensure you're familiar with these considerations to harness the full powe
 
 ## DLQ Accidental Auto-Consumption
 
-This feature requires careful attention when used alongside [Dead Letter Queues (DLQs)](Dead-Letter-Queue) to avoid unintended behaviors. A common pitfall arises from using regular expressions that are not precise enough, leading to scenarios where the base topic consumer consumes the DLQ topics themselves.
+This feature requires careful attention when used alongside [Dead Letter Queues (DLQs)](Consumer-Groups-Dead-Letter-Queue) to avoid unintended behaviors. A common pitfall arises from using regular expressions that are not precise enough, leading to scenarios where the base topic consumer consumes the DLQ topics themselves.
 
 The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can initiate an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
 
@@ -467,7 +467,7 @@ Karafka's Routing Patterns offers a dynamic solution for message routing, utiliz
 
 ## See Also
 
-- [Routing](Routing) - Standard routing configuration
+- [Routing](Consumer-Groups-Routing) - Standard routing configuration
 - [Consumer Group Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol) - Important regex behavior changes with the new consumer protocol
 - [Testing](Basics-Testing) - Testing strategies for Karafka applications
-- [Deserialization](Deserialization) - Message deserialization configuration
+- [Deserialization](Consumer-Groups-Deserialization) - Message deserialization configuration

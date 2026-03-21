@@ -703,6 +703,6 @@ Remember to leverage the CLI commands for smooth migrations and ongoing manageme
 ## See Also
 
 - [Virtual Partitions](Pro-Virtual-Partitions) - Alternative parallelization strategy optimized for IO-bound workloads
-- [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understanding Karafka's threading model and parallelization
-- [Dead Letter Queue](Dead-Letter-Queue) - Error handling with Parallel Segments
+- [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding Karafka's threading model and parallelization
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Error handling with Parallel Segments
 - [Enhanced Dead Letter Queue](Pro-Enhanced-Dead-Letter-Queue) - Advanced error handling for parallel processing

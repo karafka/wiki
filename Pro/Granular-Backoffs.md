@@ -100,4 +100,4 @@ Granular Backoffs is a powerful feature, allowing for the per-topic customizatio
 
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Default error handling and backoff behavior
 - [Enhanced Reliability](Pro-Enhanced-Reliability) - Additional reliability features for production systems
-- [Dead Letter Queue](Dead-Letter-Queue) - Handling messages after all retries are exhausted
+- [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handling messages after all retries are exhausted
