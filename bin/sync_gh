@@ -68,17 +68,6 @@ Dir["#{ROOT}/Pro/Web-UI/**/*.md"].each do |file|
   copy_file(file, target, copied_files)
 end
 
-# Copy Advanced namespace files to root (no prefix)
-%w[
-  Advanced
-].each do |namespace|
-  Dir["#{ROOT}/#{namespace}/**/*.md"].each do |file|
-    basename = File.basename(file)
-    target = "#{GH_DIR}/#{basename}"
-    copy_file(file, target, copied_files)
-  end
-end
-
 # Add header template to all copied files
 header_content = File.read(HEADER_PATH)
 

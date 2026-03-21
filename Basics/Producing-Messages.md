@@ -56,7 +56,7 @@ In the following sections, you can find an example of how to `#close` the produc
 
 !!! warning
 
-    Note, that you should **not** close the producer manually if you are using the [Embedding API](Embedding) in the same process.
+    Note, that you should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
 
 ### Closing Producer Used in Karafka
 
@@ -235,5 +235,5 @@ By leveraging this flexibility in Karafka, you can effectively manage and direct
 - [Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
 - [Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
 - [Piping](Pro-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
-- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
+- [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
 - [Consuming Messages](Basics-Consuming-Messages) - Learn how to consume the messages you produce

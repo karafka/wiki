@@ -54,5 +54,5 @@ end
 ## See Also
 
 - [Producing Messages](Basics-Producing-Messages) - Complete guide to producing messages with Karafka and WaterDrop
-- [Multi Cluster Setup](Multi-Cluster-Setup) - Configure and manage multiple Kafka clusters
+- [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and manage multiple Kafka clusters
 - [WaterDrop Configuration](WaterDrop-Configuration) - Detailed WaterDrop producer configuration options

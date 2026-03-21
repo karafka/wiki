@@ -226,7 +226,7 @@
 
 ## Does Karafka require Ruby on Rails?
 
-**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](Integrating-with-Ruby-on-Rails-and-other-frameworks) documentation.
+**No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) documentation.
 
 ## Does Karafka require Redis and/or Sidekiq to work?
 
@@ -240,7 +240,7 @@
 
 No, however, it is **recommended**. By default, Karafka requires a separate process (Karafka server) to consume and process messages. You can read about it in the [Consuming messages](Basics-Consuming-Messages) section of the documentation.
 
-Karafka can also be embedded within another process so you do not need to run a separate process. You can read about it [here](Embedding).
+Karafka can also be embedded within another process so you do not need to run a separate process. You can read about it [here](Infrastructure-Embedding).
 
 ## Can I start Karafka process with only particular consumer groups running for given topics?
 
@@ -256,7 +256,7 @@ You can also exclude particular groups the same way:
 bundle exec karafka server --exclude-consumer-groups group_name1 group_name3
 ```
 
-Visit the [CLI](CLI) section of our docs to learn more about how to limit the scope of things to which the server subscribes.
+Visit the [CLI](Infrastructure-CLI) section of our docs to learn more about how to limit the scope of things to which the server subscribes.
 
 ## Can I use ```#seek``` to start processing topics partition from a certain point?
 
@@ -268,7 +268,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Does Karafka restart dead PG connections?
 
-Karafka will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Active-Record-Connections-Management#dealing-with-dead-database-connections).
+Karafka will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Infrastructure-Active-Record-Connections-Management#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 
@@ -1001,7 +1001,7 @@ Karafka's [Expiring Messages](Pro-Expiring-Messages) functionality removes messa
 
 However, it's important to note that Karafka's Expiring Messages functionality does not remove messages from Kafka itself, and it only removes messages from Karafka's internal processing queue. Therefore, the retention policy of the Kafka topic will still apply, and the message will remain in Kafka until it expires based on the topic's retention policy.
 
-To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](Declarative-Topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
+To set the retention policy of a Kafka topic, you can use Kafka's built-in retention policies or configure custom retention policies using the [declarative topics](Infrastructure-Declarative-Topics) functionality. By configuring the retention policy, you can control how long messages are kept in Kafka before they are deleted, regardless of whether Karafka has processed them or not.
 
 ## Can you actively ping the cluster from Karafka to check the cluster availability?
 
@@ -1015,7 +1015,7 @@ You can read more about this topic [here](https://github.com/confluentinc/librdk
 
 ## How do I specify Karafka's environment?
 
-Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](Env-Variables).
+Karafka uses the `KARAFKA_ENV` variable for that; if missing, it will try to detect it. You can read more about this topic [here](Infrastructure-Env-Variables).
 
 ## How can I configure WaterDrop with SCRAM?
 
@@ -1478,7 +1478,7 @@ On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will 
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 
-For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](Declarative-Topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
+For effective management of DLQs in Kafka, we recommend using Karafka's [Declarative Topics](Infrastructure-Declarative-Topics), where you declare your topics in your code. This gives you more control over the specifics of each topic, such as the number of partitions and replication factors, and helps you avoid unintended topic creation. It also aids in efficiently managing and monitoring DLQs in your Kafka ecosystem.
 
 Below you can find an example routing that includes a DLQ declaration as well as a declarative definition of the target DLQ topic:
 
@@ -1867,7 +1867,7 @@ The `Broker: Policy violation (policy_violation)` error in Karafka is typically 
 In Karafka, this error might surface during two scenarios:
 
 - When upgrading the [Web UI](Web-UI-Getting-Started) using the command `karafka-web migrate`.
-- When employing the [Declarative Topics](Declarative-Topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
+- When employing the [Declarative Topics](Infrastructure-Declarative-Topics) with the `karafka topics migrate` command, especially if trying to establish a topic that doesn't align with the broker's policies.
 
 Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
@@ -2025,7 +2025,7 @@ Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Iterator-A
 
 ## Where can I find details on troubleshooting and debugging for Karafka?
 
-You can refer to [this](Problems-and-Troubleshooting) documentation page.
+You can refer to [this](Infrastructure-Problems-and-Troubleshooting) documentation page.
 
 ## Does the open-source (OSS) version of Karafka offer time-based offset lookup features?
 
@@ -2526,7 +2526,7 @@ This error indicates that there are not enough in-sync replicas to handle the me
 
 1. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
 
-1. **Check for RF=MinISR Misconfiguration:** Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
+1. **Check for RF=MinISR Misconfiguration:** Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
 
 By following these steps, you should be able to resolve the "Broker: Not enough in-sync replicas" error and ensure your Kafka cluster is correctly configured to handle the required replication.
 
@@ -3249,4 +3249,4 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 )
 ```
 
-For detailed configuration and considerations when working with multiple clusters, see the [Multi-Cluster Setup](Multi-Cluster-Setup) documentation.
+For detailed configuration and considerations when working with multiple clusters, see the [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup) documentation.

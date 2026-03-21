@@ -167,5 +167,5 @@ The following table outlines Kafka-compatible platforms that have been reported 
 
 ## See Also
 
-- [Upgrading](Upgrading) - Upgrade strategies and best practices
+- [Upgrading](Upgrades-Upgrading) - Upgrade strategies and best practices
 - [Support](Basics-Support) - Get help with compatibility and version issues

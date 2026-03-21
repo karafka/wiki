@@ -897,6 +897,6 @@ end
 
 - [Development vs Production](Infrastructure-Application-Development-vs-Production) - Configuration differences between environments
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Setting up observability for deployed applications
-- [Swarm / Multi Process](Swarm-Multi-Process) - Process-level parallelization for Kubernetes deployments
+- [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process) - Process-level parallelization for Kubernetes deployments
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - Detailed AWS MSK troubleshooting and best practices
-- [Env Variables](Env-Variables) - Environment-based configuration management
+- [Env Variables](Infrastructure-Env-Variables) - Environment-based configuration management

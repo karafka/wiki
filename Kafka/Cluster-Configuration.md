@@ -1941,4 +1941,4 @@
 
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - For topic-level configuration options
 - [Deployment](Infrastructure-Deployment) - For deployment strategies and operational considerations
-- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - For understanding cluster resilience
+- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - For understanding cluster resilience

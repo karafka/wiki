@@ -8,7 +8,7 @@ The Karafka Admin Configs API provides tools for managing configuration settings
 
 !!! tip "Declarative Topics Feature For Topics Management"
 
-    The Admin Configs API provides low-level access for managing Kafka topics and broker configurations. While powerful, it requires detailed knowledge and careful management of individual settings. For a more streamlined and error-resistant approach, consider using the high-level [declarative topics](Declarative-Topics) feature provided by Karafka. This feature allows for easier and more declarative management of topic configurations, making it a superior choice for most use cases.
+    The Admin Configs API provides low-level access for managing Kafka topics and broker configurations. While powerful, it requires detailed knowledge and careful management of individual settings. For a more streamlined and error-resistant approach, consider using the high-level [declarative topics](Infrastructure-Declarative-Topics) feature provided by Karafka. This feature allows for easier and more declarative management of topic configurations, making it a superior choice for most use cases.
 
 ## What are Kafka Configurations?
 

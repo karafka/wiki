@@ -47,17 +47,6 @@ Dir["Pro/Web-UI/**/*.md"].each do |file|
   FileUtils.mv(file, target)
 end
 
-# Advanced namespace - copy without prefix (just flatten)
-%w[
-  Advanced
-].each do |namespace|
-  Dir["#{namespace}/**/*.md"].each do |file|
-    basename = File.basename(file)
-    target = basename
-    FileUtils.mv(file, target)
-  end
-end
-
 # After flattening, fix all local links by adding .md extension so document references are detected
 # correctly as .md references.
 Dir.glob("*.md").each do |file|

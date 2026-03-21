@@ -134,5 +134,5 @@ Variants address the need for dynamic, topic-specific configurations in applicat
 
 ## See Also
 
-- [Multi-Cluster Setup](Multi-Cluster-Setup) - For managing multiple Kafka clusters
+- [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup) - For managing multiple Kafka clusters
 - [Producing Messages](Basics-Producing-Messages) - For message production techniques and patterns

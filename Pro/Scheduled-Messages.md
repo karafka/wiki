@@ -48,7 +48,7 @@ This approach simplifies setting up scheduled messages, making them accessible w
 
 ### Creating Required Kafka Topics
 
-When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Declarative-Topics). This means that all you need to do is to run the:
+When `scheduled_messages` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Infrastructure-Declarative-Topics). This means that all you need to do is to run the:
 
 ```shell
 bundle exec karafka topics migrate

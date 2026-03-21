@@ -8,7 +8,7 @@
 
 For it to be possible, the Karafka framework adopts a dual-process method by default. How does this work? It cleverly injects a separate consumer group into your Karafka setup. So, when you start a `karafka server` one of the processes, apart from the topics you want it to consume, will also consume Web UI data topics.
 
-This approach is the default because the Web UI Rack application was designed to be [embeddable](Embedding) within your Rails and Ruby projects, whether you run a single Puma process or multiple. There is, however, a second approach. There's a tailored solution, particularly for those who don't intend to integrate the Web UI directly into their application but want to serve it through an independent process – say, via a standalone rack application. The Karafka Web UI consumer doesn't necessarily have to run from `karafka server` process. It can operate within Puma itself in the "Embedded mode".
+This approach is the default because the Web UI Rack application was designed to be [embeddable](Infrastructure-Embedding) within your Rails and Ruby projects, whether you run a single Puma process or multiple. There is, however, a second approach. There's a tailored solution, particularly for those who don't intend to integrate the Web UI directly into their application but want to serve it through an independent process – say, via a standalone rack application. The Karafka Web UI consumer doesn't necessarily have to run from `karafka server` process. It can operate within Puma itself in the "Embedded mode".
 
 ## Benefits
 

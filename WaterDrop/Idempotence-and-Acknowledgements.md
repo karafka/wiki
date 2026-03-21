@@ -58,7 +58,7 @@ For example:
 - A replication factor of 3 means that Kafka will store three copies of each partition across different brokers.
 - If one broker fails, the remaining brokers will have the data.
 
-The replication factor is set at the topic level when the topic is created. You can define it using the [Declarative Topics](Declarative-Topics) feature:
+The replication factor is set at the topic level when the topic is created. You can define it using the [Declarative Topics](Infrastructure-Declarative-Topics) feature:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -83,7 +83,7 @@ end
 
     If the number of in-sync replicas falls below this threshold (e.g., due to broker failure), Kafka will reject writes until the required number of replicas is back online.
 
-To configure `min.insync.replicas` at the topic level you can use the [Declarative Topics](Declarative-Topics):
+To configure `min.insync.replicas` at the topic level you can use the [Declarative Topics](Infrastructure-Declarative-Topics):
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -103,7 +103,7 @@ end
 
 !!! warning "Common Misconfiguration"
 
-    Setting `min.insync.replicas` equal to `replication_factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
+    Setting `min.insync.replicas` equal to `replication_factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
 
 ## Example Scenario
 
@@ -171,6 +171,6 @@ In this scenario:
 
 ## See Also
 
-- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Detailed scenarios for replication configuration impact on availability
+- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Detailed scenarios for replication configuration impact on availability
 - [Kafka Best Practices](Kafka-Best-Practices) - General Kafka configuration recommendations
-- [Declarative Topics](Declarative-Topics) - Managing topic configuration in code
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Managing topic configuration in code

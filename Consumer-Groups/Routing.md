@@ -230,8 +230,8 @@ There are several options you can set inside of the ```topic``` block. All of th
 | [delay_by](Pro-Delayed-Topics)                                         | Integer    | Feature that enables delaying message processing from specific topics for a specified time.                                 |
 | [expire_in](Pro-Expiring-Messages)                                     | Integer    | Feature that allows messages to be excluded from processing automatically in case they are too old.                         |
 | [filter](Pro-Filtering-API)                                            | `#call`    | Feature that allows users to filter messages based on specific criteria.                                                    |
-| [config](Declarative-Topics)                                           | Hash       | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
-| [kafka](Multi-Cluster-Setup)                                           | Hash       | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
+| [config](Infrastructure-Declarative-Topics)                            | Hash       | Allows for specifying each of the topic settings and their creation via the CLI commands                                    |
+| [kafka](Infrastructure-Multi-Cluster-Setup)                            | Hash       | Allows you to configure alternative cluster on a per-topic basis for a multi-cluster setup                                  |
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -363,5 +363,5 @@ By leveraging the ability to draw routes multiple times, Karafka seamlessly fits
 - [Configuration](Basics-Configuration) - Configure framework and librdkafka settings that affect routing
 - [Routing Patterns](Pro-Routing-Patterns) - Advanced routing patterns for dynamic topic subscriptions
 - [Deserialization](Consumer-Groups-Deserialization) - Configure per-topic deserialization in routing definitions
-- [Multi Cluster Setup](Multi-Cluster-Setup) - Route topics from multiple Kafka clusters
-- [Declarative Topics](Declarative-Topics) - Define topic configurations alongside routing definitions
+- [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Route topics from multiple Kafka clusters
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Define topic configurations alongside routing definitions

@@ -5,11 +5,11 @@ Karafka uses native Ruby threads to achieve concurrent processing in four scenar
 - for concurrent processing of messages from a single partition when using the [Virtual Partitions](Pro-Virtual-Partitions) feature.
 - to handle consumer groups management (each consumer group defined will be managed by a separate thread).
 
-Additionally, Karafka supports [Swarm Mode](Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
+Additionally, Karafka supports [Swarm Mode](Infrastructure-Swarm-Multi-Process) for enhanced concurrency. This mode forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) and process supervision for improved throughput and scalability in processing Kafka messages.
 
 !!! tip "Separate Resources Management Documentation"
 
-    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
+    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Infrastructure-Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
 
 ## Parallel Messages Processing
 
@@ -180,7 +180,7 @@ Karafka provides an advanced operation mode known as Swarm, designed to optimize
 
 In Swarm Mode, Karafka forks multiple independent processes, each capable of running concurrently. This approach allows the framework to manage and supervise these processes effectively, ensuring high availability and resilience. By doing so, Karafka can better distribute the workload across available CPU cores, minimizing bottlenecks and maximizing processing speed.
 
-Swarm has its own section. You can read about it [here](Swarm-Multi-Process).
+Swarm has its own section. You can read about it [here](Infrastructure-Swarm-Multi-Process).
 
 ## Setting Thread Priority
 
@@ -209,5 +209,5 @@ Lowering thread priority (e.g., negative values like `-1`, `-3`) can significant
 
 - [Virtual Partitions](Pro-Virtual-Partitions) - Parallel processing within single partition using multiple threads
 - [Parallel Segments](Pro-Parallel-Segments) - Parallel processing across multiple consumer groups
-- [Latency and Throughput](Latency-and-Throughput) - Performance optimization and concurrency tuning
-- [Swarm / Multi Process](Swarm-Multi-Process) - Process-level parallelization alternative to threading
+- [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Performance optimization and concurrency tuning
+- [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process) - Process-level parallelization alternative to threading

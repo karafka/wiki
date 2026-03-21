@@ -351,5 +351,5 @@ Different providers have distinct trade-offs that affect operational flexibility
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration
-- [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability
-- [Latency and Throughput](Latency-and-Throughput) - Consumer performance tuning and optimization
+- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability
+- [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Consumer performance tuning and optimization
