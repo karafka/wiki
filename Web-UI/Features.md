@@ -10,7 +10,7 @@ Below you can find a comprehensive description of the most important features yo
 
 !!! tip "Web UI Scope and Simplifications"
 
-    Karafka Web UI does not aim to be a full analytical platform for tracking and measuring all data from Kafka with extreme accuracy. Due to technical reasons, some simplifications have been made. Karafka offers [instrumentation API](Operations-Monitoring-and-Logging), allowing you to craft instrumentation matching your use cases. While certain graphs and metrics may not always be fully accurate, they should provide an overall understanding of the system state.
+    Karafka Web UI does not aim to be a full analytical platform for tracking and measuring all data from Kafka with extreme accuracy. Due to technical reasons, some simplifications have been made. Karafka offers [instrumentation API](Infrastructure-Monitoring-and-Logging), allowing you to craft instrumentation matching your use cases. While certain graphs and metrics may not always be fully accurate, they should provide an overall understanding of the system state.
 
 ## Dashboard
 
@@ -194,5 +194,5 @@ Each check may display one of the following statuses:
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
 - [Pro Web UI](Pro-Web-UI) - Advanced Pro features for Web UI
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies
 - [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI

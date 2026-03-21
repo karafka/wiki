@@ -63,6 +63,6 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 
 ## See Also
 
-- [Deployment](Operations-Deployment) - Using signals for graceful deployments
+- [Deployment](Infrastructure-Deployment) - Using signals for graceful deployments
 - [Exit codes](Exit-codes) - Understanding exit codes after shutdown
 - [Long Running Jobs](Pro-Long-Running-Jobs) - Handling signals with long-running operations

@@ -50,7 +50,7 @@ For production workloads where write availability during maintenance matters, us
 
 !!! tip "AWS MSK Users"
 
-    MSK has unique maintenance behaviors, including the potential for dual-broker outages during maintenance windows. This makes 4+ broker clusters essential for production. See the [AWS MSK Guide](https://karafka.io/docs/Operations-AWS-MSK-Guide) for MSK-specific considerations.
+    MSK has unique maintenance behaviors, including the potential for dual-broker outages during maintenance windows. This makes 4+ broker clusters essential for production. See the [AWS MSK Guide](https://karafka.io/docs/Infrastructure-AWS-MSK-Guide) for MSK-specific considerations.
 
 ## Compression
 
@@ -348,7 +348,7 @@ Different providers have distinct trade-offs that affect operational flexibility
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - Per-topic settings including retention, replication, and compaction
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - Cluster-level broker settings and defaults
 - [New Consumer Group Protocol](Kafka-New-Rebalance-Protocol) - Faster rebalancing with the new consumer protocol
-- [AWS MSK Guide](Operations-AWS-MSK-Guide) - MSK-specific considerations and configuration
+- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
 - [Dead Letter Queue](Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration
 - [Broker Failures and Fault Tolerance](Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability

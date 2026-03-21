@@ -30,4 +30,4 @@ Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-
 - [Getting Started](Web-UI-Getting-Started) – For installation and setup instructions
 - [Features](Web-UI-Features) – For an overview of Web UI capabilities
 - [Pro Web UI](Pro-Web-UI) – For advanced features available in Karafka Pro
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) – For monitoring best practices
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) – For monitoring best practices

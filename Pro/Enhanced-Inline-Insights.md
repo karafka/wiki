@@ -32,5 +32,5 @@ In sum, the `required` option in Karafka Pro's Inline Insights is an invaluable 
 ## See Also
 
 - [Inline Insights](Inline-Insights) - Standard Inline Insights documentation
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - System monitoring capabilities
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - System monitoring capabilities
 - [Web UI Features](Web-UI-Features) - Web UI monitoring interface

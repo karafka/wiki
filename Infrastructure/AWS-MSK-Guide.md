@@ -355,6 +355,6 @@ Karafka does **not** provide direct support for changing topic replication facto
 
 ## See Also
 
-- [Deployment](Operations-Deployment) - General deployment strategies including AWS
+- [Deployment](Infrastructure-Deployment) - General deployment strategies including AWS
 - [Pro Rotating Credentials](Pro-Rotating-Credentials) - Rotating IAM credentials for MSK
 - [Pro Security](Pro-Security) - Security features including SASL/SCRAM authentication

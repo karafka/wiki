@@ -442,7 +442,7 @@ end
 
 ## See Also
 
-- [Deployment](Operations-Deployment) - Production deployment strategies and best practices
+- [Deployment](Infrastructure-Deployment) - Production deployment strategies and best practices
 - [Configuration](Basics-Configuration) - Environment-specific configuration options
 - [Web UI Development vs Production](Web-UI-Development-vs-Production) - Web UI considerations for different environments
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Setting up monitoring for production environments
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Setting up monitoring for production environments

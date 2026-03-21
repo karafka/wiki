@@ -439,7 +439,7 @@ These statuses offer valuable diagnostics, enabling targeted interventions to ma
 
 When deploying a swarm within a Kubernetes cluster, it is recommended to use the swarm liveness listener to supervise only the supervisor process. This specialized liveness probe ensures that the Kubernetes orchestrator accurately reflects the Karafka supervisor's state, enhancing your deployment's reliability.
 
-Please refer to our Kubernetes [documentation](Operations-Deployment#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
+Please refer to our Kubernetes [documentation](Infrastructure-Deployment#kubernetes) for more information on configuring the swarm liveness listener and other deployment considerations.
 
 ## Signal Handling
 
@@ -594,5 +594,5 @@ Swarm Mode supports Static Group Membership to enhance consumer group stability 
 - [Enhanced Swarm Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Advanced swarm features including memory monitoring and health checks
 - [Concurrency and Multithreading](Concurrency-and-Multithreading) - Understand threading options and parallel processing strategies
 - [Resources Management](Resources-Management) - Optimize memory, CPU, and connection usage in Karafka
-- [Deployment](Operations-Deployment) - Deploy Karafka in production environments with swarm mode
+- [Deployment](Infrastructure-Deployment) - Deploy Karafka in production environments with swarm mode
 - [Virtual Partitions](Pro-Virtual-Partitions) - Alternative approach to scaling beyond Kafka partition limits

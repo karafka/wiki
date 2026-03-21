@@ -642,7 +642,7 @@ This class defines a custom reducer with a `#call` method. The method uses an MD
 
 ## Monitoring
 
-Karafka default [monitor](Operations-Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
+Karafka default [monitor](Infrastructure-Monitoring-and-Logging) and the Web UI dashboard work with virtual partitions out of the box. No changes are needed. Virtual batches are reported as they would be regular batches.
 
 ## Shutdown and Revocation Handlers
 

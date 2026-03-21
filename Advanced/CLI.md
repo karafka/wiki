@@ -114,5 +114,5 @@ Routing Patterns managament via the CLI has its own section. You can read about 
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - Initial setup and basic CLI usage
-- [Deployment](Operations-Deployment) - Using CLI commands in production environments
+- [Deployment](Infrastructure-Deployment) - Using CLI commands in production environments
 - [Env Variables](Env-Variables) - Environment variables affecting CLI behavior

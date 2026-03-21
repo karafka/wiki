@@ -27,5 +27,5 @@ Each Karafka process defines exit statuses to indicate how the process terminate
 
 ## See Also
 
-- [Deployment](Operations-Deployment) - Handling exit codes in production deployments
-- [Signals and States](Operations-Signals-and-States) - Understanding process lifecycle and signals
+- [Deployment](Infrastructure-Deployment) - Handling exit codes in production deployments
+- [Signals and States](Infrastructure-Signals-and-States) - Understanding process lifecycle and signals

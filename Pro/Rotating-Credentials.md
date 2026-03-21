@@ -27,5 +27,5 @@ To do so:
 ## See Also
 
 - [Pro Security](Pro-Security) - Security best practices
-- [Deployment](Operations-Deployment) - Deployment strategies and best practices
-- [AWS MSK Guide](Operations-AWS-MSK-Guide) - AWS MSK integration guide
+- [Deployment](Infrastructure-Deployment) - Deployment strategies and best practices
+- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - AWS MSK integration guide

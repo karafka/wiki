@@ -109,7 +109,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 
 !!! info "AWS MSK Operational Issues Documentation"
 
-    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Operations-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
+    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Infrastructure-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
 
 ### AWS MSK cluster setup
 
@@ -895,8 +895,8 @@ end
 
 ## See Also
 
-- [Development vs Production](Operations-Development-vs-Production) - Configuration differences between environments
-- [Monitoring and Logging](Operations-Monitoring-and-Logging) - Setting up observability for deployed applications
+- [Development vs Production](Infrastructure-Application-Development-vs-Production) - Configuration differences between environments
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Setting up observability for deployed applications
 - [Swarm / Multi Process](Swarm-Multi-Process) - Process-level parallelization for Kubernetes deployments
-- [AWS MSK Guide](Operations-AWS-MSK-Guide) - Detailed AWS MSK troubleshooting and best practices
+- [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - Detailed AWS MSK troubleshooting and best practices
 - [Env Variables](Env-Variables) - Environment-based configuration management
