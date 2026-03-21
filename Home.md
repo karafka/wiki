@@ -12,6 +12,7 @@
 - [FAQ](Basics-FAQ)
 - [Support](Basics-Support)
 - [Status](Status)
+- [Consumer Groups vs Share Groups](Basics-Consumer-Groups-vs-Share-Groups)
 - [Articles and Other References](Basics-Articles-and-Other-References)
 
 ## Web UI
@@ -73,6 +74,10 @@
 - [Assignments Tracking](Consumer-Groups-Assignments-Tracking)
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
+
+## Share Groups
+
+- [Coming Soon](Share-Groups-Coming-Soon)
 
 ## Infrastructure
 
@@ -164,6 +169,10 @@
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability)
 - [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights)
+
+### Share Groups Features
+
+- [Coming Soon](Pro-Share-Groups-Coming-Soon)
 
 ### Enhanced Web UI
 

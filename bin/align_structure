@@ -17,6 +17,7 @@ puts "Working in directory: #{Dir.pwd}"
 %w[
   Basics
   Consumer-Groups
+  Share-Groups
   Infrastructure
   Pro
   Web-UI
