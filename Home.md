@@ -207,7 +207,6 @@
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
 - [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
-- [Share Groups (KIP-932)](Kafka-Share-Groups-KIP-932)
 
 ## Upgrade Notes
 
