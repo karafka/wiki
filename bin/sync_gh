@@ -46,6 +46,7 @@ end
 %w[
   Basics
   Consumer-Groups
+  Share-Groups
   Infrastructure
   Pro
   Web-UI

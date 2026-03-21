@@ -12,6 +12,7 @@
 - [FAQ](Basics-FAQ)
 - [Support](Basics-Support)
 - [Status](Status)
+- [Consumer Groups vs Share Groups](Basics-Consumer-Groups-vs-Share-Groups)
 - [Articles and Other References](Basics-Articles-and-Other-References)
 
 ## Web UI
@@ -73,6 +74,10 @@
 - [Assignments Tracking](Consumer-Groups-Assignments-Tracking)
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
+
+## Share Groups
+
+- [Coming Soon](Share-Groups-Coming-Soon)
 
 ## Infrastructure
 
@@ -165,6 +170,10 @@
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability)
 - [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights)
 
+### Share Groups Features
+
+- [Coming Soon](Pro-Share-Groups-Coming-Soon)
+
 ### Enhanced Web UI
 
 - [Enhanced Web UI](Pro-Web-UI)
@@ -198,6 +207,7 @@
 - [Topic Configuration](Kafka-Topic-Configuration)
 - [Cluster Configuration](Kafka-Cluster-Configuration)
 - [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
+- [Share Groups (KIP-932)](Kafka-Share-Groups-KIP-932)
 
 ## Upgrade Notes
 
@@ -207,6 +217,7 @@
 It is recommended to do one major upgrade at a time.
 
 - [Karafka](Upgrades-Karafka)
+    - [3.0](Upgrades-Karafka-3.0)
     - [2.5](Upgrades-Karafka-2.5)
     - [2.4](Upgrades-Karafka-2.4)
     - [2.3](Upgrades-Karafka-2.3)
