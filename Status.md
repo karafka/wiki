@@ -3,12 +3,36 @@
 !!! info "About This Page"
     This page tracks external incidents and ecosystem-level disruptions that may affect Karafka, WaterDrop, and Web UI users. This is **not** a Karafka uptime status page, but a curated log of upstream issues, dependency problems, and third-party service disruptions relevant to the Karafka ecosystem.
 
-!!! success "Current Status - All Systems Operational"
-    No active incidents affecting the Karafka ecosystem at this time.
+!!! warning "Current Status - Active Advisory"
+    One active advisory regarding Apache Kafka broker-level coordinator bugs affecting Karafka users. This is **not** a Karafka or librdkafka issue - it originates from bugs in Apache Kafka itself. See details below.
 
 ---
 
 ## Incident History
+
+!!! warning "[IN PROGRESS] March 2026 - Kafka Coordinator Recovery API Under Development"
+
+    - **Status:** In Progress
+    - **Impact:** Medium
+    - **Affected:** Karafka users experiencing Kafka group coordinator `FAILED` state (`not_coordinator` errors)
+
+    Kafka group coordinator failures caused by broker-side conditions (log compaction races, OOM, unclean restarts, network partitions, and rolling maintenance windows) can leave consumer groups permanently stuck in `initializing` state. When the coordinator enters a `FAILED` state, all group operations (`JoinGroup`, `SyncGroup`, `OffsetCommit`, `DeleteGroup`) return `not_coordinator`, and restarting consumer pods does not resolve the issue.
+
+    **Symptoms:**
+
+    - Consumers stay in `initializing` state and never receive partition assignments
+    - Karafka Web UI shows the consumer group as empty with no members
+    - `rdkafka` logs report repeating `not_coordinator` errors
+    - Other consumer groups on the same cluster work normally
+    - Restarting consumer pods does not resolve the issue
+
+    **Current Workarounds:**
+
+    - Switch to [Direct Assignments](https://karafka.io/docs/Pro-Consumer-Groups-Direct-Assignments) to bypass the coordinator entirely
+    - Use Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-election`, `kafka-consumer-groups`) to force a coordinator reload on a healthy broker
+    - File a support ticket with your managed Kafka provider (MSK, Confluent Cloud) to apply upstream Kafka patches
+
+    **Resolution:** A new `Karafka::Admin::Recovery` API is under active development. This API will allow users to read committed offsets directly from the `__consumer_offsets` log (bypassing the broken coordinator), assess the blast radius across consumer groups, and migrate offsets to a new healthy consumer group - all without broker-level intervention. This issue will be fully resolved once the new version of Karafka containing the Recovery API is released.
 
 !!! success "[RESOLVED] February 11, 2026 - Pro License Server Hardware Failure"
 

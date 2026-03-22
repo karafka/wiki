@@ -19,6 +19,9 @@ In `FAILED` state, every group operation (`JoinGroup`, `SyncGroup`, `OffsetCommi
 !!! note "Cluster-level condition"
     Coordinator failures are a Kafka broker condition, **not** a Karafka condition. No consumer framework can recover automatically when the coordinator itself is unavailable or in a `FAILED` state. The tools on this page allow you to work around the failure without waiting for the broker to self-heal.
 
+!!! warning "No error-level reporting from Karafka"
+    When a coordinator is in a `FAILED` state, Karafka will not emit any errors to its error tracking pipeline. The consumer simply stays in `initializing` indefinitely with no indication of why. The `not_coordinator` responses are only visible in librdkafka debug logs, which require explicitly enabling debug logging (`debug: 'all'`). Without debug logs enabled, the only observable symptom is that consumers never receive assignments. See the [Confirming the Root Cause](#confirming-the-root-cause) section below for the full diagnostic procedure.
+
 ## Confirming the Root Cause
 
 The first step is confirming that the coordinator is the problem and identifying which broker and `__consumer_offsets` partition are involved. The observed symptoms are:
