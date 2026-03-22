@@ -113,6 +113,7 @@
 - [ACLs API](Infrastructure-Admin-Acls-API)
 - [Configs API](Infrastructure-Admin-Configs-API)
 - [Replication API](Infrastructure-Admin-Replication-API)
+- [Recovery API](Infrastructure-Admin-Recovery-API)
 
 ### Reliability
 
