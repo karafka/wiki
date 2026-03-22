@@ -38,7 +38,7 @@ The first step is confirming that the coordinator is the problem and identifying
 
 When librdkafka debug logging is enabled (`debug: 'all'`), the client-side log will show a repeating cycle of `JoinGroup` failures and coordinator re-queries with no progress:
 
-```
+```log
 rdkafka: [thrd:main]: JoinGroup response: GenerationId -1, Protocol , LeaderId , my MemberId , member metadata count 0: Broker: Not coordinator
 rdkafka: [thrd:main]: GroupCoordinator/1: JoinGroupRequest failed: Broker: Not coordinator: actions Refresh
 rdkafka: [thrd:main]: Group "sync": Rejoining group without an assignment: JoinGroup error: Broker: Not coordinator
@@ -53,7 +53,7 @@ Notice that `FindCoordinator` resolves successfully and the broker responds with
 
 On AWS MSK, search broker logs in CloudWatch to confirm the coordinator is in a `FAILED` state:
 
-```bash
+```shell
 aws logs filter-log-events \
   --log-group-name "msk/broker-logs/<cluster-name>" \
   --log-stream-names "<cluster-name>-Broker-<id>" \
@@ -64,7 +64,7 @@ aws logs filter-log-events \
 
 A coordinator epoch conflict produces errors of this form:
 
-```
+```log
 ERROR Replaying record ... from __consumer_offsets-<N> at offset <offset>
   failed due to: Cannot set the epoch of <topic-uuid>-<partition> to <epoch>
   because the partition is still owned at epoch <older-epoch>.
@@ -258,7 +258,7 @@ group_name.chars.reduce(0) { |h, c| (31 * h + c.ord) & 0xFFFFFFFF } % 50
 
 Then confirm the current leader and replica set:
 
-```bash
+```shell
 kafka-topics \
   --bootstrap-server $BOOTSTRAP \
   --command-config client.properties \
@@ -276,7 +276,7 @@ Create a `reassignment.json` that places a different broker first in the replica
 {"version":1,"partitions":[{"topic":"__consumer_offsets","partition":5,"replicas":[4,5,6,1,2,3],"log_dirs":["any","any","any","any","any","any"]}]}
 ```
 
-```bash
+```shell
 kafka-reassign-partitions \
   --bootstrap-server $BOOTSTRAP \
   --command-config client.properties \
@@ -304,7 +304,7 @@ Where `election.json` is:
 
 This triggers a fresh coordinator load on broker 4. Verify the new leader before proceeding:
 
-```bash
+```shell
 kafka-topics \
   --bootstrap-server $BOOTSTRAP \
   --command-config client.properties \
@@ -316,7 +316,7 @@ kafka-topics \
 
 The group must have no active members. Scale down consumers first, then delete the group:
 
-```bash
+```shell
 kubectl scale deploy my-consumer --replicas=0
 
 kafka-consumer-groups \
@@ -344,7 +344,7 @@ Scale consumers back up once the original broker is confirmed as leader. Consume
 
 **Verify ISR health before any reassignment operation.** Ensure all replicas are in-sync before moving partition leadership. A reassignment with an incomplete ISR risks availability:
 
-```bash
+```shell
 kafka-topics \
   --bootstrap-server $BOOTSTRAP \
   --command-config client.properties \
