@@ -83,39 +83,37 @@ It is important to understand what each step returns here. `affected_partitions`
 
 **failing broker → `__consumer_offsets` partition numbers → consumer group names → your application topics**.
 
-### Step 1: Find the Coordinator for a Known-Broken Group
+1. Find the coordinator for a known-broken group:
 
-```ruby
-coordinator = Karafka::Admin::Recovery.coordinator_for('my-broken-group')
-# => { broker_id: 5, broker_host: "b-5.cluster.kafka.us-east-1.amazonaws.com:9096", partition: 5 }
-```
+    ```ruby
+    coordinator = Karafka::Admin::Recovery.coordinator_for('my-broken-group')
+    # => { broker_id: 5, broker_host: "b-5.cluster.kafka.us-east-1.amazonaws.com:9096", partition: 5 }
+    ```
 
-The returned hash contains the broker ID, its `host:port` address, and the `__consumer_offsets` partition number the group maps to. This partition number is an internal coordination detail — it is **not** a partition of any of your application topics.
+    The returned hash contains the broker ID, its `host:port` address, and the `__consumer_offsets` partition number the group maps to. This partition number is an internal coordination detail — it is **not** a partition of any of your application topics.
 
-### Step 2: Find All `__consumer_offsets` Partitions Led by That Broker
+1. Find all `__consumer_offsets` partitions led by that broker:
 
-```ruby
-partitions = Karafka::Admin::Recovery.affected_partitions(coordinator[:broker_id])
-# => [5, 12, 27, 38]
-```
+    ```ruby
+    partitions = Karafka::Admin::Recovery.affected_partitions(coordinator[:broker_id])
+    # => [5, 12, 27, 38]
+    ```
 
-This returns the partition numbers of `__consumer_offsets` that the failing broker leads. Any consumer group whose coordinator maps to one of these partition numbers is potentially impacted. Returns an empty array for a broker ID that does not exist in the cluster.
+    This returns the partition numbers of `__consumer_offsets` that the failing broker leads. Any consumer group whose coordinator maps to one of these partition numbers is potentially impacted. Returns an empty array for a broker ID that does not exist in the cluster.
 
-### Step 3: Enumerate All Consumer Groups Affected Across Those Partitions
+1. Enumerate all consumer groups affected across those partitions:
 
-```ruby
-lookback = Time.now - 3600  # look back 1 hour
+    ```ruby
+    lookback = Time.now - 3600  # look back 1 hour
 
-affected_groups = partitions.flat_map do |partition|
-  Karafka::Admin::Recovery.affected_groups(partition, last_committed_at: lookback)
-end.uniq.sort
-```
+    affected_groups = partitions.flat_map do |partition|
+      Karafka::Admin::Recovery.affected_groups(partition, last_committed_at: lookback)
+    end.uniq.sort
+    ```
 
-`affected_groups` scans each `__consumer_offsets` partition and returns the distinct consumer group IDs that have committed offsets within the lookback window. Groups whose offsets have been fully tombstoned are excluded. Results are sorted alphabetically.
+    `affected_groups` scans each `__consumer_offsets` partition and returns the distinct consumer group IDs that have committed offsets within the lookback window. Groups whose offsets have been fully tombstoned are excluded. Results are sorted alphabetically.
 
-### Step 4: Identify Your Affected Application Topics
-
-The group names returned in the previous step are the consumer groups defined in your Karafka routing configuration. Cross-reference them there to find which application topics are affected:
+1. Identify your affected application topics. The group names returned in the previous step are the consumer groups defined in your Karafka routing configuration. Cross-reference them there to find which application topics are affected:
 
 ```ruby
 # Example: inspect your routing to see what each affected group subscribes to
@@ -249,91 +247,83 @@ When a cluster-level repair is necessary, or as a fallback if the above approach
 
 This requires Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-election`, `kafka-consumer-groups`), available in any standard Kafka distribution image such as `confluentinc/cp-kafka:8.0.2`.
 
-### Step 1: Identify the Coordinator Partition
+1. Identify the coordinator partition. Find which `__consumer_offsets` partition your group maps to. The mapping uses Java's `String#hashCode` semantics:
 
-Find which `__consumer_offsets` partition your group maps to. The mapping uses Java's `String#hashCode` semantics:
+    ```ruby
+    group_name = 'my-broken-group'
+    group_name.chars.reduce(0) { |h, c| (31 * h + c.ord) & 0xFFFFFFFF } % 50
+    ```
 
-```ruby
-group_name = 'my-broken-group'
-group_name.chars.reduce(0) { |h, c| (31 * h + c.ord) & 0xFFFFFFFF } % 50
-```
+    Then confirm the current leader and replica set:
 
-Then confirm the current leader and replica set:
+    ```shell
+    kafka-topics \
+      --bootstrap-server $BOOTSTRAP \
+      --command-config client.properties \
+      --describe --topic __consumer_offsets \
+      | grep "Partition: <N>"
+    ```
 
-```shell
-kafka-topics \
-  --bootstrap-server $BOOTSTRAP \
-  --command-config client.properties \
-  --describe --topic __consumer_offsets \
-  | grep "Partition: <N>"
-```
+    Note the `Leader` and `Replicas` values — you will need both for subsequent steps.
 
-Note the `Leader` and `Replicas` values — you will need both for subsequent steps.
+1. Move the partition leader to a healthy broker. Create a `reassignment.json` that places a different broker first in the replica list. For example, if the current replicas are `[5,4,6,1,2,3]`, put broker 4 first:
 
-### Step 2: Move the Partition Leader to a Healthy Broker
+    ```json
+    {"version":1,"partitions":[{"topic":"__consumer_offsets","partition":5,"replicas":[4,5,6,1,2,3],"log_dirs":["any","any","any","any","any","any"]}]}
+    ```
 
-Create a `reassignment.json` that places a different broker first in the replica list. For example, if the current replicas are `[5,4,6,1,2,3]`, put broker 4 first:
+    ```shell
+    kafka-reassign-partitions \
+      --bootstrap-server $BOOTSTRAP \
+      --command-config client.properties \
+      --execute \
+      --reassignment-json-file reassignment.json
 
-```json
-{"version":1,"partitions":[{"topic":"__consumer_offsets","partition":5,"replicas":[4,5,6,1,2,3],"log_dirs":["any","any","any","any","any","any"]}]}
-```
+    kafka-reassign-partitions \
+      --bootstrap-server $BOOTSTRAP \
+      --command-config client.properties \
+      --verify \
+      --reassignment-json-file reassignment.json
 
-```shell
-kafka-reassign-partitions \
-  --bootstrap-server $BOOTSTRAP \
-  --command-config client.properties \
-  --execute \
-  --reassignment-json-file reassignment.json
+    kafka-leader-election \
+      --bootstrap-server $BOOTSTRAP \
+      --admin.config client.properties \
+      --election-type PREFERRED \
+      --path-to-json-file election.json
+    ```
 
-kafka-reassign-partitions \
-  --bootstrap-server $BOOTSTRAP \
-  --command-config client.properties \
-  --verify \
-  --reassignment-json-file reassignment.json
+    Where `election.json` is:
 
-kafka-leader-election \
-  --bootstrap-server $BOOTSTRAP \
-  --admin.config client.properties \
-  --election-type PREFERRED \
-  --path-to-json-file election.json
-```
+    ```json
+    {"partitions": [{"topic": "__consumer_offsets", "partition": 5}]}
+    ```
 
-Where `election.json` is:
+    This triggers a fresh coordinator load on broker 4. Verify the new leader before proceeding:
 
-```json
-{"partitions": [{"topic": "__consumer_offsets", "partition": 5}]}
-```
+    ```shell
+    kafka-topics \
+      --bootstrap-server $BOOTSTRAP \
+      --command-config client.properties \
+      --describe --topic __consumer_offsets \
+      | grep "Partition: 5"
+    ```
 
-This triggers a fresh coordinator load on broker 4. Verify the new leader before proceeding:
+1. Delete the stuck consumer group. The group must have no active members. Scale down consumers first, then delete the group:
 
-```shell
-kafka-topics \
-  --bootstrap-server $BOOTSTRAP \
-  --command-config client.properties \
-  --describe --topic __consumer_offsets \
-  | grep "Partition: 5"
-```
+    ```shell
+    kubectl scale deploy my-consumer --replicas=0
 
-### Step 3: Delete the Stuck Consumer Group
+    kafka-consumer-groups \
+      --bootstrap-server $BOOTSTRAP \
+      --command-config client.properties \
+      --delete --group my-broken-group
+    ```
 
-The group must have no active members. Scale down consumers first, then delete the group:
+    The delete operation writes tombstone records to `__consumer_offsets` that neutralize the conflicting assignment records. When the original broker later reloads the partition, the tombstones cause it to skip the conflicting records and produce a clean load.
 
-```shell
-kubectl scale deploy my-consumer --replicas=0
+1. Restore the original partition leader. Create `reassignment-rollback.json` with the original replica order and execute the same reassignment and leader election sequence from step 2.
 
-kafka-consumer-groups \
-  --bootstrap-server $BOOTSTRAP \
-  --command-config client.properties \
-  --delete --group my-broken-group
-```
-
-The delete operation writes tombstone records to `__consumer_offsets` that neutralize the conflicting assignment records. When the original broker later reloads the partition, the tombstones cause it to skip the conflicting records and produce a clean load.
-
-### Step 4: Restore the Original Partition Leader
-
-Create `reassignment-rollback.json` with the original replica order and execute the same reassignment and leader election sequence from Step 2.
-
-Scale consumers back up once the original broker is confirmed as leader. Consumers will restart from `auto.offset.reset` since committed offsets were removed along with the group.
+    Scale consumers back up once the original broker is confirmed as leader. Consumers will restart from `auto.offset.reset` since committed offsets were removed along with the group.
 
 !!! warning "Offset loss"
     Deleting the consumer group removes all committed offsets. Coordinate with your team to pause production before deleting and be prepared to re-process or skip messages consumed since the last known-good offset. To avoid this, use `Karafka::Admin::Recovery` to read and preserve the offsets before deletion, then restore them to the new group via `Karafka::Admin::ConsumerGroups.seek` after recovery.
