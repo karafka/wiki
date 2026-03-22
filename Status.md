@@ -4,7 +4,7 @@
     This page tracks external incidents and ecosystem-level disruptions that may affect Karafka, WaterDrop, and Web UI users. This is **not** a Karafka uptime status page, but a curated log of upstream issues, dependency problems, and third-party service disruptions relevant to the Karafka ecosystem.
 
 !!! warning "Current Status - Active Advisory"
-    One active advisory regarding Apache Kafka broker-level coordinator bugs affecting Karafka users. This is **not** a Karafka or librdkafka issue - it originates from bugs in Apache Kafka itself. See details below.
+    One active advisory. See details below.
 
 ---
 
@@ -16,7 +16,7 @@
     - **Impact:** Medium
     - **Affected:** Karafka users experiencing Kafka group coordinator `FAILED` state (`not_coordinator` errors)
 
-    Kafka group coordinator failures caused by broker-side conditions (log compaction races, OOM, unclean restarts, network partitions, and rolling maintenance windows) can leave consumer groups permanently stuck in `initializing` state. When the coordinator enters a `FAILED` state, all group operations (`JoinGroup`, `SyncGroup`, `OffsetCommit`, `DeleteGroup`) return `not_coordinator`, and restarting consumer pods does not resolve the issue.
+    This is **not** a Karafka or librdkafka issue - it originates from bugs in Apache Kafka itself. Kafka group coordinator failures caused by broker-side conditions (log compaction races, OOM, unclean restarts, network partitions, and rolling maintenance windows) can leave consumer groups permanently stuck in `initializing` state. When the coordinator enters a `FAILED` state, all group operations (`JoinGroup`, `SyncGroup`, `OffsetCommit`, `DeleteGroup`) return `not_coordinator`, and restarting consumer pods does not resolve the issue.
 
     **Symptoms:**
 
