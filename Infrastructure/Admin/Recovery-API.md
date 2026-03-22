@@ -1,4 +1,4 @@
-# Admin Recovery
+# Admin Recovery API
 
 When a Kafka group coordinator enters a `FAILED` state, all operations for the affected consumer groups return `not_coordinator`, leaving consumers stuck in `initializing` indefinitely — even after pod restarts. This page describes how to diagnose coordinator failures, assess their blast radius, and either mitigate the impact immediately or recover committed offsets and restore normal operation using `Karafka::Admin::Recovery`.
 
@@ -79,9 +79,11 @@ For other failure modes such as OOM or unclean restarts, look for heap exhaustio
 
 A single broker can lead multiple `__consumer_offsets` partitions, meaning a single coordinator failure can affect many consumer groups at once. Before attempting recovery, use `Karafka::Admin::Recovery` to map the full blast radius.
 
-It is important to understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic — **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is: **failing broker → `__consumer_offsets` partition numbers → consumer group names → your application topics**.
+It is important to understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic — **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is:
 
-**1. Find the coordinator for a known-broken group:**
+**failing broker → `__consumer_offsets` partition numbers → consumer group names → your application topics**.
+
+### Step 1: Find the Coordinator for a Known-Broken Group
 
 ```ruby
 coordinator = Karafka::Admin::Recovery.coordinator_for('my-broken-group')
@@ -90,7 +92,7 @@ coordinator = Karafka::Admin::Recovery.coordinator_for('my-broken-group')
 
 The returned hash contains the broker ID, its `host:port` address, and the `__consumer_offsets` partition number the group maps to. This partition number is an internal coordination detail — it is **not** a partition of any of your application topics.
 
-**2. Find all `__consumer_offsets` partitions led by that broker:**
+### Step 2: Find All `__consumer_offsets` Partitions Led by That Broker
 
 ```ruby
 partitions = Karafka::Admin::Recovery.affected_partitions(coordinator[:broker_id])
@@ -99,7 +101,7 @@ partitions = Karafka::Admin::Recovery.affected_partitions(coordinator[:broker_id
 
 This returns the partition numbers of `__consumer_offsets` that the failing broker leads. Any consumer group whose coordinator maps to one of these partition numbers is potentially impacted. Returns an empty array for a broker ID that does not exist in the cluster.
 
-**3. Enumerate all consumer groups affected across those partitions:**
+### Step 3: Enumerate All Consumer Groups Affected Across Those Partitions
 
 ```ruby
 lookback = Time.now - 3600  # look back 1 hour
@@ -111,7 +113,7 @@ end.uniq.sort
 
 `affected_groups` scans each `__consumer_offsets` partition and returns the distinct consumer group IDs that have committed offsets within the lookback window. Groups whose offsets have been fully tombstoned are excluded. Results are sorted alphabetically.
 
-**4. Identify your affected application topics:**
+### Step 4: Identify Your Affected Application Topics
 
 The group names returned in the previous step are the consumer groups defined in your Karafka routing configuration. Cross-reference them there to find which application topics are affected:
 
