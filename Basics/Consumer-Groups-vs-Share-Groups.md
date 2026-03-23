@@ -106,7 +106,7 @@ These features allow Karafka applications using consumer groups to achieve high 
 Share groups, introduced by [KIP-932: Queues for Kafka](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932:+Queues+for+Kafka), add queue-like consumption semantics to Kafka. Instead of assigning each partition exclusively to one consumer, share groups allow multiple consumers to cooperatively consume records from the same partition. This model is designed for workloads where messages represent independent work items that can be processed concurrently in any order.
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/consumer_groups_vs_shared_groups/shared-groups.svg" alt="share groups cooperative consumption diagram" />
+  <img src="https://karafka.io/assets/misc/charts/consumer_groups_vs_shared_groups/share-groups.svg" alt="share groups cooperative consumption diagram" />
 </p>
 
 !!! tip "Share Groups Are Not Queues"
