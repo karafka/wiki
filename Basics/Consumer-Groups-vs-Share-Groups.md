@@ -12,6 +12,10 @@ This page explains both models, compares their characteristics across key dimens
 
 Consumer groups are Kafka's original consumption model and the foundation of all current Karafka message processing. In a consumer group, each topic partition is assigned to exactly one consumer at a time. This exclusive assignment guarantees that records within a partition are processed in offset order by a single consumer.
 
+<p align="center">
+  <img src="https://karafka.io/assets/misc/charts/consumer_groups_vs_shared_groups/consumer-groups.svg" alt="consumer groups partition assignment diagram" />
+</p>
+
 Karafka uses consumer groups to subscribe to topics. By default, all topics defined in the routing DSL belong to a single consumer group:
 
 ```ruby
@@ -100,6 +104,10 @@ These features allow Karafka applications using consumer groups to achieve high 
 ## Share Groups
 
 Share groups, introduced by [KIP-932: Queues for Kafka](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932:+Queues+for+Kafka), add queue-like consumption semantics to Kafka. Instead of assigning each partition exclusively to one consumer, share groups allow multiple consumers to cooperatively consume records from the same partition. This model is designed for workloads where messages represent independent work items that can be processed concurrently in any order.
+
+<p align="center">
+  <img src="https://karafka.io/assets/misc/charts/consumer_groups_vs_shared_groups/shared-groups.svg" alt="share groups cooperative consumption diagram" />
+</p>
 
 !!! tip "Share Groups Are Not Queues"
 
