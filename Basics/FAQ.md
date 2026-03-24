@@ -221,6 +221,7 @@
 1. [How can I validate messages before processing them?](#how-can-i-validate-messages-before-processing-them)
 1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
+1. [I received a Confluent KIP-896 deprecation notice. Is Karafka using deprecated Kafka protocol APIs?](#i-received-a-confluent-kip-896-deprecation-notice-is-karafka-using-deprecated-kafka-protocol-apis)
 
 ---
 
@@ -3250,3 +3251,18 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 ```
 
 For detailed configuration and considerations when working with multiple clusters, see the [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup) documentation.
+
+## I received a Confluent KIP-896 deprecation notice. Is Karafka using deprecated Kafka protocol APIs?
+
+**No**. Karafka does not use any deprecated Kafka protocol APIs. The Karafka ecosystem (including `karafka-rdkafka` and `karafka-web`) uses librdkafka versions that are well above the minimum required by KIP-896. For example, Karafka 2.5.0 ships with librdkafka 2.8.0, while the Confluent minimum is 1.8.2. The librdkafka version used by Karafka has not been close to 1.8.2 since 2022.
+
+If you receive a KIP-896 deprecation notice from Confluent and see Karafka Web UI topics (`karafka_consumers_metrics`, `karafka_consumers_states`) mentioned, it does not mean Karafka is the source. Karafka identifies itself to the broker in two ways:
+
+- **`client.id`**: Set to your configured `config.client_id` value (not the default `rdkafka`). If you see a raw `rdkafka` client ID, that client is **not** Karafka.
+- **`client.software.version`**: Karafka reports a detailed version string containing the Karafka, rdkafka-ruby, and librdkafka versions (for example, `v2.5.0-rdkafka-ruby-v0.19.5-librdkafka-v2.8.0`). You can ask Confluent support to identify the offending client using this field.
+
+If the deprecation notice references a different language (such as Python) or a default `rdkafka` client ID, the source is most likely a different application or script connecting to your cluster. Common causes include:
+
+- A forgotten monitoring script, lag exporter, or data pipeline tool consuming from Karafka's internal topics.
+- An older application using a different Kafka client library with an outdated librdkafka version.
+- A misidentification on the Confluent side. If in doubt, ask Confluent support to provide the exact `client.software.version` and `client.id` of the flagged client so you can trace its origin.
