@@ -42,7 +42,7 @@ Standard brokers follow the traditional rolling update pattern described above. 
 
 !!! tip "Coordinator Failures During Rolling Upgrades"
 
-    MSK rolling upgrades were the primary catalyst for the development of the [Admin Recovery API](Admin-Recovery-API). During rolling broker restarts, coordinator reloads can trigger epoch conflicts or other conditions that leave the `__consumer_offsets` partition in a `FAILED` state, causing affected consumer groups to become permanently stuck. If consumers remain in `initializing` state after a maintenance event and pod restarts do not help, see the [Admin Recovery API](Admin-Recovery-API) for diagnostic steps and recovery procedures.
+    MSK rolling upgrades were the primary catalyst for the development of the [Admin Recovery API](Infrastructure-Admin-Recovery-API). During rolling broker restarts, coordinator reloads can trigger epoch conflicts or other conditions that leave the `__consumer_offsets` partition in a `FAILED` state, causing affected consumer groups to become permanently stuck. If consumers remain in `initializing` state after a maintenance event and pod restarts do not help, see the [Admin Recovery API](Infrastructure-Admin-Recovery-API) for diagnostic steps and recovery procedures.
 
 ## Expected Errors
 
@@ -362,4 +362,4 @@ Karafka does **not** provide direct support for changing topic replication facto
 - [Deployment](Infrastructure-Deployment) - General deployment strategies including AWS
 - [Pro Rotating Credentials](Pro-Rotating-Credentials) - Rotating IAM credentials for MSK
 - [Pro Security](Pro-Security) - Security features including SASL/SCRAM authentication
-- [Admin Recovery API](Admin-Recovery-API) - Recovering from coordinator failures caused by rolling upgrades
+- [Admin Recovery API](Infrastructure-Admin-Recovery-API) - Recovering from coordinator failures caused by rolling upgrades
