@@ -179,6 +179,10 @@ Two scenarios may necessitate shutting down a node:
 
 1. **Unhealthy Status Reports (Karafka Pro)**: With the enhanced capabilities of Karafka Pro, nodes possess the self-awareness to report unhealthy states. This can range from excessive memory consumption and prolonged processing times to polling mechanisms becoming unresponsive. Recognizing these reports, the supervisor takes decisive action to address the compromised node.
 
+!!! warning "Pro Liveness Listener Must Be Manually Enabled"
+
+    The Pro Swarm Liveness Listener that provides memory, consuming TTL, and polling TTL monitoring is **not** enabled by default. You must explicitly subscribe to it in your `karafka.rb` file. Without it, only basic health reporting (scenario 1 above) is active. See the [Enhanced Swarm documentation](Pro-Enhanced-Swarm-Multi-Process#enhanced-liveness-listener) for setup instructions.
+
 Upon identifying a node that requires a shutdown, either due to delayed health reports or self-reported unhealthy conditions, the supervisor initiates a two-step process:
 
 - **TERM Signal**: The supervisor first sends a TERM signal to the node, initiating a graceful shutdown sequence. This allows the node to complete its current tasks, release resources, and shut down properly, minimizing potential data loss or corruption.

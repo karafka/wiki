@@ -20,6 +20,10 @@ This listener provides following benefits:
 
 This enhancement is crucial for maintaining a high-performance Kafka processing environment, especially in scenarios with stringent resource constraints or high throughput requirements.
 
+!!! warning "Manual Subscription Required"
+
+    The Pro Swarm Liveness Listener is **not** automatically enabled. Unlike many other Karafka Pro features that activate automatically, this listener must be explicitly subscribed to in your `karafka.rb` file. Without it, the supervisor only performs basic liveness checks based on `node_report_timeout` and does **not** monitor memory usage, consuming TTL, or polling TTL. If your swarm nodes are hanging or exceeding memory limits without being restarted, ensure you have subscribed to this listener.
+
 To use the Enhanced Liveness Listener in your Karafka application, you need to subscribe to the listener within your `karafka.rb` configuration file:
 
 ### Usage
