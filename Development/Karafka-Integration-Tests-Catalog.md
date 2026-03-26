@@ -1217,6 +1217,7 @@
 | `pro/routing/multiplexing/validations_spec.rb` | Multiplexing details should be validated |
 | `pro/routing/multiplexing/with_multiplexed_default_subscription_group_spec.rb` | Karafka should allow for multiplexing of the default anonymous subscription group |
 | `pro/routing/multiplexing/with_multiplexed_subscription_group_spec.rb` | Karafka should allow for multiplexing subscription group |
+| `pro/routing/multiplexing/with_statistics_disabled_spec.rb` | Dynamic multiplexing should not be allowed when statistics are disabled |
 | `pro/routing/non_pro_without_long_running_job_spec.rb` | When running non-pro, LRJ should not be available |
 | `pro/routing/non_pro_without_virtual_partitioner_spec.rb` | When running non-pro, VP should not be available |
 | `pro/routing/parallel_segments/naming_and_ids_spec.rb` | Proper segment names and ids should be generated |
@@ -1280,7 +1281,10 @@
 | `pro/swarm/limited_per_node_spec.rb` | We should be able to instruct swarm to run consumption only on a certain node despite having more |
 | `pro/swarm/low_multiplexing_on_many_topics_spec.rb` | Swarm should work with a single subscription group with many topics and many partitions. |
 | `pro/swarm/with_liveness_downscaling_multiplex_spec.rb` | Liveness reporter should be totally ok with connections downscaling when using multiplexing and should not see it as a problem |
+| `pro/swarm/with_liveness_exceeding_consuming_ttl_lrj_spec.rb` | When a long running job consumer exceeds the consuming_ttl, liveness should report unhealthy and the supervisor should kill and restart the node. This simulates the real-world scenario where LRJ processing takes longer than the consuming_ttl and the node gets killed despite LRJ being designed for long processing. |
+| `pro/swarm/with_liveness_exceeding_consuming_ttl_spec.rb` | When a consumer exceeds the consuming_ttl, liveness should report unhealthy and the supervisor should kill and restart the node. |
 | `pro/swarm/with_liveness_exceeding_memory_spec.rb` | If we use liveness API to report issue, Karafka should restart the node |
+| `pro/swarm/with_liveness_without_statistics_spec.rb` | When statistics are disabled (statistics.interval.ms = 0), the liveness listener should still report healthy via on_connection_listener_fetch_loop. The node should NOT be killed. |
 | `pro/swarm/with_unreachable_nodes_spec.rb` | Karafka should fail when we define nodes that cannot be reached |
 | `pro/swarm/with_unused_nodes_spec.rb` | Karafka should fail when we define nodes that do not have any assignments |
 | `pro/testing/rspec/multiplexing_spec.rb` | We should be able to use testing with multiplexing without any exceptions |
