@@ -78,6 +78,7 @@
 | `admin/replication_multi_broker_sequential/manual_broker_assignment_spec.rb` | Karafka should respect manual broker assignment when increasing replication factor |
 | `admin/replication_multi_broker_sequential/multi_partition_topic_spec.rb` | Karafka should increase replication factor for multi-partition topics |
 | `admin/replication_multi_broker_sequential/rebalance_replicas_spec.rb` | Karafka should rebalance replicas across brokers without changing replication factor |
+| `admin/replication_multi_broker_sequential/validate_generated_commands_spec.rb` | Karafka should generate valid kafka-reassign-partitions commands that actually work against a real Kafka cluster. This validates that plan.execution_commands produces commands accepted by the Kafka tooling without argument errors. |
 | `admin/replication_multi_broker_sequential/verify_isr_after_change_spec.rb` | Karafka should have valid ISR after replication factor change |
 | `admin/seeking_operations_active_spec.rb` | Karafka should handle seeking operations during active consumption correctly |
 | `admin/topic_operations_nonexistent_spec.rb` | Karafka should handle administrative operations on non-existent topics gracefully |
