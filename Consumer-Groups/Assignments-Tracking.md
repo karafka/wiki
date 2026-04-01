@@ -14,6 +14,10 @@ def consume
 end
 ```
 
+!!! note "Revocation and Reassignment Behavior"
+
+    The Assignments Tracker maintains only the current state of assignments without any historical tracking. When a partition is revoked during a rebalance, it is removed from the assignments hash. If that same partition is later reassigned back, it is added again and treated identically to a first-time assignment. The tracker does **not** use generation counters or epoch numbers to distinguish between original and subsequent assignments.
+
 ## Example Use Cases
 
 - **Building Assignments Aware Schedulers**: A custom scheduler that takes into account assignments can significantly improve efficiency and performance. Such a scheduler optimizes resource utilization and reduces latency by making intelligent scheduling decisions based on real-time cluster state.
