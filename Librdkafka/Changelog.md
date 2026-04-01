@@ -6,6 +6,16 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.14.0 (2026-04-01)
+
+librdkafka v2.14.0 is a feature release:
+
+* [KIP-768](https://cwiki.apache.org/confluence/pages/viewpage.action?pageId=186877575#KIP768:ExtendSASL/OAUTHBEARERwithSupportforOIDC-ClientConfiguration) Extend SASL/OAUTHBEARER to support OIDC claim mapping beyond the default `sub` claim (#5336).
+
+### Checksums
+Release asset checksums:
+ * v2.14.0.zip SHA256 `372589ac63b06f9cac5d9b50d4ed1998f46b1a6cca991b691527ccc62b7cb7dd`
+ * v2.14.0.tar.gz SHA256 `c05c03ef00a13a8463fac3e8918c04843c416f11ced58c889d806a88ca92cf99`
 ## 2.13.2 (2026-03-02)
 
 librdkafka v2.13.2 is a maintenance release:
@@ -1923,62 +1933,5 @@ librdkafka v1.7.0 is feature release:
    This issue showed up as "Invalid txn state transition: .." crashes, and is
    now fixed by properly synchronizing both checking and transition of state.
 
-
-
-## 1.6.1 (2021-02-24)
-
-# librdkafka v1.6.1
-
-librdkafka v1.6.1 is a maintenance release.
-
-### Upgrade considerations
-
- * Fatal idempotent producer errors are now also fatal to the transactional
-   producer. This is a necessary step to maintain data integrity prior to
-   librdkafka supporting KIP-360. Applications should check any transactional
-   API errors for the is_fatal flag and decommission the transactional producer
-   if the flag is set.
- * The consumer error raised by `auto.offset.reset=error` now has error-code
-   set to `ERR__AUTO_OFFSET_RESET` to allow an application to differentiate
-   between auto offset resets and other consumer errors.
-
-
-### Fixes
-
-#### General fixes
-
- * Admin API and transactional `send_offsets_to_transaction()` coordinator
-   requests, such as TxnOffsetCommitRequest, could in rare cases be sent
-   multiple times which could cause a crash.
- * `ssl.ca.location=probe` is now enabled by default on Mac OSX since the
-   librdkafka-bundled OpenSSL might not have the same default CA search paths
-   as the system or brew installed OpenSSL. Probing scans all known locations.
-
-#### Transactional Producer fixes
-
- * Fatal idempotent producer errors are now also fatal to the transactional
-   producer.
- * The transactional producer could crash if the transaction failed while
-   `send_offsets_to_transaction()` was called.
- * Group coordinator requests for transactional
-   `send_offsets_to_transaction()` calls would leak memory if the
-   underlying request was attempted to be sent after the transaction had
-   failed.
- * When gradually producing to multiple partitions (resulting in multiple
-   underlying AddPartitionsToTxnRequests) sub-sequent partitions could get
-   stuck in pending state under certain conditions. These pending partitions
-   would not send queued messages to the broker and eventually trigger
-   message timeouts, failing the current transaction. This is now fixed.
- * Committing an empty transaction (no messages were produced and no
-   offsets were sent) would previously raise a fatal error due to invalid state
-   on the transaction coordinator. We now allow empty/no-op transactions to
-   be committed.
-
-#### Consumer fixes
-
- * The consumer will now retry indefinitely (or until the assignment is changed)
-   to retrieve committed offsets. This fixes the issue where only two retries
-   were attempted when outstanding transactions were blocking OffsetFetch
-   requests with `ERR_UNSTABLE_OFFSET_COMMIT`. #3265
 
 
