@@ -382,6 +382,7 @@
 | `instrumentation/vendors/kubernetes/polling_liveness_timeout_flow_spec.rb` | When the polling happens less frequently than expected, we should get a timeout indication out of the probing |
 | `instrumentation/vendors/kubernetes/swarm_liveness_all_good_spec.rb` | When all good, all should be ok in swarm |
 | `instrumentation/vendors/kubernetes/swarm_liveness_not_controlling_often_spec.rb` | When we expect to control nodes more often that it happens, it should be reflected |
+| `instrumentation/with_hammered_assignments_tracker_generations_spec.rb` | AssignmentsTracker generations should remain stable and not crash when accessed concurrently from multiple consumer groups during message processing |
 | `instrumentation/with_hammered_assignments_tracker_spec.rb` | AssignmentsTracker should remain stable and not crash when inspected concurrently from multiple consumer groups during message processing |
 | `instrumentation/with_offset_querying_spec.rb` | Karafka when started and stopped should go through all the lifecycle stages |
 | `instrumentation/with_replaced_monitor_spec.rb` | Karafka should allow for a monitor that can be used to run wrapped handling, as long as there is a delegation back to Karafka monitor afterwards. |
