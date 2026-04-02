@@ -3,16 +3,12 @@
 
 # Rdkafka Changelog
 
-## 0.26.0 (Unreleased)
+## 0.26.0 (2026-04-02)
 - [Enhancement] Bump librdkafka to `2.13.2`
-
-## 0.25.3 (Unreleased)
 - [Enhancement] Embed a per-file SPEC_HASH in test topic and consumer group names for tracing Kafka warnings back to specific spec files.
 - [Fix] Register `ObjectSpace.define_finalizer` in `Rdkafka::Consumer` to prevent segfaults when a consumer is GC'd without being explicitly closed (jturkel).
 - [Fix] Remove dead `#finalizer` instance methods from `Consumer` and `Admin` that could never work as GC finalizers.
 - [Fix] Prevent cascading test failures in admin specs when a single handle leaks into the registry.
-
-## 0.25.2 (2026-02-27)
 - [Feature] Extend `Rdkafka::RdkafkaError` with `instance_name` attribute containing the `rd_kafka_name` for tying errors back to specific native Kafka instances (#181).
 
 ## 0.25.1 (2026-02-26)
