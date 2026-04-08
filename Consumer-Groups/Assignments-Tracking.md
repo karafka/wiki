@@ -14,9 +14,16 @@ def consume
 end
 ```
 
-!!! note "Revocation and Reassignment Behavior"
+!!! note "Revocation, Reassignment, and Generation Tracking"
 
-    The Assignments Tracker maintains only the current state of assignments without any historical tracking. When a partition is revoked during a rebalance, it is removed from the assignments hash. If that same partition is later reassigned back, it is added again and treated identically to a first-time assignment. The tracker does **not** use generation counters or epoch numbers to distinguish between original and subsequent assignments.
+    The `Karafka::App.assignments` method returns only the current state of assignments. When a partition is revoked during a rebalance, it is removed from the assignments hash. If that same partition is later reassigned back, it appears identically to a first-time assignment in the current assignments hash.
+
+    However, per-partition **generation tracking** is available via `Karafka::Instrumentation::AssignmentsTracker`. Each time a partition is assigned, its generation counter is incremented (starting at 1 for the first assignment). Revocations, client resets, and assignment losses do **not** reset or change generation counters — only new assignments increment them.
+
+    - `AssignmentsTracker.generation(topic, partition)` — returns the generation count for a specific topic-partition (0 if never assigned, 1+ otherwise).
+    - `AssignmentsTracker.generations` — returns a frozen hash of all topic-partitions and their generation counts, including partitions that have been revoked.
+
+    This is useful for idempotency logic, cache invalidation, and state recovery decisions where you need to distinguish first-time assignments from reassignments.
 
 ## Example Use Cases
 
