@@ -131,19 +131,19 @@ The reload mechanism helps ensure that transient fatal errors don't permanently 
 
 ## Polling Configuration
 
-WaterDrop supports two polling modes that control how librdkafka delivery callbacks are processed: `:thread` (default) and `:fd`.
+WaterDrop supports two polling modes that control how librdkafka delivery callbacks are processed: `:fd` (default) and `:thread`.
 
-### Thread Mode (Default)
-
-In thread mode, each producer spawns a dedicated background Ruby thread that continuously calls `rd_kafka_poll` in a loop. This is the simplest approach and works well for most use cases.
-
-No additional configuration is required to use thread mode, as it is the default.
-
-### FD Mode
+### FD Mode (Default)
 
 FD mode uses OS-level pipes and `IO.select` multiplexing to monitor all producers from a single Ruby thread, avoiding GVL contention. This approach provides **39-54% higher throughput** compared to thread mode, making it ideal for high-performance applications or environments with many producers.
 
-To enable FD mode:
+No additional configuration is required to use FD mode, as it is the default.
+
+### Thread Mode
+
+In thread mode, each producer spawns a dedicated background Ruby thread that continuously calls `rd_kafka_poll` in a loop.
+
+To use thread mode:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -152,7 +152,7 @@ producer = WaterDrop::Producer.new do |config|
     'bootstrap.servers': 'localhost:9092'
   }
 
-  config.polling.mode = :fd
+  config.polling.mode = :thread
 end
 ```
 
@@ -162,7 +162,7 @@ The following options are available under the `config.polling` namespace:
 
 | Option                | Description                                                                                        | Default   |
 |-----------------------|----------------------------------------------------------------------------------------------------|-----------|
-| `polling.mode`        | Polling mode to use: `:thread` (dedicated thread per producer) or `:fd` (`IO.select` multiplexing) | `:thread` |
+| `polling.mode`        | Polling mode to use: `:fd` (`IO.select` multiplexing) or `:thread` (dedicated thread per producer) | `:fd`     |
 | `polling.fd.max_time` | Maximum time in milliseconds spent polling a single producer per cycle in FD mode                  | `100`     |
 | `polling.poller`      | Custom `WaterDrop::Polling::Poller` instance for callback isolation                                | `nil`     |
 
@@ -174,14 +174,12 @@ In FD mode, you can use `polling.fd.max_time` to differentiate polling priority 
 # High-priority producer: more time per polling cycle
 high_priority = WaterDrop::Producer.new do |config|
   config.kafka = { 'bootstrap.servers': 'localhost:9092' }
-  config.polling.mode = :fd
   config.polling.fd.max_time = 200
 end
 
 # Low-priority producer: less time per polling cycle
 low_priority = WaterDrop::Producer.new do |config|
   config.kafka = { 'bootstrap.servers': 'localhost:9092' }
-  config.polling.mode = :fd
   config.polling.fd.max_time = 50
 end
 ```
@@ -195,7 +193,6 @@ dedicated_poller = WaterDrop::Polling::Poller.new
 
 producer = WaterDrop::Producer.new do |config|
   config.kafka = { 'bootstrap.servers': 'localhost:9092' }
-  config.polling.mode = :fd
   config.polling.poller = dedicated_poller
 end
 ```
