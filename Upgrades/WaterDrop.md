@@ -1,5 +1,7 @@
 # WaterDrop Upgrade Notes
 
+- [Upgrading to 2.10](Upgrades-WaterDrop-2.10)
+- [Upgrading to 2.9](Upgrades-WaterDrop-2.9)
 - [Upgrading to 2.8](Upgrades-WaterDrop-2.8)
 - [Upgrading to 2.7](Upgrades-WaterDrop-2.7)
 - [Upgrading to 2.6](Upgrades-WaterDrop-2.6)
