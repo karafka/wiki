@@ -85,7 +85,7 @@ Please include as many of the following details as possible to help me understan
   </tr>
   <tr>
     <td class="nowrap">Debug Logs</td>
-    <td>All <a href="/docs/Problems%2C-Troubleshooting-and-Debugging/#enabling-extensive-logging">debug logs</a> including debug logs from librdkafka.</td>
+    <td>All <a href="/docs/Infrastructure-Debugging/#enable-enhanced-logging">debug logs</a> including debug logs from librdkafka.</td>
   </tr>
   <tr>
     <td class="nowrap">Reproduction Steps</td>

@@ -40,8 +40,6 @@ These errors indicate processes in the middle of certain operations during a for
 
 Note that forking issues typically occur when the required dependencies aren't loaded in the parent process prior to forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
-For more detailed information on macOS forking issues and solutions, see [Phusion's blog on Ruby app servers and macOS High Sierra](https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/).
-
 ## Conclusion
 
 Forking in Ruby applications that use Karafka and `librdkafka` requires careful planning and implementation to prevent resource leakage and ensure stable operation. This is especially true on macOS, where changes to the system's handling of forks can lead to critical issues. By following the outlined best practices, developers can effectively manage these challenges in a multi-process environment.
