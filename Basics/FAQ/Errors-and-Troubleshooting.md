@@ -108,7 +108,7 @@ To avoid this behavior and instead write immediately to stdout, you can set it t
 $stdout.sync = true
 ```
 
-You can read more about sync [here](https://ruby-doc.org/3.2.0/IO.html#method-i-sync).
+You can read more about sync [here](https://docs.ruby-lang.org/en/master/IO.html#method-i-sync).
 
 ## Why am I getting `error:0A000086:SSL routines::certificate verify failed` after upgrading Karafka?
 

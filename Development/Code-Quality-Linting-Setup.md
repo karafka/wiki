@@ -104,7 +104,7 @@ BUNDLE_GEMFILE=Gemfile.lint bundle exec yard-lint lib/
 | [StandardRB Official Site](https://github.com/standardrb/standard) | StandardRB documentation and philosophy |
 | [RuboCop Documentation](https://docs.rubocop.org/) | Comprehensive RuboCop cop reference |
 | [YARD Documentation](https://yardoc.org/) | YARD documentation syntax guide |
-| [yard-lint GitHub](https://github.com/troessner/yard-lint) | yard-lint usage and configuration |
+| [yard-lint GitHub](https://github.com/mensfeld/yard-lint) | yard-lint usage and configuration |
 | [Karafka Issue #2991](https://github.com/karafka/karafka/issues/2991) | Original migration tracking issue |
 
 ## See Also
