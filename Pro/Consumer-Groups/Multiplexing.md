@@ -428,3 +428,4 @@ Karafka Multiplexing is a powerful tool designed to enhance the performance of y
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Concurrency configuration
 - [Pro Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Non-blocking job processing
 - [Routing](Consumer-Groups-Routing) - Routing and subscription group configuration
+- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatic reduction of statistics overhead when using multiple connections
