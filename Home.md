@@ -247,6 +247,7 @@ It is recommended to do one major upgrade at a time.
     - [0.3](Upgrades-Web-UI-0.3)
 
 - [WaterDrop](Upgrades-WaterDrop)
+    - [2.10](Upgrades-WaterDrop-2.10)
     - [2.9](Upgrades-WaterDrop-2.9)
     - [2.8](Upgrades-WaterDrop-2.8)
     - [2.7](Upgrades-WaterDrop-2.7)
