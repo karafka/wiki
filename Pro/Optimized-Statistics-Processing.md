@@ -4,7 +4,7 @@ Karafka Pro includes automatic optimizations for Kafka client statistics handlin
 
 ## The Problem
 
-In environments with high partition counts, the internal Kafka client statistics mechanism generates disproportionately large payloads relative to the actual workload of a given consumer process. Each statistics emit requires memory allocation and CPU time proportional to the total number of partitions known to the client — not just those being actively consumed.
+In environments with high partition counts, the internal Kafka client statistics mechanism generates disproportionately large payloads relative to the actual workload of a given consumer process. Each statistics emit requires memory allocation and CPU time proportional to the total number of partitions known to the client - not just those being actively consumed.
 
 At scale, this results in:
 
@@ -16,7 +16,7 @@ At scale, this results in:
 
 Karafka Pro automatically reduces the statistics processing overhead at multiple levels, ensuring that both the size of statistics data and the cost of processing it scale with your actual workload rather than the total size of the Kafka cluster.
 
-This optimization is **transparent and automatic** — no configuration changes are required.
+This optimization is **transparent and automatic** - no configuration changes are required.
 
 ## Performance Impact
 
@@ -42,8 +42,8 @@ For applications with small partition counts (under ~100 per topic), the improve
 
 ## Important Notes
 
-- **Aggregate totals are preserved** — top-level metrics remain accurate regardless of the optimization level applied.
-- **Rebalance visibility is maintained** — full partition visibility is preserved during reassignment events.
+- **Aggregate totals are preserved** - top-level metrics remain accurate regardless of the optimization level applied.
+- **Rebalance visibility is maintained** - full partition visibility is preserved during reassignment events.
 
 ## See Also
 
