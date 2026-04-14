@@ -156,6 +156,7 @@
 - [Scheduled Messages](Pro-Scheduled-Messages)
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process)
+- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing)
 
 ### Consumer Groups Features
 
