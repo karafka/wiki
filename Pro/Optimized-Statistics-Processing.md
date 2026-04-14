@@ -36,19 +36,19 @@ This optimization is **transparent and automatic** - no configuration changes ar
 The charts below show how overhead scales from 100 to 5,000 total partitions. In each case, the consumer is assigned only 10 partitions - a realistic scenario where a process consumes a small slice of a large topic. Without Pro, all metrics grow linearly with the total number of partitions known to the client. With Pro, they remain constant regardless of cluster size.
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/payload_size.png" alt="stats payload size scaling by partition count" style="max-width: 800px" />
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/payload_size.png" alt="stats payload size scaling by partition count" style="max-width: 720px" />
 </p>
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/cpu_time.png" alt="cpu time per stats event scaling by partition count" style="max-width: 800px" />
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/cpu_time.png" alt="cpu time per stats event scaling by partition count" style="max-width: 720px" />
 </p>
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/allocations.png" alt="memory allocations per stats event scaling by partition count" style="max-width: 800px" />
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/allocations.png" alt="memory allocations per stats event scaling by partition count" style="max-width: 720px" />
 </p>
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/rss_growth.png" alt="rss memory growth scaling by partition count" style="max-width: 800px" />
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/rss_growth.png" alt="rss memory growth scaling by partition count" style="max-width: 720px" />
 </p>
 
 ## Who Benefits
