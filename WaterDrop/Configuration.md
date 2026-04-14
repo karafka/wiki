@@ -54,6 +54,7 @@ Some of the options are:
 | `wait_backoff_on_transaction_fatal_error`   | Time to wait (ms) before continuing after a transactional fatal error reload   |
 | `max_attempts_on_transaction_fatal_error`   | Maximum number of reload attempts for transactional fatal errors               |
 | `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
+| `statistics_decorator`                      | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
 
 !!! info
 
