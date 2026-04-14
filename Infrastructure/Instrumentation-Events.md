@@ -127,6 +127,8 @@ Below is the complete list of instrumentation events available in Karafka:
 - `worker.completed`
 - `worker.process`
 - `worker.processed`
+- `worker.scaling.down`
+- `worker.scaling.up`
 
 ## Usage Example
 
