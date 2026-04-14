@@ -37,18 +37,26 @@ The charts below show how overhead scales from 100 to 5,000 total partitions. In
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/payload_size.png" alt="stats payload size scaling by partition count" style="max-width: 720px" />
+  <br/>
+  <small>Without Pro, each stats emit grows linearly with partition count (~2.1 KB per partition). With Pro, payload stays constant at ~35 KB.</small>
 </p>
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/cpu_time.png" alt="cpu time per stats event scaling by partition count" style="max-width: 720px" />
+  <br/>
+  <small>Decoration time scales from ~2 ms at 100 partitions to ~78 ms at 5,000 without Pro. With Pro, it remains flat at ~0.5 ms.</small>
 </p>
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/allocations.png" alt="memory allocations per stats event scaling by partition count" style="max-width: 720px" />
+  <br/>
+  <small>Object allocations per event grow at ~2 per partition without Pro. With Pro, allocations are constant at ~102 regardless of cluster size.</small>
 </p>
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/rss_growth.png" alt="rss memory growth scaling by partition count" style="max-width: 720px" />
+  <br/>
+  <small>RSS memory growth over 30 seconds reaches ~91 MB at 5,000 partitions without Pro. With Pro, growth stays under ~9 MB.</small>
 </p>
 
 ## Who Benefits
