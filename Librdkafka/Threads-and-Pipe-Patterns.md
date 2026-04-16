@@ -1,4 +1,4 @@
-# librdkafka Thread and Pipe Patterns
+# Librdkafka Thread and Pipe Patterns
 
 Karafka and WaterDrop rely on librdkafka as the underlying C client for Apache Kafka. librdkafka manages its own native threads and uses pipe file descriptors for internal signaling. Understanding these patterns is essential for capacity planning, debugging resource usage, and diagnosing issues in production environments.
 
