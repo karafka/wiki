@@ -145,7 +145,30 @@ producer.produce_sync(topic: 'my.topic', payload: 'my.message')
 
     Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
 
-WaterDrop is configured to emit internal `librdkafka` metrics every five seconds. You can change this by setting the `kafka` `statistics.interval.ms` configuration property to a value greater than of equal `0`. Emitted statistics are available after subscribing to the `statistics.emitted` publisher event. If set to `0`, metrics will not be published.
+WaterDrop is configured to emit internal `librdkafka` metrics every five seconds. You can change this by setting the `kafka` `statistics.interval.ms` configuration property to a value greater than or equal `0`. Emitted statistics are available after subscribing to the `statistics.emitted` publisher event. If set to `0`, metrics will not be published.
+
+!!! tip "Statistics Are Opt-In at Client Build Time"
+
+    Statistics emission is decided **once**, when the underlying rdkafka client is lazily constructed (typically on the first `produce_*` call). If at least one listener is subscribed to `statistics.emitted` at that moment, statistics work as before. If no listener is present, WaterDrop forces `statistics.interval.ms` to `0`, skips the statistics callback registration, and avoids all associated work (JSON parsing, hash materialization, decoration) for the lifetime of that producer.
+
+    This means you must subscribe your statistics listeners **before the first use of the producer**. Attempting to subscribe after the client has been built without statistics raises `WaterDrop::Errors::StatisticsNotEnabledError`. The built-in Karafka Web UI and Datadog listeners work out of the box as long as they are wired up during startup, which is the standard setup.
+
+    ```ruby
+    producer = WaterDrop::Producer.new do |config|
+      config.kafka = {
+        'bootstrap.servers': 'localhost:9092',
+        'statistics.interval.ms': 5_000
+      }
+    end
+
+    # Subscribe BEFORE the first produce call
+    producer.monitor.subscribe('statistics.emitted') do |event|
+      MyMetrics.report(event[:statistics])
+    end
+
+    # First use — rdkafka client is built here with statistics enabled
+    producer.produce_sync(topic: 'events', payload: 'hello')
+    ```
 
 The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
@@ -153,7 +176,24 @@ The statistics include all of the metrics from `librdkafka` (complete list [here
 
     In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
 
-For several attributes like `txmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix:
+### Statistics Decorator
+
+For several attributes like `txmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
+
+!!! note "Decorator Scope"
+
+    The built-in statistics decorator only decorates the keys used by the official metrics listeners: `tx`, `txretries`, `txerrs`, and `rxerrs`. Unused subtrees (`topics`, broker window stats) are skipped to reduce overhead. If you rely on other `_d` or `_fd` delta keys in custom instrumentation, provide a custom decorator via `config.statistics_decorator`:
+
+    ```ruby
+    producer = WaterDrop::Producer.new do |config|
+      config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+
+      config.statistics_decorator = ::Karafka::Core::Monitoring::StatisticsDecorator.new(
+        only_keys: %w[tx txretries txerrs rxerrs your_custom_key],
+        excluded_keys: %w[]
+      )
+    end
+    ```
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|

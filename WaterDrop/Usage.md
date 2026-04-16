@@ -163,6 +163,68 @@ end
 
 This flexibility in handling delivery reports and delivery handles in both synchronous and asynchronous scenarios makes WaterDrop a powerful choice for managing Kafka message production while accommodating different use cases and error-handling strategies.
 
+## Tombstones
+
+In Kafka, a tombstone is a message with a `nil` payload that signals the deletion of a key in [log-compacted topics](https://kafka.apache.org/documentation/#compaction). When Kafka compacts a topic, it retains only the latest value for each key. A tombstone tells the compactor to remove all prior records for that key.
+
+WaterDrop provides a dedicated tombstone API that enforces the required constraints automatically: every tombstone must include a `key` and a `partition`, and the payload is always set to `nil`. If you supply a `payload`, it is silently removed.
+
+### Producing Tombstones
+
+```ruby
+# Synchronous - waits for delivery confirmation
+producer.tombstone_sync(topic: 'users', key: 'user-42', partition: 0)
+
+# Asynchronous - returns a delivery handle
+handle = producer.tombstone_async(topic: 'users', key: 'user-42', partition: 0)
+report = handle.wait
+```
+
+### Producing Many Tombstones
+
+```ruby
+tombstones = [
+  { topic: 'users', key: 'user-42', partition: 0 },
+  { topic: 'users', key: 'user-99', partition: 1 }
+]
+
+# Synchronous batch
+producer.tombstone_many_sync(tombstones)
+
+# Asynchronous batch
+handles = producer.tombstone_many_async(tombstones)
+```
+
+### Validation
+
+Every tombstone requires `topic`, `key` (non-empty String), and `partition` (non-negative Integer). Omitting any of them raises `WaterDrop::Errors::MessageInvalidError`:
+
+```ruby
+# This will raise MessageInvalidError — partition is missing
+producer.tombstone_sync(topic: 'users', key: 'user-42')
+```
+
+You can also use tombstone methods with [variants](WaterDrop-Variants):
+
+```ruby
+variant = producer.with(topic_config: { acks: 'all' })
+variant.tombstone_sync(topic: 'users', key: 'user-42', partition: 0)
+```
+
+### Headers and Timestamps
+
+You can include optional `headers` and `timestamp` in tombstone messages, just like regular messages:
+
+```ruby
+producer.tombstone_sync(
+  topic: 'users',
+  key: 'user-42',
+  partition: 0,
+  headers: { 'reason' => 'gdpr-deletion' },
+  timestamp: Time.now
+)
+```
+
 ## Labeling
 
 Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and utilizing labeling, please visit [this](WaterDrop-Labeling) dedicated wiki page.
