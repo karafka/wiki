@@ -211,6 +211,7 @@
 - [Configuration](Librdkafka-Configuration)
 - [Statistics](Librdkafka-Statistics)
 - [Errors](Librdkafka-Errors)
+- [Threads and Pipe Patterns](Librdkafka-Threads-and-Pipe-Patterns)
 - [Changelog](Librdkafka-Changelog)
 
 ## Kafka
