@@ -27,7 +27,7 @@ The thread names follow the pattern `rdk:main` and `rdk:broker<ID>` where `<ID>`
 
 For a single `rd_kafka_t` instance connected to a Kafka cluster with **N** brokers:
 
-```
+```text
 threads_per_handle = 1 (main) + 1 (internal) + B (bootstrap) + N (learned brokers)
 ```
 
@@ -35,13 +35,13 @@ Where `B` is the number of entries in `bootstrap.servers`. After the initial met
 
 In practice, with a single bootstrap server and a 3-broker cluster:
 
-```
+```text
 threads = 1 (main) + 1 (internal) + 1 (bootstrap) + 3 (learned) = 6
 ```
 
 After the bootstrap broker is decommissioned (it gets replaced by a learned broker for the same node), the steady-state count settles to approximately:
 
-```
+```text
 threads ≈ 1 (main) + 1 (internal) + N (learned brokers)
 ```
 
@@ -59,19 +59,19 @@ Each broker thread creates a **pipe pair** (two file descriptors: one read end, 
 
 ### Pipe Count Formula
 
-```
+```text
 pipe_fds_per_handle = (number_of_broker_threads) × 2
 ```
 
 For a single handle connected to a 3-broker cluster with 4 broker threads:
 
-```
+```text
 pipe_fds = 4 × 2 = 8
 ```
 
 For 132 handles connected to a 16-broker cluster:
 
-```
+```text
 pipe_fds ≈ 132 × 18 × 2 = 4,752
 ```
 
@@ -79,7 +79,7 @@ pipe_fds ≈ 132 × 18 × 2 = 4,752
 
 Pipe file descriptors can be identified in `/proc/<pid>/fd/`:
 
-```bash
+```shell
 ls -la /proc/<pid>/fd/ | grep pipe
 ```
 
@@ -91,7 +91,7 @@ When examining a Karafka process with `strace`, broker threads exhibit two disti
 
 Active broker threads cycle through:
 
-```
+```text
 poll([{fd=SOCKET, events=POLLIN}, {fd=PIPE, events=POLLIN}], 2, 1000)
 read(PIPE, "\1", 1024)
 sendmsg(SOCKET, ..., MSG_DONTWAIT|MSG_NOSIGNAL)
@@ -102,7 +102,7 @@ They `poll()` on both a TCP socket (for Kafka protocol) and the wakeup pipe, wit
 
 Idle broker threads that are connected to brokers not currently serving the consumer's partitions spend their time in condition variable waits:
 
-```
+```text
 futex(ADDR, FUTEX_WAIT_BITSET_PRIVATE|FUTEX_CLOCK_REALTIME, 0, {tv_sec=...}, ...)
 ```
 
@@ -134,7 +134,7 @@ This cleanup is synchronous and thorough. After `close` returns, all native thre
 
 To estimate the native resource footprint of a Karafka process:
 
-```
+```text
 total_handles = subscription_groups + producers + admin_clients
 
 threads_per_handle = 2 + N  (where N = number of Kafka brokers)
@@ -147,7 +147,7 @@ total_pipe_fds = total_handles × (threads_per_handle - 1) × 2
 
 For a Karafka process with 50 subscription groups, 1 producer, and a 10-broker Kafka cluster:
 
-```
+```text
 handles = 50 + 1 = 51
 threads_per_handle = 2 + 10 = 12
 native_threads = 51 × 12 = 612
@@ -160,7 +160,7 @@ Plus Ruby's own threads (main thread, GC thread, etc.), the total thread count w
 
 ### Counting Threads
 
-```bash
+```shell
 # Total thread count
 ls /proc/<pid>/task/ | wc -l
 
@@ -172,7 +172,7 @@ done | sort -t: -k2 | uniq -c -f1 | sort -rn
 
 ### Counting Pipe FDs
 
-```bash
+```shell
 # Total pipe FDs
 ls -la /proc/<pid>/fd/ | grep -c pipe
 
