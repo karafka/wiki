@@ -71,7 +71,7 @@ This matches what KIP-932 was designed around: elastic scaling by adding consume
 Each share consumer instance owns its thread for the lifetime of the subscription group. librdkafka consumer instances have state that's expensive to set up and tear down; long-lived threads with dedicated consumers is the simplest and cheapest mapping.
 
 - N threads = N `KafkaShareConsumer` instances
-- Ruby's GIL is not a concern since work is I/O-bound
+- Ruby GIL impact depends on workload; threading primarily helps when processing is I/O-bound
 - Shared process resources (DB pools, logging, instrumentation) across threads
 
 ### librdkafka Is Thread-Safe
@@ -313,7 +313,7 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 | Backpressure | Pause partitions when saturated | Don't poll when workers are busy (tight loop handles this) |
 | Retry with backoff | Pause + seek | RELEASE, or delay structure |
 | Long-running job | Pause partition for heartbeats | RENEW the lease |
-| Manual pause | `consumer.pause` | Stop polling (consumer-wide) |
+| Manual pause | `consumer.pause` | Stop polling (consumer-wide, no `pause` API) |
 | Throttling | Per-partition throttling | `poll_interval` on the share group |
 
 ### No Per-Partition Pause, No Per-Record Pause
@@ -599,7 +599,7 @@ end
 
 - `mark_accepted(message)` — ACCEPT
 - `mark_released(message)` — RELEASE (broker-decided redelivery timing)
-- `mark_released(message, delay: N)` — RELEASE after N seconds (framework handles RENEW)
+- `mark_released(message, delay: N)` — RELEASE after N milliseconds (framework handles RENEW)
 - `mark_rejected(message)` — REJECT (poison, archives immediately)
 - `extend_lock!(message)` — RENEW (for long-running processing)
 
