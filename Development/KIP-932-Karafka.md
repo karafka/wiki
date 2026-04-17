@@ -159,7 +159,7 @@ Broker's lock expiry (30s default) redelivers them to another consumer. No custo
 ### Four Patterns for Different Retry Semantics
 
 | Goal | Pattern |
-|---|---|
+| --- | --- |
 | Retry with broker-decided timing | Plain RELEASE |
 | Retry with precise delay, stays on this worker | RENEW + in-worker sleep + retry |
 | Retry with precise delay, goes back to group | RENEW + delay structure + RELEASE |
@@ -209,7 +209,7 @@ A single poll may return records from multiple partitions. Users may want differ
 A first-class object per topic that decides how to split a poll result into jobs:
 
 | Builder | Behavior |
-|---|---|
+| --- | --- |
 | `PerMessage` (default) | N records, N jobs, one per record |
 | `PerBatch` | N records, 1 job (or chunked by `max_messages_per_job`) |
 | `PerPartition` | Records grouped by partition within the poll |
@@ -309,7 +309,7 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 ### What Replaces Each Use Case
 
 | Use case | Consumer group | Share group |
-|---|---|---|
+| --- | --- | --- |
 | Backpressure | Pause partitions when saturated | Don't poll when workers are busy (tight loop handles this) |
 | Retry with backoff | Pause + seek | RELEASE, or delay structure |
 | Long-running job | Pause partition for heartbeats | RENEW the lease |
@@ -328,7 +328,7 @@ Document the "not supported" list clearly so users don't try to port partition-p
 ## Feature Matrix by Mode
 
 | Feature | Consumer Group | Share Group | Notes |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `consumer` | Yes | Yes | shared |
 | `deserializers` | Yes | Yes | shared |
 | `kafka` (librdkafka opts) | Yes | Yes | some keys are mode-specific |
@@ -492,9 +492,9 @@ Karafka::
 ### Components Needing Refactor (Not Full Split)
 
 - **Assignment tracker** — split into:
-  - Shared `SubscriptionTracker` (topic-level subscription info)
-  - CG-only partition-assignment tracker (stays under ConsumerGroups)
-  - New `LeaseTracker` for SG (record-level state)
+    - Shared `SubscriptionTracker` (topic-level subscription info)
+    - CG-only partition-assignment tracker (stays under ConsumerGroups)
+    - New `LeaseTracker` for SG (record-level state)
 
 ### New Components for Share Groups
 
@@ -684,42 +684,42 @@ end
 
 ### Phase 1: Fake-Broker Foundation
 
-7. **Public API spec for SG consumers** — RFC doc, no code yet. Drives component requirements.
-8. **In-memory fake share-consumer** — pure-Ruby stub of poll/acquire/ack/release/renew/lock-expiry behavior.
-9. **LeaseTracker implementation** — record-indexed state, populated by poll/ack/renew.
-10. **Minimal listener loop** — capacity-gated (via worker pool), happy path, explicit ack only, one topic per consumer.
-11. **Consumer base class extensions** — `mark_accepted`, `mark_released`, `mark_rejected`, `extend_lock!`.
-12. **Shutdown path** — graceful drain, flush acks, close.
-13. **Instrumentation** — SG events alongside CG, separate names where semantics differ.
+1. **Public API spec for SG consumers** — RFC doc, no code yet. Drives component requirements.
+2. **In-memory fake share-consumer** — pure-Ruby stub of poll/acquire/ack/release/renew/lock-expiry behavior.
+3. **LeaseTracker implementation** — record-indexed state, populated by poll/ack/renew.
+4. **Minimal listener loop** — capacity-gated (via worker pool), happy path, explicit ack only, one topic per consumer.
+5. **Consumer base class extensions** — `mark_accepted`, `mark_released`, `mark_rejected`, `extend_lock!`.
+6. **Shutdown path** — graceful drain, flush acks, close.
+7. **Instrumentation** — SG events alongside CG, separate names where semantics differ.
 
 ### Phase 2: Feature Development (Against Fake Broker)
 
-14. **First preview release** — labeled experimental, opt-in, loud "API will change" labeling.
-15. **Per-record error handling with RELEASE** — foundation for retry features.
-16. **Delayed-release structure** — `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
-17. **Long-running jobs equivalent** — `extend_lock!` exposed, auto-renew heuristics where appropriate.
-18. **Share-group DLQ** — client-side REJECT + produce implementation.
-19. **Share-group strategies matrix** — analog of CG 5-flag matrix.
-20. **Admin API extensions** — describe SG, list SGs, reset SPSO, alter SG config.
+1. **First preview release** — labeled experimental, opt-in, loud "API will change" labeling.
+2. **Per-record error handling with RELEASE** — foundation for retry features.
+3. **Delayed-release structure** — `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
+4. **Long-running jobs equivalent** — `extend_lock!` exposed, auto-renew heuristics where appropriate.
+5. **Share-group DLQ** — client-side REJECT + produce implementation.
+6. **Share-group strategies matrix** — analog of CG 5-flag matrix.
+7. **Admin API extensions** — describe SG, list SGs, reset SPSO, alter SG config.
 
 ### Phase 3: librdkafka Integration
 
-21. **Swap fake broker for librdkafka** — interface-first design means this is an adapter swap.
-22. **Real-cluster testing** — rebalance, failover, lock expiry under load, network partitions, tiered storage.
-23. **Config layer completion** — all `share.*` / `group.share.*` configs mapped with job-queue defaults.
-24. **Performance profiling and tuning** — ack dispatch, lease tracker lookups, delay queue ordering.
+1. **Swap fake broker for librdkafka** — interface-first design means this is an adapter swap.
+2. **Real-cluster testing** — rebalance, failover, lock expiry under load, network partitions, tiered storage.
+3. **Config layer completion** — all `share.*` / `group.share.*` configs mapped with job-queue defaults.
+4. **Performance profiling and tuning** — ack dispatch, lease tracker lookups, delay queue ordering.
 
 ### Phase 4: Ecosystem
 
-25. **Karafka Web UI integration** — parallel SG dashboards (members, leases, delivery count distributions, archived records, SPSO progress).
-26. **karafka-testing integration** — matchers (`to accept(m)`, `to release(m)`), packaged fake broker.
-27. **Migration tooling and documentation** — guides, reference implementations, capacity-planning updates.
+1. **Karafka Web UI integration** — parallel SG dashboards (members, leases, delivery count distributions, archived records, SPSO progress).
+2. **karafka-testing integration** — matchers (`to accept(m)`, `to release(m)`), packaged fake broker.
+3. **Migration tooling and documentation** — guides, reference implementations, capacity-planning updates.
 
 ### Phase 5: Maturation
 
-28. **Preview to GA promotion** — after several releases of production stability.
-29. **Pro features reconsidered** — scheduled messages, iterators: which get SG analogs, which stay CG-only.
-30. **Consolidation / deprecation decisions** — lessons learned captured separately.
+1. **Preview to GA promotion** — after several releases of production stability.
+2. **Pro features reconsidered** — scheduled messages, iterators: which get SG analogs, which stay CG-only.
+3. **Consolidation / deprecation decisions** — lessons learned captured separately.
 
 ## Release Pacing
 
