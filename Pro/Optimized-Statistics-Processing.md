@@ -60,7 +60,7 @@ The charts below show how overhead scales from 100 to 5,000 total partitions. In
 </p>
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/memory-drop.png" alt="allocations count drop after enabling Pro optimized statistics processing" style="max-width: 720px" />
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/memory-drop.png" alt="allocations count drop after enabling Pro optimized statistics processing" />
   <br/>
   <small>Allocations count drop observed after enabling Pro optimized statistics processing in a high-partition environment.</small>
 </p>
