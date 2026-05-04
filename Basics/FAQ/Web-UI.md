@@ -21,6 +21,7 @@
 1. [What is the serialization format for Karafka Web UI internal topics?](#what-is-the-serialization-format-for-karafka-web-ui-internal-topics)
 1. [What is the expected message throughput for Karafka Web UI internal topics?](#what-is-the-expected-message-throughput-for-karafka-web-ui-internal-topics)
 1. [What Kafka ACLs are required for the Karafka Web UI to work?](#what-kafka-acls-are-required-for-the-karafka-web-ui-to-work)
+1. [How can I check if a specific message was processed using the Karafka Web UI?](#how-can-i-check-if-a-specific-message-was-processed-using-the-karafka-web-ui)
 
 ---
 
@@ -295,3 +296,23 @@ All detailed throughput rates, message volumes, and operational cost breakdowns 
 When deploying Karafka Web UI in a Kafka cluster with explicit ACLs, you need to grant permissions for both the Web UI topics (`karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics`, `karafka_consumers_commands`, and `karafka_errors`) and the consumer groups (`karafka_admin` and `karafka_web`).
 
 For detailed information about required permissions and configuration options, see the [Kafka ACL Requirements](Web-UI-Getting-Started#kafka-acl-requirements) section in the Web UI documentation.
+
+## How can I check if a specific message was processed using the Karafka Web UI?
+
+The Karafka Web UI does not provide a direct per-message processing status indicator, but you can determine whether a message has been processed by checking the committed offset for the relevant partition.
+
+The Karafka Web UI displays the committed offset position for each partition of every consumer group. Since Kafka processes messages sequentially within a partition and Karafka commits offsets after successful processing, if the committed offset is ahead of (greater than) the offset of the message you are interested in, that message has necessarily been processed.
+
+To check if a specific message was processed:
+
+1. **Identify the partition and offset** of the message you are interested in. If you produced the message using WaterDrop, you can capture the delivery report, which includes the partition and offset information.
+1. **Navigate to the consumer group** in the Web UI and locate the relevant topic and partition.
+1. **Compare the committed offset** with your message's offset. If the committed offset is equal to or greater than your message's offset, the message has been processed. If the committed offset is behind your message's offset, it means the consumer has not yet reached that message.
+
+You can also look at the lag value for the partition, which represents the difference between the latest offset in the partition (high watermark) and the last committed offset. A lag of zero means all messages in that partition have been processed and committed.
+
+**Important Considerations**
+
+- **Committed offset does not always equal processed**: By default, Karafka commits offsets after successful processing. However, if your application uses manual offset management or has custom commit strategies, a committed offset may not perfectly reflect processing status.
+- **Lag is per-partition**: Kafka topics can have multiple partitions. Ensure you are checking the lag for the correct partition where your message resides.
+- **Lag updates are not instant**: The Web UI refreshes its data periodically (every few seconds), so there may be a brief delay before the latest committed offset is reflected in the UI.
