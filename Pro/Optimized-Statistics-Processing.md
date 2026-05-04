@@ -59,6 +59,12 @@ The charts below show how overhead scales from 100 to 5,000 total partitions. In
   <small>RSS memory growth over 30 seconds reaches ~91 MB at 5,000 partitions without Pro. With Pro, growth stays under ~9 MB.</small>
 </p>
 
+<p align="center">
+  <img src="https://karafka.io/assets/misc/charts/optimized_statistics_processing/memory-drop.png" alt="allocations count drop after enabling Pro optimized statistics processing" style="max-width: 720px" />
+  <br/>
+  <small>Allocations count drop observed after enabling Pro optimized statistics processing in a high-partition environment.</small>
+</p>
+
 ## Who Benefits
 
 This optimization is most impactful for:
