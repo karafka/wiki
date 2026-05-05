@@ -129,6 +129,126 @@ PhusionPassenger.on_event(:stopping_worker_process) do
 end
 ```
 
+## Long-Running Processing in Embedded Mode
+
+When using Karafka in embedded mode, long-running message processing can conflict with the host process shutdown behavior. Because `Karafka::Embedded.stop` is **blocking** (it waits for all current work to finish), a slow consumer can prevent the host process from shutting down in time. For example, when embedded in Puma, if your consumer takes longer than Puma's `worker_timeout`, the Puma master will send `SIGKILL` to the worker — forcefully terminating it without allowing cleanup.
+
+### The Problem
+
+Consider a consumer that processes a single Kafka message containing a reference to a large file (e.g., a Parquet log drop with hundreds of thousands of records). Processing such a message involves downloading the file, parsing it, and dispatching many derived events back to Kafka. This can easily exceed the host process shutdown timeout:
+
+1. Puma master initiates worker shutdown.
+2. `before_worker_shutdown` calls `Karafka::Embedded.stop`.
+3. `Embedded.stop` blocks, waiting for the consumer's `#consume` to finish.
+4. Consumer is still processing (e.g., 200+ seconds of work remaining).
+5. Puma's `worker_timeout` expires and master sends `SIGKILL`.
+
+This results in lost work, potential resource leaks, and offsets that may or may not have been committed depending on timing.
+
+### Solution: Chunked Processing with Early Exit
+
+The recommended approach is to break your processing into chunks and check `Karafka::App.stopping?` between each chunk. When the application begins shutting down, your consumer exits early **without** committing the offset, so the message will be reprocessed by the next instance.
+
+!!! note "Download and Parse Phase"
+
+    The `stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well — for example, reading the file in batches rather than loading it entirely into memory before dispatching.
+
+This pattern requires `manual_offset_management` enabled on the topic so that offsets are only committed when you explicitly call `mark_as_consumed`, not automatically when `#consume` returns:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :log_drops do
+      consumer LogDropsConsumer
+      manual_offset_management true
+    end
+  end
+end
+```
+
+The consumer processes each message individually. This example assumes `max_messages` is set to `1` (or that each message is independent). If your topic delivers multiple messages per batch, iterate over all of them:
+
+```ruby
+def consume
+  messages.each do |message|
+    return if Karafka::App.stopping?
+
+    logs = download_and_parse(message.payload[:file_url])
+
+    logs.each_slice(1_000) do |slice|
+      # Exit early if the application is shutting down.
+      # The offset will not be committed, so this message
+      # will be picked up again by the next running instance.
+      return if Karafka::App.stopping?
+
+      dispatch_to_kafka(slice)
+    end
+
+    # Only mark as consumed after ALL chunks for this message have been dispatched
+    mark_as_consumed(message)
+  end
+end
+
+private
+
+def dispatch_to_kafka(slice)
+  kafka_messages = slice.map do |record|
+    { topic: 'derived_events', payload: record.to_json, key: record[:id] }
+  end
+
+  Karafka.producer.produce_many_sync(kafka_messages)
+end
+```
+
+This pattern ensures:
+
+- **Graceful shutdown**: Processing stops quickly when the host process needs to shut down.
+- **No data loss**: Uncommitted offsets mean the message will be reprocessed.
+- **Idempotent reprocessing**: Use deduplication (e.g., DynamoDB, Redis) to track which chunks have already been dispatched, allowing safe retries without duplicates.
+
+### Timeout Alignment
+
+When running Karafka in embedded mode with long-running consumers, align your timeouts:
+
+| Setting | Recommendation |
+| --- | --- |
+| Puma `worker_timeout` | Must exceed Karafka's `shutdown_timeout` |
+| Karafka `shutdown_timeout` | Must exceed the time for the longest chunk to complete (not the entire job) |
+| Chunk size | Small enough that a single chunk completes well within `shutdown_timeout` |
+
+For example, if each chunk of 1,000 records takes ~5 seconds to process:
+
+```ruby
+# config/puma.rb
+workers 2
+worker_timeout 60
+
+before_worker_boot do
+  ::Karafka::Embedded.start
+end
+
+before_worker_shutdown do
+  ::Karafka::Embedded.stop
+end
+```
+
+```ruby
+# karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    config.shutdown_timeout = 30_000 # 30 seconds — enough for one chunk + cleanup
+  end
+end
+```
+
+!!! tip "Combine with Long-Running Jobs"
+
+    If your processing time may still exceed `max.poll.interval.ms` even with chunking, consider enabling the [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature. It pauses the partition during processing so that polling continues independently, preventing consumer group rebalances.
+
+!!! warning "Manual Offset Management Required"
+
+    For the early-exit pattern to work correctly, you **must** enable `manual_offset_management true` on the topic (as shown in the routing example above). Without it, Karafka will automatically commit the offset of the last message in the batch when `#consume` returns — even via an early `return` — which would skip reprocessing on the next startup. See [Manual Offset Management](Consumer-Groups-Offset-management#manual-offset-management) for details.
+
 ## Limitations
 
 ### Long-living Processes Requirement
