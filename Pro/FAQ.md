@@ -218,6 +218,8 @@ Please double-check your credentials and correct them.
 
 You can find it in the email you received from us when you requested the Pro license via our gems UI.
 
+To access your license credentials page, you will need to provide your `karafka-license` gem version. This is the version string from your `Gemfile` (e.g., `1.xxxxxxxxxxx`). You can find it next to the `karafka-license` gem definition in your `Gemfile`.
+
 ## Do you require any personal information, financial data, confidential/sensitive data, government data, etc.?
 
 No. We only collect enough customer information to fill out a standard invoice for billing purposes, and customer information is never shared or sold to anyone.
