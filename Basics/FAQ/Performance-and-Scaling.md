@@ -26,6 +26,7 @@
 1. [What is the optimal strategy for scaling in Karafka to handle high consumer lag?](#what-is-the-optimal-strategy-for-scaling-in-karafka-to-handle-high-consumer-lag)
 1. [How does Karafka behave under heavy lag, and what should be considered in configuration?](#how-does-karafka-behave-under-heavy-lag-and-what-should-be-considered-in-configuration)
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
+1. [Should I use SolidQueue with ActiveJob alongside Karafka, or can Karafka handle all job-related tasks?](#should-i-use-solidqueue-with-activejob-alongside-karafka-or-can-karafka-handle-all-job-related-tasks)
 
 ---
 
@@ -290,3 +291,21 @@ Set your multiplexing `max` to be less than your partition count, allowing room 
 **Increase partition count:**
 
 If you need both high multiplexing and multiple processes, consider increasing your topic's partition count.
+
+## Should I use SolidQueue with ActiveJob alongside Karafka, or can Karafka handle all job-related tasks?
+
+If your current setup is working without bottlenecks, running a dual infrastructure (SolidQueue + Karafka) adds operational complexity with limited benefit. Maintaining two separate job processing systems means two sets of monitoring, deployment concerns, and failure modes.
+
+However, there are practical reasons why some teams keep a traditional job queue alongside Karafka:
+
+**Kafka's scaling model differs from traditional job queues.** In standard Kafka consumption, parallelism is bounded by the number of topic partitions. Each partition can only be consumed by one consumer within a consumer group at a time. This means you cannot simply spin up more workers to process a backlog faster the way you would with SolidQueue or Sidekiq. You must plan your partition count in advance to match your expected parallelism needs.
+
+Karafka provides several mechanisms to work within and extend these constraints:
+
+- **[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)** allow you to parallelize work within a single partition using multiple threads, effectively bypassing the one-consumer-per-partition limitation for suitable workloads.
+- **[Multiplexing](Pro-Multiplexing)** enables a single process to maintain multiple connections to Kafka, increasing throughput without additional processes.
+- **Scaling processes** up to your partition count provides horizontal scaling, with each process handling its assigned partitions independently.
+
+**Kafka Share Groups (KIP-932) support is under active development in Karafka.** Share Groups will allow multiple consumers to process messages from the same partition concurrently without strict ordering guarantees, bringing Kafka's scaling model much closer to traditional job queue semantics. Once available, this will significantly reduce the need for a separate job queue system for workloads where ordering is not critical.
+
+**Recommendation:** If you are not experiencing scaling bottlenecks with Karafka today, avoid introducing a second job processing system. The added infrastructure complexity rarely justifies the benefit. With Virtual Partitions already available and Share Groups on the horizon, Karafka's scaling capabilities continue to close the gap with traditional queue-based systems for job processing use cases.
