@@ -149,23 +149,44 @@ This results in lost work, potential resource leaks, and offsets that may or may
 
 The recommended approach is to break your processing into chunks and check `Karafka::App.stopping?` between each chunk. When the application begins shutting down, your consumer exits early **without** committing the offset, so the message will be reprocessed by the next instance.
 
+!!! note "Download and Parse Phase"
+
+    The `stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well — for example, reading the file in batches rather than loading it entirely into memory before dispatching.
+
+This pattern requires `manual_offset_management` enabled on the topic so that offsets are only committed when you explicitly call `mark_as_consumed`, not automatically when `#consume` returns:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :log_drops do
+      consumer LogDropsConsumer
+      manual_offset_management true
+    end
+  end
+end
+```
+
+The consumer processes each message individually. This example assumes `max_messages` is set to `1` (or that each message is independent). If your topic delivers multiple messages per batch, iterate over all of them:
+
 ```ruby
 def consume
-  message = messages.first
-
-  logs = download_and_parse(message.payload[:file_url])
-
-  logs.each_slice(1_000) do |slice|
-    # Exit early if the application is shutting down.
-    # The offset will not be committed, so this message
-    # will be picked up again by the next running instance.
+  messages.each do |message|
     return if Karafka::App.stopping?
 
-    dispatch_to_kafka(slice)
-  end
+    logs = download_and_parse(message.payload[:file_url])
 
-  # Only mark as consumed after ALL chunks have been processed
-  mark_as_consumed(message)
+    logs.each_slice(1_000) do |slice|
+      # Exit early if the application is shutting down.
+      # The offset will not be committed, so this message
+      # will be picked up again by the next running instance.
+      return if Karafka::App.stopping?
+
+      dispatch_to_kafka(slice)
+    end
+
+    # Only mark as consumed after ALL chunks for this message have been dispatched
+    mark_as_consumed(message)
+  end
 end
 
 private
@@ -226,7 +247,7 @@ end
 
 !!! warning "Manual Offset Management Required"
 
-    For the early-exit pattern to work correctly, you **must not** rely on automatic offset commits. Use `mark_as_consumed` explicitly only after all processing is complete. Otherwise, an automatic commit during shutdown could advance the offset before all chunks are dispatched.
+    For the early-exit pattern to work correctly, you **must** enable `manual_offset_management true` on the topic (as shown in the routing example above). Without it, Karafka will automatically commit the offset of the last message in the batch when `#consume` returns — even via an early `return` — which would skip reprocessing on the next startup. See [Manual Offset Management](Consumer-Groups-Offset-management#manual-offset-management) for details.
 
 ## Limitations
 
