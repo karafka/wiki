@@ -187,7 +187,9 @@ Licenses are **not** transferrable to another company. It is strongly recommende
 
 ## Do I have to share the credentials with all of my developers?
 
-In general, **yes**. The credentials are required to download the gems and your developers will need the gems to use the commercial features.
+Not necessarily. You can create up to 5 additional credential pairs from your license page, each with its own label (e.g. "development", "ci"). This allows you to issue separate credentials for different teams or environments without sharing a single set. Each additional credential can be independently rotated or removed.
+
+If you prefer not to use multiple credentials, sharing the primary credentials with your developers also remains a valid approach.
 
 ## Can I get a refund?
 
