@@ -29,6 +29,12 @@ To activate Karafka Pro, you need to do three things:
 
     An Enterprise license is required if you are looking into hosting the license key offline within the app or via a private registry. This mode of operation allows you to use Karafka Pro without relying on our gem server. An Enterprise Agreement will grant you access to the license gem sources and installation instructions, ensuring you can proceed smoothly with your preferred setup.
 
+## Additional Credentials
+
+You can create up to 5 additional credential pairs from your license page for different environments or teams (e.g. development, CI). Each additional credential provides its own username and password that can be used in place of the primary credential in your `Gemfile`. Additional credentials can be individually rotated or removed without affecting other credentials.
+
+To manage additional credentials, visit your license credentials page and use the "Add credential" form.
+
 ## License Gem Integrity Verification
 
 !!! info "Checksum Verification in Enterprise Mode Not Needed"
