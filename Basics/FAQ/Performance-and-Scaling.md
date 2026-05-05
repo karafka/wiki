@@ -303,7 +303,7 @@ However, there are practical reasons why some teams keep a traditional job queue
 Karafka provides several mechanisms to work within and extend these constraints:
 
 - **[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)** allow you to parallelize work within a single partition using multiple threads, effectively bypassing the one-consumer-per-partition limitation for suitable workloads.
-- **[Multiplexing](Pro-Multiplexing)** enables a single process to maintain multiple connections to Kafka, increasing throughput without additional processes.
+- **[Multiplexing](Pro-Consumer-Groups-Multiplexing)** enables a single process to maintain multiple connections to Kafka, increasing throughput without additional processes.
 - **Scaling processes** up to your partition count provides horizontal scaling, with each process handling its assigned partitions independently.
 
 **Kafka Share Groups (KIP-932) support is under active development in Karafka.** Share Groups will allow multiple consumers to process messages from the same partition concurrently without strict ordering guarantees, bringing Kafka's scaling model much closer to traditional job queue semantics. Once available, this will significantly reduce the need for a separate job queue system for workloads where ordering is not critical.
