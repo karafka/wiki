@@ -1,10 +1,10 @@
 Karafka allows you to manage your topics in three ways:
 
-- Using the built-in [Declarative Topics](Infrastructure-Declarative-Topics) routing + CLI functionality (recommended)
+- Using the built-in [Declarative Topics](Infrastructure-Declarative-Topics) standalone DSL + CLI functionality (recommended)
 - Directly via the [Admin API](Infrastructure-Admin-API)
 - From the Pro Web UI via the [Topics Management feature](Pro-Web-UI-Topics-Management)
 
-Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them in the routing and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
+Karafka considers your topics setup (retention, partitions, etc.) as part of your business logic. You can describe them using the standalone declarative DSL and make Karafka ensure their consistency across all the environments using the appropriate CLI commands. Thanks to that, you can make sure that everything is described as code.
 
 !!! tip "Multi-Cluster Support"
 
@@ -23,8 +23,6 @@ Keeping Kafka topics configuration as code has several benefits:
 - Documentation: Code is self-documenting, meaning anyone can look at the configuration and understand what is happening. This can make it easier for new team members to get up to speed and help troubleshoot issues.
 
 Overall, keeping Kafka topics settings as code can make it easier to manage, automate, and collaborate on Kafka topics, saving time and reducing the risk of errors.
-
-Karafka [routing](Consumer-Groups-Routing) allows you to do that via per topic `#config` method that you can use to describe your Kafka topic configuration.
 
 This configuration is used by a set of Karafka [CLI](Infrastructure-CLI) commands you can invoke to operate on your application's topics.
 
@@ -81,7 +79,170 @@ The below example illustrates the usage of the `migrate` command to align the nu
 
 ## Defining Topic Configuration
 
-All the configuration for a given topic needs to be defined using the topic scope `#config` method.
+Topic declarations are defined using the standalone `declaratives.draw` DSL, which is independent of routing. This means you can declare and manage any Kafka topic, including topics that your application does not consume from. This separation makes Karafka a powerful tool for managing your entire Kafka topic infrastructure as code, not just the topics tied to your consumers.
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    topic :a do
+      partitions 6
+      replication_factor 3
+      config(
+        'retention.ms': 86_400_000, # 1 day in ms
+        'cleanup.policy': 'delete'
+      )
+    end
+
+    topic :b do
+      partitions 2
+      replication_factor 3
+      # The rest will be according to the cluster defaults
+    end
+  end
+end
+```
+
+If not defined, the default configuration for a topic is:
+
+- `partitions`: `1`
+- `replication_factor`: `1`
+
+### Managing Topics You Do Not Consume
+
+Because declarative topics are independent from routing, you can use them to manage topics that belong to other applications or services. This is useful in organizations where a single team or application is responsible for Kafka topic infrastructure across multiple services:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    # Topic consumed by this application
+    topic :orders do
+      partitions 6
+      replication_factor 3
+    end
+
+    # Topic consumed by a different service entirely
+    topic :external_events do
+      partitions 10
+      replication_factor 3
+      config('retention.ms': 604_800_000)
+    end
+
+    # Topic used only for producing, not consumed by anyone here
+    topic :audit_log do
+      partitions 3
+      replication_factor 3
+      config('cleanup.policy': 'compact')
+    end
+  end
+
+  routes.draw do
+    topic :orders do
+      consumer OrdersConsumer
+    end
+    # No routing entry needed for :external_events or :audit_log
+  end
+end
+```
+
+### Setting Defaults
+
+You can define default settings that apply to all topics declared within the block. Topic-specific values override the defaults:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    defaults do
+      partitions 5
+      replication_factor 3
+      config('retention.ms': 604_800_000)
+    end
+
+    topic :orders do
+      partitions 10 # Overrides default of 5
+    end
+
+    topic :events
+    # Gets all defaults: 5 partitions, 3 replication_factor, retention 604_800_000
+  end
+end
+```
+
+### Multiple Draw Blocks
+
+You can call `declaratives.draw` multiple times. Each call is additive, accumulating topic declarations:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    topic :orders do
+      partitions 6
+    end
+  end
+
+  # Later, perhaps in an initializer or plugin
+  declaratives.draw do
+    topic :events do
+      partitions 10
+    end
+  end
+end
+```
+
+## Excluding Topics from the Topics Management
+
+If you want to manage only part of your topics using Karafka, you can set the `active` flag for a given topic to `false`:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    topic :a do
+      active false
+    end
+  end
+end
+```
+
+This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
+
+!!! note
+
+    Keep in mind that setting `active` to `false` in declarative topics is **not** equivalent to disabling the topic consumption using the routing `active` method.
+
+## Coexistence with Routing
+
+Declarative topics and routing are independent but share a single underlying repository. When a topic is declared in both places, the standalone `declaratives.draw` declaration takes precedence:
+
+```ruby
+class KarafkaApp < Karafka::App
+  # Standalone declaration wins
+  declaratives.draw do
+    topic :orders do
+      partitions 20
+      replication_factor 3
+    end
+  end
+
+  routes.draw do
+    topic :orders do
+      consumer OrdersConsumer
+      # This config is ignored because :orders was already declared above
+      config(partitions: 99)
+    end
+  end
+end
+
+# Karafka::App.declaratives.find_topic(:orders).partitions => 20
+```
+
+This means you can gradually migrate from the routing-based `config()` approach to the standalone DSL without breaking anything.
+
+## Legacy Routing-Based Configuration
+
+!!! warning "Deprecated"
+
+    Defining topic configuration via the routing `#config` method is deprecated. While still functional for backwards compatibility, all new topic declarations should use the standalone `declaratives.draw` DSL described above. The routing-based approach will be removed in a future major release.
+
+Previously, topic configuration was defined inline within routing blocks using the `#config` method:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -90,7 +251,7 @@ class KarafkaApp < Karafka::App
       config(
         partitions: 6,
         replication_factor: 3,
-        'retention.ms': 86_400_000, # 1 day in ms
+        'retention.ms': 86_400_000,
         'cleanup.policy': 'delete'
       )
 
@@ -101,7 +262,6 @@ class KarafkaApp < Karafka::App
       config(
         partitions: 2,
         replication_factor: 3
-        # The rest will be according to the cluster defaults
       )
 
       consumer ConsumerB
@@ -110,53 +270,33 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-If not invoked, the default config looks as followed:
+This approach still works and populates the same shared repository as the standalone DSL. However, the standalone DSL is preferred because it cleanly separates infrastructure concerns (topic configuration) from application concerns (consumer routing), and it allows managing topics that are not consumed by your application.
+
+To migrate, move your `config()` calls from routing into a `declaratives.draw` block and remove them from routing:
 
 ```ruby
-config(
-  partitions: 1,
-  replication_factor: 1
-)
-```
+# Before (legacy)
+routes.draw do
+  topic :orders do
+    config(partitions: 6, replication_factor: 3)
+    consumer OrdersConsumer
+  end
+end
 
-## Excluding Topics from the Topics Management
+# After (recommended)
+declaratives.draw do
+  topic :orders do
+    partitions 6
+    replication_factor 3
+  end
+end
 
-If you want to manage only part of your topics using Karafka, you can set the `active` flag for a given topic configuration to false.
-
-```ruby
-class KarafkaApp < Karafka::App
-  routes.draw do
-    topic :a do
-      config(active: false)
-    end
+routes.draw do
+  topic :orders do
+    consumer OrdersConsumer
   end
 end
 ```
-
-This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
-
-!!! note
-
-    Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
-
-You can use Karafka to manage topics that you do not consume from as well by defining their config and making them inactive at the same time:
-
-```ruby
-class KarafkaApp < Karafka::App
-  routes.draw do
-    topic :a do
-      config(
-        partitions: 2,
-        replication_factor: 3
-      )
-
-      active false
-    end
-  end
-end
-```
-
-Setting such as above will allow Karafka to manage the topic while instructing Karafka not to try to consume it. A configuration like this is helpful in a multi-app environment where you want Karafka to manage topics, but their consumption belongs to other applications.
 
 ## Production Usage
 
@@ -206,12 +346,12 @@ This will ensure the correct exit code is returned based on the operation's outc
 
 - Topics management is enabled by default but will not be used unless any CLI commands are invoked.
 - `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
-- If a topic is used by several consumer groups defined in one application, only the first `config` defined will be used.
+- If a topic is declared in both `declaratives.draw` and routing `config()`, the standalone declaration takes precedence.
 - Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one will be managed.
 - Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed. This means it is up to you to ensure that two topic CLI commands are not running in parallel during the deployments.
 - Topics commands are **not** transactional. It means that the state application may be partial in case of errors.
 - Topics commands **are** idempotent. Broken set of operations can be retried after fixes without worry.
-- Karafka will **never** alter any topics that are not defined in the routing.
+- Karafka will **never** alter any topics that are not defined in the declarations.
 - `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
 - `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.
 
