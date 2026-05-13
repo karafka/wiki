@@ -16,7 +16,7 @@
     - **Impact:** Medium
     - **Affected:** Karafka users running against clusters with high partition counts (thousands of partitions per topic)
 
-    On large Kafka clusters, the statistics mechanism emitted by the underlying client produced extensive payloads that caused excessive memory allocations on every statistics interval, along with noticeable RSS growth and GC pressure in long-running consumer and producer processes.
+    On large Kafka clusters, the statistics pipeline produced extensive payloads that caused excessive memory allocations on every statistics interval, along with noticeable RSS growth and GC pressure in long-running consumer and producer processes.
 
     **Symptoms:**
 
