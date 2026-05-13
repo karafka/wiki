@@ -10,6 +10,23 @@
 
 ## Incident History
 
+!!! success "[RESOLVED] April 2026 - Karafka Statistics Memory Bloat on Large Clusters"
+
+    - **Status:** Resolved
+    - **Impact:** Medium
+    - **Affected:** Karafka users running against clusters with high partition counts (thousands of partitions per topic)
+
+    On large Kafka clusters, the statistics pipeline produced extensive payloads that caused excessive memory allocations on every statistics interval, along with noticeable RSS growth and GC pressure in long-running consumer and producer processes.
+
+    **Symptoms:**
+
+    - Steadily growing RSS memory in consumer and producer processes on large clusters
+    - High CPU usage tied to statistics decoration and deserialization
+    - Frequent GC collections correlated with the `statistics.interval.ms` cadence
+    - Stats payloads in the megabytes range on long-running processes
+
+    **Resolution:** Karafka Pro now ships with [Optimized Statistics Processing](https://karafka.io/docs/Pro-Optimized-Statistics-Processing) that automatically reduces the size and processing cost of statistics so they scale with the actual workload of a given process rather than the size of the cluster. The optimization is transparent and requires no configuration changes.
+
 !!! success "[RESOLVED] March 2026 - Kafka Coordinator Recovery API"
 
     - **Status:** Resolved
