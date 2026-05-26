@@ -699,7 +699,7 @@ This response format allows for more granular monitoring and debugging while mai
 
     - `polling_ttl_exceeded: true` - the polling loop has not run within the configured `polling_ttl`
     - `consumption_ttl_exceeded: true` - a consumer has been processing a batch longer than `consuming_ttl`
-    - `unrecoverable: <error_code>` - a fatal, non-recoverable error (e.g. consumer group fencing) occurred
+    - `unrecoverable: false | "<error_code>"` - `false` when healthy; an rdkafka error code string (e.g. `"fenced"`) when a fatal, non-recoverable error has occurred
 
 #### Extending Liveness with `#healthy?`
 
