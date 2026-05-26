@@ -306,7 +306,7 @@ The `#read_partition_offsets` method queries partition offsets using the Kafka `
 
 | Feature | `read_watermark_offsets` | `read_partition_offsets` |
 | --- | --- | --- |
-| Transactional correctness (LSO) | No — always returns HWM | Yes — pass `isolation_level` for LSO |
+| Transactional correctness (LSO) | No - always returns HWM | Yes - pass `isolation_level` for LSO |
 | `:max_timestamp` spec | No | Yes |
 | Time-based offset lookup | No | Yes (ms timestamp as offset) |
 | `leader_epoch` in result | No | Yes |
@@ -351,7 +351,7 @@ Each result hash contains:
 results = Karafka::Admin.read_partition_offsets(
   'orders' => [
     { partition: 0, offset: :earliest },
-    { partition: 0, offset: :latest }  # not valid — each partition may appear at most once
+    { partition: 0, offset: :latest }  # not valid - each partition may appear at most once
   ],
   'payments' => [
     { partition: 0, offset: :latest },
@@ -368,7 +368,7 @@ results = Karafka::Admin.read_partition_offsets(
 
 `read_watermark_offsets` always returns the high-watermark (HWM), which includes messages from uncommitted or in-flight transactions. A `READ_COMMITTED` consumer never sees those messages, so lag calculated from the HWM is overstated on transactionally-produced topics.
 
-Pass `isolation_level: Rdkafka::Bindings::RD_KAFKA_ISOLATION_LEVEL_READ_COMMITTED` to get the **Last Stable Offset (LSO)** — the highest offset a `READ_COMMITTED` consumer would actually reach — for accurate lag figures:
+Pass `isolation_level: Rdkafka::Bindings::RD_KAFKA_ISOLATION_LEVEL_READ_COMMITTED` to get the **Last Stable Offset (LSO)** - the highest offset a `READ_COMMITTED` consumer would actually reach - for accurate lag figures:
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
