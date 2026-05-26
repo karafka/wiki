@@ -300,7 +300,7 @@ puts "High watermark offset: #{high}"
 
 ## Reading Partition Offsets
 
-The `#read_partition_offsets` method queries partition offsets using the Kafka `ListOffsets` admin API (`rd_kafka_ListOffsets`). It is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
+The `#read_partition_offsets` method is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
 
 ### When to Use `read_partition_offsets` vs `read_watermark_offsets`
 
