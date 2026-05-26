@@ -298,6 +298,114 @@ puts "Low watermark offset: #{low}"
 puts "High watermark offset: #{high}"
 ```
 
+## Reading Partition Offsets
+
+The `#read_partition_offsets` method queries partition offsets using the Kafka `ListOffsets` admin API (`rd_kafka_ListOffsets`). It is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
+
+### When to Use `read_partition_offsets` vs `read_watermark_offsets`
+
+| Feature | `read_watermark_offsets` | `read_partition_offsets` |
+| --- | --- | --- |
+| Transactional correctness (LSO) | No — always returns HWM | Yes — pass `isolation_level` for LSO |
+| `:max_timestamp` spec | No | Yes |
+| Time-based offset lookup | No | Yes (ms timestamp as offset) |
+| `leader_epoch` in result | No | Yes |
+| Multi-partition, multi-topic in one call | Partial | Yes |
+| Transport | Consumer connection | Admin client |
+
+For non-transactional topics, `:latest` here and the `read_watermark_offsets` high-watermark return the same value.
+
+### Basic Usage
+
+Pass a hash where keys are topic names and values are arrays of partition specs. Each spec must include `:partition` and `:offset`. The `:offset` can be `:earliest`, `:latest`, `:max_timestamp`, or an integer Unix timestamp **in milliseconds** (returns the first offset at or after that timestamp).
+
+```ruby
+results = Karafka::Admin.read_partition_offsets(
+  'events' => [
+    { partition: 0, offset: :earliest },
+    { partition: 1, offset: :latest }
+  ]
+)
+
+results.each do |r|
+  puts "#{r[:topic]}##{r[:partition]}: offset=#{r[:offset]}, leader_epoch=#{r[:leader_epoch]}"
+end
+
+# events#0: offset=0, leader_epoch=0
+# events#1: offset=100, leader_epoch=0
+```
+
+Each result hash contains:
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `:topic` | String | Topic name |
+| `:partition` | Integer | Partition number |
+| `:offset` | Integer | Resolved offset |
+| `:timestamp` | Integer | Message timestamp (`-1` when not applicable) |
+| `:leader_epoch` | Integer, nil | Partition leader epoch |
+
+### Multiple Topics in One Call
+
+```ruby
+results = Karafka::Admin.read_partition_offsets(
+  'orders' => [
+    { partition: 0, offset: :earliest },
+    { partition: 0, offset: :latest }  # not valid — each partition may appear at most once
+  ],
+  'payments' => [
+    { partition: 0, offset: :latest },
+    { partition: 1, offset: :latest }
+  ]
+)
+```
+
+!!! warning "Each Partition May Appear at Most Once Per Call"
+
+    A single `read_partition_offsets` call accepts each partition at most once. If you need both `:earliest` and `:latest` for the same partition, make two separate calls.
+
+### Accurate Lag on Transactional Topics (LSO)
+
+`read_watermark_offsets` always returns the high-watermark (HWM), which includes messages from uncommitted or in-flight transactions. A `READ_COMMITTED` consumer never sees those messages, so lag calculated from the HWM is overstated on transactionally-produced topics.
+
+Pass `isolation_level: Rdkafka::Bindings::RD_KAFKA_ISOLATION_LEVEL_READ_COMMITTED` to get the **Last Stable Offset (LSO)** — the highest offset a `READ_COMMITTED` consumer would actually reach — for accurate lag figures:
+
+```ruby
+results = Karafka::Admin.read_partition_offsets(
+  'events' => [{ partition: 0, offset: :latest }],
+  isolation_level: Rdkafka::Bindings::RD_KAFKA_ISOLATION_LEVEL_READ_COMMITTED
+)
+
+lso = results.first[:offset]
+puts "Last Stable Offset: #{lso}"
+```
+
+### Finding the Offset at a Point in Time
+
+Pass a Unix timestamp **in milliseconds** as the `:offset` value to find the first offset at or after that timestamp:
+
+```ruby
+one_hour_ago_ms = (Time.now.to_f * 1000 - 3_600_000).to_i
+
+results = Karafka::Admin.read_partition_offsets(
+  'events' => [{ partition: 0, offset: one_hour_ago_ms }]
+)
+
+puts "First offset from one hour ago: #{results.first[:offset]}"
+```
+
+### Finding the Offset of the Message with the Highest Timestamp
+
+Use `:max_timestamp` to retrieve the offset of the message with the highest timestamp in the partition. This is not available through `read_watermark_offsets`:
+
+```ruby
+results = Karafka::Admin.read_partition_offsets(
+  'events' => [{ partition: 0, offset: :max_timestamp }]
+)
+
+puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:timestamp]}"
+```
+
 ## Reading Lags and Offsets of a Consumer Group
 
 This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
