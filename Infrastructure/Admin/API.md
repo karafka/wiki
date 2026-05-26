@@ -302,20 +302,44 @@ puts "High watermark offset: #{high}"
 
 The `#read_partition_offsets` method is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
 
-### When to Use `read_partition_offsets` vs `read_watermark_offsets`
-
-| Feature | `read_watermark_offsets` | `read_partition_offsets` |
-| --- | --- | --- |
-| Transactional correctness (LSO) | No - always returns HWM | Yes - pass `isolation_level` for LSO |
-| `:max_timestamp` spec | No | Yes |
-| Time-based offset lookup | No | Yes (ms timestamp as offset) |
-| `leader_epoch` in result | No | Yes |
-| Multi-partition, multi-topic in one call | Partial | Yes |
-| Transport | Consumer connection | Admin client |
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th><code>read_watermark_offsets</code></th>
+      <th><code>read_partition_offsets</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Transactional correctness (LSO)</td>
+      <td>No - always returns HWM</td>
+      <td>Yes - pass <code>isolation_level</code> for LSO</td>
+    </tr>
+    <tr>
+      <td><code>:max_timestamp</code> spec</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Time-based offset lookup</td>
+      <td>No</td>
+      <td>Yes (ms timestamp as offset)</td>
+    </tr>
+    <tr>
+      <td><code>leader_epoch</code> in result</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Multi-partition, multi-topic in one call</td>
+      <td>Partial</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
 
 For non-transactional topics, `:latest` here and the `read_watermark_offsets` high-watermark return the same value.
-
-### Basic Usage
 
 Pass a hash where keys are topic names and values are arrays of partition specs. Each spec must include `:partition` and `:offset`. The `:offset` can be `:earliest`, `:latest`, `:max_timestamp`, or an integer Unix timestamp **in milliseconds** (returns the first offset at or after that timestamp).
 
@@ -337,28 +361,42 @@ end
 
 Each result hash contains:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| `:topic` | String | Topic name |
-| `:partition` | Integer | Partition number |
-| `:offset` | Integer | Resolved offset |
-| `:timestamp` | Integer | Message timestamp (`-1` when not applicable) |
-| `:leader_epoch` | Integer, nil | Partition leader epoch |
-
-### Multiple Topics in One Call
-
-```ruby
-results = Karafka::Admin.read_partition_offsets(
-  'orders' => [
-    { partition: 0, offset: :earliest },
-    { partition: 0, offset: :latest }  # not valid - each partition may appear at most once
-  ],
-  'payments' => [
-    { partition: 0, offset: :latest },
-    { partition: 1, offset: :latest }
-  ]
-)
-```
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:topic</code></td>
+      <td>String</td>
+      <td>Topic name</td>
+    </tr>
+    <tr>
+      <td><code>:partition</code></td>
+      <td>Integer</td>
+      <td>Partition number</td>
+    </tr>
+    <tr>
+      <td><code>:offset</code></td>
+      <td>Integer</td>
+      <td>Resolved offset</td>
+    </tr>
+    <tr>
+      <td><code>:timestamp</code></td>
+      <td>Integer</td>
+      <td>Message timestamp (<code>-1</code> when not applicable)</td>
+    </tr>
+    <tr>
+      <td><code>:leader_epoch</code></td>
+      <td>Integer, nil</td>
+      <td>Partition leader epoch</td>
+    </tr>
+  </tbody>
+</table>
 
 !!! warning "Each Partition May Appear at Most Once Per Call"
 
@@ -366,16 +404,7 @@ results = Karafka::Admin.read_partition_offsets(
 
 ### Accurate Lag on Transactional Topics (LSO)
 
-`read_watermark_offsets` always returns the high-watermark (HWM), which includes messages from uncommitted or in-flight transactions. A `READ_COMMITTED` consumer never sees those messages, so lag calculated from the HWM is overstated on transactionally-produced topics.
-
-Karafka exposes isolation level constants directly via `Karafka::Admin::IsolationLevels`:
-
-| Constant | Description |
-| --- | --- |
-| `Karafka::Admin::IsolationLevels::READ_UNCOMMITTED` | Default. Returns the high-watermark, including messages from uncommitted or in-flight transactions. |
-| `Karafka::Admin::IsolationLevels::READ_COMMITTED` | Returns the Last Stable Offset (LSO) - the highest offset a `READ_COMMITTED` consumer would actually see. |
-
-Pass `isolation_level: Karafka::Admin::IsolationLevels::READ_COMMITTED` to get the **Last Stable Offset (LSO)** for accurate lag figures on transactionally-produced topics:
+`read_watermark_offsets` always returns the high-watermark (HWM), which includes messages from uncommitted or in-flight transactions. A `READ_COMMITTED` consumer never sees those messages, so lag calculated from the HWM is overstated on transactionally-produced topics. Use `isolation_level: Karafka::Admin::IsolationLevels::READ_COMMITTED` to get the **Last Stable Offset (LSO)** instead:
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
@@ -403,7 +432,7 @@ puts "First offset from one hour ago: #{results.first[:offset]}"
 
 ### Finding the Offset of the Message with the Highest Timestamp
 
-Use `:max_timestamp` to retrieve the offset of the message with the highest timestamp in the partition. This is not available through `read_watermark_offsets`:
+Use `:max_timestamp` to retrieve the offset of the message with the highest timestamp in the partition:
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
