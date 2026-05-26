@@ -601,7 +601,7 @@ end
 There are many ways to define a liveness probe for a Kubernetes deployment, and the best approach depends on the application's specific requirements. We recommend using the HTTP liveness probe, as this is the most common type of liveness probe, which checks if the container is alive by sending an HTTP request to a specific endpoint. Karafka provides a base listener that starts a minimal HTTP server exposing basic health information about the running process using following HTTP codes:
 
 - `200` - Everything works as expected, with detailed JSON status information.
-- `500` - Karafka process is not behaving as expected and should be restarted.
+- `500` - Karafka process is not behaving as expected and should be restarted. The response body contains detailed JSON with specific failure reasons.
 
 Karafka Kubernetes liveness listener can be initialized with two important thresholds: `consuming_ttl` and `polling_ttl`. These thresholds are used to determine if Karafka or the user code consuming from Kafka hangs for an extended time.
 
@@ -686,6 +686,20 @@ The liveness listener returns detailed health information in JSON format:
 ```
 
 This response format allows for more granular monitoring and debugging while maintaining compatibility with existing Kubernetes liveness probe configurations that check for HTTP 2xx status codes.
+
+!!! tip "Inspecting Failure Details"
+
+    Kubernetes liveness probes only use the HTTP status code to determine pod health — the response body is **not** visible in Kubernetes pod events or logs. When a pod is marked unhealthy and you need to understand why, manually query the liveness endpoint from inside the pod:
+
+    ```bash
+    kubectl exec -it <pod-name> -- curl -s http://localhost:3000/
+    ```
+
+    The `errors` object in the JSON response reveals exactly which check failed:
+
+    - `polling_ttl_exceeded: true` - the polling loop has not run within the configured `polling_ttl`
+    - `consumption_ttl_exceeded: true` - a consumer has been processing a batch longer than `consuming_ttl`
+    - `unrecoverable: false | "<error_code>"` - `false` when healthy; an rdkafka error code string (e.g. `"fenced"`) when a fatal, non-recoverable error has occurred
 
 #### Extending Liveness with `#healthy?`
 
