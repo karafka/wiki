@@ -31,6 +31,7 @@
 | File Path | Description |
 |-----------|-------------|
 | `admin/acl_flow_spec.rb` | This integration spec illustrates the all the basic ACL flows. Detailed ACL API specs are in the unit RSpec specs. |
+| `admin/close_spec.rb` | Karafka::Admin#close is a no-op that exists to normalize the API surface so that callers can treat an admin instance like any other closeable resource. This spec verifies that: 1. close does not raise on a fresh instance 2. close does not raise after performing real operations 3. close can be called multiple times safely |
 | `admin/configs_flow_spec.rb` | This integration spec illustrates the all the basic Admin configs flows. Detailed Configs API specs are in the unit RSpec specs. |
 | `admin/consumer_group_operations_spec.rb` | Karafka should handle consumer group operations with active consumers correctly |
 | `admin/consumer_groups/delete_existing_spec.rb` | We should be able to remove consumer group and start from beginning using the Admin API |
