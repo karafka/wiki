@@ -61,6 +61,7 @@
 | `admin/read_lags_with_offsets/inactive_topics_lags_spec.rb` | When configured with inactive visible, we should get their lags. |
 | `admin/read_lags_with_offsets/multi_cg_setup_spec.rb` | A set of cases that can be easily tested together to save time |
 | `admin/read_lags_with_offsets/simple_cases_spec.rb` | A set of cases that can be easily tested together to save time |
+| `admin/read_partition_offsets_spec.rb` | This integration spec exercises the Admin#read_partition_offsets API for querying partition offsets without a consumer group, using the Kafka ListOffsets admin operation. |
 | `admin/read_topic/with_custom_deserializer_spec.rb` | When using read_topic with topic that is inactive, the deserializer resolution should work and properly defined deserializer should be used |
 | `admin/read_topic/with_default_for_non_routed_topic_spec.rb` | When using read_topic with a topic that is not part of the routing, it should use the defaults deserializers defined if they are present instead of the "total" framework defaults |
 | `admin/read_topic/with_defaults_but_overwritten_in_routes_spec.rb` | When having defaults but also having explicit definitions, defaults should not overwrite explicit for admin |
