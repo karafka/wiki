@@ -39,6 +39,7 @@
 | `admin/consumer_groups/seek_consumer_group/few_partitions_few_topics_spec.rb` | We should be able to move the offset to requested location per topic partition |
 | `admin/consumer_groups/seek_consumer_group/mixed_time_and_real_offsets_spec.rb` | We should be able to mix moving of the same topic data and use different type of location in between partitions. |
 | `admin/consumer_groups/seek_consumer_group/time_spec.rb` | We should be able to move the offset to where we want on one partition directly by the time reference instead of an offset |
+| `admin/consumer_groups/seek_consumer_group/time_total_future_multi_topic_spec.rb` | Seeking multiple topics to a future timestamp should move all partitions to the HWM. This exercises the batch list_offsets admin call that replaces the per-partition query_watermark_offsets fallback when offsets_for_times returns a negative offset. |
 | `admin/consumer_groups/seek_consumer_group/time_total_future_spec.rb` | We should be able to move the offset to where we want on one partition directly by the time reference instead of an offset |
 | `admin/consumer_groups/seek_consumer_group/time_total_past_spec.rb` | We should be able to move the offset way beyond in time and should just select first offset |
 | `admin/consumer_groups/seek_consumer_group/to_earliest_latest_par_partition_spec.rb` | We should be able to move the offset per partition using `:earliest` and `:latest` |
