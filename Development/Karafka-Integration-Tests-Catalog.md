@@ -39,6 +39,7 @@
 | `admin/consumer_groups/seek_consumer_group/few_partitions_few_topics_spec.rb` | We should be able to move the offset to requested location per topic partition |
 | `admin/consumer_groups/seek_consumer_group/mixed_time_and_real_offsets_spec.rb` | We should be able to mix moving of the same topic data and use different type of location in between partitions. |
 | `admin/consumer_groups/seek_consumer_group/time_spec.rb` | We should be able to move the offset to where we want on one partition directly by the time reference instead of an offset |
+| `admin/consumer_groups/seek_consumer_group/time_total_future_multi_topic_spec.rb` | Seeking multiple topics to a future timestamp should move all partitions to the HWM. This exercises the batch list_offsets admin call that replaces the per-partition query_watermark_offsets fallback when offsets_for_times returns a negative offset. |
 | `admin/consumer_groups/seek_consumer_group/time_total_future_spec.rb` | We should be able to move the offset to where we want on one partition directly by the time reference instead of an offset |
 | `admin/consumer_groups/seek_consumer_group/time_total_past_spec.rb` | We should be able to move the offset way beyond in time and should just select first offset |
 | `admin/consumer_groups/seek_consumer_group/to_earliest_latest_par_partition_spec.rb` | We should be able to move the offset per partition using `:earliest` and `:latest` |
@@ -61,6 +62,7 @@
 | `admin/read_lags_with_offsets/inactive_topics_lags_spec.rb` | When configured with inactive visible, we should get their lags. |
 | `admin/read_lags_with_offsets/multi_cg_setup_spec.rb` | A set of cases that can be easily tested together to save time |
 | `admin/read_lags_with_offsets/simple_cases_spec.rb` | A set of cases that can be easily tested together to save time |
+| `admin/read_partition_offsets_spec.rb` | This integration spec exercises the Admin#read_partition_offsets API for querying partition offsets without a consumer group, using the Kafka ListOffsets admin operation. |
 | `admin/read_topic/with_custom_deserializer_spec.rb` | When using read_topic with topic that is inactive, the deserializer resolution should work and properly defined deserializer should be used |
 | `admin/read_topic/with_default_for_non_routed_topic_spec.rb` | When using read_topic with a topic that is not part of the routing, it should use the defaults deserializers defined if they are present instead of the "total" framework defaults |
 | `admin/read_topic/with_defaults_but_overwritten_in_routes_spec.rb` | When having defaults but also having explicit definitions, defaults should not overwrite explicit for admin |
