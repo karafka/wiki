@@ -113,12 +113,17 @@ WaterDrop default timeout values differ from librdkafka:
 
 WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) than librdkafka to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 150 seconds, particularly during dual-broker outages.
 
+!!! note "Timeout Ordering Requirement"
+
+    Keep `message.timeout.ms` **greater than** `socket.timeout.ms`. librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)`. When `message.timeout.ms` is the smaller value, it becomes the ProduceRequest timeout - consuming the message's entire delivery budget with no time left for a retry. The MSK configuration above sets `socket.timeout.ms: 90_000` - ensure `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the detailed mechanism.
+
 **Recommended MSK configuration for standard producers:**
 
 ```ruby
 config.kafka = {
-  # Increase message timeout to handle MSK maintenance delays
-  # For transactional producers, also set transaction.timeout.ms (see below)
+  # Increase message timeout to handle MSK maintenance delays.
+  # Must remain above socket.timeout.ms (90_000 in the recommended config above).
+  # For transactional producers, also set transaction.timeout.ms (see below).
   'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
 }
 ```
@@ -164,6 +169,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 **Common causes of `msg_timed_out`:**
 
+- **Connection idle timeout** - Connections that are idle too long are closed by the broker (graceful TCP FIN) or silently dropped by network gear such as NLB, NAT gateways, or firewalls (no FIN delivered). On the silent path, a ProduceRequest stalls on the dead socket until its timeout expires. librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)` - when the message budget is the smaller value, the request consumes the entire budget with no headroom left for a retry. This is the most common cause when errors cluster at a fixed interval. See [Idle Connection Reaping](#idle-connection-reaping).
 - **Leader unavailable** - The partition leader is not available, either because leader election failed (no eligible replicas) or the leader broker is down
 - **Connection failures** - Network problems preventing connection to the partition leader
 - **Insufficient in-sync replicas** - The cluster cannot satisfy `min.insync.replicas` requirements (see [Not Enough Replicas](#not-enough-replicas))
@@ -171,7 +177,83 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 !!! warning "Increase Timeout Before Investigating Further"
 
-    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone, as it provides sufficient buffer for maintenance operations and temporary cluster instability.
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, increasing the budget alone is not sufficient - see [Idle Connection Reaping](#idle-connection-reaping).
+
+### Idle Connection Reaping
+
+Intermittent `msg_timed_out` errors on producers with bursty or low-frequency traffic, paired with disconnect log entries clustering at a fixed interval, are produced by connections going idle long enough to be closed by the broker or a network intermediary. Unlike most connection errors, these do not raise exceptions at the call site when using `produce_async` - they are only visible through the `error.occurred` notification channel.
+
+These two failure paths have distinct log signatures. The **network-gear path** is the one that pairs with `msg_timed_out`. Its defining symptom is a `request(s) timed out` transport-level disconnect:
+
+```text
+librdkafka.error: Local: Timed out (timed_out) ...
+  1 request(s) timed out: disconnect (average rtt 9ms) (after 643610ms in state UP)
+```
+
+Followed by a delivery failure:
+
+```text
+librdkafka.dispatch_error: Local: Message timed out (msg_timed_out)
+  topic: your.topic, partition: 0
+```
+
+The healthy `average rtt` confirms the network itself was fine while the connection was alive. The `timed_out` signature specifically means librdkafka had an outstanding ProduceRequest when the socket went silent - which only happens when the socket appeared live but was dead (no FIN or RST from the other side). The clustering of `(after Nms in state UP)` values near a fixed threshold distinguishes this from general network instability.
+
+The **broker-reaper path** (direct-ENI, no NLB in the path) produces a different log signature and does **not** pair with `msg_timed_out`:
+
+```text
+Receive failed: Disconnected (after 600Xms in state UP)
+```
+
+The broker sends a TCP FIN; librdkafka detects it promptly on the next read and reconnects. Because the broker only reaps after `connections.max.idle.ms` of genuine inactivity, there are no in-flight ProduceRequests at reap time - nothing to drop.
+
+!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+
+    When a ProduceRequest times out, the broker may have already written the message to the log before the client gave up waiting for the acknowledgment. The actual delivery status is **POSSIBLY_PERSISTED** - the message is unconfirmed, not guaranteed lost. For non-idempotent producers, this creates genuine ambiguity between data loss and duplication. Use idempotent or transactional producers when exactly-once delivery semantics are required.
+
+**Two paths to this failure**
+
+*Broker-side graceful close:* When the broker's `connections.max.idle.ms` fires (MSK default: 600 seconds), it sends a TCP FIN. librdkafka detects this promptly on its next read and logs `Receive failed: Disconnected`. Because the broker only reaps connections after genuine inactivity (any produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time. librdkafka reconnects, and the next produce uses a fresh connection - no drops.
+
+*Network gear silent drop:* If your connectivity goes through an NLB, NAT gateway, or firewall (common when using PrivateLink for cross-account or cross-VPC access), these intermediaries maintain their own idle session tables and silently drop TCP state after their idle timeout - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live. An NLB in the path also converts the broker's own graceful TCP FIN into a silent close from the client's perspective: the NLB RSTs the server side but sends nothing to the client. AWS NLB's default TCP idle timeout is 350 seconds.
+
+For standard in-VPC MSK deployments where clients connect directly to broker ENIs, no NLB is present and only the broker's 600-second graceful close applies. The `(after Nms in state UP)` value represents connection lifetime and does not distinguish the two paths from logs alone. The mitigations below address both.
+
+**The timeout ordering mechanism**
+
+librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)` for the oldest message in the batch.
+
+With correct ordering (`message.timeout.ms` > `socket.timeout.ms`): `socket.timeout.ms` is the smaller value, the request gives up at that point, the connection is torn down, the message is re-queued with budget remaining, and librdkafka reconnects and retries. The message survives as a latency spike.
+
+With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message budget is the smaller value and becomes the ProduceRequest timeout. The request consumes the entire delivery budget in one shot, leaving zero headroom for a retry. The message fails with `msg_timed_out` at budget expiry. On a stale socket, drops are not just likely - they are structural.
+
+!!! warning "WaterDrop < 2.9.0 Default Inversion"
+
+    Before WaterDrop 2.9.0, `message.timeout.ms` defaulted to 50,000ms while librdkafka's `socket.timeout.ms` defaults to 60,000ms. This is the inverted case: 50s < 60s means every ProduceRequest on a stale socket exhausts the message budget with no retry possible. Upgrade to WaterDrop >= 2.9.0 where the defaults (150,000ms and 60,000ms respectively) satisfy the ordering, or set `message.timeout.ms` explicitly above `socket.timeout.ms` on older versions.
+
+**Mitigations**
+
+Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. This detects silent half-open sockets faster than waiting for a ProduceRequest to exhaust a message budget. When an NLB or other network gear is in the path, tune the OS keepalive interval below that gear's idle timeout.
+
+Use `idle_disconnect_timeout` to proactively shut down the full producer - including the leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes - before either the broker or network gear reaches its idle timeout. Set it below the **shortest** idle timeout in the client-to-broker path:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,
+    'connections.max.idle.ms': 240_000  # recycle non-leader broker connections proactively
+  }
+
+  # MSK broker: 600s. If PrivateLink/NLB is in the path, NLB default is 350s.
+  # Set below the shortest idle timeout that applies to your deployment.
+  config.idle_disconnect_timeout = 300_000  # 5 min - safe for both direct-ENI and NLB paths
+end
+```
+
+For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to keep connections persistent.
+
+See [WaterDrop Connection Management](WaterDrop-Connection-Management) for full configuration details and monitoring instrumentation.
 
 ### All Brokers Down - Why Consumers Recover
 

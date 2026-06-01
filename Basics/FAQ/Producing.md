@@ -35,6 +35,7 @@
 1. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
+1. [Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600000ms-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
 
 ---
 
@@ -508,6 +509,67 @@ Remember that messages with the same `partition_key` (or `key` if no `partition_
 ## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
 
 Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](WaterDrop-Labeling) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](WaterDrop-Labeling#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
+
+## Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
+
+This pattern appears when connections idle long enough to be closed by the broker or by network gear in the path (NLB, NAT gateway, firewall). The healthy `average rtt` in the disconnect entry confirms the network itself was fine while the connection was alive - the clustering at a fixed interval distinguishes this from general network instability.
+
+On MSK, clients in the same VPC (or a peered VPC) connect directly to broker ENIs - no NLB is in the path, and the only idle timeout is the broker's `connections.max.idle.ms` (default: 600 seconds, a graceful TCP FIN). An NLB enters the picture when the cluster is exposed via PrivateLink for cross-account or cross-VPC access. When present, an NLB has its own idle timeout (default: 350 seconds) and also converts the broker's own TCP FIN into a silent close from the client's perspective - the NLB RSTs the server but sends nothing to the client.
+
+There are two distinct failure paths with different log signatures:
+
+- **Broker-side graceful close** (`Receive failed: Disconnected` log, does not pair with `msg_timed_out`): The broker's `connections.max.idle.ms` fires and it sends a TCP FIN. librdkafka detects this promptly on the next read and reconnects. Because the broker only reaps after genuine inactivity (produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time - librdkafka reconnects clean, no drops.
+- **Network gear silent drop** (`N request(s) timed out: disconnect` log, pairs with `msg_timed_out`): NLB, NAT gateway, or firewall silently drops TCP state without sending a FIN or RST. librdkafka believes the socket is live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires, at which point the message budget may already be exhausted.
+
+If you observe the `request(s) timed out` signature on a deployment where you believe no NLB is present, check for unreported PrivateLink configurations, NAT gateways, or firewalls in the network path - the silent-drop signature is definitive evidence that something in the path is dropping TCP state without a FIN.
+
+**The `min()` rule and why the timeout ordering matters**
+
+librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)` for the oldest message in the batch.
+
+With correct ordering (`message.timeout.ms` > `socket.timeout.ms`): `socket.timeout.ms` fires first, the connection is torn down, the message is re-queued with budget remaining, and librdkafka retries. The message survives as a latency spike.
+
+With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message budget is the smaller value. The ProduceRequest consumes the entire budget in one shot with zero headroom for a retry. On a stale socket, drops are structural, not probabilistic.
+
+!!! warning "Always Check the Ordering When Adjusting Either Timeout"
+
+    Increasing `socket.timeout.ms` without raising `message.timeout.ms` proportionally can create or worsen this inversion. Decreasing `message.timeout.ms` without lowering `socket.timeout.ms` has the same effect. Any time you change one, verify that `message.timeout.ms` remains larger than `socket.timeout.ms`. Aim for `message.timeout.ms` to be at least 2-3x `socket.timeout.ms` to leave headroom for the reconnect and retry cycle.
+
+!!! warning "WaterDrop < 2.9.0 Default Inversion"
+
+    Before WaterDrop 2.9.0, `message.timeout.ms` defaulted to 50,000ms while librdkafka's `socket.timeout.ms` defaults to 60,000ms - the inverted case. Every ProduceRequest on a stale socket exhausts the message budget with no retry possible. Upgrade to WaterDrop >= 2.9.0, or explicitly set `message.timeout.ms` above `socket.timeout.ms` on older versions.
+
+!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+
+    When a ProduceRequest times out, the broker may have already committed the write before the client gave up. Delivery status is **POSSIBLY_PERSISTED** - unconfirmed, not guaranteed lost. Use idempotent or transactional producers if exactly-once semantics are required.
+
+**Fixes**
+
+Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. Note that OS keepalive probe intervals default to very long values (Linux `tcp_keepalive_time` defaults to 7200 seconds), which exceeds NLB's 350-second idle timeout. For `socket.keepalive.enable` to detect silent drops before a network intermediary fires, you must also tune the host-level TCP keepalive timers (e.g., `net.ipv4.tcp_keepalive_time`) below that intermediary's idle timeout. `idle_disconnect_timeout` (below) is the more reliable mitigation because it does not depend on OS timer configuration:
+
+```ruby
+config.kafka = {
+  'socket.keepalive.enable': true
+}
+```
+
+Use `idle_disconnect_timeout` to proactively recycle the full producer - including the leader connection that librdkafka's `connections.max.idle.ms` never closes - before the broker or network gear reaches its idle timeout. Set it below the **shortest** idle timeout in the path:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,
+    'connections.max.idle.ms': 240_000
+  }
+
+  # MSK broker: 600s. If PrivateLink/NLB is in the path, NLB default is 350s.
+  # Set below the shortest idle timeout in your specific deployment.
+  config.idle_disconnect_timeout = 300_000  # 5 min - safe for both direct-ENI and NLB paths
+end
+```
+
+See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#idle-connection-reaping) and [WaterDrop Connection Management](WaterDrop-Connection-Management) for further detail.
 
 ## How do I produce messages to a secondary Kafka cluster?
 
