@@ -115,7 +115,7 @@ WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/mas
 
 !!! note "Timeout Ordering Requirement"
 
-    `message.timeout.ms` must always be **greater than** `socket.timeout.ms`. The detection window (`socket.timeout.ms`) is how long librdkafka waits before concluding a connection is dead; the delivery budget (`message.timeout.ms`) is how long a message has to be delivered. If the delivery budget is shorter than the detection window, every message touching a stale connection is guaranteed to be dropped before reconnect and retry can help. The MSK configuration above sets `socket.timeout.ms: 90_000` — ensure your `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the full explanation.
+    `message.timeout.ms` must always be **greater than** `socket.timeout.ms`. The detection window (`socket.timeout.ms`) is how long librdkafka waits before concluding a connection is dead; the delivery budget (`message.timeout.ms`) is how long a message has to be delivered. If the delivery budget is shorter than the detection window, every message touching a stale connection is guaranteed to be dropped before reconnect and retry can help. The MSK configuration above sets `socket.timeout.ms: 90_000` - ensure your `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the full explanation.
 
 **Recommended MSK configuration for standard producers:**
 
@@ -169,7 +169,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 **Common causes of `msg_timed_out`:**
 
-- **Idle connection reaping** - The broker silently closed a connection that was idle past its `connections.max.idle.ms` limit. librdkafka does not detect the dead socket until a request times out, and if the per-message `message.timeout.ms` budget expires during that detection window, the message is dropped before the reconnect can help. This is the most common cause when disconnects cluster at a fixed interval around ten minutes — see [Idle Connection Reaping](#idle-connection-reaping).
+- **Idle connection reaping** - The broker silently closed a connection that was idle past its `connections.max.idle.ms` limit. librdkafka does not detect the dead socket until a request times out, and if the per-message `message.timeout.ms` budget expires during that detection window, the message is dropped before the reconnect can help. This is the most common cause when disconnects cluster at a fixed interval around ten minutes - see [Idle Connection Reaping](#idle-connection-reaping).
 - **Leader unavailable** - The partition leader is not available, either because leader election failed (no eligible replicas) or the leader broker is down
 - **Connection failures** - Network problems preventing connection to the partition leader
 - **Insufficient in-sync replicas** - The cluster cannot satisfy `min.insync.replicas` requirements (see [Not Enough Replicas](#not-enough-replicas))
@@ -177,7 +177,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 !!! warning "Increase Timeout Before Investigating Further"
 
-    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, the root cause is idle connection reaping rather than a timeout value that is simply too short — see [Idle Connection Reaping](#idle-connection-reaping).
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, the root cause is idle connection reaping rather than a timeout value that is simply too short - see [Idle Connection Reaping](#idle-connection-reaping).
 
 ### Idle Connection Reaping
 
@@ -205,7 +205,7 @@ Three details in the transport error are the fingerprint of idle reaping:
 
 **Why the automatic reconnect does not save the message**
 
-librdkafka reconnects automatically and quickly — but it only discovers the dead socket after `socket.timeout.ms` elapses on a pending request (90 seconds in the recommended MSK configuration). Each message carries its own delivery budget set by `message.timeout.ms`. If this per-message clock runs out before the detection window closes, librdkafka fires the delivery callback with `msg_timed_out` and drops the message. The reconnect happens immediately afterwards, but too late for that message.
+librdkafka reconnects automatically and quickly - but it only discovers the dead socket after `socket.timeout.ms` elapses on a pending request (90 seconds in the recommended MSK configuration). Each message carries its own delivery budget set by `message.timeout.ms`. If this per-message clock runs out before the detection window closes, librdkafka fires the delivery callback with `msg_timed_out` and drops the message. The reconnect happens immediately afterwards, but too late for that message.
 
 The essential ordering requirement is:
 
@@ -221,7 +221,7 @@ With `message.timeout.ms: 150_000` (WaterDrop ≥ 2.8.17 default) and `socket.ti
 
 **Preventing idle reaping with `idle_disconnect_timeout`**
 
-Fixing the timeout ordering turns drops into recoverable latency spikes. Preventing the stale socket in the first place eliminates both. WaterDrop's `idle_disconnect_timeout` performs a full producer-level shutdown — including the persistent leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes — before the broker reaper fires, then reconnects fresh on the next produce call.
+Fixing the timeout ordering turns drops into recoverable latency spikes. Preventing the stale socket in the first place eliminates both. WaterDrop's `idle_disconnect_timeout` performs a full producer-level shutdown - including the persistent leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes - before the broker reaper fires, then reconnects fresh on the next produce call.
 
 Set it below the broker's `connections.max.idle.ms`. Eight minutes (480,000ms) leaves comfortable margin under MSK's ten-minute default:
 

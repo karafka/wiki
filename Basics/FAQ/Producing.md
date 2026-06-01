@@ -512,11 +512,11 @@ Both `produce_sync` and `produce_async` trigger the same `error.occurred` notifi
 
 ## Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
 
-This is the signature of **idle connection reaping**. The broker closes connections that have been idle past its `connections.max.idle.ms` (AWS MSK default: ten minutes). librdkafka does not detect a silently-reaped socket immediately — it only discovers the dead connection when a request times out on it, which takes `socket.timeout.ms` (default: 60 seconds). Any messages whose per-message `message.timeout.ms` budget expires during that detection window are dropped with `msg_timed_out`.
+This is the signature of idle connection reaping. The broker closes connections that have been idle past its `connections.max.idle.ms` (AWS MSK default: ten minutes). librdkafka does not detect a silently-reaped socket immediately - it only discovers the dead connection when a request times out on it, which takes `socket.timeout.ms` (default: 60 seconds). Any messages whose per-message `message.timeout.ms` budget expires during that detection window are dropped with `msg_timed_out`.
 
 Two things tell you this is the cause rather than normal cluster instability:
 
-- The `(after Nms in state UP)` value in the disconnect entry clusters near a fixed boundary — roughly ten minutes for MSK. Random network faults do not strike at the same elapsed time.
+- The `(after Nms in state UP)` value in the disconnect entry clusters near a fixed boundary - roughly ten minutes for MSK. Random network faults do not strike at the same elapsed time.
 - The `average rtt` in the disconnect entry is healthy (single-digit milliseconds). The network is fine; the connection was simply idle too long.
 
 **Why "librdkafka reconnects automatically" does not save the messages**
@@ -527,7 +527,7 @@ librdkafka does reconnect, but only after the detection window (`socket.timeout.
 message.timeout.ms > socket.timeout.ms
 ```
 
-With WaterDrop ≥ 2.8.17 defaults (`message.timeout.ms: 150_000`, `socket.timeout.ms: 60_000` librdkafka default), this ordering holds and a stale socket causes a latency spike rather than message loss. On WaterDrop < 2.8.17, `message.timeout.ms` defaulted to 50,000ms, which is **below** the 60,000ms librdkafka default for `socket.timeout.ms` — an inversion that makes drops on stale sockets certain. Upgrade to WaterDrop ≥ 2.8.17 or set `message.timeout.ms` explicitly above `socket.timeout.ms`.
+With WaterDrop ≥ 2.8.17 defaults (`message.timeout.ms: 150_000`, `socket.timeout.ms: 60_000` librdkafka default), this ordering holds and a stale socket causes a latency spike rather than message loss. On WaterDrop < 2.8.17, `message.timeout.ms` defaulted to 50,000ms, which is **below** the 60,000ms librdkafka default for `socket.timeout.ms` - an inversion that makes drops on stale sockets certain. Upgrade to WaterDrop ≥ 2.8.17 or set `message.timeout.ms` explicitly above `socket.timeout.ms`.
 
 !!! warning "Always Check the Ordering When Adjusting Either Timeout"
 
@@ -535,7 +535,7 @@ With WaterDrop ≥ 2.8.17 defaults (`message.timeout.ms: 150_000`, `socket.timeo
 
 **The durable fix: prevent stale connections with `idle_disconnect_timeout`**
 
-Fixing the timeout ordering turns drops into recoverable latency spikes. Eliminating stale connections prevents both. WaterDrop's `idle_disconnect_timeout` disconnects the full producer — including the persistent leader connection that librdkafka's own `connections.max.idle.ms` never closes — before the broker reaper fires:
+Fixing the timeout ordering turns drops into recoverable latency spikes. Eliminating stale connections prevents both. WaterDrop's `idle_disconnect_timeout` disconnects the full producer - including the persistent leader connection that librdkafka's own `connections.max.idle.ms` never closes - before the broker reaper fires:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
