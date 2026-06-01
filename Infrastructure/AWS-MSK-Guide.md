@@ -207,9 +207,9 @@ The healthy `average rtt` confirms the network was fine while the connection was
 
 *Broker-side graceful close:* When the broker's `connections.max.idle.ms` fires (MSK default: 600 seconds), it closes the connection with a TCP FIN. librdkafka detects this promptly on its next read, logs `Receive failed: Disconnected`, refreshes metadata, and places in-flight messages back on the partition queue for retransmission without incrementing retry counts. A message with a full delivery budget survives this transparently.
 
-*Network gear silent drop:* AWS NLB, NAT gateways, and firewalls maintain their own idle session tables and silently drop TCP state after their idle timeout (AWS NLB default: 350 seconds) - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live and sends a ProduceRequest on the dead socket. The request receives no response.
+*Network gear silent drop:* If your connectivity goes through an NLB, NAT gateway, or firewall (common when using PrivateLink for cross-account or cross-VPC access), these intermediaries maintain their own idle session tables and silently drop TCP state after their idle timeout - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live. An NLB in the path also converts the broker's own graceful TCP FIN into a silent close from the client's perspective: the NLB RSTs the server side but sends nothing to the client. AWS NLB's default TCP idle timeout is 350 seconds.
 
-In practice on MSK, the AWS NLB fires first (350 seconds by default, before the broker's 600-second reaper) and drops silently. Both the `(after ~600s)` and `(after ~350s)` log values represent connection lifetime, not detection latency - the signature cannot distinguish the two paths from logs alone. The mitigations below address both.
+For standard in-VPC MSK deployments where clients connect directly to broker ENIs, no NLB is present and only the broker's 600-second graceful close applies. The `(after Nms in state UP)` value represents connection lifetime and does not distinguish the two paths from logs alone. The mitigations below address both.
 
 **The timeout ordering mechanism**
 
@@ -225,7 +225,7 @@ With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message
 
 **Mitigations**
 
-Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. This detects silent half-open sockets (the network gear path) faster than waiting for a ProduceRequest to exhaust a message budget. For MSK, tune the OS keepalive interval below the NLB's idle timeout.
+Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. This detects silent half-open sockets faster than waiting for a ProduceRequest to exhaust a message budget. When an NLB or other network gear is in the path, tune the OS keepalive interval below that gear's idle timeout.
 
 Use `idle_disconnect_timeout` to proactively shut down the full producer - including the leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes - before either the broker or network gear reaches its idle timeout. Set it below the **shortest** idle timeout in the client-to-broker path:
 
@@ -237,8 +237,9 @@ producer = WaterDrop::Producer.new do |config|
     'connections.max.idle.ms': 240_000  # recycle non-leader broker connections proactively
   }
 
-  # MSK broker: 600s. AWS NLB default: 350s. Stay below whichever is shorter.
-  config.idle_disconnect_timeout = 300_000  # 5 minutes
+  # MSK broker: 600s. If PrivateLink/NLB is in the path, NLB default is 350s.
+  # Set below the shortest idle timeout that applies to your deployment.
+  config.idle_disconnect_timeout = 300_000  # 5 min - safe for both direct-ENI and NLB paths
 end
 ```
 

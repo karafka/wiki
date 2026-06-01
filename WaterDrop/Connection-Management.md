@@ -198,11 +198,11 @@ producer = WaterDrop::Producer.new do |config|
 end
 ```
 
-For AWS MSK, the AWS NLB (default idle timeout: 350 seconds) sits between the client and the brokers and fires before the broker's 600-second reaper. Set `idle_disconnect_timeout` below the **shortest** idle timeout in the client-to-broker path:
+For AWS MSK, the applicable idle timeout depends on your network architecture. In-VPC clients connecting directly to broker ENIs face only the broker's 600-second graceful close. When using PrivateLink or an NLB for cross-account or cross-VPC access, the NLB's 350-second idle timeout (default) applies and causes a silent drop. In either case, set `idle_disconnect_timeout` below the **shortest** idle timeout in your specific deployment:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
-  config.idle_disconnect_timeout = 300_000          # 5 min - below both MSK broker (600s) and NLB (350s)
+  config.idle_disconnect_timeout = 300_000          # 5 min - safe for both direct-ENI and NLB paths
   config.kafka = {
     'bootstrap.servers': ENV['KAFKA_URL'],
     'socket.keepalive.enable': true,                # detect silently dead sockets via OS keepalives
@@ -215,6 +215,6 @@ This produces a natural ordering:
 
 - `connections.max.idle.ms` (4 min) recycles unused non-leader broker connections
 - `idle_disconnect_timeout` (5 min) performs full producer shutdown including the leader connection
-- The AWS NLB idle timeout (default 350s) and broker reaper (600s) never fire on your client connections
+- The broker reaper (600s) and any NLB idle timeout (default 350s) never fire on your client connections
 
 For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to disable the feature and keep connections persistent.

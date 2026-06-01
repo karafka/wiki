@@ -514,7 +514,7 @@ Both `produce_sync` and `produce_async` trigger the same `error.occurred` notifi
 
 This pattern appears when connections idle long enough to be closed by the broker or by network gear in the path (NLB, NAT gateway, firewall). The healthy `average rtt` in the disconnect entry confirms the network itself was fine while the connection was alive - the clustering at a fixed interval distinguishes this from general network instability.
 
-On MSK specifically, the AWS NLB sits between your client and the brokers and has its own idle session timeout (default: 350 seconds). The broker's `connections.max.idle.ms` fires later at 600 seconds. Both the broker and the NLB can be the source depending on configuration.
+On MSK, clients in the same VPC (or a peered VPC) connect directly to broker ENIs - no NLB is in the path, and the only idle timeout is the broker's `connections.max.idle.ms` (default: 600 seconds, a graceful TCP FIN). An NLB enters the picture when the cluster is exposed via PrivateLink for cross-account or cross-VPC access. When present, an NLB has its own idle timeout (default: 350 seconds) and also converts the broker's own TCP FIN into a silent close from the client's perspective - the NLB RSTs the server but sends nothing to the client.
 
 There are two distinct failure paths:
 
@@ -561,8 +561,9 @@ producer = WaterDrop::Producer.new do |config|
     'connections.max.idle.ms': 240_000
   }
 
-  # MSK broker: 600s. AWS NLB default: 350s. Stay below whichever is shorter.
-  config.idle_disconnect_timeout = 300_000  # 5 minutes
+  # MSK broker: 600s. If PrivateLink/NLB is in the path, NLB default is 350s.
+  # Set below the shortest idle timeout in your specific deployment.
+  config.idle_disconnect_timeout = 300_000  # 5 min - safe for both direct-ENI and NLB paths
 end
 ```
 
