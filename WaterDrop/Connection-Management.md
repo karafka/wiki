@@ -182,9 +182,9 @@ In this configuration:
 
 ### Timing Considerations
 
-Set `idle_disconnect_timeout` higher than `connections.max.idle.ms` so that librdkafka's per-connection cleanup runs first and WaterDrop's full-producer disconnection is only needed as the second tier.
+Set `idle_disconnect_timeout` higher than the client-side `connections.max.idle.ms` (the librdkafka setting in `config.kafka`) so that librdkafka's per-connection cleanup runs first and WaterDrop's full-producer disconnection is only needed as the second tier.
 
-The most important external constraint is the idle timeout of anything between the client and the brokers. Kafka brokers close idle connections with a graceful TCP FIN (default `connections.max.idle.ms`: 600,000ms on MSK). librdkafka detects a FIN promptly and retries in-flight messages, so a clean broker reap is typically handled transparently. More dangerous are network intermediaries - AWS NLB, NAT gateways, firewalls - which silently drop TCP state after their own idle timeout (AWS NLB default: 350 seconds) without sending a FIN. librdkafka believes the socket is still live, and the next ProduceRequest stalls until the message's delivery budget expires.
+The most important external constraint is the idle timeout of anything between the client and the brokers. Kafka brokers have their own server-side `connections.max.idle.ms` that controls when they close idle client connections with a graceful TCP FIN (the broker-side default on MSK is 600,000ms). librdkafka detects a FIN promptly and retries in-flight messages, so a clean broker reap is typically handled transparently. More dangerous are network intermediaries - AWS NLB, NAT gateways, firewalls - which silently drop TCP state after their own idle timeout (AWS NLB default: 350 seconds) without sending a FIN. librdkafka believes the socket is still live, and the next ProduceRequest stalls until the message's delivery budget expires.
 
 Setting `idle_disconnect_timeout` below these thresholds ensures the producer recycles connections proactively, before either the broker or network gear can reach their idle timeouts:
 
@@ -205,7 +205,7 @@ producer = WaterDrop::Producer.new do |config|
   config.idle_disconnect_timeout = 300_000          # 5 min - safe for both direct-ENI and NLB paths
   config.kafka = {
     'bootstrap.servers': ENV['KAFKA_URL'],
-    'socket.keepalive.enable': true,                # detect silently dead sockets via OS keepalives
+    'socket.keepalive.enable': true,                # enable OS keepalives; tune tcp_keepalive_time below any intermediary idle timeout for this to be effective
     'connections.max.idle.ms': 240_000              # recycle non-leader broker connections at 4 min
   }
 end

@@ -35,7 +35,7 @@
 1. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
-1. [Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600-seconds-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
+1. [Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600000ms-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
 
 ---
 
@@ -510,7 +510,7 @@ Remember that messages with the same `partition_key` (or `key` if no `partition_
 
 Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](WaterDrop-Labeling) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](WaterDrop-Labeling#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
 
-## Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
+## Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
 
 This pattern appears when connections idle long enough to be closed by the broker or by network gear in the path (NLB, NAT gateway, firewall). The healthy `average rtt` in the disconnect entry confirms the network itself was fine while the connection was alive - the clustering at a fixed interval distinguishes this from general network instability.
 
@@ -545,7 +545,7 @@ With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message
 
 **Fixes**
 
-Enable `socket.keepalive.enable: true` so the OS detects silent half-open sockets (the NLB/NAT path) via TCP keepalive probes, before a ProduceRequest has to exhaust a message budget:
+Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. Note that OS keepalive probe intervals default to very long values (Linux `tcp_keepalive_time` defaults to 7200 seconds), which exceeds NLB's 350-second idle timeout. For `socket.keepalive.enable` to detect silent drops before a network intermediary fires, you must also tune the host-level TCP keepalive timers (e.g., `net.ipv4.tcp_keepalive_time`) below that intermediary's idle timeout. `idle_disconnect_timeout` (below) is the more reliable mitigation because it does not depend on OS timer configuration:
 
 ```ruby
 config.kafka = {
