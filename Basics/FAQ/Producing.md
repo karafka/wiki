@@ -516,10 +516,12 @@ This pattern appears when connections idle long enough to be closed by the broke
 
 On MSK, clients in the same VPC (or a peered VPC) connect directly to broker ENIs - no NLB is in the path, and the only idle timeout is the broker's `connections.max.idle.ms` (default: 600 seconds, a graceful TCP FIN). An NLB enters the picture when the cluster is exposed via PrivateLink for cross-account or cross-VPC access. When present, an NLB has its own idle timeout (default: 350 seconds) and also converts the broker's own TCP FIN into a silent close from the client's perspective - the NLB RSTs the server but sends nothing to the client.
 
-There are two distinct failure paths:
+There are two distinct failure paths with different log signatures:
 
-- **Broker-side graceful close:** The broker sends a TCP FIN. librdkafka detects this promptly, logs `Receive failed: Disconnected`, refreshes metadata, and re-queues in-flight messages for retransmission without incrementing retry counts. A message with a full delivery budget survives this transparently.
-- **Network gear silent drop:** NLB, NAT, or firewall drops TCP state without sending a FIN or RST. librdkafka believes the socket is still live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires.
+- **Broker-side graceful close** (`Receive failed: Disconnected` log, does not pair with `msg_timed_out`): The broker's `connections.max.idle.ms` fires and it sends a TCP FIN. librdkafka detects this promptly on the next read and reconnects. Because the broker only reaps after genuine inactivity (produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time - librdkafka reconnects clean, no drops.
+- **Network gear silent drop** (`N request(s) timed out: disconnect` log, pairs with `msg_timed_out`): NLB, NAT gateway, or firewall silently drops TCP state without sending a FIN or RST. librdkafka believes the socket is live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires, at which point the message budget may already be exhausted.
+
+If you observe the `request(s) timed out` signature on a deployment where you believe no NLB is present, check for unreported PrivateLink configurations, NAT gateways, or firewalls in the network path - the silent-drop signature is definitive evidence that something in the path is dropping TCP state without a FIN.
 
 **The `min()` rule and why the timeout ordering matters**
 

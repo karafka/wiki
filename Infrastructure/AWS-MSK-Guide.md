@@ -183,7 +183,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 Intermittent `msg_timed_out` errors on producers with bursty or low-frequency traffic, paired with disconnect log entries clustering at a fixed interval, are produced by connections going idle long enough to be closed by the broker or a network intermediary. Unlike most connection errors, these do not raise exceptions at the call site when using `produce_async` - they are only visible through the `error.occurred` notification channel.
 
-The defining symptom is a **pair** of error entries at near-regular intervals. A transport-level disconnect:
+These two failure paths have distinct log signatures. The **network-gear path** is the one that pairs with `msg_timed_out`. Its defining symptom is a `request(s) timed out` transport-level disconnect:
 
 ```text
 librdkafka.error: Local: Timed out (timed_out) ...
@@ -197,7 +197,15 @@ librdkafka.dispatch_error: Local: Message timed out (msg_timed_out)
   topic: your.topic, partition: 0
 ```
 
-The healthy `average rtt` confirms the network was fine while the connection was alive. The clustering of `(after Nms in state UP)` values near a fixed boundary distinguishes this from general network instability.
+The healthy `average rtt` confirms the network itself was fine while the connection was alive. The `timed_out` signature specifically means librdkafka had an outstanding ProduceRequest when the socket went silent - which only happens when the socket appeared live but was dead (no FIN or RST from the other side). The clustering of `(after Nms in state UP)` values near a fixed threshold distinguishes this from general network instability.
+
+The **broker-reaper path** (direct-ENI, no NLB in the path) produces a different log signature and does **not** pair with `msg_timed_out`:
+
+```text
+Receive failed: Disconnected (after 600Xms in state UP)
+```
+
+The broker sends a TCP FIN; librdkafka detects it promptly on the next read and reconnects. Because the broker only reaps after `connections.max.idle.ms` of genuine inactivity, there are no in-flight ProduceRequests at reap time - nothing to drop.
 
 !!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
 
@@ -205,7 +213,7 @@ The healthy `average rtt` confirms the network was fine while the connection was
 
 **Two paths to this failure**
 
-*Broker-side graceful close:* When the broker's `connections.max.idle.ms` fires (MSK default: 600 seconds), it closes the connection with a TCP FIN. librdkafka detects this promptly on its next read, logs `Receive failed: Disconnected`, refreshes metadata, and places in-flight messages back on the partition queue for retransmission without incrementing retry counts. A message with a full delivery budget survives this transparently.
+*Broker-side graceful close:* When the broker's `connections.max.idle.ms` fires (MSK default: 600 seconds), it sends a TCP FIN. librdkafka detects this promptly on its next read and logs `Receive failed: Disconnected`. Because the broker only reaps connections after genuine inactivity (any produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time. librdkafka reconnects, and the next produce uses a fresh connection - no drops.
 
 *Network gear silent drop:* If your connectivity goes through an NLB, NAT gateway, or firewall (common when using PrivateLink for cross-account or cross-VPC access), these intermediaries maintain their own idle session tables and silently drop TCP state after their idle timeout - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live. An NLB in the path also converts the broker's own graceful TCP FIN into a silent close from the client's perspective: the NLB RSTs the server side but sends nothing to the client. AWS NLB's default TCP idle timeout is 350 seconds.
 
