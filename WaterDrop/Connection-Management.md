@@ -182,6 +182,39 @@ In this configuration:
 
 ### Timing Considerations
 
-- Set `idle_disconnect_timeout` higher than `connections.max.idle.ms` to allow librdkafka's connection cleanup to occur first
-- Consider your cluster's connection limits and broker-side idle timeouts when setting these values
-- Monitor connection patterns to find the optimal balance for your use case
+Set `idle_disconnect_timeout` higher than `connections.max.idle.ms` so that librdkafka's per-connection cleanup runs first and WaterDrop's full-producer disconnection is only needed as the second tier.
+
+The most important consideration is the **broker-side idle timeout**. Kafka brokers close connections that have been idle longer than the server-side `connections.max.idle.ms`. On Apache Kafka and AWS MSK this defaults to 600,000ms (ten minutes). An NLB or NAT in front of the cluster may have an even shorter timeout (AWS NLB defaults to 350 seconds). When a client connection is reaped by the broker, librdkafka only discovers the dead socket after `socket.timeout.ms` elapses on the next request — and if messages expire during that detection window, they are dropped with `msg_timed_out`.
+
+Setting `idle_disconnect_timeout` **below the broker's reaper** prevents the broker from ever reaping the client's connections, eliminating both the detection latency and the resulting message drops or delivery spikes:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.idle_disconnect_timeout = 300_000          # WaterDrop: disconnect entire producer after 5 min
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'connections.max.idle.ms': 60_000               # librdkafka: close individual broker connections after 1 min
+  }
+end
+```
+
+For AWS MSK specifically, where the broker default is 600,000ms, a value of 480,000ms (8 minutes) leaves comfortable headroom:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.idle_disconnect_timeout = 480_000          # 8 min — below MSK's 10-min broker reaper
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,
+    'connections.max.idle.ms': 240_000              # recycle non-leader broker connections at 4 min
+  }
+end
+```
+
+This produces a three-level ordering:
+
+- `connections.max.idle.ms` (4 min) recycles unused non-leader broker connections
+- `idle_disconnect_timeout` (8 min) performs full producer shutdown including the leader connection
+- The broker's `connections.max.idle.ms` (10 min) never fires on your client connections
+
+For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to disable the feature and keep connections persistent.

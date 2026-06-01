@@ -35,6 +35,7 @@
 1. [What's the difference between `key` and `partition_key` in WaterDrop?](#whats-the-difference-between-key-and-partition_key-in-waterdrop)
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
+1. [Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600-seconds-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
 
 ---
 
@@ -508,6 +509,50 @@ Remember that messages with the same `partition_key` (or `key` if no `partition_
 ## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
 
 Both `produce_sync` and `produce_async` trigger the same `error.occurred` notification, making it difficult to distinguish between them. Since sync errors are typically already handled with backtraces, you can use WaterDrop's [labeling](WaterDrop-Labeling) feature to differentiate async errors that need special logging. Label your async messages and check for those labels in the error handler to process only async errors. See the [detailed guide](WaterDrop-Labeling#distinguishing-between-sync-and-async-producer-errors) on distinguishing between sync and async producer errors for implementation examples.
+
+## Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
+
+This is the signature of **idle connection reaping**. The broker closes connections that have been idle past its `connections.max.idle.ms` (AWS MSK default: ten minutes). librdkafka does not detect a silently-reaped socket immediately — it only discovers the dead connection when a request times out on it, which takes `socket.timeout.ms` (default: 60 seconds). Any messages whose per-message `message.timeout.ms` budget expires during that detection window are dropped with `msg_timed_out`.
+
+Two things tell you this is the cause rather than normal cluster instability:
+
+- The `(after Nms in state UP)` value in the disconnect entry clusters near a fixed boundary — roughly ten minutes for MSK. Random network faults do not strike at the same elapsed time.
+- The `average rtt` in the disconnect entry is healthy (single-digit milliseconds). The network is fine; the connection was simply idle too long.
+
+**Why "librdkafka reconnects automatically" does not save the messages**
+
+librdkafka does reconnect, but only after the detection window (`socket.timeout.ms`) closes. Messages hold a fixed delivery budget (`message.timeout.ms`) that does not reset on reconnect. If the budget expires before the detection window closes, the message is dropped and the reconnect helps nothing. The required relationship is:
+
+```text
+message.timeout.ms > socket.timeout.ms
+```
+
+With WaterDrop ≥ 2.8.17 defaults (`message.timeout.ms: 150_000`, `socket.timeout.ms: 60_000` librdkafka default), this ordering holds and a stale socket causes a latency spike rather than message loss. On WaterDrop < 2.8.17, `message.timeout.ms` defaulted to 50,000ms, which is **below** the 60,000ms librdkafka default for `socket.timeout.ms` — an inversion that makes drops on stale sockets certain. Upgrade to WaterDrop ≥ 2.8.17 or set `message.timeout.ms` explicitly above `socket.timeout.ms`.
+
+!!! warning "Always Check the Ordering When Adjusting Either Timeout"
+
+    Increasing `socket.timeout.ms` without raising `message.timeout.ms` proportionally can create or worsen this inversion. Decreasing `message.timeout.ms` without lowering `socket.timeout.ms` has the same effect. Any time you change one, verify that `message.timeout.ms` remains larger than `socket.timeout.ms`.
+
+**The durable fix: prevent stale connections with `idle_disconnect_timeout`**
+
+Fixing the timeout ordering turns drops into recoverable latency spikes. Eliminating stale connections prevents both. WaterDrop's `idle_disconnect_timeout` disconnects the full producer — including the persistent leader connection that librdkafka's own `connections.max.idle.ms` never closes — before the broker reaper fires:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,
+    'connections.max.idle.ms': 240_000  # recycle non-leader connections at 4 min
+  }
+
+  # Recycle the full producer before MSK's 10-min broker reaper.
+  config.idle_disconnect_timeout = 480_000  # 8 minutes
+end
+```
+
+Set `idle_disconnect_timeout` below the broker's `connections.max.idle.ms`. Eight minutes (480,000ms) is a practical starting point for MSK. For high-frequency producers that are always active, set it to `0` to disable.
+
+See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#idle-connection-reaping) and [WaterDrop Connection Management](WaterDrop-Connection-Management) for further detail.
 
 ## How do I produce messages to a secondary Kafka cluster?
 

@@ -113,12 +113,17 @@ WaterDrop default timeout values differ from librdkafka:
 
 WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb) than librdkafka to provide faster feedback in typical deployments. However, MSK's maintenance operations and rolling updates can cause delivery delays that exceed 150 seconds, particularly during dual-broker outages.
 
+!!! note "Timeout Ordering Requirement"
+
+    `message.timeout.ms` must always be **greater than** `socket.timeout.ms`. The detection window (`socket.timeout.ms`) is how long librdkafka waits before concluding a connection is dead; the delivery budget (`message.timeout.ms`) is how long a message has to be delivered. If the delivery budget is shorter than the detection window, every message touching a stale connection is guaranteed to be dropped before reconnect and retry can help. The MSK configuration above sets `socket.timeout.ms: 90_000` — ensure your `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the full explanation.
+
 **Recommended MSK configuration for standard producers:**
 
 ```ruby
 config.kafka = {
-  # Increase message timeout to handle MSK maintenance delays
-  # For transactional producers, also set transaction.timeout.ms (see below)
+  # Increase message timeout to handle MSK maintenance delays.
+  # Must remain above socket.timeout.ms (90_000 in the recommended config above).
+  # For transactional producers, also set transaction.timeout.ms (see below).
   'message.timeout.ms': 300_000 # 5 minutes, matching librdkafka default
 }
 ```
@@ -164,6 +169,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 **Common causes of `msg_timed_out`:**
 
+- **Idle connection reaping** - The broker silently closed a connection that was idle past its `connections.max.idle.ms` limit. librdkafka does not detect the dead socket until a request times out, and if the per-message `message.timeout.ms` budget expires during that detection window, the message is dropped before the reconnect can help. This is the most common cause when disconnects cluster at a fixed interval around ten minutes — see [Idle Connection Reaping](#idle-connection-reaping).
 - **Leader unavailable** - The partition leader is not available, either because leader election failed (no eligible replicas) or the leader broker is down
 - **Connection failures** - Network problems preventing connection to the partition leader
 - **Insufficient in-sync replicas** - The cluster cannot satisfy `min.insync.replicas` requirements (see [Not Enough Replicas](#not-enough-replicas))
@@ -171,7 +177,76 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 !!! warning "Increase Timeout Before Investigating Further"
 
-    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone, as it provides sufficient buffer for maintenance operations and temporary cluster instability.
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, the root cause is idle connection reaping rather than a timeout value that is simply too short — see [Idle Connection Reaping](#idle-connection-reaping).
+
+### Idle Connection Reaping
+
+Idle connection reaping is a distinct failure mode that produces intermittent, silent message loss on producers with bursty or low-frequency traffic. Unlike most connection errors, it does not cause immediate exceptions at the call site when using `produce_async`, and it only becomes visible through the `error.occurred` notification channel.
+
+The defining symptom is a **pair** of error entries that appear together at near-regular intervals. A transport-level disconnect:
+
+```text
+librdkafka.error: Local: Timed out (timed_out) ...
+  1 request(s) timed out: disconnect (average rtt 9ms) (after 643610ms in state UP)
+```
+
+Followed by a delivery failure:
+
+```text
+librdkafka.dispatch_error: Local: Message timed out (msg_timed_out)
+  topic: your.topic, partition: 0
+```
+
+Three details in the transport error are the fingerprint of idle reaping:
+
+- The `(after Nms in state UP)` value clusters near the broker's `connections.max.idle.ms`. MSK keeps this at the Kafka default of 600,000ms (ten minutes). Random network failures do not reliably strike at the same elapsed time; a fixed idle timeout does.
+- The `average rtt` is healthy (single-digit milliseconds), confirming the network was working fine while the connection was live.
+- The cause is `1 request(s) timed out: disconnect` rather than a clean close, meaning librdkafka only discovered the dead socket when a request timed out on it.
+
+**Why the automatic reconnect does not save the message**
+
+librdkafka reconnects automatically and quickly — but it only discovers the dead socket after `socket.timeout.ms` elapses on a pending request (90 seconds in the recommended MSK configuration). Each message carries its own delivery budget set by `message.timeout.ms`. If this per-message clock runs out before the detection window closes, librdkafka fires the delivery callback with `msg_timed_out` and drops the message. The reconnect happens immediately afterwards, but too late for that message.
+
+The essential ordering requirement is:
+
+```text
+message.timeout.ms > socket.timeout.ms
+```
+
+With `message.timeout.ms: 150_000` (WaterDrop ≥ 2.8.17 default) and `socket.timeout.ms: 90_000` (recommended MSK configuration above), detection at 90 seconds still leaves 60 seconds of message budget for reconnect and a retry, so messages survive a stale-socket hit. The configuration in the [Transport and Network Failures](#transport-and-network-failures) section satisfies this ordering.
+
+!!! warning "WaterDrop < 2.8.17 Timeout Inversion"
+
+    Before WaterDrop 2.8.17, `message.timeout.ms` defaulted to 50,000ms while `socket.timeout.ms` defaults to 60,000ms in librdkafka. This inversion makes drops on stale sockets **guaranteed**: the message's deadline passes before the connection problem is even detected, and the reconnect is always too late. When running WaterDrop < 2.8.17, set `message.timeout.ms` explicitly above `socket.timeout.ms` before adjusting any socket timeout values, or upgrade to WaterDrop ≥ 2.8.17 where the corrected defaults satisfy the ordering automatically.
+
+**Preventing idle reaping with `idle_disconnect_timeout`**
+
+Fixing the timeout ordering turns drops into recoverable latency spikes. Preventing the stale socket in the first place eliminates both. WaterDrop's `idle_disconnect_timeout` performs a full producer-level shutdown — including the persistent leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes — before the broker reaper fires, then reconnects fresh on the next produce call.
+
+Set it below the broker's `connections.max.idle.ms`. Eight minutes (480,000ms) leaves comfortable margin under MSK's ten-minute default:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,
+    'connections.max.idle.ms': 240_000  # recycle non-leader broker connections at 4 min
+  }
+
+  # Recycle the entire producer (leader connection included) before MSK's 10-min reaper.
+  config.idle_disconnect_timeout = 480_000  # 8 minutes
+end
+```
+
+This creates a natural ordering:
+
+- `connections.max.idle.ms` (4 min) recycles unused non-leader broker connections first
+- `idle_disconnect_timeout` (8 min) shuts down the full producer, including the leader connection, before MSK fires
+- The broker's `connections.max.idle.ms` (10 min) effectively never fires on your client connections
+
+For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to keep connections persistent.
+
+See [WaterDrop Connection Management](WaterDrop-Connection-Management) for full configuration details and monitoring instrumentation.
 
 ### All Brokers Down - Why Consumers Recover
 
