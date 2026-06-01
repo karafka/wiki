@@ -512,45 +512,59 @@ Both `produce_sync` and `produce_async` trigger the same `error.occurred` notifi
 
 ## Why am I seeing paired `disconnect (after ~600 seconds in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?
 
-This is the signature of idle connection reaping. The broker closes connections that have been idle past its `connections.max.idle.ms` (AWS MSK default: ten minutes). librdkafka does not detect a silently-reaped socket immediately - it only discovers the dead connection when a request times out on it, which takes `socket.timeout.ms` (default: 60 seconds). Any messages whose per-message `message.timeout.ms` budget expires during that detection window are dropped with `msg_timed_out`.
+This pattern appears when connections idle long enough to be closed by the broker or by network gear in the path (NLB, NAT gateway, firewall). The healthy `average rtt` in the disconnect entry confirms the network itself was fine while the connection was alive - the clustering at a fixed interval distinguishes this from general network instability.
 
-Two things tell you this is the cause rather than normal cluster instability:
+On MSK specifically, the AWS NLB sits between your client and the brokers and has its own idle session timeout (default: 350 seconds). The broker's `connections.max.idle.ms` fires later at 600 seconds. Both the broker and the NLB can be the source depending on configuration.
 
-- The `(after Nms in state UP)` value in the disconnect entry clusters near a fixed boundary - roughly ten minutes for MSK. Random network faults do not strike at the same elapsed time.
-- The `average rtt` in the disconnect entry is healthy (single-digit milliseconds). The network is fine; the connection was simply idle too long.
+There are two distinct failure paths:
 
-**Why "librdkafka reconnects automatically" does not save the messages**
+- **Broker-side graceful close:** The broker sends a TCP FIN. librdkafka detects this promptly, logs `Receive failed: Disconnected`, refreshes metadata, and re-queues in-flight messages for retransmission without incrementing retry counts. A message with a full delivery budget survives this transparently.
+- **Network gear silent drop:** NLB, NAT, or firewall drops TCP state without sending a FIN or RST. librdkafka believes the socket is still live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires.
 
-librdkafka does reconnect, but only after the detection window (`socket.timeout.ms`) closes. Messages hold a fixed delivery budget (`message.timeout.ms`) that does not reset on reconnect. If the budget expires before the detection window closes, the message is dropped and the reconnect helps nothing. The required relationship is:
+**The `min()` rule and why the timeout ordering matters**
 
-```text
-message.timeout.ms > socket.timeout.ms
-```
+librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)` for the oldest message in the batch.
 
-With WaterDrop ≥ 2.8.17 defaults (`message.timeout.ms: 150_000`, `socket.timeout.ms: 60_000` librdkafka default), this ordering holds and a stale socket causes a latency spike rather than message loss. On WaterDrop < 2.8.17, `message.timeout.ms` defaulted to 50,000ms, which is **below** the 60,000ms librdkafka default for `socket.timeout.ms` - an inversion that makes drops on stale sockets certain. Upgrade to WaterDrop ≥ 2.8.17 or set `message.timeout.ms` explicitly above `socket.timeout.ms`.
+With correct ordering (`message.timeout.ms` > `socket.timeout.ms`): `socket.timeout.ms` fires first, the connection is torn down, the message is re-queued with budget remaining, and librdkafka retries. The message survives as a latency spike.
+
+With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message budget is the smaller value. The ProduceRequest consumes the entire budget in one shot with zero headroom for a retry. On a stale socket, drops are structural, not probabilistic.
 
 !!! warning "Always Check the Ordering When Adjusting Either Timeout"
 
-    Increasing `socket.timeout.ms` without raising `message.timeout.ms` proportionally can create or worsen this inversion. Decreasing `message.timeout.ms` without lowering `socket.timeout.ms` has the same effect. Any time you change one, verify that `message.timeout.ms` remains larger than `socket.timeout.ms`.
+    Increasing `socket.timeout.ms` without raising `message.timeout.ms` proportionally can create or worsen this inversion. Decreasing `message.timeout.ms` without lowering `socket.timeout.ms` has the same effect. Any time you change one, verify that `message.timeout.ms` remains larger than `socket.timeout.ms`. Aim for `message.timeout.ms` to be at least 2-3x `socket.timeout.ms` to leave headroom for the reconnect and retry cycle.
 
-**The durable fix: prevent stale connections with `idle_disconnect_timeout`**
+!!! warning "WaterDrop < 2.9.0 Default Inversion"
 
-Fixing the timeout ordering turns drops into recoverable latency spikes. Eliminating stale connections prevents both. WaterDrop's `idle_disconnect_timeout` disconnects the full producer - including the persistent leader connection that librdkafka's own `connections.max.idle.ms` never closes - before the broker reaper fires:
+    Before WaterDrop 2.9.0, `message.timeout.ms` defaulted to 50,000ms while librdkafka's `socket.timeout.ms` defaults to 60,000ms - the inverted case. Every ProduceRequest on a stale socket exhausts the message budget with no retry possible. Upgrade to WaterDrop >= 2.9.0, or explicitly set `message.timeout.ms` above `socket.timeout.ms` on older versions.
+
+!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+
+    When a ProduceRequest times out, the broker may have already committed the write before the client gave up. Delivery status is **POSSIBLY_PERSISTED** - unconfirmed, not guaranteed lost. Use idempotent or transactional producers if exactly-once semantics are required.
+
+**Fixes**
+
+Enable `socket.keepalive.enable: true` so the OS detects silent half-open sockets (the NLB/NAT path) via TCP keepalive probes, before a ProduceRequest has to exhaust a message budget:
+
+```ruby
+config.kafka = {
+  'socket.keepalive.enable': true
+}
+```
+
+Use `idle_disconnect_timeout` to proactively recycle the full producer - including the leader connection that librdkafka's `connections.max.idle.ms` never closes - before the broker or network gear reaches its idle timeout. Set it below the **shortest** idle timeout in the path:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
   config.kafka = {
     'bootstrap.servers': ENV['KAFKA_URL'],
     'socket.keepalive.enable': true,
-    'connections.max.idle.ms': 240_000  # recycle non-leader connections at 4 min
+    'connections.max.idle.ms': 240_000
   }
 
-  # Recycle the full producer before MSK's 10-min broker reaper.
-  config.idle_disconnect_timeout = 480_000  # 8 minutes
+  # MSK broker: 600s. AWS NLB default: 350s. Stay below whichever is shorter.
+  config.idle_disconnect_timeout = 300_000  # 5 minutes
 end
 ```
-
-Set `idle_disconnect_timeout` below the broker's `connections.max.idle.ms`. Eight minutes (480,000ms) is a practical starting point for MSK. For high-frequency producers that are always active, set it to `0` to disable.
 
 See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#idle-connection-reaping) and [WaterDrop Connection Management](WaterDrop-Connection-Management) for further detail.
 
