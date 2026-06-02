@@ -4,6 +4,7 @@
 # Karafka Web Changelog
 
 ## 0.11.7 (Unreleased)
+- [Enhancement] Add `Warning.process` block to the test helper to turn Ruby warnings originating from the project code into test failures.
 - [Enhancement] Replace sequential per-partition `query_watermark_offsets` consumer calls in `Counters#estimate_errors_count` with a single targeted `topic_info` metadata call followed by a batch `read_watermark_offsets` admin call. This eliminates the consumer connection overhead and reduces Kafka roundtrips from up to N+1 sequential calls to 3 regardless of partition count.
 - [Enhancement] Allow for zero value in number of workers to support dynamic scaling of Karafka workers.
 - [Enhancement] Align concurrency tracking with dynamic thread pool scaling. Workers count is now read from `Karafka::Server.workers.size` instead of the static `Karafka::App.config.concurrency`, so the Web UI accurately reflects runtime thread pool changes.
@@ -11,6 +12,7 @@
 - [Enhancement] Replace token-based CSRF protection (`route_csrf` plugin) with header-based protection using `Sec-Fetch-Site` header (`sec_fetch_site_csrf` plugin). This eliminates the need for CSRF tokens by leveraging browser-enforced headers that cannot be forged from cross-origin requests. Modern browsers automatically include this header, providing simpler and more robust CSRF protection.
 - [Enhancement] Include a short spec file hash in generated test topic names for traceability. Topic names now follow the `it-{hash}-{uuid}` format, making it easy to identify which test file created a given topic in Kafka logs.
 - [Change] Require Roda `>= 3.100` (previously `~> 3.69`).
+- [Fix] Accept (and ignore) a block in `Karafka::Web::Producer#__getobj__` to silence Ruby 3.4's `strict_unused_block` warning emitted via `SimpleDelegator#method_missing` on every delegated producer call.
 - [Fix] Remove `cgi` as no longer needed.
 - [Fix] Exclude `test/` directory from gem releases to reduce package size.
 - [Fix] Update LinksValidator regexes to match the new `it-{hash}-{uuid}` test topic naming format, fixing test-order dependent failures in explorer controller specs.
