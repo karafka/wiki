@@ -6,6 +6,83 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.14.2 (2026-06-03)
+
+librdkafka v2.14.2 is a maintenance release:
+
+* Fix duplicate groups in `ListConsumerGroups` when multiple brokers
+  return the same group (#5417).
+* Fix data race in timers (#5089).
+* Update bundled OpenSSL, libcurl, zstd, zlib and cJSON
+  dependencies (#5346).
+
+### Security considerations
+
+Bundled dependencies were upgraded as follows (see #5346):
+OpenSSL 3.0.15 → 3.5.6 (LTS) for source/autoconf builds, and to 3.6.2 in
+vcpkg-based packages (no LTS available in vcpkg); libcurl 8.10.1 → 8.20.0
+for source/autoconf builds and to 8.19.0 in vcpkg; zlib 1.3.1 → 1.3.2;
+zstd 1.5.6 → 1.5.7; cJSON 1.7.14 → 1.7.19.
+
+ * OpenSSL upgrade (3.0.15 → 3.5.6 LTS for source/autoconf,
+   3.3.2 → 3.6.2 for vcpkg) addresses:
+   * CVE-2025-15467 (OpenSSL): upgraded OpenSSL to 3.5.6 (LTS) or
+     3.6.2 with vcpkg as it usually doesn't provide LTS upgrades.
+   * Both branches (affect 3.0.15 and 3.3.2): CVE-2024-9143,
+     CVE-2024-13176, CVE-2025-9230, CVE-2025-68160, CVE-2025-69418,
+     CVE-2025-69419, CVE-2025-69420, CVE-2025-69421, CVE-2026-22795,
+     CVE-2026-22796, CVE-2026-28387, CVE-2026-28388, CVE-2026-28389,
+     CVE-2026-28390, CVE-2026-31789, CVE-2026-31790.
+   * Only the 3.3.x→3.6.2 vcpkg branch (3.0.15 was not affected):
+     CVE-2024-12797, CVE-2025-9231, CVE-2025-15468, CVE-2025-66199.
+
+ * libcurl upgrade (8.10.1 → 8.20.0 source/autoconf, 8.10.1 → 8.19.0
+   vcpkg) addresses:
+   * CVE-2025-14017 (libcurl): solved through upgrading to CURL 8.20.0.
+     LDAP module isn't present in pre-built binary, so this CVE doesn't
+     affect librdkafka but can still trigger automatic scanners.
+   * Fixed by 8.18.0 or earlier (both autoconf and vcpkg paths):
+     CVE-2024-9681, CVE-2024-11053, CVE-2025-0167, CVE-2025-0725,
+     CVE-2025-4947, CVE-2025-5025, CVE-2025-10966, CVE-2025-13034,
+     CVE-2025-14524, CVE-2025-14819, CVE-2025-15079, CVE-2025-15224,
+     CVE-2026-1965, CVE-2026-3783, CVE-2026-3784.
+   * Fixed only by 8.20.0 (autoconf path); vcpkg-pinned 8.19.0 still
+     contains these: CVE-2026-4873, CVE-2026-5545, CVE-2026-5773,
+     CVE-2026-6253, CVE-2026-6276, CVE-2026-6429, CVE-2026-7168.
+
+ * zlib (1.3.1 → 1.3.2): CVE-2026-27171 (CPU exhaustion in
+   `crc32_combine64` and `crc32_combine_gen64`).
+
+ * zstd (1.5.6 → 1.5.7): no CVEs; bug-fix and performance release.
+
+ * cJSON (1.7.14 → 1.7.19): CVE-2023-50471, CVE-2023-50472,
+   CVE-2024-31755, CVE-2025-57052.
+
+### Fixes
+
+#### General fixes
+
+* Issues: #5082.
+  Fix data race in timers. The callback and its argument could have been modified after the lock is released.
+  Happening since 1.x (#5089).
+
+#### Consumer fixes
+
+* Fix crash (SIGSEGV) in `rd_kafka_cgrp_handle_LeaveGroup()` when coordinator
+  is unavailable during consumer close. The error logging path dereferenced
+  a potentially NULL broker pointer. Happening since 1.x.
+
+#### Admin client fixes
+
+* Issues: #5417.
+  Fix duplicate groups in `ListConsumerGroups` when multiple brokers return the same group.
+  Happening since 1.x (#5417).
+
+
+### Checksums
+Release asset checksums:
+ * v2.14.2.zip SHA256 `2c0a563a39d5c1bc2e7b3ae81bbad9aca23c586ddab9f659b51983d4dc67cffb`
+ * v2.14.2.tar.gz SHA256 `d7eec9c31c817fa44402f679c252dfbf97e4c338a849a25c3579a31fd127beb8`
 ## 2.14.1 (2026-04-15)
 
 librdkafka v2.14.1 is a maintenance release:
@@ -1715,88 +1792,4 @@ Release asset checksums:
 
 
 *Note: there was no v1.8.1 librdkafka release*
-
-## 1.8.0 (2021-09-16)
-
-# librdkafka v1.8.0
-
-librdkafka v1.8.0 is a security release:
-
- * Upgrade bundled zlib version from 1.2.8 to 1.2.11 in the `librdkafka.redist`
-   NuGet package. The updated zlib version fixes CVEs:
-   CVE-2016-9840, CVE-2016-9841, CVE-2016-9842, CVE-2016-9843
-   See https://github.com/edenhill/librdkafka/issues/2934 for more information.
- * librdkafka now uses [vcpkg](https://vcpkg.io/) for up-to-date Windows
-   dependencies in the `librdkafka.redist` NuGet package:
-   OpenSSL 1.1.1l, zlib 1.2.11, zstd 1.5.0.
- * The upstream dependency (OpenSSL, zstd, zlib) source archive checksums are
-   now verified when building with `./configure --install-deps`.
-   These builds are used by the librdkafka builds bundled with
-   confluent-kafka-go, confluent-kafka-python and confluent-kafka-dotnet.
-
-
-### Enhancements
-
- * Producer `flush()` now overrides the `linger.ms` setting for the duration
-   of the `flush()` call, effectively triggering immediate transmission of
-   queued messages. (#3489)
-
-### Fixes
-
-#### General fixes
-
- * Correctly detect presence of zlib via compilation check. (Chris Novakovic)
- * `ERR__ALL_BROKERS_DOWN` is no longer emitted when the coordinator
-   connection goes down, only when all standard named brokers have been tried.
-   This fixes the issue with `ERR__ALL_BROKERS_DOWN` being triggered on
-   `consumer_close()`. It is also now only emitted if the connection was fully
-   up (past handshake), and not just connected.
- * `rd_kafka_query_watermark_offsets()`, `rd_kafka_offsets_for_times()`,
-   `consumer_lag` metric, and `auto.offset.reset` now honour
-   `isolation.level` and will return the Last Stable Offset (LSO)
-   when `isolation.level` is set to `read_committed` (default), rather than
-   the uncommitted high-watermark when it is set to `read_uncommitted`. (#3423)
- * SASL GSSAPI is now usable when `sasl.kerberos.min.time.before.relogin`
-   is set to 0 - which disables ticket refreshes (by @mpekalski, #3431).
- * Rename internal crc32c() symbol to rd_crc32c() to avoid conflict with
-   other static libraries (#3421).
- * `txidle` and `rxidle` in the statistics object was emitted as 18446744073709551615 when no idle was known. -1 is now emitted instead. (#3519)
-
-
-#### Consumer fixes
-
- * Automatically retry offset commits on `ERR_REQUEST_TIMED_OUT`,
-   `ERR_COORDINATOR_NOT_AVAILABLE`, and `ERR_NOT_COORDINATOR` (#3398).
-   Offset commits will be retried twice.
- * Timed auto commits did not work when only using assign() and not subscribe().
-   This regression was introduced in v1.7.0.
- * If the topics matching the current subscription changed (or the application
-   updated the subscription) while there was an outstanding JoinGroup or
-   SyncGroup request, an additional request would sometimes be sent before
-   handling the response of the first. This in turn lead to internal state
-   issues that could cause a crash or malbehaviour.
-   The consumer will now wait for any outstanding JoinGroup or SyncGroup
-   responses before re-joining the group.
- * `auto.offset.reset` could previously be triggered by temporary errors,
-   such as disconnects and timeouts (after the two retries are exhausted).
-   This is now fixed so that the auto offset reset policy is only triggered
-   for permanent errors.
- * The error that triggers `auto.offset.reset` is now logged to help the
-   application owner identify the reason of the reset.
- * If a rebalance takes longer than a consumer's `session.timeout.ms`, the
-   consumer will remain in the group as long as it receives heartbeat responses
-   from the broker.
-
-
-#### Admin fixes
-
- * `DeleteRecords()` could crash if one of the underlying requests
-   (for a given partition leader) failed at the transport level (e.g., timeout).
-   (#3476).
-
-### Checksums
-Release asset checksums:
- * v1.8.0.zip SHA256 `4b173f759ea5fdbc849fdad00d3a836b973f76cbd3aa8333290f0398fd07a1c4`
- * v1.8.0.tar.gz SHA256 `93b12f554fa1c8393ce49ab52812a5f63e264d9af6a50fd6e6c318c481838b7f`
-
 
