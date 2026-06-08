@@ -1,4 +1,4 @@
-# Consumer Lag Spikes and Offset Resets After Broker Events
+# Consumer Lag Spikes and Offset Resets
 
 A specific failure pattern can cause consumer lag to jump suddenly from near zero to the full topic retention window - potentially hours or days of lag - then slowly drain over time before repeating on a regular schedule. This document explains the two main causes of this pattern, how to tell them apart, and what to do about each.
 

@@ -74,7 +74,7 @@
 - [Assignments Tracking](Consumer-Groups-Assignments-Tracking)
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
-- [Consumer Lag Spikes and Offset Resets After Broker Events](Consumer-Groups-Offset-Rewind-After-Broker-Failure)
+- [Consumer Lag Spikes and Offset Resets](Consumer-Groups-Offset-Rewind)
 
 ## Share Groups
 
