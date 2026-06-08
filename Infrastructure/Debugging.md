@@ -598,5 +598,6 @@ Don't hesitate to get in touch if you still need clarification after following t
 - [Problems and Troubleshooting](Infrastructure-Problems-and-Troubleshooting) - Common issues and their solutions for Karafka applications
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Configure comprehensive logging and monitoring for debugging
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understand error handling mechanisms and retry logic
+- [Consumer Lag Spikes and Offset Resets After Broker Events](Consumer-Groups-Offset-Rewind-After-Broker-Failure) - Diagnosing and resolving the pattern where consumer lag jumps to the retention ceiling after a broker failure or rebalance
 - [Support](Pro-Support) - Access priority support and direct assistance from the Karafka team
 - [FAQ](Basics-FAQ) - Frequently asked questions about Karafka functionality and troubleshooting
