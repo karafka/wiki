@@ -228,7 +228,6 @@ end
 - **External execution required**: Due to librdkafka limitations, plans must be executed via Kafka CLI tools
 - **No atomic operations**: Partition reassignments happen independently and may complete at different times
 
----
 
 ## See Also
 

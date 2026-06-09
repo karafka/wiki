@@ -139,7 +139,6 @@ Flipper.disable("pause_topic_orders")
 
 This approach gives you **persistent, centrally-managed topic pausing** that's perfect for planned maintenance, migrations, and controlled rollouts - without touching the Web UI or redeploying code.
 
----
 
 ## See Also
 

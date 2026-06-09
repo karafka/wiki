@@ -175,7 +175,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
----
 
 ## See Also
 

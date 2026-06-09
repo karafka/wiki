@@ -2,7 +2,7 @@
 
 When using Karafka with batch consumption and a Dead Letter Queue (DLQ), it is possible to observe messages being processed more times than `max_retries` would suggest. This document explains the three primary causes of this behavior, how to identify which one applies, and what to do about each.
 
-!!! note
+!!! note "Note"
 
     In the vast majority of reported cases, the root cause is one of the expected behaviors described below rather than a Karafka bug. That said, bugs have occurred in the past, and if none of these explanations fit your observations, sharing a minimal reproduction with the Karafka team is the right next step.
 

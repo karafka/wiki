@@ -75,6 +75,5 @@ Precompiled native extensions presented legitimate security concerns:
 
 For complete documentation on using native extensions, see: **[Native Extensions](Development-Native-Extensions)**
 
----
 
 **Note:** This represents the successful completion of a multi-month effort to solve one of Ruby's most complex native extension challenges. The Karafka ecosystem now provides installation speeds comparable to pure Ruby gems while maintaining full native library functionality.

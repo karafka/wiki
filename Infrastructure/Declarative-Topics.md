@@ -135,7 +135,7 @@ end
 
 This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
 
-!!! note
+!!! note "Note"
 
     Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
 
@@ -215,7 +215,6 @@ This will ensure the correct exit code is returned based on the operation's outc
 - `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
 - `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.
 
----
 
 ## See Also
 

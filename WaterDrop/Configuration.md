@@ -56,7 +56,7 @@ Some of the options are:
 | `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
 | `statistics_decorator`                      | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
 
-!!! info
+!!! info "Info"
 
     Full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
@@ -337,7 +337,7 @@ Below you can find examples where each of the validations layers fails:
     #     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
     ```
 
-!!! note
+!!! note "Note"
 
     The `msg_size_too_large error` can arise from:
 
@@ -369,7 +369,6 @@ Below you can find examples where each of the validations layers fails:
 
 Understanding the nuances of message size validation is crucial to ensure smooth message production. While it may seem complex at first, being mindful of the distinctions between uncompressed and compressed sizes and client-side and broker-side validations can prevent potential pitfalls and disruptions in your Kafka workflows.
 
----
 
 ## See Also
 

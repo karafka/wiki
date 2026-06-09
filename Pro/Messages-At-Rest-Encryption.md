@@ -32,7 +32,7 @@ Once everything is configured, Karafka will automatically produce encrypted mess
 
 Karafka keeps messages encrypted until their deserialization.
 
-!!! note
+!!! note "Note"
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
 
@@ -109,7 +109,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Such a pattern should only be used when working with trusted entities.
 
@@ -157,7 +157,6 @@ This feature is especially critical in industries subject to stringent regulatio
 
 Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
 
----
 
 ## See Also
 

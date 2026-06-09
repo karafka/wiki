@@ -112,7 +112,6 @@ Sessions are conducted remotely via video call. You can share your screen to wal
 5. **Scope**: Consultation covers Karafka, WaterDrop, and related Kafka architecture. Custom application development is not included.
 6. **Confidentiality**: All discussions and shared materials are treated as confidential.
 
----
 
 ## See Also
 

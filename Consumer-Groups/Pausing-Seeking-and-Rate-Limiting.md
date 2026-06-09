@@ -6,7 +6,6 @@ Using Karafka Pro for filtering and rate limiting also eliminates the need for d
 
 Overall, using Karafka Pro for filtering and rate limiting not only simplifies the development process but also ensures that message processing is handled in a reliable and scalable manner.
 
----
 
 Karafka allows you to pause processing for a defined time. This can be used, for example, to apply a manual back-off policy or throttling. To pause a given partition from within the consumer, you need to use the `#pause` method that accepts the pause offset (what should be the first message to get again after resuming) and the time for which the pause should be valid.
 
@@ -30,7 +29,7 @@ def consume
 end
 ```
 
-!!! note
+!!! note "Note"
 
     It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
 
@@ -276,7 +275,6 @@ It's crucial to be aware, especially if you're using a third-party Kafka provide
 
 In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help leverage its benefits while mitigating downsides.
 
----
 
 ## See Also
 

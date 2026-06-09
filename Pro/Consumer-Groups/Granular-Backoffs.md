@@ -94,7 +94,6 @@ Granular Backoffs can be valuable in numerous situations, including:
 
 Granular Backoffs is a powerful feature, allowing for the per-topic customization of pause, backoff, and retry time settings. This ensures a flexible and tailored approach to handling and processing messages based on their respective topic characteristics.
 
----
 
 ## See Also
 

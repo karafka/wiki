@@ -129,7 +129,6 @@ class CountersConsumer < ApplicationConsumer
 end
 ```
 
----
 
 ## See Also
 

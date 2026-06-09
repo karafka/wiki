@@ -27,7 +27,6 @@ Karafka's behaviour can be altered with the following environment variables:
   </tbody>
 </table>
 
----
 
 ## See Also
 

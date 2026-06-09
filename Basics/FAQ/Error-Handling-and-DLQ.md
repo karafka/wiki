@@ -16,7 +16,6 @@
 1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
 1. [Why are some messages processed more times than `max_retries` specifies?](#why-are-some-messages-processed-more-times-than-max_retries-specifies)
 
----
 
 ## Can I skip messages on errors?
 
@@ -53,7 +52,7 @@ When a message is dispatched to a [dead letter queue](Consumer-Groups-Dead-Lette
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled.
 
-!!! note
+!!! note "Note"
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 

@@ -17,7 +17,9 @@
   ],
   "customRules": [
     "mkdocs-material-linter",
-    "./.rules/no-emdash.js"
+    "./.rules/no-emdash.js",
+    "./.rules/no-horizontal-rule.js",
+    "./.rules/admonition-title-required.js"
   ],
   "config": {
     "default": true,

@@ -290,7 +290,7 @@ You can also use this ACL command to give all operations access for the brokers 
   --group=*
 ```
 
-!!! note
+!!! note "Note"
 
     The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
 
@@ -310,7 +310,7 @@ Details about how Kafka for Heroku works can also be found here:
 
 ### Heroku Kafka Prefix Convention
 
-!!! note
+!!! note "Note"
 
     This section **only** applies to the Multi-Tenant add-on mode.
 
@@ -367,7 +367,7 @@ To make it work you need to follow few steps:
     heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
     ```
 
-    !!! note
+    !!! note "Note"
 
         The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
 
@@ -436,7 +436,7 @@ To make it work you need to follow few steps:
     heroku kafka:consumer-groups:create karafka-web-ui
     ```
 
-    !!! note
+    !!! note "Note"
 
         You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
@@ -905,7 +905,6 @@ CUSTOM_PRODUCER = WaterDrop::Producer.new do |config|
 end
 ```
 
----
 
 ## See Also
 

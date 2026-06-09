@@ -18,7 +18,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you, for example, to connect to multiple Kafka clusters.
 
@@ -79,7 +79,7 @@ There are several env settings you can use with Karafka. They are described unde
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-!!! note
+!!! note "Note"
 
     Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
 
@@ -112,7 +112,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     In order to use `zstd`, you need to install `libzstd-dev`:
 
@@ -180,7 +180,6 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
     If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Infrastructure-Declarative-Topics).
 
----
 
 ## See Also
 

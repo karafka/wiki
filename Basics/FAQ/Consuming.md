@@ -45,7 +45,6 @@
 1. [Can two Karafka server processes with the same group_id consume messages from the same partition in parallel?](#can-two-karafka-server-processes-with-the-same-group_id-consume-messages-from-the-same-partition-in-parallel)
 1. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
 
----
 
 ## Could an HTTP controller also consume a fetched message through the Karafka router?
 
@@ -177,7 +176,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-!!! note
+!!! note "Note"
 
     When using Karafka [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Consumer-Groups-Virtual-Partitions#virtual-offset-management) works.
 

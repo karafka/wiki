@@ -70,7 +70,6 @@ Enterprise includes support for creating custom compliance and security document
 
 By choosing Karafka Enterprise, organizations can ensure that their Kafka and Karafka implementations are robust, secure, and aligned with their specific business and operational needs.
 
----
 
 ## See Also
 

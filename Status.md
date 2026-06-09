@@ -6,7 +6,6 @@
 !!! success "Current Status - All Clear"
     No active advisories at this time.
 
----
 
 ## Incident History
 

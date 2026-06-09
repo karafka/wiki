@@ -63,7 +63,6 @@ Here are some real-life examples of how Karafka's Rate Limiting feature can be u
 
 In summary, the Rate Limiting mechanism in Karafka provides a flexible way to control the message consumption rate from Kafka topics, improving the scalability and resilience of message-based applications. By configuring the limits on a per-topic basis and using advanced filtering APIs, Karafka can adapt to different processing requirements and handle dynamic changes in the Kafka cluster topology.
 
----
 
 ## See Also
 

@@ -28,7 +28,6 @@ To rotate your primary (main) credential:
 
 If you use [additional credentials](Pro-Getting-Started#additional-credentials) (e.g. for CI or development environments), each one can be rotated independently from the license page. Press the "Rotate" button next to the specific credential you want to rotate and follow the same email confirmation flow. Only the rotated credential is affected; all other credentials remain unchanged.
 
----
 
 ## See Also
 

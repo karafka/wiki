@@ -431,7 +431,6 @@ topic :person do
 end
 ```
 
----
 
 ## See Also
 

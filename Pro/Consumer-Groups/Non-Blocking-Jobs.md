@@ -30,7 +30,6 @@ Non-Blocking Jobs are Long-Running Jobs, and `#non_blocking_job` is just an alia
 
 Please refer to the [Long-Running Jobs documentation](Pro-Consumer-Groups-Long-Running-Jobs) to better understand this feature.
 
----
 
 ## See Also
 

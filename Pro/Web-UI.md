@@ -210,7 +210,6 @@ This feature has dedicated documentation that you can access [here](Pro-Web-UI-T
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-topics-management-configuration.png)
 
----
 
 ## See Also
 

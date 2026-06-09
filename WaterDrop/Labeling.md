@@ -158,7 +158,6 @@ Using labels to distinguish between sync and async errors provides several advan
 
 Labeling in WaterDrop is a powerful feature that enhances message tracking, debugging, and monitoring. By effectively using labels, you can better understand your message flow, quickly address issues, and gather valuable insights into your messaging system's performance.
 
----
 
 ## See Also
 

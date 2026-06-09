@@ -155,7 +155,6 @@ To use it:
 
 In case the verification fails, script will exit with the exit code `1`.
 
----
 
 ## See Also
 

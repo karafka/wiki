@@ -587,7 +587,6 @@ Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-inten
 
 Swarm Mode supports Static Group Membership to enhance consumer group stability and allows for quick node restarts without rebalancing, thanks to Karafka Pro's monitoring.
 
----
 
 ## See Also
 

@@ -9,7 +9,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 - settings level - root settings that will be used everywhere
 - topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
-!!! note
+!!! note "Note"
 
     Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Basics-Configuration) of the app itself.
 
@@ -356,7 +356,6 @@ end
 
 By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
 
----
 
 ## See Also
 

@@ -70,7 +70,6 @@ Understanding topic auto-creation behavior is crucial for building reliable even
 
 This behavior ensures topics are created only when there's actual data to store, not merely because a consumer is interested in potentially receiving messages.
 
----
 
 ## See Also
 

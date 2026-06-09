@@ -28,7 +28,6 @@
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
 1. [Should I use SolidQueue with ActiveJob alongside Karafka, or can Karafka handle all job-related tasks?](#should-i-use-solidqueue-with-activejob-alongside-karafka-or-can-karafka-handle-all-job-related-tasks)
 
----
 
 ## Why is Karafka not doing work in parallel when I started two processes?
 

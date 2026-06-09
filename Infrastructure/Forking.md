@@ -44,7 +44,6 @@ Note that forking issues typically occur when the required dependencies aren't l
 
 Forking in Ruby applications that use Karafka and `librdkafka` requires careful planning and implementation to prevent resource leakage and ensure stable operation. This is especially true on macOS, where changes to the system's handling of forks can lead to critical issues. By following the outlined best practices, developers can effectively manage these challenges in a multi-process environment.
 
----
 
 ## See Also
 

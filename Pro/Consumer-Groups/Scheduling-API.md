@@ -86,7 +86,7 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 ### API Methods
 
-!!! note
+!!! note "Note"
 
     Please note that each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 
@@ -221,7 +221,7 @@ end
 
 ### Example Custom Scheduler
 
-!!! note
+!!! note "Note"
 
     Besides viewing the example scheduler below, we encourage you to check Karafka's default schedulers in the Karafka sources for more real-life examples.
 
@@ -315,7 +315,7 @@ This approach ensures that the system remains efficient and responsive to its op
 
 ## Expired Jobs Scheduling
 
-!!! note
+!!! note "Note"
 
     In Karafka, all jobs given to the scheduler must be scheduled, even if they seem redundant. This is essential for maintaining system integrity and efficiency. The only exception is for accumulated jobs of a subscription group under recovery.
 
@@ -447,7 +447,6 @@ The Karafka Scheduling API provides advanced capabilities for managing consumpti
 
 It supports custom scheduler implementation, with stateful and stateless options, and includes a variety of methods for job management. The API's design ensures concurrency and frequency management. Its flexibility and efficiency make it ideal for diverse scenarios, including long-running job management, dynamic resource allocation, and adaptive scheduling based on traffic patterns or job complexity.
 
----
 
 ## See Also
 

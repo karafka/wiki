@@ -10,6 +10,6 @@ The Karafka FAQ is organized into the following categories for easier navigation
 | [Error Handling and DLQ](Basics-FAQ-Error-Handling-and-DLQ) | DLQ strategies, poison pills, retries, backoff, validation | 17 |
 | [Web UI](Basics-FAQ-Web-UI) | Web UI setup, topics, ACLs, monitoring, Datadog | 23 |
 
-!!! note
+!!! note "Note"
 
     For Pro-specific questions, please refer to the relevant Pro feature documentation pages.

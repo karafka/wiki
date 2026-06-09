@@ -61,7 +61,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     [Pro Enhanced ActiveJob](Pro-Consumer-Groups-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
 
@@ -300,7 +300,6 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
     ActiveJob Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
 
----
 
 ## See Also
 

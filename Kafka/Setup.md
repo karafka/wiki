@@ -43,7 +43,6 @@ Connected to 192.168.0.5.
 Escape character is '^]'.
 ```
 
----
 
 ## See Also
 

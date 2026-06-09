@@ -12,7 +12,7 @@
 
 ## Articles and references about Karafka
 
-!!! note
+!!! note "Note"
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 

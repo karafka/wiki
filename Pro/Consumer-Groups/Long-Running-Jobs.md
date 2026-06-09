@@ -79,11 +79,11 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 2. Partition is revoked and re-assigned to the same process.
 3. Partition is revoked and assigned to a different process.
 
-!!! note
+!!! note "Note"
 
     The `#revoked?` method value changes independently from the workers' occupation. This means that the revocation status will be updated even if all the workers are busy processing long-running jobs.
 
-!!! note
+!!! note "Note"
 
     Revocation jobs are also non-blocking for long-running jobs. If the internal workers' batch is full, they will not block polling.
 
@@ -221,7 +221,6 @@ The Long-Running Jobs feature is designed to handle tasks that take longer to pr
 
 These are just a few examples of how Long-Running Jobs can benefit different industries where processing messages takes a significant amount of time. Karafka's Long-Running Jobs feature can be used to develop and manage these jobs, enabling continuous data processing and analysis.
 
----
 
 ## See Also
 

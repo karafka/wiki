@@ -38,7 +38,6 @@ bundle exec karafka install
 
 After that, ensure that your application is loaded before setting up and booting Karafka.
 
----
 
 ## See Also
 

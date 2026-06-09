@@ -145,7 +145,7 @@ KIP-848 supports live migration without downtime. When the first consumer using 
     - Continue restarting remaining consumers one at a time
     - Monitor for any errors during the rollout
 
-    !!! warning
+    !!! warning "Warning"
 
         Complete the migration within a few hours. Don't leave the group in a mixed state for extended periods.
 
@@ -312,7 +312,6 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 
 - **Recommendation:** For new deployments on Kafka 4.0+, enable KIP-848 from the start. For existing deployments, test thoroughly in staging before migrating to production.
 
----
 
 ## See Also
 

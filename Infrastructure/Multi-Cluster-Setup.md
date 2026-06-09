@@ -54,7 +54,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, ensuring efficient resource utilization and streamlined data consumption across clusters.
 
@@ -123,7 +123,6 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're leveraging the multi-cluster configuration for valid business reasons.
 
----
 
 ## See Also
 
