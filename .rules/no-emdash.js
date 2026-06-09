@@ -1,6 +1,6 @@
 module.exports = {
   names: ['no-emdash'],
-  description: 'Em dashes are not allowed - use a regular hyphen instead',
+  description: 'Em dashes and en dashes are not allowed - use a regular hyphen instead',
   tags: ['style'],
   parser: 'markdownit',
   function: function rule(params, onError) {
@@ -9,10 +9,10 @@ module.exports = {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      if (line.includes('—')) {
+      if (line.includes('—') || line.includes('–')) {
         onError({
           lineNumber: i + 1,
-          detail: 'Em dash found. Use a regular hyphen (-) instead.',
+          detail: 'Em dash or en dash found. Use a regular hyphen (-) instead.',
           context: line.trim()
         });
       }

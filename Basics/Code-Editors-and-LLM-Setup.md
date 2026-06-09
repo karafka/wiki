@@ -175,10 +175,10 @@ In this section, you'll find a general list of dos and don'ts for prompting your
 
 ### What to Verify
 
-- **Version compatibility** – Always check against current docs
-- **Production considerations** – Test recommendations in staging
-- **Security implications** – Review security-related suggestions carefully
-- **Performance claims** – Benchmark in your environment
+- **Version compatibility** - Always check against current docs
+- **Production considerations** - Test recommendations in staging
+- **Security implications** - Review security-related suggestions carefully
+- **Performance claims** - Benchmark in your environment
 
 ## Automatic LLM Optimization
 
@@ -191,8 +191,8 @@ Karafka's documentation automatically detects AI services (OpenAI, Anthropic, Gi
 
 This bidirectional routing provides the best possible experience for both regular users and machines:
 
-- **40-65% token reduction** – No HTML tags, CSS classes, or JavaScript noise
-- **Direct processing** – LLMs receive clean, semantic content without parsing overhead
-- **Better context understanding** – More actual documentation fits within AI context windows
+- **40-65% token reduction** - No HTML tags, CSS classes, or JavaScript noise
+- **Direct processing** - LLMs receive clean, semantic content without parsing overhead
+- **Better context understanding** - More actual documentation fits within AI context windows
 
 The result is more accurate, framework-specific guidance when you reference Karafka documentation URLs in AI conversations. The optimization happens transparently as long as you use regular documentation URLs. The rest is handled by the system automatically.

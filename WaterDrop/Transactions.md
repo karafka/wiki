@@ -255,9 +255,9 @@ Because of the above, delivery reports may seem useless, however, while delivery
 
 ## Internal Errors Retries
 
-WaterDrop is designed to be intelligent about handling transaction-related errors. It discerns which errors can be retried and will attempt based on the configuration settings. The retries aren't immediate – they come with a backoff period, giving the system a brief respite before trying again. This approach can mitigate transient issues that might resolve themselves after a short period.
+WaterDrop is designed to be intelligent about handling transaction-related errors. It discerns which errors can be retried and will attempt based on the configuration settings. The retries aren't immediate - they come with a backoff period, giving the system a brief respite before trying again. This approach can mitigate transient issues that might resolve themselves after a short period.
 
-Regardless of the nature of the error – whether retryable or not - WaterDrop ensures transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be initiated if a pattern of errors emerges.
+Regardless of the nature of the error - whether retryable or not - WaterDrop ensures transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be initiated if a pattern of errors emerges.
 
 Errors encapsulated as `Rdkafka::RdkafkaError` offer insight into their nature, helping formulate a response strategy. Here's how you can interpret them:
 

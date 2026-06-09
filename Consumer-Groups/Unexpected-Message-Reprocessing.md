@@ -10,7 +10,7 @@ When using Karafka with batch consumption and a Dead Letter Queue (DLQ), it is p
 
 The `#attempt` counter and the DLQ retry counter both track **how many times Karafka has attempted to process starting from the current committed offset**, not how many times a specific individual message has been processed.
 
-With `max_messages 100`, a full batch of up to 100 messages is pulled for each processing cycle. If messages 0–98 succeed but message 99 fails, and you have not called `mark_as_consumed` for each message individually, Karafka retries the entire batch from the last committed offset (the offset of message 0). Messages 0–98 are therefore reprocessed on every retry of message 99.
+With `max_messages 100`, a full batch of up to 100 messages is pulled for each processing cycle. If messages 0-98 succeed but message 99 fails, and you have not called `mark_as_consumed` for each message individually, Karafka retries the entire batch from the last committed offset (the offset of message 0). Messages 0-98 are therefore reprocessed on every retry of message 99.
 
 This is not a bug. It is the expected consequence of not tracking per-message consumption progress. Each of those earlier messages is processed `max_retries + 1` additional times despite never failing.
 
