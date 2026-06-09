@@ -1,6 +1,6 @@
 # Unexpected Message Reprocessing
 
-When using Karafka with batch consumption and a Dead Letter Queue (DLQ), it is possible to observe messages being processed more times than `max_retries` would suggest. This document explains the three primary causes of this behavior, how to identify which one applies, and what to do about each.
+When using Karafka with batch consumption, it is possible to observe messages being processed more times than expected. This can happen regardless of whether you use a Dead Letter Queue (DLQ) - two of the three causes below apply to any batch consumer, while the third is specific to DLQ configurations. This document explains each cause, how to identify which one applies, and what to do about it.
 
 !!! note "Note"
 
