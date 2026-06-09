@@ -23,8 +23,8 @@ Karafka defaults to **at-least-once delivery semantics**, which means that under
 
 Karafka also supports other Kafka delivery semantics:
 
-- **Exactly-once semantics (EOS)** — via Kafka transactions, which ensure atomicity between offset commits and message production.
-- **At-most-once semantics** — by committing offsets *before* processing. This guarantees no duplication but may lead to message loss if a crash occurs during processing.
+- **Exactly-once semantics (EOS)** - via Kafka transactions, which ensure atomicity between offset commits and message production.
+- **At-most-once semantics** - by committing offsets *before* processing. This guarantees no duplication but may lead to message loss if a crash occurs during processing.
 
 When used correctly and under healthy conditions (no ungraceful termination), Karafka, with at least one semantics, will process each message **once and only once**, even without transactions.
 
@@ -46,7 +46,7 @@ Karafka is a multi-threaded Kafka consumer framework for Ruby/Rails applications
 
 - **Exactly-Once Option**: For critical workflows that absolutely cannot tolerate duplicates, Karafka supports Kafka transactions (Exactly-Once Semantics). This ties the offset commit to producing a result in one atomic operation. However, using transactions is more complex and beyond the scope of most consumer-only scenarios.
 
-Understanding this lifecycle, we can see that double-processing usually indicates something went wrong between message receipt and offset commit – often due to errors, timeouts, or miscoordination in this flow.
+Understanding this lifecycle, we can see that double-processing usually indicates something went wrong between message receipt and offset commit - often due to errors, timeouts, or miscoordination in this flow.
 
 ## Common Causes of Double Message Processing
 
@@ -78,7 +78,7 @@ class OrdersConsumer < ApplicationConsumer
   def consume
     messages.each do |message|
       process(message)
-      # mark_as_consumed is missing — offsets will never be committed!
+      # mark_as_consumed is missing - offsets will never be committed!
     end
   end
 end
@@ -175,7 +175,7 @@ Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe
 
 #### Manual Thread Management in Consumer
 
-Sometimes, users try to spawn their threads within consume to parallelize work. This is **not** recommended - Karafka already handles parallelism. If you do this, be very careful with offset commits. For example, if you spawn a background thread to process a message and immediately mark the message as consumed in the main thread, the background thread might still work when Karafka commits and moves on. If that thread raises an error, you've already acknowledged the message, so Karafka won't retry it – you just lost it (not a duplicate, but data loss). Conversely, suppose you delay offset commit until threads join. In that case, you might not commit in time, causing Kafka to redeliver messages processed successfully by threads (duplicate processing). In short, avoid inventing your threading on top of Karafka's.
+Sometimes, users try to spawn their threads within consume to parallelize work. This is **not** recommended - Karafka already handles parallelism. If you do this, be very careful with offset commits. For example, if you spawn a background thread to process a message and immediately mark the message as consumed in the main thread, the background thread might still work when Karafka commits and moves on. If that thread raises an error, you've already acknowledged the message, so Karafka won't retry it - you just lost it (not a duplicate, but data loss). Conversely, suppose you delay offset commit until threads join. In that case, you might not commit in time, causing Kafka to redeliver messages processed successfully by threads (duplicate processing). In short, avoid inventing your threading on top of Karafka's.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -224,9 +224,9 @@ end
 
 #### Multiple Karafka Apps on Same Topics
 
-Another scenario is that you might have two different Karafka apps (maybe two services) subscribing to the same Kafka topic. If they are meant to handle the same data (like two separate consumers for different purposes), that's not an error – it's expected duplicates (each group processes independently). But you might inadvertently double-consume if they were not supposed to overlap (e.g., a copy-paste of the app running by mistake). Double-check which services consume which topics, and use distinct group IDs only when you intend multiple independent consumptions.
+Another scenario is that you might have two different Karafka apps (maybe two services) subscribing to the same Kafka topic. If they are meant to handle the same data (like two separate consumers for different purposes), that's not an error - it's expected duplicates (each group processes independently). But you might inadvertently double-consume if they were not supposed to overlap (e.g., a copy-paste of the app running by mistake). Double-check which services consume which topics, and use distinct group IDs only when you intend multiple independent consumptions.
 
-Case Study – Competing Consumers: Imagine running Karafka in Kubernetes with an HPA (Horizontal Pod Autoscaler). You set it to scale up to 5 replicas on high load. However, you accidentally left the consumer group name as the default (which might include a random component or environment-specific name). When new pods start, they form their group instead of joining the existing one because the `group.id` was misconfigured per pod. Now, all pods consume the same topic independently – leading to each message being processed 5 times (once per pod). The fix: define a consistent `consumer_group` name in your Karafka routing config so all pods join the same group. After that, messages will properly partition among pods with no duplicates.
+Case Study - Competing Consumers: Imagine running Karafka in Kubernetes with an HPA (Horizontal Pod Autoscaler). You set it to scale up to 5 replicas on high load. However, you accidentally left the consumer group name as the default (which might include a random component or environment-specific name). When new pods start, they form their group instead of joining the existing one because the `group.id` was misconfigured per pod. Now, all pods consume the same topic independently - leading to each message being processed 5 times (once per pod). The fix: define a consistent `consumer_group` name in your Karafka routing config so all pods join the same group. After that, messages will properly partition among pods with no duplicates.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -532,7 +532,7 @@ If Karafka seems frozen or is not progressing:
 
 - Send `SIGTTIN` to the Karafka process. It will print backtraces of all threads to stdout/log.
 
-- This shows you what each thread is doing — e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
+- This shows you what each thread is doing - e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
 
 ```shell
 kill -TTIN <karafka_pid>
@@ -590,8 +590,6 @@ Karafka Pro offers:
 You can contact us at `contact@karafka.io` or via the private Slack channel if you're a Pro customer.
 
 Don't hesitate to get in touch if you still need clarification after following this guide. We're happy to help.
-
----
 
 ## See Also
 

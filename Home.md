@@ -75,6 +75,7 @@
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
 - [Consumer Lag Spikes and Offset Resets](Consumer-Groups-Offset-Rewind)
+- [Unexpected Message Reprocessing](Consumer-Groups-Unexpected-Message-Reprocessing)
 
 ## Share Groups
 

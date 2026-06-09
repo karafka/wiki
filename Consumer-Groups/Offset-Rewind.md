@@ -53,7 +53,7 @@ Three related librdkafka issues interact with the `cooperative-sticky` partition
     </tr>
     <tr>
       <td>2.4.x</td>
-      <td>2.4.0 – 2.7.x</td>
+      <td>2.4.0 - 2.7.x</td>
       <td>Fixed</td>
       <td>Affected</td>
     </tr>
@@ -313,8 +313,6 @@ Pairing `group.instance.id` with a `session.timeout.ms` large enough to cover th
 Upgrading to the latest available Karafka release is the permanent resolution for all issues described in this document. Karafka ships bug fixes and patch releases frequently - staying current means you automatically receive all cumulative fixes, including librdkafka updates, without having to track individual issue fix versions. Running significantly behind the latest release increases the risk of operating on known bugs that have already been resolved upstream.
 
 Before upgrading, review the [upgrade guides](Upgrades-Upgrading) for any breaking changes between your current and target versions, as some version-to-version changes can produce consumer group behavior that looks similar to the offset-reset pattern described in this document. See the [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) page for the current support status of each release series.
-
----
 
 ## See Also
 

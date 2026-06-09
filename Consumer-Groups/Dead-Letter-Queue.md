@@ -202,7 +202,7 @@ This functionality is available in Karafka Pro, and you can read about it [here]
 
 Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
 
-!!! note
+!!! note "Note"
 
     The original offset, partition, and topic information will **not** be preserved. If you need those, we recommend you use the [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue).
 
@@ -271,7 +271,7 @@ When working with a DLQ pattern and using Karafka multi-cluster support, please 
 
 You can alter this by overriding the `#producer` consumer method and providing your cluster-specific producer instance.
 
-!!! note
+!!! note "Note"
 
     Do **not** create producer instances per consumer but one per cluster. Karafka producer is thread-safe and can operate from multiple consumers simultaneously.
 
@@ -408,8 +408,6 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-
 - Gaming platforms: In gaming systems, DLQs can be used to capture game events that fail to process due to connectivity issues, data quality problems, or other issues.
 
 The Karafka Dead Letter Queue is worth using because it provides a way to handle messages that cannot be processed for any reason without losing data. The DLQ allows the failed messages to be reviewed and processed later, reducing the risk of data loss and providing greater reliability and resilience to the system. The DLQ in Karafka is easy to set up and can be configured to handle different scenarios, including retry mechanisms, error handling, and version incompatibilities. This makes it an essential feature for businesses that want to ensure the reliability of their messaging system and avoid data loss in case of errors.
-
----
 
 ## See Also
 

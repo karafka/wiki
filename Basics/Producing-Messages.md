@@ -46,7 +46,7 @@ Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or
 
 This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
 
-!!! info
+!!! info "Info"
 
     If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data. In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
 
@@ -54,7 +54,7 @@ Overall, calling `#close` on the Karafka producer is a best practice that helps 
 
 In the following sections, you can find an example of how to `#close` the producer used in various Ruby processes.
 
-!!! warning
+!!! warning "Warning"
 
     Note, that you should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
 
@@ -206,7 +206,6 @@ PRODUCERS_FOR_CLUSTERS = {
   end
 }
 
-
 # And overwrite the default producer in any consumer you need
 class MyConsumer < ApplicationConsumer
   def consume
@@ -227,8 +226,6 @@ end
 The Web UI relies on per-producer listeners to monitor asynchronous errors. If you craft your consumers and utilize the Web UI, make sure that you configure this integration appropriately.
 
 By leveraging this flexibility in Karafka, you can effectively manage and direct message flow in multi-cluster Kafka environments, ensuring data reaches the right place based on your application's unique requirements.
-
----
 
 ## See Also
 

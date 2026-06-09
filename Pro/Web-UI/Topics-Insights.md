@@ -31,7 +31,7 @@ This tab is essential for monitoring the health and integrity of topic replicati
 
 The Replication tab displays `min.insync.replicas` alongside the replication factor for each topic, providing a complete picture of your topic's durability configuration. Based on these values, the Web UI shows fault tolerance warnings to help you identify potential risks:
 
-- **No redundancy**: When replication factor is 1, there is no data redundancy—if the broker fails, data may be lost
+- **No redundancy**: When replication factor is 1, there is no data redundancy-if the broker fails, data may be lost
 - **Zero fault tolerance**: When `min.insync.replicas` equals the replication factor, no broker failures can be tolerated while maintaining write availability
 - **Low durability**: When the configuration provides minimal fault tolerance that may not be suitable for production workloads
 
@@ -80,8 +80,6 @@ Understanding offsets is useful in several scenarios:
 ## Summary
 
 In summary, the Distribution Insights feature of the Karafka Pro Web UI is a powerful tool that empowers users with the necessary insights to manage, optimize, and troubleshoot Kafka topics effectively. By providing detailed configurations, replication status, and distribution analytics, it enables administrators to maintain a robust and efficient Kafka environment, thereby enhancing performance, scalability, and troubleshooting capabilities.
-
----
 
 ## See Also
 

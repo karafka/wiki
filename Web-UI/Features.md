@@ -98,7 +98,7 @@ The `join_state` field reflects the internal state of the librdkafka consumer gr
 
 ## Jobs
 
-!!! info
+!!! info "Info"
 
     More metrics are available in our Pro offering.
 
@@ -242,8 +242,6 @@ Each check may display one of the following statuses:
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
-
----
 
 ## See Also
 

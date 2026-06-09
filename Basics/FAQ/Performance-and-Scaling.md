@@ -28,8 +28,6 @@
 1. [Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?](#why-dont-my-autoscaled-consumers-rebalance-partitions-when-scaling-up-with-multiplexing-enabled)
 1. [Should I use SolidQueue with ActiveJob alongside Karafka, or can Karafka handle all job-related tasks?](#should-i-use-solidqueue-with-activejob-alongside-karafka-or-can-karafka-handle-all-job-related-tasks)
 
----
-
 ## Why is Karafka not doing work in parallel when I started two processes?
 
 Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
@@ -127,7 +125,7 @@ Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are desig
 
 Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
 
-However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations – database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
+However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations - database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
 Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
 

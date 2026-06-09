@@ -182,7 +182,7 @@ To configure the initial offset for specific topics:
 
     **Result:** Each topic will use its configured offset position, overriding the global default.
 
-!!! note
+!!! note "Note"
 
     This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
@@ -212,11 +212,11 @@ It is worth noting, however, that under normal operating conditions, Karafka wil
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
-!!! note
+!!! note "Note"
 
     The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
 
-!!! note
+!!! note "Note"
 
     With [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 
@@ -231,7 +231,7 @@ Karafka consumer instances are persistent by default. A single consumer instance
 
 Karafka recreates the consumer instance only when a partition is lost and reassigned.
 
-!!! note
+!!! note "Note"
 
     When buffering messages in memory, use manual offset management. Without it, you'll lose buffered data, if the process crashes before flushing.
 
@@ -584,8 +584,6 @@ class CustomConsumer < ApplicationConsumer
   end
 end
 ```
-
----
 
 ## See Also
 

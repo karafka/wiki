@@ -83,8 +83,6 @@ In summary, while both features deal with message lifecycle management, they ope
 
 - Log analysis: In log analysis applications, the expiring consumption of Kafka messages can be used to prevent the processing of old logs that are no longer useful. For example, skipping logs that are older than a certain age or logs that have already been analyzed and processed.
 
----
-
 ## See Also
 
 - [Filtering API](Pro-Consumer-Groups-Filtering-API) - Foundation for Expiring Messages and custom message filtering

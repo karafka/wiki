@@ -473,7 +473,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
 end
 ```
 
-!!! note
+!!! note "Note"
 
     If you're seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 
@@ -492,8 +492,6 @@ However, keep in mind the following limitations of `karafka-testing`:
 1. **Transactional Testing**: While `karafka-testing` supports transactional message production, it may not fully capture all the intricacies of Kafka transactions in a real cluster environment. It is important to be mindful of potential discrepancies between mocked transactions and their real-world counterparts.
 
 1. **Batch Size Ignored**: The `karafka-testing` library does not respect the `max_messages` setting configured for topics in the `karafka.rb` routes. It simply accumulates and consumes all messages sent to it during testing, bypassing the actual fetching engine of Karafka. This means that batch processing behavior may not be accurately reflected in your tests, as the library will consume all messages produced regardless of the configured batch size.
-
----
 
 ## See Also
 

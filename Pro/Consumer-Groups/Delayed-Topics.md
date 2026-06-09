@@ -34,7 +34,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Please keep in mind, that the delay time needs to be provided in milliseconds
 
@@ -142,8 +142,6 @@ Here are some potential use cases for Delayed Topics:
 ## Summary
 
 Karafka's Delayed Topics is a powerful feature that allows for arbitrary delays when processing messages from specific topics. It can be used in various use cases, such as e-commerce, social media moderation, and finance. By delaying message processing, you can perform additional processing or validation, moderate user-generated content, and introduce a retry mechanism for failed messages. By using Delayed Topics in conjunction with a Dead Letter Queue, you can create a more robust and dynamic system that can handle various business and failure scenarios.
-
----
 
 ## See Also
 

@@ -1,6 +1,6 @@
 # Getting Started with WaterDrop
 
-!!! info
+!!! info "Info"
 
     If you want to both produce and consume messages, please use [Karafka](Basics-Getting-Started). It integrates WaterDrop automatically.
 
@@ -50,11 +50,9 @@ To get started with WaterDrop:
     )
     ```
 
-!!! info
+!!! info "Info"
 
     For additional WaterDrop usage examples, please refer to the [Usage](WaterDrop-Usage) section of this documentation.
-
----
 
 ## See Also
 

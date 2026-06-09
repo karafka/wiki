@@ -208,11 +208,11 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
-!!! note
+!!! note "Note"
 
     While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
-!!! note
+!!! note "Note"
 
     When using the `#read_topic` method in the Karafka Admin API to retrieve messages from a topic partition, it's essential to understand that this method skips offsets of compacted messages and transactions-related messages. This means that these specific messages won't be fetched or displayed even if they exist in the topic partition. However, while these messages are skipped during retrieval, they are still included in the total counts for those in that partition.
 
@@ -747,8 +747,6 @@ Karafka::Admin.seek_consumer_group(
 ```
 
 Using `:earliest` and `:latest` is vital for managing consumer behavior, ensuring flexibility in data consumption strategies according to specific needs.
-
----
 
 ## See Also
 

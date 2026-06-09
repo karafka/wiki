@@ -110,7 +110,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
@@ -181,7 +181,7 @@ Karafka.monitor.subscribe 'error.occurred' do |event|
 end
 ```
 
-!!! note
+!!! note "Note"
 
     When doing batch operations, this message may not be the exact cause of the processing error.
 
@@ -201,7 +201,7 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
   <img src="https://karafka.io/assets/misc/charts/on_errors_behaviour.svg" />
 </p>
 
-!!! note
+!!! note "Note"
 
     This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
 
@@ -265,8 +265,6 @@ In cases of unexpected errors within the listeners' loops, Karafka applies a fin
 !!! warning "User Responsibility for Listener Errors"
 
     Users should **not** rely on the final recovery strategy as a primary error-handling method. Any errors originating from listeners should be deeply investigated and resolved to prevent recurring issues. Proper error management at the listener level is crucial for maintaining the efficiency and reliability of your Karafka application.
-
----
 
 ## See Also
 

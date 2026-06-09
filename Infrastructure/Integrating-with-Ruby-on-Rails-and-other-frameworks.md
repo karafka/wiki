@@ -38,8 +38,6 @@ bundle exec karafka install
 
 After that, ensure that your application is loaded before setting up and booting Karafka.
 
----
-
 ## See Also
 
 - [Active Job](Consumer-Groups-Active-Job) - Integrate Karafka with Rails ActiveJob for background processing

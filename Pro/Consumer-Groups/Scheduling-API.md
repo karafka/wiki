@@ -86,7 +86,7 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 ### API Methods
 
-!!! note
+!!! note "Note"
 
     Please note that each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 
@@ -221,7 +221,7 @@ end
 
 ### Example Custom Scheduler
 
-!!! note
+!!! note "Note"
 
     Besides viewing the example scheduler below, we encourage you to check Karafka's default schedulers in the Karafka sources for more real-life examples.
 
@@ -309,13 +309,13 @@ end
 In Karafka, revocation and shutdown jobs, much like consumption jobs, can technically be scheduled using custom logic. However, it is generally recommended to stick with the default scheduling behavior provided by the `Base` scheduler for these jobs. The primary reason for this recommendation lies in the nature of these jobs as lifecycle events.
 
 Revocation and shutdown jobs are not frequent occurrences in the lifecycle of a Kafka application. They represent specific moments in the application's operation, such as when a consumer leaves a group (revocation), or the application shuts down (shutdown). Given their infrequent nature, these events rarely require the kind of complex scheduling logic that might be necessary for regular consumption jobs.
-Another essential aspect is the interaction between these lifecycle jobs and the ongoing consumption jobs. When a consumption job for the same topic partition is withheld, one might wonder if it's appropriate to proceed with revocation or shutdown jobs. The answer is yes; running these jobs is reasonable and recommended. Karafka's design allows it to detect when a scheduled consumption job is no longer necessary – for instance if the consumer has already been revoked or shut down. In such cases, Karafka will not execute the redundant consumption job but will run the required housekeeping internal logic.
+Another essential aspect is the interaction between these lifecycle jobs and the ongoing consumption jobs. When a consumption job for the same topic partition is withheld, one might wonder if it's appropriate to proceed with revocation or shutdown jobs. The answer is yes; running these jobs is reasonable and recommended. Karafka's design allows it to detect when a scheduled consumption job is no longer necessary - for instance if the consumer has already been revoked or shut down. In such cases, Karafka will not execute the redundant consumption job but will run the required housekeeping internal logic.
 
 This approach ensures that the system remains efficient and responsive to its operational state without the need for complex custom scheduling logic for revocation and shutdown events. By default, the `Base` scheduler is well-equipped to handle these events effectively, making it advisable to rely on these built-in mechanisms for most use cases.
 
 ## Expired Jobs Scheduling
 
-!!! note
+!!! note "Note"
 
     In Karafka, all jobs given to the scheduler must be scheduled, even if they seem redundant. This is essential for maintaining system integrity and efficiency. The only exception is for accumulated jobs of a subscription group under recovery.
 
@@ -446,8 +446,6 @@ Here is a list of use cases where the Scheduling API can be useful:
 The Karafka Scheduling API provides advanced capabilities for managing consumption jobs within a process, emphasizing precise control and efficient resource distribution. It enables granular scheduling of tasks, sequencing of jobs, and adaptive scheduling based on the system's current state.
 
 It supports custom scheduler implementation, with stateful and stateless options, and includes a variety of methods for job management. The API's design ensures concurrency and frequency management. Its flexibility and efficiency make it ideal for diverse scenarios, including long-running job management, dynamic resource allocation, and adaptive scheduling based on traffic patterns or job complexity.
-
----
 
 ## See Also
 

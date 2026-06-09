@@ -89,7 +89,7 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
   </small>
 </p>
 
-!!! note
+!!! note "Note"
 
     The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
@@ -177,7 +177,7 @@ class MyConsumer
 end
 ```
 
-!!! note
+!!! note "Note"
 
     No routing changes are needed to make it work.
 
@@ -442,8 +442,6 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
-
----
 
 ## See Also
 

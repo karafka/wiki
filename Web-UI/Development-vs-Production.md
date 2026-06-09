@@ -105,7 +105,7 @@ bundle exec karafka-web install --replication-factor 5
 
 ## Usage with Heroku Kafka Multi-Tenant add-on
 
-!!! note
+!!! note "Note"
 
     This section **only** applies to the Multi-Tenant add-on mode.
 
@@ -153,8 +153,6 @@ Please take note of the following potential issue:
 If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
 It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
-
----
 
 ## See Also
 

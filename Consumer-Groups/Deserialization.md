@@ -431,8 +431,6 @@ topic :person do
 end
 ```
 
----
-
 ## See Also
 
 - [Routing](Consumer-Groups-Routing) - Learn how to configure topics and deserializers in routing

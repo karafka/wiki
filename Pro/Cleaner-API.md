@@ -202,8 +202,6 @@ Understanding these limitations is essential for users to effectively and effici
 
 In all these use cases, the key value of the Cleaner API is in enhancing memory management, ensuring that systems maintain optimal performance even when dealing with substantial or varied data loads with various message sizes.
 
----
-
 ## See Also
 
 - [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - Iterator API for message processing

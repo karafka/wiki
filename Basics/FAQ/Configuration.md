@@ -37,8 +37,6 @@
 1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
 1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 
----
-
 ## Does Karafka require Ruby on Rails?
 
 **No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) documentation.
@@ -176,7 +174,7 @@ require 'karafka_root_dir/karafka_app'
 
 Still not a perfect solution because karafka gem is still loaded.
 
-!!! note
+!!! note "Note"
 
     This description was prepared by [AleksanderSzyszka](https://github.com/AleksanderSzyszka).
 
@@ -287,7 +285,7 @@ end
 
 It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
 
-!!! note
+!!! note "Note"
 
     If you do not allow bigger payloads and try to send them, you will end up with one of the following errors:
 

@@ -555,7 +555,7 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 - **Long-Running Stability**: Scheduled messages are designed to operate in a continuous, long-running manner. This setup is crucial because the feature involves daily reloading of schedules based on predefined times (midnight). Ensuring these processes are not interrupted by deployments or other operational changes is key to maintaining their reliability.
 
-- **Isolation from Other Processes**: Due to the significant resource consumption during data loading phases—both in terms of memory and network bandwidth—it's beneficial to isolate the scheduled messages handling from other processes. This separation helps prevent any potential performance degradation in different parts of your system due to the intensive data-loading activities in scheduled message processing.
+- **Isolation from Other Processes**: Due to the significant resource consumption during data loading phases-both in terms of memory and network bandwidth-it's beneficial to isolate the scheduled messages handling from other processes. This separation helps prevent any potential performance degradation in different parts of your system due to the intensive data-loading activities in scheduled message processing.
 
 ### Best Practices
 
@@ -663,8 +663,6 @@ Use Cases:
 - **Feature Activation**: At the start of a promotional period, use a scheduled message to activate a new application feature for all users, ensuring synchronized access for all users.
 
 - **Cache Expiration and Refresh**: Schedule a message to trigger the refresh of a specific cache segment right before its set expiration time. This ensures data remains current without manual monitoring and maintains system performance and reliability.
-
----
 
 ## See Also
 

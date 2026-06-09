@@ -28,8 +28,6 @@ When you encounter issues with Karafka, there are several things you can do:
 
 Karafka now has a dedicated and comprehensive debugging guide that covers troubleshooting message duplication, offset handling, crashes, and other consumer-related issues. To keep things focused, debugging content has been moved out of this document and can be found in the new [Debugging](Infrastructure-Debugging) document.
 
----
-
 ## See Also
 
 - [Debugging](Infrastructure-Debugging) - Systematic approach to debugging consumer processing issues
