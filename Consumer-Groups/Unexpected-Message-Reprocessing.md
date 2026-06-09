@@ -2,7 +2,7 @@
 
 When using Karafka with batch consumption, it is possible to observe messages being processed more times than expected. This can happen regardless of whether you use a Dead Letter Queue (DLQ) - two of the three causes below apply to any batch consumer, while the third is specific to DLQ configurations. This document explains each cause, how to identify which one applies, and what to do about it.
 
-!!! note "Note"
+!!! note "Most Cases Have a Known Cause"
 
     In the vast majority of reported cases, the root cause is one of the expected behaviors described below rather than a Karafka bug. That said, bugs have occurred in the past, and if none of these explanations fit your observations, sharing a minimal reproduction with the Karafka team is the right next step.
 
