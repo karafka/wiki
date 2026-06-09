@@ -53,7 +53,7 @@ Three related librdkafka issues interact with the `cooperative-sticky` partition
     </tr>
     <tr>
       <td>2.4.x</td>
-      <td>2.4.0 - 2.7.x</td>
+      <td>2.4.0 – 2.7.x</td>
       <td>Fixed</td>
       <td>Affected</td>
     </tr>

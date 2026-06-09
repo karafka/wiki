@@ -11,7 +11,7 @@ The branding configuration is done through the `config.ui.branding`. You can adj
 ```ruby
 Karafka::Web.setup do |config|
   config.ui.branding.type = :warning
-  config.ui.branding.notice = 'You are working in the production environment - proceed with caution!'
+  config.ui.branding.notice = 'You are working in the production environment – proceed with caution!'
   config.ui.branding.label = 'Production'
 end
 ```
