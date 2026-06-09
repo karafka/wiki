@@ -492,10 +492,10 @@ For comprehensive error handling strategies, see [Error Handling and Back-Off Po
 
 There are three common causes, all expected behaviors rather than bugs:
 
-1. **Retry counter tracks offset position, not individual messages.** With batch consumption, if messages 0-98 succeed but message 99 fails and you have not called `mark_as_consumed` per message, Karafka retries the entire batch from the last committed offset. Messages 0-98 are reprocessed on every retry of message 99, despite never failing themselves.
+1. Retry counter tracks offset position, not individual messages. With batch consumption, if messages 0-98 succeed but message 99 fails and you have not called `mark_as_consumed` per message, Karafka retries the entire batch from the last committed offset. Messages 0-98 are reprocessed on every retry of message 99, despite never failing themselves.
 
-1. **DLQ error counter is shared across the batch without `independent: true`.** The retry counter accumulates across all messages in a batch. If message 4 uses up several retries before succeeding and message 7 then fails, message 7 inherits the accumulated count and may reach the DLQ sooner than `max_retries` implies.
+1. DLQ error counter is shared across the batch without `independent: true`. The retry counter accumulates across all messages in a batch. If message 4 uses up several retries before succeeding and message 7 then fails, message 7 inherits the accumulated count and may reach the DLQ sooner than `max_retries` implies.
 
-1. **Consumer restart or rebalance resets the in-memory retry counter.** The counter is held in memory for the current assignment. A deploy, crash, or rebalance resets it to zero, giving the same message a full new set of `max_retries` retries.
+1. Consumer restart or rebalance resets the in-memory retry counter. The counter is held in memory for the current assignment. A deploy, crash, or rebalance resets it to zero, giving the same message a full new set of `max_retries` retries.
 
 For a full explanation of each cause with diagnostic guidance, see [Unexpected Message Reprocessing](Consumer-Groups-Unexpected-Message-Reprocessing).
