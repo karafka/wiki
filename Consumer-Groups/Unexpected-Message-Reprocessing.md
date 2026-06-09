@@ -8,7 +8,7 @@ When using Karafka with batch consumption, it is possible to observe messages be
 
 ## Cause 1: Retry Counter Tracks Offset Position, Not Individual Messages
 
-The `#attempt` counter and the DLQ retry counter both track **how many times Karafka has attempted to process starting from the current committed offset**, not how many times a specific individual message has been processed.
+The `#attempt` counter and the DLQ retry counter both track how many times Karafka has attempted to process starting from the **current** committed offset, not how many times a specific individual message has been processed.
 
 With `max_messages 100`, a full batch of up to 100 messages is pulled for each processing cycle. If messages 0-98 succeed but message 99 fails, and you have not called `mark_as_consumed` for each message individually, Karafka retries the entire batch from the last committed offset (the offset of message 0). Messages 0-98 are therefore reprocessed on every retry of message 99.
 
@@ -72,14 +72,3 @@ This means a message that has already been retried 9 times out of a configured `
 **What to do:** If idempotency is a requirement, implement it at the processing level (for example, using a database upsert keyed on message offset or a deduplicated identifier in the payload) rather than relying solely on the retry counter. Rebalances are a normal part of Kafka consumer group operation and cannot be eliminated entirely.
 
 See [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) for background on how the retry cycle interacts with partition pause and resume.
-
-## Diagnosing Which Cause Applies
-
-| Observation | Likely cause |
-| --- | --- |
-| Messages that never fail are still processed multiple times | Cause 1: offset not marked per message |
-| Later messages in a batch hit the DLQ with fewer retries than earlier ones | Cause 2: shared error counter without `independent: true` |
-| Over-retrying correlates with deploys, pod restarts, or rebalance events | Cause 3: in-memory counter reset |
-| None of the above, and the pattern is reproducible in isolation | Possible Karafka bug - report with a reproduction at [GitHub Issues](https://github.com/karafka/karafka/issues) |
-
-You can use the `#attempt` method inside your consumer to observe the current retry count at runtime, and subscribe to `error.occurred` events for structured logging of each retry. See [Altering Consumer Behaviour upon Reprocessing](Consumer-Groups-Error-Handling-and-Back-Off-Policy#altering-the-consumer-behaviour-upon-reprocessing) for usage examples.
