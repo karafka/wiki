@@ -272,15 +272,15 @@ As part of adopting the `consumer` protocol, librdkafka (and derived clients) no
 
     **Example:** Given topics `topic-1` and `topic-2`:
 
-    - `^topic` or `^topic*` — matches both topics in the `classic` protocol, but **no partitions are assigned** with the `consumer` protocol
-    - `^topic.*` — works correctly with **both** protocols
+    - `^topic` or `^topic*` - matches both topics in the `classic` protocol, but **no partitions are assigned** with the `consumer` protocol
+    - `^topic.*` - works correctly with **both** protocols
 
     Always ensure your regex patterns use explicit wildcards (like `.*`) to match the full topic name.
 
 In Karafka, the [Routing Patterns](Pro-Routing-Patterns) feature internally prepends `^` to the regex source. This means:
 
-- `pattern(/prefix/)` produces `^prefix` — **fails** under the consumer protocol for topics like `prefix-1`
-- `pattern(/prefix.*/)` produces `^prefix.*` — **works** under both protocols
+- `pattern(/prefix/)` produces `^prefix` - **fails** under the consumer protocol for topics like `prefix-1`
+- `pattern(/prefix.*/)` produces `^prefix.*` - **works** under both protocols
 
 If you are migrating to the consumer protocol and use regex-based subscriptions, review all your patterns to ensure they include explicit wildcards where needed. See the [Routing Patterns documentation](Pro-Routing-Patterns#regexp-implementation-differences) for more details.
 

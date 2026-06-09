@@ -6,7 +6,7 @@ This page explains both models, compares their characteristics across key dimens
 
 !!! note "Share Group Support in Karafka"
 
-    Karafka's share group support is actively in progress. As librdkafka, the underlying C driver Karafka uses to communicate with Kafka, lands the share group protocol, Karafka is being extended to support share groups natively — including routing DSL integration, consumer APIs, and Web UI observability. The information below describes how share groups work at the Kafka level. Follow the progress in [GitHub issue #2953](https://github.com/karafka/karafka/issues/2953).
+    Karafka's share group support is actively in progress. As librdkafka, the underlying C driver Karafka uses to communicate with Kafka, lands the share group protocol, Karafka is being extended to support share groups natively - including routing DSL integration, consumer APIs, and Web UI observability. The information below describes how share groups work at the Kafka level. Follow the progress in [GitHub issue #2953](https://github.com/karafka/karafka/issues/2953).
 
 ## Consumer Groups
 

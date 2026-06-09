@@ -60,9 +60,9 @@ This sidesteps the prefetch-expiry problem (records acquired by the broker but s
 
 Throughput scales by running more share consumer instances, not by making each consumer process more records at once. Three tuning dimensions:
 
-1. **`concurrency` per share group** — number of share consumer instances (threads) in one process
-2. **`max_messages_per_job` per topic** — records per poll/processing unit
-3. **Number of processes deployed** — horizontal scaling at the process level
+1. **`concurrency` per share group** - number of share consumer instances (threads) in one process
+2. **`max_messages_per_job` per topic** - records per poll/processing unit
+3. **Number of processes deployed** - horizontal scaling at the process level
 
 This matches what KIP-932 was designed around: elastic scaling by adding consumers without over-partitioning.
 
@@ -104,9 +104,9 @@ If a worker pool exists per consumer (for `workers_per_consumer > 1`), it's scop
 
 ### Lifecycle Hooks
 
-- **`#shutdown`** — retained, universal lifecycle hook when consumer is being torn down
-- **`#revoked`** — consumer-group only, has no meaning under share groups
-- **`#lock_expired(message)`** — new hook specific to share groups, called when a record's lock expires without being acked (optional; for cleanup of partial work)
+- **`#shutdown`** - retained, universal lifecycle hook when consumer is being torn down
+- **`#revoked`** - consumer-group only, has no meaning under share groups
+- **`#lock_expired(message)`** - new hook specific to share groups, called when a record's lock expires without being acked (optional; for cleanup of partial work)
 
 ### Messages and Partitions
 
@@ -131,7 +131,7 @@ The worker pool size *is* the backpressure mechanism. When all workers are busy,
 
 ### Worker Pool Per Consumer
 
-Default: `workers_per_consumer: 1` (pure tight loop — consumer thread does the processing itself).
+Default: `workers_per_consumer: 1` (pure tight loop - consumer thread does the processing itself).
 
 For advanced cases (highly variable processing times, finer parallelism): `workers_per_consumer: N` spawns a small pool per consumer.
 
@@ -320,8 +320,8 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 
 The closest analog to "pause this" is:
 
-- "Don't ack, let lock expire" — record goes to another consumer
-- "Stop polling for a while" — consumer-wide
+- "Don't ack, let lock expire" - record goes to another consumer
+- "Stop polling for a while" - consumer-wide
 
 Document the "not supported" list clearly so users don't try to port partition-pause patterns.
 
@@ -354,7 +354,7 @@ Document the "not supported" list clearly so users don't try to port partition-p
 
 1. **Namespaces are always plural** (with rare pragmatic exceptions for readability)
 2. **Classes/modules inside are named for what they are** (singular)
-3. **Full mode names in class names:** `ConsumerGroup`, `ShareGroup` — not abbreviations
+3. **Full mode names in class names:** `ConsumerGroup`, `ShareGroup` - not abbreviations
 4. **Kafka's own terminology preferred** over domain-framed names (no `JobConsumer`, `QueueConsumer`)
 5. **Symmetric names across the stack** where possible
 6. **Back-compat aliases at flat top level** for user-facing references
@@ -445,7 +445,7 @@ Karafka::
 ### Key Nesting Decisions
 
 - `Groups::` holds Kafka-level group types (CG and SG are kinds of Kafka groups)
-- `SubscriptionGroup` is a peer to `Groups::`, not inside it — it's a Karafka runtime construct, not a Kafka concept
+- `SubscriptionGroup` is a peer to `Groups::`, not inside it - it's a Karafka runtime construct, not a Kafka concept
 - `Topics::` is its own namespace (topics belong to groups via composition, not nesting)
 - `Features::` contains shared features directly, plus mode-specific sub-namespaces
 - `BatchMetadata` relaxes the plural rule because "BatchMetadatas" reads worse than the inconsistency costs
@@ -471,7 +471,7 @@ Karafka::
 - JobsQueue class (if retained for SG at all; may not be needed)
 - Worker pool class (for CG; SG uses per-consumer pools if any)
 - Scheduler class (for CG)
-- `Messages` collection class (already mode-agnostic — no changes needed)
+- `Messages` collection class (already mode-agnostic - no changes needed)
 - `Message` value object (already has per-message partition/offset, universal)
 - Instrumentation bus / monitor / event bus
 - Routing DSL framework
@@ -484,28 +484,28 @@ Karafka::
 
 ### Components Needing Structural Split
 
-- **`BatchMetadata`** — `BatchMetadata::ConsumerGroup` (with partition/offsets) and `BatchMetadata::ShareGroup` (without), sharing `LagMetrics` module
-- **Topic class** — three-layer hierarchy (`Topics::Base` / `ConsumerGroup` / `ShareGroup`)
-- **Consumer base class** — three-layer hierarchy with historical `BaseConsumer` preserved
-- **Listener** — mode-specific subclasses under `Connection::Listeners::`
+- **`BatchMetadata`** - `BatchMetadata::ConsumerGroup` (with partition/offsets) and `BatchMetadata::ShareGroup` (without), sharing `LagMetrics` module
+- **Topic class** - three-layer hierarchy (`Topics::Base` / `ConsumerGroup` / `ShareGroup`)
+- **Consumer base class** - three-layer hierarchy with historical `BaseConsumer` preserved
+- **Listener** - mode-specific subclasses under `Connection::Listeners::`
 
 ### Components Needing Refactor (Not Full Split)
 
-- **Assignment tracker** — split into:
+- **Assignment tracker** - split into:
     - Shared `SubscriptionTracker` (topic-level subscription info)
     - CG-only partition-assignment tracker (stays under ConsumerGroups)
     - New `LeaseTracker` for SG (record-level state)
 
 ### New Components for Share Groups
 
-- **`LeaseTracker`** — record-indexed state of currently-held leases, populated by poll/ack/renew
-- **`RenewScheduler`** — watches LeaseTracker for records approaching lock expiry
-- **`DelayedReleaseStructure`** — priority queue for delayed RELEASEs with RENEW keepalive
-- **`PoisonRecordObserver`** — handles broker-archived records, produces to DLQ if configured
-- **In-memory fake share-consumer** — for Phase 1 development and ongoing testing
-- **Share-group strategies matrix** — SG version of CG's 5-flag matrix, simpler
-- **Share-group DLQ implementation** — client-side REJECT + produce (broker-native later)
-- **JobsBuilders hierarchy** — PerMessage, PerBatch, PerPartition, PerKey, Custom
+- **`LeaseTracker`** - record-indexed state of currently-held leases, populated by poll/ack/renew
+- **`RenewScheduler`** - watches LeaseTracker for records approaching lock expiry
+- **`DelayedReleaseStructure`** - priority queue for delayed RELEASEs with RENEW keepalive
+- **`PoisonRecordObserver`** - handles broker-archived records, produces to DLQ if configured
+- **In-memory fake share-consumer** - for Phase 1 development and ongoing testing
+- **Share-group strategies matrix** - SG version of CG's 5-flag matrix, simpler
+- **Share-group DLQ implementation** - client-side REJECT + produce (broker-native later)
+- **JobsBuilders hierarchy** - PerMessage, PerBatch, PerPartition, PerKey, Custom
 
 ### Components Explicitly NOT Needed
 
@@ -597,11 +597,11 @@ end
 
 ### Ack API Methods (SG Consumers)
 
-- `mark_accepted(message)` — ACCEPT
-- `mark_released(message)` — RELEASE (broker-decided redelivery timing)
-- `mark_released(message, delay: N)` — RELEASE after N milliseconds (framework handles RENEW)
-- `mark_rejected(message)` — REJECT (poison, archives immediately)
-- `extend_lock!(message)` — RENEW (for long-running processing)
+- `mark_accepted(message)` - ACCEPT
+- `mark_released(message)` - RELEASE (broker-decided redelivery timing)
+- `mark_released(message, delay: N)` - RELEASE after N milliseconds (framework handles RENEW)
+- `mark_rejected(message)` - REJECT (poison, archives immediately)
+- `extend_lock!(message)` - RENEW (for long-running processing)
 
 ### Implicit Ack Mode
 
@@ -676,50 +676,50 @@ end
 ### Phase 0: Structural Preparation (No librdkafka Dependency)
 
 1. **Namespace refactor of CG code** under `ConsumerGroups::` with aliases at old paths. Purely mechanical.
-2. **Hidden-assumptions audit** in code that didn't move — find places secretly depending on offsets, partitions, or exclusive assignment.
-3. **Subscription tracker extraction** — split responsibilities between shared `SubscriptionTracker` and CG-only partition-assignment.
-4. **Per-mode JobsQueue wiring** — introduce the runtime coordinator pattern even though only CG exists for now.
-5. **Topic and Consumer class hierarchies** — three-layer each (Base / ConsumerGroup / ShareGroup), feature registry per mode, expose `group_type` introspection.
-6. **`share_group` routing block** — added as peer to `consumer_group`, raises `NotImplementedError` at startup with roadmap reference.
+2. **Hidden-assumptions audit** in code that didn't move - find places secretly depending on offsets, partitions, or exclusive assignment.
+3. **Subscription tracker extraction** - split responsibilities between shared `SubscriptionTracker` and CG-only partition-assignment.
+4. **Per-mode JobsQueue wiring** - introduce the runtime coordinator pattern even though only CG exists for now.
+5. **Topic and Consumer class hierarchies** - three-layer each (Base / ConsumerGroup / ShareGroup), feature registry per mode, expose `group_type` introspection.
+6. **`share_group` routing block** - added as peer to `consumer_group`, raises `NotImplementedError` at startup with roadmap reference.
 
 ### Phase 1: Fake-Broker Foundation
 
-1. **Public API spec for SG consumers** — RFC doc, no code yet. Drives component requirements.
-2. **In-memory fake share-consumer** — pure-Ruby stub of poll/acquire/ack/release/renew/lock-expiry behavior.
-3. **LeaseTracker implementation** — record-indexed state, populated by poll/ack/renew.
-4. **Minimal listener loop** — capacity-gated (via worker pool), happy path, explicit ack only, one topic per consumer.
-5. **Consumer base class extensions** — `mark_accepted`, `mark_released`, `mark_rejected`, `extend_lock!`.
-6. **Shutdown path** — graceful drain, flush acks, close.
-7. **Instrumentation** — SG events alongside CG, separate names where semantics differ.
+1. **Public API spec for SG consumers** - RFC doc, no code yet. Drives component requirements.
+2. **In-memory fake share-consumer** - pure-Ruby stub of poll/acquire/ack/release/renew/lock-expiry behavior.
+3. **LeaseTracker implementation** - record-indexed state, populated by poll/ack/renew.
+4. **Minimal listener loop** - capacity-gated (via worker pool), happy path, explicit ack only, one topic per consumer.
+5. **Consumer base class extensions** - `mark_accepted`, `mark_released`, `mark_rejected`, `extend_lock!`.
+6. **Shutdown path** - graceful drain, flush acks, close.
+7. **Instrumentation** - SG events alongside CG, separate names where semantics differ.
 
 ### Phase 2: Feature Development (Against Fake Broker)
 
-1. **First preview release** — labeled experimental, opt-in, loud "API will change" labeling.
-2. **Per-record error handling with RELEASE** — foundation for retry features.
-3. **Delayed-release structure** — `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
-4. **Long-running jobs equivalent** — `extend_lock!` exposed, auto-renew heuristics where appropriate.
-5. **Share-group DLQ** — client-side REJECT + produce implementation.
-6. **Share-group strategies matrix** — analog of CG 5-flag matrix.
-7. **Admin API extensions** — describe SG, list SGs, reset SPSO, alter SG config.
+1. **First preview release** - labeled experimental, opt-in, loud "API will change" labeling.
+2. **Per-record error handling with RELEASE** - foundation for retry features.
+3. **Delayed-release structure** - `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
+4. **Long-running jobs equivalent** - `extend_lock!` exposed, auto-renew heuristics where appropriate.
+5. **Share-group DLQ** - client-side REJECT + produce implementation.
+6. **Share-group strategies matrix** - analog of CG 5-flag matrix.
+7. **Admin API extensions** - describe SG, list SGs, reset SPSO, alter SG config.
 
 ### Phase 3: librdkafka Integration
 
-1. **Swap fake broker for librdkafka** — interface-first design means this is an adapter swap.
-2. **Real-cluster testing** — rebalance, failover, lock expiry under load, network partitions, tiered storage.
-3. **Config layer completion** — all `share.*` / `group.share.*` configs mapped with job-queue defaults.
-4. **Performance profiling and tuning** — ack dispatch, lease tracker lookups, delay queue ordering.
+1. **Swap fake broker for librdkafka** - interface-first design means this is an adapter swap.
+2. **Real-cluster testing** - rebalance, failover, lock expiry under load, network partitions, tiered storage.
+3. **Config layer completion** - all `share.*` / `group.share.*` configs mapped with job-queue defaults.
+4. **Performance profiling and tuning** - ack dispatch, lease tracker lookups, delay queue ordering.
 
 ### Phase 4: Ecosystem
 
-1. **Karafka Web UI integration** — parallel SG dashboards (members, leases, delivery count distributions, archived records, SPSO progress).
-2. **karafka-testing integration** — matchers (`to accept(m)`, `to release(m)`), packaged fake broker.
-3. **Migration tooling and documentation** — guides, reference implementations, capacity-planning updates.
+1. **Karafka Web UI integration** - parallel SG dashboards (members, leases, delivery count distributions, archived records, SPSO progress).
+2. **karafka-testing integration** - matchers (`to accept(m)`, `to release(m)`), packaged fake broker.
+3. **Migration tooling and documentation** - guides, reference implementations, capacity-planning updates.
 
 ### Phase 5: Maturation
 
-1. **Preview to GA promotion** — after several releases of production stability.
-2. **Pro features reconsidered** — scheduled messages, iterators: which get SG analogs, which stay CG-only.
-3. **Consolidation / deprecation decisions** — lessons learned captured separately.
+1. **Preview to GA promotion** - after several releases of production stability.
+2. **Pro features reconsidered** - scheduled messages, iterators: which get SG analogs, which stay CG-only.
+3. **Consolidation / deprecation decisions** - lessons learned captured separately.
 
 ## Release Pacing
 
@@ -754,16 +754,16 @@ end
 Questions deferred for resolution during implementation:
 
 1. **OSS vs Pro placement** for share-group support. Affects where code lives and eventual pricing model.
-2. **Exact librdkafka API shape** — affects Phase 3 adapter design. Monitor librdkafka issues for share-consumer support landing.
-3. **DLQ naming** — same method name with different semantics, or different method names for clarity. Leaning toward same name with documented semantic differences.
-4. **Generator defaults** for new projects — ask mode at install, or generate both and let users delete unused.
-5. **Broker-native DLQ timing** — affects whether to ship client-side DLQ initially or wait for Kafka to provide it.
+2. **Exact librdkafka API shape** - affects Phase 3 adapter design. Monitor librdkafka issues for share-consumer support landing.
+3. **DLQ naming** - same method name with different semantics, or different method names for clarity. Leaning toward same name with documented semantic differences.
+4. **Generator defaults** for new projects - ask mode at install, or generate both and let users delete unused.
+5. **Broker-native DLQ timing** - affects whether to ship client-side DLQ initially or wait for Kafka to provide it.
 6. **Configuration precedence** when share-group and consumer-group knobs overlap in the `kafka` config block.
-7. **`current_leases` API exposure** — expose LeaseTracker contents on the consumer for user observability, or keep internal-only.
-8. **Prefetch defaults** — how aggressive to be. Leaning toward conservative for job-queue workloads.
-9. **`workers_per_consumer` default** — 1 (pure tight loop) is probably right, but worth validating during performance testing.
-10. **Auto-renew for LRJ** — opt-in or on-by-default. Probably on-by-default with opt-out for advanced users who want full control.
-11. **Poll interval units** — milliseconds vs. duration object vs. symbol (`:eager`, `:normal`, `:low`) vs. all three. DSL ergonomics question.
+7. **`current_leases` API exposure** - expose LeaseTracker contents on the consumer for user observability, or keep internal-only.
+8. **Prefetch defaults** - how aggressive to be. Leaning toward conservative for job-queue workloads.
+9. **`workers_per_consumer` default** - 1 (pure tight loop) is probably right, but worth validating during performance testing.
+10. **Auto-renew for LRJ** - opt-in or on-by-default. Probably on-by-default with opt-out for advanced users who want full control.
+11. **Poll interval units** - milliseconds vs. duration object vs. symbol (`:eager`, `:normal`, `:low`) vs. all three. DSL ergonomics question.
 
 ## Design Ethos
 

@@ -200,7 +200,7 @@ handles = producer.tombstone_many_async(tombstones)
 Every tombstone requires `topic`, `key` (non-empty String), and `partition` (non-negative Integer). Omitting any of them raises `WaterDrop::Errors::MessageInvalidError`:
 
 ```ruby
-# This will raise MessageInvalidError — partition is missing
+# This will raise MessageInvalidError - partition is missing
 producer.tombstone_sync(topic: 'users', key: 'user-42')
 ```
 
@@ -664,7 +664,7 @@ If you work with forked processes, make sure you **don't** use the producer befo
 
 !!! info "Closed Producers Do Not Resurrect After Fork"
 
-    If you close a producer before forking and then attempt to use it in the child process, it will **not** be automatically re-created. A `WaterDrop::Errors::ProducerClosedError` will be raised. This is by design — a closed producer remains closed regardless of forking.
+    If you close a producer before forking and then attempt to use it in the child process, it will **not** be automatically re-created. A `WaterDrop::Errors::ProducerClosedError` will be raised. This is by design - a closed producer remains closed regardless of forking.
 
     If you need a working producer in a forked child process, you must explicitly reinitialize it by creating a new `WaterDrop::Producer` instance. Use `Karafka::Setup::AttributesMap.producer` to carry over the relevant Kafka settings:
 

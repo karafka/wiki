@@ -19,7 +19,7 @@
 - [One Thread to Poll Them All: How a Single Pipe Made WaterDrop 50% Faster](https://mensfeld.pl/2026/02/waterdrop-fd-polling-50-percent-faster/)
 - [WaterDrop Meets Ruby’s Async Ecosystem: Lightweight Concurrency Done Right](https://mensfeld.pl/2025/09/ruby-async-waterdrop-concurrency/)
 - [The 60-Second Wait: How I Spent Months Solving the Ruby’s Most Annoying Gem Installation Problem](https://mensfeld.pl/2025/07/solving-ruby-rdkafka-installation-problem/)
-- [Deimos — The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)
+- [Deimos - The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)
 - [Under the Hood: Enhancing Karafka’s CPU and Memory Efficiency](https://mensfeld.pl/2024/08/under-the-hood-enhancing-karafkas-cpu-and-memory-efficiency/)
 - [The librdkafka Supply Chain Breakdown: rdkafka-ruby’s Darkest Hour](https://mensfeld.pl/2024/07/the-librdkafka-supply-chain-breakdown-rdkafka-rubys-darkest-hour/)
 - [From Sleep to Speed: Making Rdkafka Sync Operations 16 Times Faster](https://mensfeld.pl/2024/05/from-sleep-to-speed-making-rdkafka-sync-operations-16-times-faster/)

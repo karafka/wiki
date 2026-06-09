@@ -689,7 +689,7 @@ This response format allows for more granular monitoring and debugging while mai
 
 !!! tip "Inspecting Failure Details"
 
-    Kubernetes liveness probes only use the HTTP status code to determine pod health — the response body is **not** visible in Kubernetes pod events or logs. When a pod is marked unhealthy and you need to understand why, manually query the liveness endpoint from inside the pod:
+    Kubernetes liveness probes only use the HTTP status code to determine pod health - the response body is **not** visible in Kubernetes pod events or logs. When a pod is marked unhealthy and you need to understand why, manually query the liveness endpoint from inside the pod:
 
     ```bash
     kubectl exec -it <pod-name> -- curl -s http://localhost:3000/

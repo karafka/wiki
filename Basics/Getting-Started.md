@@ -25,9 +25,9 @@
 
     **Result**: All necessary files and directories are generated:
 
-   - `karafka.rb` — the main file where you configure Karafka and define which consumers should consume what topics
-   - `app/consumers/example_consumer.rb` — an example consumer
-   - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit
+   - `karafka.rb` - the main file where you configure Karafka and define which consumers should consume what topics
+   - `app/consumers/example_consumer.rb` - an example consumer
+   - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit
 
 1. To produce test messages, open the development console and enter:
 
@@ -83,9 +83,9 @@
 
     **Result**: All necessary files and directories are generated:
 
-    - `karafka.rb` — the main file where you configure Karafka and where you define which consumers should consume what topics.
-    - `app/consumers/example_consumer.rb` — an example consumer.
-    - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit.
+    - `karafka.rb` - the main file where you configure Karafka and where you define which consumers should consume what topics.
+    - `app/consumers/example_consumer.rb` - an example consumer.
+    - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit.
 
 1. Run a development console to produce messages to this example topic:
 

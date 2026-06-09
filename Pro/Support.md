@@ -18,7 +18,7 @@ Please email using the same domain as the original license email or explain your
 
 !!! warning "Support for EOL Versions"
 
-    While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies—especially those beyond their End-of-Life (EOL) dates.
+    While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies-especially those beyond their End-of-Life (EOL) dates.
 
     Resolving issues in EOL versions may require backporting fixes to unsupported Ruby versions or deprecated dependencies, which may not be feasible or maintainable. We strongly recommend keeping your software stack current to ensure you can receive effective support and timely fixes.
 

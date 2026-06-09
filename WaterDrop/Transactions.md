@@ -374,7 +374,7 @@ By adhering to these recommendations, you can ensure reliable transactional proc
 
 In certain situations, developers might inadvertently nest transactions within one another. With WaterDrop, this is gracefully handled to prevent any undesired side effects.
 
-When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you initiate a nested transaction — starting another transaction inside an existing one — the producer won't get confused or initiate a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
+When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you initiate a nested transaction - starting another transaction inside an existing one - the producer won't get confused or initiate a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
 
 This intelligent behavior ensures:
 

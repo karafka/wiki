@@ -23,8 +23,8 @@ Karafka defaults to **at-least-once delivery semantics**, which means that under
 
 Karafka also supports other Kafka delivery semantics:
 
-- **Exactly-once semantics (EOS)** — via Kafka transactions, which ensure atomicity between offset commits and message production.
-- **At-most-once semantics** — by committing offsets *before* processing. This guarantees no duplication but may lead to message loss if a crash occurs during processing.
+- **Exactly-once semantics (EOS)** - via Kafka transactions, which ensure atomicity between offset commits and message production.
+- **At-most-once semantics** - by committing offsets *before* processing. This guarantees no duplication but may lead to message loss if a crash occurs during processing.
 
 When used correctly and under healthy conditions (no ungraceful termination), Karafka, with at least one semantics, will process each message **once and only once**, even without transactions.
 
@@ -78,7 +78,7 @@ class OrdersConsumer < ApplicationConsumer
   def consume
     messages.each do |message|
       process(message)
-      # mark_as_consumed is missing — offsets will never be committed!
+      # mark_as_consumed is missing - offsets will never be committed!
     end
   end
 end
@@ -532,7 +532,7 @@ If Karafka seems frozen or is not progressing:
 
 - Send `SIGTTIN` to the Karafka process. It will print backtraces of all threads to stdout/log.
 
-- This shows you what each thread is doing — e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
+- This shows you what each thread is doing - e.g., stuck waiting on IO, DB, mutex, or sleeping. Works only when LoggerListener is enabled in your monitor setup (enabled by default).
 
 ```shell
 kill -TTIN <karafka_pid>

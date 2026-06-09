@@ -25,7 +25,7 @@ Upon detecting a new topic, Karafka seamlessly integrates its operations just as
     - **Classic protocol**: librdkafka evaluates regexes locally using the **libc** POSIX regex engine.
     - **Consumer protocol (KIP-848)**: Regex evaluation moves to the broker side, which uses the **Google RE2/J** engine.
 
-    Both engines differ from Ruby's Oniguruma engine. Additionally, the RE2/J engine requires that regexes match the **complete** topic name, while `libc` only checks if the pattern is found within the topic name. This means patterns like `^topic` that worked with the classic protocol may silently stop matching topics like `topic-1` under the consumer protocol — use `^topic.*` instead. See the [Regexp Implementation Differences](Pro-Routing-Patterns#regexp-implementation-differences) section and the [KIP-848 Regex Subscription Changes](Kafka-New-Rebalance-Protocol#regex-subscription-changes) for details.
+    Both engines differ from Ruby's Oniguruma engine. Additionally, the RE2/J engine requires that regexes match the **complete** topic name, while `libc` only checks if the pattern is found within the topic name. This means patterns like `^topic` that worked with the classic protocol may silently stop matching topics like `topic-1` under the consumer protocol - use `^topic.*` instead. See the [Regexp Implementation Differences](Pro-Routing-Patterns#regexp-implementation-differences) section and the [KIP-848 Regex Subscription Changes](Kafka-New-Rebalance-Protocol#regex-subscription-changes) for details.
 
 ### Representation of Routing Patterns
 
@@ -371,8 +371,8 @@ Ruby uses the **Oniguruma engine**, which differs from both of the above.
 
     **Example:** Given topics `topic-1` and `topic-2`:
 
-    - `^topic` or `^topic*` — matches in classic protocol, **fails** in consumer protocol
-    - `^topic.*` — works correctly in **both** protocols
+    - `^topic` or `^topic*` - matches in classic protocol, **fails** in consumer protocol
+    - `^topic.*` - works correctly in **both** protocols
 
     Since Karafka internally prepends `^` to pattern regex sources, a pattern like `pattern(/prefix/)` produces `^prefix`, which will fail under the consumer protocol for topics like `prefix-1`. Use `pattern(/prefix.*/)` instead, which produces `^prefix.*` and works with both protocols.
 

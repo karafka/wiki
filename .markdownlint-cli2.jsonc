@@ -16,7 +16,8 @@
     "!.lint/**",
   ],
   "customRules": [
-    "mkdocs-material-linter"
+    "mkdocs-material-linter",
+    "./.rules/no-emdash.js"
   ],
   "config": {
     "default": true,

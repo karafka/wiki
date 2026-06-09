@@ -2,7 +2,7 @@ Dive deep into the world of event-driven applications and supercharge your devel
 
 ## Why Invest in This Workshop?
 
-By investing a few hours, you're setting yourself up to save weeks of collective team efforts later. Grasp the intricate nuances of Karafka and sidestep the common pitfalls and potential bugs that could be harmful later. The complexities of Karafka and event-driven architecture demand a precise, methodical introduction — and our workshop is tailor-made to deliver just that.
+By investing a few hours, you're setting yourself up to save weeks of collective team efforts later. Grasp the intricate nuances of Karafka and sidestep the common pitfalls and potential bugs that could be harmful later. The complexities of Karafka and event-driven architecture demand a precise, methodical introduction - and our workshop is tailor-made to deliver just that.
 
 ## What We Offer
 

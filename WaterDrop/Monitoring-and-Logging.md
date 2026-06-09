@@ -166,7 +166,7 @@ WaterDrop is configured to emit internal `librdkafka` metrics every five seconds
       MyMetrics.report(event[:statistics])
     end
 
-    # First use — rdkafka client is built here with statistics enabled
+    # First use - rdkafka client is built here with statistics enabled
     producer.produce_sync(topic: 'events', payload: 'hello')
     ```
 
