@@ -124,7 +124,6 @@ For instructions, see [Karafka Example Applications Wiki](https://github.com/kar
 
 Karafka ships with a full integration test suite that illustrates various use cases and edge cases of working with Karafka and Kafka. For comprehensive understanding of our framework, visit [Integrations directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository.
 
-
 ## See Also
 
 - [Configuration](Basics-Configuration) - Configure your Karafka application with framework and librdkafka settings

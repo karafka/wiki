@@ -585,7 +585,6 @@ class CustomConsumer < ApplicationConsumer
 end
 ```
 
-
 ## See Also
 
 - [Offset management](Consumer-Groups-Offset-management) - Control when and how message offsets are committed to Kafka

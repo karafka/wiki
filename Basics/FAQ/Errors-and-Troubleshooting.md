@@ -34,7 +34,6 @@
 1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
 1. [I received a Confluent KIP-896 deprecation notice. Is Karafka using deprecated Kafka protocol APIs?](#i-received-a-confluent-kip-896-deprecation-notice-is-karafka-using-deprecated-kafka-protocol-apis)
 
-
 ## Why can't I connect to Kafka from another Docker container?
 
 You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).

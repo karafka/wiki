@@ -300,7 +300,6 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
     ActiveJob Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
 
-
 ## See Also
 
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs

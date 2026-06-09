@@ -23,7 +23,6 @@ Karafka Web UI is shipped as a separate [gem](https://rubygems.org/gems/karafka-
   <img src="https://karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI"/>
 </p>
 
-
 ## See Also
 
 - [Getting Started](Web-UI-Getting-Started) - For installation and setup instructions

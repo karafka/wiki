@@ -172,7 +172,6 @@ puts PRODUCER.client.messages.count #=> 0
 
 This ensures each test starts with an empty buffer, eliminating potential cross-test interference.
 
-
 ## See Also
 
 - [Testing](Basics-Testing) - For comprehensive testing strategies in Karafka applications

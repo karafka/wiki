@@ -341,7 +341,6 @@ Before committing to a managed Kafka provider, get clear answers to these questi
 
 Different providers have distinct trade-offs that affect operational flexibility, version currency, and available features. Evaluate based on your specific requirements for availability, ecosystem integration, and operational overhead.
 
-
 ## See Also
 
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - Per-topic settings including retention, replication, and compaction

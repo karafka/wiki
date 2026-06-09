@@ -16,7 +16,6 @@
 1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
 1. [Why are some messages processed more times than `max_retries` specifies?](#why-are-some-messages-processed-more-times-than-max_retries-specifies)
 
-
 ## Can I skip messages on errors?
 
 Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhanced Dead Letter Queue feature. You can read about this ability [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-dispatch).

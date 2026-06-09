@@ -37,7 +37,6 @@
 1. [Does Karafka Pro support Apache Avro?](#does-karafka-pro-support-apache-avro)
 1. [Does rdkafka-ruby support schema registry patterns with magic bytes for serialization/deserialization?](#does-rdkafka-ruby-support-schema-registry-patterns-with-magic-bytes-for-serializationdeserialization)
 
-
 ## Does Karafka require Ruby on Rails?
 
 **No**. Karafka is a fully independent framework that can operate in a standalone mode. It can be easily integrated with any Ruby-based application, including those written with Ruby on Rails. Please follow the [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) documentation.

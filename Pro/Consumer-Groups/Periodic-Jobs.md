@@ -346,7 +346,6 @@ Periodic Jobs in Karafka offer a versatile way to perform scheduled tasks at reg
 
 Periodic Jobs in Karafka provide a powerful tool for ensuring your application remains active and responsive, performing necessary tasks regularly. Whether you're maintaining system readiness, generating reports, or monitoring system status, periodic jobs can help keep your system efficient and reliable.
 
-
 ## See Also
 
 - [Recurring Tasks](Pro-Recurring-Tasks) - Scheduled task execution with cron-like patterns

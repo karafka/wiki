@@ -180,7 +180,6 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
     If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Infrastructure-Declarative-Topics).
 
-
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - Initial setup and installation of Karafka for your application

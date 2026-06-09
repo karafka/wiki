@@ -37,7 +37,6 @@
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
 1. [Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600000ms-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
 
-
 ## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
 If you are seeing following error:

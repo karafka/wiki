@@ -129,7 +129,6 @@ class CountersConsumer < ApplicationConsumer
 end
 ```
 
-
 ## See Also
 
 - [Consuming Messages](Basics-Consuming-Messages) - Understanding message consumption basics

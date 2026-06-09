@@ -437,7 +437,6 @@ Karafka does **not** provide direct support for changing topic replication facto
 
     A Karafka Admin API feature is currently under development that will provide a more user-friendly interface for replication factor management.
 
-
 ## See Also
 
 - [Deployment](Infrastructure-Deployment) - General deployment strategies including AWS

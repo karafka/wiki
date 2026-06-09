@@ -23,7 +23,6 @@
 1. [What Kafka ACLs are required for the Karafka Web UI to work?](#what-kafka-acls-are-required-for-the-karafka-web-ui-to-work)
 1. [How can I check if a specific message was processed using the Karafka Web UI?](#how-can-i-check-if-a-specific-message-was-processed-using-the-karafka-web-ui)
 
-
 ## Why some of consumer subscriptions are not visible in the Web UI?
 
 If some of your Karafka consumer subscriptions are not visible in the Karafka Web UI, there could be a few reasons for this:

@@ -243,7 +243,6 @@ Each check may display one of the following statuses:
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
 
-
 ## See Also
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI

@@ -39,7 +39,6 @@ end
 
 - **Dynamic Consumer Scaling**: For systems that dynamically scale consumers based on load, knowledge of partition assignments is necessary to redistribute partitions among the new set of consumers efficiently.
 
-
 ## See Also
 
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Track consumer assignments and partition distribution

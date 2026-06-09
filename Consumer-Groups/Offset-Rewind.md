@@ -314,7 +314,6 @@ Upgrading to the latest available Karafka release is the permanent resolution fo
 
 Before upgrading, review the [upgrade guides](Upgrades-Upgrading) for any breaking changes between your current and target versions, as some version-to-version changes can produce consumer group behavior that looks similar to the offset-reset pattern described in this document. See the [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) page for the current support status of each release series.
 
-
 ## See Also
 
 - [Offset Management](Consumer-Groups-Offset-management) - How Karafka manages offset commits under normal conditions

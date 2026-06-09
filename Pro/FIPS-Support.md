@@ -101,7 +101,6 @@ Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2
 
 While we strive to maintain FIPS compatibility, we encourage users to contact us with any issues or suggestions for improvement to help us continue enhancing Karafka's security features.
 
-
 ## See Also
 
 - [Security](Pro-Security) - For comprehensive security guidelines and best practices

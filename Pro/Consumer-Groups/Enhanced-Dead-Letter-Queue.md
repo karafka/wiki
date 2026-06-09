@@ -443,7 +443,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-
 ## See Also
 
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Base DLQ feature and fundamental concepts

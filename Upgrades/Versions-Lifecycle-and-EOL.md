@@ -163,7 +163,6 @@ The following table outlines Kafka-compatible platforms that have been reported 
 - **Medium:** Several known production deployments
 - **Low:** Limited or no known production deployments
 
-
 ## See Also
 
 - [Upgrading](Upgrades-Upgrading) - Upgrade strategies and best practices

@@ -698,7 +698,6 @@ While the trade-off in network bandwidth usage is important to consider, the per
 
 Remember to leverage the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
 
-
 ## See Also
 
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Alternative parallelization strategy optimized for IO-bound workloads

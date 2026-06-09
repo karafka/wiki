@@ -591,7 +591,6 @@ You can contact us at `contact@karafka.io` or via the private Slack channel if y
 
 Don't hesitate to get in touch if you still need clarification after following this guide. We're happy to help.
 
-
 ## See Also
 
 - [Problems and Troubleshooting](Infrastructure-Problems-and-Troubleshooting) - Common issues and their solutions for Karafka applications

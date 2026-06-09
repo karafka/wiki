@@ -191,7 +191,6 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 
 - **Optimization Opportunities**: Given its multithreaded nature and efficient asynchronous techniques, Karafka allows for significant optimization opportunities regarding CPU usage. Developers can fine-tune the number of threads and the operational parameters of Karafka to match the specific performance and resource requirements.
 
-
 ## See Also
 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Configure threading and parallel processing for optimal performance

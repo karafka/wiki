@@ -772,7 +772,6 @@ Here are some use cases from various industries where Karafka's virtual partitio
 
 Overall, virtual partitions can be beneficial in any industry where large volumes of data need to be processed quickly and efficiently, particularly when processing is IO bound. By parallelizing the processing of data from a single Kafka topic partition, organizations can improve the performance and scalability of their systems, enabling them to make more informed decisions and deliver better results.
 
-
 ## See Also
 
 - [Parallel Segments](Pro-Consumer-Groups-Parallel-Segments) - Alternative parallelization strategy optimized for CPU-intensive workloads

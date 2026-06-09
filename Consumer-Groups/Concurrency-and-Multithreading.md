@@ -203,7 +203,6 @@ Lowering thread priority (e.g., negative values like `-1`, `-3`) can significant
 
     Ruby employs a Global VM Lock (GVL) that ensures only one thread executes Ruby code at a time. The Ruby VM switches threads roughly every 100ms (thread quantum) unless explicitly released (such as during IO operations). CPU-intensive tasks holding the GVL for the entire quantum period can significantly increase latency for other threads, especially those performing quick IO tasks. Adjusting thread priority mitigates this issue by influencing the scheduling decisions and allowing shorter, IO-bound threads more frequent access to the CPU.
 
-
 ## See Also
 
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Parallel processing within single partition using multiple threads

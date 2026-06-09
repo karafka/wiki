@@ -167,7 +167,6 @@ In this scenario:
 - Set appropriate `min.insync.replicas`: Ensure that `min.insync.replicas` is set to a value that matches your fault tolerance requirements (e.g., `2` for a replication factor of `3`).
 - Monitor replicas: Regularly monitor your Kafka cluster to ensure that all replicas are in sync and healthy.
 
-
 ## See Also
 
 - [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Detailed scenarios for replication configuration impact on availability

@@ -206,7 +206,6 @@ PRODUCERS_FOR_CLUSTERS = {
   end
 }
 
-
 # And overwrite the default producer in any consumer you need
 class MyConsumer < ApplicationConsumer
   def consume
@@ -227,7 +226,6 @@ end
 The Web UI relies on per-producer listeners to monitor asynchronous errors. If you craft your consumers and utilize the Web UI, make sure that you configure this integration appropriately.
 
 By leveraging this flexibility in Karafka, you can effectively manage and direct message flow in multi-cluster Kafka environments, ensuring data reaches the right place based on your application's unique requirements.
-
 
 ## See Also
 

@@ -369,7 +369,6 @@ Below you can find examples where each of the validations layers fails:
 
 Understanding the nuances of message size validation is crucial to ensure smooth message production. While it may seem complex at first, being mindful of the distinctions between uncompressed and compressed sizes and client-side and broker-side validations can prevent potential pitfalls and disruptions in your Kafka workflows.
 
-
 ## See Also
 
 - [WaterDrop Getting Started](WaterDrop-Getting-Started) - Quick start guide for WaterDrop producer

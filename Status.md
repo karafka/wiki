@@ -6,7 +6,6 @@
 !!! success "Current Status - All Clear"
     No active advisories at this time.
 
-
 ## Incident History
 
 !!! success "[RESOLVED] April 2026 - Karafka Statistics Memory Bloat on Large Clusters"

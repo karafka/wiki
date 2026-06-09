@@ -215,7 +215,6 @@ This will ensure the correct exit code is returned based on the operation's outc
 - `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
 - `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.
 
-
 ## See Also
 
 - [Routing](Consumer-Groups-Routing) - Define routing and topic configurations together

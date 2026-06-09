@@ -867,7 +867,6 @@ To avert these issues, it's crucial to ensure your Karafka applications' instrum
 
 In conclusion, maintaining the stability, performance, and reliability of Karafka-based applications requires the proper functioning of any custom instrumentation and monitoring listeners.
 
-
 ## See Also
 
 - [Instrumentation Events](Infrastructure-Instrumentation-Events) - Complete reference of all available instrumentation events

@@ -59,7 +59,6 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 - `stopped` - The process finished everything and closed all the Kafka connections.
 - `terminated` - The process is going to exit shortly.
 
-
 ## See Also
 
 - [Deployment](Infrastructure-Deployment) - Using signals for graceful deployments

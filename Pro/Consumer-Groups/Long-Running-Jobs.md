@@ -221,7 +221,6 @@ The Long-Running Jobs feature is designed to handle tasks that take longer to pr
 
 These are just a few examples of how Long-Running Jobs can benefit different industries where processing messages takes a significant amount of time. Karafka's Long-Running Jobs feature can be used to develop and manage these jobs, enabling continuous data processing and analysis.
 
-
 ## See Also
 
 - [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Alias for Long-Running Jobs, same feature with different name

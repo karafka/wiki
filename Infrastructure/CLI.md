@@ -109,7 +109,6 @@ Declarative Topics managament via the CLI has its own section. You can read abou
 
 Routing Patterns managament via the CLI has its own section. You can read about that [here](Pro-Routing-Patterns#limiting-patterns-used-per-process).
 
-
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - Initial setup and basic CLI usage

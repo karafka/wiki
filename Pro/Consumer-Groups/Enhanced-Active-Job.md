@@ -278,7 +278,6 @@ When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** e
 
 For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-shutdown).
 
-
 ## See Also
 
 - [Active Job](Consumer-Groups-Active-Job) - Standard Active Job adapter documentation

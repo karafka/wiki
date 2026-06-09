@@ -502,7 +502,6 @@ Ignoring these older schema reports might introduce slight discrepancies in the 
 
 It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
 
-
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - Quick start guide for Karafka framework

@@ -312,7 +312,6 @@ KIP-848 delivers significant improvements in rebalance performance and stability
 
 - **Recommendation:** For new deployments on Kafka 4.0+, enable KIP-848 from the start. For existing deployments, test thoroughly in staging before migrating to production.
 
-
 ## See Also
 
 - [Routing Patterns](Pro-Routing-Patterns) - Regex-based dynamic topic routing and regexp engine differences

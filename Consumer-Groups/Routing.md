@@ -356,7 +356,6 @@ end
 
 By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
 
-
 ## See Also
 
 - [Configuration](Basics-Configuration) - Configure framework and librdkafka settings that affect routing

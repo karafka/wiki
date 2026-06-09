@@ -266,7 +266,6 @@ In cases of unexpected errors within the listeners' loops, Karafka applies a fin
 
     Users should **not** rely on the final recovery strategy as a primary error-handling method. Any errors originating from listeners should be deeply investigated and resolved to prevent recurring issues. Proper error management at the listener level is crucial for maintaining the efficiency and reliability of your Karafka application.
 
-
 ## See Also
 
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handling messages that consistently fail processing

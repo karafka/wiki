@@ -600,7 +600,6 @@ Optimization strategies, including multiple subscription groups, connection mult
 
 In conclusion, effective consumer management in Karafka requires considering various factors and regular adjustments to maintain efficiency and responsiveness.
 
-
 ## See Also
 
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understanding threading model and its impact on performance
