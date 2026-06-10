@@ -14,6 +14,33 @@ With `max_messages 100`, a full batch of up to 100 messages is pulled for each p
 
 This is not a bug. It is the expected consequence of not tracking per-message consumption progress. Each of those earlier messages is processed `max_retries + 1` additional times despite never failing.
 
+The following shows the problematic pattern. If message 99 raises an error, messages 0-98 will be reprocessed from scratch on every retry:
+
+```ruby
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      process(message)
+      # No mark_as_consumed here - offset never advances mid-batch
+    end
+  end
+end
+```
+
+A subtler variation that looks correct but has the same problem - marking only after the full loop means a failure on any message resets the entire batch:
+
+```ruby
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      process(message)
+    end
+    # Only the last offset is marked - any earlier failure retries from the start
+    mark_as_consumed(messages.last)
+  end
+end
+```
+
 **How to avoid it:** Call `mark_as_consumed` (or `mark_as_consumed!`) for each message individually as it is successfully processed:
 
 ```ruby
@@ -38,6 +65,24 @@ Without the `independent: true` flag on your DLQ configuration, Karafka treats t
 Consider a batch where message 4 fails three times before succeeding, and message 7 then fails. Because the error counter has already accumulated from message 4's failures, message 7 will be dispatched to the DLQ sooner than `max_retries` implies, because it has "inherited" part of the count.
 
 The same counter accumulation can, in certain patterns, cause individual messages to be retried fewer times than expected rather than more, depending on which messages fail and in which order.
+
+The following configuration will exhibit this behaviour. With a shared counter, message 7 "inherits" the retries already spent on message 4 and hits the DLQ after fewer attempts than `max_retries` would suggest:
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    topic :orders do
+      consumer OrdersConsumer
+
+      dead_letter_queue(
+        topic: 'orders_dlq',
+        max_retries: 10
+        # No independent: true - error counter accumulates across the entire batch
+      )
+    end
+  end
+end
+```
 
 **How to fix it:** Add `independent: true` to your DLQ configuration and mark each message as consumed individually:
 
@@ -69,6 +114,33 @@ The retry counter is held **in memory** for the duration of a consumer's current
 
 This means a message that has already been retried 9 times out of a configured `max_retries: 10` can receive a full new set of 10 retries after a restart or rebalance. Across multiple restarts the same message can be attempted many more times than `max_retries` alone would imply.
 
-**What to do:** If idempotency is a requirement, implement it at the processing level (for example, using a database upsert keyed on message offset or a deduplicated identifier in the payload) rather than relying solely on the retry counter. Rebalances are a normal part of Kafka consumer group operation and cannot be eliminated entirely.
+A consumer that is not idempotent will produce duplicate side-effects whenever the counter resets. A deploy mid-retry is enough to trigger this:
+
+```ruby
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      # create! will raise or produce a duplicate if this message was
+      # already processed before the restart reset the retry counter
+      Order.create!(message.payload)
+      mark_as_consumed(message)
+    end
+  end
+end
+```
+
+**What to do:** If idempotency is a requirement, implement it at the processing level (for example, using a database upsert keyed on message offset or a deduplicated identifier in the payload) rather than relying solely on the retry counter. Rebalances are a normal part of Kafka consumer group operation and cannot be eliminated entirely:
+
+```ruby
+class OrdersConsumer < ApplicationConsumer
+  def consume
+    messages.each do |message|
+      # upsert is safe to call multiple times with the same key
+      Order.upsert(message.payload, unique_by: :external_id)
+      mark_as_consumed(message)
+    end
+  end
+end
+```
 
 See [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) for background on how the retry cycle interacts with partition pause and resume.
