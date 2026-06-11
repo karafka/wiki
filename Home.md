@@ -159,6 +159,8 @@
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process)
 - [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing)
+- [Iterator API](Pro-Consumer-Groups-Iterator-API)
+- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments)
 
 ### Consumer Groups Features
 
@@ -171,9 +173,7 @@
 - [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)
 - [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator)
 - [Scheduling API](Pro-Consumer-Groups-Scheduling-API)
-- [Iterator API](Pro-Consumer-Groups-Iterator-API)
 - [Granular Backoffs](Pro-Consumer-Groups-Granular-Backoffs)
-- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments)
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing)
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue)
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
