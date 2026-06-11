@@ -398,7 +398,7 @@ In summary, while the error message might seem daunting, understanding its nuanc
 
 If the SSL certificates failed on the producer side, the data might not have been produced to Kafka in the first place. If your data is still present and not compacted due to the retention policy, then you should be able to read it.
 
-You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Consumer-Groups-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
+You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
 
 ## Where can I find details on troubleshooting and debugging for Karafka?
 

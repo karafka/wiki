@@ -237,4 +237,4 @@ By creating and configuring custom matchers, you can extend the functionality of
 ## See Also
 
 - [Explorer](Pro-Web-UI-Explorer) - For browsing and exploring topic data
-- [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - For programmatic topic data exploration
+- [Pro Iterator API](Pro-Iterator-API) - For programmatic topic data exploration

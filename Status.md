@@ -43,7 +43,7 @@
 
     **Current Workarounds:**
 
-    - Switch to [Direct Assignments](https://karafka.io/docs/Pro-Consumer-Groups-Direct-Assignments) to bypass the coordinator entirely
+    - Switch to [Direct Assignments](https://karafka.io/docs/Pro-Direct-Assignments) to bypass the coordinator entirely
     - Use Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-election`, `kafka-consumer-groups`) to force a coordinator reload on a healthy broker
     - File a support ticket with your managed Kafka provider (MSK, Confluent Cloud) to apply upstream Kafka patches
 
