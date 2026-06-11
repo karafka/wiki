@@ -159,8 +159,8 @@
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process)
 - [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing)
-- [Iterator API](Pro-Consumer-Groups-Iterator-API)
-- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments)
+- [Iterator API](Pro-Iterator-API)
+- [Direct Assignments](Pro-Direct-Assignments)
 
 ### Consumer Groups Features
 

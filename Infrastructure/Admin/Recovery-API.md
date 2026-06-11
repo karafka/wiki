@@ -198,7 +198,7 @@ puts "New group maps to broker #{target[:broker_id]} (#{target[:broker_host]})"
 
 ## Alternative: Direct Assignments
 
-[Direct Assignments](https://karafka.io/docs/Pro-Consumer-Groups-Direct-Assignments) offer a fundamentally different approach: rather than recovering and migrating the broken group, you reconfigure consumers to use the `assign` API instead of `subscribe`. This skips `JoinGroup` and `SyncGroup` entirely - the coordinator is never contacted, so its state is irrelevant. Consumers connect directly to specific topic-partitions and start processing without any group membership negotiation.
+[Direct Assignments](https://karafka.io/docs/Pro-Direct-Assignments) offer a fundamentally different approach: rather than recovering and migrating the broken group, you reconfigure consumers to use the `assign` API instead of `subscribe`. This skips `JoinGroup` and `SyncGroup` entirely - the coordinator is never contacted, so its state is irrelevant. Consumers connect directly to specific topic-partitions and start processing without any group membership negotiation.
 
 ```ruby
 routes.draw do

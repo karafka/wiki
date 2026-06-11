@@ -34,7 +34,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Scheduling API](Pro-Consumer-Groups-Scheduling-API) - Scheduling API was designed to control when specific consumption jobs are placed on the processing queue. This API is not just a simple timer-based mechanism but a sophisticated controller that allows for precise and intelligent scheduling of tasks.
 
-- [Iterator](Pro-Consumer-Groups-Iterator-API) - Iterator API allows you to quickly subscribe to selected topics and partitions and perform data lookups without having to start a `karafka server` and create consumers.
+- [Iterator](Pro-Iterator-API) - Iterator API allows you to quickly subscribe to selected topics and partitions and perform data lookups without having to start a `karafka server` and create consumers.
 
 - [Granular Backoffs](Pro-Consumer-Groups-Granular-Backoffs) - Granular Backoffs provide heightened control over backing off, pausing, and retrying processing upon errors. This feature offers per-topic customization of the error-handling strategy.
 

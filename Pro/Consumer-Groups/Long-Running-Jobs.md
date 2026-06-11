@@ -45,7 +45,7 @@ This feature is great for scenarios where your processing may last for a longer 
 
 !!! tip "Alternatives to Long-Running Jobs: Direct Assignments and Iterator"
 
-    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Consumer-Groups-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Consumer-Groups-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
+    An alternative to using subscription group-based assignments to handle long-running jobs in Karafka is the [Direct Assignments API](Pro-Direct-Assignments). This API provides a flexible way to manage Kafka partitions directly, bypassing the `max.poll.interval.ms` constraint. The [Iterator API](Pro-Iterator-API) also presents a viable alternative for scenarios requiring fine-tuned control over message consumption. These approaches can be instrumental in systems where long processing times are common and must be managed efficiently.
 
 ## Using Long-Running Jobs
 
@@ -225,5 +225,5 @@ These are just a few examples of how Long-Running Jobs can benefit different ind
 
 - [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Alias for Long-Running Jobs, same feature with different name
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Use with Long-Running Jobs for better throughput on IO-bound tasks
-- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments) - Alternative consumption model for long-running background processing
+- [Direct Assignments](Pro-Direct-Assignments) - Alternative consumption model for long-running background processing
 - [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) - Efficient data processing for long-running batch operations

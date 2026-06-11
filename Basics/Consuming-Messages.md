@@ -391,7 +391,7 @@ This configuration ensures that as soon as the end of a partition is reached, an
 
 ## Consuming with the Iterator API
 
-Karafka Pro provides the [Iterator API](Pro-Consumer-Groups-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
+Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to subscribe to topics and to perform lookups from Rake tasks, custom scripts, Rails console, or any other Ruby processes.
 
 The following example demonstrates searching for messages with a specific header value:
 
@@ -417,7 +417,7 @@ end
 puts "There were #{user_5_events.count} messages"
 ```
 
-For more details on this feature, see [Iterator API](Pro-Consumer-Groups-Iterator-API).
+For more details on this feature, see [Iterator API](Pro-Iterator-API).
 
 ## Avoiding Accidental Overwriting of Consumer Instance Variables
 
