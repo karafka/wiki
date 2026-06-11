@@ -196,6 +196,22 @@ end
 
     If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption.
 
+### EOF and Termination Semantics
+
+By default, the iterator terminates when **every subscribed partition has reached its end at least once** — this is the "at-least-once-EOF" rule. Understanding what happens around that boundary is important for snapshot-style iteration.
+
+**After a partition EOFs, librdkafka keeps fetching it.** The partition is not paused (only an explicit `#stop_partition` call pauses a partition). This means that if new messages arrive on a partition that has already EOFed — while the iterator is still alive because other partitions haven't finished yet — those messages are delivered and yielded normally.
+
+**Once a partition enters the "reached its end" set, it stays there permanently.** New arrivals on an already-EOFed partition do not remove it from that set. The termination condition is therefore: *all partitions have reached their end at least once*, not *all partitions are simultaneously at their end right now*.
+
+A consequence of the at-least-once-EOF rule is that when the **last** partition EOFs, iteration ends immediately — even if another partition has fresh arrivals that are still in flight. Those in-flight messages will not be yielded.
+
+**Why this rule?** The alternative — removing a partition from the "done" set whenever a new message arrives for it — would mean the iterator never terminates on any topic with steady production. The at-least-once-EOF rule keeps termination deterministic and upholds the **snapshot contract**: the iterator is guaranteed to process everything that existed in every partition at the time its end was first reached.
+
+!!! tip "Tail-Following vs. Snapshot Semantics"
+
+    If you need to process messages continuously as they arrive (tail-following), use `enable.partition.eof: false` together with `yield_nil: true` as shown in the [Long-Living Iterators](#long-living-iterators) section. The at-least-once-EOF termination rule applies only to the default snapshot-style iteration.
+
 ### Routing Awareness
 
 If you are iterating over topics defined in your `karafka.rb`, including those marked as inactive, the iterator will know what deserializer to use and will operate accordingly. If you are iterating over an unknown topic, defaults will be used.
