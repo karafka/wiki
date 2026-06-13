@@ -118,8 +118,14 @@ if [ "$MODE" != "after" ]; then
     -o ./karafka-license.gem
 else
   # Check the local cached one after bundle install
-  cache_path=`ruby -e 'puts "#{Gem.dir}/cache/"'`
-  cp "$cache_path/karafka-license-$KARAFKA_PRO_LICENSE_ID.gem" ./karafka-license.gem
+  #
+  # Run ruby insulated from Bundler: when this script is invoked from a
+  # Bundler-aware context (e.g. under `bundle exec`), RUBYOPT carries
+  # bundler/setup into the subshell and, with auto-install enabled, Bundler
+  # may print "Resolving dependencies..." to stdout, corrupting the captured
+  # path
+  cache_path=$(RUBYOPT='' BUNDLE_AUTO_INSTALL='false' ruby -e 'print "#{Gem.dir}/cache/"')
+  cp "${cache_path}karafka-license-$KARAFKA_PRO_LICENSE_ID.gem" ./karafka-license.gem
 fi
 
 detected=`sha256sum ./karafka-license.gem | awk '{ print $1 }'`
