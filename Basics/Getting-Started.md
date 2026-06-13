@@ -25,9 +25,9 @@
 
     **Result**: All necessary files and directories are generated:
 
-   - `karafka.rb` — the main file where you configure Karafka and define which consumers should consume what topics
-   - `app/consumers/example_consumer.rb` — an example consumer
-   - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit
+   - `karafka.rb` - the main file where you configure Karafka and define which consumers should consume what topics
+   - `app/consumers/example_consumer.rb` - an example consumer
+   - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit
 
 1. To produce test messages, open the development console and enter:
 
@@ -83,9 +83,9 @@
 
     **Result**: All necessary files and directories are generated:
 
-    - `karafka.rb` — the main file where you configure Karafka and where you define which consumers should consume what topics.
-    - `app/consumers/example_consumer.rb` — an example consumer.
-    - `app/consumers/application_consumer.rb` — the base consumer from which all consumers should inherit.
+    - `karafka.rb` - the main file where you configure Karafka and where you define which consumers should consume what topics.
+    - `app/consumers/example_consumer.rb` - an example consumer.
+    - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit.
 
 1. Run a development console to produce messages to this example topic:
 
@@ -123,8 +123,6 @@ For instructions, see [Karafka Example Applications Wiki](https://github.com/kar
 ## Use cases, edge cases, and usage examples
 
 Karafka ships with a full integration test suite that illustrates various use cases and edge cases of working with Karafka and Kafka. For comprehensive understanding of our framework, visit [Integrations directory](https://github.com/karafka/karafka/tree/master/spec/integrations) of the Karafka repository.
-
----
 
 ## See Also
 

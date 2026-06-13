@@ -23,8 +23,6 @@ Each Karafka process defines exit statuses to indicate how the process terminate
   </tr>
 </table>
 
----
-
 ## See Also
 
 - [Deployment](Infrastructure-Deployment) - Handling exit codes in production deployments

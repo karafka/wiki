@@ -247,7 +247,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 </tbody>
 </table>
 
-!!! note
+!!! note "Note"
 
     Karafka Web UI topics are **not** managed via the [Declarative topics API](Infrastructure-Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
@@ -441,7 +441,7 @@ And that is all.
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
 
-!!! note
+!!! note "Note"
 
     Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 
@@ -501,8 +501,6 @@ Furthermore, it's worth noting that if Karafka Web UI detects older schema repor
 Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
 It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
-
----
 
 ## See Also
 

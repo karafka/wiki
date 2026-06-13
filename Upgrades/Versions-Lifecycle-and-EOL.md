@@ -25,7 +25,8 @@ Karafka and its components versions or release series are categorized below into
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.5     | Active      | N/A        |
+| 2.6     | Preview     | N/A        |
+| 2.5     | Active      | 2026-12-31 |
 | 2.4     | EOL         | 2025-10-31 |
 | 2.3     | EOL         | 2025-03-01 |
 | 2.2     | EOL         | 2024-09-30 |
@@ -63,7 +64,7 @@ Karafka and its components versions or release series are categorized below into
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
-!!! note
+!!! note "Note"
 
     If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
@@ -162,8 +163,6 @@ The following table outlines Kafka-compatible platforms that have been reported 
 - **High:** Widely reported usage in production environments
 - **Medium:** Several known production deployments
 - **Low:** Limited or no known production deployments
-
----
 
 ## See Also
 

@@ -439,8 +439,6 @@ The key is understanding that temporary connection errors during Kafka cluster m
 
 Connection refused errors during broker maintenance indicate the system is working correctly and attempting to reconnect to brokers as they become available again.
 
----
-
 ## See Also
 
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Configure retry strategies and backoff policies for consumer errors

@@ -180,7 +180,7 @@ end
 
     When providing a custom producer directly to the `#transaction` method while using manual offset management, you must ensure that no Karafka features that automatically manage and store offsets are used in your consumer. Any inadvertent offset management by Karafka could interfere with the integrity of your manual offset strategy.
 
-    In many cases, it may be a better idea to leverage the `#wrap` API, even when using manual offset management. The `#wrap` API allows you to handle custom producer assignment and lifecycle management seamlessly, while still ensuring that the overall Karafka consumption flow - including synchronization and framework-level operations—executes correctly. This approach reduces the risk of inconsistencies and simplifies producer handling in complex scenarios.
+    In many cases, it may be a better idea to leverage the `#wrap` API, even when using manual offset management. The `#wrap` API allows you to handle custom producer assignment and lifecycle management seamlessly, while still ensuring that the overall Karafka consumption flow - including synchronization and framework-level operations-executes correctly. This approach reduces the risk of inconsistencies and simplifies producer handling in complex scenarios.
 
 ### Using a Dedicated Transactional Producer
 

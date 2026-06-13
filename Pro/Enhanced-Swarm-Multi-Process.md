@@ -175,8 +175,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
----
-
 ## See Also
 
 - [Swarm Multi-Process](Infrastructure-Swarm-Multi-Process) - Standard Swarm mode documentation

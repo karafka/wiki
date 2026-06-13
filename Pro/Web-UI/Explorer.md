@@ -62,10 +62,8 @@ Occasionally, there might be a need to republish a message for various reasons. 
 
 The Karafka Data Explorer is your go-to solution for an in-depth exploration of data produced to Kafka. It's not just about viewing the data; it's about understanding it.
 
----
-
 ## See Also
 
 - [Search](Pro-Web-UI-Search) - For advanced search capabilities within topics
-- [Pro Iterator API](Pro-Consumer-Groups-Iterator-API) - For programmatic topic data exploration
+- [Pro Iterator API](Pro-Iterator-API) - For programmatic topic data exploration
 - [Features](Web-UI-Features) - For an overview of Web UI capabilities

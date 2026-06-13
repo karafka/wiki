@@ -83,8 +83,6 @@ Focusing on the lag data directly from Kafka lets you gain insights into system 
 
     For accurate lag information during consumer pauses, rely on the Cluster Lags view, which always reflects the true state from Kafka's perspective.
 
----
-
 ## See Also
 
 - [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - For comprehensive monitoring best practices

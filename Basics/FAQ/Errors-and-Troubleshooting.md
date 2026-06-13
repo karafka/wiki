@@ -34,8 +34,6 @@
 1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
 1. [I received a Confluent KIP-896 deprecation notice. Is Karafka using deprecated Kafka protocol APIs?](#i-received-a-confluent-kip-896-deprecation-notice-is-karafka-using-deprecated-kafka-protocol-apis)
 
----
-
 ## Why can't I connect to Kafka from another Docker container?
 
 You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).
@@ -198,7 +196,7 @@ The error message you mentioned may be related to the connection reaper in Kafka
 
 If the client application is not sending or receiving data over the TCP connection for a long time, the connection reaper may kick in and disconnect the client from the broker.
 
-However, this disconnection does not mean that any produced data will be lost. When the client application reconnects to the broker, it can resume sending or receiving messages from where it left off.
+For consumers, this disconnection is handled automatically - librdkafka reconnects and resumes from where it left off with no data loss. For producers, librdkafka retries in-flight messages after reconnecting, and a message with a full delivery budget survives a clean disconnect transparently. However, if you also see `msg_timed_out` delivery failures alongside these transport errors, the producer's timeout configuration may need attention - see [Why am I seeing paired disconnect and msg_timed_out errors on MSK](Basics-FAQ-Producing#why-am-i-seeing-paired-disconnect-after-600000ms-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka).
 
 Suppose your data production patterns are not stable, and there are times when your client application is not producing any data to Kafka for over 10 minutes. In that case, you may want to consider setting the `log.connection.close` value to `false` in your configuration. This configuration parameter controls whether the client logs a message when a connection is closed by the broker. By default, the client will log a message indicating that the connection was closed, which can generate false alarms if the connection was closed due to inactivity by the connection reaper.
 
@@ -400,7 +398,7 @@ In summary, while the error message might seem daunting, understanding its nuanc
 
 If the SSL certificates failed on the producer side, the data might not have been produced to Kafka in the first place. If your data is still present and not compacted due to the retention policy, then you should be able to read it.
 
-You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Consumer-Groups-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
+You can read from the last known consumed offset by seeking this offset + 1 or use Karafka [Iterator API](Pro-Iterator-API) or Web UI [Explorer](Web-UI-Features#explorer) to view those messages.
 
 ## Where can I find details on troubleshooting and debugging for Karafka?
 

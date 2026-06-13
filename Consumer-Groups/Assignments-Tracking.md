@@ -18,10 +18,10 @@ end
 
     The `Karafka::App.assignments` method returns only the current state of assignments. When a partition is revoked during a rebalance, it is removed from the assignments hash. If that same partition is later reassigned back, it appears identically to a first-time assignment in the current assignments hash.
 
-    However, per-partition **generation tracking** is available via `Karafka::Instrumentation::AssignmentsTracker`. Each time a partition is assigned, its generation counter is incremented (starting at 1 for the first assignment). Revocations, client resets, and assignment losses do **not** reset or change generation counters — only new assignments increment them.
+    However, per-partition **generation tracking** is available via `Karafka::Instrumentation::AssignmentsTracker`. Each time a partition is assigned, its generation counter is incremented (starting at 1 for the first assignment). Revocations, client resets, and assignment losses do **not** reset or change generation counters - only new assignments increment them.
 
-    - `AssignmentsTracker.generation(topic, partition)` — returns the generation count for a specific topic-partition (0 if never assigned, 1+ otherwise).
-    - `AssignmentsTracker.generations` — returns a frozen hash of all topic-partitions and their generation counts, including partitions that have been revoked.
+    - `AssignmentsTracker.generation(topic, partition)` - returns the generation count for a specific topic-partition (0 if never assigned, 1+ otherwise).
+    - `AssignmentsTracker.generations` - returns a frozen hash of all topic-partitions and their generation counts, including partitions that have been revoked.
 
     This is useful for idempotency logic, cache invalidation, and state recovery decisions where you need to distinguish first-time assignments from reassignments.
 
@@ -38,8 +38,6 @@ end
 - **Performance Tuning**: Observing partition traffic can help identify hotspots or bottlenecks in data flow, enabling fine-tuning partition sizes or numbers to optimize performance.
 
 - **Dynamic Consumer Scaling**: For systems that dynamically scale consumers based on load, knowledge of partition assignments is necessary to redistribute partitions among the new set of consumers efficiently.
-
----
 
 ## See Also
 

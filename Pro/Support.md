@@ -18,7 +18,7 @@ Please email using the same domain as the original license email or explain your
 
 !!! warning "Support for EOL Versions"
 
-    While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies—especially those beyond their End-of-Life (EOL) dates.
+    While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies-especially those beyond their End-of-Life (EOL) dates.
 
     Resolving issues in EOL versions may require backporting fixes to unsupported Ruby versions or deprecated dependencies, which may not be feasible or maintainable. We strongly recommend keeping your software stack current to ensure you can receive effective support and timely fixes.
 
@@ -52,6 +52,6 @@ We recognize the significance of prompt and effective bug resolution for your on
 
 By opting for Karafka Pro, you are not just purchasing a product but partnering with people committed to ensuring the smooth operation of your applications.
 
-!!! note
+!!! note "Note"
 
     Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.

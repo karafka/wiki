@@ -85,7 +85,7 @@ For example, in case you want to pause the processing, you need to return the fo
 - number of milliseconds to pause under `#timeout`.
 - message containing the desired offset from which to start processing after un-pausing under `#cursor`.
 
-!!! note
+!!! note "Note"
 
     User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 
@@ -306,8 +306,6 @@ By following these best practices, you can ensure that your Karafka Pro Filterin
 ## Summary
 
 Karafka Filtering API is a powerful tool that allows developers to process incoming messages in real time and perform various actions based on their content. With the Filtering API, users can register multiple filters to validate, filter out messages as they arrive, and alter the polling process by pausing or starting from a different offset. The order of the filters is essential, as each filter receives the data that the previous filters have already processed. Following best practices, such as using lightweight filters, avoiding complex logic, and testing filters thoroughly, can ensure that the system remains performant and reliable.
-
----
 
 ## See Also
 

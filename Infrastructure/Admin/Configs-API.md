@@ -135,8 +135,6 @@ Karafka::Admin::Configs.alter(resource)
 
 - **Batch Configuration Management**: Simultaneously update configurations for multiple brokers or topics, improving efficiency in large-scale environments.
 
----
-
 ## See Also
 
 - [Admin API](Infrastructure-Admin-API) - General admin operations and topic management

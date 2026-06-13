@@ -182,6 +182,39 @@ In this configuration:
 
 ### Timing Considerations
 
-- Set `idle_disconnect_timeout` higher than `connections.max.idle.ms` to allow librdkafka's connection cleanup to occur first
-- Consider your cluster's connection limits and broker-side idle timeouts when setting these values
-- Monitor connection patterns to find the optimal balance for your use case
+Set `idle_disconnect_timeout` higher than the client-side `connections.max.idle.ms` (the librdkafka setting in `config.kafka`) so that librdkafka's per-connection cleanup runs first and WaterDrop's full-producer disconnection is only needed as the second tier.
+
+The most important external constraint is the idle timeout of anything between the client and the brokers. Kafka brokers have their own server-side `connections.max.idle.ms` that controls when they close idle client connections with a graceful TCP FIN (the broker-side default on MSK is 600,000ms). librdkafka detects a FIN promptly and retries in-flight messages, so a clean broker reap is typically handled transparently. More dangerous are network intermediaries - AWS NLB, NAT gateways, firewalls - which silently drop TCP state after their own idle timeout (AWS NLB default: 350 seconds) without sending a FIN. librdkafka believes the socket is still live, and the next ProduceRequest stalls until the message's delivery budget expires.
+
+Setting `idle_disconnect_timeout` below these thresholds ensures the producer recycles connections proactively, before either the broker or network gear can reach their idle timeouts:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.idle_disconnect_timeout = 300_000          # WaterDrop: disconnect entire producer after 5 min
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'connections.max.idle.ms': 60_000               # librdkafka: close individual broker connections after 1 min
+  }
+end
+```
+
+For AWS MSK, the applicable idle timeout depends on your network architecture. In-VPC clients connecting directly to broker ENIs face only the broker's 600-second graceful close. When using PrivateLink or an NLB for cross-account or cross-VPC access, the NLB's 350-second idle timeout (default) applies and causes a silent drop. In either case, set `idle_disconnect_timeout` below the **shortest** idle timeout in your specific deployment:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.idle_disconnect_timeout = 300_000          # 5 min - safe for both direct-ENI and NLB paths
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true,                # enable OS keepalives; tune tcp_keepalive_time below any intermediary idle timeout for this to be effective
+    'connections.max.idle.ms': 240_000              # recycle non-leader broker connections at 4 min
+  }
+end
+```
+
+This produces a natural ordering:
+
+- `connections.max.idle.ms` (4 min) recycles unused non-leader broker connections
+- `idle_disconnect_timeout` (5 min) performs full producer shutdown including the leader connection
+- The broker reaper (600s) and any NLB idle timeout (default 350s) never fire on your client connections
+
+For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to disable the feature and keep connections persistent.

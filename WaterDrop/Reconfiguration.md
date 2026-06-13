@@ -49,8 +49,6 @@ class KarafkaApp < Karafka::App
 end
 ```
 
----
-
 ## See Also
 
 - [Producing Messages](Basics-Producing-Messages) - Complete guide to producing messages with Karafka and WaterDrop

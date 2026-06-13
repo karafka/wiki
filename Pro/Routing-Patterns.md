@@ -25,7 +25,7 @@ Upon detecting a new topic, Karafka seamlessly integrates its operations just as
     - **Classic protocol**: librdkafka evaluates regexes locally using the **libc** POSIX regex engine.
     - **Consumer protocol (KIP-848)**: Regex evaluation moves to the broker side, which uses the **Google RE2/J** engine.
 
-    Both engines differ from Ruby's Oniguruma engine. Additionally, the RE2/J engine requires that regexes match the **complete** topic name, while `libc` only checks if the pattern is found within the topic name. This means patterns like `^topic` that worked with the classic protocol may silently stop matching topics like `topic-1` under the consumer protocol — use `^topic.*` instead. See the [Regexp Implementation Differences](Pro-Routing-Patterns#regexp-implementation-differences) section and the [KIP-848 Regex Subscription Changes](Kafka-New-Rebalance-Protocol#regex-subscription-changes) for details.
+    Both engines differ from Ruby's Oniguruma engine. Additionally, the RE2/J engine requires that regexes match the **complete** topic name, while `libc` only checks if the pattern is found within the topic name. This means patterns like `^topic` that worked with the classic protocol may silently stop matching topics like `topic-1` under the consumer protocol - use `^topic.*` instead. See the [Regexp Implementation Differences](Pro-Routing-Patterns#regexp-implementation-differences) section and the [KIP-848 Regex Subscription Changes](Kafka-New-Rebalance-Protocol#regex-subscription-changes) for details.
 
 ### Representation of Routing Patterns
 
@@ -371,8 +371,8 @@ Ruby uses the **Oniguruma engine**, which differs from both of the above.
 
     **Example:** Given topics `topic-1` and `topic-2`:
 
-    - `^topic` or `^topic*` — matches in classic protocol, **fails** in consumer protocol
-    - `^topic.*` — works correctly in **both** protocols
+    - `^topic` or `^topic*` - matches in classic protocol, **fails** in consumer protocol
+    - `^topic.*` - works correctly in **both** protocols
 
     Since Karafka internally prepends `^` to pattern regex sources, a pattern like `pattern(/prefix/)` produces `^prefix`, which will fail under the consumer protocol for topics like `prefix-1`. Use `pattern(/prefix.*/)` instead, which produces `^prefix.*` and works with both protocols.
 
@@ -462,8 +462,6 @@ This comparative testing method offers a straightforward way to ensure your regu
 ## Summary
 
 Karafka's Routing Patterns offers a dynamic solution for message routing, utilizing the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality ensures agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
-
----
 
 ## See Also
 

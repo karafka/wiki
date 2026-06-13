@@ -1,5 +1,6 @@
 # Web UI Upgrade Notes
 
+- [Upgrading to 1.0](Upgrades-Web-UI-1.0)
 - [Upgrading to 0.11](Upgrades-Web-UI-0.11)
 - [Upgrading to 0.10](Upgrades-Web-UI-0.10)
 - [Upgrading to 0.9](Upgrades-Web-UI-0.9)

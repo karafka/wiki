@@ -131,7 +131,7 @@ In this case, each subscription group would establish connections to 4 brokers (
 
 In Karafka, each producer internally uses a single librdkafka client, which is designed to establish one TCP connection per broker in the Kafka cluster. This architecture implies that a single Karafka producer can potentially open as many TCP connections as brokers in the cluster. This fact becomes particularly important in larger systems or in setups where producers are dynamically created for different topics.
 
-For instance, consider a scenario where a Ruby process is configured to spawn a separate producer for each of `10` different topics. If your Kafka cluster consists of `5` brokers, this configuration would result in each producer maintaining `5` TCP connections — one for each broker. Consequently, the total number of TCP connections in just one Ruby process would be `50` (`10` topics x `5` brokers). When scaled up to `100` processes, this architecture would lead to a staggering total of `5000` TCP connections, which can impact network performance and resource utilization.
+For instance, consider a scenario where a Ruby process is configured to spawn a separate producer for each of `10` different topics. If your Kafka cluster consists of `5` brokers, this configuration would result in each producer maintaining `5` TCP connections - one for each broker. Consequently, the total number of TCP connections in just one Ruby process would be `50` (`10` topics x `5` brokers). When scaled up to `100` processes, this architecture would lead to a staggering total of `5000` TCP connections, which can impact network performance and resource utilization.
 
 Awareness of this potential multiplication of TCP connections is crucial. Systems architects and developers need to consider the implications of such a setup, including the increased overhead on network resources and the complexity of managing a larger number of connections, which can introduce more points of failure and complicate troubleshooting.
 
@@ -190,8 +190,6 @@ Karafka is designed to efficiently handle high-throughput message processing, le
 - **Underlying librdkafka Multithreading**: The librdkafka library, which underpins Karafka's interaction with Kafka, is multithreaded. It can efficiently utilize multiple cores available on modern machines, enhancing the capability to manage multiple connections and perform various network and I/O operations concurrently.
 
 - **Optimization Opportunities**: Given its multithreaded nature and efficient asynchronous techniques, Karafka allows for significant optimization opportunities regarding CPU usage. Developers can fine-tune the number of threads and the operational parameters of Karafka to match the specific performance and resource requirements.
-
----
 
 ## See Also
 

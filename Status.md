@@ -3,16 +3,31 @@
 !!! info "About This Page"
     This page tracks external incidents and ecosystem-level disruptions that may affect Karafka, WaterDrop, and Web UI users. This is **not** a Karafka uptime status page, but a curated log of upstream issues, dependency problems, and third-party service disruptions relevant to the Karafka ecosystem.
 
-!!! warning "Current Status - Active Advisory"
-    One active advisory. See details below.
-
----
+!!! success "Current Status - All Clear"
+    No active advisories at this time.
 
 ## Incident History
 
-!!! warning "[IN PROGRESS] March 2026 - Kafka Coordinator Recovery API Under Development"
+!!! success "[RESOLVED] April 2026 - Karafka Statistics Memory Bloat on Large Clusters"
 
-    - **Status:** In Progress
+    - **Status:** Resolved
+    - **Impact:** Medium
+    - **Affected:** Karafka users running against clusters with high partition counts (thousands of partitions per topic)
+
+    On large Kafka clusters, the statistics pipeline produced extensive payloads that caused excessive memory allocations on every statistics interval, along with noticeable RSS growth and GC pressure in long-running consumer and producer processes.
+
+    **Symptoms:**
+
+    - Steadily growing RSS memory in consumer and producer processes on large clusters
+    - High CPU usage tied to statistics decoration and deserialization
+    - Frequent GC collections correlated with the `statistics.interval.ms` cadence
+    - Stats payloads in the megabytes range on long-running processes
+
+    **Resolution:** Karafka Pro now ships with [Optimized Statistics Processing](https://karafka.io/docs/Pro-Optimized-Statistics-Processing) that automatically reduces the size and processing cost of statistics so they scale with the actual workload of a given process rather than the size of the cluster. The optimization is transparent and requires no configuration changes.
+
+!!! success "[RESOLVED] March 2026 - Kafka Coordinator Recovery API"
+
+    - **Status:** Resolved
     - **Impact:** Medium
     - **Affected:** Karafka users experiencing Kafka group coordinator `FAILED` state (`not_coordinator` errors)
 
@@ -28,11 +43,11 @@
 
     **Current Workarounds:**
 
-    - Switch to [Direct Assignments](https://karafka.io/docs/Pro-Consumer-Groups-Direct-Assignments) to bypass the coordinator entirely
+    - Switch to [Direct Assignments](https://karafka.io/docs/Pro-Direct-Assignments) to bypass the coordinator entirely
     - Use Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-election`, `kafka-consumer-groups`) to force a coordinator reload on a healthy broker
     - File a support ticket with your managed Kafka provider (MSK, Confluent Cloud) to apply upstream Kafka patches
 
-    **Resolution:** A new `Karafka::Admin::Recovery` API is under active development. This API will allow users to read committed offsets directly from the `__consumer_offsets` log (bypassing the broken coordinator), assess the blast radius across consumer groups, and migrate offsets to a new healthy consumer group - all without broker-level intervention. This issue will be fully resolved once the new version of Karafka containing the Recovery API is released.
+    **Resolution:** The [`Karafka::Admin::Recovery` API](https://karafka.io/docs/Infrastructure-Admin-Recovery-API) has been shipped. It allows users to read committed offsets directly from the `__consumer_offsets` log (bypassing the broken coordinator), assess the blast radius across consumer groups, and migrate offsets to a new healthy consumer group - all without broker-level intervention.
 
 !!! success "[RESOLVED] February 11, 2026 - Pro License Server Hardware Failure"
 

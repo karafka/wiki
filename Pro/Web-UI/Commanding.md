@@ -38,7 +38,7 @@ Opting out of commanding is recommended for environments where direct consumer m
 
 The commanding functionality within the Web UI is organized into two distinct tabs: "Controls" and "Commands." These tabs provide a centralized interface for managing consumer processes, making it easier for administrators to perform and track administrative actions directly from the Web UI.
 
-!!! info
+!!! info "Info"
 
     Commands issued through the Web UI are retained in Kafka for a default period of 7 days. After this duration, these commands are automatically removed from the system. This automatic cleanup helps manage the storage and maintain efficiency within Kafka without manual intervention.
 
@@ -318,8 +318,6 @@ Key points include:
 Karafka Pro's consumer control capabilities are essential for any organization looking to leverage Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
 The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
-
----
 
 ## See Also
 

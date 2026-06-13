@@ -1,5 +1,6 @@
 # Karafka Upgrade Notes
 
+- [Upgrading to 2.6](Upgrades-Karafka-2.6)
 - [Upgrading to 2.5](Upgrades-Karafka-2.5)
 - [Upgrading to 2.4](Upgrades-Karafka-2.4)
 - [Upgrading to 2.3](Upgrades-Karafka-2.3)

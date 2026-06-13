@@ -16,6 +16,14 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 Considering these points, you'll be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
 
+## Why Staying Current Matters
+
+Karafka ships bug fixes and patch releases at a fast pace. This includes fixes to Karafka itself, its dependencies such as karafka-rdkafka, and the underlying librdkafka C library. Many of these patches address subtle but impactful issues - such as consumer lag spikes triggered by rebalance bugs, offset management edge cases, or stability improvements under broker failures.
+
+Running significantly behind the latest release means you are carrying known bugs that have already been resolved upstream. Patch releases (third-digit bumps) are intentionally low-risk and focused on stability, making them safe to apply promptly. Minor version upgrades always come with a detailed upgrade guide to help you migrate confidently.
+
+The practical recommendation is: **apply patch releases as soon as they are available, and plan minor version upgrades within a few months of their release.** The longer you defer, the more changes accumulate between your version and current, making each upgrade incrementally harder and the window of exposure to known bugs incrementally longer.
+
 ## Upgrade Strategy
 
 1. **Read the upgrade guides**: Karafka provides detailed [upgrade guides](https://karafka.io/docs#upgrade-notes) for each major version release. These guides outline the steps required to upgrade from the previous version to the new version. Before proceeding with the upgrade, carefully read and follow the instructions in the upgrade guide.
@@ -47,8 +55,6 @@ Following these upgrade recommendations will help ensure a successful upgrade pr
 ## Pro Upgrade Support
 
 If you encounter difficulties while upgrading Karafka, particularly when upgrading from unsupported versions, we have a [Pro offering](https://karafka.io/#become-pro) that includes dedicated support. Our [Pro support](Pro-Support) can provide you with the necessary assistance to address any upgrade challenges and ensure a successful upgrade process. Feel free to contact us to learn more about the Pro offering and how it can help you with your Karafka upgrade.
-
----
 
 ## See Also
 

@@ -3,6 +3,21 @@
 
 # Karafka Core Changelog
 
+## 2.6.1 (2026-06-11)
+- [Enhancement] Speed up `Contract#call` by ~1.25x for minimal and ~1.4x for fully populated data: resolve rule paths with a single `Hash#fetch` per level instead of `key?` + `[]`, inline the per-rule type dispatch into the rules loop, and compare the dig sentinel via `#equal?` so `#==` is never dispatched to the validated (user-provided) values. This is the per-message validation path in WaterDrop producers.
+- [Fix] `Contract#call` with rule paths of 3+ keys no longer raises `NoMethodError` when an intermediate value is not a `Hash` and reports the path as missing instead, consistent with the 2-key path behavior.
+- [Change] Reject reserved setting names with an `ArgumentError` in `Configurable::Node#setting` and `#register`: internal state names (`node_name`, `children`, `nestings`, `compiled`, `configs_refs`, `local_defs`) and the node public API names (`setting`, `configure`, `to_h`, `deep_dup`, `register`, `compile`). Previously such names silently shadowed the node own accessors, breaking `deep_dup` or `to_h`, and assignments like `config.children = value` corrupted the node internal state.
+- [Enhancement] Skip the event name mapping hash lookup in `Monitor#instrument` when no namespace is used and the event id is already a `String`, which is the case for all events in the Karafka ecosystem (~1.2x faster dispatch on the common no-subscribers path). Symbol event ids and namespaced monitors keep going through the mapping.
+- [Enhancement] Mirror config values into instance variables and use `attr_reader` based readers in `Configurable::Node`, yielding ~1.4x faster flat and ~1.6x faster nested settings reads on hot paths. `@configs_refs` remains the canonical store; non-identifier setting names (e.g. registered names with dashes) keep the previous hash-based accessors.
+- [Enhancement] Instantiate each `Configurable::Node` through a per-layout anonymous subclass so the ivar-backed settings do not grow object shape variations on the shared `Node` class (which would degrade ivar access and trigger Ruby performance warnings). `deep_dup` reuses the template's subclass, so duplicated configs share object shapes.
+- [Fix] Symbolize setting names at definition time (`setting`, same as `register`) and on config store writes so `String` setting names work end to end (accessors, `#to_h`, recompilation state) and cannot corrupt node internal state when matching reserved internal names (previously string-named settings were quietly broken as accessors and the store disagreed on the key type).
+- [Change] Config nodes are now instances of anonymous `Node` subclasses: `is_a?(Karafka::Core::Configurable::Node)` still holds, but `instance_of?(Node)` is now `false` and `node.class.name` is `nil`.
+- [Change] Assigning a setting on a frozen config node now raises `FrozenError` (previously the write silently mutated internal storage despite the freeze).
+
+## 2.6.0 (2026-06-10)
+- [Enhancement] Add `Node#register` to allow runtime key-value registration on compiled nodes without going through the static `setting` DSL. Useful for dynamic registries (e.g. named clusters) where setting names are not known at class-load time.
+- [Enhancement] Replace version-gated `Warning[:performance]` with a `Warning.categories`-based loop that enables all opt-in Ruby warning categories automatically, picking up new categories (e.g. `strict_unused_block` in Ruby 3.4+) without future patches.
+
 ## 2.5.13 (2026-04-08)
 - [Enhancement] Extract `decorate_partitions` method from `StatisticsDecorator` to allow subclasses to filter which partitions are decorated (e.g. skip unassigned partitions in a consumer context).
 

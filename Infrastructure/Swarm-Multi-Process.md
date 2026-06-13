@@ -455,7 +455,7 @@ Conversely, signals can be sent directly to any child process to trigger specifi
 
 ### Behavior on Shutdown
 
-When the supervisor receives a request to shut down—typically through a SIGTERM or similar signal—it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
+When the supervisor receives a request to shut down-typically through a SIGTERM or similar signal-it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
 
 After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
 
@@ -586,8 +586,6 @@ Implementing Swarm Mode for these use cases allows applications to fully utilize
 Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-intensive Kafka message processing in Ruby, effectively bypassing the Global Interpreter Lock (GIL). It leverages Ruby's Copy-On-Write (CoW) for efficient memory use, employing a "Supervisor-Worker" pattern for parallel execution and system health monitoring.
 
 Swarm Mode supports Static Group Membership to enhance consumer group stability and allows for quick node restarts without rebalancing, thanks to Karafka Pro's monitoring.
-
----
 
 ## See Also
 

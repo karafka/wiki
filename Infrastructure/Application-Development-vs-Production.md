@@ -438,8 +438,6 @@ end
 
     However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.
 
----
-
 ## See Also
 
 - [Deployment](Infrastructure-Deployment) - Production deployment strategies and best practices

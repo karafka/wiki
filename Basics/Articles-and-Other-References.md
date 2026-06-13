@@ -12,14 +12,14 @@
 
 ## Articles and references about Karafka
 
-!!! note
+!!! note "Note"
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
 - [One Thread to Poll Them All: How a Single Pipe Made WaterDrop 50% Faster](https://mensfeld.pl/2026/02/waterdrop-fd-polling-50-percent-faster/)
 - [WaterDrop Meets Ruby’s Async Ecosystem: Lightweight Concurrency Done Right](https://mensfeld.pl/2025/09/ruby-async-waterdrop-concurrency/)
 - [The 60-Second Wait: How I Spent Months Solving the Ruby’s Most Annoying Gem Installation Problem](https://mensfeld.pl/2025/07/solving-ruby-rdkafka-installation-problem/)
-- [Deimos — The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)
+- [Deimos - The Journey to Karafka](https://medium.com/@dmorner/deimos-the-journey-to-karafka-9a26daf42678)
 - [Under the Hood: Enhancing Karafka’s CPU and Memory Efficiency](https://mensfeld.pl/2024/08/under-the-hood-enhancing-karafkas-cpu-and-memory-efficiency/)
 - [The librdkafka Supply Chain Breakdown: rdkafka-ruby’s Darkest Hour](https://mensfeld.pl/2024/07/the-librdkafka-supply-chain-breakdown-rdkafka-rubys-darkest-hour/)
 - [From Sleep to Speed: Making Rdkafka Sync Operations 16 Times Faster](https://mensfeld.pl/2024/05/from-sleep-to-speed-making-rdkafka-sync-operations-16-times-faster/)
@@ -34,7 +34,7 @@
 - [Monitoring Karafka Jobs Progress Using Web UI](https://mensfeld.pl/2023/10/monitoring-karafka-jobs-progress-using-web-ui/)
 - [Enhancing Data Reliability Through Transactional Offsets with Karafka](https://mensfeld.pl/2023/06/inside-kafka-enhancing-data-reliability-through-transactional-offsets-with-karafka/)
 - [Delaying Kafka Messages Processing with Karafka: A Deep Dive into Delayed Topics](https://mensfeld.pl/2023/04/delaying-kafka-messages-processing-with-karafka-a-deep-dive-into-delayed-topics/)
-- [Kafka topics as a code – declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
+- [Kafka topics as a code - declarative Kafka topics management in Ruby](https://mensfeld.pl/2023/03/kafka-topics-as-a-code-declarative-kafka-topics-management-in-ruby/)
 - [Batch Processing with Kafka using Karafka Batch](https://mamxalf.medium.com/batch-processing-with-kafka-using-karafka-batch-ac42b6e4a4a0)
 - [Integration Patterns for Distributed Architecture - Intro to Kafka](https://www.smily.com/engineering/integration-patterns-for-distributed-architecture-intro-to-kafka)
 - [Add a Kafka Consumer to Rails](https://danielabaron.me/blog/rails-kafka-consumer/)
@@ -44,10 +44,10 @@
 - [Karafka example applications](https://github.com/karafka/example-apps)
 - [Karafka (Ruby + Kafka) framework 1.4.0 Release Notes](https://mensfeld.pl/2020/09/karafka-framework-1-4-0-release-notes-ruby-kafka/)
 - [Karafka (Ruby + Kafka) framework 1.3.0 Release Notes](https://mensfeld.pl/2019/09/karafka-framework-1-3-0-release-notes-ruby-kafka/)
-- [Karafka – Ruby micro-framework for building Apache Kafka message-based applications](http://dev.mensfeld.pl/2015/08/karafka-ruby-micro-framework-for-building-apache-kafka-message-based-applications/)
-- [Benchmarking Karafka – how does it handle multiple TCP connections](http://dev.mensfeld.pl/2015/11/benchmarking-karafka-how-does-it-handle-multiple-tcp-connections/)
+- [Karafka - Ruby micro-framework for building Apache Kafka message-based applications](http://dev.mensfeld.pl/2015/08/karafka-ruby-micro-framework-for-building-apache-kafka-message-based-applications/)
+- [Benchmarking Karafka - how does it handle multiple TCP connections](http://dev.mensfeld.pl/2015/11/benchmarking-karafka-how-does-it-handle-multiple-tcp-connections/)
 - [Reduce your method calls by 99.9% by replacing Thread#pass with Queue#pop](https://mensfeld.pl/2022/01/reduce-your-method-calls-by-99-9-by-replacing-threadpass-with-queuepop/)
-- [Karafka – Ruby framework for building Kafka message based applications (presentation)](http://mensfeld.github.io/karafka-framework-introduction/)
+- [Karafka - Ruby framework for building Kafka message based applications (presentation)](http://mensfeld.github.io/karafka-framework-introduction/)
 
 ## Videos
 

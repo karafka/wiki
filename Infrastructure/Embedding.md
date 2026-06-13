@@ -131,7 +131,7 @@ end
 
 ## Long-Running Processing in Embedded Mode
 
-When using Karafka in embedded mode, long-running message processing can conflict with the host process shutdown behavior. Because `Karafka::Embedded.stop` is **blocking** (it waits for all current work to finish), a slow consumer can prevent the host process from shutting down in time. For example, when embedded in Puma, if your consumer takes longer than Puma's `worker_timeout`, the Puma master will send `SIGKILL` to the worker — forcefully terminating it without allowing cleanup.
+When using Karafka in embedded mode, long-running message processing can conflict with the host process shutdown behavior. Because `Karafka::Embedded.stop` is **blocking** (it waits for all current work to finish), a slow consumer can prevent the host process from shutting down in time. For example, when embedded in Puma, if your consumer takes longer than Puma's `worker_timeout`, the Puma master will send `SIGKILL` to the worker - forcefully terminating it without allowing cleanup.
 
 ### The Problem
 
@@ -151,7 +151,7 @@ The recommended approach is to break your processing into chunks and check `Kara
 
 !!! note "Download and Parse Phase"
 
-    The `stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well — for example, reading the file in batches rather than loading it entirely into memory before dispatching.
+    The `stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well - for example, reading the file in batches rather than loading it entirely into memory before dispatching.
 
 This pattern requires `manual_offset_management` enabled on the topic so that offsets are only committed when you explicitly call `mark_as_consumed`, not automatically when `#consume` returns:
 
@@ -236,7 +236,7 @@ end
 # karafka.rb
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.shutdown_timeout = 30_000 # 30 seconds — enough for one chunk + cleanup
+    config.shutdown_timeout = 30_000 # 30 seconds - enough for one chunk + cleanup
   end
 end
 ```
@@ -247,7 +247,7 @@ end
 
 !!! warning "Manual Offset Management Required"
 
-    For the early-exit pattern to work correctly, you **must** enable `manual_offset_management true` on the topic (as shown in the routing example above). Without it, Karafka will automatically commit the offset of the last message in the batch when `#consume` returns — even via an early `return` — which would skip reprocessing on the next startup. See [Manual Offset Management](Consumer-Groups-Offset-management#manual-offset-management) for details.
+    For the early-exit pattern to work correctly, you **must** enable `manual_offset_management true` on the topic (as shown in the routing example above). Without it, Karafka will automatically commit the offset of the last message in the batch when `#consume` returns - even via an early `return` - which would skip reprocessing on the next startup. See [Manual Offset Management](Consumer-Groups-Offset-management#manual-offset-management) for details.
 
 ## Limitations
 
@@ -379,8 +379,6 @@ The listener thread priority (internal setting `internal.connection.listener_thr
 !!! warning "Performance Trade-offs"
 
     Lower priorities reduce GVL time per quantum, which can slightly increase message processing latency. However, this trade-off usually improves overall system responsiveness. Monitor your specific workload and adjust priorities accordingly - the practical range is -3 to 3, with -3 providing the minimum 20ms quantum in practice due to Ruby's internal tick system.
-
----
 
 ## See Also
 

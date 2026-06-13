@@ -3,7 +3,17 @@
 
 # Rdkafka Changelog
 
-## 0.27.0 (Unreleased)
+## Unreleased
+- [Enhancement] Reuse per-thread scratch pointers in `Consumer::Headers.from_native` instead of allocating them for every consumed message. Previously each message paid one native pointer allocation just to check for headers and three more when headers were present; now the scratch pointers are allocated once per thread/fiber and reused, removing all per-message native scratch allocations from the consumer hot path.
+- [Enhancement] Remove the unused `DeliveryHandle` `:topic_name` struct field and the per-message allocation that populated it. The delivery callback copied the topic name into a native `FFI::MemoryPointer` on every delivered message, retained for the lifetime of the handle, yet nothing ever read it: the topic is already available via `DeliveryHandle#topic` (a Ruby attribute set during `produce`) and `DeliveryReport#topic_name`, both of which work exactly as before.
+
+## 0.28.0 (2026-06-03)
+- [Enhancement] Bump librdkafka to `2.14.1`
+- [Enhancement] Replace version-gated `Warning[:performance]` with dynamic `Warning.categories` opt-in in spec helper so new Ruby warning categories are automatically enabled without manual updates.
+- [Enhancement] `poll_batch` and `poll_batch_nb` now return error events inline as `RdkafkaError` objects rather than raising on the first error. The return type is `Array<Message, RdkafkaError>` and callers are responsible for handling errors in the result.
+
+## 0.27.0 (2026-05-07)
+- [Feature] Add `Consumer#poll_batch(timeout_ms, max_items:)` and `Consumer#poll_batch_nb(timeout_ms, max_items:)` for batch message polling via `rd_kafka_consume_batch_queue`.
 - [Feature] Add `Config#describe_properties` to dump all librdkafka configuration properties (including defaults and hidden properties) as a Hash via `rd_kafka_conf_dump`.
 - [Enhancement] Bump librdkafka to `2.14.0`
 - [Fix] Fix resource leak in `Admin#describe_configs` and `Admin#incremental_alter_configs` where `admin_options_ptr` and `queue_ptr` were not destroyed in the ensure block.

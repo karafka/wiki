@@ -41,9 +41,64 @@ The following metrics are available for each consumer:
 - `Utilization` - Displays the number of threads in a given process against a number of threads actively processing data in a given moment.
 - `Total lag` - Sumed lag from all the partitions actively consumed by a given process.
 
+### Consumer Group Join States
+
+The `join_state` field reflects the internal state of the librdkafka consumer group handler. It indicates where in the Kafka group coordination protocol the consumer currently sits. Understanding these states is useful when diagnosing rebalance delays, stalled consumers, or unexpected group membership behavior.
+
+<table>
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>init</code></td>
+      <td>Consumer has just started. No group join has been attempted yet.</td>
+    </tr>
+    <tr>
+      <td><code>wait-join</code></td>
+      <td>JoinGroup request sent to the broker; awaiting the broker's response.</td>
+    </tr>
+    <tr>
+      <td><code>wait-metadata</code></td>
+      <td>Waiting for a cluster metadata refresh before (re)joining the group. This state is only entered during a proper join or rejoin, not routine metadata updates.</td>
+    </tr>
+    <tr>
+      <td><code>wait-sync</code></td>
+      <td>SyncGroup request sent to the broker (follower path); awaiting the group leader's partition assignment.</td>
+    </tr>
+    <tr>
+      <td><code>wait-assn</code></td>
+      <td>Waiting for the partition assignment to be delivered. Appears in older librdkafka versions.</td>
+    </tr>
+    <tr>
+      <td><code>wait-assign-call</code></td>
+      <td>Assignment received from the broker; waiting for the application's assign callback to complete before consumption can begin.</td>
+    </tr>
+    <tr>
+      <td><code>wait-unassign-call</code></td>
+      <td>Waiting for the application's revoke callback to complete before partitions are surrendered.</td>
+    </tr>
+    <tr>
+      <td><code>wait-unassign-to-complete</code></td>
+      <td>Revoke callback finished; waiting for the full partition unassignment to be processed internally. Occurs during eager (non-cooperative) rebalances.</td>
+    </tr>
+    <tr>
+      <td><code>wait-incr-unassign-to-complete</code></td>
+      <td>Waiting for a partial (incremental) partition unassignment to finish. Occurs during cooperative rebalances where only a subset of partitions is being revoked.</td>
+    </tr>
+    <tr>
+      <td><code>steady</code></td>
+      <td>Consumer is synchronized and fully assigned. This is the normal healthy operating state. The assignment may be empty if no partitions were allocated to this consumer instance.</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Jobs
 
-!!! info
+!!! info "Info"
 
     More metrics are available in our Pro offering.
 
@@ -187,8 +242,6 @@ Each check may display one of the following statuses:
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/status.png" alt="karafka web status view" />
 </p>
-
----
 
 ## See Also
 

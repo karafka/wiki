@@ -3,7 +3,19 @@
 
 # Rdkafka Changelog
 
-## 0.26.2 (Unreleased)
+## Unreleased
+- [Enhancement] Reuse per-thread scratch pointers in `Consumer::Headers.from_native` instead of allocating them for every consumed message. Previously each message paid one native pointer allocation just to check for headers and three more when headers were present; now the scratch pointers are allocated once per thread/fiber and reused, removing all per-message native scratch allocations from the consumer hot path.
+- [Enhancement] Remove the unused `DeliveryHandle` `:topic_name` struct field and the per-message allocation that populated it. The delivery callback copied the topic name into a native `FFI::MemoryPointer` on every delivered message, retained for the lifetime of the handle, yet nothing ever read it: the topic is already available via `DeliveryHandle#topic` (a Ruby attribute set during `produce`) and `DeliveryReport#topic_name`, both of which work exactly as before.
+
+## 0.27.2 (2026-05-21)
+- [Enhancement] `poll_batch` and `poll_batch_nb` now return error events inline as `RdkafkaError` objects rather than raising on the first error. The return type is `Array<Message, RdkafkaError>` and callers are responsible for handling errors in the result.
+
+## 0.27.1 (2026-05-14)
+- [Fix] `poll_nb`, `poll_nb_each`, `poll_batch`, and `poll_batch_nb` now raise `RdkafkaError` with `details` populated (`{topic:, partition:, offset:}`) when a message contains an error (e.g. `:partition_eof`). Previously these methods raised via `RdkafkaError.new(code)`, discarding the native message struct context. They now use `RdkafkaError.validate!(native_message, client_ptr: inner)`, consistent with `poll`.
+
+## 0.27.0 (2026-05-08)
+- [Feature] Add `Consumer#poll_batch(timeout_ms, max_items:)` and `Consumer#poll_batch_nb(timeout_ms, max_items:)` for batch message polling via `rd_kafka_consume_batch_queue` (from upstream).
+- [Enhancement] Bump librdkafka to `2.14.1`.
 - [Fix] Fix resource leak in `Admin#describe_configs` and `Admin#incremental_alter_configs` where `admin_options_ptr` and `queue_ptr` were not destroyed in the ensure block (from upstream).
 - [Fix] Fix leaked queue reference in `Config#native_kafka` where `rd_kafka_queue_get_main` return value was not destroyed after passing to `rd_kafka_set_log_queue` (from upstream).
 - [Fix] Fix native topic partition list leak in `Consumer#position` where `tpl` was never destroyed (from upstream).

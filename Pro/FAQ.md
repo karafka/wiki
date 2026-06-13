@@ -50,6 +50,7 @@ Karafka Pro is an enhanced version of the Karafka framework, adding more functio
 1. [What happens if my payment fails or my credit card cannot be charged?](#what-happens-if-my-payment-fails-or-my-credit-card-cannot-be-charged)
 1. [Will Karafka Pro prices increase in the future?](#will-karafka-pro-prices-increase-in-the-future)
 1. [What are the pricing adjustment terms for Enterprise agreements?](#what-are-the-pricing-adjustment-terms-for-enterprise-agreements)
+1. [Who sends invoices and payment confirmations?](#who-sends-invoices-and-payment-confirmations)
 1. [Ethics, Privacy, and Information Usage](#ethics-privacy-and-information-usage)
 1. [Contact Info](#contact-info)
 
@@ -90,7 +91,7 @@ Unlike typical open-source projects that rely on volunteer maintenance, Karafka 
 
 The combination of commercial success, proven scale, and active development creates a self-reinforcing cycle that makes Karafka a safer bet than many corporate-backed or fully open-source projects that can be abandoned when business priorities shift.
 
-**Bottom Line:** Karafka combines enterprise-grade reliability—proven by features like comprehensive error handling, Dead Letter Queue functionality, and professional monitoring integrations—with the innovation speed of well-funded open source, as demonstrated by frequent feature releases and live consumer management capabilities. It's designed for businesses that need both stability and growth capability.
+**Bottom Line:** Karafka combines enterprise-grade reliability-proven by features like comprehensive error handling, Dead Letter Queue functionality, and professional monitoring integrations-with the innovation speed of well-funded open source, as demonstrated by frequent feature releases and live consumer management capabilities. It's designed for businesses that need both stability and growth capability.
 
 ## To become a Karafka Pro user, do I need to follow the LICENSE-COMM terms?
 
@@ -559,6 +560,18 @@ This pricing structure ensures:
 3. **Long-Term Partnerships**: Both parties can plan for the future without artificially constrained pricing that might force service changes
 
 Enterprise customers seeking specific pricing terms should contact `contact@karafka.io` to discuss arrangements that work for both parties while maintaining the sustainability of Karafka's development.
+
+## Who sends invoices and payment confirmations?
+
+This depends on your payment method:
+
+- **Karafka Pro (Stripe)**: All invoices, payment confirmations, and credit card update links are sent directly by **Stripe** after each successful charge. These emails come from Stripe's infrastructure, not from `contact@karafka.io`.
+
+- **Karafka Enterprise (Stripe)**: Same as Pro - Stripe handles all billing communications automatically after a successful charge.
+
+- **Karafka Enterprise (invoice/purchase order)**: Invoices are sent directly by me (Maciej Mensfeld) from `contact@karafka.io`.
+
+In short: whenever your payment goes through Stripe, all billing-related emails (invoices, payment receipts, card update links) come from Stripe. If any of these did not arrive, please check your spam folder first. Upon request, I can resend or manually provide any missing billing document.
 
 ## Ethics, Privacy, and Information Usage
 

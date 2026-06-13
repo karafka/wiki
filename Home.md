@@ -74,6 +74,8 @@
 - [Assignments Tracking](Consumer-Groups-Assignments-Tracking)
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy)
 - [Persistent Pausing](Consumer-Groups-Persistent-Pausing)
+- [Consumer Lag Spikes and Offset Resets](Consumer-Groups-Offset-Rewind)
+- [Unexpected Message Reprocessing](Consumer-Groups-Unexpected-Message-Reprocessing)
 
 ## Share Groups
 
@@ -157,6 +159,8 @@
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption)
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process)
 - [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing)
+- [Iterator API](Pro-Iterator-API)
+- [Direct Assignments](Pro-Direct-Assignments)
 
 ### Consumer Groups Features
 
@@ -169,9 +173,7 @@
 - [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)
 - [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator)
 - [Scheduling API](Pro-Consumer-Groups-Scheduling-API)
-- [Iterator API](Pro-Consumer-Groups-Iterator-API)
 - [Granular Backoffs](Pro-Consumer-Groups-Granular-Backoffs)
-- [Direct Assignments](Pro-Consumer-Groups-Direct-Assignments)
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing)
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue)
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
@@ -230,6 +232,7 @@
 It is recommended to do one major upgrade at a time.
 
 - [Karafka](Upgrades-Karafka)
+    - [2.6](Upgrades-Karafka-2.6)
     - [2.5](Upgrades-Karafka-2.5)
     - [2.4](Upgrades-Karafka-2.4)
     - [2.3](Upgrades-Karafka-2.3)
@@ -238,6 +241,7 @@ It is recommended to do one major upgrade at a time.
     - [2.0](Upgrades-Karafka-2.0)
 
 - [Web UI](Upgrades-Web-UI)
+    - [1.0](Upgrades-Web-UI-1.0)
     - [0.11](Upgrades-Web-UI-0.11)
     - [0.10](Upgrades-Web-UI-0.10)
     - [0.9](Upgrades-Web-UI-0.9)

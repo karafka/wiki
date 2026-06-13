@@ -26,7 +26,7 @@ instrumentation/logger_listener.rb:77:in `on_process_notice_signal'
 ...
 ```
 
-!!! note
+!!! note "Note"
 
     You need to have the `LoggerListener` enabled for this signal to print. It is enabled by default, so this signal should work out of the box unless you altered that.
 
@@ -38,7 +38,7 @@ Using `TSTP` allows you to gracefully finish all the work and shut down without 
 
 Use `TSTP` + `TERM` to guarantee shut down within a period. The best practice is sending `TSTP` at the start of deployment and `TERM` at the end.
 
-!!! note
+!!! note "Note"
 
     You still need to send `TERM` to exit the Karafka process.
 
@@ -58,8 +58,6 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 - `stopping` - The process is finishing current work, no longer accepting more, and shutting down.
 - `stopped` - The process finished everything and closed all the Kafka connections.
 - `terminated` - The process is going to exit shortly.
-
----
 
 ## See Also
 

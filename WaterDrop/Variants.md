@@ -130,8 +130,6 @@ These details are critical in effectively managing and troubleshooting your Kafk
 
 Variants address the need for dynamic, topic-specific configurations in applications interacting with Kafka. By enabling variations per topic within a single producer, WaterDrop helps streamline resource usage and enhance message dispatch efficiency, making it an essential tool for sophisticated Kafka-based messaging systems.
 
----
-
 ## See Also
 
 - [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup) - For managing multiple Kafka clusters

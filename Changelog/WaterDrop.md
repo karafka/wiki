@@ -3,7 +3,20 @@
 
 # WaterDrop changelog
 
-## 2.10.0 (Unreleased)
+## 2.10.2 (Unreleased)
+- [Enhancement] Stop allocating one interpolated string per message in `LoggerListener` batch produce handlers. The quoted topic strings were only ever counted (quoting is a 1:1 mapping), never displayed, so counting the raw topic values yields the identical number with zero string allocations — relevant for large `produce_many_*` batches with the default logger listener attached.
+- [Enhancement] Use `Array#concat` in `Producer#buffer_many` instead of appending messages one by one.
+- [Enhancement] Skip building the `message.acknowledged` instrumentation payload in the delivery callback when nothing is subscribed to that event. The notifications bus already short-circuits on empty listeners, but only after the payload hash was allocated — once per delivered message on the polling thread. Mirrors the listener guard already used by the statistics callback. Late subscribers keep working as the check happens on each emission.
+- [Enhancement] Resolve the fiber-local variant once per `#produce` call and once per `#produce_many_sync` wait phase instead of re-resolving it for every usage and for every waited delivery handle. For a 1,000-message sync batch this removes ~2,000 redundant fiber-local lookups.
+- [Enhancement] Do not allocate the fiber-local variants hash on the `Producer#current_variant` read path. Previously every fiber that produced messages got a Hash pinned to it for the fiber's lifetime (per producer use), even when variants were never used — wasteful under fiber-per-request servers (Falcon, async). The hash is now only created by variant wrapper methods that actually need to write to it.
+- [Enhancement] Cache the variant validation contract in a constant instead of instantiating a new `Contracts::Variant` on every `Producer#with` / `Producer#variant` call (mirrors the existing `Transactions::CONTRACT` pattern).
+- [Enhancement] Cache the tombstone validation contract in a constant instead of instantiating a new `Contracts::Tombstone` per tombstone message, removing per-message allocations in the `tombstone_*` APIs (mirrors the existing `Transactions::CONTRACT` pattern).
+- [Enhancement] Replace explicit `Warning[:performance]` opt-in with a dynamic approach using `Warning.categories` (available since Ruby 3.4) to automatically enable all stable opt-in warning categories in the test suite, including `:strict_unused_block` introduced in Ruby 4.0.
+
+## 2.10.1 (2026-05-25)
+- [Fix] Prevent `Producer#close` from raising `ThreadError: can't be called from trap context` when invoked from a Ruby signal trap context (e.g. Puma's `after_stopped` DSL hook in single mode). `close` now detects this case and delegates to a background thread, joining it so the caller blocks until the producer is fully closed (#866).
+
+## 2.10.0 (2026-05-07)
 - [Fix] Clean up native rdkafka client, global instrumentation callbacks, and poller registration when `init_transactions` fails during producer client construction. Previously, each failed attempt permanently leaked native threads, pipe file descriptors, and callback registry entries because the started `rd_kafka_t` handle was abandoned without being destroyed.
 - **[Breaking]** Skip emitting librdkafka statistics when nothing is subscribed to `statistics.emitted` at the time the underlying rdkafka client is constructed. When no listener is present at build time, `statistics.interval.ms` is forced to `0` regardless of user configuration and the statistics callback is not registered, saving substantial allocations in the hot path (no JSON parsing, no statistics hash materialization, no decoration work). To use statistics, subscribe a listener to `statistics.emitted` BEFORE the first producer use (before the underlying client is lazily initialized).
 - **[Breaking]** Raise `WaterDrop::Errors::StatisticsNotEnabledError` when attempting to subscribe to `statistics.emitted` (either via block or via a listener that responds to `on_statistics_emitted`) on a monitor where librdkafka statistics have been disabled at client build time. This replaces the "silent nothing" failure mode with an immediate, actionable error that pinpoints the timing mistake.

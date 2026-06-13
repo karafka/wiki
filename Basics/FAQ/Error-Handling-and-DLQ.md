@@ -14,8 +14,7 @@
 1. [What are poison pill messages, and how should I handle them in Karafka?](#what-are-poison-pill-messages-and-how-should-i-handle-them-in-karafka)
 1. [How can I validate messages before processing them?](#how-can-i-validate-messages-before-processing-them)
 1. [How should I handle missing or invalid records during message processing?](#how-should-i-handle-missing-or-invalid-records-during-message-processing)
-
----
+1. [Why are some messages processed more times than `max_retries` specifies?](#why-are-some-messages-processed-more-times-than-max_retries-specifies)
 
 ## Can I skip messages on errors?
 
@@ -52,7 +51,7 @@ When a message is dispatched to a [dead letter queue](Consumer-Groups-Dead-Lette
 
 On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled.
 
-!!! note
+!!! note "Note"
 
     In production environments, `auto.create.topics.enable` is often set to `false` to prevent unintended topic creation.
 
@@ -487,3 +486,15 @@ end
 ```
 
 For comprehensive error handling strategies, see [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy).
+
+## Why are some messages processed more times than `max_retries` specifies?
+
+There are three common causes, all expected behaviors rather than bugs:
+
+1. Retry counter tracks offset position, not individual messages. With batch consumption, if messages 0-98 succeed but message 99 fails and you have not called `mark_as_consumed` per message, Karafka retries the entire batch from the last committed offset. Messages 0-98 are reprocessed on every retry of message 99, despite never failing themselves.
+
+1. DLQ error counter is shared across the batch without `independent: true`. The retry counter accumulates across all messages in a batch. If message 4 uses up several retries before succeeding and message 7 then fails, message 7 inherits the accumulated count and may reach the DLQ sooner than `max_retries` implies.
+
+1. Consumer restart or rebalance resets the in-memory retry counter. The counter is held in memory for the current assignment. A deploy, crash, or rebalance resets it to zero, giving the same message a full new set of `max_retries` retries.
+
+For a full explanation of each cause with diagnostic guidance, see [Unexpected Message Reprocessing](Consumer-Groups-Unexpected-Message-Reprocessing).

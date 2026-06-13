@@ -1,6 +1,6 @@
 # Admin Recovery API
 
-When a Kafka group coordinator enters a `FAILED` state, all operations for the affected consumer groups return `not_coordinator`, leaving consumers stuck in `initializing` indefinitely — even after pod restarts. This page describes how to diagnose coordinator failures, assess their blast radius, and either mitigate the impact immediately or recover committed offsets and restore normal operation using `Karafka::Admin::Recovery`.
+When a Kafka group coordinator enters a `FAILED` state, all operations for the affected consumer groups return `not_coordinator`, leaving consumers stuck in `initializing` indefinitely - even after pod restarts. This page describes how to diagnose coordinator failures, assess their blast radius, and either mitigate the impact immediately or recover committed offsets and restore normal operation using `Karafka::Admin::Recovery`.
 
 ## Background: Coordinator Failures
 
@@ -8,11 +8,11 @@ Each consumer group maps deterministically to a partition of the internal `__con
 
 Coordinator failures can be triggered by a variety of broker-side conditions, including but not limited to:
 
-- **Log compaction races** — compaction running during a coordinator reload can produce epoch conflicts in `__consumer_offsets`, causing the coordinator shard to transition to `FAILED` state (e.g. [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862))
-- **Out-of-memory conditions** — loading a very large, uncompacted `__consumer_offsets` partition can exhaust broker heap (e.g. [KAFKA-19716](https://issues.apache.org/jira/browse/KAFKA-19716))
-- **Broker crashes and unclean restarts** — a broker that crashes mid-write may leave the `__consumer_offsets` partition in a partially consistent state
-- **Network partitions** — a broker isolated from the cluster may become the stale leader for coordinator partitions, causing `not_coordinator` responses until leadership is re-established
-- **Rolling restarts and maintenance windows** — managed Kafka services (MSK, Confluent Cloud) perform automatic broker rolling restarts that trigger coordinator reloads, which can surface any of the above conditions
+- **Log compaction races** - compaction running during a coordinator reload can produce epoch conflicts in `__consumer_offsets`, causing the coordinator shard to transition to `FAILED` state (e.g. [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862))
+- **Out-of-memory conditions** - loading a very large, uncompacted `__consumer_offsets` partition can exhaust broker heap (e.g. [KAFKA-19716](https://issues.apache.org/jira/browse/KAFKA-19716))
+- **Broker crashes and unclean restarts** - a broker that crashes mid-write may leave the `__consumer_offsets` partition in a partially consistent state
+- **Network partitions** - a broker isolated from the cluster may become the stale leader for coordinator partitions, causing `not_coordinator` responses until leadership is re-established
+- **Rolling restarts and maintenance windows** - managed Kafka services (MSK, Confluent Cloud) perform automatic broker rolling restarts that trigger coordinator reloads, which can surface any of the above conditions
 
 In `FAILED` state, every group operation (`JoinGroup`, `SyncGroup`, `OffsetCommit`, `DeleteGroup`) returns `not_coordinator`. The affected group appears empty in Karafka Web UI, fresh pods joining the group get stuck the same way, and restarting consumer deployments does not help. Other consumer groups whose coordinator partitions are on healthy brokers continue working normally.
 
@@ -49,7 +49,7 @@ rdkafka: [thrd:main]: 127.0.0.1:9092/1: Group "sync" coordinator is 127.0.0.1:90
 rdkafka: [thrd:main]: GroupCoordinator/1: Heartbeat for group "app" generation id 9
 ```
 
-Notice that `FindCoordinator` resolves successfully and the broker responds with a coordinator address — the broker itself is reachable. The group still fails to join because the coordinator shard is in a `FAILED` state and rejects every `JoinGroup` request. Other groups (such as `app` in the last line) continue heartbeating normally on the same broker, confirming the issue is isolated to the coordinator partition for the affected group.
+Notice that `FindCoordinator` resolves successfully and the broker responds with a coordinator address - the broker itself is reachable. The group still fails to join because the coordinator shard is in a `FAILED` state and rejects every `JoinGroup` request. Other groups (such as `app` in the last line) continue heartbeating normally on the same broker, confirming the issue is isolated to the coordinator partition for the affected group.
 
 On AWS MSK, search broker logs in CloudWatch to confirm the coordinator is in a `FAILED` state:
 
@@ -79,7 +79,7 @@ For other failure modes such as OOM or unclean restarts, look for heap exhaustio
 
 A single broker can lead multiple `__consumer_offsets` partitions, meaning a single coordinator failure can affect many consumer groups at once. Before attempting recovery, use `Karafka::Admin::Recovery` to map the full blast radius.
 
-It is important to understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic — **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is:
+It is important to understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic - **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is:
 
 **failing broker → `__consumer_offsets` partition numbers → consumer group names → your application topics**.
 
@@ -90,7 +90,7 @@ It is important to understand what each step returns here. `affected_partitions`
     # => { broker_id: 5, broker_host: "b-5.cluster.kafka.us-east-1.amazonaws.com:9096", partition: 5 }
     ```
 
-    The returned hash contains the broker ID, its `host:port` address, and the `__consumer_offsets` partition number the group maps to. This partition number is an internal coordination detail — it is **not** a partition of any of your application topics.
+    The returned hash contains the broker ID, its `host:port` address, and the `__consumer_offsets` partition number the group maps to. This partition number is an internal coordination detail - it is **not** a partition of any of your application topics.
 
 1. Find all `__consumer_offsets` partitions led by that broker:
 
@@ -150,16 +150,16 @@ recovered = Karafka::Admin::Recovery.read_committed_offsets(
 # => { "orders" => { 0 => 14921, 1 => 15004 }, "payments" => { 0 => 8830 } }
 ```
 
-The `last_committed_at` parameter defines the earliest point in time the scan will consider. Only offset commit records written at or after this timestamp are included. The scan uses last-write-wins semantics — if the same topic-partition appears multiple times within the window, only the most recent non-tombstone value is returned. Results are sorted alphabetically by topic and numerically by partition.
+The `last_committed_at` parameter defines the earliest point in time the scan will consider. Only offset commit records written at or after this timestamp are included. The scan uses last-write-wins semantics - if the same topic-partition appears multiple times within the window, only the most recent non-tombstone value is returned. Results are sorted alphabetically by topic and numerically by partition.
 
-Choosing the right value for `last_committed_at` is important. Setting it too recent risks missing the last committed offsets if the coordinator failed before they were flushed. Setting it too far in the past is generally safe — earlier records are simply overwritten by later ones due to last-write-wins — but on a very active group with a large `__consumer_offsets` partition it increases scan time.
+Choosing the right value for `last_committed_at` is important. Setting it too recent risks missing the last committed offsets if the coordinator failed before they were flushed. Setting it too far in the past is generally safe - earlier records are simply overwritten by later ones due to last-write-wins - but on a very active group with a large `__consumer_offsets` partition it increases scan time.
 
 A practical approach is to reason from what you know about the incident:
 
 - **If you know when the coordinator failed**, use that timestamp minus ten to fifteen minutes. This gives enough buffer to capture the last successful commits even if there was a lag between the failure and when it was noticed.
 - **If the failure time is uncertain**, start with a one to two hour lookback. If the returned offsets look plausible (not suspiciously old), they are good to use. If they are further back than expected, the group may have had low commit frequency or the failure happened earlier than assumed.
 - **If the group processes high-throughput topics**, committed offsets are written frequently and a shorter lookback of five to ten minutes before the known failure time is usually sufficient.
-- **If the group processes low-throughput topics** where commits happen infrequently, extend the lookback window generously — potentially several hours — to ensure you capture the most recent commit rather than an empty result.
+- **If the group processes low-throughput topics** where commits happen infrequently, extend the lookback window generously - potentially several hours - to ensure you capture the most recent commit rather than an empty result.
 
 When in doubt, err on the side of a longer lookback. The scan is read-only and has no side effects.
 
@@ -171,7 +171,7 @@ When in doubt, err on the side of a longer lookback. The scan is read-only and h
 The recovery workflow is intentionally two-step: inspect the recovered offsets first, then commit them to a target group. This lets you validate the data before making any permanent changes.
 
 ```ruby
-# Step 1: Read from the broken group — bypasses the coordinator entirely
+# Step 1: Read from the broken group - bypasses the coordinator entirely
 recovered = Karafka::Admin::Recovery.read_committed_offsets(
   'my-broken-group',
   last_committed_at: Time.now - 600
@@ -198,7 +198,7 @@ puts "New group maps to broker #{target[:broker_id]} (#{target[:broker_host]})"
 
 ## Alternative: Direct Assignments
 
-[Direct Assignments](https://karafka.io/docs/Pro-Consumer-Groups-Direct-Assignments) offer a fundamentally different approach: rather than recovering and migrating the broken group, you reconfigure consumers to use the `assign` API instead of `subscribe`. This skips `JoinGroup` and `SyncGroup` entirely — the coordinator is never contacted, so its state is irrelevant. Consumers connect directly to specific topic-partitions and start processing without any group membership negotiation.
+[Direct Assignments](https://karafka.io/docs/Pro-Direct-Assignments) offer a fundamentally different approach: rather than recovering and migrating the broken group, you reconfigure consumers to use the `assign` API instead of `subscribe`. This skips `JoinGroup` and `SyncGroup` entirely - the coordinator is never contacted, so its state is irrelevant. Consumers connect directly to specific topic-partitions and start processing without any group membership negotiation.
 
 ```ruby
 routes.draw do
@@ -220,7 +220,7 @@ routes.draw do
 end
 ```
 
-This is best used as an immediate operational bypass to restore consumption while the cluster issue is being investigated and resolved in parallel. It is the fastest path back to processing — no group migration, no broker operations, no tombstone writes required.
+This is best used as an immediate operational bypass to restore consumption while the cluster issue is being investigated and resolved in parallel. It is the fastest path back to processing - no group migration, no broker operations, no tombstone writes required.
 
 The important trade-off is that Direct Assignments operate entirely outside of Kafka's consumer group offset tracking. Since there is no coordinator, Kafka does not manage committed offsets on your behalf. You are responsible for determining the correct starting position for each partition and for persisting progress externally if needed. A practical approach during recovery is to pair Direct Assignments with `read_committed_offsets` to seed the correct starting offset:
 
@@ -234,7 +234,7 @@ recovered = Karafka::Admin::Recovery.read_committed_offsets(
 # In your consumer, use the recovered offsets to seek before processing
 class MyConsumer < ApplicationConsumer
   def consume
-    # Your processing logic here — offset position was seeded externally
+    # Your processing logic here - offset position was seeded externally
   end
 end
 ```
@@ -264,7 +264,7 @@ This requires Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-electi
       | grep "Partition: <N>"
     ```
 
-    Note the `Leader` and `Replicas` values — you will need both for subsequent steps.
+    Note the `Leader` and `Replicas` values - you will need both for subsequent steps.
 
 1. Move the partition leader to a healthy broker. Create a `reassignment.json` that places a different broker first in the replica list. For example, if the current replicas are `[5,4,6,1,2,3]`, put broker 4 first:
 
@@ -330,7 +330,7 @@ This requires Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-electi
 
 ## Caveats and Recommendations
 
-**Broker reboots are not a durable fix.** Rebooting a failing coordinator broker can temporarily succeed — the reload may land on a clean path — but the underlying condition in `__consumer_offsets` remains. The failure will recur on the next leadership change to that broker unless the root cause is addressed.
+**Broker reboots are not a durable fix.** Rebooting a failing coordinator broker can temporarily succeed - the reload may land on a clean path - but the underlying condition in `__consumer_offsets` remains. The failure will recur on the next leadership change to that broker unless the root cause is addressed.
 
 **File a support ticket with your managed Kafka provider.** For managed services such as MSK or Confluent Cloud, report the coordinator failure with the relevant broker logs. Known bugs of this class have fixes available in newer Kafka patch versions, and providers should be pushed to roll out the patch promptly.
 

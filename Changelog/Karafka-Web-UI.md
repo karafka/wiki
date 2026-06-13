@@ -3,17 +3,24 @@
 
 # Karafka Web Changelog
 
-## 0.11.7 (Unreleased)
+## 1.0.0 (Unreleased)
+- [Fix] Add `initialize` to `Status::Context` that defines all instance variables upfront in a consistent order, giving every instance the same Ruby object shape and eliminating the `:performance` shape-variation warning.
+- [Enhancement] Add `Warning.process` block to the test helper to turn Ruby warnings originating from the project code into test failures.
+- [Enhancement] Enable all opt-in Ruby warning categories in the test helper via `Warning.categories` (available since Ruby 3.4), so any new categories added in future Ruby versions are automatically enabled without code changes.
+- [Enhancement] Replace sequential per-partition `query_watermark_offsets` consumer calls in `Counters#estimate_errors_count` with a single targeted `topic_info` metadata call followed by a batch `read_watermark_offsets` admin call. This eliminates the consumer connection overhead and reduces Kafka roundtrips from up to N+1 sequential calls to 3 regardless of partition count.
 - [Enhancement] Allow for zero value in number of workers to support dynamic scaling of Karafka workers.
 - [Enhancement] Align concurrency tracking with dynamic thread pool scaling. Workers count is now read from `Karafka::Server.workers.size` instead of the static `Karafka::App.config.concurrency`, so the Web UI accurately reflects runtime thread pool changes.
 - [Enhancement] Track `poll_interval` (max.poll.interval.ms) per subscription group alongside `poll_age` to help users monitor how close they are to the polling timeout limit. Consumer schema version bumped to 1.7.0.
 - [Enhancement] Replace token-based CSRF protection (`route_csrf` plugin) with header-based protection using `Sec-Fetch-Site` header (`sec_fetch_site_csrf` plugin). This eliminates the need for CSRF tokens by leveraging browser-enforced headers that cannot be forged from cross-origin requests. Modern browsers automatically include this header, providing simpler and more robust CSRF protection.
 - [Enhancement] Include a short spec file hash in generated test topic names for traceability. Topic names now follow the `it-{hash}-{uuid}` format, making it easy to identify which test file created a given topic in Kafka logs.
 - [Change] Require Roda `>= 3.100` (previously `~> 3.69`).
+- [Fix] Accept (and ignore) a block in `Karafka::Web::Producer#__getobj__` to silence Ruby 3.4's `strict_unused_block` warning emitted via `SimpleDelegator#method_missing` on every delegated producer call.
 - [Fix] Remove `cgi` as no longer needed.
 - [Fix] Exclude `test/` directory from gem releases to reduce package size.
 - [Fix] Update LinksValidator regexes to match the new `it-{hash}-{uuid}` test topic naming format, fixing test-order dependent failures in explorer controller specs.
 - [Fix] Fix alerts formatting for the distribution view.
+- [Fix] Fix 500 error in the Pro Explorer when a message payload parses as valid JSON but contains strings with invalid UTF-8 byte sequences. `JSON.pretty_generate` would raise `JSON::GeneratorError` outside of any error boundary and propagate as an unhandled 500. The pretty-print step is now wrapped in a dedicated `@safe_pretty_payload` SafeRunner; on failure the raw bytes are displayed alongside a deserialization warning.
+- [Fix] Fix 500 error in the Pro Explorer message JSON export when a payload deserializes correctly but cannot be serialized back to JSON (for example when it contains strings with invalid UTF-8 byte sequences). The export endpoint now responds with 404 in such cases and the export action button is no longer rendered for such messages.
 
 ## 0.11.6 (2026-02-01)
 - **[Feature]** Provide ability to pause/resume all partitions of a topic at once across all consumer processes via the Health Overview page (Pro). Topic-level commands are broadcast to all processes, and each process applies the command to partitions it owns within the specified consumer group. This simplifies bulk operations compared to pausing/resuming individual partitions one by one.

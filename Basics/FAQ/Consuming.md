@@ -45,8 +45,6 @@
 1. [Can two Karafka server processes with the same group_id consume messages from the same partition in parallel?](#can-two-karafka-server-processes-with-the-same-group_id-consume-messages-from-the-same-partition-in-parallel)
 1. [When does EOF (End of File) handling occur in Karafka, and how does it work?](#when-does-eof-end-of-file-handling-occur-in-karafka-and-how-does-it-work)
 
----
-
 ## Could an HTTP controller also consume a fetched message through the Karafka router?
 
 **No**. Kafka messages can be consumed only using Karafka consumers. You cannot use your Ruby on Rails HTTP consumers to consume Kafka messages, as Karafka is **not** an HTTP Kafka proxy. Karafka uses Kafka API for messages consumption.
@@ -143,7 +141,7 @@ A single consumer instance can perform work in many threads but only in one simu
 
 ## Can I consume messages from a Rake task?
 
-**Yes**. Karafka Pro provides the [Iterator API](Pro-Consumer-Groups-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.
+**Yes**. Karafka Pro provides the [Iterator API](Pro-Iterator-API) that allows you to run one-off consumptions inline from within Rake tasks and any other Ruby processes.
 
 ## Does Karafka Expiring Messages remove messages from Kafka?
 
@@ -177,13 +175,13 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-!!! note
+!!! note "Note"
 
     When using Karafka [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Consumer-Groups-Virtual-Partitions#virtual-offset-management) works.
 
 ## How can I consume all the messages from a Kafka topic without a consumer process?
 
-Karafka has an Iterator API for that. You can read about it [here](Pro-Consumer-Groups-Iterator-API).
+Karafka has an Iterator API for that. You can read about it [here](Pro-Iterator-API).
 
 ## Is there an option in Karafka to re-consume all the messages from a topic even though all were already consumed?
 
@@ -191,7 +189,7 @@ Yes.
 
 There are a few ways to do that:
 
-1. Use the [Iterator API](Pro-Consumer-Groups-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
+1. Use the [Iterator API](Pro-Iterator-API) to run a one-time job alongside your regular Karafka consumption.
 1. Use the `#seek` consumer method in combination with [Admin watermark API](Infrastructure-Admin-API#reading-the-watermark-offsets) to move to the first offset and re-consume all the data.
 1. Create a new consumer group that will start from the beginning.
 
@@ -293,7 +291,7 @@ Furthermore, with no arguments in the initialize method, this API structure is d
 
 ## Can I retrieve all records produced in a single topic using Karafka?
 
-Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Consumer-Groups-Iterator-API).
+Yes, you can consume all records from a specific topic in Karafka by setting up a new consumer for that topic or using the [Iterator API](Pro-Iterator-API).
 
 If your primary aim is to get the count of messages, you might have to maintain a counter as you consume the messages.
 
@@ -328,7 +326,7 @@ Getting the exact number of messages in a Kafka topic is more complicated due to
       end
     ```
 
-1. Using the [Iterator API](Pro-Consumer-Groups-Iterator-API) and counting all the messages:
+1. Using the [Iterator API](Pro-Iterator-API) and counting all the messages:
 
     ```ruby
     iterator = Karafka::Pro::Iterator.new('my_topic_name')
@@ -385,7 +383,7 @@ If your data retention policy has compacted the data, then the data from the dow
 
 ## Is it possible to fetch messages per topic based on a specific time period in Karafka?
 
-Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Consumer-Groups-Iterator-API) or the [Enhanced Web UI](Web-UI-Features#explorer) to perform time-based offset lookups.
+Yes, in newer versions of Karafka, you can use the [Iterator API](Pro-Iterator-API) or the [Enhanced Web UI](Web-UI-Features#explorer) to perform time-based offset lookups.
 
 ## Does the open-source (OSS) version of Karafka offer time-based offset lookup features?
 

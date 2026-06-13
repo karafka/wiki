@@ -20,7 +20,7 @@ A complete list of the supported events can be found [here](https://github.com/k
 
 The best place to hook your listener is at the end of the ```karafka.rb``` file. This will guarantee that your custom listener will be already loaded into memory and visible for the Karafka framework.
 
-!!! note
+!!! note "Note"
 
     You should set up listeners **after** configuring the app because Karafka sets up its internal components right after the configuration block. That way, we can be sure everything is loaded and initialized correctly.
 
@@ -212,7 +212,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
     Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
 
-!!! note
+!!! note "Note"
 
     Karafka emits metrics every 5 seconds by default, governed by the Kafka setting `statistics.interval.ms`. Metrics are also published during processing and long polling. Whether you are processing data or waiting on more information being shipped from Kafka, metrics publishing will occur.
 
@@ -290,7 +290,7 @@ You can read more about its features [here](Web-UI-Features), and the installati
 
 ## AppSignal Metrics and Error Tracking
 
-!!! tip
+!!! tip "Tip"
     [AppSignal](https://www.appsignal.com/) has had and continues to have, a **tremendous** impact on the Karafka ecosystem. Without their invaluable contributions and support, the progress and evolution of this ecosystem would not have been possible. For those searching for a top-notch monitoring system for Ruby and Rails applications, AppSignal stands out as a prime choice. Karafka officially recommends AppSignal as the supported integration for its community and users.
 
 Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a seamless solution for monitoring your Kafka-based applications.
@@ -309,7 +309,7 @@ Key Metrics Include:
 
 By using the Karafka AppSignal integration, you can proactively manage your Kafka-based applications, ensuring they operate smoothly and reliably.
 
-!!! note
+!!! note "Note"
 
     When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
 
@@ -597,7 +597,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ![Example Karafka DD dashboard](https://karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
 
-!!! note
+!!! note "Note"
 
     Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
@@ -698,7 +698,7 @@ Kubernetes is an open-source platform for automating the deployment and manageme
 
 ## OpenTelemetry
 
-!!! note
+!!! note "Note"
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
 
@@ -806,7 +806,7 @@ ActiveSupport::Notifications.subscribe('consumed.consumer.karafka') do |event|
 end
 ```
 
-!!! note
+!!! note "Note"
 
     Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
 
@@ -866,8 +866,6 @@ For those using custom instrumentation listeners, it's vital to ensure they are 
 To avert these issues, it's crucial to ensure your Karafka applications' instrumentation and monitoring listeners function correctly.
 
 In conclusion, maintaining the stability, performance, and reliability of Karafka-based applications requires the proper functioning of any custom instrumentation and monitoring listeners.
-
----
 
 ## See Also
 

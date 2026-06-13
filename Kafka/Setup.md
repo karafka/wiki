@@ -43,8 +43,6 @@ Connected to 192.168.0.5.
 Escape character is '^]'.
 ```
 
----
-
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - For setting up Karafka with your Kafka cluster

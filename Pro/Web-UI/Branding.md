@@ -11,7 +11,7 @@ The branding configuration is done through the `config.ui.branding`. You can adj
 ```ruby
 Karafka::Web.setup do |config|
   config.ui.branding.type = :warning
-  config.ui.branding.notice = 'You are working in the production environment – proceed with caution!'
+  config.ui.branding.notice = 'You are working in the production environment - proceed with caution!'
   config.ui.branding.label = 'Production'
 end
 ```
@@ -23,8 +23,6 @@ end
 - Always set a unique label for each environment (e.g., "Production", "Development") to avoid any accidental confusion.
 - Use the notice field to display critical environment-specific information, especially in production environments.
 - Choose an appropriate type to convey the importance or caution level of the environment visually.
-
----
 
 ## See Also
 
