@@ -72,6 +72,12 @@ This section provides a guide on implementing and using a custom scheduler. It w
 
     Please ensure that every job provided to the scheduler gets scheduled except for the subscription group recovery case. It's okay if job scheduling is delayed, but all jobs must end up in the jobs queue. Not doing this can cause problems with how the system works.
 
+!!! danger "Unhandled Scheduler Errors Trigger a Client Reset and a Rebalance"
+
+    Scheduler methods run in the listener (polling) thread, at the very core of Karafka's fetch loop. If any scheduler method raises an unhandled exception, Karafka treats it as a critical failure and recovers by resetting the underlying client connection for the affected subscription group - the same client reset that drives the `#clear` method described below. A client reset makes the process leave and rejoin the consumer group, which **triggers a rebalance**.
+
+    Because of this, a persistent error in a custom scheduler will make Karafka reset and rejoin in a loop, producing a **rebalance storm** that disrupts the entire subscription group and the other members of the consumer group. Treat a custom scheduler as critical, low-level code: keep it defensive, rescue and handle your own errors, and never allow an exception to escape a scheduler method.
+
 ### Types of Schedulers
 
 You can build two primary types of schedulers: stateful and stateless. Each scheduling method in this API has a non-blocking counterpart, which is vital for specific use cases.
