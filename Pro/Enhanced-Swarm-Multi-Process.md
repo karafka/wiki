@@ -30,7 +30,8 @@ Karafka.monitor.subscribe(
   Karafka::Pro::Swarm::LivenessListener.new(
     memory_limit: 2048, # Memory limit in MB (e.g., 10GB)
     consuming_ttl: 5 * 60 * 1_000, # 5 minutes in ms
-    polling_ttl: 5 * 60 * 1_000 # 5 minutes in ms
+    polling_ttl: 5 * 60 * 1_000, # 5 minutes in ms
+    stability_ttl: 5 * 60 * 1_000 # 5 minutes in ms (requires statistics.interval.ms)
   )
 )
 ```
@@ -69,6 +70,12 @@ The Enhanced Liveness Listener accepts several parameters to customize its behav
       <td>Matches <code>max.poll.interval.ms</code></td>
       <td>Max time in ms for polling. If polling does not happen often enough, the process will be considered dead.</td>
     </tr>
+    <tr>
+      <td><code>stability_ttl</code></td>
+      <td>Integer</td>
+      <td>Twice the max <code>max.poll.interval.ms</code></td>
+      <td>Max time in ms a consumer group may stay frozen in a single non-<code>"steady"</code> librdkafka join state (e.g. stuck in <code>CompletingRebalance</code>). The timer resets on every join state transition, so only a continuously frozen group is flagged. <strong>Requires <code>statistics.interval.ms</code> to be set</strong> - without it this check has no effect.</td>
+    </tr>
   </tbody>
 </table>
 
@@ -92,6 +99,10 @@ The listener reports to the supervisor the following failure statuses for monito
   <tr>
     <td>3</td>
     <td>Node exceeded the allocated memory limit (Pro only).</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Node's consumer group stayed frozen in a non-steady join state longer than <code>stability_ttl</code> (Pro only).</td>
   </tr>
 </table>
 
