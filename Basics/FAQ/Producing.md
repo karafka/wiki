@@ -517,7 +517,7 @@ On MSK, clients in the same VPC (or a peered VPC) connect directly to broker ENI
 There are two distinct failure paths with different log signatures:
 
 - **Broker-side graceful close** (`Receive failed: Disconnected` log, does not pair with `msg_timed_out`): The broker's `connections.max.idle.ms` fires and it sends a TCP FIN. librdkafka detects this promptly on the next read and reconnects. Because the broker only reaps after genuine inactivity (produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time - librdkafka reconnects clean, no drops.
-- **Network gear silent drop** (`N request(s) timed out: disconnect` log, pairs with `msg_timed_out`): NLB, NAT gateway, or firewall silently drops TCP state without sending a FIN or RST. librdkafka believes the socket is live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires, at which point the message budget may already be exhausted.
+- **Network gear silent drop** (`N request(s) timed out: disconnect` log, pairs with `msg_timed_out`): NLB, NAT gateway, firewall, or - on EC2 Nitro v6 instances - the instance's own ENI silently drops TCP state without sending a FIN or RST. librdkafka believes the socket is live and sends a ProduceRequest on the dead connection. The request stalls until its timeout fires, at which point the message budget may already be exhausted.
 
 If you observe the `request(s) timed out` signature on a deployment where you believe no NLB is present, check for unreported PrivateLink configurations, NAT gateways, or firewalls in the network path - the silent-drop signature is definitive evidence that something in the path is dropping TCP state without a FIN.
 
@@ -568,6 +568,28 @@ end
 ```
 
 See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#idle-connection-reaping) and [WaterDrop Connection Management](WaterDrop-Connection-Management) for further detail.
+
+## Why did my producer start timing out right after upgrading EC2 instance types?
+
+If producing was healthy for months and then suddenly started stalling - each stalled message blocking for as long as your configured `socket.timeout.ms` - with `Timed out N in-flight, 0 retry-queued, 0 out-queue, 0 partially-sent requests` warnings, immediately after switching to a newer EC2 instance type (for example the Graviton `*9g` families), and reverting the instance type makes it disappear, the cause is almost certainly the Nitro v6 idle connection timeout.
+
+EC2 instances built on Nitro v6 reduced the default ENI TCP connection-tracking idle timeout from 432,000 seconds (5 days) to 350 seconds. On older instances, idle Kafka connections were effectively never reaped by the host; on Nitro v6 the ENI silently drops the connection after 350 seconds of inactivity - with no FIN or RST - even for direct, in-VPC traffic with no load balancer in the path. librdkafka keeps using the dead socket, and the next ProduceRequest stalls until `socket.timeout.ms` expires - so the stall lasts as long as that timeout is set (librdkafka's default is 60 seconds).
+
+This bites low-traffic and bursty producers whose connections idle past 350 seconds, which is why it usually surfaces first in QA, staging, or other low-volume environments. Continuously active producers and consumers are typically unaffected.
+
+The fix is the same as for any idle-reaping stall - make the client notice or pre-empt the drop before 350 seconds:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.idle_disconnect_timeout = 300_000  # recycle the full producer before the 350s ENI timeout
+  config.kafka = {
+    'bootstrap.servers': ENV['KAFKA_URL'],
+    'socket.keepalive.enable': true          # plus tune host keepalive timers below 350s (see below)
+  }
+end
+```
+
+Because the OS keepalive timers default to 7,200 seconds, `socket.keepalive.enable` alone is not enough - lower `net.ipv4.tcp_keepalive_time` (AWS recommends 240 seconds) on the host or through Kubernetes pod sysctls. The [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#ec2-nitro-v6-idle-connection-reaping) has the full sysctl recipe, the Kubernetes spec, and the AWS-side `ModifyNetworkInterfaceAttribute` alternative.
 
 ## How do I produce messages to a secondary Kafka cluster?
 
