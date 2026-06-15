@@ -114,6 +114,29 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
     For a more comprehensive list of configuration settings supported by librdkafka, please visit the [Librdkafka Configuration](Librdkafka-Configuration) page.
 
+## Inspecting the Active Variant
+
+When you dispatch through a variant, the variant in effect is tracked per dispatch and is fiber-local. The `#current_variant` method lets you read the variant that is active for the dispatch currently running on the present fiber. When called outside of a variant-wrapped dispatch, it returns the producer's default variant.
+
+This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a dispatch and need to read the effective per-dispatch settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `default?`:
+
+```ruby
+high_importance = producer.with(topic_config: { acks: 'all' })
+
+# Inside synchronous middleware or instrumentation running during the dispatch:
+variant = producer.current_variant
+
+variant.default?         # => false when dispatching through a variant
+variant.topic_config     # => { acks: 'all' }
+variant.max_wait_timeout # => the variant's root-scoped timeout
+
+high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
+```
+
+!!! warning "Fiber-Local and Scoped to a Single Dispatch"
+
+    `#current_variant` is fiber-local and scoped to a single dispatch; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was dispatched with.
+
 ## Edge-Cases and Details
 
 When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of to ensure optimal performance and behavior:
