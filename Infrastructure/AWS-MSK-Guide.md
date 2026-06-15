@@ -215,9 +215,9 @@ The broker sends a TCP FIN; librdkafka detects it promptly on the next read and 
 
 *Broker-side graceful close:* When the broker's `connections.max.idle.ms` fires (MSK default: 600 seconds), it sends a TCP FIN. librdkafka detects this promptly on its next read and logs `Receive failed: Disconnected`. Because the broker only reaps connections after genuine inactivity (any produce activity resets the idle timer), there are no in-flight ProduceRequests at reap time. librdkafka reconnects, and the next produce uses a fresh connection - no drops.
 
-*Network gear silent drop:* If your connectivity goes through an NLB, NAT gateway, or firewall (common when using PrivateLink for cross-account or cross-VPC access), these intermediaries maintain their own idle session tables and silently drop TCP state after their idle timeout - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live. An NLB in the path also converts the broker's own graceful TCP FIN into a silent close from the client's perspective: the NLB RSTs the server side but sends nothing to the client. AWS NLB's default TCP idle timeout is 350 seconds.
+*Network gear silent drop:* If your connectivity goes through an NLB, NAT gateway, or firewall (common when using PrivateLink for cross-account or cross-VPC access), these intermediaries maintain their own idle session tables and silently drop TCP state after their idle timeout - with no FIN or RST delivered to either endpoint. librdkafka believes the socket is still live. An NLB in the path also converts the broker's own graceful TCP FIN into a silent close from the client's perspective: the NLB RSTs the server side but sends nothing to the client. AWS NLB's default TCP idle timeout is 350 seconds. On EC2 Nitro v6 instances, the instance's own ENI behaves the same way even with no NLB present - see [EC2 Nitro v6 Idle Connection Reaping](#ec2-nitro-v6-idle-connection-reaping) below.
 
-For standard in-VPC MSK deployments where clients connect directly to broker ENIs, no NLB is present and only the broker's 600-second graceful close applies. The `(after Nms in state UP)` value represents connection lifetime and does not distinguish the two paths from logs alone. The mitigations below address both.
+For in-VPC MSK deployments where clients connect directly to broker ENIs, the idle timeout that applies depends on the EC2 instance generation. On Nitro v5 and earlier instances, no silent-drop intermediary is present and only the broker's 600-second graceful close applies. On Nitro v6 instances this is no longer true: the instance ENI silently reaps idle connection-tracking state at 350 seconds even for direct-ENI traffic. The `(after Nms in state UP)` value represents connection lifetime and does not distinguish the paths from logs alone. The mitigations below address all of them.
 
 **The timeout ordering mechanism**
 
@@ -233,7 +233,32 @@ With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message
 
 **Mitigations**
 
-Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. This detects silent half-open sockets faster than waiting for a ProduceRequest to exhaust a message budget. When an NLB or other network gear is in the path, tune the OS keepalive interval below that gear's idle timeout.
+Enable `socket.keepalive.enable: true` so the OS sends TCP keepalive probes on idle connections. This detects silent half-open sockets faster than waiting for a ProduceRequest to exhaust a message budget. On its own, though, this flag is rarely enough: it only sets `SO_KEEPALIVE` on the socket, and the OS keepalive timers default to very long values (Linux `net.ipv4.tcp_keepalive_time` defaults to 7,200 seconds / 2 hours), so the first probe fires long after the broker, NLB, or EC2 ENI has already dropped the connection. To detect a silent drop before any intermediary's idle timeout, tune the host-level keepalive timers below the shortest idle timeout in the path. AWS recommends starting probes at 240 seconds when the applicable idle timeout is 350 seconds:
+
+```shell
+# /etc/sysctl.d/99-kafka-keepalive.conf (apply with `sudo sysctl --system`)
+net.ipv4.tcp_keepalive_time = 240   # start probing after 240s idle, below the 350s ENI/NLB timeout
+net.ipv4.tcp_keepalive_intvl = 60   # then probe every 60s
+net.ipv4.tcp_keepalive_probes = 3   # give up and recycle the socket after 3 failed probes
+```
+
+On Kubernetes, set these as pod-level sysctls so the Karafka or WaterDrop container sends keepalives on its broker sockets:
+
+```yaml
+spec:
+  securityContext:
+    sysctls:
+      - name: net.ipv4.tcp_keepalive_time
+        value: "240"
+      - name: net.ipv4.tcp_keepalive_intvl
+        value: "60"
+      - name: net.ipv4.tcp_keepalive_probes
+        value: "3"
+```
+
+!!! note "Kubernetes Namespaced Sysctls"
+
+    The `net.ipv4.tcp_keepalive_*` sysctls are namespaced but are not part of the kubelet default safe set on every distribution. If a pod fails to start with a `forbidden sysctl` error, allow them on the node through the kubelet `--allowed-unsafe-sysctls` flag (or your managed cluster's equivalent), then redeploy.
 
 Use `idle_disconnect_timeout` to proactively shut down the full producer - including the leader/bootstrap connection that librdkafka's own `connections.max.idle.ms` never closes - before either the broker or network gear reaches its idle timeout. Set it below the **shortest** idle timeout in the client-to-broker path:
 
@@ -245,13 +270,40 @@ producer = WaterDrop::Producer.new do |config|
     'connections.max.idle.ms': 240_000  # recycle non-leader broker connections proactively
   }
 
-  # MSK broker: 600s. If PrivateLink/NLB is in the path, NLB default is 350s.
-  # Set below the shortest idle timeout that applies to your deployment.
-  config.idle_disconnect_timeout = 300_000  # 5 min - safe for both direct-ENI and NLB paths
+  # Idle timeouts in the path: MSK broker 600s; Nitro v6 instance ENI 350s;
+  # PrivateLink/NLB (if present) 350s. Set below the shortest that applies.
+  config.idle_disconnect_timeout = 300_000  # 5 min - below the 350s ENI/NLB timeout
 end
 ```
 
 For high-frequency producers that are continuously active, set `idle_disconnect_timeout = 0` to keep connections persistent.
+
+!!! tip "Raising the ENI Idle Timeout on Nitro v6"
+
+    The 350-second connection-tracking idle timeout on Nitro v6 instances is configurable per ENI, from 60 to 432,000 seconds. If you control the infrastructure and prefer a fix on the AWS side, raise it with the `ModifyNetworkInterfaceAttribute` API (also available through Launch Templates, the console, CloudFormation, and Terraform). The client-side keepalive and `idle_disconnect_timeout` mitigations are more portable, because they need no per-ENI AWS configuration and also cover the broker's 600-second reaper and any NLB in the path.
+
+#### EC2 Nitro v6 Idle Connection Reaping
+
+A frequent trigger for this failure is an EC2 instance generation upgrade. A producer that ran for months without issue can start timing out immediately after its instance type is changed to a newer generation, with no application or configuration change. Reverting the instance type makes the symptom disappear - the strongest single signal that this is the cause.
+
+The root cause is a platform default change documented in [AWS's TCP connection management guidance](https://aws.amazon.com/blogs/networking-and-content-delivery/best-practices-for-tcp-connection-management-on-ec2/). Instances built on Nitro v6 (the newest generation, including the Graviton-based `*9g` families) reduced the default ENI TCP connection-tracking idle timeout from 432,000 seconds (5 days) to 350 seconds. Nitro v5 and earlier instances keep the 5-day default, which is long enough that idle Kafka connections were effectively never reaped by the host. On Nitro v6, the ENI silently drops connection-tracking state after 350 seconds of inactivity, with no FIN or RST - the same dangerous silent-drop behavior as an NLB, but now present even for direct-ENI, in-VPC traffic with no NLB, NAT gateway, or firewall in the path.
+
+This affects low-traffic and bursty producers, whose connections sit idle past 350 seconds. Continuously active producers and consumers keep their connections busy and are typically unaffected, which is why the problem often surfaces first in QA, staging, or other low-volume environments. The failure sequence is:
+
+1. The producer goes idle for longer than 350 seconds.
+1. The instance ENI silently drops the connection's tracking state, while librdkafka still believes the socket is alive.
+1. The next message is sent as a ProduceRequest on the dead socket, which stalls with no response.
+1. The request fails only when `socket.timeout.ms` expires, so each stalled message blocks for as long as that timeout is set (librdkafka's default is 60 seconds). With the `socket.timeout.ms: 90_000` recommended earlier in this guide, that works out to a roughly 90-second delivery stall before the connection is torn down and the message retried.
+
+The librdkafka warning logged during the stall looks like this:
+
+```text
+rdkafka: [thrd:sasl_ssl://b-2.cluster.kafka.us-west-2.amazonaws.com:9096/2]:
+sasl_ssl://b-2.cluster.kafka.us-west-2.amazonaws.com:9096/2:
+Timed out 1 in-flight, 0 retry-queued, 0 out-queue, 0 partially-sent requests
+```
+
+Apply the mitigations described above: tune the OS TCP keepalive timers so probes fire before 350 seconds (together with `socket.keepalive.enable: true`), and set `idle_disconnect_timeout` on the WaterDrop producer to recycle the full producer proactively. Either one alone resolves the stall; using both gives defense in depth. If you would rather fix it on the infrastructure side, raise the per-ENI idle timeout with `ModifyNetworkInterfaceAttribute` as described above.
 
 See [WaterDrop Connection Management](WaterDrop-Connection-Management) for full configuration details and monitoring instrumentation.
 

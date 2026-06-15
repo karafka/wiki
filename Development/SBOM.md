@@ -400,7 +400,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.13.0</td>
+    <td>2.14.2</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
@@ -570,9 +570,16 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>OpenSSL</td>
-    <td>3.0.19</td>
+    <td>3.5.6</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/openssl/openssl/blob/master/LICENSE.txt">Apache-2.0</a></td>
     <td>The OpenSSL Project</td>
+  </tr>
+
+  <tr>
+    <td>libcurl</td>
+    <td>8.20.0</td>
+    <td><a rel="nofollow noopener noreferrer" href="https://github.com/curl/curl/blob/master/COPYING">curl</a></td>
+    <td>Daniel Stenberg</td>
   </tr>
 
   <tr>

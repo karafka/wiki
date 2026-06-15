@@ -251,6 +251,8 @@ This means Kafka is unreachable. Check your brokers' addresses and ensure you us
 
 Please make sure that your instances can reach Kafka. Keep in mind that security group updates can have a certain lag in propagation.
 
+If a previously healthy producer starts stalling on delivery (each stalled message blocking for as long as your configured `socket.timeout.ms`, with `Timed out N in-flight ... requests` warnings) after an EC2 instance type upgrade to a newer generation such as the Graviton `*9g` families, the likely cause is the Nitro v6 ENI idle-connection timeout (lowered from 5 days to 350 seconds), which silently drops idle producer sockets. Enable `socket.keepalive.enable: true`, tune the host TCP keepalive timers below 350 seconds (on Kubernetes, through pod `securityContext.sysctls`), and set WaterDrop's `idle_disconnect_timeout` to recycle idle producers proactively. See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#ec2-nitro-v6-idle-connection-reaping) for the full explanation, the keepalive sysctl values, and the timeout and retry settings recommended for MSK.
+
 ### Rdkafka::RdkafkaError (Broker: Invalid replication factor (invalid_replication_factor))
 
 Please make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
