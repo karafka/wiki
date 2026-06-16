@@ -605,11 +605,17 @@ There are many ways to define a liveness probe for a Kubernetes deployment, and 
 - `200` - Everything works as expected, with detailed JSON status information.
 - `500` - Karafka process is not behaving as expected and should be restarted. The response body contains detailed JSON with specific failure reasons.
 
-Karafka Kubernetes liveness listener can be initialized with two important thresholds: `consuming_ttl` and `polling_ttl`. These thresholds are used to determine if Karafka or the user code consuming from Kafka hangs for an extended time.
+Karafka Kubernetes liveness listener can be initialized with three important thresholds: `consuming_ttl`, `polling_ttl` and `stability_ttl`. These thresholds are used to determine if Karafka or the user code consuming from Kafka hangs for an extended time.
 
 If the `consuming_ttl` threshold is exceeded, it suggests that the user code consuming from Kafka is taking too long. Similarly, if the `polling_ttl` is exceeded, this means that the polling does not happen often enough. In both cases, when either of these thresholds is surpassed, the liveness endpoint configured in Karafka will respond with an HTTP 500 status code.
 
-This configuration allows you to handle scenarios where Karafka hangs, or the user code consuming from Kafka becomes unresponsive. By setting appropriate values for `consuming_ttl` and `polling_ttl`, you can tailor the liveness probe to detect and handle these situations effectively.
+The `stability_ttl` threshold detects a consumer group frozen in a single non-`"steady"` librdkafka `cgrp.join_state` (for example a broker stuck in `CompletingRebalance` due to bugs like KAFKA-19862). Brief non-steady periods are normal during rebalances, so the timer resets on every join state transition - only a group that stays in the same non-steady state continuously for longer than the threshold is flagged. On breach, `stability_ttl_exceeded: true` is reported in the HTTP 500 body, and the flag clears automatically once the group returns to `"steady"`.
+
+This configuration allows you to handle scenarios where Karafka hangs, or the user code consuming from Kafka becomes unresponsive. By setting appropriate values for `consuming_ttl`, `polling_ttl` and `stability_ttl`, you can tailor the liveness probe to detect and handle these situations effectively.
+
+!!! warning "`stability_ttl` Requires `statistics.interval.ms`"
+
+    The `stability_ttl` check relies on librdkafka statistics, so it has **no effect** unless `statistics.interval.ms` is set in your `kafka` configuration. When enabled, `stability_ttl` defaults to twice the maximum `max.poll.interval.ms` across all active subscription groups.
 
 !!! warning "Important Note on Liveness Probes in Swarm Mode"
 
@@ -629,7 +635,11 @@ Below you can find an example of how to require, configure and connect the liven
       # Make sure polling happens at least once every 5 minutes
       polling_ttl: 300_000,
       # Make sure that consuming does not hang and does not take more than 1 minute
-      consuming_ttl: 60_000
+      consuming_ttl: 60_000,
+      # Flag the process if its consumer group stays frozen in a non-steady
+      # join state for too long (requires statistics.interval.ms to be set).
+      # Defaults to twice the max max.poll.interval.ms when left unset.
+      stability_ttl: 300_000
     )
 
     Karafka.monitor.subscribe(listener)
@@ -666,6 +676,7 @@ The liveness listener returns detailed health information in JSON format:
   "errors": {
     "polling_ttl_exceeded": false,
     "consumption_ttl_exceeded": false,
+    "stability_ttl_exceeded": false,
     "unrecoverable": false
   }
 }
@@ -682,6 +693,7 @@ The liveness listener returns detailed health information in JSON format:
   "errors": {
     "polling_ttl_exceeded": true,
     "consumption_ttl_exceeded": false,
+    "stability_ttl_exceeded": false,
     "unrecoverable": false
   }
 }
@@ -701,6 +713,7 @@ This response format allows for more granular monitoring and debugging while mai
 
     - `polling_ttl_exceeded: true` - the polling loop has not run within the configured `polling_ttl`
     - `consumption_ttl_exceeded: true` - a consumer has been processing a batch longer than `consuming_ttl`
+    - `stability_ttl_exceeded: true` - the consumer group has stayed frozen in a non-steady join state longer than `stability_ttl` (requires `statistics.interval.ms`)
     - `unrecoverable: false | "<error_code>"` - `false` when healthy; an rdkafka error code string (e.g. `"fenced"`) when a fatal, non-recoverable error has occurred
 
 #### Extending Liveness with `#healthy?`
