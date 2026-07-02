@@ -6,6 +6,89 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.15.0 (2026-06-30)
+
+### [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka) Queues for Kafka – Now in **Preview**
+
+- Added a preview implementation of the **share consumer** (Queues for Kafka,
+  [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka)).
+  Members of a share group cooperatively consume from the same partitions with
+  per-record acquire/acknowledge semantics and redelivery, providing queue-like
+  consumption on top of Kafka.
+- New `rd_kafka_share_*` public API, with a dedicated `rd_kafka_share_t` handle
+  created via `rd_kafka_share_consumer_new()`:
+  - Subscription: `rd_kafka_share_subscribe()`, `rd_kafka_share_unsubscribe()`,
+    `rd_kafka_share_subscription()`.
+  - Batch polling: `rd_kafka_share_poll()` returns an `rd_kafka_messages_t`
+    batch (`rd_kafka_messages_count()` / `rd_kafka_messages_get()` /
+    `rd_kafka_messages_destroy()`).
+  - Acknowledgement: `rd_kafka_share_acknowledge()`,
+    `rd_kafka_share_acknowledge_type()`, `rd_kafka_share_acknowledge_offset()`
+    with ACCEPT / RELEASE / REJECT types, and
+    `rd_kafka_message_delivery_count()`.
+  - Commit: `rd_kafka_share_commit_sync()`, `rd_kafka_share_commit_async()` and
+    the acknowledgement-commit callback
+    (`rd_kafka_share_set_acknowledgement_commit_cb()`).
+  - Lifecycle: `rd_kafka_share_consumer_close()`,
+    `rd_kafka_share_consumer_close_queue()`, `rd_kafka_share_destroy()`.
+- Two acknowledgement modes selected by `share.acknowledgement.mode`
+  (default `implicit`; `explicit` requires the application to acknowledge every
+  record before the next poll).
+- New `max.poll.records` property (default 500) and adjusted defaults for
+  several network properties for share consumers (`receive.message.max.bytes`,
+  `connections.max.idle.ms`, `reconnect.backoff.ms`,
+  `reconnect.backoff.max.ms`).
+- See the *Share consumers (Queues for Kafka)* section of
+  [INTRODUCTION.md](INTRODUCTION.md#share-consumers-queues-for-kafka), the
+  *Share consumer* section in [rdkafka.h](src/rdkafka.h), and the
+  `examples/share_consumer*` programs.
+
+> [!Note]
+> The [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka)
+> share consumer is currently in **Preview** and should not be used in
+> production environments. The public interfaces may change before General
+> Availability, and known limitations apply (see
+> [INTRODUCTION.md](INTRODUCTION.md#share-consumer-current-limitations)). The
+> share consumer is single-threaded and not thread-safe by design. It requires
+> a broker with share groups enabled (generally available in Apache Kafka
+> 4.2.0).
+
+### Enhancements
+* Add `aws_iam` option to `sasl.oauthbearer.metadata.authentication.type`, with a defensive stub that fails when no token-refresh callback is registered.
+
+### Fixes
+
+#### General fixes
+
+* Issues: #5135.
+  Fix compilation with CMake when CURL is disabled.
+  The OAuthBearer OIDC code included `<curl/curl.h>` under `#ifdef WITH_OAUTHBEARER_OIDC`, but
+  CMake always defines that macro (to 0 or 1), so CURL was required even when it was turned off.
+  Happening since 2.11.0 (#5136).
+* Issues: #5282.
+  Fix `rd_atomic32_set`/`rd_atomic64_set` returning the new value instead of the previous one in CMake builds.
+  CMake never defined `HAVE_ATOMICS_{32,64}_ATOMIC`, so the setters used a non-atomic fallback that
+  returned the new value, which prevented the `ALL_BROKERS_DOWN` event from being raised under CMake.
+  Happening since 2.11.1 (#5136).
+
+#### Consumer fixes
+
+* Issues: #5541.
+  Improve error handling in the KIP-848 `consumer` group protocol:
+    - Defer the leave heartbeat until the assignment is revoked, so a member that
+      exceeds `max.poll.interval.ms` rejoins cleanly instead of being rejected
+      with a fatal `INVALID_REQUEST`.
+    - Treat `GROUP_ID_NOT_FOUND` in the ConsumerGroupHeartbeat response as fatal,
+      except while the member is already leaving.
+    - Surface unexpected permanent broker-level heartbeat errors instead of
+      retrying them in a loop; internal transport/timeout codes keep their
+      existing retry/reconnect handling.
+    Happening since 2.12.0 (#5488)
+    
+ ## Checksums
+Release asset checksums:
+ * v2.15.0.zip SHA256 `d0655c770f7edc5699855f65b391d1e20dc24fc03ecf2dd680665934dd4d1cc1`
+ * v2.15.0.tar.gz SHA256 `259015220cdca708afe838b5aa79ebf1a5fb710fb4179cf918d390aed85d5dbc`
 ## 2.14.2 (2026-06-03)
 
 librdkafka v2.14.2 is a maintenance release:
@@ -1732,64 +1815,4 @@ Release asset checksums:
  * v1.6.2.zip SHA256 `1d389a98bda374483a7b08ff5ff39708f5a923e5add88b80b71b078cb2d0c92e`
  * v1.6.2.tar.gz SHA256 `b9be26c632265a7db2fdd5ab439f2583d14be08ab44dc2e33138323af60c39db`
 
-
-## 1.8.2 (2021-10-18)
-
-# librdkafka v1.8.2
-
-librdkafka v1.8.2 is a maintenance release.
-
-### Enhancements
-
- * Added `ssl.ca.pem` to add CA certificate by PEM string. (#2380)
- * Prebuilt binaries for Mac OSX now contain statically linked OpenSSL v1.1.1l.
-   Previously the OpenSSL version was either v1.1.1 or v1.0.2 depending on
-   build type.
-
-### Fixes
-
- * The `librdkafka.redist` 1.8.0 package had two flaws:
-   - the linux-arm64 .so build was a linux-x64 build.
-   - the included Windows MSVC 140 runtimes for x64 were infact x86.
-   The release script has been updated to verify the architectures of
-   provided artifacts to avoid this happening in the future.
- * Prebuilt binaries for Mac OSX Sierra (10.12) and older are no longer provided.
-   This affects [confluent-kafka-go](https://github.com/confluentinc/confluent-kafka-go).
- * Some of the prebuilt binaries for Linux were built on Ubuntu 14.04,
-   these builds are now performed on Ubuntu 16.04 instead.
-   This may affect users on ancient Linux distributions.
- * It was not possible to configure `ssl.ca.location` on OSX, the property
-   would automatically revert back to `probe` (default value).
-   This regression was introduced in v1.8.0. (#3566)
- * librdkafka's internal timers would not start if the timeout was set to 0,
-   which would result in some timeout operations not being enforced correctly,
-   e.g., the transactional producer API timeouts.
-   These timers are now started with a timeout of 1 microsecond.
-
-#### Transactional producer fixes
-
- * Upon quick repeated leader changes the transactional producer could receive
-   an `OUT_OF_ORDER_SEQUENCE` error from the broker, which triggered an
-   Epoch bump on the producer resulting in an InitProducerIdRequest being sent
-   to the transaction coordinator in the middle of a transaction.
-   This request would start a new transaction on the coordinator, but the
-   producer would still think (erroneously) it was in current transaction.
-   Any messages produced in the current transaction prior to this event would
-   be silently lost when the application committed the transaction, leading
-   to message loss.
-   This has been fixed by setting the Abortable transaction error state
-   in the producer. #3575.
- * The transactional producer could stall during a transaction if the transaction
-   coordinator changed while adding offsets to the transaction (send_offsets_to_transaction()).
-   This stall lasted until the coordinator connection went down, the
-   transaction timed out, transaction was aborted, or messages were produced
-   to a new partition, whichever came first. #3571.
-
-### Checksums
-Release asset checksums:
- * v1.8.2.zip SHA256 `8b03d8b650f102f3a6a6cff6eedc29b9e2f68df9ba7e3c0f3fb00838cce794b8`
- * v1.8.2.tar.gz SHA256 `6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6`
-
-
-*Note: there was no v1.8.1 librdkafka release*
 
