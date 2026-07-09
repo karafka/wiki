@@ -48,7 +48,17 @@ Send `TERM` or `QUIT` signal to a Karafka process to shut it down. It will stop 
 
 #### Forceful Shutdown
 
-When one or more jobs do not finish within the `shutdown_timeout`, Karafka escalates to a **forceful shutdown**: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
+When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a **forceful shutdown**: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
+
+A forceful shutdown is triggered by either of two conditions:
+
+- **Work still in progress** - one or more jobs are still running when the `shutdown_timeout` elapses.
+
+- **An unresolved rebalance** - the underlying `librdkafka` client is in the middle of a rebalance or partition revocation that does not complete within the `shutdown_timeout`. In this case the process appears "stuck" while closing the consumer (for example inside the client's `rd_kafka_consumer_close` call) even though no user job is running, because the group coordinator is still waiting on replies from all members of the consumer group before the rebalance can finish. This is inherent to the classic and cooperative-sticky rebalance protocols and is one of the main drivers of the "rebalance storm" you can observe when many consumers restart during a deployment. See [Rebalance Storms During Deployments](Infrastructure-Application-Development-vs-Production#rebalance-storms-during-deployments) for mitigations.
+
+!!! tip "Identifying What Blocks a Forceful Shutdown"
+
+    Since Karafka `2.5.7`, when a forceful shutdown occurs, Karafka logs detailed blocking information - the active listeners, alive workers, and in-processing jobs - instead of only aggregate counts. Inspect this log line to determine whether a long-running job or a stuck rebalance is holding the process. If nothing is reported as actively processing, the delay is almost certainly a rebalance that could not resolve in time.
 
 A forceful shutdown is a **last resort**, and it is **expected that in-flight data may be lost**. Because the process ends with an immediate `exit!`, the regular `ensure`-based cleanup is skipped and the producer is **not** flushed: any async-buffered messages that have not yet been delivered - for example user `produce_async` calls or Dead Letter Queue copies - may be discarded.
 

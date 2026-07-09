@@ -557,6 +557,10 @@ For larger deployments with many consumer processes, it's especially important t
 
 Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
 
+!!! info "Rebalance Storms and Forceful Shutdowns After Deployments"
+
+    Even with `Recreate`, frequent deployments can trigger "rebalance storms" that manifest as consumption lag and forceful shutdowns (processes getting stuck closing the consumer while a rebalance is in flight). If you observe lag appearing randomly across topics after deploys, or a high rate of `error_occurred` notifications with `type: app.stopping.error`, read [Rebalance Storms During Deployments](Infrastructure-Application-Development-vs-Production#rebalance-storms-during-deployments) for the causes and mitigations (KIP-848, static group membership via a `StatefulSet`, a higher `shutdown_timeout`, and slower deploys).
+
 ### Choosing the Right Rebalance Strategy
 
 **For teams running Kafka 4.0+:**
