@@ -370,6 +370,49 @@ For small-scale development environments, having a single consumer group with mu
 
 For larger deployments, organizing your consumers and topics is advisable so that each consumer group subscribes to a smaller, more focused set of topics. This reduces the scope and impact of rebalances, leading to more stable and performant applications.
 
+## Rebalance Storms During Deployments
+
+Frequent deployments are one of the most common sources of consumption lag in larger Karafka setups. Each time a consumer process stops and a replacement starts, the group coordinator has to run a rebalance, and with the classic and `cooperative-sticky` protocols **every** member of the consumer group is involved in that rebalance - not only the process that is leaving or joining. When many processes restart in a short window (a rolling deploy, a scale event, or a crash loop), these rebalances pile up into a "rebalance storm": one rebalance is still settling when the next process restart triggers another, and consumers spend more time coordinating than processing.
+
+This directly interacts with the [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown) path. When a process is asked to stop while a rebalance is already in flight, `librdkafka` may not be able to close the consumer cleanly within the `shutdown_timeout` - the close call blocks while the coordinator waits for replies from all group members. Karafka then escalates to a forceful shutdown, which leaves the group and immediately triggers yet another rebalance, feeding the storm. Under this pressure you will typically see:
+
+- Consumption lag that appears randomly across different topics after deployments, unrelated to message size or load.
+- A raised number of `error.occurred` notifications with `type: app.stopping.error` (see [Monitoring Forceful Shutdowns](#monitoring-forceful-shutdowns) below).
+- Lag that does not improve by changing the number of pods/replicas - a group of 5 and a group of 22 are affected alike, because the problem is the rebalance protocol, not the process count.
+
+!!! info "Cooperative-Sticky Reduces But Does Not Eliminate This"
+
+    Switching to `cooperative-sticky` makes individual rebalances less disruptive (partitions are not all revoked at once), but it still invokes a rebalance protocol round involving all members on every join/leave. It mitigates the symptoms; it does not remove the storm.
+
+### Mitigations
+
+There is no way to make the classic/cooperative protocols skip the group-wide rebalance on member changes - so mitigating rebalance storms during deployments comes down to the following approaches, in rough order of effectiveness:
+
+1. **Migrate to the KIP-848 consumer protocol.** The [new rebalance protocol](Kafka-New-Rebalance-Protocol) moves coordination to the broker and rebalances incrementally in the background, which is the only option that structurally removes the storm. This is the recommended long-term fix on Kafka 4.0+.
+
+1. **Use static group membership.** Assigning a stable `group.instance.id` per process lets a restarting consumer rejoin with its previous identity, so a quick restart within the broker's `session.timeout.ms` does **not** trigger a rebalance at all. See [Static Group Membership Usage](#static-group-membership-usage) below. On Kubernetes this usually means running consumers as a `StatefulSet` (or otherwise deriving a stable, unique per-pod identity) rather than a `Deployment`.
+
+1. **Extend the `shutdown_timeout` beyond the rebalance duration.** If the process is allowed to wait longer than a rebalance takes to settle, it can close cleanly instead of being force-killed mid-rebalance, which avoids adding another rebalance to the storm. See [Configure `shutdown_timeout` for `cooperative-sticky` Strategy in Large Deployments](#configure-shutdown_timeout-for-cooperative-sticky-strategy-in-large-deployments) below.
+
+1. **Deploy slowly.** Restarting one process at a time, and using [`TSTP` + `TERM`](Infrastructure-Signals-and-States#tstp) (quiet, then stop) so work drains before the process leaves, keeps the number of concurrent rebalances low. Combined with a generous `shutdown_timeout`, this is the best you can do without changing the protocol or the membership model.
+
+!!! warning "KIP-848 Version Requirements"
+
+    If you adopt KIP-848 to solve this, make sure your Kafka brokers are on a version beyond the critical bug [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862), which could leave a group stuck in `CompletingRebalance`. See the [New Rebalance Protocol](Kafka-New-Rebalance-Protocol#requirements) documentation for the full requirements.
+
+### Monitoring Forceful Shutdowns
+
+Because forceful shutdowns both cause and result from rebalance storms, the rate of forceful shutdowns is a good proxy for how healthy your deployments are. Subscribe to the `error.occurred` event and watch for the `app.stopping.error` type - a persistently high count (for example hundreds per day across many deployments) indicates that processes are regularly being force-killed before they can shut down gracefully:
+
+```ruby
+Karafka.monitor.subscribe('error.occurred') do |event|
+  next unless event[:type] == 'app.stopping.error'
+
+  # Report to your metrics/APM so you can track forceful shutdowns over time
+  MyMetrics.increment('karafka.app.stopping.error')
+end
+```
+
 ## Configure `shutdown_timeout` for Cooperative-Sticky Strategy in Large Deployments
 
 When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This ensures that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
