@@ -48,7 +48,7 @@ Send `TERM` or `QUIT` signal to a Karafka process to shut it down. It will stop 
 
 #### Forceful Shutdown
 
-When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a **forceful shutdown**: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
+When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a forceful shutdown: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
 
 A forceful shutdown is triggered by either of two conditions:
 
