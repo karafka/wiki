@@ -3,6 +3,10 @@
 
 # Rdkafka Changelog
 
+## 0.29.1 (Unreleased)
+- [Enhancement] Name the failing partition and topic in the `RdkafkaError` raised for per-partition `list_offsets` errors (previously a bare error code), preserving the per-partition context the pre-batching `Consumer#lag` watermark errors carried.
+- [Enhancement] Add `Consumer#list_offsets`, mirroring `Admin#list_offsets`, so batched offset queries (one `ListOffsets` request carrying all requested partitions, fanned out to the partition leaders by librdkafka) can be issued on an existing consumer handle without opening a dedicated admin connection, and rebuild `Consumer#lag` on top of it: lag is now computed from a single batched end-offsets query instead of one blocking `query_watermark_offsets` broker roundtrip per partition. To receive the results, consumer clients now register the librdkafka background event callback, so librdkafka spawns its internally-managed background thread for consumers as well. `Consumer#lag` keeps its exact pre-batching semantics: it forwards the consumer's configured `isolation.level` to the batched query (librdkafka resolves the per-partition watermark query with that level, so end offsets stay LSO-based for the default `read_committed`), surfaces a timeout of the batched query as an `RdkafkaError` (`timed_out`), and now also raises `ClosedConsumerError` when called on a closed consumer.
+
 ## 0.29.0 (2026-07-10)
 - [Enhancement] Bump librdkafka to `2.14.2`
 - [Enhancement] Add `Consumer#metadata` and `Producer#metadata`, mirroring `Admin#metadata`, so cluster/topic metadata can be fetched from an existing consumer or producer handle without opening a dedicated admin connection.
