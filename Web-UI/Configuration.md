@@ -21,12 +21,12 @@ Karafka::Web.enable!
 
 Karafka Web UI produces data on its own: consumer state reports, error records, aggregated metrics, and messages republished from the Explorer. All of it goes through the producer available under `Karafka::Web.producer`.
 
-By default, this producer is derived from `Karafka.producer`:
+By default, the Web UI does not create a producer of its own. It uses `Karafka.producer`, that is, the very same producer instance and connection your application uses:
 
-- For a regular (non-idempotent, non-transactional) default producer, the Web UI uses a low-ack variant of it (`acks: 0`). Web UI reporting is analytical rather than mission-critical, so fire-and-forget semantics reduce latency and overhead at the cost of occasional message loss.
 - For an idempotent or transactional default producer, `Karafka.producer` is used as-is, because the acknowledgment settings of such producers cannot be altered.
+- For a regular (non-idempotent, non-transactional) default producer, the Web UI dispatches through a low-ack [variant](WaterDrop-Variants) of it (`acks: 0`). A variant is only a per-dispatch settings overlay on top of the same producer, not a separate one. Web UI reporting is analytical rather than mission-critical, so fire-and-forget semantics reduce its latency and overhead at the cost of occasional message loss.
 
-In both cases, the Web UI shares the underlying producer instance with your application.
+Either way, the Web UI reporting shares the producer, its connection, and its queue with your application.
 
 You may want to assign a fully separate producer instance when:
 
