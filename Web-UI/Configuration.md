@@ -17,6 +17,57 @@ end
 Karafka::Web.enable!
 ```
 
+## Using a Custom Web UI Producer
+
+Karafka Web UI produces data on its own: consumer state reports, error records, aggregated metrics, and messages republished from the Explorer. All of it goes through the producer available under `Karafka::Web.producer`.
+
+By default, the Web UI does not create a producer of its own. It uses `Karafka.producer`, that is, the very same producer instance and connection your application uses:
+
+- For an idempotent or transactional default producer, `Karafka.producer` is used as-is, because the acknowledgment settings of such producers cannot be altered.
+- For a regular (non-idempotent, non-transactional) default producer, the Web UI dispatches through a low-ack [variant](WaterDrop-Variants) of it (`acks: 0`). A variant is only a per-dispatch settings overlay on top of the same producer, not a separate one. Web UI reporting is analytical rather than mission-critical, so fire-and-forget semantics reduce its latency and overhead at the cost of occasional message loss.
+
+Either way, the Web UI reporting shares the producer, its connection, and its queue with your application.
+
+You may want to assign a fully separate producer instance when:
+
+- Your default producer is transactional and heavy transaction usage in your code can stall the Web UI reporting. See [Web UI Transactions Support](Web-UI-Transactions) for details.
+- The Web UI should report to a different cluster or use different credentials than your application data.
+- You want the Web UI reporting to have its own delivery settings, buffers, and connection, fully isolated from your application traffic.
+
+You can assign it during the Web UI configuration phase:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Create and assign producer that will be used by the Web UI components
+  config.producer = ::WaterDrop::Producer.new do |p_config|
+    # Use Karafka configuration.
+    # You can also of course define all settings independently
+    karafka_app_config = ::Karafka::App.config
+
+    # Copy the kafka configuration hash
+    kafka_config = karafka_app_config.kafka.dup
+
+    # Set the kafka configuration for the Web dedicated producer
+    p_config.kafka = ::Karafka::Setup::AttributesMap.producer(kafka_config)
+
+    # Use the same logger as Karafka
+    p_config.logger = karafka_app_config.logger
+  end
+end
+```
+
+Once the dedicated Web UI producer is set up, it becomes the default for all the Web UI components.
+
+!!! warning "Ensure Access to the Web UI Topics"
+
+    A custom Web UI producer must be able to deliver messages to all the Web UI internal topics. If it points to a different cluster or uses restricted credentials, the Web UI will not be able to report or materialize its states. You can find the list of the required topics in the [Getting Started](Web-UI-Getting-Started) guide.
+
+!!! note "The Web UI Producer Is Instrumented Automatically"
+
+    A producer assigned via `config.producer` is automatically subscribed with the producer tracking listeners, so its errors are reported like the ones from `Karafka.producer`. This is not the case for other custom producers you create in your application. Those need to be subscribed manually, as described below.
+
+Karafka Web UI also closes its producer when `karafka server` terminates, so you do not need to manage its lifecycle yourself.
+
 ## Monitoring Non-Default Producer Instances
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`
@@ -171,5 +222,6 @@ In summary, while the in-memory cache in Karafka Web UI significantly enhances i
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
 - [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI capabilities
+- [Web UI Transactions Support](Web-UI-Transactions) - Why a transactional default producer warrants a dedicated Web UI producer
 - [Pro Web UI Policies](Pro-Web-UI-Policies) - Configure access control and security policies
 - [Pro Web UI Branding](Pro-Web-UI-Branding) - Customize Web UI appearance and branding

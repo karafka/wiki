@@ -24,10 +24,9 @@ There are a few things worth keeping in mind if you work with transactional data
 
 When initiating a WaterDrop transaction, the producer locks to the executing thread, preventing other threads from proceeding. This affects the Karafka Web UI; for example, a 30-second transaction might halt the UI's reporting for that duration.
 
-When using transactions heavily within consumers paired with the Web UI, it's advised to set up a specific `Karafka::Web.producer`.
-By default, if the Web UI producer isn't set, the system will default to `Karafka.producer`.
+When your default producer is transactional, the Web UI uses it as-is for its own reporting, which means it is subject to the same thread locking. If you use transactions heavily within your consumers, it is advised to assign a separate, non-transactional producer to the Web UI. Karafka Web UI only produces atomic data sets, so it does not require transactional data production, and a standard producer performs better here.
 
-To optimize this, you can assign a dedicated producer during the Web UI's configuration phase. The example below demonstrates how to configure a dedicated producer that mirrors the Kafka setup but excludes the transactional aspect. Karafka Web UI only produces atomic data sets, so it doesn't require transactional data production. For better performance, a standard producer is recommended.
+The general mechanism for this, including the defaults and other reasons for using a separate producer, is described in [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer). The example below builds such a producer from the Karafka configuration while stripping the transactional aspect:
 
 ```ruby
 Karafka::Web.setup do |config|
@@ -55,6 +54,7 @@ Once the dedicated Web UI producer is set up, it becomes the default for all Web
 
 ## See Also
 
+- [Web UI Configuration](Web-UI-Configuration#using-a-custom-web-ui-producer) - For the general Web UI producer configuration and its defaults
 - [WaterDrop Transactions](WaterDrop-Transactions) - For detailed information on WaterDrop transactional producer behavior
 - [Pro Transactions](Pro-Consumer-Groups-Transactions) - For advanced transactional features in Karafka Pro
 - [Features](Web-UI-Features) - For an overview of Web UI capabilities
