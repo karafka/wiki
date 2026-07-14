@@ -296,6 +296,10 @@ Conversely, purge errors take on a different meaning within a transactional prod
 
 This purging process is anticipated within transactional boundaries, so these purge errors are not considered typical "errors." Instead of using the `error.occurred` notification channel, WaterDrop uses the `message.purged` channel to report these events. This distinction is crucial to ensure system monitors or logs are not flooded with false positives when working with transactional producers.
 
+Not every message of an aborted transaction is purged, though. A message is only purged if it was still sitting in the local queue when the abort happened. If the broker had already acknowledged it, there is nothing left to purge: the message stays in the log as part of an aborted transaction, and its delivery handle carries a real partition and offset instead of a `Purged in queue` error. Both outcomes are normal, and which one you get is a matter of timing. Enabling `wait_timeout_on_transaction_abort` (see [Aborting Right After Producing](#aborting-right-after-producing)) makes the second one deliberate for the transaction's first message, because WaterDrop waits for its acknowledgement before aborting.
+
+Neither outcome changes what consumers see. As covered in [Delivery Handles and Delivery Reports](#delivery-handles-and-delivery-reports), a delivery inside a transaction only means the message was reserved in Kafka, never that it became consumable. Visibility comes from the commit, so a message belonging to an aborted transaction is never processed by `read_committed` consumers, whether it was purged locally or written to the log. A missing `message.purged` event is therefore not a sign that something leaked out of a rolled back transaction.
+
 ## Timeouts
 
 The `transaction.timeout.ms` parameter in Kafka is a configuration setting specifying the maximum amount of time (in milliseconds) a transactional session can remain open without being completed. Once this timeout is reached, Kafka will proactively abort the transaction.
@@ -466,6 +470,36 @@ The reloading mechanism is used exclusively within locked transactions, eliminat
 The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
 
 If you find this behaviour undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
+
+## Aborting Right After Producing
+
+Under load, aborting a transaction right after producing to it can fail with a fatal `INVALID_TXN_STATE` error. This is a `librdkafka` defect ([#4849](https://github.com/confluentinc/librdkafka/issues/4849)), not something WaterDrop causes.
+
+`librdkafka` registers a transaction's partitions with the coordinator via `AddPartitionsToTxn`, but sends the transaction-ending `EndTxn` as soon as that request has been sent rather than once it has been answered. If the abort wins that race, the coordinator does not yet consider the transaction started and rejects it. The error is fatal, so the client is unusable and WaterDrop has to reload it (see [Fatal Errors Recovery Strategy](#fatal-errors-recovery-strategy)).
+
+It takes a producer that has just committed a previous transaction, then opens a new one, produces, and aborts before the registration completes. Timing dependent, it appears only under load, so most users never see it. The rollback still holds; the cost is the fatal error and the reload behind it.
+
+### Mitigating It
+
+Setting `wait_timeout_on_transaction_abort` to a positive number of milliseconds makes WaterDrop wait for the transaction's first delivery before aborting, for at most that long. It is an upper bound rather than a fixed delay: the wait ends as soon as the delivery is acknowledged, which normally happens immediately.
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'transactional.id': 'my-transactional-id'
+  }
+
+  # Wait up to 5 seconds for the first delivery before aborting
+  config.wait_timeout_on_transaction_abort = 5_000
+end
+```
+
+One delivery is enough: a message cannot be acknowledged until its partition has completed registration, and one registration is all the coordinator needs to treat the transaction as ongoing. The `EndTxn` that follows is then valid, however many partitions it spans.
+
+The wait is bounded and best-effort: if the delivery does not arrive in time, WaterDrop aborts as before and the fatal remains recoverable through the reload. It applies only while the transaction is healthy, that is when you abort with `WaterDrop::AbortTransaction` or your own code raises. Once `librdkafka` reports an error the transaction stops delivering, so WaterDrop skips the wait rather than stalling on a delivery that can never arrive.
+
+The setting is disabled by default (`0`). Waiting for that acknowledgement means the transaction's first message is written to the log rather than purged from the local queue, which is what [Purge Errors](#purge-errors) describes.
 
 ## Limitations
 
