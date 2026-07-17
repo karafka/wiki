@@ -591,3 +591,32 @@ If the deprecation notice references a different language (such as Python) or a 
 - A forgotten monitoring script, lag exporter, or data pipeline tool consuming from Karafka's internal topics.
 - An older application using a different Kafka client library with an outdated librdkafka version.
 - A misidentification on the Confluent side. If in doubt, ask Confluent support to provide the exact `client.software.version` and `client.id` of the flagged client so you can trace its origin.
+
+## Why am I getting an `Unable to reconstruct MessageSet` inconsistent state error when producing?
+
+You may occasionally see an error like this when producing with an idempotent (or transactional) producer:
+
+```text
+Rdkafka::RdkafkaError: Local: Inconsistent state (inconsistent)
+Unable to reconstruct MessageSet (currently with 8 message(s)) with msgid range 860..882:
+last message added has msgid 867: unable to guarantee consistency
+```
+
+This is caused by a bug in `librdkafka`'s idempotent producer message set reconstruction logic that surfaces when a batch is retried and cannot be rebuilt identically. At the moment, this has only been observed on **Amazon MSK** (particularly after upgrading the MSK broker version) and does not appear to affect vanilla Apache Kafka clusters. The error is raised locally by the client, so no inconsistent data is written to Kafka; the affected batch is rejected rather than delivered out of order.
+
+Until a fix is available, you can mitigate the issue by limiting the number of in-flight requests per connection to `1`:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = {
+    'bootstrap.servers': 'localhost:9092',
+    'enable.idempotence': true,
+    # Limit in-flight requests to avoid the reconstruction bug
+    'max.in.flight.requests.per.connection': 1
+  }
+end
+```
+
+Setting `max.in.flight.requests.per.connection` to `1` prevents the parallel in-flight deliveries that trigger the faulty reconstruction on retry. This effectively serializes delivery per connection, which may slightly reduce throughput, but it reliably avoids the inconsistency error while retaining idempotence guarantees.
+
+If the error originates from the Karafka Web UI reporter (visible in the backtrace via `karafka/web/tracking`), you can also mitigate it by configuring a dedicated, non-idempotent producer for the Web UI, since the Web UI data does not require idempotent delivery. See [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer) for details.
