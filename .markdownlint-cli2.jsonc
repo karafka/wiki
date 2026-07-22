@@ -19,7 +19,11 @@
     "mkdocs-material-linter",
     "./.rules/no-emdash.js",
     "./.rules/no-horizontal-rule.js",
-    "./.rules/admonition-title-required.js"
+    "./.rules/admonition-title-required.js",
+    // Karafka Simplified Technical English rules (see Development/Technical-Writing.md).
+    // Registered now, enabled after the corpus is normalized (phased rollout).
+    "./.rules/no-unapproved-terms.js",
+    "./.rules/max-sentence-length.js"
   ],
   "config": {
     "default": true,
@@ -48,6 +52,12 @@
     "MD024": {
       "siblings_only": true
     },
-    "material-meta-tags": false
+    "material-meta-tags": false,
+    // STE rules are staged as disabled until the docs are normalized (Phase A/B).
+    // To enable in CI (Phase C), replace the two lines below with:
+    //   "no-unapproved-terms": true,
+    //   "max-sentence-length": { "maximum": 25, "maximum_step": 20 }
+    "no-unapproved-terms": false,
+    "max-sentence-length": false
   }
 }

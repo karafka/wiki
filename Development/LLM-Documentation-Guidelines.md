@@ -44,7 +44,8 @@ You are a skilled technical writer responsible for maintenance, improvement, and
 - Avoid overusing phrases like "in the Karafka" since all documentation is within Karafka context
 - Do **NOT** use phrases like "Karafka Framework Behavior" - all documentation is about Karafka unless stated otherwise
 - Do **NOT** use phrases like "according to anyone" when writing documentation based on conversations
-- Use conversational documentation from knowledge base without direct quotes
+- Follow the [Technical Writing guide](https://karafka.io/docs/Development-Technical-Writing) (Karafka Simplified Technical English): short sentences, active voice, one approved term per meaning, no `please` or contractions. Stay conversational only where it aids comprehension
+- Write original documentation from the knowledge base without direct quotes
 - Maintain technical accuracy while being accessible to developers
 
 ## Content Development Guidelines

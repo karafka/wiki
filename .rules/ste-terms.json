@@ -1,0 +1,81 @@
+{
+  "_comment": "Karafka Simplified Technical English (STE) term list. INSPIRED BY the ASD-STE100 dictionary; this is our own curated list and NOT a redistribution of the ASD dictionary. Consumed by .rules/no-unapproved-terms.js. Add words here to extend the controlled vocabulary. Keep 'substitutions' safe and exact (1:1, inflection-matched) so auto-fix stays reliable; put anything context-dependent in 'flag'.",
+  "_docs": "See Development/Technical-Writing.md for the full house style and the rationale behind each entry.",
+
+  "substitutions": [
+    { "term": "ensure", "fix": "make sure" },
+    { "term": "ensures", "fix": "makes sure" },
+    { "term": "ensuring", "fix": "making sure" },
+    { "term": "ensured", "fix": "made sure" },
+
+    { "term": "utilize", "fix": "use" },
+    { "term": "utilizes", "fix": "uses" },
+    { "term": "utilizing", "fix": "using" },
+    { "term": "utilized", "fix": "used" },
+    { "term": "utilise", "fix": "use" },
+    { "term": "utilises", "fix": "uses" },
+    { "term": "utilising", "fix": "using" },
+    { "term": "utilised", "fix": "used" },
+
+    { "term": "leverage", "fix": "use" },
+    { "term": "leverages", "fix": "uses" },
+    { "term": "leveraging", "fix": "using" },
+    { "term": "leveraged", "fix": "used" },
+
+    { "term": "commence", "fix": "start" },
+    { "term": "commences", "fix": "starts" },
+    { "term": "commencing", "fix": "starting" },
+    { "term": "commenced", "fix": "started" },
+
+    { "term": "initiate", "fix": "start" },
+    { "term": "initiates", "fix": "starts" },
+    { "term": "initiating", "fix": "starting" },
+    { "term": "initiated", "fix": "started" },
+
+    { "term": "obtain", "fix": "get" },
+    { "term": "obtains", "fix": "gets" },
+    { "term": "obtaining", "fix": "getting" },
+    { "term": "obtained", "fix": "got" },
+
+    { "term": "regarding", "fix": "about" },
+    { "term": "concerning", "fix": "about" },
+    { "term": "approximately", "fix": "about" },
+    { "term": "sufficient", "fix": "enough" },
+    { "term": "numerous", "fix": "many" },
+
+    { "term": "prior to", "fix": "before" },
+    { "term": "in order to", "fix": "to" },
+    { "term": "a number of", "fix": "many" },
+    { "term": "due to the fact that", "fix": "because" },
+    { "term": "in the event that", "fix": "if" }
+  ],
+
+  "flag": [
+    { "term": "terminate", "suggest": "Use 'stop' or 'end'." },
+    { "term": "terminates", "suggest": "Use 'stops' or 'ends'." },
+    { "term": "terminating", "suggest": "Use 'stopping' or 'ending'." },
+    { "term": "terminated", "suggest": "Use 'stopped' or 'ended'." },
+    { "term": "additional", "suggest": "Use 'more' or 'an extra'." },
+    { "term": "attempt", "suggest": "Use 'try'." },
+    { "term": "facilitate", "suggest": "Use 'help' or 'make easier'." },
+    { "term": "robust", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "powerful", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "seamless", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "seamlessly", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "simply", "suggest": "Hedge word - usually removable." },
+    { "term": "easily", "suggest": "Hedge word - usually removable." }
+  ],
+
+  "banned": [
+    { "term": "please", "message": "Remove 'please'. Documentation gives direct instructions." }
+  ],
+
+  "contractions": [
+    "don't", "doesn't", "didn't", "isn't", "aren't", "wasn't", "weren't",
+    "won't", "wouldn't", "can't", "couldn't", "shouldn't", "mustn't",
+    "haven't", "hasn't", "hadn't", "it's", "that's", "there's", "here's",
+    "what's", "let's", "you're", "we're", "they're", "i'm",
+    "you'll", "we'll", "they'll", "i'll", "he'll", "she'll",
+    "you've", "we've", "they've", "i've", "you'd", "we'd", "they'd"
+  ]
+}
