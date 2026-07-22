@@ -1,6 +1,6 @@
 Karafka supports auto-reload of code changes for Ruby on Rails, similar to Puma or Sidekiq.
 
-Due to consumers persistence in Karafka (long-living consumer instances), in order to make it work, you need to turn it on yourself by setting a `consumer_persistence` configuration option in the `karafka.rb` file to `false` in the development mode:
+Due to consumers persistence in Karafka (long-living consumer instances), to make it work, you need to turn it on yourself by setting a `consumer_persistence` configuration option in the `karafka.rb` file to `false` in the development mode:
 
 ```ruby
 class KarafkaApp < Karafka::App

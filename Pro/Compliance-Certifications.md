@@ -41,7 +41,7 @@ Because Karafka operates entirely within your controlled environment, there is n
 
 ### Data Collection and Privacy
 
-The Karafka project adheres to strict principles regarding data collection, as outlined in [this document](Pro-Security).
+The Karafka project adheres to strict principles about data collection, as outlined in [this document](Pro-Security).
 
 ## Analogous Examples
 

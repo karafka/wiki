@@ -82,7 +82,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
     <tr>
       <td><code>#wrap</code></td>
       <td>No</td>
-      <td>Wraps the entire consumption lifecycle, including framework-level operations and user-defined logic. Must <strong>always</strong> call <code>yield</code> to ensure that all processing, synchronization, and cleanup actions are executed, even in error scenarios.</td>
+      <td>Wraps the entire consumption lifecycle, including framework-level operations and user-defined logic. Must <strong>always</strong> call <code>yield</code> to make sure that all processing, synchronization, and cleanup actions are executed, even in error scenarios.</td>
     </tr>
   </tbody>
 </table>
@@ -191,7 +191,7 @@ Karafka is configured with `pause_with_exponential_backoff` enabled (`true`) by 
 
 Regardless of the error's nature, the Monitoring and Logging feature can track any issues encountered during operation.
 
-A monitoring and logging layer is strongly recommended to ensure prompt notification of errors that arise while processing Kafka messages.
+A monitoring and logging layer is strongly recommended to make sure prompt notification of errors that arise while processing Kafka messages.
 
 ### Pause Offset Selection
 
@@ -249,18 +249,18 @@ Setting this value high enough is highly recommended so that Karafka won't stop 
 
 ## Internal Framework Errors
 
-Karafka handles framework and Kafka-related errors on several layers, ensuring robust and reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
+Karafka handles framework and Kafka-related errors on several layers, making sure robust and reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
 
 ### Error Recovery and Retry Mechanisms
 
 Karafka employs multiple layers of error handling to manage issues seamlessly:
 
 - **Framework-Level Recovery**: Errors related to Karafka's internal operations are handled within the framework. This includes automatic retries and recovery procedures to maintain the stability of the message processing flow.
-- **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka ensures that these errors do not disrupt the overall processing pipeline.
+- **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka makes sure that these errors do not disrupt the overall processing pipeline.
 
 ### Final Recovery Strategy
 
-In cases of unexpected errors within the listeners' loops, Karafka applies a final recovery strategy. This strategy involves resetting the client connection and restarting all associated resources. While this mechanism ensures continued operation, it is considered the last layer of defense.
+In cases of unexpected errors within the listeners' loops, Karafka applies a final recovery strategy. This strategy involves resetting the client connection and restarting all associated resources. While this mechanism makes sure continued operation, it is considered the last layer of defense.
 
 !!! warning "User Responsibility for Listener Errors"
 

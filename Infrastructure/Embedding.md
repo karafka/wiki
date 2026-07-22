@@ -137,7 +137,7 @@ When using Karafka in embedded mode, long-running message processing can conflic
 
 Consider a consumer that processes a single Kafka message containing a reference to a large file (e.g., a Parquet log drop with hundreds of thousands of records). Processing such a message involves downloading the file, parsing it, and dispatching many derived events back to Kafka. This can easily exceed the host process shutdown timeout:
 
-1. Puma master initiates worker shutdown.
+1. Puma master starts worker shutdown.
 2. `before_worker_shutdown` calls `Karafka::Embedded.stop`.
 3. `Embedded.stop` blocks, waiting for the consumer's `#consume` to finish.
 4. Consumer is still processing (e.g., 200+ seconds of work remaining).
@@ -200,7 +200,7 @@ def dispatch_to_kafka(slice)
 end
 ```
 
-This pattern ensures:
+This pattern makes sure:
 
 - **Graceful shutdown**: Processing stops quickly when the host process needs to shut down.
 - **No data loss**: Uncommitted offsets mean the message will be reprocessed.
@@ -253,7 +253,7 @@ end
 
 ### Long-living Processes Requirement
 
-Karafka is not designed to be periodically started and stopped within the same process. You might encounter unexpected behavior or errors if you attempt to do so. This design decision aligns with the nature of long-living processes in applications and services like Puma or Sidekiq. If you want to embed Karafka in your process, ensure it's persistent and long-living.
+Karafka is not designed to be periodically started and stopped within the same process. You might encounter unexpected behavior or errors if you attempt to do so. This design decision aligns with the nature of long-living processes in applications and services like Puma or Sidekiq. If you want to embed Karafka in your process, make sure it's persistent and long-living.
 
 ### Signal Handling
 
@@ -265,43 +265,43 @@ When Karafka is embedded in another process, you might find that code reloading 
 
 ### Concurrency Settings
 
-Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you ensure that all tasks and responsibilities of your process can effectively access and utilize the resources they need without causing undue strain.
+Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you make sure that all tasks and responsibilities of your process can effectively access and use the resources they need without causing undue strain.
 
 ### Preloading/Eager Loading
 
-Before you initiate the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
+Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This makes sure that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
 
 ### Critical Error Handling
 
-When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to ensure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored.
+When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to make sure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored.
 
 ### Partial/Silent Crashes
 
-When utilizing Karafka in an embedded mode, it's vital to be aware of Partial or Silent Crash scenarios. These refer to situations where the Karafka process encounters a critical error and decides to halt its operations, but the overarching process in which Karafka runs continues to operate. This behavior can lead to situations where critical components have failed silently, but the system appears to be running, potentially leading to undetected issues or data loss.
+When using Karafka in an embedded mode, it's vital to be aware of Partial or Silent Crash scenarios. These refer to situations where the Karafka process encounters a critical error and decides to halt its operations, but the overarching process in which Karafka runs continues to operate. This behavior can lead to situations where critical components have failed silently, but the system appears to be running, potentially leading to undetected issues or data loss.
 
 Certain critical errors, such as incompatible changes to the `partition.assignment.strategy`, can cause the embedded Karafka process to emit an error and terminate. However, this termination is isolated to Karafka itself, and may not propagate to the parent or supervising process.
 
-For example, when running Karafka within a Puma worker in the event of a critical Karafka crash, the Puma worker will remain unaffected. This means the HTTP server, despite the Karafka crash, will continue to accept and process messages. While this ensures that your HTTP server remains responsive, it also poses a risk since Karafka, a crucial component for processing, is no longer operational.
+For example, when running Karafka within a Puma worker in the event of a critical Karafka crash, the Puma worker will remain unaffected. This means the HTTP server, despite the Karafka crash, will continue to accept and process messages. While this makes sure that your HTTP server remains responsive, it also poses a risk since Karafka, a crucial component for processing, is no longer operational.
 
-To ensure system resilience and reliability:
+To make sure system resilience and reliability:
 
 - **Monitoring**: Implement comprehensive monitoring tools that can detect and alert on both Karafka-specific errors and general system anomalies.
 
-- **Error Propagation**: Ensure critical errors from embedded processes like Karafka are reported.
+- **Error Propagation**: Make sure critical errors from embedded processes like Karafka are reported.
 
 - **Regular Testing**: Periodically simulate critical errors in non-production environments to understand the system's response and to improve recovery mechanisms.
 
-In conclusion, while embedding Karafka within larger processes can be efficient, knowing the potential for Partial or Silent Crashes is crucial. By understanding their implications and implementing mitigation strategies, you can ensure a more robust and resilient system.
+In conclusion, while embedding Karafka within larger processes can be efficient, knowing the potential for Partial or Silent Crashes is crucial. By understanding their implications and implementing mitigation strategies, you can make sure a more robust and resilient system.
 
 ### Process Termination
 
-When Karafka operates in an Embedded mode, it is essential to recognize that the Karafka supervisor does not have the final say regarding the termination of the entire process. In practice, if your surrounding process has a shutdown timeout shorter than Karafka's, there is a risk that Karafka could be forcefully terminated before it has had a chance to dispatch and delegate all work and states properly. While this might not pose an issue due to how offsets are managed, it can affect monitoring and management tools. For instance, Karafka Web UI interface monitoring Karafka might not capture the final state transition from "stopping" to "stopped". Instead, it may give an impression that the Karafka process is perpetually in the "stopping" phase, which can be misleading and make diagnostics more challenging.
+When Karafka operates in an Embedded mode, it is essential to recognize that the Karafka supervisor does not have the final say about the termination of the entire process. In practice, if your surrounding process has a shutdown timeout shorter than Karafka's, there is a risk that Karafka could be forcefully terminated before it has had a chance to dispatch and delegate all work and states properly. While this might not pose an issue due to how offsets are managed, it can affect monitoring and management tools. For instance, Karafka Web UI interface monitoring Karafka might not capture the final state transition from "stopping" to "stopped". Instead, it may give an impression that the Karafka process is perpetually in the "stopping" phase, which can be misleading and make diagnostics more challenging.
 
-Always ensure you account for this behavior when integrating Karafka in an Embedded mode, especially if you rely on external tools or interfaces to monitor and manage your processes. Adjusting your surrounding process's shutdown timeout or ensuring it respects Karafka's requirements can help avoid such discrepancies.
+Always make sure you account for this behavior when integrating Karafka in an Embedded mode, especially if you rely on external tools or interfaces to monitor and manage your processes. Adjusting your surrounding process's shutdown timeout or making sure it respects Karafka's requirements can help avoid such discrepancies.
 
 ### Web UI Limitations in Embedding Mode
 
-When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To leverage the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
+When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To use the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
 
 ### Thread Priority Management
 

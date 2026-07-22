@@ -109,11 +109,11 @@ If your problems originate from batch and message sizes, we recommend looking in
 
 ## How can I optimize memory usage in Karafka?
 
-- **Use Cleaner API**: The [Cleaner API](Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and ensuring a steadier memory usage pattern.
+- **Use Cleaner API**: The [Cleaner API](Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and making sure a steadier memory usage pattern.
 
 - **Adjust `librdkafka` Memory Settings**: The underlying library, `librdkafka`, has configurations related to memory usage. Tuning these settings according to your application's needs can optimize the memory footprint. Amongst others you may be interested in looking into the following settings: `fetch.message.max.bytes`, `queued.min.messages`, `queued.max.messages.kbytes` and `receive.message.max.bytes`
 
-- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
+- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Make sure that you balance memory usage with processing efficiency while adjusting this value.
 
 While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
 
@@ -123,11 +123,11 @@ Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are desig
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
-Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
+Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition makes sure that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations - database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
-Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still leverage the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
+Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still use the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
 
 In summary, while the "one process per partition" recommendation is sound for CPU-intensive tasks when IO operations are the predominant factor, Karafka's multi-threaded design combined with the capability of Virtual Partitions can offer a more efficient processing strategy.
 
@@ -135,13 +135,13 @@ In summary, while the "one process per partition" recommendation is sound for CP
 
 Yes, but only when you employ [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
-Without utilizing Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you're operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
+Without using Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you're operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
 
 However, with Virtual Partitions, you can parallelize data processing even from a single partition. Virtual Partitions allow the data from one Kafka partition to be virtually "split", enabling multiple worker threads to process that data concurrently. This mechanism can be especially beneficial when dealing with IO operations or other tasks that introduce latencies, as other threads can continue processing while one is waiting.
 
 Karafka provides a Web UI where you can monitor several metrics, including threads utilization. This gives you a clear view of how efficiently your threads are being used and can be a helpful tool in determining your setup's effectiveness.
 
-In summary, while operating on a single partition typically uses just one worker thread, integrating Virtual Partitions in Karafka allows you to effectively utilize multiple worker threads, potentially boosting performance and throughput.
+In summary, while operating on a single partition typically uses just one worker thread, integrating Virtual Partitions in Karafka allows you to effectively use multiple worker threads, potentially boosting performance and throughput.
 
 ## Why don't Virtual Partitions provide me with any performance benefits?
 
@@ -161,13 +161,13 @@ In conclusion, while Virtual Partitions can be a potent tool for improving throu
 
 Optimizing latency in Karafka involves tweaking various configurations and making specific architectural decisions. Here are some strategies to reduce latency:
 
-- **Max Wait Time Adjustments**: The `max_wait_time` parameter determines the maximum time the consumer will block, waiting for sufficient data to come in during a poll before it returns control. By adjusting this value, you can balance between latency and throughput. If end-to-end latency is a primary concern and your consumers want to react quickly to smaller batches of incoming messages, consider reducing the max_wait_time. A shorter wait time means the process will fetch messages more frequently, leading to quicker processing of smaller data batches.
+- **Max Wait Time Adjustments**: The `max_wait_time` parameter determines the maximum time the consumer will block, waiting for enough data to come in during a poll before it returns control. By adjusting this value, you can balance between latency and throughput. If end-to-end latency is a primary concern and your consumers want to react quickly to smaller batches of incoming messages, consider reducing the max_wait_time. A shorter wait time means the process will fetch messages more frequently, leading to quicker processing of smaller data batches.
 
 - **Batch Size Adjustments**: Use the `max_messages` parameter to control the number of messages fetched in a single poll. Decreasing the batch size can reduce the time taken to process each batch, potentially reducing end-to-end latency. However, note that smaller batches can also decrease throughput, so balance is key.
 
-- **Increase Consumer Instances**: Scale out by adding more consumer instances to your application. This allows you to process more messages concurrently. However, ensure you have an appropriate number of topic partitions to distribute among the consumers and monitor the utilization of Karafka processes.
+- **Increase Consumer Instances**: Scale out by adding more consumer instances to your application. This allows you to process more messages concurrently. However, make sure you have an appropriate number of topic partitions to distribute among the consumers and monitor the utilization of Karafka processes.
 
-- **Leverage Virtual Partitions**: Virtual Partitions can be beneficial if your workload is IO-bound. You can better utilize available resources and potentially reduce processing latency by enabling further parallelization within a single partition.
+- **Use Virtual Partitions**: Virtual Partitions can be beneficial if your workload is IO-bound. You can better use available resources and potentially reduce processing latency by enabling further parallelization within a single partition.
 
 - **Optimize Message Processing**: Review the actual processing logic in your consumers. Consider optimizing database queries, reducing external service calls, or employing caching mechanisms to speed up processing.
 
@@ -175,11 +175,11 @@ Remember, the best practices for optimizing latency in Karafka will largely depe
 
 ## What is the maximum recommended concurrency value for Karafka?
 
-For a system with a single topic and a process assigned per partition, there's generally no need for multiple workers. `50` workers are a lot, and you might not fully utilize them because of the overhead from context switching. While Sidekiq and Karafka differ in their internals, not setting concurrency too high is a valid point for both. The same applies to the connection pool.
+For a system with a single topic and a process assigned per partition, there's generally no need for multiple workers. `50` workers are a lot, and you might not fully use them because of the overhead from context switching. While Sidekiq and Karafka differ in their internals, not setting concurrency too high is a valid point for both. The same applies to the connection pool.
 
 ## Are there concerns about having unused worker threads for a Karafka consumer process?
 
-The overhead of unused worker threads is minimal because they are blocked on pop, which is efficient, so they are considered sleeping. However, maintaining an unused pool of workers can distort the utilization metric, as a scenario where all workers are always busy is regarded as 100% utilized.
+The overhead of unused worker threads is minimal because they are blocked on pop, which is efficient, so they are considered sleeping. However, maintaining an unused pool of workers can distort the utilization metric, as a scenario where all workers are always busy is regarded as 100% used.
 
 ## How can you effectively scale Karafka during busy periods?
 
@@ -187,7 +187,7 @@ If you plan to auto-scale for busy periods, be aware that increasing scale might
 
 ## What are the benefits of using Virtual Partitions (VPs) in Karafka?
 
-[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Utilizing VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
+[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) allow for more concurrent consumption, which could also be achieved by increasing the partition count. However, with Karafka, VPs operate regardless of whether you poll a batch from one or many partitions. This effectively fills up workers with tasks. If you are not well-tuned for polling the right amount of data, lags might reduce concurrency. Using VPs can improve performance because they can parallelize data processing for a single topic partition based on a virtual partitioner key.
 
 ## What's the difference between increasing topic partition count and using VPs in terms of concurrency?
 
@@ -205,13 +205,13 @@ As discussed, since the partitioner was configured to use the first argument (ca
 
 ## How can I ensure that my Karafka consumers process data in parallel?
 
-Karafka utilizes multiple threads to consume and process data, allowing operations across multiple partitions or topics to occur in parallel. However, the perception of sequential processing might occur due to several factors, such as configuration, scale, and system design. To enhance parallel processing:
+Karafka uses multiple threads to consume and process data, allowing operations across multiple partitions or topics to occur in parallel. However, the perception of sequential processing might occur due to several factors, such as configuration, scale, and system design. To enhance parallel processing:
 
-- **Consumer Groups**: If you require completely independent processing streams, utilize multiple consumer groups. Each consumer group manages its connection, polling, and data handling.
+- **Consumer Groups**: If you require completely independent processing streams, use multiple consumer groups. Each consumer group manages its connection, polling, and data handling.
 
 - **Subscription Groups**: You can set up multiple subscription groups within a single consumer group. Each subscription group can subscribe to different topics, enabling parallel data fetching within the same consumer group.
 
-- **Configuration**: Ensure your settings like `max.partition.fetch.bytes` and `max.poll.records are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
+- **Configuration**: Make sure your settings like `max.partition.fetch.bytes` and `max.poll.records are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
 
 By properly configuring consumer and subscription groups and optimizing Kafka connection settings, you can achieve effective parallel data processing in Karafka.
 
@@ -235,11 +235,11 @@ Best practices for setting up consumer groups in Karafka to optimize parallel pr
 
 - **Subscription Group Utilization**: Within a consumer group, use subscription groups to handle different topics or partitions. This setup provides flexibility in managing which part of your application handles specific data streams.
 
-- **Resource Allocation**: Ensure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
+- **Resource Allocation**: Make sure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
 
-- **Monitoring and Scaling**: Regularly monitor the performance of your consumer groups and adjust their configurations as necessary. Utilize Karafka’s monitoring tools to track processing times, throughput, and lag to make informed scaling decisions.
+- **Monitoring and Scaling**: Regularly monitor the performance of your consumer groups and adjust their configurations as necessary. Use Karafka’s monitoring tools to track processing times, throughput, and lag to make informed scaling decisions.
 
-Implementing these best practices will help you fully leverage Karafka’s capabilities for parallel processing, enhancing the throughput and efficiency of your Kafka data pipelines.
+Implementing these best practices will help you fully use Karafka’s capabilities for parallel processing, enhancing the throughput and efficiency of your Kafka data pipelines.
 
 ## Is Multiplexing an alternative to running multiple Karafka processes but using Threads?
 
@@ -255,11 +255,11 @@ Scaling processes can help up to the number of partitions available. For instanc
 
 ## What is the optimal strategy for scaling in Karafka to handle high consumer lag?
 
-The optimal strategy depends on your specific processing patterns and data distribution. A balanced approach involves using a combination of more partitions and virtual partitions. For example, with 6 partitions, you could configure 2 processes with VPs that utilize half the concurrency each and a multiplexing factor of 2. This setup can balance cost and performance well, ensuring you have enough headroom to handle lag spikes efficiently.
+The optimal strategy depends on your specific processing patterns and data distribution. A balanced approach involves using a combination of more partitions and virtual partitions. For example, with 6 partitions, you could configure 2 processes with VPs that use half the concurrency each and a multiplexing factor of 2. This setup can balance cost and performance well, making sure you have enough headroom to handle lag spikes efficiently.
 
 ## How does Karafka behave under heavy lag, and what should be considered in configuration?
 
-Under heavy lag, incorrect settings can reduce Karafka's ability to utilize multiple threads effectively. While Karafka may perform well with multiple threads under normal conditions, heavy lag can force it to operate with reduced concurrency. Configuring Karafka with appropriate settings is crucial to maintaining optimal performance during lag periods. Understanding how to balance threads, processes, and virtual partitions is key to effectively managing high-lag situations.
+Under heavy lag, incorrect settings can reduce Karafka's ability to use multiple threads effectively. While Karafka may perform well with multiple threads under normal conditions, heavy lag can force it to operate with reduced concurrency. Configuring Karafka with appropriate settings is crucial to maintaining optimal performance during lag periods. Understanding how to balance threads, processes, and virtual partitions is key to effectively managing high-lag situations.
 
 ## Why don't my autoscaled consumers rebalance partitions when scaling up with multiplexing enabled?
 

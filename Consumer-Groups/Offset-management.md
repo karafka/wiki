@@ -38,7 +38,7 @@ end
 To mark a certain message as consumed (so in case of a crash or restart, it won't be consumed again), you can use one of two marking methods:
 
 - ```#mark_as_consumed``` - for a non-blocking eventual offset commitment.
-- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure that the offset has been stored. This is not recommended for most scenarios, as Karafka will automatically commit the most recent offsets upon rebalance and shutdown.
+- ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to make sure that the offset has been stored. This is not recommended for most scenarios, as Karafka will automatically commit the most recent offsets upon rebalance and shutdown.
 
 ```ruby
 def consume
@@ -65,12 +65,12 @@ end
 
 Karafka offers two additional methods to commit already stored but not committed offsets to Kafka: `#commit_offsets` and `#commit_offsets!`.
 
-These two methods allow you to manage your consumer's offsets, ensuring Kafka knows the last message your consumer has processed.
+These two methods allow you to manage your consumer's offsets, making sure Kafka knows the last message your consumer has processed.
 
 - `#commit_offsets`: This method is asynchronous. It sends a request to the Kafka brokers to commit the offsets but immediately gets confirmation. Instead, it returns immediately, which allows your consumer to continue processing other messages without delay. The result of the commit request (whether successful or not) is not immediately known but can be checked using the `#revoked?` method.
-- `#commit_offsets!`: In contrast, this method is synchronous. It sends a request to commit the offsets and waits for a response from the Kafka brokers. This means your consumer pauses and waits for the brokers to acknowledge the commit request. The method will return a boolean value indicating the operation's success - true if the commit was successful and false if it was not. This can be helpful when you need to ensure that the offsets have been committed before moving forward.
+- `#commit_offsets!`: In contrast, this method is synchronous. It sends a request to commit the offsets and waits for a response from the Kafka brokers. This means your consumer pauses and waits for the brokers to acknowledge the commit request. The method will return a boolean value indicating the operation's success - true if the commit was successful and false if it was not. This can be helpful when you need to make sure that the offsets have been committed before moving forward.
 
-Remember, both `#commit_offsets` and `#commit_offsets!` only commit offsets that have already been stored. Storing an offset signifies that a message has been processed, so ensure you have correctly stored the offsets before attempting to commit them to Kafka.
+Remember, both `#commit_offsets` and `#commit_offsets!` only commit offsets that have already been stored. Storing an offset signifies that a message has been processed, so make sure you have correctly stored the offsets before attempting to commit them to Kafka.
 
 ### Example buffer implementation with ```shutdown``` DB flush
 

@@ -1,4 +1,4 @@
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing.
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer makes sure that users can access deserialized data effortlessly for seamless viewing.
 
 Below you can find the primary features of the Karafka Data Explorer.
 
@@ -14,7 +14,7 @@ Before diving deep into the data, having a bird's eye view of all available topi
 
 ### Per Topic View
 
-This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you don't miss out on the latest insights.
+This feature provides an overview of the most recent data across all partitions for a specific topic, making sure you don't miss out on the latest insights.
 
 #### Limitations
 
@@ -28,7 +28,7 @@ However, in most other scenarios, where there's a substantial amount of data, th
 
 ### Per Partition View with Offset-Based Pagination
 
-Dive deeper into each partition and scroll through the data using offset-based pagination. This offers a granular view, ensuring detailed exploration of data within partitions.
+Dive deeper into each partition and scroll through the data using offset-based pagination. This offers a granular view, making sure detailed exploration of data within partitions.
 
 ### Time-Based Offset Lookups
 
@@ -42,17 +42,17 @@ Need to investigate messages from a specific moment in time? Karafka Web UI prov
 
 ### Real-Time Display of the Recent Message
 
-Stay updated with the latest information. The explorer can display the most recent message from a given topic partition in real time and even supports an auto-refresh feature, ensuring you always have the current data at your fingertips.
+Stay updated with the latest information. The explorer can display the most recent message from a given topic partition in real time and even supports an auto-refresh feature, making sure you always have the current data at your fingertips.
 
 ### Detailed Message View
 
-Every message is more than just its content. With the Karafka Data Explorer, you can access the complete details of any message. This includes its payload, headers, and associated metadata, ensuring a comprehensive understanding of the data.
+Every message is more than just its content. With the Karafka Data Explorer, you can access the complete details of any message. This includes its payload, headers, and associated metadata, making sure a comprehensive understanding of the data.
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer3.png)
 
 ### Message Republishing
 
-Occasionally, there might be a need to republish a message for various reasons. This feature empowers users to seamlessly republish any message to the same topic partition. It retains the original payload and all the headers, ensuring data consistency and integrity during republishing.
+Occasionally, there might be a need to republish a message for various reasons. This feature empowers users to seamlessly republish any message to the same topic partition. It retains the original payload and all the headers, making sure data consistency and integrity during republishing.
 
 ### Surroundings Lookup
 

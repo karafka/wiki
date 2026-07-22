@@ -336,7 +336,7 @@ Broker: Messages are rejected since there are fewer in-sync replicas than requir
 
 #### Check Current Topic Configuration
 
-You can obtain relevant details about your topics by using the following combination of the [Admin](Infrastructure-Admin-API#getting-cluster-info) and [Configs](Infrastructure-Admin-Configs-API) APIs:
+You can get relevant details about your topics by using the following combination of the [Admin](Infrastructure-Admin-API#getting-cluster-info) and [Configs](Infrastructure-Admin-Configs-API) APIs:
 
 ```ruby
 topic_name = 'YOUR_TOPIC_NAME'
@@ -393,11 +393,11 @@ The topic configuration management feature allows you to view and modify the con
 
 ### Pre-Maintenance Configuration
 
-1. **Replication Factor**: Ensure topics have a replication factor of `3` or higher for any production environment. Setting a replication factor of `1` might lead to offline partitions during broker maintenance
+1. **Replication Factor**: Make sure topics have a replication factor of `3` or higher for any production environment. Setting a replication factor of `1` might lead to offline partitions during broker maintenance
 
 2. **Minimum In-Sync Replicas**: Set minimum in-sync replicas (`min.insync.replicas`) to a value of (replication factor - 1) or less. A minISR value that's equal to the replication factor might prevent you from producing to the cluster during maintenance
 
-3. **Connection Strings**: Ensure client connection strings include brokers from multiple availability zones or racks. Having multiple brokers in a client's connection string allows for failover when specific brokers are offline
+3. **Connection Strings**: Make sure client connection strings include brokers from multiple availability zones or racks. Having multiple brokers in a client's connection string allows for failover when specific brokers are offline
 
 ### Monitoring During Maintenance
 
@@ -421,7 +421,7 @@ Alert on these conditions:
 ### Recovery Actions
 
 1. **Check Cluster Status**: Verify all brokers are healthy in your monitoring system
-2. **Review Configurations**: Ensure topic replication factor ≥ 3
+2. **Review Configurations**: Make sure topic replication factor ≥ 3
 3. **Monitor Metrics**: Watch for recovery in consumer lag and error rates
 4. **Application Restart**: As a last resort, restart Karafka processes
 

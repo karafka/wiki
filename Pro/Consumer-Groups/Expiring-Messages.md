@@ -6,7 +6,7 @@ To use the Expiring Messages feature in Karafka, you can specify the message exp
 
 Karafka's Expiring Messages filtering process takes place before the virtual partitioning (if applicable) and dispatching of messages to consumers. This helps optimize resource utilization, particularly CPU usage, as consumers receive sets of messages that are already filtered.
 
-By filtering messages before they are partitioned and dispatched, Karafka reduces the number of messages that need to be processed by each consumer. This approach ensures that only relevant and recent messages are dispatched to consumers, making it easier for them to process the data and reducing the overall processing load on the system. This optimization helps in improving the performance of the overall system and enables more efficient data processing.
+By filtering messages before they are partitioned and dispatched, Karafka reduces the number of messages that need to be processed by each consumer. This approach makes sure that only relevant and recent messages are dispatched to consumers, making it easier for them to process the data and reducing the overall processing load on the system. This optimization helps in improving the performance of the overall system and enables more efficient data processing.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/expiring_messages_flow.svg" />
@@ -38,9 +38,9 @@ end
 
 ## Behaviour on errors
 
-Karafka's Expiring Messages feature ensures that failed messages are reprocessed after a short period. However, if the failed messages become too old, Karafka will skip them. This is because the Expiring Messages feature in Karafka automatically filters out messages that are older than the defined period. Therefore, if a failed message becomes older than the expiry period, it will not be included in the batch of messages that Karafka processes again. This is a design decision made to optimize resource utilization and prevent the processing of stale or irrelevant data.
+Karafka's Expiring Messages feature makes sure that failed messages are reprocessed after a short period. However, if the failed messages become too old, Karafka will skip them. This is because the Expiring Messages feature in Karafka automatically filters out messages that are older than the defined period. Therefore, if a failed message becomes older than the expiry period, it will not be included in the batch of messages that Karafka processes again. This is a design decision made to optimize resource utilization and prevent the processing of stale or irrelevant data.
 
-It is important to note that this behavior can be adjusted by changing the expiry period for messages in the configuration settings. It is also essential to ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
+It is important to note that this behavior can be adjusted by changing the expiry period for messages in the configuration settings. It is also essential to make sure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to make sure that failed messages are not skipped.
 
 ## Limitations
 
@@ -48,7 +48,7 @@ When a Karafka consumer process is heavily saturated, and there are more jobs in
 
 The delay occurs due to the nature of the Karafka consumer processing flow. When messages are polled, they are subject to filtering before they are dispatched for processing. This filtering process, along with the dispatching and processing itself, can take some time, mainly when a large number of messages are being processed at once. If the number of jobs in the internal queue exceeds the number of available threads, then some messages will need to wait for processing, leading to processing lag. This lag can be mitigated by increasing the number of threads available for processing, but this may not be possible in some cases, such as with resource constraints.
 
-If case of such scenarios, we recommend running second-stage filtering to ensure that at the moment of processing particular messages, they are not expired.
+If case of such scenarios, we recommend running second-stage filtering to make sure that at the moment of processing particular messages, they are not expired.
 
 ## Expiring Messages vs. using `log.retention.ms`
 

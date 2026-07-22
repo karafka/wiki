@@ -67,7 +67,7 @@ You can create producers with different `kafka` settings. Full list of the Kafka
 
 ## Idempotence
 
-When idempotence is enabled, the producer will ensure that messages are successfully produced exactly once and in the original production order.
+When idempotence is enabled, the producer will make sure that messages are successfully produced exactly once and in the original production order.
 
 To enable idempotence, you need to set the `enable.idempotence` kafka scope setting to `true`:
 
@@ -87,7 +87,7 @@ The following Kafka configuration properties are adjusted automatically (if not 
 - `retries` set to `2147483647`
 - `acks` set to `all`
 
-The idempotent producer ensures that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system ensures that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
+The idempotent producer makes sure that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system makes sure that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
 
 You can read more about idempotence and acknowledgements settings [here](WaterDrop-Idempotence-and-Acknowledgements).
 
@@ -121,11 +121,11 @@ When enabled, WaterDrop will:
 1. Wait for the configured backoff period before retrying the operation
 1. Track reload attempts to prevent infinite loops
 
-The reload mechanism helps ensure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
+The reload mechanism helps make sure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
 
 !!! warning "Producer Client Reload Impact"
 
-    Fatal error recovery involves reloading the entire producer client, which may result in a brief interruption of message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Ensure your application can tolerate this behavior before enabling this feature.
+    Fatal error recovery involves reloading the entire producer client, which may result in a brief interruption of message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Make sure your application can tolerate this behavior before enabling this feature.
 
 !!! note "Transactional Producer Support"
 
@@ -248,7 +248,7 @@ producer.setup do |config|
 end
 ```
 
-Keep in mind, that in order to use `zstd`, you need to install `libzstd-dev`:
+Keep in mind, that to use `zstd`, you need to install `libzstd-dev`:
 
 ```shell
 apt-get install -y libzstd-dev
@@ -256,7 +256,7 @@ apt-get install -y libzstd-dev
 
 ## Message Size Validation
 
-When working with WaterDrop, it's essential to know the various checks and validations to ensure the integrity and feasibility of producing messages. This section explains the message size validation process in WaterDrop, librdkafka, and Kafka.
+When working with WaterDrop, it's essential to know the various checks and validations to make sure the integrity and feasibility of producing messages. This section explains the message size validation process in WaterDrop, librdkafka, and Kafka.
 
 There are three primary parameters to consider:
 
@@ -270,7 +270,7 @@ There are three primary parameters to consider:
 
 1. **WaterDrop Client-Side Validation**:
 
-    - Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to ensure the message payload is within permissible limits.
+    - Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to make sure the message payload is within permissible limits.
 
     - It's worth noting that this validation only concerns the payload and not additional elements like metadata, headers, and key.
 
@@ -278,7 +278,7 @@ There are three primary parameters to consider:
 
     - librdkafka, before publishing, validates the **uncompressed** size of the message.
 
-    - This check ensures that the message size adheres to configured standards even before compression.
+    - This check makes sure that the message size adheres to configured standards even before compression.
 
 1. **Broker-Side Validation**:
 
@@ -368,7 +368,7 @@ Below you can find examples where each of the validations layers fails:
 
 ### Conclusion
 
-Understanding the nuances of message size validation is crucial to ensure smooth message production. While it may seem complex at first, being mindful of the distinctions between uncompressed and compressed sizes and client-side and broker-side validations can prevent potential pitfalls and disruptions in your Kafka workflows.
+Understanding the nuances of message size validation is crucial to make sure smooth message production. While it may seem complex at first, being mindful of the distinctions between uncompressed and compressed sizes and client-side and broker-side validations can prevent potential pitfalls and disruptions in your Kafka workflows.
 
 ## See Also
 

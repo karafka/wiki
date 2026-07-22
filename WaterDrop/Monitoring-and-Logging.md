@@ -141,7 +141,7 @@ producer.produce_sync(topic: 'my.topic', payload: 'my.message')
 
 !!! warning "Always keep `statistics.emitted` handlers concise and non-blocking"
 
-    When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking. Long-running handlers can impede the message production process and overall producer performance. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your production process.
+    When subscribing to `statistics.emitted`, make sure your code is concise and non-blocking. Long-running handlers can impede the message production process and overall producer performance. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your production process.
 
     Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
 
@@ -174,11 +174,11 @@ The statistics include all of the metrics from `librdkafka` (complete list [here
 
 !!! note "Note"
 
-    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
+    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always make sure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
 
 ### Statistics Decorator
 
-For several attributes like `txmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
+For several attributes like `txmsgs`, `librdkafka` publishes only the totals. To make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
 
 !!! note "Decorator Scope"
 
@@ -242,7 +242,7 @@ producer.close
 
 ## Error Notifications
 
-WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under `error.occurred` notification key. You can subscribe to this event to ensure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered.
+WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under `error.occurred` notification key. You can subscribe to this event to make sure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered.
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|

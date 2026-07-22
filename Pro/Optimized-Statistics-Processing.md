@@ -14,7 +14,7 @@ At scale, this results in:
 
 ## How Karafka Pro Solves This
 
-Karafka Pro automatically reduces the overhead of statistics processing at multiple levels, ensuring that both the size of the statistics data and the cost of processing it scale with your actual workload rather than the total size of the Kafka cluster.
+Karafka Pro automatically reduces the overhead of statistics processing at multiple levels, making sure that both the size of the statistics data and the cost of processing it scale with your actual workload rather than the total size of the Kafka cluster.
 
 This optimization is **transparent and automatic** - no configuration changes are required.
 

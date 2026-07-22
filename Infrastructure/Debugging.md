@@ -2,7 +2,7 @@ This document was created in response to recurring community questions and confu
 
 - **There are no confirmed bugs in the most recent version of Karafka** (at the time of writing) that cause unintended double-processing or skipped messages. If you observe such behavior and can reliably reproduce it, please open an issue with a minimal test case.
 
-- Karafka includes a **comprehensive integration test suite**, which features a dedicated assertion layer ensuring:
+- Karafka includes a **comprehensive integration test suite**, which features a dedicated assertion layer making sure:
     - Messages are not fetched more than once.
     - A single consumer instance never processes messages from different topics or partitions.
     - Kafka protocol semantics (like ordering and delivery guarantees) are respected.
@@ -23,7 +23,7 @@ Karafka defaults to **at-least-once delivery semantics**, which means that under
 
 Karafka also supports other Kafka delivery semantics:
 
-- **Exactly-once semantics (EOS)** - via Kafka transactions, which ensure atomicity between offset commits and message production.
+- **Exactly-once semantics (EOS)** - via Kafka transactions, which make sure atomicity between offset commits and message production.
 - **At-most-once semantics** - by committing offsets *before* processing. This guarantees no duplication but may lead to message loss if a crash occurs during processing.
 
 When used correctly and under healthy conditions (no ungraceful termination), Karafka, with at least one semantics, will process each message **once and only once**, even without transactions.
@@ -36,7 +36,7 @@ When used correctly and under healthy conditions (no ungraceful termination), Ka
 
 Karafka is a multi-threaded Kafka consumer framework for Ruby/Rails applications. Understanding its internals will help pinpoint where duplicates arise:
 
-- **Consumer Group and Partitions**: Karafka consumers typically run as a separate process (via `karafka server`). They join a Kafka **consumer group**, dividing topic partitions among instances. If you run multiple Karafka processes (for scaling or high availability) under the **same** group ID, Kafka will assign each partition to only one process at a time (preventing duplicates). If processes use different group IDs, each group will receive all messages (causing intentional duplicates). Always ensure all instances use the same group for load-balanced consumption.
+- **Consumer Group and Partitions**: Karafka consumers typically run as a separate process (via `karafka server`). They join a Kafka **consumer group**, dividing topic partitions among instances. If you run multiple Karafka processes (for scaling or high availability) under the **same** group ID, Kafka will assign each partition to only one process at a time (preventing duplicates). If processes use different group IDs, each group will receive all messages (causing intentional duplicates). Always make sure all instances use the same group for load-balanced consumption.
 
 - **Threads and Concurrency**: Within a Karafka process, **multiple** Ruby threads may be spawned to fetch and consume messages in parallel (controlled amongst others by `Karafka::App.config.concurrency`). By default, Karafka uses threads to process different partitions and topics concurrently. Each partition's messages are processed in order, and Karafka preserves partition ordering by not processing multiple messages from the same partition at the same time (unless using advanced features like Virtual Partitions). This means concurrency > 1 mainly improves throughput when consuming multiple partitions or topics simultaneously. **All code must be thread-safe**, as Karafka shares the process among threads much like a Puma or Sidekiq. Non-thread-safe code can cause race conditions and unpredictable behavior (including potential double processing or missed acknowledgments).
 
@@ -122,7 +122,7 @@ Runtime errors in your consumer logic are a very common cause of double-processi
 
 If you process messages in a loop without per-message marking and one message triggers an error, Karafka treats the whole batch as failed by default.
 
-Example: Your consumer does `messages.each { |m| handle(m) }` and `#handle` throws an error on the 3rd message. The first two messages were processed, but their offsets haven't been committed yet (since Karafka commits them after the batch). Karafka catches the error, logs it, and will retry from the 1st message's offset on the next attempt. Result: The first two messages will be delivered again along with the third, causing duplicates for those two. To mitigate this, make your processing robust per message. You can rescue exceptions around the single message to ensure the batch continues for others, or use `#mark_as_consumed` as you go to commit offsets for messages that succeeded before the error. Karafka Pro's Virtual Partitions feature even handles this scenario by skipping already consumed messages on retry to avoid duplicates.
+Example: Your consumer does `messages.each { |m| handle(m) }` and `#handle` throws an error on the 3rd message. The first two messages were processed, but their offsets haven't been committed yet (since Karafka commits them after the batch). Karafka catches the error, logs it, and will retry from the 1st message's offset on the next attempt. Result: The first two messages will be delivered again along with the third, causing duplicates for those two. To mitigate this, make your processing robust per message. You can rescue exceptions around the single message to make sure the batch continues for others, or use `#mark_as_consumed` as you go to commit offsets for messages that succeeded before the error. Karafka Pro's Virtual Partitions feature even handles this scenario by skipping already consumed messages on retry to avoid duplicates.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -142,13 +142,13 @@ end
 
 ### Non-Thread-Safe Code or Shared Resource Issues
 
-Because Karafka runs concurrently, any code that isn’t safe under multi-threading can inadvertently lead to double-processing symptoms. While Karafka itself ensures a single message is handled by one thread at a time, user code might introduce duplication in a few ways.
+Because Karafka runs concurrently, any code that isn’t safe under multi-threading can inadvertently lead to double-processing symptoms. While Karafka itself makes sure a single message is handled by one thread at a time, user code might introduce duplication in a few ways.
 
 #### Shared Global State
 
 Multiple threads can interfere if you use class variables, singletons, or another globally shared mutable state to track processing.
 
-Example: Suppose you have a global hash to ensure you don't process the same item twice or a global counter for deduplication. If two threads (processing different partitions) access it, they might see stale or conflicting data. One thread might reset or change a flag that causes the other thread to re-process something. Always protect shared state with mutexes or, better, avoid it. Use local variables or consumer instance local storage if needed, and remember each Karafka consumer instance is tied to a partition and persists for that partition's lifetime so you can store state in instance variables safely per partition.
+Example: Suppose you have a global hash to make sure you don't process the same item twice or a global counter for deduplication. If two threads (processing different partitions) access it, they might see stale or conflicting data. One thread might reset or change a flag that causes the other thread to re-process something. Always protect shared state with mutexes or, better, avoid it. Use local variables or consumer instance local storage if needed, and remember each Karafka consumer instance is tied to a partition and persists for that partition's lifetime so you can store state in instance variables safely per partition.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -171,7 +171,7 @@ end
 
 #### External Services not Thread-Safe
 
-Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails ActiveRecord is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
+Make sure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails ActiveRecord is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
 
 #### Manual Thread Management in Consumer
 
@@ -200,7 +200,7 @@ This category is related to thread safety but involves how you configure and dep
 
 #### Karafka Swarm Mode (Multi-Process)
 
-Karafka supports forking multiple worker processes (similar to Puma workers) to overcome MRI GIL limits​. If you use swarm mode, ensure each forked process still has a unique consumer group member identity. Karafka handles this under the hood, but if you manually run multiple Karafka processes (e.g. via a Procfile or multiple containers), make sure they share the same `group.id` in config. A mistake here is running two Karafka processes with the same topics but different group names, which means both processes will independently consume all messages (duplicating everything).
+Karafka supports forking multiple worker processes (similar to Puma workers) to overcome MRI GIL limits​. If you use swarm mode, make sure each forked process still has a unique consumer group member identity. Karafka handles this under the hood, but if you manually run multiple Karafka processes (e.g. via a Procfile or multiple containers), make sure they share the same `group.id` in config. A mistake here is running two Karafka processes with the same topics but different group names, which means both processes will independently consume all messages (duplicating everything).
 
 The correct approach to scaling consumers is to run multiple processes all configured as one group (or use Karafka's built-in swarm mode). In Rails deployments, it's common to have an independent Karafka process for each app instance (all using the same group), which is fine.
 
@@ -287,7 +287,7 @@ In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller b
 
 As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, please follow these steps:
 
-1. **Upgrade to the Latest Version**: Ensure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
+1. **Upgrade to the Latest Version**: Make sure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
 
 1. **Check for External Dependencies**: Limit the use of non-default gems to eliminate issues that might arise from other libraries.
 
@@ -462,7 +462,7 @@ Available debug flags include: `generic`, `broker`, `topic`, `metadata`, `featur
 
 !!! warning "Debug Mode Usage Caution"
 
-    Using debug mode extensively, especially in production, may impact performance and generate large log files. Ensure you revert to regular settings once your issue is resolved.
+    Using debug mode extensively, especially in production, may impact performance and generate large log files. Make sure you revert to regular settings once your issue is resolved.
 
 When debug mode is configured correctly, Karafka will generate detailed logs to help you troubleshoot issues. These logs are printed whether or not Karafka can connect to the Kafka cluster, as part of them are generated during the pre-connection establishment phase.
 
@@ -513,7 +513,7 @@ rdkafka: [thrd:127.0.0.1:9092/bootstrap]: 127.0.0.1:9092/bootstrap: Broker API s
 
 While useful for observability, custom instrumentation, and monitors can inadvertently affect message processing when implemented incorrectly. Historically, some cases of message duplication have been traced to custom monitors (particularly those added for distributed tracing) that interfered with Karafka's internal operations.
 
-If you're experiencing duplicate processing, temporarily disabling all custom monitors can help isolate whether your instrumentation contributes to the issue. Once confirmed, carefully review your monitor implementations to ensure they operate as passive observers without side effects on Karafka's core processing logic.
+If you're experiencing duplicate processing, temporarily disabling all custom monitors can help isolate whether your instrumentation contributes to the issue. Once confirmed, carefully review your monitor implementations to make sure they operate as passive observers without side effects on Karafka's core processing logic.
 
 ```ruby
 class KarafkaApp < Karafka::App

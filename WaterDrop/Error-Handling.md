@@ -2,9 +2,9 @@ Understanding WaterDrop error handling mechanisms is crucial for developing robu
 
 !!! note "Note"
 
-    This document focuses on error handling for the Standard Producer (non-transactional). For information regarding the error behavior of the Transactional Producer, it is highly recommended to refer to the [Transactional Producer](WaterDrop-Transactions) documentation.
+    This document focuses on error handling for the Standard Producer (non-transactional). For information about the error behavior of the Transactional Producer, it is highly recommended to refer to the [Transactional Producer](WaterDrop-Transactions) documentation.
 
-WaterDrop operates with a fully asynchronous architecture, maintaining a memory buffer for efficiently handling messages. This buffer stores messages waiting to be dispatched or already in the delivery process. Following the delivery of a message or the occurrence of an error after reaching the maximum retry limit, WaterDrop enqueues a delivery event into an internal event queue. This event includes the relevant delivery outcome, ensuring that each message's status is accurately tracked and managed within the system.
+WaterDrop operates with a fully asynchronous architecture, maintaining a memory buffer for efficiently handling messages. This buffer stores messages waiting to be dispatched or already in the delivery process. Following the delivery of a message or the occurrence of an error after reaching the maximum retry limit, WaterDrop enqueues a delivery event into an internal event queue. This event includes the relevant delivery outcome, making sure that each message's status is accurately tracked and managed within the system.
 
 ## Operational Modes
 
@@ -30,7 +30,7 @@ In WaterDrop, errors encountered during the message-handling process can be cate
 
 - **ProduceMany Errors**: During non-transactional batch dispatches, some messages may be successfully enqueued, and some may not. In such a case, this error will be raised. It will contain a `#dispatched` method with appropriate delivery handles for successfully enqueued messages. Those messages have the potential to be delivered based on their delivery report, but messages without matching delivery handles were for sure rejected and not enqueued for delivery.
 
-- **Transactional ProduceMany Errors**: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature ensures atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
+- **Transactional ProduceMany Errors**: In a transactional batch dispatch, all messages within the transaction are either successfully enqueued and delivered together or not at all. If a failure occurs during the transaction, no messages are dispatched, and a rollback is performed. Therefore, the `#dispatched` method will always be empty in this error, as either all messages have been delivered successfully or none have been delivered. The transactional nature makes sure atomicity, meaning that partial success or failure is not possible, and no message delivery handles will be available for any messages in case of a rollback.
 
 - **Fatal Errors**: These are critical errors that prevent the producer from continuing to operate correctly. Fatal errors can occur in both idempotent and transactional producers. When a fatal error occurs, the producer may need to be reloaded to recover. WaterDrop provides automatic recovery mechanisms to handle these errors gracefully. See the [Fatal Error Recovery](#fatal-error-recovery) section for more details.
 
@@ -171,7 +171,7 @@ WaterDrop provides automatic recovery mechanisms for fatal errors that occur in 
 
 !!! warning "Message Loss Risk During Reload"
 
-    Fatal error recovery involves reloading the entire producer client, which causes a brief interruption in message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Ensure your application can tolerate this behavior before enabling this feature.
+    Fatal error recovery involves reloading the entire producer client, which causes a brief interruption in message production. Any messages in the internal buffer that were not yet delivered may be lost unless they are part of a transaction. However, the producer will always emit notification events for messages that are dropped during reload, and the Labeling API can be used to track and identify which messages were not delivered. Make sure your application can tolerate this behavior before enabling this feature.
 
 ### Idempotent Producer Fatal Error Recovery
 
@@ -272,7 +272,7 @@ When a fatal error occurs:
 
 1. **Error Detection**: WaterDrop detects that the error is fatal and cannot be resolved through normal retry mechanisms.
 
-1. **Reload Decision**: If the reload feature is enabled and the maximum number of attempts has not been exceeded, WaterDrop initiates a producer reload.
+1. **Reload Decision**: If the reload feature is enabled and the maximum number of attempts has not been exceeded, WaterDrop starts a producer reload.
 
 1. **Producer Reload**: The underlying librdkafka producer client is completely reloaded, clearing any internal state that may have caused the fatal error.
 
@@ -303,4 +303,4 @@ end
 
 ## Summary
 
-WaterDrop's error handling is designed to manage the complexities of message delivery in Kafka through three primary APIs, each with distinct behaviors. Understanding these modes is crucial because error-handling strategies depend heavily on the dispatch method used, and each requires a different approach to ensure messages are reliably delivered or properly retried. Additionally, WaterDrop provides detailed error information, helping developers understand the context and cause of failures to implement effective recovery strategies. Along with monitoring errors and tracking delivery reports, it's also recommended to use WaterDrop's Labeling capabilities. This feature allows you to tag messages with labels associated with their dispatches during the dispatch lifecycle, making tracking and managing messages throughout their journey easier.
+WaterDrop's error handling is designed to manage the complexities of message delivery in Kafka through three primary APIs, each with distinct behaviors. Understanding these modes is crucial because error-handling strategies depend heavily on the dispatch method used, and each requires a different approach to make sure messages are reliably delivered or properly retried. Additionally, WaterDrop provides detailed error information, helping developers understand the context and cause of failures to implement effective recovery strategies. Along with monitoring errors and tracking delivery reports, it's also recommended to use WaterDrop's Labeling capabilities. This feature allows you to tag messages with labels associated with their dispatches during the dispatch lifecycle, making tracking and managing messages throughout their journey easier.

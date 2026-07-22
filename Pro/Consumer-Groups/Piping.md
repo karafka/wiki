@@ -8,13 +8,13 @@ Message piping in Karafka refers to forwarding messages from one topic to anothe
 
 - **Decoupling Components**: Message piping helps decouple system components. Data producers do not need to know about the consumers, allowing for independent scaling and maintenance.
 
-- **Enhanced Data Flow Management**: It provides a controlled way to manage data flow, ensuring data integrity and traceability through enhanced metadata headers similar to those used in enhanced Dead Letter Queues (DLQ).
+- **Enhanced Data Flow Management**: It provides a controlled way to manage data flow, making sure data integrity and traceability through enhanced metadata headers similar to those used in enhanced Dead Letter Queues (DLQ).
 
 - **Efficiency**: Message piping minimizes the overhead associated with messages piping by automatically applying a partitioning strategy and using raw payload and headers without any deserialization.
 
 ## Usage
 
-Karafka Pro provides built-in methods to facilitate message piping directly from within your consumers. These methods handle the complexities of Kafka message attributes, ensuring messages are forwarded with all necessary context intact.
+Karafka Pro provides built-in methods to facilitate message piping directly from within your consumers. These methods handle the complexities of Kafka message attributes, making sure messages are forwarded with all necessary context intact.
 
 ```ruby
 class PaymentConsumer < ApplicationConsumer
@@ -47,15 +47,15 @@ You can define a `#enhance_pipe_message` method in your consumer to alter the me
 
 ### Automatic Partition Key Selection
 
-In Karafka, the message key selection for message piping is designed to maintain a high degree of ordering and integrity, especially when messages are forwarded to topics with differing partition counts. This ensures that correlated messages preserve their strong ordering, which is critical for processing sequences of interdependent events.
+In Karafka, the message key selection for message piping is designed to maintain a high degree of ordering and integrity, especially when messages are forwarded to topics with differing partition counts. This makes sure that correlated messages preserve their strong ordering, which is critical for processing sequences of interdependent events.
 
 The process of message key selection is handled as follows:
 
-- **Key Available**: If the source message includes a key, this key is reused when the message is piped. This ensures the message follows the same partitioning logic as before, maintaining its order and correlation with related messages.
+- **Key Available**: If the source message includes a key, this key is reused when the message is piped. This makes sure the message follows the same partitioning logic as before, maintaining its order and correlation with related messages.
 
-- **Key Not Available**: When no key is present, Karafka automatically generates a partition key based on the partition number from which the message was originally consumed. This automatic key generation ensures that messages maintain their ordering by being routed to the same relative partition in the new topic.
+- **Key Not Available**: When no key is present, Karafka automatically generates a partition key based on the partition number from which the message was originally consumed. This automatic key generation makes sure that messages maintain their ordering by being routed to the same relative partition in the new topic.
 
-This approach is particularly useful in scenarios where the number of partitions in the target topic differs from the source. It ensures that the message flow remains consistent and predictable, supporting scenarios like ordered processing and stateful computations where the order of messages is crucial.
+This approach is particularly useful in scenarios where the number of partitions in the target topic differs from the source. It makes sure that the message flow remains consistent and predictable, supporting scenarios like ordered processing and stateful computations where the order of messages is crucial.
 
 ### Traces in Headers
 
@@ -74,9 +74,9 @@ These headers provide vital information for troubleshooting and understanding th
 
 ### Exactly-Once Semantics and Transactions
 
-Karafka Pro supports [exactly-once semantics](Pro-Consumer-Groups-Transactions) within its message piping feature, ensuring that messages are processed and forwarded precisely once, even in case of failures or retries. This is crucial in scenarios where message duplication or loss could lead to inconsistencies or erroneous behaviors in downstream systems.
+Karafka Pro supports [exactly-once semantics](Pro-Consumer-Groups-Transactions) within its message piping feature, making sure that messages are processed and forwarded precisely once, even in case of failures or retries. This is crucial in scenarios where message duplication or loss could lead to inconsistencies or erroneous behaviors in downstream systems.
 
-Here's how you can utilize transactions with message piping:
+Here's how you can use transactions with message piping:
 
 ```ruby
 class Consumer < ApplicationConsumer
@@ -92,7 +92,7 @@ class Consumer < ApplicationConsumer
 end
 ```
 
-Transactional piping ensures that message forwarding completes successfully or not at all if any part of the transaction fails. This is particularly useful when your application logic involves multiple steps and needs to avoid partial execution. The `#mark_as_consumed` method acknowledges that the last message has been fully processed and its results confirmed, which is crucial for correct offset management in Karafka.
+Transactional piping makes sure that message forwarding completes successfully or not at all if any part of the transaction fails. This is particularly useful when your application logic involves multiple steps and needs to avoid partial execution. The `#mark_as_consumed` method acknowledges that the last message has been fully processed and its results confirmed, which is crucial for correct offset management in Karafka.
 
 ## Example Use Cases
 

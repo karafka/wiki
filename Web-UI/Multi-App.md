@@ -32,9 +32,9 @@ Here are the steps necessary to configure Karafka Web-UI to work in a multi-app 
 
 !!! warning "Critical Setup Requirement"
 
-    It is critical to ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
+    It is critical to make sure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and makes sure the setup is accurate and functional.
 
-    Having any Karafka server process report to the Web UI before it is correctly bootstrapped via `bundle exec karafka-web migrate` may lead to critical state inconsistencies and other hard-to-debug issues. These inconsistencies can disrupt the accurate materialization of metrics and state data, causing unreliable or incorrect information to be displayed in the Web UI. To maintain a stable and reliable setup, ensure the Web UI is fully initialized and migrated before starting any Karafka server processes.
+    Having any Karafka server process report to the Web UI before it is correctly bootstrapped via `bundle exec karafka-web migrate` may lead to critical state inconsistencies and other hard-to-debug issues. These inconsistencies can disrupt the accurate materialization of metrics and state data, causing unreliable or incorrect information to be displayed in the Web UI. To maintain a stable and reliable setup, make sure the Web UI is fully initialized and migrated before starting any Karafka server processes.
 
 ## Limitations
 
@@ -58,7 +58,7 @@ There are several reasons why you should never use the same Karafka Web UI setup
 
 ## Explorer Routing Awareness
 
-The Karafka Web UI utilizes the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it utilizes the appropriate dedicated deserializer instead of defaulting to JSON.
+The Karafka Web UI uses the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it uses the appropriate dedicated deserializer instead of defaulting to JSON.
 
 !!! note "Deserialization Requirement"
 
@@ -101,9 +101,9 @@ end
 
 ## DLQ Routing Awareness
 
-To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
+To make sure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
 
-Karafka applications leverage the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
+Karafka applications use the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -127,7 +127,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-In this configuration, the DLQ is defined with the topic marked explicitly for the Web UI's awareness. This setup ensures that the Web UI, when launched, can accurately reflect the state and contents of DLQ topics.
+In this configuration, the DLQ is defined with the topic marked explicitly for the Web UI's awareness. This setup makes sure that the Web UI, when launched, can accurately reflect the state and contents of DLQ topics.
 
 ## Example Use Cases
 

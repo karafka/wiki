@@ -12,7 +12,7 @@ Karafka provides application administrative functions via the built-in `Karafka:
 
 ## Configuration
 
-`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also uses this same consumer group as it uses the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, make sure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
 
 `Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
 
@@ -446,9 +446,9 @@ puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:time
 
 This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
 
-Using the following method, you can obtain the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
+Using the following method, you can get the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
 
-If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This ensures comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
+If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This makes sure comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
 
 ### Reading Lags of All Active Routing Topics
 
@@ -596,7 +596,7 @@ Karafka::Admin.rename_consumer_group(
 )
 ```
 
-When using `rename_consumer_group`, the method ensures that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
+When using `rename_consumer_group`, the method makes sure that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
 
 !!! tip "Offset Merger with Existing Consumer Groups"
 
@@ -618,7 +618,7 @@ Karafka::Admin.copy_consumer_group(
 )
 ```
 
-When using `#copy_consumer_group`, the method ensures that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
+When using `#copy_consumer_group`, the method makes sure that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
 
 !!! tip "Offset Merger with Existing Consumer Groups"
 
@@ -716,7 +716,7 @@ Karafka::Admin.seek_consumer_group(
 
 ### Changing an Offset to Earliest or Latest
 
-Adjusting consumer group offsets to "earliest" or "latest" helps control where consumption begins within a topic. However, these terms can be misleading, particularly with compacted topics where the "earliest" offset may not be zero due to log cleanup and message expiration. The "earliest" setting allows consumers to start from the oldest available message, ensuring comprehensive data coverage.
+Adjusting consumer group offsets to "earliest" or "latest" helps control where consumption begins within a topic. However, these terms can be misleading, particularly with compacted topics where the "earliest" offset may not be zero due to log cleanup and message expiration. The "earliest" setting allows consumers to start from the oldest available message, making sure comprehensive data coverage.
 
 Conversely, the "latest" offset refers to the end of the log, indicating the point where new messages will be appended. Setting the offset to "latest" means consumption will start with new messages arriving post-adjustment, which is ideal for applications focused on real-time data.
 
@@ -746,7 +746,7 @@ Karafka::Admin.seek_consumer_group(
 )
 ```
 
-Using `:earliest` and `:latest` is vital for managing consumer behavior, ensuring flexibility in data consumption strategies according to specific needs.
+Using `:earliest` and `:latest` is vital for managing consumer behavior, making sure flexibility in data consumption strategies according to specific needs.
 
 ## See Also
 

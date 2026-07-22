@@ -2,15 +2,15 @@ Karafka under the hood relies on `librdkafka` to manage Kafka connections. It is
 
 !!! tip "Ecosystem-Wide Recommendations"
 
-    This guidance applies to all components of the Karafka ecosystem interacting with Kafka, including `rdkafka`, `karafka-rdkafka`, `WaterDrop`, and `Karafka`. Ensure these recommendations are followed to maintain system stability and prevent resource leaks.
+    This guidance applies to all components of the Karafka ecosystem interacting with Kafka, including `rdkafka`, `karafka-rdkafka`, `WaterDrop`, and `Karafka`. Make sure these recommendations are followed to maintain system stability and prevent resource leaks.
 
 ## Fork Safety with `librdkafka`
 
-When forking Ruby processes, ensuring there are no active connections to Kafka is required. Active connections include consumer, producer, and admin connections. Failing to close these connections before forking can leak file descriptors and other resources, potentially destabilizing your application.
+When forking Ruby processes, making sure there are no active connections to Kafka is required. Active connections include consumer, producer, and admin connections. Failing to close these connections before forking can leak file descriptors and other resources, potentially destabilizing your application.
 
 ## Karafka's Swarm Forking Strategy
 
-Karafka uses forking in its [Swarm Mode](Infrastructure-Swarm-Multi-Process). This process is carefully designed to ensure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
+Karafka uses forking in its [Swarm Mode](Infrastructure-Swarm-Multi-Process). This process is carefully designed to make sure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
 
 ## Forking Issues on macOS
 
@@ -23,13 +23,13 @@ These errors indicate processes in the middle of certain operations during a for
 
 ### Solutions for macOS Forking Issues
 
-1. **Pre-load `rdkafka` before forking**: Ensure `rdkafka` is loaded in the parent process before any fork occurs. For Puma web server users, add this line to your `puma.rb` configuration file:
+1. **Pre-load `rdkafka` before forking**: Make sure `rdkafka` is loaded in the parent process before any fork occurs. For Puma web server users, add this line to your `puma.rb` configuration file:
 
     ```ruby
     require 'rdkafka'
     ```
 
-    This ensures that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
+    This makes sure that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
 
 1. **Environment Variable**: You can set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to help manage initialization issues related to forking in macOS environments.
 
@@ -38,11 +38,11 @@ These errors indicate processes in the middle of certain operations during a for
     - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
     - Disable Spring in development if you're encountering persistent issues
 
-Note that forking issues typically occur when the required dependencies aren't loaded in the parent process prior to forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
+Note that forking issues typically occur when the required dependencies aren't loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
 ## Conclusion
 
-Forking in Ruby applications that use Karafka and `librdkafka` requires careful planning and implementation to prevent resource leakage and ensure stable operation. This is especially true on macOS, where changes to the system's handling of forks can lead to critical issues. By following the outlined best practices, developers can effectively manage these challenges in a multi-process environment.
+Forking in Ruby applications that use Karafka and `librdkafka` requires careful planning and implementation to prevent resource leakage and make sure stable operation. This is especially true on macOS, where changes to the system's handling of forks can lead to critical issues. By following the outlined best practices, developers can effectively manage these challenges in a multi-process environment.
 
 ## See Also
 

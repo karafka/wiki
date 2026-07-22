@@ -4,7 +4,7 @@ When producing messages with WaterDrop, tracking the progress and status of each
 
 ## Importance of Labeling
 
-Labeling is an important feature, and we highly recommend utilizing it for enhanced message tracking and management. It provides the following benefits:
+Labeling is an important feature, and we highly recommend using it for enhanced message tracking and management. It provides the following benefits:
 
 1. **Traceability**: Labels provide a straightforward way to trace a message from the point it's produced until it's successfully consumed. This is particularly useful in complex systems where messages pass through various stages and services.
 

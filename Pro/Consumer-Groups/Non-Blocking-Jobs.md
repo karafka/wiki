@@ -1,4 +1,4 @@
-Non-blocking jobs do not block polling of the underlying listener for other topic partitions. This ensures that a single Kafka connection can efficiently poll data from multiple topics and partitions.
+Non-blocking jobs do not block polling of the underlying listener for other topic partitions. This makes sure that a single Kafka connection can efficiently poll data from multiple topics and partitions.
 
 ## Using Non-Blocking Jobs
 
@@ -18,7 +18,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Setting `non_blocking_job` to `true` within a route configuration indicates that the job should execute without blocking data polling from other topic partitions that utilize the same connection.
+Setting `non_blocking_job` to `true` within a route configuration indicates that the job should execute without blocking data polling from other topic partitions that use the same connection.
 
 ## Non-Blocking vs. Long-Running Jobs
 

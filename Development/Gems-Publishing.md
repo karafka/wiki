@@ -8,7 +8,7 @@ Our release process uses GitHub Actions with RubyGems trusted publishing for sec
 
 ## Prerequisites
 
-Before you can make releases, ensure you have:
+Before you can make releases, make sure you have:
 
 - **Repository access**: Push access to the Karafka repository
 - **Release permissions**: Ability to create GitHub releases
@@ -45,7 +45,7 @@ The trusted publishing configuration is already set up in the Karafka GitHub env
 
 1. **Update README**: If needed, update README.md with any new features, changes, or version-specific information
 
-1. **Test locally**: Run the full test suite and ensure everything works as expected
+1. **Test locally**: Run the full test suite and make sure everything works as expected
 
 1. **Create PR**: Submit changes via pull request with the version branch (`v"VERSION"`) and get it reviewed/merged
    - PR title should be clear (e.g., "Release v1.2.3")
@@ -138,7 +138,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 **Workflow doesn't trigger**:
 
-- Ensure tag starts with `v`
+- Make sure tag starts with `v`
 - Check that the tag was created properly
 - Verify you have push access to the repository
 - Check if the run was approved
@@ -147,7 +147,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 - Verify the GitHub environment name matches RubyGems configuration
 - Check that the workflow path is correct in RubyGems settings
-- Ensure the repository name matches exactly
+- Make sure the repository name matches exactly
 
 **Permission denied**:
 
@@ -157,7 +157,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 **Gem already exists**:
 
 - Check if the version was already released
-- Ensure the version was properly bumped before creating the release
+- Make sure the version was properly bumped before creating the release
 - Consider using a patch version if needed
 
 ## Security Notes

@@ -75,11 +75,11 @@ When that happens, Karafka will retry two times and continue processing despite 
 
 !!! warning "Critical Configuration Notice"
 
-    Setting the `topic` value to `nil` when disabling dispatch will fully disable the Dead Letter Queue. If you intend to turn off dispatch but still want DLQ functionality, ensure the `topic` value is set to `false` instead of `nil`. This ensures that DLQ handling remains active while preventing message dispatch.
+    Setting the `topic` value to `nil` when disabling dispatch will fully disable the Dead Letter Queue. If you intend to turn off dispatch but still want DLQ functionality, make sure the `topic` value is set to `false` instead of `nil`. This makes sure that DLQ handling remains active while preventing message dispatch.
 
 ## Dispatch Warranties
 
-Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
+Enhanced Dead Letter Queue makes sure that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/enhanced_dlq_flow.svg" />
@@ -91,7 +91,7 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
 
 !!! note "Note"
 
-    The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
+    The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will make sure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
 ## Additional Headers For Increased Traceability
 
@@ -228,11 +228,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This adjustment ensures that messages dispatched to the DLQ and the marking of their consumption are processed separately, providing you with the flexibility to align Karafka's behavior with your system's needs.
+This adjustment makes sure that messages dispatched to the DLQ and the marking of their consumption are processed separately, providing you with the flexibility to align Karafka's behavior with your system's needs.
 
 ## Advanced Error Tracking
 
-Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to leverage historical error data to inform recovery strategies, ensuring a nuanced approach to handling errors based on past failures.
+Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to use historical error data to inform recovery strategies, making sure a nuanced approach to handling errors based on past failures.
 
 The errors_tracker API in Karafka's ErrorsTracker class is designed to accumulate and manage a history of errors during the `#consume` method execution. It tracks up to the last 100 errors to prevent memory leaks from endless error loops.
 
@@ -272,7 +272,7 @@ end
 
 ### Error Tracking with Virtual Partitions
 
-When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it ensures that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
+When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it makes sure that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
 
 ## Accessing Error Context in DLQ Message Enhancement
 
@@ -323,11 +323,11 @@ This approach enables you to:
 
 !!! tip "Header Value Type Conversion"
 
-    Remember that Kafka header values are always strings, so ensure any non-string values are converted appropriately when adding them to headers.
+    Remember that Kafka header values are always strings, so make sure any non-string values are converted appropriately when adding them to headers.
 
 ## Custom Context-Aware Recovery Strategies
 
-Karafka allows for implementing custom DLQ handling and recovery strategies, leveraging the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
+Karafka allows for implementing custom DLQ handling and recovery strategies, using the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
 
 This method offers significant benefits, including more efficient processing, reduced noise from non-recoverable errors, and enhanced opportunity for successful message recovery, leading to a more robust and error-tolerant system.
 

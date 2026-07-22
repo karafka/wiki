@@ -8,11 +8,11 @@ Please refer to the [Swarm](Infrastructure-Swarm-Multi-Process) documentation fo
 
 ## Enhanced Liveness Listener
 
-The Pro Liveness Listener is a significant enhancement in Karafka Pro, designed to ensure the highest system health and efficiency level. This feature goes beyond traditional liveness checks by allowing developers to specify the maximum memory allowed for each node and the criteria for processing and polling liveness. The supervisor will gracefully restart the misbehaving swarm node if a node exceeds memory limits or fails to meet processing or polling criteria.
+The Pro Liveness Listener is a significant enhancement in Karafka Pro, designed to make sure the highest system health and efficiency level. This feature goes beyond traditional liveness checks by allowing developers to specify the maximum memory allowed for each node and the criteria for processing and polling liveness. The supervisor will gracefully restart the misbehaving swarm node if a node exceeds memory limits or fails to meet processing or polling criteria.
 
 This listener provides following benefits:
 
-- **System Stability**: Memory leaks or prolonged processing times can lead to system instability or degradation. The Pro Liveness Listener proactively addresses these issues, ensuring nodes operate within defined parameters.
+- **System Stability**: Memory leaks or prolonged processing times can lead to system instability or degradation. The Pro Liveness Listener proactively addresses these issues, making sure nodes operate within defined parameters.
 
 - **Efficient Resource Utilization**: By monitoring and restarting nodes that exceed memory usage or fail to process or poll efficiently, the system conserves resources and maintains optimal performance.
 
@@ -108,19 +108,19 @@ The listener reports to the supervisor the following failure statuses for monito
 
 ## Node Assignments
 
-The Node Assignments feature in Karafka's Enhanced Swarm / Multi-Process Mode addresses the need for more granular control over topic processing across different nodes within the swarm. By default, Karafka Swarm assigns all topics to all nodes uniformly. This means each node attempts to connect to and subscribe to the same set of topics. This approach ensures that the processing load is distributed across all available nodes, providing a balanced workload under typical conditions. However, this can lead to inefficiencies in specific scenarios.
+The Node Assignments feature in Karafka's Enhanced Swarm / Multi-Process Mode addresses the need for more granular control over topic processing across different nodes within the swarm. By default, Karafka Swarm assigns all topics to all nodes uniformly. This means each node attempts to connect to and subscribe to the same set of topics. This approach makes sure that the processing load is distributed across all available nodes, providing a balanced workload under typical conditions. However, this can lead to inefficiencies in specific scenarios.
 
 Granular control over node assignments becomes crucial when topics have varying loads, message volumes, or numbers of partitions.
 
 Allocating specific topics to specific nodes allows for more efficient resource utilization and can significantly enhance performance by:
 
-- **Aligning Resource Allocation**: Directing high-volume topics to nodes with more processing power or assigning them exclusively can prevent bottlenecks and ensure smoother processing across the swarm.
+- **Aligning Resource Allocation**: Directing high-volume topics to nodes with more processing power or assigning them exclusively can prevent bottlenecks and make sure smoother processing across the swarm.
 
 - **Optimizing for Partitions**: Topics with different numbers of partitions may benefit from being processed by a specific subset of nodes, enabling more effective load balancing and reducing cross-node communication overhead.
 
-- **Improving Performance**: Tailoring node assignments can help optimize the processing time by ensuring that nodes are not overwhelmed by attempting to subscribe and process messages from topics that are too resource-intensive for their capacity.
+- **Improving Performance**: Tailoring node assignments can help optimize the processing time by making sure that nodes are not overwhelmed by attempting to subscribe and process messages from topics that are too resource-intensive for their capacity.
 
-In Karafka, configuring node assignments is straightforward within the routing setup, utilizing the `#swarm` method to direct topic subscriptions to specified nodes. Nodes are indexed starting at `0`, allowing for individual or ranges of nodes to be targeted. Without explicit assignments, topics default to being accessible by all nodes. Below is a configuration example to demonstrate node assignment usage:
+In Karafka, configuring node assignments is straightforward within the routing setup, using the `#swarm` method to direct topic subscriptions to specified nodes. Nodes are indexed starting at `0`, allowing for individual or ranges of nodes to be targeted. Without explicit assignments, topics default to being accessible by all nodes. Below is a configuration example to demonstrate node assignment usage:
 
 ```ruby
 class KarafkaApp < Karafka::App

@@ -1,8 +1,8 @@
-When working with Karafka and Kafka, it's essential to understand the nuances between development (`development` and `test` environments) and production. Awareness of these differences ensures a smoother work experience and optimal system performance. Here's a detailed breakdown of some of the crucial considerations to keep in mind:
+When working with Karafka and Kafka, it's essential to understand the nuances between development (`development` and `test` environments) and production. Awareness of these differences makes sure a smoother work experience and optimal system performance. Here's a detailed breakdown of some of the crucial considerations to keep in mind:
 
 ## Avoid Using Karafka's Reload Mode in Production
 
-While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always ensure that this mode is disabled before deploying to production.
+While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always make sure that this mode is disabled before deploying to production.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -19,7 +19,7 @@ end
 
 ## Pre-create Necessary Topics in the Production Kafka Cluster
 
-Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so ensures no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](Infrastructure-Declarative-Topics) functionality for that.
+Kafka topics act as communication channels for your messages. It is best to create all the required topics in your production Kafka cluster upfront. Doing so makes sure no interruptions or issues when your application starts sending or receiving messages and that your topics have the desired number of partitions. You can use [Declarative Topics](Infrastructure-Declarative-Topics) functionality for that.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -41,7 +41,7 @@ end
 
 ## Disable Automatic Topic Creation in Production
 
-When set to true, the `allow.auto.create.topics` setting enables Kafka to create topics automatically. However, it's recommended not to rely on this feature in a production environment. It's more controlled and predictable to manually set up your topics, ensuring they are configured correctly for your production needs.
+When set to true, the `allow.auto.create.topics` setting enables Kafka to create topics automatically. However, it's recommended not to rely on this feature in a production environment. It's more controlled and predictable to manually set up your topics, making sure they are configured correctly for your production needs.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -60,7 +60,7 @@ As you develop and test, you may often modify your list of Kafka topics and thei
 
 ## Be Cautious with the Default Single Partition for Auto-created Topics
 
-Topics that are automatically created because of `allow.auto.create.topics` are assigned just one partition by default. While this may suffice for development purposes, production environments often require multiple partitions for better performance and scalability. Ensure you configure your topics' appropriate number of partitions before deploying to production.
+Topics that are automatically created because of `allow.auto.create.topics` are assigned just one partition by default. While this may suffice for development purposes, production environments often require multiple partitions for better performance and scalability. Make sure you configure your topics' appropriate number of partitions before deploying to production.
 
 ## Consider the Impact of Rolling Deployments on Rebalances
 
@@ -95,7 +95,7 @@ end
 
 ## Manual Topic Creation and Consumer Starting Sequence
 
-Creating a topic manually or by sending the first message and then initiating a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
+Creating a topic manually or by sending the first message and then starting a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Making sure that the topic exists before starting a consumer reduces potential delays.
 
 ## Adjust Topic Metadata Refresh Interval for Production
 
@@ -148,9 +148,9 @@ The `compression.codec` parameter in Kafka's configuration allows you to specify
 
 There are several reasons why you should configure compression for your production environments and why it needs to be set on both Kafka and Karafka levels:
 
-- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth utilized. Remember that compression **needs** to be set for both Kafka topics and Karafka to ensure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
+- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth used. Remember that compression **needs** to be set for both Kafka topics and Karafka to make sure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
 
-- **Consistency**: Keeping the compression setting consistent between producers, consumers, and brokers ensures the data is uniformly compressed throughout its lifecycle. This minimizes issues related to unsupported compression formats or mismatched compression expectations.
+- **Consistency**: Keeping the compression setting consistent between producers, consumers, and brokers makes sure the data is uniformly compressed throughout its lifecycle. This minimizes issues related to unsupported compression formats or mismatched compression expectations.
 
 - **Performance & Storage**: Compressed data is typically smaller, leading to better storage efficiency on the broker side and quicker transmission times.
 
@@ -179,11 +179,11 @@ When you switch between classic protocol assignment strategies, be aware that:
 
 1. **Potential for Uneven Distribution**: Some strategies might result in specific consumers being assigned a larger share of partitions, leading to uneven work distribution.
 
-1. **Compatibility Concerns**: Ensure the chosen strategy is compatible with your Kafka broker version. Some strategies might be exclusive to specific Kafka versions.
+1. **Compatibility Concerns**: Make sure the chosen strategy is compatible with your Kafka broker version. Some strategies might be exclusive to specific Kafka versions.
 
-To ensure a smooth transition when adjusting the classic protocol assignment strategy, follow these steps:
+To make sure a smooth transition when adjusting the classic protocol assignment strategy, follow these steps:
 
-1. **Backup Configuration**: Initiate the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
+1. **Backup Configuration**: Start the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
 
 1. **Test in a Non-Production Environment**: Before rolling out changes in a live setting, validate the new strategy in a controlled, non-production environment.
 
@@ -219,15 +219,15 @@ When Kafka and the consumer drift apart in time, it doesn't just result in the o
 
 ### How to Prevent Time Drift
 
-1. **Ensure NTP is Installed**: Always ensure that NTP is installed on all machines running Kafka brokers and consumer applications.
+1. **Make sure NTP is Installed**: Always make sure that NTP is installed on all machines running Kafka brokers and consumer applications.
 
-2. **Monitor NTP Status**: Regularly monitor the NTP status to ensure it's running and is in sync with its time sources.
+2. **Monitor NTP Status**: Regularly monitor the NTP status to make sure it's running and is in sync with its time sources.
 
 3. **Configure Alerts**: Set alerts for any significant time drift between the servers. This can provide early warnings before time drift becomes a problem.
 
-4. **Synchronize Frequently**: Reduce the time between synchronization intervals to ensure that even minor drifts are corrected promptly.
+4. **Synchronize Frequently**: Reduce the time between synchronization intervals to make sure that even minor drifts are corrected promptly.
 
-In conclusion, while Kafka is a powerful tool, it's essential to remember the importance of time synchronization to ensure the reliable delivery and consumption of messages. Regularly monitoring and ensuring the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
+In conclusion, while Kafka is a powerful tool, it's essential to remember the importance of time synchronization to make sure the reliable delivery and consumption of messages. Regularly monitoring and making sure the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
 
 ### Impact on Karafka
 
@@ -259,13 +259,13 @@ In Karafka it has specific implications:
 
 - **Delayed Writing to Newly Created Topics**: In Karafka, it's advisable not to start producing messages for a topic immediately after its creation using the Karafka Admin API. Due to Kafka's asynchronous nature, the topic might not be fully recognized across the cluster, leading to message delivery issues. Messages sent to these "in-limbo" topics get queued and might fail if the topic becomes unavailable within the propagation time.
 
-- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing sufficient time for topics to stabilize within the Kafka ecosystem before initiating message production.
+- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing enough time for topics to stabilize within the Kafka ecosystem before starting message production.
 
 - **Handling Topic Resets**: Resetting topics in Karafka, especially in a production environment, should be approached with caution. Resetting a topic (deleting and recreating it) may lead to immediate marking of the topic as non-existent, as the propagation time does not apply in this scenario. This can cause significant disruptions in message flow and processing. We **do not** recommend removing and recreating topics on running systems. Always stop your producers and consumers before attempting to do so.
 
 - **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it's generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
 
-In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a robust and reliable streaming application.
+In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to make sure a robust and reliable streaming application.
 
 ## `zstd` Support Issues on macOS
 
@@ -279,7 +279,7 @@ Unsupported value "zstd" for configuration property "compression.codec": libzstd
 
 This issue occurs because of karafka-rdkafka not being linked against `libzstd`, even if `brew install zstd` was previously used to provide `zstd` support.
 
-To resolve this issue, ensure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
+To resolve this issue, make sure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
 
 ```shell
 brew install pkg-config
@@ -301,7 +301,7 @@ You can find an extensive explanation of Karafka ecosystem components forking su
 
 ## Be Aware of WaterDrop Default Producer Middleware Modifications
 
-When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also utilizes this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
+When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also uses this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This makes sure alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
 
 For example, when applying such a middleware:
 
@@ -415,17 +415,17 @@ end
 
 ## Configure `shutdown_timeout` for Cooperative-Sticky Strategy in Large Deployments
 
-When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This ensures that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
+When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This makes sure that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
 
 ### Why Set a High `shutdown_timeout`?
 
-The `shutdown_timeout` configuration defines the maximum time consumers can shut down gracefully. In larger deployments with many partitions, rebalances can take longer due to the complexity of ensuring minimal partition movement and maintaining a balanced load. A higher `shutdown_timeout` helps in:
+The `shutdown_timeout` configuration defines the maximum time consumers can shut down gracefully. In larger deployments with many partitions, rebalances can take longer due to the complexity of making sure minimal partition movement and maintaining a balanced load. A higher `shutdown_timeout` helps in:
 
-- **Ensuring Graceful Shutdowns**: Allows consumers sufficient time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
+- **Making sure Graceful Shutdowns**: Allows consumers enough time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
 
 - **Reducing Rebalance Interruptions**: Prevents premature shutdowns during rebalances, which can cause additional rebalances and increase system instability.
 
-- **Maintaining Consumer Health**: Gives consumers more time to handle their state transitions, ensuring a smoother rebalance process.
+- **Maintaining Consumer Health**: Gives consumers more time to handle their state transitions, making sure a smoother rebalance process.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -446,7 +446,7 @@ The appropriate value for shutdown_timeout depends on your specific deployment c
 
 - **Workload Characteristics**: If your consumers process messages quickly, a lower timeout might suffice. For slower processing, increase the timeout accordingly.
 
-We recommend setting the `shutdown_timeout` to at least 30 seconds. A timeout of at least 90 seconds is advisable for larger deployments to ensure a smooth and stable rebalance process.
+We recommend setting the `shutdown_timeout` to at least 30 seconds. A timeout of at least 90 seconds is advisable for larger deployments to make sure a smooth and stable rebalance process.
 
 ### Static Group Membership Usage
 
@@ -479,7 +479,7 @@ end
 
     We do not recommend using static group membership with Multiplexing operating in [Dynamic mode](Pro-Consumer-Groups-Multiplexing#dynamic-multiplexing). Multiplexing in Dynamic mode involves frequent changes in group composition, which conflicts with the nature of static group membership that relies on stable consumer identities. This can lead to increased complexity and more prolonged assignment lags.
 
-    However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and ensures a more stable and efficient operation.
+    However, Multiplexing can be used without issues if Dynamic mode is not enabled. In this configuration, consumers maintain a more predictable group composition, which aligns well with the principles of static group membership and makes sure a more stable and efficient operation.
 
 ## See Also
 

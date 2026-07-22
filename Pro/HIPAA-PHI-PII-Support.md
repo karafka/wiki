@@ -6,7 +6,7 @@
 
 ## Overview
 
-Organizations that handle sensitive information, such as Protected Health Information (PHI) and Personally Identifiable Information (PII), must comply with stringent regulatory frameworks like the Health Insurance Portability and Accountability Act (HIPAA). These regulations require rigorous data security, privacy practices, and access controls to protect sensitive information from unauthorized access and misuse. Ensuring compliance in software environments that handle PHI and PII involves safeguarding data and managing how software systems interact with processes and present that data.
+Organizations that handle sensitive information, such as Protected Health Information (PHI) and Personally Identifiable Information (PII), must comply with stringent regulatory frameworks like the Health Insurance Portability and Accountability Act (HIPAA). These regulations require rigorous data security, privacy practices, and access controls to protect sensitive information from unauthorized access and misuse. Making sure compliance in software environments that handle PHI and PII involves safeguarding data and managing how software systems interact with processes and present that data.
 
 Karafka and Karafka Web UI can be adapted for use in HIPAA, PHI, and PII-compliant environments. This document outlines how Karafka and Karafka Web UI can meet the stringent requirements of such regulatory frameworks and what features make them particularly suited for these high-compliance environments.
 
@@ -14,7 +14,7 @@ Karafka and Karafka Web UI can be adapted for use in HIPAA, PHI, and PII-complia
 
 ### Understanding HIPAA Compliance
 
-HIPAA requires organizations handling PHI to implement administrative, physical, and technical safeguards to ensure sensitive information's confidentiality, integrity, and availability. These safeguards include controlling access to data, encrypting sensitive information both in transit and at rest, auditing access, and providing data masking or anonymization mechanisms.
+HIPAA requires organizations handling PHI to implement administrative, physical, and technical safeguards to make sure sensitive information's confidentiality, integrity, and availability. These safeguards include controlling access to data, encrypting sensitive information both in transit and at rest, auditing access, and providing data masking or anonymization mechanisms.
 
 While HIPAA does not prescribe specific software configurations, it demands that all systems and processes that handle PHI meet particular privacy and security standards. This means any tool used in a HIPAA-compliant environment must support robust data encryption, fine-grained access controls, audit logging, and data minimization.
 
@@ -24,13 +24,13 @@ PHI is a specific subset of PII, which encompasses a broader range of sensitive 
 
 ## Karafka and HIPAA/PHI/PII Compliance: Core Capabilities
 
-Karafka and Karafka Web UI come equipped with a set of features designed to facilitate compliance with the privacy and security requirements of HIPAA, PHI, and PII regulations. These capabilities ensure that sensitive information is adequately protected at every stage of its lifecycle, from ingestion and processing to presentation and logging.
+Karafka and Karafka Web UI come equipped with a set of features designed to facilitate compliance with the privacy and security requirements of HIPAA, PHI, and PII regulations. These capabilities make sure that sensitive information is adequately protected at every stage of its lifecycle, from ingestion and processing to presentation and logging.
 
 ### 1. Data Encryption
 
 #### At-Rest Data Encryption
 
-Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
+Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), making sure that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -47,7 +47,7 @@ end
 
 #### In-Transit Encryption
 
-Data in transit must be protected as it moves between components in a distributed system. Karafka supports secure communication using Transport Layer Security (TLS/SSL), which encrypts data while it is transmitted between clients, brokers, and the Web UI. This protection is essential to meet HIPAA's technical safeguard requirements, ensuring that PHI or PII is not exposed to unauthorized interception during network communication.
+Data in transit must be protected as it moves between components in a distributed system. Karafka supports secure communication using Transport Layer Security (TLS/SSL), which encrypts data while it is transmitted between clients, brokers, and the Web UI. This protection is essential to meet HIPAA's technical safeguard requirements, making sure that PHI or PII is not exposed to unauthorized interception during network communication.
 
 ### 2. Access Control and Authentication
 
@@ -73,9 +73,9 @@ You can learn more about the Polices [here](Pro-Web-UI-Policies).
 
 #### Integration with Authentication Providers
 
-Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By leveraging this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
+Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By using this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
 
-Additionally, the provided code APIs enable you to define custom access policies, ensuring that only authorized users can interact with specific components of the Web UI.
+Additionally, the provided code APIs enable you to define custom access policies, making sure that only authorized users can interact with specific components of the Web UI.
 
 ### 3. Granular Data Presentation
 
@@ -89,7 +89,7 @@ You can learn more about the Partial Payload Sanitization [here](Pro-Web-UI-Poli
 
 ### 4. Logging and Auditing
 
-Since Karafka Web UI is built as a Rack application, it can leverage Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
+Since Karafka Web UI is built as a Rack application, it can use Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
 
 - Access to specific pages and data views
 - Administrative changes, such as configuration updates or modifications to access controls
@@ -105,7 +105,7 @@ Karafka Enterprise operates fully offline, independently of the public Karafka g
 
 #### Private Registries and Dependency Management
 
-Although HIPAA, PHI, and PII regulations do not explicitly require the use of private registries, controlling software sources is a best practice to minimize risks related to supply chain vulnerabilities. With Karafka Enterprise, you can manage your software dependencies using private registries, ensuring only verified and trusted components are used in their environments. This control helps maintain compliance by preventing the introduction of unvetted software that could compromise sensitive information.
+Although HIPAA, PHI, and PII regulations do not explicitly require the use of private registries, controlling software sources is a best practice to minimize risks related to supply chain vulnerabilities. With Karafka Enterprise, you can manage your software dependencies using private registries, making sure only verified and trusted components are used in their environments. This control helps maintain compliance by preventing the introduction of unvetted software that could compromise sensitive information.
 
 ## Summary
 

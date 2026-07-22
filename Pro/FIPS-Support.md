@@ -4,11 +4,11 @@
 
     For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
-Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secure operations in environments that require adherence to Federal Information Processing Standards. This documentation outlines how Karafka supports FIPS requirements.
+Karafka aligns with FIPS 140-2 cryptographic module expectations to make sure secure operations in environments that require adherence to Federal Information Processing Standards. This documentation outlines how Karafka supports FIPS requirements.
 
 !!! info "No Warranty"
 
-    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, please contact us so we can enhance the codebase accordingly.
+    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to make sure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, please contact us so we can enhance the codebase accordingly.
 
 !!! warning "OSS Version Limitations"
 
@@ -31,7 +31,7 @@ Karafka supports FIPS 140-2 Level 3 requirements in specific configurations, as 
 
 Karafka achieves FIPS compatibility through:
 
-- Use of FIPS-validated cryptographic modules: Karafka leverages librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
+- Use of FIPS-validated cryptographic modules: Karafka uses librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
 - Secure communications: All network traffic can be encrypted using TLS/SSL with FIPS-approved algorithms
 - In-flight encryption: Data transmitted between Karafka clients and Kafka brokers uses FIPS-compatible encryption algorithms
 - At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, AES for encryption)
@@ -47,11 +47,11 @@ Karafka exclusively employs FIPS-approved cryptographic algorithms:
 - Asymmetric Encryption: RSA with key sizes ≥ 2048 bits
 - Random Number Generation: Uses Ruby's OpenSSL FIPS-compatible random number generators when Ruby is running in FIPS mode
 
-These algorithms are implemented through FIPS-validated cryptographic modules, ensuring all cryptographic operations meet federal standards.
+These algorithms are implemented through FIPS-validated cryptographic modules, making sure all cryptographic operations meet federal standards.
 
 ## Messages At Rest Encryption
 
-Karafka Pro provides transparent encryption of message payloads, ensuring sensitive data at rest in Kafka cannot be accessed by unauthorized parties. This is crucial for meeting FIPS requirements. You can read more about the at-rest encryption [here](Pro-Messages-At-Rest-Encryption).
+Karafka Pro provides transparent encryption of message payloads, making sure sensitive data at rest in Kafka cannot be accessed by unauthorized parties. This is crucial for meeting FIPS requirements. You can read more about the at-rest encryption [here](Pro-Messages-At-Rest-Encryption).
 
 ### Custom Headers Deserializer and Encryption
 
@@ -66,7 +66,7 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
+All dependencies have been reviewed for FIPS compatibility about cryptographic hashing algorithms to make sure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
 
 For more comprehensive information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
 
@@ -89,8 +89,8 @@ When operating in FIPS mode, the following limitations apply:
 
 ## Example Use Cases
 
-- **Government Agencies**: Agencies handling sensitive but unclassified information need to ensure all data processing systems meet FIPS requirements.
-- **Healthcare Systems**: Medical institutions processing patient data that must adhere to both HIPAA and FIPS (for government contracts) can use Karafka to ensure data security.
+- **Government Agencies**: Agencies handling sensitive but unclassified information need to make sure all data processing systems meet FIPS requirements.
+- **Healthcare Systems**: Medical institutions processing patient data that must adhere to both HIPAA and FIPS (for government contracts) can use Karafka to make sure data security.
 - **Financial Services**: Banks and financial institutions working with government entities need FIPS-compatible processing for financial transactions.
 - **Defense Contractors**: Companies working with the Department of Defense can use Karafka's FIPS capabilities to process sensitive information securely.
 - **Critical Infrastructure**: Systems supporting utilities and critical infrastructure that need to meet federal security standards.

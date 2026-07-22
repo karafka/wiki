@@ -2,7 +2,7 @@ This page lists the current maintenance status of the various Karafka versions.
 
 ## Versioning Strategy
 
-Karafka and its components utilize a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here's how we structure our versioning:
+Karafka and its components use a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here's how we structure our versioning:
 
 - **Major Version Upgrades**: The first digit in our version number represents significant rewrites or major changes in the architecture of Karafka gems. For example, transitioning from `0.x` to `1.0` or from `1.x` to `2.0` signifies transformative changes that introduce new concepts or substantially modify the system's design.
 
@@ -10,7 +10,7 @@ Karafka and its components utilize a versioning strategy that does not strictly 
 
 - **Patch Releases**: The third digit is reserved for patch releases, focusing on bug fixes and minor, risk-free enhancements. These updates are intended to improve the stability and performance of the software without impacting the existing user base's operations.
 
-This versioning system is designed to provide clarity and predictability, ensuring developers can understand the impact of upgrading Karafka and its components. By informing you about the nature of each release, we aim to help you make informed decisions regarding when and how to update your versions.
+This versioning system is designed to provide clarity and predictability, making sure developers can understand the impact of upgrading Karafka and its components. By informing you about the nature of each release, we aim to help you make informed decisions about when and how to update your versions.
 
 ## Karafka Components Support
 
@@ -98,13 +98,13 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 
 Karafka and its components are designed to maintain compatibility with all Kafka versions that meet the following conditions:
 
-- **Kafka Versions**: Karafka supports all Kafka versions that have yet to reach their End of Life (EOL). This ensures that users can confidently use Karafka with Kafka versions that are actively maintained and receive necessary security and bug fixes.
+- **Kafka Versions**: Karafka supports all Kafka versions that have yet to reach their End of Life (EOL). This makes sure that users can confidently use Karafka with Kafka versions that are actively maintained and receive necessary security and bug fixes.
 
 - **librdkafka Compatibility**: The underlying broker support for Karafka is anchored by the librdkafka library. As of now, librdkafka supports Kafka brokers in versions `1.0` or higher.
 
-- **Message Format**: Karafka mandates the use of Message Format v2 or later. This ensures efficient message handling and leverages the capabilities introduced in this format.
+- **Message Format**: Karafka mandates the use of Message Format v2 or later. This makes sure efficient message handling and uses the capabilities introduced in this format.
 
-By adhering to these compatibility conditions, Karafka ensures its users receive a stable, reliable, and up-to-date experience when integrating with Kafka ecosystems.
+By adhering to these compatibility conditions, Karafka makes sure its users receive a stable, reliable, and up-to-date experience when integrating with Kafka ecosystems.
 
 ### Kafka Ecosystem Coverage
 

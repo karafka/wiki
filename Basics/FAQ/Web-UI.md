@@ -29,7 +29,7 @@ If some of your Karafka consumer subscriptions are not visible in the Karafka We
 
 - You are using Karafka Web older than the `0.4.1` version. Older Karafka Web UI versions used to only shows subscriptions that have at least one message processed.
 - The consumer group that the subscription belongs to is not active. Karafka only displays active consumer groups in the Web UI. Make - sure that your consumer group is up and running.
-The subscription is not properly configured. Ensure that your subscription is appropriately defined, has the correct topic, and is active.
+The subscription is not properly configured. Make sure that your subscription is appropriately defined, has the correct topic, and is active.
 - There is a delay in the Karafka Web UI updating its data. Karafka Web UI may take a few seconds to update its data, especially if many subscriptions or messages are being processed.
 
 If none of these reasons explain why your subscriptions are not visible in the Karafka Web UI, you may need to investigate further and check your Karafka logs for any errors or warnings.
@@ -38,7 +38,7 @@ If none of these reasons explain why your subscriptions are not visible in the K
 
 While it is possible to create the necessary topics manually using the Kafka command-line tools, it is generally recommended to use the `bundle exec karafka-web install` command instead.
 
-This is because the `karafka-web install` command ensures that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
+This is because the `karafka-web install` command makes sure that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
 
 Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
@@ -48,7 +48,7 @@ If you need to create them manually, please include the settings listed [here](W
 
 When a new consumer group is introduced, Confluent reports things with a delay to Datadog. This is because the new consumer group needs to be registered with Confluent before it can start reporting metrics to Datadog.
 
-To ensure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](Infrastructure-Monitoring-and-Logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and ensure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
+To make sure a smoother monitoring experience, we recommend enabling [Karafka Datadog integration](Infrastructure-Monitoring-and-Logging#datadog-and-statsd-integration). It will allow you to easily monitor your Karafka operations and make sure everything is running smoothly. An out-of-the-box dashboard can be imported to Datadog for overseeing Karafka operations. This dashboard provides detailed metrics and insights into your Karafka operations, making identifying and resolving issues easier.
 
 ## Can I password-protect Karafka Web UI?
 
@@ -94,17 +94,17 @@ it typically indicates that the Karafka Web UI is trying to execute the `ps` com
 
 - **Restricted Permissions**: It could be a permission issue. The process/user running the Web UI may not have the necessary permissions to execute the `ps` command.
 
-Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
+Please make sure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
 
 ## Why do Karafka Web UI topics contain binary/Unicode data instead of text?
 
 If you've checked Karafka Web UI topics in an alternative Kafka UI, you may notice that topics seem to contain binary/unicode data rather than plain text. It's not an oversight or an error. This design choice is rooted in our data management and transmission efficiency approach.
 
-- **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, ensuring that Kafka remains efficient and responsive.
+- **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, making sure that Kafka remains efficient and responsive.
 
 - **Independent Compression without External Dependencies**: We understand the significance of maintaining a lightweight, hassle-free setup for our users. We chose Zlib for data compression - it comes bundled with every Ruby version. This means there's no need to rely on third-party libraries or go through configuration changes to your Kafka cluster to use Karafka Web UI.
 
-By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
+By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby makes sure that Karafka remains user-friendly without compromising data transmission efficiency.
 
 While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it's a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
 
@@ -114,23 +114,23 @@ While the binary/Unicode representation in the Karafka Web UI topics might seem 
 
 ## Does Karafka plan to submit metrics via a supported Datadog integration, ensuring the metrics aren't considered custom metrics?
 
-**No**, Karafka does not have plans to submit metrics through a dedicated Datadog integration that ensures these metrics are classified as non-custom. While Karafka has an integration with Datadog, the metrics from this integration will be visible as custom metrics.
+**No**, Karafka does not have plans to submit metrics through a dedicated Datadog integration that makes sure these metrics are classified as non-custom. While Karafka has an integration with Datadog, the metrics from this integration will be visible as custom metrics.
 
 The reason for this approach is grounded in practicality and long-term maintainability. As with any software, weighing the benefits against the maintenance cost and the commitment involved is essential. While it might seem feasible to align certain features or integrations with the current framework changes, it could introduce challenges if the release cycle or external dependencies were to change.
 
 To put it in perspective:
 
-- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works seamlessly with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
+- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to making sure it works seamlessly with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
 
-- **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in ensuring smooth integration. This introduces an external dependency that's out of Karafka's direct control.
+- **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in making sure smooth integration. This introduces an external dependency that's out of Karafka's direct control.
 
 - **Ecosystem Benefits**: While such integrations can offer added value, assessing if their benefits are substantial enough to justify the effort and potential challenges is vital. In this case, the perceived benefit to the ecosystem seems insignificant.
 
-In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it's essential to strike a balance that ensures the software remains efficient, maintainable, and free from unnecessary complexities.
+In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it's essential to strike a balance that makes sure the software remains efficient, maintainable, and free from unnecessary complexities.
 
 ## The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?
 
-In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind.
+In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always make sure you're reading the metrics with the correct scale in mind.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
@@ -138,7 +138,7 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 
 ## What is the purpose of the `karafka_consumers_reports` topic?
 
-The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
+The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to use Kafka as its primary source of information.
 
 ## Why does the `karafka_consumers_commands` topic generate constant network traffic?
 
@@ -166,17 +166,17 @@ No.
 
 If the "Dead" tab in your Karafka Web UI is empty, especially within a multi-app setup, there are two primary reasons to consider based on the DLQ routing awareness section:
 
-1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
+1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Make sure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
 
 1. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
 
 To troubleshoot and resolve this issue, you should:
 
-- **Verify DLQ Topic Configuration**: Double-check your `karafka.rb` file to ensure that DLQ topics are correctly referenced within the routing configuration. Ensure the topic names match the expected DLQ topics in your Kafka setup.
+- **Verify DLQ Topic Configuration**: Double-check your `karafka.rb` file to make sure that DLQ topics are correctly referenced within the routing configuration. Make sure the topic names match the expected DLQ topics in your Kafka setup.
 
-- **Check Kafka for DLQ Topic Existence**: Ensure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
+- **Check Kafka for DLQ Topic Existence**: Make sure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
 
-- **Review Topic Naming Consistency**: Ensure consistency in topic naming across your Kafka configuration and Karafka setup. Any discrepancy could lead to failed message routing.
+- **Review Topic Naming Consistency**: Make sure consistency in topic naming across your Kafka configuration and Karafka setup. Any discrepancy could lead to failed message routing.
 
 ## Why are message and batch numbers increasing even though I haven't sent any messages?
 
@@ -190,7 +190,7 @@ To view the actual payload of messages sent from producer to consumer, you can u
 
 The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It's not critical, but it needs to be set.
 
-Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Ensure that the secret is consistent across all deployment instances, with one value per environment.
+Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Make sure that the secret is consistent across all deployment instances, with one value per environment.
 
 ## Can we change the name of Karafka's internal topic for the Web UI?
 
@@ -281,7 +281,7 @@ This approach allows you to maintain detailed logging for your application consu
 
 ## What is the serialization format for Karafka Web UI internal topics?
 
-Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach leverages Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
+Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach uses Ruby's built-in compression capabilities without requiring additional third-party gems, making sure compatibility and simplicity for all users.
 
 ## What is the expected message throughput for Karafka Web UI internal topics?
 
@@ -312,5 +312,5 @@ You can also look at the lag value for the partition, which represents the diffe
 **Important Considerations**
 
 - **Committed offset does not always equal processed**: By default, Karafka commits offsets after successful processing. However, if your application uses manual offset management or has custom commit strategies, a committed offset may not perfectly reflect processing status.
-- **Lag is per-partition**: Kafka topics can have multiple partitions. Ensure you are checking the lag for the correct partition where your message resides.
+- **Lag is per-partition**: Kafka topics can have multiple partitions. Make sure you are checking the lag for the correct partition where your message resides.
 - **Lag updates are not instant**: The Web UI refreshes its data periodically (every few seconds), so there may be a brief delay before the latest committed offset is reflected in the UI.

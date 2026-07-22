@@ -12,7 +12,7 @@ The Karafka Admin Configs API provides tools for managing configuration settings
 
 ## What are Kafka Configurations?
 
-Kafka configurations are key-value pairs that define the behavior of brokers and topics. Managing these configurations properly is essential for optimizing performance, ensuring security, and maintaining reliability in your Kafka environment.
+Kafka configurations are key-value pairs that define the behavior of brokers and topics. Managing these configurations properly is essential for optimizing performance, making sure security, and maintaining reliability in your Kafka environment.
 
 ## Types
 
@@ -129,7 +129,7 @@ Karafka::Admin::Configs.alter(resource)
 
 ## Example Use Cases
 
-- **Configuration Audits**: Retrieve configurations to review and ensure compliance with operational standards.
+- **Configuration Audits**: Retrieve configurations to review and make sure compliance with operational standards.
 
 - **Dynamic Configuration Tuning**: Adjust topic or broker configurations in response to changes in usage patterns or operational requirements.
 

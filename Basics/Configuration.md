@@ -40,7 +40,7 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 
 **Prerequisites**
 
-1. Initiate the Karafka application setup
+1. Start the Karafka application setup
 1. Verify if the external components requiring configuration are available
 
 **Procedure**
@@ -114,7 +114,7 @@ end
 
 !!! note "Note"
 
-    In order to use `zstd`, you need to install `libzstd-dev`:
+    To use `zstd`, you need to install `libzstd-dev`:
 
     ```shell
     apt-get install -y libzstd-dev
@@ -174,7 +174,7 @@ To put it in perspective, these configurations can be likened to those in a data
 
 - **Table Configurations**: Similar to table-specific settings like storage engine choices or per-table cache settings in a database.
 
-These infrastructural settings are crucial for managing Kafka more efficiently. They ensure that the Kafka cluster is optimized for both performance and durability according to the needs of the applications it supports.
+These infrastructural settings are crucial for managing Kafka more efficiently. They make sure that the Kafka cluster is optimized for both performance and durability according to the needs of the applications it supports.
 
 !!! tip "Managing Topics Configuration with Declarative Topics API"
 

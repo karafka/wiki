@@ -20,7 +20,7 @@ Kafka brokers themselves also manage connections through their own connection re
 
 - **Addressing the leader connection limitation**: Unlike  native idle connection handling in librdkafka, WaterDrop can close all connections, including the persistent leader connection.
 - **Producer-level control**: Waterdrop operates at the producer instance level rather than individual broker connections.
-- **Complete resource cleanup**: Waterdrop ensures full connection pool cleanup during extended idle periods.
+- **Complete resource cleanup**: Waterdrop makes sure full connection pool cleanup during extended idle periods.
 
 ## Automatic Idle Producer Disconnection
 
@@ -186,7 +186,7 @@ Set `idle_disconnect_timeout` higher than the client-side `connections.max.idle.
 
 The most important external constraint is the idle timeout of anything between the client and the brokers. Kafka brokers have their own server-side `connections.max.idle.ms` that controls when they close idle client connections with a graceful TCP FIN (the broker-side default on MSK is 600,000ms). librdkafka detects a FIN promptly and retries in-flight messages, so a clean broker reap is typically handled transparently. More dangerous are silent-drop sources: network intermediaries such as AWS NLB, NAT gateways, and firewalls, and - on EC2 Nitro v6 instances - the instance's own ENI. These drop TCP state after their idle timeout (AWS NLB default and the Nitro v6 ENI default are both 350 seconds) without sending a FIN. librdkafka believes the socket is still live, and the next ProduceRequest stalls until the message's delivery budget expires.
 
-Setting `idle_disconnect_timeout` below these thresholds ensures the producer recycles connections proactively, before either the broker or network gear can reach their idle timeouts:
+Setting `idle_disconnect_timeout` below these thresholds makes sure the producer recycles connections proactively, before either the broker or network gear can reach their idle timeouts:
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|

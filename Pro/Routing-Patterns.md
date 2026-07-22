@@ -4,7 +4,7 @@ Karafka's Routing Patterns is a powerful feature that offers flexibility in rout
 
 Routing Patterns is not just about using regex patterns. It's about the marriage of regexp and Karafka's topic routing system.
 
-When you define a route using a regexp pattern, Karafka monitors the Kafka topics. As soon as a topic matching the pattern emerges, Karafka takes the initiative. Without waiting for manual interventions or service restarts, it dynamically adds the topic to the routing tree, initiates a consumer for this topic, and starts processing data.
+When you define a route using a regexp pattern, Karafka monitors the Kafka topics. As soon as a topic matching the pattern emerges, Karafka takes the initiative. Without waiting for manual interventions or service restarts, it dynamically adds the topic to the routing tree, starts a consumer for this topic, and starts processing data.
 
 Below, you can find a conceptual diagram of how the discovery process works:
 
@@ -16,7 +16,7 @@ Below, you can find a conceptual diagram of how the discovery process works:
   </small>
 </p>
 
-Upon detecting a new topic, Karafka seamlessly integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
+Upon detecting a new topic, Karafka seamlessly integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, making sure compatibility with topics established prior, provided they haven't been previously defined in the routes.
 
 !!! warning "Regexp Implementation Differences"
 
@@ -90,7 +90,7 @@ The same usage contexts apply since this method is a twin to the `#topic`. You c
 
 Regardless of where you use it, it works similarly to the `#topic` method, but searches for topics based on patterns.
 
-Patterns crafted in such a way are called "anonymous patterns". This terminology highlights that these patterns don't have a predefined name. Instead, Karafka generates a name prefixed with "karafka-pattern-" based on the regular expression content. This approach ensures unique and distinguishable matcher topics but, at the same time, makes it much harder to exclude pattern routes from the CLI. Anonymous patterns are easy to start with and great for development. However, we do recommend assigning them names in the later stages before shipping to production.
+Patterns crafted in such a way are called "anonymous patterns". This terminology highlights that these patterns don't have a predefined name. Instead, Karafka generates a name prefixed with "karafka-pattern-" based on the regular expression content. This approach makes sure unique and distinguishable matcher topics but, at the same time, makes it much harder to exclude pattern routes from the CLI. Anonymous patterns are easy to start with and great for development. However, we do recommend assigning them names in the later stages before shipping to production.
 
 ### Named Patterns
 
@@ -188,7 +188,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-While this pattern looks complex, it works by explicitly matching any string that doesn't start with "activities" followed by a period. The regex checks each character's position and ensures it either doesn't match the expected character in "activities" or, if it does match that far, it diverges afterward.
+While this pattern looks complex, it works by explicitly matching any string that doesn't start with "activities" followed by a period. The regex checks each character's position and makes sure it either doesn't match the expected character in "activities" or, if it does match that far, it diverges afterward.
 
 ### Testing Exclusion Patterns
 
@@ -290,13 +290,13 @@ bundle exec karafka server --exclude-topics dlqs_pattern
 
 ## Limitations
 
-There are key aspects to consider to ensure efficient and consistent behavior:
+There are key aspects to consider to make sure efficient and consistent behavior:
 
 1. **Changing Regexp in Anonymous Patterns**: If the regular expression for an anonymous pattern is changed, its name will change too.
 
 1. **Avoid Overlapping Regexps**: It's crucial to avoid defining multiple regular expressions within the same consumer group that might match the same topics. This can lead to unexpected behavior because of possible reassignments and rebalances.
 
-1. **Thoroughly Test Patterns**: Always ensure your patterns don't overlap within a single consumer group. Regular testing can prevent unwanted behavior.
+1. **Thoroughly Test Patterns**: Always make sure your patterns don't overlap within a single consumer group. Regular testing can prevent unwanted behavior.
 
 1. **Potential Regexp Differences**: The regular expressions in Ruby and `librdkafka` in C might not work identically. Always test the matching behaviors before deploying to production.
 
@@ -306,13 +306,13 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Too Broad Regular Expressions**: Broad regular expressions may unintentionally match a wide range of topics, leading to the over-consumption of topics that were not intended to be included. This can result in excessive resource utilization, unexpected data processing, and potential bottlenecks in the system.
 
-Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
+Please make sure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
 
 ## DLQ Accidental Auto-Consumption
 
 This feature requires careful attention when used alongside [Dead Letter Queues (DLQs)](Consumer-Groups-Dead-Letter-Queue) to avoid unintended behaviors. A common pitfall arises from using regular expressions that are not precise enough, leading to scenarios where the base topic consumer consumes the DLQ topics themselves.
 
-The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can initiate an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
+The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can start an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
 
 Such a case can lead to situations where messages destined for the DLQ due to processing errors are re-consumed as regular messages, only to fail and be sent back to the DLQ, perpetuating a cycle.
 
@@ -335,7 +335,7 @@ end
 
 To prevent such loops, it's essential to:
 
-- Craft regular expressions precisely, ensuring they match only the intended topics and not the DLQs unless explicitly desired.
+- Craft regular expressions precisely, making sure they match only the intended topics and not the DLQs unless explicitly desired.
 
 - Adopt clear naming conventions for DLQ topics that can easily be excluded in regex patterns.
 
@@ -376,13 +376,13 @@ Ruby uses the **Oniguruma engine**, which differs from both of the above.
 
     Since Karafka internally prepends `^` to pattern regex sources, a pattern like `pattern(/prefix/)` produces `^prefix`, which will fail under the consumer protocol for topics like `prefix-1`. Use `pattern(/prefix.*/)` instead, which produces `^prefix.*` and works with both protocols.
 
-    Review all your regex patterns before migrating to the consumer protocol to ensure they use explicit wildcards where needed.
+    Review all your regex patterns before migrating to the consumer protocol to make sure they use explicit wildcards where needed.
 
 ### Testing Regular Expressions
 
-Given the differences between Ruby's and libc's regular expression engines, it is recommended to thoroughly test your regular expressions to ensure compatibility, especially when using them with Karafka for dynamic topic routing. Testing becomes crucial because a regular expression in Ruby might behave differently or not work with librdkafka.
+Given the differences between Ruby's and libc's regular expression engines, it is recommended to thoroughly test your regular expressions to make sure compatibility, especially when using them with Karafka for dynamic topic routing. Testing becomes crucial because a regular expression in Ruby might behave differently or not work with librdkafka.
 
-To bridge the gap and verify that your regular expressions work as expected in both environments, you can use the POSIX regex engine directly within a Ruby context through command-line tools like `grep`. This approach allows you to test regular expressions against the POSIX standard and ensure they're compatible with librdkafka.
+To bridge the gap and verify that your regular expressions work as expected in both environments, you can use the POSIX regex engine directly within a Ruby context through command-line tools like `grep`. This approach allows you to test regular expressions against the POSIX standard and make sure they're compatible with librdkafka.
 
 Here's how you can test a POSIX regular expression in a Unix-like terminal:
 
@@ -390,7 +390,7 @@ Here's how you can test a POSIX regular expression in a Unix-like terminal:
 echo 'sample_string' | grep -E 'posix_regex'
 ```
 
-We also recommend creating a test helper class or method to ensure consistency in matching behaviors similar to the one below:
+We also recommend creating a test helper class or method to make sure consistency in matching behaviors similar to the one below:
 
 ```ruby
 def ruby_posix_regexp_same?(test_string, ruby_regex)
@@ -437,19 +437,19 @@ ruby_posix_regexp_same?('test12.production', /[0-9]{10}/)
 # Comparison: true
 ```
 
-This comparative testing method offers a straightforward way to ensure your regular expressions behave as expected across different environments, particularly when working with librdkafka in Karafka.
+This comparative testing method offers a straightforward way to make sure your regular expressions behave as expected across different environments, particularly when working with librdkafka in Karafka.
 
 ## Example Use Cases
 
-1. **Tenant-specific Topics**: Modern SaaS applications often cater to multiple tenants, each requiring its own data isolation. You can ensure data segregation by having a Kafka topic for each tenant, like `tenantA_events`, `tenantB_logs`. Routing Patterns can simplify the consumption from these dynamically created topics.
+1. **Tenant-specific Topics**: Modern SaaS applications often cater to multiple tenants, each requiring its own data isolation. You can make sure data segregation by having a Kafka topic for each tenant, like `tenantA_events`, `tenantB_logs`. Routing Patterns can simplify the consumption from these dynamically created topics.
 
 1. **Environment-based Topics**: Development environments like staging, production, or QA might generate events. Using routing patterns can streamline the consumption process if these are categorized into topics like `staging_logs` and `prod_errors`.
 
 1. **Versioned Topics**: As systems evolve, data formats and structures change. Regexp patterns can handle these variations smoothly if you've chosen to version your topics, like `data_v1`, `data_v2`.
 
-1. **Date-based Topics**: The feature becomes invaluable for systems that rotate topics based on timeframes, like `logs_202301` and `logs_202302`, ensuring no topic goes unnoticed.
+1. **Date-based Topics**: The feature becomes invaluable for systems that rotate topics based on timeframes, like `logs_202301` and `logs_202302`, making sure no topic goes unnoticed.
 
-1. **Special-event Topics**: Seasonal events, promotions, or sales like `blackfriday_deals`, `holiday_discounts` often have dedicated topics. This feature ensures that such transient topics are efficiently catered to.
+1. **Special-event Topics**: Seasonal events, promotions, or sales like `blackfriday_deals`, `holiday_discounts` often have dedicated topics. This feature makes sure that such transient topics are efficiently catered to.
 
 1. **Automated Testing Topics**: In CI/CD pipelines, where automated tests might create on-the-fly topics like `test_run_001`, `test_run_002`, regexp routing can prove to be a boon.
 
@@ -457,11 +457,11 @@ This comparative testing method offers a straightforward way to ensure your regu
 
 1. **Error and Debug Topics**: Special topics created for debugging or error tracking, like `errors_critical`, `debug_minor`, can be consumed automatically using patterns.
 
-1. **Dedicated DLQ (Dead Letter Queue) Topics**: Handling erroneous or unprocessable messages becomes crucial as applications scale. Systems can isolate and address these problematic messages by employing dedicated Kafka topics for DLQ, such as `dlq_orders`, `dlq_notifications`. Karafka's Routing Patterns can be leveraged to automatically detect and route messages to these DLQ topics, ensuring efficient monitoring and subsequent troubleshooting.
+1. **Dedicated DLQ (Dead Letter Queue) Topics**: Handling erroneous or unprocessable messages becomes crucial as applications scale. Systems can isolate and address these problematic messages by employing dedicated Kafka topics for DLQ, such as `dlq_orders`, `dlq_notifications`. Karafka's Routing Patterns can be used to automatically detect and route messages to these DLQ topics, making sure efficient monitoring and subsequent troubleshooting.
 
 ## Summary
 
-Karafka's Routing Patterns offers a dynamic solution for message routing, utilizing the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality ensures agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
+Karafka's Routing Patterns offers a dynamic solution for message routing, using the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality makes sure agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
 
 ## See Also
 

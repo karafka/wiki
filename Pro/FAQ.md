@@ -71,7 +71,7 @@ Unlike typical open-source projects that rely on volunteer maintenance, Karafka 
 - **Karafka Pro** provides commercial licenses, priority support, and architecture consultations
 - Pro subscriptions directly fund ongoing research and development
 - Revenue creates a virtuous cycle where commercial success drives open-source improvements
-- This model ensures long-term sustainability and continuous innovation
+- This model makes sure long-term sustainability and continuous innovation
 
 ### **Active Development & Maintenance**
 
@@ -99,7 +99,7 @@ Yes, it is required to accept the [LICENSE-COMM](Pro-License-Comm) terms to beco
 
 ## Is there a trial version?
 
-Yes. For free, you can obtain temporary credentials from our [website](https://karafka.io/#become-pro).
+Yes. For free, you can get temporary credentials from our [website](https://karafka.io/#become-pro).
 
 Those credentials will be valid for 14 days for every environment.
 
@@ -180,7 +180,7 @@ However, there are various scenarios where organizations might want to maintain 
 - Custom arrangements for commercial projects with public repositories
 - Collaborative opportunities that benefit both the project and the Karafka community
 
-Each case will be evaluated individually, considering factors such as the project's scope, impact on the community, alignment with Karafka's goals, and potential business implications. We need to carefully assess each case to ensure proper license key management and mitigate possible risks of the public codebase being used to bypass Karafka Pro licensing requirements. While we're open to supporting meaningful public source initiatives, whether open-source or commercial, we must maintain appropriate controls to prevent misuse of our commercial features through public code access.
+Each case will be evaluated individually, considering factors such as the project's scope, impact on the community, alignment with Karafka's goals, and potential business implications. We need to carefully assess each case to make sure proper license key management and mitigate possible risks of the public codebase being used to bypass Karafka Pro licensing requirements. While we're open to supporting meaningful public source initiatives, whether open-source or commercial, we must maintain appropriate controls to prevent misuse of our commercial features through public code access.
 
 ## Can you transfer a license?
 
@@ -235,7 +235,7 @@ Please read our [Security statement](Pro-Security) for details on this manner.
 
 ## What is Karafka Data Collection and GDPR Policy?
 
-We understand the importance of user privacy and data protection, especially in today's digital world. For this reason, we want to provide absolute clarity regarding the data practices associated with Karafka and Karafka Pro.
+We understand the importance of user privacy and data protection, especially in today's digital world. For this reason, we want to provide absolute clarity about the data practices associated with Karafka and Karafka Pro.
 
 - **Data Collection**: Karafka and Karafka Pro do NOT collect any data from the servers they operate on. Our primary concern is to deliver functionality without infringing on the privacy of our users.
 
@@ -243,7 +243,7 @@ We understand the importance of user privacy and data protection, especially in 
 
 - **GDPR and Data Processing**: As per the General Data Protection Regulation (GDPR), a "data processor" is an entity that processes personal data on behalf of a data controller. Since Karafka does not collect or process any data from its users, it does not act as a data processor, and therefore, GDPR-related concerns in that context do not apply to Karafka.
 
-- **Future Changes**: Our commitment to data privacy is unwavering. We hereby affirm that this policy is not subject to change. Karafka will only introduce features or capabilities that collect data if explicitly requested by the community. Even then, all Pro and Enterprise users will be informed about that, and any such features will be turned off by default. We are and will remain committed to ensuring the privacy and trust of our users.
+- **Future Changes**: Our commitment to data privacy is unwavering. We hereby affirm that this policy is not subject to change. Karafka will only introduce features or capabilities that collect data if explicitly requested by the community. Even then, all Pro and Enterprise users will be informed about that, and any such features will be turned off by default. We are and will remain committed to making sure the privacy and trust of our users.
 
 ## Does Karafka Pro stores, processes or transmits Personal Health Information?
 
@@ -283,13 +283,13 @@ Karafka Pro gem license server operates on a high-availability infrastructure de
 - During failover: existing license gems remain accessible (read-only mode)
 - Your running production environments are not affected by infrastructure issues
 
-The infrastructure uses Cloudflare for DNS management, load balancing, and automatic failover between server locations, ensuring enterprise-grade reliability for your license delivery.
+The infrastructure uses Cloudflare for DNS management, load balancing, and automatic failover between server locations, making sure enterprise-grade reliability for your license delivery.
 
 Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org).
 
 ## Can I use Karafka Pro with an offline license without using the Karafka gem server?
 
-We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
+We understand that some companies have strict policies about their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
 Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an Enterprise agreement.
 
@@ -299,7 +299,7 @@ Upon agreement, we will provide the license gem sources with installation instru
 
 If you need to change the email associated with your subscription, you have two ways to proceed:
 
-1. **Email**: You can send us a direct request by emailing us at `contact@karafka.io`. Ensure to include your current email address, the new one you want to use, and any relevant information about your subscription.
+1. **Email**: You can send us a direct request by emailing us at `contact@karafka.io`. Make sure to include your current email address, the new one you want to use, and any relevant information about your subscription.
 
 2. **Pro Private Slack Channel**: If you're part of the Pro private Slack channel, you can also use this platform to send your request. Just write a message explaining that you want to change the email associated with your subscription. Include your current email address and the new one you want to use.
 
@@ -324,13 +324,13 @@ Yes, with the Karafka Pro license, you must fetch the license from the Source UR
 
 However, the Enterprise license would be more suitable if your use case requires total offline usage or involves private gem registries.
 
-Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
+Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which make sure that you're covered even after your contract has ended.
 
 ## Can I use Karafka Pro with a private gem server / private registry?
 
-Yes, however, you need a specific Enterprise agreement allowing you to leverage this capability.
+Yes, however, you need a specific Enterprise agreement allowing you to use this capability.
 
-Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
+Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which make sure that you're covered even after your contract has ended.
 
 ## Can I pay via invoice and purchase order?
 
@@ -358,7 +358,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 3. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
 
-4. You can legally utilize Karafka without needing my gem server for license gem download and verification.
+4. You can legally use Karafka without needing my gem server for license gem download and verification.
 
 5. You are granted extended permission to continue using your private fork of Karafka even after your license expires or your subscription ends.
 
@@ -374,11 +374,11 @@ You can read more about those differences [here](Pro-Enterprise).
 
 With Karafka Pro priority support, you'll receive an initial assessment and reply within a maximum of **4 business days**. Enterprise customers receive even faster support with a maximum response time of **2 business days**. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
 
-Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
+Please note that our software is provided "as is." We recommend using the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
 
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 
-Karafka maintains a [documentation page](Development-SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
+Karafka maintains a [documentation page](Development-SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components used within the Karafka ecosystem.
 
 ## Can I use one Karafka license across multiple companies within a corporate group?
 
@@ -423,7 +423,7 @@ If you have questions about your specific contractor or agency arrangement, cont
 - **Community Influence**: Active community members' feedback heavily influences feature prioritization
 - **Custom Development**: For Enterprise customers, I can discuss custom development arrangements on a case-by-case basis, though never as a contracting service.
 
-The open-source nature of Karafka means that development is driven by community needs and practical use cases rather than contractual obligations. This approach has proven effective over nearly a decade of development, ensuring that features are thoroughly tested and genuinely valuable to the community.
+The open-source nature of Karafka means that development is driven by community needs and practical use cases rather than contractual obligations. This approach has proven effective over nearly a decade of development, making sure that features are thoroughly tested and genuinely valuable to the community.
 
 ## Do you provide consulting or contracting services?
 
@@ -467,13 +467,13 @@ Karafka has been in continuous development and production use for nearly 10 year
 
 ## What happens if the maintainer becomes unavailable?
 
-Several contingency measures are implemented to ensure continuity:
+Several contingency measures are implemented to make sure continuity:
 
 **Enterprise Contingency Options:**
 
 - **Extended Warranties**: Enterprise subscriptions include contingency warranties that provide extended support and maintenance commitments
 - **Custom Agreements**: Enterprise customers can negotiate specific contingency arrangements based on their needs
-- **Source Code Access**: All code remains open-source and public-source, ensuring no vendor lock-in
+- **Source Code Access**: All code remains open-source and public-source, making sure no vendor lock-in
 - **Community Governance**: The project structure allows for community maintenance if needed
 
 **Built-in Continuity:**
@@ -487,7 +487,7 @@ For Enterprise customers concerned about long-term continuity, we offer custom a
 
 ## Can I have multiple trials for my company?
 
-Generally, we provide one trial per company. This policy ensures fair access to trial resources while maintaining the integrity of our evaluation process.
+Generally, we provide one trial per company. This policy makes sure fair access to trial resources while maintaining the integrity of our evaluation process.
 
 ### Standard Trial Policy
 
@@ -514,7 +514,7 @@ Payment issues can occur due to various reasons such as expired cards, insuffici
 
 ### License Termination
 
-Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach ensures that temporary payment problems don't immediately disrupt your production systems.
+Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach makes sure that temporary payment problems don't immediately disrupt your production systems.
 
 If you experience any billing issues, please contact us immediately to avoid any service interruption.
 
@@ -531,7 +531,7 @@ If you experience any billing issues, please contact us immediately to avoid any
 
 ### What This Means for You
 
-- You'll always have sufficient time to plan and budget for any changes to your subscription costs
+- You'll always have enough time to plan and budget for any changes to your subscription costs
 - Your current subscription price is locked in until your next renewal
 - No surprise price changes or sudden mid-term adjustments
 - Existing customers are valued, and pricing transitions are handled with consideration for long-term relationships
@@ -549,11 +549,11 @@ Enterprise agreements include the following pricing adjustment framework:
 - **Annual Adjustments**: Pricing may be adjusted annually with **3 months' advance notice**
 - **Renewal-Based Changes**: Adjustments take effect at renewal, never mid-term during an active contract period
 - **No Predetermined Caps**: There is no preset limit on adjustments, allowing pricing to reflect market conditions, inflation, and development investments
-- **Transparent Communication**: All pricing changes are communicated clearly and with sufficient notice for budget planning
+- **Transparent Communication**: All pricing changes are communicated clearly and with enough notice for budget planning
 
 ### Why This Approach
 
-This pricing structure ensures:
+This pricing structure makes sure:
 
 1. **Sustainable Development**: Pricing can adapt to reflect ongoing R&D, new features, and market conditions
 2. **Fair Adjustments**: Annual adjustments provide predictability while avoiding locked-in pricing that becomes unsustainable

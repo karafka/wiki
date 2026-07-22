@@ -4,7 +4,7 @@ In Apache Kafka, a partitioner determines how records are placed among the parti
 
 ## Reasons for Using a Custom Partitioner
 
-1. **Specific Data Distribution Needs**: You may want to distribute messages based on specific data attributes, such as ensuring all messages from a particular user or entity end up in the same partition to maintain order.
+1. **Specific Data Distribution Needs**: You may want to distribute messages based on specific data attributes, such as making sure all messages from a particular user or entity end up in the same partition to maintain order.
 
 1. **Load Balancing**: If the data has certain hotspots (e.g., a few keys are very common), a custom partitioner can help distribute the load more evenly across the partitions, preventing any single partition from becoming a bottleneck.
 
@@ -17,7 +17,7 @@ In Apache Kafka, a partitioner determines how records are placed among the parti
 When integrating a custom partitioning strategy into your Kafka setup with WaterDrop, you generally have two options:
 
 1. Writing an entirely external custom partitioner
-2. Utilizing WaterDrop's middleware for the partitioning logic.
+2. Using WaterDrop's middleware for the partitioning logic.
 
 Both approaches have merits and drawbacks, primarily influenced by the nature of your data and the specifics of your use case.
 
@@ -29,7 +29,7 @@ producer.partition_count('users_events') => 5
 
 !!! warning "Failure To Fetch Partition Count"
 
-    If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Ensure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
+    If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Make sure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
 
 ### Fully External Custom Partitioner
 
@@ -43,7 +43,7 @@ Advantages:
 Drawbacks:
 
 - **Complexity**: This method introduces additional layers to your architecture, potentially increasing the complexity of your system.
-- **Maintenance**: You need to ensure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
+- **Maintenance**: You need to make sure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
 
 ```ruby
 class UserPartitioner
@@ -63,7 +63,7 @@ PRODUCER.produce_async(
 
 ### Middleware Approach
 
-Alternatively, you can leverage WaterDrop's middleware to inject your custom partitioning logic directly into the message processing pipeline. This is seen as a more elegant and integrated approach.
+Alternatively, you can use WaterDrop's middleware to inject your custom partitioning logic directly into the message processing pipeline. This is seen as a more elegant and integrated approach.
 
 Advantages:
 
@@ -116,7 +116,7 @@ PRODUCER.produce_async(topic: 'users_events', payload: user)
 
 ## Summary
 
-In summary, the choice between an external custom partitioner and a middleware-based partitioner in WaterDrop hinges on your specific requirements, particularly regarding how and when your data needs to be processed for partitioning. If pre-serialization data manipulation is crucial for your partitioning logic, an external partitioner might be more suitable. On the other hand, if you prefer a more integrated approach and your partitioning logic can work with serialized data, using WaterDrop's middleware might be the optimal path.
+In summary, the choice between an external custom partitioner and a middleware-based partitioner in WaterDrop hinges on your specific requirements, particularly about how and when your data needs to be processed for partitioning. If pre-serialization data manipulation is crucial for your partitioning logic, an external partitioner might be more suitable. On the other hand, if you prefer a more integrated approach and your partitioning logic can work with serialized data, using WaterDrop's middleware might be the optimal path.
 
 ## See Also
 

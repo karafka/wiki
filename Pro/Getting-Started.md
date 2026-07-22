@@ -6,7 +6,7 @@ To activate Karafka Pro, you need to do three things:
 
 1. Follow the standard Karafka [installation](Basics-Getting-Started) procedure.
 
-1. Obtain credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
+1. Get credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
 
 1. Add this to your Gemfile and `bundle install`:
 
@@ -27,7 +27,7 @@ To activate Karafka Pro, you need to do three things:
 
 !!! warning "Enterprise License Required for Offline or Private Registry Setup"
 
-    An Enterprise license is required if you are looking into hosting the license key offline within the app or via a private registry. This mode of operation allows you to use Karafka Pro without relying on our gem server. An Enterprise Agreement will grant you access to the license gem sources and installation instructions, ensuring you can proceed smoothly with your preferred setup.
+    An Enterprise license is required if you are looking into hosting the license key offline within the app or via a private registry. This mode of operation allows you to use Karafka Pro without relying on our gem server. An Enterprise Agreement will grant you access to the license gem sources and installation instructions, making sure you can proceed smoothly with your preferred setup.
 
 ## Additional Credentials
 
@@ -47,7 +47,7 @@ To manage additional credentials, visit your license credentials page and use th
 
 ### With Bundler 2.6+
 
-From Bundler 2.6, gem checksum verification is natively supported and built directly into the `Gemfile.lock` file. This eliminates the need for external scripts or manual verification processes, as Bundler will automatically ensure the integrity of all gems during installation as long as checksum verification is active. By enabling checksum verification, you enhance the security of the `karafka-license` gem and protect all other dependencies in your project.
+From Bundler 2.6, gem checksum verification is natively supported and built directly into the `Gemfile.lock` file. This eliminates the need for external scripts or manual verification processes, as Bundler will automatically make sure the integrity of all gems during installation as long as checksum verification is active. By enabling checksum verification, you enhance the security of the `karafka-license` gem and protect all other dependencies in your project.
 
 To enable checksum verification with Bundler 2.6 or newer, follow these steps:
 
@@ -61,7 +61,7 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
 
 1. (First-time setup only) **Verify the karafka-license gem checksum**:
 
-    After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and ensure it matches the checksum provided in the email you received. This ensures that the correct gem version is being used and matches the one issued with your license.
+    After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and make sure it matches the checksum provided in the email you received. This makes sure that the correct gem version is being used and matches the one issued with your license.
 
     Use the following command to extract the checksum of the karafka-license gem from the Gemfile.lock:
 
@@ -77,13 +77,13 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
     bundle config lockfile_checksums true
     ```
 
-    This will ensure that every new project or lockfile you create will have checksums included.
+    This will make sure that every new project or lockfile you create will have checksums included.
 
 #### Protecting All Gems, Not Just `karafka-license`
 
 One of the biggest advantages of Bundler 2.6+ is that checksum verification applies to all gems listed in your `Gemfile.lock`, not just `karafka-license`. This means your entire dependency chain is protected from tampering, enhancing the overall security of your application.
 
-When Bundler downloads a gem (or installs it from a local cache), it verifies that the checksum matches the value stored in the `Gemfile.lock`. If there is a mismatch, Bundler halts the installation process and raises an error, ensuring no compromised or altered gems are installed.
+When Bundler downloads a gem (or installs it from a local cache), it verifies that the checksum matches the value stored in the `Gemfile.lock`. If there is a mismatch, Bundler halts the installation process and raises an error, making sure no compromised or altered gems are installed.
 
 ### With Bundler 2.5 or Older (Deprecated)
 
@@ -144,8 +144,8 @@ fi
 
 Due to the nature of how Bundler works, it is **recommended** to run this script twice in the CI/CD:
 
-1. First, before `bundle install` is executed, to ensure that the gem server is serving the correct data.
-1. Second time after `bundle install` to ensure consistency of the fetched package.
+1. First, before `bundle install` is executed, to make sure that the gem server is serving the correct data.
+1. Second time after `bundle install` to make sure consistency of the fetched package.
 
 To use it:
 
@@ -157,13 +157,13 @@ To use it:
 
 1. Run `bundle install`
 
-1. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
+1. Run `MODE=after bin/verify_karafka_license_checksum` to make sure that the stored artefact was not compromised.
 
 In case the verification fails, script will exit with the exit code `1`.
 
 ## See Also
 
-- [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about obtaining a Karafka Pro license
+- [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about getting a Karafka Pro license
 - [Pro Features List](Pro-Features-List) - Complete list of available Pro features
 - [Pro Features Compatibility](Pro-Features-Compatibility) - Feature compatibility matrix
 - [Getting Started](Basics-Getting-Started) - Standard Karafka installation guide

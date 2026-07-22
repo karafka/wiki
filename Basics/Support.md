@@ -135,11 +135,11 @@ Please include as many of the following details as possible to help me understan
 
 ## Karafka API End-User API Definition
 
-The Karafka framework offers a range of functionalities to streamline building event-driven applications. Understanding what constitutes a Karafka API is essential for developers leveraging its capabilities. While Karafka provides various public methods and interfaces, it's crucial to discern which ones are intended for direct use by end users.
+The Karafka framework offers a range of functionalities to streamline building event-driven applications. Understanding what constitutes a Karafka API is essential for developers using its capabilities. While Karafka provides various public methods and interfaces, it's crucial to discern which ones are intended for direct use by end users.
 
 ### Public Methods and Internal Usage
 
-Not all public methods within the Karafka codebase are meant for direct user consumption. Some methods are publicly accessible but primarily intended for internal use by various components of the Karafka framework itself. This distinction arises due to the complex nature of building a framework or an ecosystem of gems, where numerous moving parts require public interfaces for framework developers rather than for end users.
+Not all public methods within the Karafka codebase are meant for direct user consumption. Some methods are publicly accessible but primarily intended for internal use by various components of the Karafka framework itself. This distinction arises due to the complex nature of building a framework or an ecosystem of gems, where many moving parts require public interfaces for framework developers rather than for end users.
 
 ### Official End-User API
 

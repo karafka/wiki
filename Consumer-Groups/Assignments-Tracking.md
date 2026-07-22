@@ -29,7 +29,7 @@ end
 
 - **Building Assignments Aware Schedulers**: A custom scheduler that takes into account assignments can significantly improve efficiency and performance. Such a scheduler optimizes resource utilization and reduces latency by making intelligent scheduling decisions based on real-time cluster state.
 
-- **Dynamic Resources Allocation**: In scenarios where workloads fluctuate, the tracker can dynamically redistribute tasks based on the current partition assignments or apply specific processing strategies, ensuring optimal resource utilization.
+- **Dynamic Resources Allocation**: In scenarios where workloads fluctuate, the tracker can dynamically redistribute tasks based on the current partition assignments or apply specific processing strategies, making sure optimal resource utilization.
 
 - **Monitoring and Alerting**: Developers can monitor partition assignments to detect anomalies (e.g., imbalanced loads, partition loss) and trigger alerts for proactive issue resolution.
 

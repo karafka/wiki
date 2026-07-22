@@ -1,9 +1,9 @@
-The Adaptive Iterator is a Karafka Pro feature designed to proactively monitor the processing of messages within a batch to prevent exceeding Kafka's `max.poll.interval.ms`. By estimating the processing cost of each message and halting processing when the remaining time is insufficient, the Adaptive Iterator ensures smooth operation without exceeding Kafka's poll interval limit. This feature is particularly useful in environments where message processing times vary, and occasional long-processing times risk reaching the `max.poll.interval.ms`.
+The Adaptive Iterator is a Karafka Pro feature designed to proactively monitor the processing of messages within a batch to prevent exceeding Kafka's `max.poll.interval.ms`. By estimating the processing cost of each message and halting processing when the remaining time is insufficient, the Adaptive Iterator makes sure smooth operation without exceeding Kafka's poll interval limit. This feature is particularly useful in environments where message processing times vary, and occasional long-processing times risk reaching the `max.poll.interval.ms`.
 
 Consider the Adaptive Iterator as a solution when:
 
 - Your application experiences occasional spikes in processing times that risk exceeding the Kafka poll interval.
-- You want to ensure the consumer does not exceed the `max.poll.interval.ms`, preventing rebalancing and potential downtimes.
+- You want to make sure the consumer does not exceed the `max.poll.interval.ms`, preventing rebalancing and potential downtimes.
 - You are processing messages one after another, as the Adaptive Iterator is designed to handle sequential message processing efficiently.
 
 Do not use the Adaptive Iterator if:
@@ -28,13 +28,13 @@ Do not use the Adaptive Iterator if:
 
 ## Benefits of Adaptive Iterator
 
-- **Prevents Poll Interval Expiry**: Dynamically monitors the remaining time to avoid exceeding the Kafka poll interval, ensuring consumer group stability.
+- **Prevents Poll Interval Expiry**: Dynamically monitors the remaining time to avoid exceeding the Kafka poll interval, making sure consumer group stability.
 
 - **Seeks Back on Timeout**: When it determines that processing further messages in a batch could exceed the poll interval, it stops and seeks back, allowing the next poll to reset the timer.
 
 - **Automated Handling**: Provides built-in capabilities for operations such as stopping processing if the consumer is revoked or auto-marking messages based on your configuration.
 
-- **Configurable Safety Margin**: Allows configuring a safety margin to leave a buffer for post-processing activities, ensuring smooth handling of messages.
+- **Configurable Safety Margin**: Allows configuring a safety margin to leave a buffer for post-processing activities, making sure smooth handling of messages.
 
 ## Using Adaptive Iterator
 
@@ -106,9 +106,9 @@ The Adaptive Iterator is designed to monitor message processing times and stop p
 
 ### Impact on Performance
 
-The primary impact on performance arises when the Adaptive Iterator stops processing frequently and initiates a seek operation. Seeking is not a lightweight operation; it involves the consumer resetting its position in the partition, introducing a delay. If seeking happens with every batch, especially when `the max.poll.interval.ms` is set to a lower value (default is 5 minutes), this overhead can become significant.
+The primary impact on performance arises when the Adaptive Iterator stops processing frequently and starts a seek operation. Seeking is not a lightweight operation; it involves the consumer resetting its position in the partition, introducing a delay. If seeking happens with every batch, especially when `the max.poll.interval.ms` is set to a lower value (default is 5 minutes), this overhead can become significant.
 
-However, it's important to note the relative impact of seeking in the context of typical configurations. Assuming that seeking back takes approximately 5 seconds, this delay is still only around 2% of the total processing time if the safety margin is set to 10% of the poll interval. In cases where the interval is longer and seeking happens infrequently, this impact is minimal.
+However, it's important to note the relative impact of seeking in the context of typical configurations. Assuming that seeking back takes about 5 seconds, this delay is still only around 2% of the total processing time if the safety margin is set to 10% of the poll interval. In cases where the interval is longer and seeking happens infrequently, this impact is minimal.
 
 The performance hit becomes more noticeable if seeking occurs with every batch, which can lead the consumer to spend a disproportionate amount of time managing offsets instead of processing messages, ultimately reducing throughput. Thus, the key consideration is the frequency of seeking and the `configured max.poll.interval.ms` - the lower the interval, the higher the relative cost of frequent seeks. Proper configuration of the safety margin is crucial to balance processing efficiency against the risk of exceeding the poll interval.
 

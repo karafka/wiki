@@ -16,9 +16,9 @@ Single Process Setup provides few benefits over the default one:
 
 1. **Ease of Management**: You simplify the entire management process by consolidating the tasks into a single process type, like Puma or another HTTP server. The necessity for juggling multiple processes vanishes. In the most streamlined scenario, a singular Ruby process effortlessly handles data aggregation and presentation.
 
-1. **Ease of Upgrade**: With just one process to consider, upgrading becomes a breeze. The Web UI's Puma (or your chosen HTTP server) and the Embedded consumer can be updated simultaneously, ensuring all components evolve cohesively without leaving any part behind.
+1. **Ease of Upgrade**: With just one process to consider, upgrading becomes a breeze. The Web UI's Puma (or your chosen HTTP server) and the Embedded consumer can be updated simultaneously, making sure all components evolve cohesively without leaving any part behind.
 
-1. **Ease of Deployment**: Deployment complexities are minimized when there's only one process to contend with. This unified approach ensures quicker deployment cycles and reduces the chances of deployment-related issues.
+1. **Ease of Deployment**: Deployment complexities are minimized when there's only one process to contend with. This unified approach makes sure quicker deployment cycles and reduces the chances of deployment-related issues.
 
 1. **Consistent Setup**: The single-process setup eradicates potential inconsistencies, especially the dilemma of multi-process version collisions. With everything bundled into one, you're assured that all parts are on the same page, version-wise.
 
@@ -112,7 +112,7 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
         end
         ```
 
-1. It's vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
+1. It's vital to also adjust the `karafka.rb` configuration file. This makes sure that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
 
     ```ruby
     # Other Karafka configuration here...

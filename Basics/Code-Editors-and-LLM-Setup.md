@@ -1,6 +1,6 @@
 # Configuring Code Editors and LLMs
 
-Karafka provides LLM-optimized documentation following the [llms.txt standard](https://llmstxt.org). There are three ways to configure your development environment in order to get better code assistance and solve problems faster when working with Karafka. You can feed AI tools with Karafka documentation either by providing them with a URL, copying and pasting the docs, or setting up your code editor to do it automatically.
+Karafka provides LLM-optimized documentation following the [llms.txt standard](https://llmstxt.org). There are three ways to configure your development environment to get better code assistance and solve problems faster when working with Karafka. You can feed AI tools with Karafka documentation either by providing them with a URL, copying and pasting the docs, or setting up your code editor to do it automatically.
 
 ## Setup Methods
 

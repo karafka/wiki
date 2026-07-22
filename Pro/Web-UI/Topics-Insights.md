@@ -1,4 +1,4 @@
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics.
+The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must make sure optimal configuration and performance of their Kafka topics.
 
 ## Configuration Explorer
 
@@ -10,7 +10,7 @@ The first tab under Topics Insights is the Configuration Explorer, where users c
 - **Sensitive**: Indicates whether the parameter holds sensitive information (e.g., passwords).
 - **Read only**: Shows whether the parameter is modifiable or read-only.
 
-This detailed breakdown helps quickly understand how each topic is configured, making it easier to manage Kafka's behavior and ensure compliance with security and operational standards.
+This detailed breakdown helps quickly understand how each topic is configured, making it easier to manage Kafka's behavior and make sure compliance with security and operational standards.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-topics-configuration.png" />
@@ -18,7 +18,7 @@ This detailed breakdown helps quickly understand how each topic is configured, m
 
 ## Replication
 
-The Replication tab provides insights into the replication dynamics of each topic. It's crucial for ensuring data durability and high availability in Kafka. The attributes included in this tab are:
+The Replication tab provides insights into the replication dynamics of each topic. It's crucial for making sure data durability and high availability in Kafka. The attributes included in this tab are:
 
 - **Partition**: The specific partition of a topic.
 - **Leader**: The leader's broker ID for each partition.
@@ -59,7 +59,7 @@ Moreover, the Distribution tab features a graph that visually represents the dis
 ### Benefits of Distribution Insights
 
 - **Performance Optimization**: Understanding message distribution helps in tuning the system for better performance by reallocating resources or adjusting partitioning.
-- **Scalability Planning**: Identifying hot partitions allows for proactive scalability efforts, ensuring that the system can handle increases in load without performance degradation.
+- **Scalability Planning**: Identifying hot partitions allows for proactive scalability efforts, making sure that the system can handle increases in load without performance degradation.
 - **Troubleshooting and Maintenance**: Uneven distribution can be a symptom of broader issues, such as configuration errors or network problems. Early detection enables quicker resolution.
 
 ## Offsets

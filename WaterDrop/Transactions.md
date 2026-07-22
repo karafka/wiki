@@ -2,9 +2,9 @@
 
 !!! tip "Transactional and Exactly-Once Semantics Support in Consumers"
 
-    Karafka Pro supports transactional operations and Exactly-Once Semantics for both producers and consumers. This enhanced functionality includes the production of messages and the committing of consumer offset within the same transaction. This ensures atomicity and consistency in message handling, making your data streaming processes more reliable and efficient. For a detailed understanding of these capabilities and their implementation, refer to the Karafka Pro [Transactions](Pro-Consumer-Groups-Transactions) documentation section.
+    Karafka Pro supports transactional operations and Exactly-Once Semantics for both producers and consumers. This enhanced functionality includes the production of messages and the committing of consumer offset within the same transaction. This makes sure atomicity and consistency in message handling, making your data streaming processes more reliable and efficient. For a detailed understanding of these capabilities and their implementation, refer to the Karafka Pro [Transactions](Pro-Consumer-Groups-Transactions) documentation section.
 
-WaterDrop transactions enable users to send multiple messages to multiple topics/partitions so that all messages are successfully published or none are, ensuring atomicity.
+WaterDrop transactions enable users to send multiple messages to multiple topics/partitions so that all messages are successfully published or none are, making sure atomicity.
 
 ## Using Transactions
 
@@ -36,9 +36,9 @@ end
 
 ### Producing Messages One After Another
 
-When a WaterDrop producer is set up in a transactional mode, every single message production will automatically initiate its transaction when it isn't wrapped within a transaction block. While this ensures atomicity for each message, there are more efficient approaches. Each transaction will introduce additional latency due to the overhead of starting and completing a transaction for every message.
+When a WaterDrop producer is set up in a transactional mode, every single message production will automatically start its transaction when it isn't wrapped within a transaction block. While this makes sure atomicity for each message, there are more efficient approaches. Each transaction will introduce additional latency due to the overhead of starting and completing a transaction for every message.
 
-For optimized performance, it's advisable to leverage batch dispatches. By batching messages, you can reduce the number of transactions and, consequently, the associated overheads. This will improve throughput and minimize the latency introduced by frequent transaction initiations and completions. In a transactional setting, batching is key to balancing consistency and performance.
+For optimized performance, it's advisable to use batch dispatches. By batching messages, you can reduce the number of transactions and, consequently, the associated overheads. This will improve throughput and minimize the latency introduced by frequent transaction initiations and completions. In a transactional setting, batching is key to balancing consistency and performance.
 
 **BAD**:
 
@@ -77,7 +77,7 @@ end
 
 ### Producing In Batches
 
-When utilizing WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, ensuring that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
+When using WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, making sure that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
 
 ```ruby
 # In case of batch messages production, the `#transaction` wrapper is not needed.
@@ -91,9 +91,9 @@ producer.produce_many_async(messages)
 
 ### Aborting Transaction
 
-Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This ensures that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
+Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This makes sure that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
 
-Below, you can find an example that ensures that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka:
+Below, you can find an example that makes sure that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka:
 
 ```ruby
 producer.transaction do
@@ -125,7 +125,7 @@ producer.transaction do
 end
 ```
 
-In both behaviors, the overarching principle is to ensure data consistency and reliability. Whether you're aborting due to unforeseen errors or specific business logic, Karafka provides the tools necessary to manage your transactions effectively.
+In both behaviors, the overarching principle is to make sure data consistency and reliability. Whether you're aborting due to unforeseen errors or specific business logic, Karafka provides the tools necessary to manage your transactions effectively.
 
 ### Delivery Handles and Delivery Reports
 
@@ -192,7 +192,7 @@ However, the behavior differs between versions:
 - **pre 2.8.0**: Exiting a transaction using `return`, `break`, or `throw` would cause the transaction to rollback.
 - **2.8.0 and Newer**: Exiting a transaction using these methods will raise an error.
 
-It is **not** recommended to use early exiting methods. To ensure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
+It is **not** recommended to use early exiting methods. To make sure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
 
 **BAD**:
 
@@ -257,7 +257,7 @@ Because of the above, delivery reports may seem useless, however, while delivery
 
 WaterDrop is designed to be intelligent about handling transaction-related errors. It discerns which errors can be retried and will attempt based on the configuration settings. The retries aren't immediate - they come with a backoff period, giving the system a brief respite before trying again. This approach can mitigate transient issues that might resolve themselves after a short period.
 
-Regardless of the nature of the error - whether retryable or not - WaterDrop ensures transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be initiated if a pattern of errors emerges.
+Regardless of the nature of the error - whether retryable or not - WaterDrop makes sure transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be started if a pattern of errors emerges.
 
 Errors encapsulated as `Rdkafka::RdkafkaError` offer insight into their nature, helping formulate a response strategy. Here's how you can interpret them:
 
@@ -292,9 +292,9 @@ Purge errors occur mostly when WaterDrop cannot deliver a given message for an e
 In the context of a standard producer, a purge error is relatively uncommon and usually indicative of a problem. This type of error often arises when WaterDrop cannot deliver a given message to Kafka for an extended period. Common causes include network issues, Kafka broker unavailability, or misconfigurations.
 
 Given the unexpected nature of purges in this context, they're flagged as errors. When such a situation arises, WaterDrop propagates the purge error via the `error.occurred` notification channel. As these are not typical behaviors, they should be diligently monitored and addressed.
-Conversely, purge errors take on a different meaning within a transactional producer context. Specifically, during aborted transactions, it's a standard operation for WaterDrop to purge each message within the transaction that hasn't been dispatched to Kafka yet. This behavior is expected and part of how transactional processes ensure atomicity and consistency.
+Conversely, purge errors take on a different meaning within a transactional producer context. Specifically, during aborted transactions, it's a standard operation for WaterDrop to purge each message within the transaction that hasn't been dispatched to Kafka yet. This behavior is expected and part of how transactional processes make sure atomicity and consistency.
 
-This purging process is anticipated within transactional boundaries, so these purge errors are not considered typical "errors." Instead of using the `error.occurred` notification channel, WaterDrop uses the `message.purged` channel to report these events. This distinction is crucial to ensure system monitors or logs are not flooded with false positives when working with transactional producers.
+This purging process is anticipated within transactional boundaries, so these purge errors are not considered typical "errors." Instead of using the `error.occurred` notification channel, WaterDrop uses the `message.purged` channel to report these events. This distinction is crucial to make sure system monitors or logs are not flooded with false positives when working with transactional producers.
 
 Not every message of an aborted transaction is purged, though. A message is only purged if it was still sitting in the local queue when the abort happened. If the broker had already acknowledged it, there is nothing left to purge: the message stays in the log as part of an aborted transaction, and its delivery handle carries a real partition and offset instead of a `Purged in queue` error. Both outcomes are normal, and which one you get is a matter of timing. Enabling `wait_timeout_on_transaction_abort` (see [Aborting Right After Producing](#aborting-right-after-producing)) makes the second one deliberate for the transaction's first message, because WaterDrop waits for its acknowledgement before aborting.
 
@@ -306,11 +306,11 @@ The `transaction.timeout.ms` parameter in Kafka is a configuration setting speci
 
 This behavior may impact you in the following ways:
 
-- **Ensures Bounded Transaction Durations**: With `transaction.timeout.ms` in place, WaterDrop ensures that no transaction lingers indefinitely. This is especially crucial when unforeseen issues might prevent a transaction from completing normally. Having a set timeout ensures system resources aren't indefinitely tied up with stalled or zombie transactions.
+- **Makes sure Bounded Transaction Durations**: With `transaction.timeout.ms` in place, WaterDrop makes sure that no transaction lingers indefinitely. This is especially crucial when unforeseen issues might prevent a transaction from completing normally. Having a set timeout makes sure system resources aren't indefinitely tied up with stalled or zombie transactions.
 
 - **Enhances System Resilience**: By auto-aborting transactions that surpass the set timeout, we avoid potential deadlocks or long-running transactions that might block other critical operations.
 
-- **Determines Batch Size**: If you're sending a batch of messages as a part of a single transaction in WaterDrop, you need to ensure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
+- **Determines Batch Size**: If you're sending a batch of messages as a part of a single transaction in WaterDrop, you need to make sure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
 
 - **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, it's crucial to handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
 
@@ -318,11 +318,11 @@ This behavior may impact you in the following ways:
 
 !!! warning "Potential Exceedance of `max_wait_timeout` in WaterDrop Transactions"
 
-    When working with transactions in WaterDrop, especially in clusters experiencing connectivity issues or unavailability, be aware that the `max_wait_timeout` parameter may be exceeded. This behavior is due to the internal retry policies within WaterDrop, which are critical for maintaining system stability. Although this might result in longer wait times, it is an expected and necessary mechanism to ensure reliable message delivery and consistency across transactions. Therefore, this will not be addressed or altered in future updates.
+    When working with transactions in WaterDrop, especially in clusters experiencing connectivity issues or unavailability, be aware that the `max_wait_timeout` parameter may be exceeded. This behavior is due to the internal retry policies within WaterDrop, which are critical for maintaining system stability. Although this might result in longer wait times, it is an expected and necessary mechanism to make sure reliable message delivery and consistency across transactions. Therefore, this will not be addressed or altered in future updates.
 
 ## `transactional.id` Management and Fencing
 
-One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka ensures that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
+One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka makes sure that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
 
 Below, you can find an example of how fencing works. After `producer2` first transaction, `producer1` will no longer be able to produce messages and will raise an error:
 
@@ -356,7 +356,7 @@ end
 
 Here are some recommendations on how to set the `transactional.id` value:
 
-1. **Uniqueness**: Ensure each producer instance has a unique `transactional.id`. This avoids conflicts and allows Kafka to correctly track and manage the state of each producer's transactions.
+1. **Uniqueness**: Make sure each producer instance has a unique `transactional.id`. This avoids conflicts and allows Kafka to correctly track and manage the state of each producer's transactions.
 
 1. **Durability**: The `transactional.id` is meant to be durable across producer restarts. If a producer goes down and comes back up, it should use the same `transactional.id` to resume its activities.
 
@@ -364,29 +364,29 @@ Here are some recommendations on how to set the `transactional.id` value:
 
 1. **Consistent Mapping**: If you have a particular processing task or a set of tasks, always assign the same `transactional.id` to them. This consistent mapping helps maintain exactly-once semantics, especially if jobs or producers restart.
 
-1. **Storage**: Consider storing the mapping of `transactional.id` to specific tasks or workflows in durable storage. This ensures that even if your application restarts, you can consistently assign the correct `transactional.id` to each task.
+1. **Storage**: Consider storing the mapping of `transactional.id` to specific tasks or workflows in durable storage. This makes sure that even if your application restarts, you can consistently assign the correct `transactional.id` to each task.
 
 1. **Monitoring**: Regularly monitor the transactions in your Kafka cluster. Look for anomalies or issues related to specific `transactional.id`, such as frequent aborts. This can help in early detection of potential problems.
 
-1. **Fencing Awareness**: Understand that Kafka uses the `transactional.id` for producer fencing. Suppose a new producer instance starts with an existing transactional.id, older instances with the same ID will be "fenced out" and unable to send more messages. This is a protective measure to ensure data consistency, but be aware of this behavior when managing producer lifecycles.
+1. **Fencing Awareness**: Understand that Kafka uses the `transactional.id` for producer fencing. Suppose a new producer instance starts with an existing transactional.id, older instances with the same ID will be "fenced out" and unable to send more messages. This is a protective measure to make sure data consistency, but be aware of this behavior when managing producer lifecycles.
 
-1. **Avoid Overloading**: While it might be tempting to use highly descriptive `transactional.id` that encapsulates a lot of meta-information about the producer or task, keep them reasonably short and meaningful. This ensures better performance and manageability.
+1. **Avoid Overloading**: While it might be tempting to use highly descriptive `transactional.id` that encapsulates a lot of meta-information about the producer or task, keep them reasonably short and meaningful. This makes sure better performance and manageability.
 
-By adhering to these recommendations, you can ensure reliable transactional processing in Karafka and avoid potential pitfalls related to mismanagement of `transactional.id`.
+By adhering to these recommendations, you can make sure reliable transactional processing in Karafka and avoid potential pitfalls related to mismanagement of `transactional.id`.
 
 ## Nested Transaction
 
 In certain situations, developers might inadvertently nest transactions within one another. With WaterDrop, this is gracefully handled to prevent any undesired side effects.
 
-When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you initiate a nested transaction - starting another transaction inside an existing one - the producer won't get confused or initiate a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
+When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you start a nested transaction - starting another transaction inside an existing one - the producer won't get confused or start a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
 
-This intelligent behavior ensures:
+This intelligent behavior makes sure:
 
 1. **Simplicity**: You don't need to manage or be overly cautious about accidentally nesting transactions.
 
 1. **Consistency**: Whether it's a single or mistakenly nested transaction, the outcome remains consistent; messages will either all be committed or aborted.
 
-1. **Performance**: Since WaterDrop recognizes and avoids initiating multiple transactions, there's no additional overhead or latency from nested transaction initiations.
+1. **Performance**: Since WaterDrop recognizes and avoids starting multiple transactions, there's no additional overhead or latency from nested transaction initiations.
 
 While it's generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they're handled seamlessly without any adverse effects.
 
@@ -421,7 +421,7 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.marked_as_consumed`
 - `transaction.finished`
 
-Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
+Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature makes sure that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
 !!! warning "Event Subscription with Multiple Producers"
 
@@ -463,11 +463,11 @@ end
 
 ## Fatal Errors Recovery Strategy
 
-When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
+When a fatal transactional error occurs, the producer can close and recreate its underlying client. This makes sure that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
 
 The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process.
 
-The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
+The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it makes sure that all errors result in a rollback, maintaining system integrity.
 
 If you find this behaviour undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
 
@@ -505,13 +505,13 @@ The setting is disabled by default (`0`). Waiting for that acknowledgement means
 
 Karafka producer transactions provide atomicity over streams, but users should be mindful of the following limitations:
 
-- **Not Database Transactions**: WaterDrop transactions are distinct from database transactions. They don't support the rollback states typically in databases. Aborting a transaction ensures that the messages are not published but won't "undo" other side effects arising from message processing.
+- **Not Database Transactions**: WaterDrop transactions are distinct from database transactions. They don't support the rollback states typically in databases. Aborting a transaction makes sure that the messages are not published but won't "undo" other side effects arising from message processing.
 
 - **Latency**: Transactions necessitate coordination amongst Kafka brokers, leading to added latency.
 
 - **Hanging Transactions**: Transactions that don't complete (neither committed nor aborted) can impact the Last Stable Offset (LSO) in Kafka. This can block consumers from reading new data until the hanging transaction is resolved, affecting data consumption and overall system throughput.
 
-- **Web UI Dispatch Interference**: When both user code and Karafka Web UI use `Karafka.producer`, prolonged transactions can block the Web UI from reporting data due to a held lock, blocking other dispatches to Kafka. Ensure brief transactions, avoid concurrent access or initialize additional producers to mitigate this.
+- **Web UI Dispatch Interference**: When both user code and Karafka Web UI use `Karafka.producer`, prolonged transactions can block the Web UI from reporting data due to a held lock, blocking other dispatches to Kafka. Make sure brief transactions, avoid concurrent access or initialize additional producers to mitigate this.
 
 - **Handling Purge Errors in Transactions**: Purge errors are common during aborted transactions. Instead of broadcasting these through the `error.occurred` notification channel, they are relayed via the `message.purged` notification. This distinction is important because undelivered messages from an aborted transaction will trigger this notification. Recognizing these as standard behavior rather than errors is crucial when working with transactions.
 
@@ -520,7 +520,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
     > Broker: Producer attempted a transactional operation in an invalid state (invalid_txn_state)
 
 - **Thread Safety with WaterDrop**: While WaterDrop is inherently thread-safe, there are specifics to keep in mind for transactions:
-    - **Lock During Transactions**: WaterDrop locks access to itself when a transaction is underway. For those anticipating high transactional loads, consider leveraging multiple producers. This way, while one producer is engaged in a transaction in one thread, others can operate independently.
+    - **Lock During Transactions**: WaterDrop locks access to itself when a transaction is underway. For those anticipating high transactional loads, consider using multiple producers. This way, while one producer is engaged in a transaction in one thread, others can operate independently.
 
     - **Exclusive Transactional Usage**: Should you configure a producer as transactional, be aware that it cannot then be used for non-transactional messaging, and all producer operations will be wrapped with a transaction.
 
@@ -532,11 +532,11 @@ Karafka producer transactions provide atomicity over streams, but users should b
       <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
     </p>
 
-These limitations underline the importance of a thorough understanding and careful implementation when leveraging Kafka transactions, especially with tools like WaterDrop.
+These limitations underline the importance of a thorough understanding and careful implementation when using Kafka transactions, especially with tools like WaterDrop.
 
 ## Example Use Cases
 
-- **Order Processing Systems**: When an order is placed, various events might be produced, such as order creation, payment processing, and inventory updates. All or none of these events must be published to ensure data consistency.
+- **Order Processing Systems**: When an order is placed, various events might be produced, such as order creation, payment processing, and inventory updates. All or none of these events must be published to make sure data consistency.
 
 - **Financial Systems**: Consider a system responsible for handling bank transfers. Two events are produced for a transfer - debit from the source account and credit to the destination account. To maintain financial integrity, both events must be processed atomically.
 
@@ -544,4 +544,4 @@ These limitations underline the importance of a thorough understanding and caref
 
 - **Multi-step Workflows**: In processes involving multiple steps (like data transformation and aggregation), and each stage results in a message, all messages in the workflow must be published to maintain a consistent view of the workflow's state.
 
-- **Audit Logging Systems**: When an action is performed, it may produce multiple audit logs. All related audit logs must be written atomically to ensure a complete trail of events.
+- **Audit Logging Systems**: When an action is performed, it may produce multiple audit logs. All related audit logs must be written atomically to make sure a complete trail of events.

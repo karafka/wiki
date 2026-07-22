@@ -127,7 +127,7 @@ Crucially, different consumer groups are completely independent. Your analytics 
 
 Within a partition, Kafka guarantees that messages arrive in exactly the order they were produced. Messages with the same key are always routed to the same partition. This gives you per-entity ordering without giving up parallelism.
 
-If you need to ensure all events for a given user, order, or account are processed in sequence, use that entity's ID as the message key. Kafka handles the rest.
+If you need to make sure all events for a given user, order, or account are processed in sequence, use that entity's ID as the message key. Kafka handles the rest.
 
 This is a meaningful advantage over typical queueing systems, which offer no ordering guarantee, and over SQS Standard, which explicitly does not guarantee ordering.
 
@@ -156,7 +156,7 @@ Kafka tends to be the right choice when:
 
 Kafka adds real operational complexity. It is **not** the right tool for every situation.
 
-Sidekiq is simpler, well-understood, and sufficient for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
+Sidekiq is simpler, well-understood, and enough for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
 
 Consider staying with simpler alternatives when:
 

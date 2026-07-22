@@ -17,7 +17,7 @@ When a consumer is configured with a `group.instance.id`, this value is displaye
 
 ## LSO Freezes Awareness
 
-In the world of Kafka, the Last Stable Offset (LSO) is pivotal in ensuring message integrity and order, especially for idempotent producers. However, at times, the LSO may hang, affecting the consumption of messages and potentially bringing to a standstill any consumers operating at a `read_committed` isolation level. This documentation will shed light on the concept, the problems it may cause, and how the Karafka Web UI can be a lifesaver during such situations.
+In the world of Kafka, the Last Stable Offset (LSO) is pivotal in making sure message integrity and order, especially for idempotent producers. However, at times, the LSO may hang, affecting the consumption of messages and potentially bringing to a standstill any consumers operating at a `read_committed` isolation level. This documentation will shed light on the concept, the problems it may cause, and how the Karafka Web UI can be a lifesaver during such situations.
 
 ### Understanding the LSO - Last Stable Offset
 
@@ -31,7 +31,7 @@ If the LSO hangs or is stuck, it signifies that new records have yet to be commi
 
 The Karafka Web UI is equipped with robust health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
 
-Karafka's Web UI has visual cues to indicate potential problems concerning the LSO:
+Karafka's Web UI has visual cues to indicate potential problems about the LSO:
 
 1. **At Risk (Yellow Highlight)**
 
@@ -49,11 +49,11 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
 
     ![karafka web ui LSO error](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png)
 
-These visual indicators allow immediate awareness of potential problems, ensuring quick identification and action.
+These visual indicators allow immediate awareness of potential problems, making sure quick identification and action.
 
 ### Conclusion
 
-Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, ensuring administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the seamless functioning of your Kafka-based data processing system.
+Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, making sure administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the seamless functioning of your Kafka-based data processing system.
 
 ## Cluster Lags
 

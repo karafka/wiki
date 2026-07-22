@@ -17,7 +17,7 @@ There are **no** extra steps needed unless you want to completely disable consum
 
 ## Dashboard
 
-The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
+The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to make sure the smooth running of your Kafka operations.
 
 <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-dashboard.png" alt="karafka web pro dashboard view" />
 
@@ -62,7 +62,7 @@ This dashboard views show Karafka consumers' groups' health states with their la
 
 ## Topics Insights
 
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](Pro-Web-UI-Topics-Insights).
+The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must make sure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](Pro-Web-UI-Topics-Insights).
 
 ## Explorer
 
@@ -87,7 +87,7 @@ In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](Pro-Recu
 Karafka Pro's Enhanced Web UI provides detailed insights into scheduled messages, enabling efficient management and monitoring:
 
 - **Daily Dispatch Estimates**: View estimates of messages scheduled for dispatch across partitions, aiding in operational planning.
-- **Loading State Monitoring**: Monitor the loading state of partitions to ensure readiness, especially after nightly reloads.
+- **Loading State Monitoring**: Monitor the loading state of partitions to make sure readiness, especially after nightly reloads.
 - **Message Exploration**: Access detailed information about messages, queued for future dispatch, including scheduled times and payload details.
 
 <p align="center">
@@ -137,7 +137,7 @@ This feature has its own dedicated documentation that you can access [here](Pro-
 
 ## Policies
 
-Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
+Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, making sure compliance with data protection and privacy standards.
 
 This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Policies).
 

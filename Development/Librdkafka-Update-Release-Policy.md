@@ -1,6 +1,6 @@
-This document outlines the policy and strategy for updating librdkafka in the Karafka ecosystem. The policy emphasizes stability and reliability over immediate adoption of new releases, ensuring that production deployments remain stable while still benefiting from improvements and bug fixes in librdkafka.
+This document outlines the policy and strategy for updating librdkafka in the Karafka ecosystem. The policy emphasizes stability and reliability over immediate adoption of new releases, making sure that production deployments remain stable while still benefiting from improvements and bug fixes in librdkafka.
 
-The Karafka ecosystem prioritizes **stability over speed** when it comes to librdkafka updates. Historical evidence shows that new librdkafka releases introduced subtle behavioral changes or previously undetected issues that can emerge under specific production conditions. This conservative approach ensures that Karafka users receive only thoroughly tested and validated librdkafka updates.
+The Karafka ecosystem prioritizes **stability over speed** when it comes to librdkafka updates. Historical evidence shows that new librdkafka releases introduced subtle behavioral changes or previously undetected issues that can emerge under specific production conditions. This conservative approach makes sure that Karafka users receive only thoroughly tested and validated librdkafka updates.
 
 !!! warning "Flexible Timeline Policy"
 
@@ -11,7 +11,7 @@ The Karafka ecosystem prioritizes **stability over speed** when it comes to libr
     - Critical bug fixes in existing functionality
     - Other high-priority maintenance work
 
-    Additionally, new feature releases are intentionally **never bundled with librdkafka updates** to maintain a clear separation between infrastructure updates and functionality changes. This ensures that any issues can be attributed to their specific cause, reducing the complexity of troubleshooting.
+    Additionally, new feature releases are intentionally **never bundled with librdkafka updates** to maintain a clear separation between infrastructure updates and functionality changes. This makes sure that any issues can be attributed to their specific cause, reducing the complexity of troubleshooting.
 
 ## Update Strategy
 
@@ -73,7 +73,7 @@ The minor version may also be incremented without a librdkafka update when:
 - Breaking changes require user attention
 - Substantial refactoring affects public interfaces
 
-This ensures that version numbering clearly communicates the scope of changes to users.
+This makes sure that version numbering clearly communicates the scope of changes to users.
 
 ## Release Validation Criteria
 
@@ -101,6 +101,6 @@ Before any librdkafka update is considered complete, the following criteria must
 
 ## Conclusion
 
-This conservative approach to librdkafka updates ensures that Karafka users receive reliable, well-tested releases that maintain the stability expected in production environments. While this process may delay the availability of new features, it prioritizes the stability and reliability that are crucial for mission-critical Kafka deployments.
+This conservative approach to librdkafka updates makes sure that Karafka users receive reliable, well-tested releases that maintain the stability expected in production environments. While this process may delay the availability of new features, it prioritizes the stability and reliability that are crucial for mission-critical Kafka deployments.
 
 The minimum 4-week cycle from librdkafka release to Karafka integration (2 weeks observation + 2 weeks testing) represents a balanced approach between staying current with upstream improvements and maintaining production stability.

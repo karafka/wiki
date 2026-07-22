@@ -2,13 +2,13 @@
 
     Please note that this license applies exclusively to the Wiki's **original content** and does not apply to any specific Karafka ecosystem components or third-party sourced content.
 
-    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
+    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information about the licensing of particular Karafka components.
 
     **Third-party content** (such as content sourced from librdkafka documentation or other external sources) retains its original licensing terms and is not subject to the restrictions outlined in this license.
 
 **librdkafka documentation** is used under explicit permission as stated in their INTRODUCTION.md: "You are free to reuse the librdkafka API and CONFIGURATION documentation in your project, but please do return any documentation improvements back to librdkafka (file a github pull request)."
 
-    This license is intended solely to govern the use of the Wiki's original content, ensuring proper restrictions and permitted non-commercial use as specified below.
+    This license is intended solely to govern the use of the Wiki's original content, making sure proper restrictions and permitted non-commercial use as specified below.
 
 # All Rights Reserved
 
@@ -56,7 +56,7 @@ No additional license, express or implied, is granted for any use of the origina
 
 ## Contributions to the Wiki
 
-By sending a pull request or contributing in any other way to this Wiki, you agree to transfer the copyright of your changes to the Owner. This transfer ensures that the Owner retains exclusive control over the original content of the wiki, including the right to use, modify, and distribute any contributed content as part of the wiki under the same license terms.
+By sending a pull request or contributing in any other way to this Wiki, you agree to transfer the copyright of your changes to the Owner. This transfer makes sure that the Owner retains exclusive control over the original content of the wiki, including the right to use, modify, and distribute any contributed content as part of the wiki under the same license terms.
 
 This provision does not apply to third-party content that contributors may reference or include, which remains subject to its original licensing terms.
 

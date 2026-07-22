@@ -12,10 +12,10 @@ The Karafka Admin Replication API provides tools for planning topic replication 
 
 ## Prerequisites
 
-Before using the Replication API, ensure you have:
+Before using the Replication API, make sure you have:
 
 - **Kafka CLI tools**: The `kafka-reassign-partitions.sh` script from your Kafka installation
-- **Sufficient broker capacity**: Target replication factor cannot exceed the number of available brokers
+- **Enough broker capacity**: Target replication factor cannot exceed the number of available brokers
 - **Adequate resources**: Replication changes require disk space and network bandwidth on target brokers
 - **Cluster access**: Network access to execute Kafka CLI commands against your cluster
 
@@ -64,7 +64,7 @@ plan = Karafka::Admin.plan_topic_replication(
 Manual assignment is useful when you need to:
 
 - Control rack awareness or availability zone placement
-- Ensure specific partitions are hosted on specific hardware
+- Make sure specific partitions are hosted on specific hardware
 - Implement custom load balancing strategies
 
 ## Rebalancing Replicas
@@ -79,7 +79,7 @@ plan = Karafka::Admin::Replication.rebalance(topic: 'events')
 plan.export_to_file('/tmp/rebalance.json')
 ```
 
-This is particularly useful after cluster expansion to ensure even load distribution.
+This is particularly useful after cluster expansion to make sure even load distribution.
 
 ## Working with the Replication Plan
 
@@ -206,7 +206,7 @@ end
 ### Before Execution
 
 - **Test on non-critical topics first**: Verify the process works in your environment before applying to production topics
-- **Check cluster health**: Ensure all brokers are healthy and have sufficient resources
+- **Check cluster health**: Make sure all brokers are healthy and have enough resources
 - **Review the plan**: Use `summary` and inspect `partitions_assignment` to verify the plan looks correct
 - **Plan for maintenance windows**: Execute during low-traffic periods to minimize impact
 
@@ -218,7 +218,7 @@ end
 
 ### After Execution
 
-- **Verify ISR status**: Ensure all replicas are in-sync before considering the operation complete
+- **Verify ISR status**: Make sure all replicas are in-sync before considering the operation complete
 - **Monitor for under-replicated partitions**: Watch for any issues in the hours following the change
 - **Update monitoring thresholds**: Adjust alerts if your replication factor expectations have changed
 
