@@ -177,7 +177,7 @@ end
 
 ## Partitioning Strategies
 
-The effectiveness of Parallel Segments depends heavily on your partitioning strategy. Since Parallel Segments work by filtering messages at the consumer group level prior to work delegation, choosing an optimal partitioner is crucial for both performance and proper data distribution.
+The effectiveness of Parallel Segments depends heavily on your partitioning strategy. Since Parallel Segments work by filtering messages at the consumer group level before work delegation, choosing an optimal partitioner is crucial for both performance and proper data distribution.
 
 !!! warning "All-at-Once Deployment Required for Partitioner/Reducer Changes"
 
@@ -200,7 +200,7 @@ The effectiveness of Parallel Segments depends heavily on your partitioning stra
 
 ### Performance Considerations
 
-Parallel Segments work the best, when messages can be filtered prior to deserialization, which minimizes CPU overhead during the filtering process. To maximize this benefit, your partitioner should ideally use data that doesn't require payload deserialization.
+Parallel Segments work the best, when messages can be filtered before deserialization, which minimizes CPU overhead during the filtering process. To maximize this benefit, your partitioner should ideally use data that doesn't require payload deserialization.
 
 #### Using Message Headers (Recommended)
 
@@ -293,7 +293,7 @@ end
 # user_id "23" -> "23".sum = 101 -> 101 % 5 = 1 (segment 1) ← collision!
 ```
 
-This means that despite configuring 5 segments, the data will only utilize 2 segments, leaving the remaining 3 segments idle as long as no other user IDs are present.
+This means that despite configuring 5 segments, the data will only use 2 segments, leaving the remaining 3 segments idle as long as no other user IDs are present.
 
 #### Custom Reducer for Better Distribution
 
@@ -696,7 +696,7 @@ Parallel Segments provide a way to scale CPU-intensive message processing in Kar
 
 While the trade-off in network bandwidth usage is important to consider, the performance gains for certain workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and monitoring, Parallel Segments offer a robust solution for high-throughput, CPU-intensive message processing scenarios.
 
-Remember to leverage the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
+Remember to use the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
 
 ## See Also
 

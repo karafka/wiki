@@ -20,7 +20,7 @@ ACLs ensure that only authorized entities can access Kafka's functionalities, wh
 
 The Karafka Admin ACLs API defines several "types" that categorize and specify details for ACL management in a Kafka environment. These types are crucial for setting up detailed and secure access controls.
 
-These types play a critical role in the Karafka Admin ACLs API, providing a structured and comprehensive way to manage access controls within a Kafka environment. Understanding and utilizing these types enables you to secure and regulate operations in your Kafka clusters effectively.
+These types play a critical role in the Karafka Admin ACLs API, providing a structured and comprehensive way to manage access controls within a Kafka environment. Understanding and using these types enables you to secure and regulate operations in your Kafka clusters effectively.
 
 ### Resource Types
 
@@ -304,9 +304,9 @@ end
 
 ## Summary
 
-Karafka's Admin ACLs API provides a powerful yet user-friendly way to manage Kafka ACLs, ensuring secure and authorized access to Kafka resources. By leveraging Ruby symbols and a structured API, it simplifies the process of ACL management, making it more accessible and less error-prone for Ruby developers.
+Karafka's Admin ACLs API provides a powerful yet user-friendly way to manage Kafka ACLs, ensuring secure and authorized access to Kafka resources. By using Ruby symbols and a structured API, it simplifies the process of ACL management, making it more accessible and less error-prone for Ruby developers.
 
-Whether securing a small project or an enterprise-scale system, understanding and utilizing Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
+Whether securing a small project or an enterprise-scale system, understanding and using Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
 
 ## See Also
 

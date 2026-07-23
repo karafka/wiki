@@ -38,7 +38,7 @@ The following metrics are available for each consumer:
 
 - `Started` - The moment when the given consumer process was started.
 - `Memory` - RSS (Resident Set Size) measures memory usage in an operating system. It represents the portion of a process's memory held in RAM and is "resident" in the system.
-- `Utilization` - Displays the number of threads in a given process against a number of threads actively processing data in a given moment.
+- `Utilization` - Compares the number of threads actively processing data at a given moment against the total number of threads in a given process.
 - `Total lag` - Sumed lag from all the partitions actively consumed by a given process.
 
 ### Consumer Group Join States

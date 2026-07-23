@@ -272,7 +272,7 @@ This approach ensures that:
 - Larger message groups are processed first
 - Work is distributed more evenly across available workers
 - Message order within each key group is preserved within a single batch
-- All available worker threads are utilized effectively
+- All available worker threads are used effectively
 
 ##### Important Considerations for Balanced Distribution
 
@@ -497,7 +497,7 @@ end
 
 When working with Virtual Partitions in Karafka, users can manually invoke a collapsing operation. This provides flexibility and control, especially when non-linear message processing is required.
 
-Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also initiate this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
+Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also start this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
 
 To manually collapse your Virtual Partitions, you need to invoke the `#collapse_until!` method as follows:
 
@@ -584,7 +584,7 @@ By decoupling thread assignment from consumer instances and ensuring dedicated, 
 
 In Karafka, the default reducer for Virtual Partitions is a method designed to distribute messages across virtual partitions. It does this by using a simple mathematical operation on the sum of the stringified version of the virtual key. While this method is generally effective, it may not be fully optimal under certain configurations. For example, it could consistently use only 60% or less of the available threads, leading to inefficiencies and underutilization of resources.
 
-Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally utilized, leading to better performance and throughput for your application.
+Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally used, leading to better performance and throughput for your application.
 
 ### Implementing a Custom Reducer
 
@@ -656,7 +656,7 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Virtual Partitions vs. Increasing Number of Partitions vs. Parallel Segments
 
-When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, leverage Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
+When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, use Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
 
 ### Conceptual Differences
 
@@ -676,7 +676,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 ### Polling Characteristics
 
-- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-utilized.
+- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-used.
 
 - **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
 

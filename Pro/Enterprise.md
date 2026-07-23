@@ -24,7 +24,7 @@ With the Enterprise version, organizations have the privilege to continue using 
 
 ### Offline / Embedded Usage Rights
 
-Enterprise users are not tied to our gem server for license gem download and verification. This grants organizations the flexibility and independence to utilize Karafka without any external dependencies.
+Enterprise users are not tied to our gem server for license gem download and verification. This grants organizations the flexibility and independence to use Karafka without any external dependencies.
 
 ### Private Fork Usage
 

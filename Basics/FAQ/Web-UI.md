@@ -138,7 +138,7 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 
 ## What is the purpose of the `karafka_consumers_reports` topic?
 
-The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
+The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to use Kafka as its primary source of information.
 
 ## Why does the `karafka_consumers_commands` topic generate constant network traffic?
 
@@ -281,7 +281,7 @@ This approach allows you to maintain detailed logging for your application consu
 
 ## What is the serialization format for Karafka Web UI internal topics?
 
-Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach leverages Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
+Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach uses Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
 
 ## What is the expected message throughput for Karafka Web UI internal topics?
 

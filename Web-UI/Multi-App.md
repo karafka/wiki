@@ -58,7 +58,7 @@ There are several reasons why you should never use the same Karafka Web UI setup
 
 ## Explorer Routing Awareness
 
-The Karafka Web UI utilizes the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it utilizes the appropriate dedicated deserializer instead of defaulting to JSON.
+The Karafka Web UI uses the routing awareness feature. Viewing messages in the Web UI Explorer automatically uses the deserializer specified in the routing setup. By doing so, whenever the Web UI displays messages from a specific topic, it uses the appropriate dedicated deserializer instead of defaulting to JSON.
 
 !!! note "Deserialization Requirement"
 
@@ -103,7 +103,7 @@ end
 
 To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
 
-Karafka applications leverage the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
+Karafka applications use the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
 
 ```ruby
 class KarafkaApp < Karafka::App

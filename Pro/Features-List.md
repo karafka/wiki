@@ -26,7 +26,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) - Karafka's Expiring Messages feature allows messages to be excluded from processing automatically in case they are too old.
 
-- [Routing Patterns](Pro-Routing-Patterns) - Karafka's Routing Patterns feature allows users to define routes using regular expressions. When a Kafka topic matches the specified pattern, Karafka automatically initiates consumption, streamlining the handling of dynamically created topics without manual configuration.
+- [Routing Patterns](Pro-Routing-Patterns) - Karafka's Routing Patterns feature allows users to define routes using regular expressions. When a Kafka topic matches the specified pattern, Karafka automatically starts consumption, streamlining the handling of dynamically created topics without manual configuration.
 
 - [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) - Rate limiting allows you to control the pace at which messages are consumed.
 

@@ -414,7 +414,7 @@ expect { cleanup_task.execute }.not_to raise_error
 
 ## Warranties
 
-Recurring Tasks provides strong execution warranties by leveraging Kafka’s robust architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
+Recurring Tasks provides strong execution warranties by using Kafka’s robust architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
 
 - **Single Process Execution**: Karafka ensures that only one process can execute the scheduled tasks by assigning Kafka partitions to a single consumer. This prevents multiple processes from executing the same task simultaneously, offering a strong guarantee of task uniqueness and timing precision.
 

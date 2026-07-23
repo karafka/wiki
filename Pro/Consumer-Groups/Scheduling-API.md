@@ -12,7 +12,7 @@ The Scheduling API was designed to control when specific consumption jobs are pl
 
 ## Execution Model
 
-Understanding the job execution model in Karafka is crucial for effectively utilizing the advanced scheduling API. This section explains how Karafka manages and executes jobs, focusing on the relationship between subscription groups, the scheduler, workers, and the jobs queue.
+Understanding the job execution model in Karafka is crucial for effectively using the advanced scheduling API. This section explains how Karafka manages and executes jobs, focusing on the relationship between subscription groups, the scheduler, workers, and the jobs queue.
 
 Karafka's interaction with Kafka and subsequent job processing are fundamentally based on two types of threads: the Listener and Worker thread(s). These threads serve distinct yet complementary data consumption and processing roles. Understanding the functions and interplay of these threads is critical to grasping how Karafka operates efficiently and effectively.
 

@@ -8,7 +8,7 @@ This feature can be compelling in complex processing scenarios where understandi
 
 ## Enabling Offset Metadata Storage
 
-This feature is always enabled, ensuring you can leverage Offset Metadata Storage's benefits without additional setup. However, the behavior of Offset Metadata Storage can be fine-tuned using specific settings that control its caching and deserialization behavior. You can alter this feature behavior in the routing, similar to other features:
+This feature is always enabled, ensuring you can use Offset Metadata Storage's benefits without additional setup. However, the behavior of Offset Metadata Storage can be fine-tuned using specific settings that control its caching and deserialization behavior. You can alter this feature behavior in the routing, similar to other features:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -177,13 +177,13 @@ One crucial aspect is that the `#offset_metadata` method may return `false` if t
 
 ## Offset Metadata Usage From Within Filters
 
-Offset Metadata Storage in Karafka enhances consumer instances' capability to manage and utilize message offsets and extends this functionality beyond the scope of a single consumer. This feature is particularly beneficial when you need to access offset metadata from different application components, such as within the [Filtering API](Pro-Consumer-Groups-Filtering-API), to make more context-aware decisions based on the metadata associated with specific offsets.
+Offset Metadata Storage in Karafka enhances consumer instances' capability to manage and use message offsets and extends this functionality beyond the scope of a single consumer. This feature is particularly beneficial when you need to access offset metadata from different application components, such as within the [Filtering API](Pro-Consumer-Groups-Filtering-API), to make more context-aware decisions based on the metadata associated with specific offsets.
 
-In scenarios where you need to retrieve offset metadata outside of the consumer instance, for instance, within Filters, to leverage the Filtering API, Karafka provides a flexible solution. This is especially useful when your processing logic requires insight into the message offsets' metadata at different stages or components of your application, not just within the consumer itself.
+In scenarios where you need to retrieve offset metadata outside of the consumer instance, for instance, within Filters, to use the Filtering API, Karafka provides a flexible solution. This is especially useful when your processing logic requires insight into the message offsets' metadata at different stages or components of your application, not just within the consumer itself.
 
 As long as the current process retains the assignment of the given topic partition, you can retrieve the offset metadata from places other than the consumer instance. This means that even in filters or other parts of your Karafka application, you can access the metadata associated with any offset, ensuring a seamless and cohesive processing flow.
 
-To do so, you need to utilize the `Karafka::Pro::Processing::OffsetMetadata::Fetcher` object as follows:
+To do so, you need to use the `Karafka::Pro::Processing::OffsetMetadata::Fetcher` object as follows:
 
 ```ruby
 offset_metadata = Karafka::Pro::Processing::OffsetMetadata::Fetcher.find(
@@ -245,7 +245,7 @@ Offset Metadata Storage comes with certain limitations you should be aware of:
 
 1. **Usage of `#store_offset_metadata` with Non-Persistent Consumers**: Similar to the caching issue, the `#store_offset_metadata` method may face challenges if consumers are not operating in persistent mode. This method is designed to store metadata in anticipation of future marking, and its proper functioning relies on the consumer maintaining a consistent state. If the consumers are not persistent, the stored metadata might not be associated with the intended offset, leading to unexpected behavior.
 
-Understanding and accommodating these limitations is essential for effectively leveraging the Offset Metadata Storage feature in your Karafka-based applications.
+Understanding and accommodating these limitations is essential for effectively using the Offset Metadata Storage feature in your Karafka-based applications.
 
 ## Example Use Cases
 

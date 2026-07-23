@@ -12,7 +12,7 @@ Process-level commanding includes tracing consumers for detailed state informati
 
 ### Configuration
 
-Commanding is **turned on by default**. During each consumer process startup, it initiates a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and tracing consumers for backtraces.
+Commanding is **turned on by default**. During each consumer process startup, it starts a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and tracing consumers for backtraces.
 
 To turn off this feature, you can set the `config.commanding.active` configuration option to `false`. Disabling commanding removes the extra Kafka connection dedicated to these administrative tasks. Consequently, it also disables the ability to execute these commands from the Web UI.
 
@@ -94,7 +94,7 @@ A special command message is dispatched to the targeted consumer when the "Trace
 2. **Performance Bottlenecks**: Diagnosing performance issues by understanding which threads are consuming most resources or are stuck in long-running operations.
 3. **Unexpected Delays**: Investigating unexplained delays in message processing, potentially caused by external API calls or resource locking.
 4. **Error Reproduction**: Capturing the exact state of a consumer when an intermittent or hard-to-reproduce error occurs, aiding in debugging.
-5. **Optimization**: Analyzing thread states for potential optimizations in how resources are utilized, or operations are conducted.
+5. **Optimization**: Analyzing thread states for potential optimizations in how resources are used, or operations are conducted.
 6. **Training and Learning**: Educating new developers or operators about the internal workings of a consumer by showing real-time thread activities and states.
 
 ### Quieting
@@ -291,7 +291,7 @@ To adjust a partition offset:
 
 ## Connection Management
 
-The commanding feature in Karafka Pro utilizes the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
+The commanding feature in Karafka Pro uses the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
 
 Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
 
@@ -315,7 +315,7 @@ Key points include:
 
 ## Summary
 
-Karafka Pro's consumer control capabilities are essential for any organization looking to leverage Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
+Karafka Pro's consumer control capabilities are essential for any organization looking to use Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
 The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
 

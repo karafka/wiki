@@ -1,4 +1,4 @@
-This page presents the Software Bill of Materials (SBOM) for Karafka and its runtime dependencies. An SBOM is a comprehensive inventory that details the components, libraries, and software packages utilized in a software product. It plays a crucial role in understanding the software's composition, enhancing transparency, and bolstering security by identifying potential vulnerabilities.
+This page presents the Software Bill of Materials (SBOM) for Karafka and its runtime dependencies. An SBOM is a comprehensive inventory that details the components, libraries, and software packages used in a software product. It plays a crucial role in understanding the software's composition, enhancing transparency, and bolstering security by identifying potential vulnerabilities.
 
 This page exists because of our commitment to security, compliance, and transparency. It serves as a resource for users and developers to understand the external dependencies that Karafka relies on during operation.
 
@@ -12,7 +12,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
 !!! tip "License Variability in OSS Dependencies"
 
-    Please be aware that the license status of the dependencies within the Karafka ecosystem may change over time due to the dynamic nature of open-source software (OSS) and dependency management. While we strive to keep this SBOM as accurate and up-to-date as possible, it represents a best-effort snapshot. For those seeking to construct a comprehensive and current SBOM for their projects, incorporating all dependencies accurately, we recommend utilizing tools such as [Mend.io](https://www.mend.io/open-source-license-compliance/). Mend.io can help automate the creation of a detailed SBOM, ensuring it reflects the complete state of your target software, including any license changes in its dependencies.
+    Please be aware that the license status of the dependencies within the Karafka ecosystem may change over time due to the dynamic nature of open-source software (OSS) and dependency management. While we strive to keep this SBOM as accurate and up-to-date as possible, it represents a best-effort snapshot. For those seeking to construct a comprehensive and current SBOM for their projects, incorporating all dependencies accurately, we recommend using tools such as [Mend.io](https://www.mend.io/open-source-license-compliance/). Mend.io can help automate the creation of a detailed SBOM, ensuring it reflects the complete state of your target software, including any license changes in its dependencies.
 
 ## karafka + subcomponents
 

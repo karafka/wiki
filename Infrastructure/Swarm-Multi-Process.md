@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Karafka's Swarm Mode allows for the efficient CPU-intensive processing of Kafka messages in Ruby. It circumvents Ruby's Global Interpreter Lock (GIL) limitations by utilizing a multi-process architecture, allowing for parallel execution similar to libraries like Puma and Sidekiq Enterprise. This mode is particularly beneficial for CPU-intensive workloads, leveraging Ruby's Copy-On-Write (CoW) feature for memory efficiency. While Karafka's multi-threading excels in I/O-bound tasks, Swarm Mode offers a superior alternative for tasks demanding significant CPU resources, providing scalable and high-performance message processing capabilities.
+Karafka's Swarm Mode allows for the efficient CPU-intensive processing of Kafka messages in Ruby. It circumvents Ruby's Global Interpreter Lock (GIL) limitations by using a multi-process architecture, allowing for parallel execution similar to libraries like Puma and Sidekiq Enterprise. This mode is particularly beneficial for CPU-intensive workloads, using Ruby's Copy-On-Write (CoW) feature for memory efficiency. While Karafka's multi-threading excels in I/O-bound tasks, Swarm Mode offers a superior alternative for tasks demanding significant CPU resources, providing scalable and high-performance message processing capabilities.
 
 ### Overview of Karafka Swarm Mode
 
-Karafka's Swarm Mode is based on the "Supervisor-Worker" architectural pattern. It utilizes a controller process for supervision and multiple independent child processes for parallel execution. This setup enhances Kafka message processing for CPU-intensive tasks by leveraging multi-process execution. Each child process periodically reports its status to the supervisory master, ensuring system health and efficiency.
+Karafka's Swarm Mode is based on the "Supervisor-Worker" architectural pattern. It uses a controller process for supervision and multiple independent child processes for parallel execution. This setup enhances Kafka message processing for CPU-intensive tasks by using multi-process execution. Each child process periodically reports its status to the supervisory master, ensuring system health and efficiency.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/swarm/architecture.svg" />
@@ -20,7 +20,7 @@ Karafka's Swarm Mode is based on the "Supervisor-Worker" architectural pattern. 
 
 Swarm Mode in Karafka brings several advantages, especially for applications dealing with high volumes of data or requiring intensive computation. Here are some benefits that highlight the importance and efficiency of using Swarm Mode:
 
-- **Improved CPU Utilization**: By running multiple processes, Swarm Mode can fully utilize multi-core systems, ensuring CPU resources are maximally exploited for increased processing power.
+- **Improved CPU Utilization**: By running multiple processes, Swarm Mode can fully use multi-core systems, ensuring CPU resources are maximally exploited for increased processing power.
 
 - **Scalability**: Easily scales your application to handle more load by increasing the number of worker processes, allowing for flexible adaptation to varying workloads.
 
@@ -28,7 +28,7 @@ Swarm Mode in Karafka brings several advantages, especially for applications dea
 
 - **Efficiency in CPU-bound Tasks**: Ideal for CPU-intensive operations, as it allows for parallel execution of tasks that would otherwise be bottlenecked by single-threaded execution.
 
-- **Memory Efficiency**: Leverages Ruby's Copy-On-Write (CoW) feature, which means the memory footprint increases only marginally with each additional processing node, making it memory efficient.
+- **Memory Efficiency**: Uses Ruby's Copy-On-Write (CoW) feature, which means the memory footprint increases only marginally with each additional processing node, making it memory efficient.
 
 - **Robustness and Isolation**: Each worker process is isolated; a failure in one worker does not directly impact others, enhancing the overall robustness of the application.
 
@@ -54,7 +54,7 @@ The startup command deviates slightly from the traditional server start command 
 bundle exec karafka swarm
 ```
 
-This command signals Karafka to initiate in Swarm Mode, creating a supervisor process and the forked nodes.
+This command signals Karafka to start in Swarm Mode, creating a supervisor process and the forked nodes.
 
 ### CLI Configuration Options
 
@@ -119,7 +119,7 @@ Here's how Karafka ensures consistency and efficiency in this process:
 
 - **Automatic ID Management**: Karafka automatically assigns and manages `group.instance.id` for each node within the swarm, ensuring that each node's identity is unique and consistent across sessions. This automatic management simplifies setup and reduces potential configuration errors that could lead to rebalance issues.
 
-- **Enhanced Stability**: By utilizing static group memberships, Karafka minimizes the frequency of consumer group rebalances. This stability is particularly beneficial in environments where consumer groups handle high volumes of data, as it allows for uninterrupted data processing and maximizes throughput.
+- **Enhanced Stability**: By using static group memberships, Karafka minimizes the frequency of consumer group rebalances. This stability is particularly beneficial in environments where consumer groups handle high volumes of data, as it allows for uninterrupted data processing and maximizes throughput.
 
 - **Simplified Configuration**: Developers need to specify their desired configuration once, and Karafka's Swarm Mode propagates these settings across the swarm. This simplification reduces the operational burden and allows teams to focus on developing the logic and functionality of their applications.
 
@@ -179,9 +179,9 @@ Two scenarios may necessitate shutting down a node:
 
 1. **Unhealthy Status Reports (Karafka Pro)**: With the enhanced capabilities of Karafka Pro, nodes possess the self-awareness to report unhealthy states. This can range from excessive memory consumption and prolonged processing times to polling mechanisms becoming unresponsive. Recognizing these reports, the supervisor takes decisive action to address the compromised node.
 
-Upon identifying a node that requires a shutdown, either due to delayed health reports or self-reported unhealthy conditions, the supervisor initiates a two-step process:
+Upon identifying a node that requires a shutdown, either due to delayed health reports or self-reported unhealthy conditions, the supervisor starts a two-step process:
 
-- **TERM Signal**: The supervisor first sends a TERM signal to the node, initiating a graceful shutdown sequence. This allows the node to complete its current tasks, release resources, and shut down properly, minimizing potential data loss or corruption.
+- **TERM Signal**: The supervisor first sends a TERM signal to the node, starting a graceful shutdown sequence. This allows the node to complete its current tasks, release resources, and shut down properly, minimizing potential data loss or corruption.
 
 - **KILL Signal**: If the node fails to shut down within the specified `shutdown_timeout` period, the supervisor escalates its intervention by sending a KILL signal. This forcefully terminates the node, ensuring the system can recover from the situation but at the risk of abrupt process termination.
 
@@ -227,7 +227,7 @@ While forking enables Ruby applications like Karafka to parallelize work efficie
 
 !!! danger "Avoid Using Karafka APIs in the Supervisor Process"
 
-    It is essential to refrain from using the Karafka producer or any other Karafka APIs, including administrative APIs, within the supervisor process, both before and after forking. `librdkafka`, the underlying library used by Karafka, is fundamentally not fork-safe. Utilizing these APIs from the supervisor process can lead to unexpected behaviors and potentially destabilize your application. Always ensure that interactions with Karafka's APIs occur within the forked worker nodes, where it is safe and designed to operate.
+    It is essential to refrain from using the Karafka producer or any other Karafka APIs, including administrative APIs, within the supervisor process, both before and after forking. `librdkafka`, the underlying library used by Karafka, is fundamentally not fork-safe. Using these APIs from the supervisor process can lead to unexpected behaviors and potentially destabilize your application. Always ensure that interactions with Karafka's APIs occur within the forked worker nodes, where it is safe and designed to operate.
 
 ### Warmup and Preloading for Efficiency
 
@@ -259,7 +259,7 @@ Below, you can find a few examples of resources worth preparing and cleaning bef
 
 Given the potential complexities and dangers associated with preloading the entire application, Karafka makes this feature opt-in. This cautious approach enables developers to enable preloading when effectively managing the related resources.
 
-In addition to preloading for substantial memory savings, Karafka introduces a crucial phase known as "Process Warmup" right before the process starts. It occurs only in the supervisor. This phase is designed to optimize the application's readiness for forking and operation, leveraging Ruby 3.3's `Process.warmup` feature and similar techniques in previous Ruby versions. This method signals Ruby that the application has completed booting and is now ready for forking, triggering actions such as garbage collection and memory compaction to enhance the efficiency of Copy-On-Write (CoW) mechanics in child forks.
+In addition to preloading for substantial memory savings, Karafka introduces a crucial phase known as "Process Warmup" right before the process starts. It occurs only in the supervisor. This phase is designed to optimize the application's readiness for forking and operation, using Ruby 3.3's `Process.warmup` feature and similar techniques in previous Ruby versions. This method signals Ruby that the application has completed booting and is now ready for forking, triggering actions such as garbage collection and memory compaction to enhance the efficiency of Copy-On-Write (CoW) mechanics in child forks.
 
 Before the warmup phase, Karafka emits a `process.before_warmup` notification, providing an ideal opportunity to eager load the application code and perform other preparatory tasks. This hook is pivotal for loading any code that benefits from being loaded once and shared across forks, thereby reducing memory usage and startup time for each child process.
 
@@ -273,7 +273,7 @@ Karafka.monitor.subscribe('app.before_warmup') do
 end
 ```
 
-The `Process.warmup` method and `process.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By utilizing these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
+The `Process.warmup` method and `process.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By using these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
 
 By carefully preparing for and executing the warmup phase, you ensure your Karafka applications operates optimally, benefiting from reduced memory usage and enhanced process initialization performance.
 
@@ -289,7 +289,7 @@ Below, you can compare memory usage when running 3 independent processes versus 
 
 If you want to measure gains within your particular application under given conditions, you can use the below script.
 
-This script calculates and displays memory usage details for processes matching a specified pattern (e.g., "karafka") on a Linux system, utilizing the `smem` tool. It retrieves the Proportional Set Size (PSS), Unique Set Size (USS), and Resident Set Size (RSS) for each process, which helps in understanding both individual and collective memory usage, including shared memory aspects.
+This script calculates and displays memory usage details for processes matching a specified pattern (e.g., "karafka") on a Linux system, using the `smem` tool. It retrieves the Proportional Set Size (PSS), Unique Set Size (USS), and Resident Set Size (RSS) for each process, which helps in understanding both individual and collective memory usage, including shared memory aspects.
 
 ```shell
 #!/bin/bash
@@ -404,7 +404,7 @@ Karafka introduces several event hooks specific to Swarm Mode, enhancing the obs
   <tr>
     <td><code>swarm.manager.terminating</code></td>
     <td>Supervisor</td>
-    <td>Initiated when the supervisor decides to terminate an unresponsive node.</td>
+    <td>Started when the supervisor decides to terminate an unresponsive node.</td>
   </tr>
 </table>
 
@@ -455,7 +455,7 @@ Conversely, signals can be sent directly to any child process to trigger specifi
 
 ### Behavior on Shutdown
 
-When the supervisor receives a request to shut down-typically through a SIGTERM or similar signal-it initiates a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
+When the supervisor receives a request to shut down-typically through a SIGTERM or similar signal-it starts a cascade of shutdown commands to all child nodes. This is the first step in a coordinated effort to terminate the entire application gracefully.
 
 After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
 
@@ -484,7 +484,7 @@ Due to librdkafka's fork-safety limitations, the supervisor process does not app
 
 Karafka's scalability and workload management strategies include Swarm Mode, multi-threading, virtual partitions, and multiplexing. Each serves specific workload needs, facilitating optimal architectural decisions.
 
-- **Swarm Mode** excels in CPU-intensive environments by utilizing multiple processes for true parallel execution, enhancing CPU utilization and throughput. However, its scalability is tied to the number of Kafka partitions, limiting parallelization.
+- **Swarm Mode** excels in CPU-intensive environments by using multiple processes for true parallel execution, enhancing CPU utilization and throughput. However, its scalability is tied to the number of Kafka partitions, limiting parallelization.
 
 - **Multi-threading** is suited for I/O-bound tasks, efficiently managing wait times by concurrently handling tasks within a single process. Its scalability is constrained by Ruby's Global Interpreter Lock (GIL) and the number of Kafka partitions.
 
@@ -569,21 +569,21 @@ This approach will ensure that:
 
 Here are some use cases from various industries where Karafka's Swarm Mode can be beneficial:
 
-- **Background Job Processing**: Ruby on Rails applications frequently rely on background jobs for tasks that are too time-consuming to be processed during a web request. Examples include sending batch emails, generating reports, or processing uploaded files. Swarm Mode can distribute these jobs across multiple processes, significantly reducing processing time by leveraging all available CPU cores.
+- **Background Job Processing**: Ruby on Rails applications frequently rely on background jobs for tasks that are too time-consuming to be processed during a web request. Examples include sending batch emails, generating reports, or processing uploaded files. Swarm Mode can distribute these jobs across multiple processes, significantly reducing processing time by using all available CPU cores.
 
 - **Image Processing and Generation**: Many Ruby applications need to process images, whether resizing, cropping, or applying filters. Image processing is CPU-intensive and can benefit from parallel execution in Swarm Mode, especially when handling high volumes of images, such as in user-generated content platforms or digital asset management systems.
 
-- **Data Import and Export Operations**: Applications that require importing large datasets (e.g., CSV, XML, or JSON files) into the database or exporting data for reports can utilize Swarm Mode to parallelize parsing and processing. This accelerates the import/export operations, making it more efficient to handle bulk data operations without blocking web server requests.
+- **Data Import and Export Operations**: Applications that require importing large datasets (e.g., CSV, XML, or JSON files) into the database or exporting data for reports can use Swarm Mode to parallelize parsing and processing. This accelerates the import/export operations, making it more efficient to handle bulk data operations without blocking web server requests.
 
 - **Real-time Data Processing**: Real-time analytics or event processing systems in Ruby can process incoming data streams (from webhooks, sensors, etc.) in parallel using Swarm Mode. This is particularly useful for applications that aggregate data, calculate statistics, or detect patterns in real time across large datasets.
 
 - **Complex Calculations and Simulations**: Applications that perform complex calculations or simulations, such as financial modeling, risk analysis, or scientific computations, can significantly improve performance with Swarm Mode. By distributing the computational load across multiple worker processes, Ruby applications can handle more complex algorithms and larger datasets without slowing down.
 
-Implementing Swarm Mode for these use cases allows applications to fully utilize server resources, overcoming the limitations of Ruby's Global Interpreter Lock (GIL) and enhancing overall application performance and scalability.
+Implementing Swarm Mode for these use cases allows applications to fully use server resources, overcoming the limitations of Ruby's Global Interpreter Lock (GIL) and enhancing overall application performance and scalability.
 
 ## Summary
 
-Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-intensive Kafka message processing in Ruby, effectively bypassing the Global Interpreter Lock (GIL). It leverages Ruby's Copy-On-Write (CoW) for efficient memory use, employing a "Supervisor-Worker" pattern for parallel execution and system health monitoring.
+Karafka's Swarm Mode offers a multi-process architecture optimized for CPU-intensive Kafka message processing in Ruby, effectively bypassing the Global Interpreter Lock (GIL). It uses Ruby's Copy-On-Write (CoW) for efficient memory use, employing a "Supervisor-Worker" pattern for parallel execution and system health monitoring.
 
 Swarm Mode supports Static Group Membership to enhance consumer group stability and allows for quick node restarts without rebalancing, thanks to Karafka Pro's monitoring.
 

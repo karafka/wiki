@@ -156,7 +156,7 @@ Kafka tends to be the right choice when:
 
 Kafka adds real operational complexity. It is **not** the right tool for every situation.
 
-Sidekiq is simpler, well-understood, and sufficient for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
+Sidekiq is simpler, well-understood, and enough for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
 
 Consider staying with simpler alternatives when:
 
@@ -206,7 +206,7 @@ Kafka is operationally dense. Partitions need to be managed. Offsets need to be 
 
 Karafka exposes extensive administrative APIs that make these operations first-class Ruby citizens. You can query cluster state, manage consumer group offsets, inspect topic configurations, and coordinate consumer lifecycle from within your application or from a Rake task - without dropping into the Kafka CLI or writing bespoke JVM tooling.
 
-This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that leverage. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
+This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that use. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
 
 ![Karafka Web UI health dashboard](https://karafka.io/assets/misc/printscreens/web-ui/health.png)
 

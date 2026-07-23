@@ -6,7 +6,7 @@
 
 Testing is a crucial component of any software development cycle. Ensuring that message production behaves as expected is essential when working with Kafka. Thankfully, WaterDrop provides a robust testing mechanism for its producers.
 
-When testing code that utilizes WaterDrop producers, you have two primary strategies:
+When testing code that uses WaterDrop producers, you have two primary strategies:
 
 1. **End-to-End Testing with Kafka**: This method involves setting up a Kafka environment and dispatching messages. By doing so, you're testing the full flow of your application, ensuring that messages are produced, dispatched, and received as expected in a real-world Kafka setup.
 
@@ -20,7 +20,7 @@ When developing applications that interact with Kafka, one common approach for t
 
 However, setting up and managing a Kafka cluster for testing can introduce several complexities:
 
-1. **Infrastructure Overhead**: A real Kafka setup requires sufficient infrastructure, including the Kafka brokers, ZooKeeper nodes, and potentially more components, depending on the testing scenario.
+1. **Infrastructure Overhead**: A real Kafka setup requires enough infrastructure, including the Kafka brokers, ZooKeeper nodes, and potentially more components, depending on the testing scenario.
 
 1. **Configuration Complexity**: Ensuring that Kafka is configured correctly for each testing environment can be cumbersome.
 

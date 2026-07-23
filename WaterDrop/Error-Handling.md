@@ -272,7 +272,7 @@ When a fatal error occurs:
 
 1. **Error Detection**: WaterDrop detects that the error is fatal and cannot be resolved through normal retry mechanisms.
 
-1. **Reload Decision**: If the reload feature is enabled and the maximum number of attempts has not been exceeded, WaterDrop initiates a producer reload.
+1. **Reload Decision**: If the reload feature is enabled and the maximum number of attempts has not been exceeded, WaterDrop starts a producer reload.
 
 1. **Producer Reload**: The underlying librdkafka producer client is completely reloaded, clearing any internal state that may have caused the fatal error.
 

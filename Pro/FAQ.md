@@ -99,7 +99,7 @@ Yes, it is required to accept the [LICENSE-COMM](Pro-License-Comm) terms to beco
 
 ## Is there a trial version?
 
-Yes. For free, you can obtain temporary credentials from our [website](https://karafka.io/#become-pro).
+Yes. For free, you can get temporary credentials from our [website](https://karafka.io/#become-pro).
 
 Those credentials will be valid for 14 days for every environment.
 
@@ -328,7 +328,7 @@ Moreover, the Enterprise license comes with additional legal benefits. These inc
 
 ## Can I use Karafka Pro with a private gem server / private registry?
 
-Yes, however, you need a specific Enterprise agreement allowing you to leverage this capability.
+Yes, however, you need a specific Enterprise agreement allowing you to use this capability.
 
 Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
 
@@ -358,7 +358,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 3. You have permission to continue to use Karafka in the version available on the day of license expiration or subscription termination without any subsequent updates.
 
-4. You can legally utilize Karafka without needing my gem server for license gem download and verification.
+4. You can legally use Karafka without needing my gem server for license gem download and verification.
 
 5. You are granted extended permission to continue using your private fork of Karafka even after your license expires or your subscription ends.
 
@@ -374,11 +374,11 @@ You can read more about those differences [here](Pro-Enterprise).
 
 With Karafka Pro priority support, you'll receive an initial assessment and reply within a maximum of **4 business days**. Enterprise customers receive even faster support with a maximum response time of **2 business days**. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
 
-Please note that our software is provided "as is." We recommend utilizing the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
+Please note that our software is provided "as is." We recommend using the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
 
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 
-Karafka maintains a [documentation page](Development-SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components utilized within the Karafka ecosystem.
+Karafka maintains a [documentation page](Development-SBOM) with its runtime Software Bill of Materials (SBOM). This page lists Open Source Software (OSS) components used within the Karafka ecosystem.
 
 ## Can I use one Karafka license across multiple companies within a corporate group?
 
@@ -531,7 +531,7 @@ If you experience any billing issues, please contact us immediately to avoid any
 
 ### What This Means for You
 
-- You'll always have sufficient time to plan and budget for any changes to your subscription costs
+- You'll always have enough time to plan and budget for any changes to your subscription costs
 - Your current subscription price is locked in until your next renewal
 - No surprise price changes or sudden mid-term adjustments
 - Existing customers are valued, and pricing transitions are handled with consideration for long-term relationships
@@ -549,7 +549,7 @@ Enterprise agreements include the following pricing adjustment framework:
 - **Annual Adjustments**: Pricing may be adjusted annually with **3 months' advance notice**
 - **Renewal-Based Changes**: Adjustments take effect at renewal, never mid-term during an active contract period
 - **No Predetermined Caps**: There is no preset limit on adjustments, allowing pricing to reflect market conditions, inflation, and development investments
-- **Transparent Communication**: All pricing changes are communicated clearly and with sufficient notice for budget planning
+- **Transparent Communication**: All pricing changes are communicated clearly and with enough notice for budget planning
 
 ### Why This Approach
 

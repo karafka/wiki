@@ -137,7 +137,7 @@ When using Karafka in embedded mode, long-running message processing can conflic
 
 Consider a consumer that processes a single Kafka message containing a reference to a large file (e.g., a Parquet log drop with hundreds of thousands of records). Processing such a message involves downloading the file, parsing it, and dispatching many derived events back to Kafka. This can easily exceed the host process shutdown timeout:
 
-1. Puma master initiates worker shutdown.
+1. Puma master starts worker shutdown.
 2. `before_worker_shutdown` calls `Karafka::Embedded.stop`.
 3. `Embedded.stop` blocks, waiting for the consumer's `#consume` to finish.
 4. Consumer is still processing (e.g., 200+ seconds of work remaining).
@@ -265,11 +265,11 @@ When Karafka is embedded in another process, you might find that code reloading 
 
 ### Concurrency Settings
 
-Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you ensure that all tasks and responsibilities of your process can effectively access and utilize the resources they need without causing undue strain.
+Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you ensure that all tasks and responsibilities of your process can effectively access and use the resources they need without causing undue strain.
 
 ### Preloading/Eager Loading
 
-Before you initiate the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
+Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
 
 ### Critical Error Handling
 
@@ -277,7 +277,7 @@ When operating Karafka in Embedded mode, it's crucial to understand that certain
 
 ### Partial/Silent Crashes
 
-When utilizing Karafka in an embedded mode, it's vital to be aware of Partial or Silent Crash scenarios. These refer to situations where the Karafka process encounters a critical error and decides to halt its operations, but the overarching process in which Karafka runs continues to operate. This behavior can lead to situations where critical components have failed silently, but the system appears to be running, potentially leading to undetected issues or data loss.
+When using Karafka in an embedded mode, it's vital to be aware of Partial or Silent Crash scenarios. These refer to situations where the Karafka process encounters a critical error and decides to halt its operations, but the overarching process in which Karafka runs continues to operate. This behavior can lead to situations where critical components have failed silently, but the system appears to be running, potentially leading to undetected issues or data loss.
 
 Certain critical errors, such as incompatible changes to the `partition.assignment.strategy`, can cause the embedded Karafka process to emit an error and terminate. However, this termination is isolated to Karafka itself, and may not propagate to the parent or supervising process.
 
@@ -301,7 +301,7 @@ Always ensure you account for this behavior when integrating Karafka in an Embed
 
 ### Web UI Limitations in Embedding Mode
 
-When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To leverage the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
+When using Karafka in embedding mode, the Karafka Pro Web UI controlling feature will be limited. This is because, in embedding mode, Karafka does not have control over the entire Ruby process. As a result, some process management and control functionalities may not be fully available or operational. To use the full capabilities of the Karafka Pro Web UI, it is recommended that Karafka be run as a standalone application that can maintain complete control over the Ruby process.
 
 ### Thread Priority Management
 

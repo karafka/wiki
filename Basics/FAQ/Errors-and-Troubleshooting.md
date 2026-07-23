@@ -343,7 +343,7 @@ is not supported (Rdkafka::Config::ClientCreationError)
 
 It indicates that you're attempting an online/rolling migration between two different `partition.assignment.strategy` assignors with different protocol types. Specifically, you might try switching between "cooperative-sticky" and "range" strategies without first shutting down all consumers.
 
-In Kafka, all consumers within a consumer group must utilize the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
+In Kafka, all consumers within a consumer group must use the same partition assignment strategy. Changing this strategy requires a careful offline migration process to prevent inconsistencies and errors like the one you've encountered.
 
 You can read more about this process [here](Infrastructure-Application-Development-vs-Production#avoid-rolling-upgrades-for-rebalance-protocol-changes).
 

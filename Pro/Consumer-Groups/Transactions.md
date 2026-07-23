@@ -180,7 +180,7 @@ end
 
     When providing a custom producer directly to the `#transaction` method while using manual offset management, you must ensure that no Karafka features that automatically manage and store offsets are used in your consumer. Any inadvertent offset management by Karafka could interfere with the integrity of your manual offset strategy.
 
-    In many cases, it may be a better idea to leverage the `#wrap` API, even when using manual offset management. The `#wrap` API allows you to handle custom producer assignment and lifecycle management seamlessly, while still ensuring that the overall Karafka consumption flow - including synchronization and framework-level operations-executes correctly. This approach reduces the risk of inconsistencies and simplifies producer handling in complex scenarios.
+    In many cases, it may be a better idea to use the `#wrap` API, even when using manual offset management. The `#wrap` API allows you to handle custom producer assignment and lifecycle management seamlessly, while still ensuring that the overall Karafka consumption flow - including synchronization and framework-level operations-executes correctly. This approach reduces the risk of inconsistencies and simplifies producer handling in complex scenarios.
 
 ### Using a Dedicated Transactional Producer
 
@@ -268,7 +268,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
     In these scenarios, the Karafka framework might invoke the transactional producer after the main consumption logic completes. This implicit usage could lead to unintended transactional behavior or conflicts, undermining the integrity of your processing logic.
 
-    The recommended approach is to utilize the `#wrap` method when customizing the producer. This ensures that the transactional producer is seamlessly managed across the entire lifecycle of the action, including any framework-level operations that occur after your custom logic. By adhering to this practice, you maintain consistency, avoid unexpected issues, and fully leverage the robustness of Karafka's transactional processing capabilities.
+    The recommended approach is to use the `#wrap` method when customizing the producer. This ensures that the transactional producer is seamlessly managed across the entire lifecycle of the action, including any framework-level operations that occur after your custom logic. By adhering to this practice, you maintain consistency, avoid unexpected issues, and fully use the robustness of Karafka's transactional processing capabilities.
 
 !!! warning "Ensure `#wrap` Always Calls `yield`"
 
@@ -438,7 +438,7 @@ In summary, Karafka's transaction handling after revocation is designed to maint
 
 This section explains how transactions interact with the DLQ and the implications for message processing.
 
-1. **Consistent Transaction Behavior**: From the user's perspective, transactions in Karafka behave consistently, whether or not the DLQ is utilized. This means the practice of wrapping your message processing code within transactions remains unchanged, providing a consistent development experience.
+1. **Consistent Transaction Behavior**: From the user's perspective, transactions in Karafka behave consistently, whether or not the DLQ is used. This means the practice of wrapping your message processing code within transactions remains unchanged, providing a consistent development experience.
 
 1. **Transactional Dead-Letter Queue Operations**: In scenarios involving persistent errors - where messages need to be moved to the DLQ - Karafka, by default, uses transactions to perform two critical operations atomically: moving the message to the DLQ and committing the offset (when necessary). This ensures that the message relocation to the DLQ and the acknowledgment of message processing (offset commit) are treated as a single atomic operation, maintaining consistency.
 
@@ -456,7 +456,7 @@ In conclusion, while transactions in Karafka provide a robust mechanism for proc
 
 ## Delivery Warranties
 
-Karafka, leveraging Kafka's Transactional Producer, offers solid delivery warranties that ensure data integrity and reliable message processing in distributed systems.
+Karafka, using Kafka's Transactional Producer, offers solid delivery warranties that ensure data integrity and reliable message processing in distributed systems.
 
 Here's how Karafka's delivery warranties manifest in transactions:
 
@@ -512,7 +512,7 @@ While Kafka transactions in Karafka provide strong consistency guarantees and da
 
 1. **Throughput Considerations**: The use of transactions can impact the system's overall throughput. The need to ensure atomicity and exactly-once semantics means that messages within a transaction need to be processed more controlled, which can reduce the rate at which messages are processed compared to non-transactional workflows.
 
-1. **Producer Locking in Karafka (Waterdrop)**: In Karafka, when a transaction is initiated, the Waterdrop producer is locked to the thread handling the transaction. This means any other thread can only use the producer once the transaction is completed. This locking mechanism is crucial for ensuring the integrity of the transaction but can lead to contention and reduced parallelism, especially in high-throughput scenarios where multiple threads need to produce messages concurrently.
+1. **Producer Locking in Karafka (Waterdrop)**: In Karafka, when a transaction is started, the Waterdrop producer is locked to the thread handling the transaction. This means any other thread can only use the producer once the transaction is completed. This locking mechanism is crucial for ensuring the integrity of the transaction but can lead to contention and reduced parallelism, especially in high-throughput scenarios where multiple threads need to produce messages concurrently.
 
 1. **Handling Failures and Retries**: Transactions necessitate a more complex handling of failures and retries. If a part of the transaction fails, the whole transaction needs to be rolled back and potentially retried. This complexity can add to the processing time and requires careful design to avoid issues such as deadlocks or repeated failures.
 
@@ -540,7 +540,7 @@ In summary, while Kafka transactions in Karafka provide significant data consist
 
 - **Multi-Database Synchronization**: Syncing data across different databases or data stores while ensuring that each update is applied exactly once, thereby preventing data drift and maintaining consistency across distributed data systems.
 
-These scenarios illustrate the pivotal role of Karafka transactions in ensuring data integrity and consistency across various domains, leveraging Kafka's exactly-once processing semantics.
+These scenarios illustrate the pivotal role of Karafka transactions in ensuring data integrity and consistency across various domains, using Kafka's exactly-once processing semantics.
 
 ## Summary
 

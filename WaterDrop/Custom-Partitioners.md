@@ -17,7 +17,7 @@ In Apache Kafka, a partitioner determines how records are placed among the parti
 When integrating a custom partitioning strategy into your Kafka setup with WaterDrop, you generally have two options:
 
 1. Writing an entirely external custom partitioner
-2. Utilizing WaterDrop's middleware for the partitioning logic.
+2. Using WaterDrop's middleware for the partitioning logic.
 
 Both approaches have merits and drawbacks, primarily influenced by the nature of your data and the specifics of your use case.
 
@@ -63,7 +63,7 @@ PRODUCER.produce_async(
 
 ### Middleware Approach
 
-Alternatively, you can leverage WaterDrop's middleware to inject your custom partitioning logic directly into the message processing pipeline. This is seen as a more elegant and integrated approach.
+Alternatively, you can use WaterDrop's middleware to inject your custom partitioning logic directly into the message processing pipeline. This is seen as a more elegant and integrated approach.
 
 Advantages:
 

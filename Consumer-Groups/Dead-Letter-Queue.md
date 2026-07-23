@@ -251,7 +251,7 @@ end
 
 At the moment, DLQ does **not** have the ability to skip whole batches. For scenarios where the collective outcome of messages operations is causing errors, Karafka will skip one after another. This means that you may encounter "flickering", where seemingly valid messages are being moved to the DLQ before reaching the corrupted one.
 
-If skipping batches is something you would utilize, please get in touch with us so we can understand your use cases and possibly introduce this functionality.
+If skipping batches is something you would use, please get in touch with us so we can understand your use cases and possibly introduce this functionality.
 
 ## Compacting Limitations
 

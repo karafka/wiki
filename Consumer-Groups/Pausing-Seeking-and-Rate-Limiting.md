@@ -174,7 +174,7 @@ end
 
 ### Seeking vs. Offset Position
 
-When utilizing the `#seek` API in Karafka, it's crucial to understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
+When using the `#seek` API in Karafka, it's crucial to understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
 
 By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is not reset. This means that the position to which you're seeking won't automatically update the current offset in memory.
 
@@ -272,7 +272,7 @@ It's crucial to be aware, especially if you're using a third-party Kafka provide
 
 ### Summary
 
-In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help leverage its benefits while mitigating downsides.
+In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help use its benefits while mitigating downsides.
 
 ## See Also
 

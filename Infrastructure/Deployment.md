@@ -779,7 +779,7 @@ To integrate the `SwarmLivenessListener` into your Karafka application, follow t
       timeoutSeconds: 5
     ```
 
-By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
+By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
 #### Additional processes inside the same pod
 

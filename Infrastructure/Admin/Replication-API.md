@@ -15,7 +15,7 @@ The Karafka Admin Replication API provides tools for planning topic replication 
 Before using the Replication API, ensure you have:
 
 - **Kafka CLI tools**: The `kafka-reassign-partitions.sh` script from your Kafka installation
-- **Sufficient broker capacity**: Target replication factor cannot exceed the number of available brokers
+- **Enough broker capacity**: Target replication factor cannot exceed the number of available brokers
 - **Adequate resources**: Replication changes require disk space and network bandwidth on target brokers
 - **Cluster access**: Network access to execute Kafka CLI commands against your cluster
 
@@ -206,7 +206,7 @@ end
 ### Before Execution
 
 - **Test on non-critical topics first**: Verify the process works in your environment before applying to production topics
-- **Check cluster health**: Ensure all brokers are healthy and have sufficient resources
+- **Check cluster health**: Ensure all brokers are healthy and have enough resources
 - **Review the plan**: Use `summary` and inspect `partitions_assignment` to verify the plan looks correct
 - **Plan for maintenance windows**: Execute during low-traffic periods to minimize impact
 

@@ -73,7 +73,7 @@ You can learn more about the Polices [here](Pro-Web-UI-Policies).
 
 #### Integration with Authentication Providers
 
-Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By leveraging this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
+Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By using this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
 
 Additionally, the provided code APIs enable you to define custom access policies, ensuring that only authorized users can interact with specific components of the Web UI.
 
@@ -89,7 +89,7 @@ You can learn more about the Partial Payload Sanitization [here](Pro-Web-UI-Poli
 
 ### 4. Logging and Auditing
 
-Since Karafka Web UI is built as a Rack application, it can leverage Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
+Since Karafka Web UI is built as a Rack application, it can use Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
 
 - Access to specific pages and data views
 - Administrative changes, such as configuration updates or modifications to access controls

@@ -2,7 +2,7 @@ Periodic Jobs are a feature designed to allow consumers to perform operations at
 
 ## Using Periodic Jobs
 
-To leverage this functionality, you must enable and configure it within your routing and implement the corresponding `#tick` method in your consumer. Here's how to get started:
+To use this functionality, you must enable and configure it within your routing and implement the corresponding `#tick` method in your consumer. Here's how to get started:
 
 ### Enabling Periodic Jobs in Routing
 
@@ -201,7 +201,7 @@ Ticking relates to the scheduling of periodic jobs at regular intervals. The nua
 
 ### Managing Overlap in Periodic and Long-Running Jobs
 
-Karafka doesn't start Periodic Jobs for a given topic partition when a Long-Running Job (LRJ) is active by default. However, this doesn't prevent an LRJ from initiating while a periodic job runs, as these are non-blocking and can overlap. While this overlapping can be advantageous for independent tasks, it might cause issues for tasks sharing resources or influencing each other.
+Karafka doesn't start Periodic Jobs for a given topic partition when a Long-Running Job (LRJ) is active by default. However, this doesn't prevent an LRJ from starting while a periodic job runs, as these are non-blocking and can overlap. While this overlapping can be advantageous for independent tasks, it might cause issues for tasks sharing resources or influencing each other.
 
 To prevent concurrent executions and potential conflicts, consider using the `#synchronize` method. This feature ensures that only one job instance runs simultaneously, safeguarding against overlapping.
 
@@ -228,7 +228,7 @@ end
 
 To maintain accurate and independent ticking, irrespective of polling intervals and message processing times, consider the following approaches:
 
-- **Independent Subscription Groups**: Utilize separate subscription groups for different topics or partitions. This isolates the periodic jobs, preventing the processing time of one group from affecting the ticking of another.
+- **Independent Subscription Groups**: Use separate subscription groups for different topics or partitions. This isolates the periodic jobs, preventing the processing time of one group from affecting the ticking of another.
 
 - **Connection Multiplexing**: Implement multiple connections to Kafka within the same application. This ensures that lengthy processing in one part of your application doesn't delay the execution of periodic jobs in another.
 
@@ -293,7 +293,7 @@ When an error occurs within the `#tick` method, it doesn't trigger the conventio
 
 Despite not being subject to DLQ or retries, it's crucial to monitor and manage errors effectively. In Karafka, errors within the `#tick` method are published to the `error.occurred` notification channel. This allows for centralized monitoring and handling of errors. Each error notification event carries a `:type` set to `consumer.tick.error`, distinguishing it clearly as an error from the periodic job's tick operation. This explicit categorization aids in pinpointing the source of errors and facilitates more efficient debugging and error-handling strategies.
 
-By understanding and leveraging this behavior, developers can ensure that their periodic jobs in Karafka are robust and operate smoothly, even in the face of intermittent errors. It also underscores the importance of monitoring and responding to the error.occurred notifications to maintain the health and reliability of the system.
+By understanding and using this behavior, developers can ensure that their periodic jobs in Karafka are robust and operate smoothly, even in the face of intermittent errors. It also underscores the importance of monitoring and responding to the error.occurred notifications to maintain the health and reliability of the system.
 
 ```ruby
 class Consumer < Karafka::BaseConsumer
@@ -320,7 +320,7 @@ end
 
 ### Conclusion
 
-Karafka's relationship between polling and ticking is vital for application design. While they are interconnected, with polling intervals impacting the timing of periodic jobs, understanding and leveraging this relationship can lead to more efficient and reliable applications. By acknowledging this interdependency and employing strategies like independent subscription groups or connection multiplexing, you can ensure that periodic tasks are executed as expected, even in complex systems with varying data flow and processing requirements.
+Karafka's relationship between polling and ticking is vital for application design. While they are interconnected, with polling intervals impacting the timing of periodic jobs, understanding and using this relationship can lead to more efficient and reliable applications. By acknowledging this interdependency and employing strategies like independent subscription groups or connection multiplexing, you can ensure that periodic tasks are executed as expected, even in complex systems with varying data flow and processing requirements.
 
 ## Example Use Cases
 

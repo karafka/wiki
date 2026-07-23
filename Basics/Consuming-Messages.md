@@ -25,7 +25,7 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 1. Select one of two processing approaches based on your use case:
 
       - Process each message one by one
-      - Process all payloads together to leverage batch database operations provided by many ORMs
+      - Process all payloads together to use batch database operations provided by many ORMs
 
 1. Access message payloads.
 
@@ -55,7 +55,7 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 
 ## Consuming Messages One At a Time
 
-While batch processing is recommended to leverage in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
+While batch processing is recommended to use in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
 
 1. To start the Karafka server process, use the following CLI command:
 
@@ -347,9 +347,9 @@ The `enable.partition.eof` configuration option changes how Karafka responds whe
 
 - **Reduced Latency**: Immediate message yielding upon reaching the end of a partition can significantly reduce latency. This is particularly beneficial in environments where data must be processed and acted upon quickly.
 
-- **Increased Responsiveness**: Systems that require high responsiveness will benefit from not having to wait for the timeout conditions (`max_wait_time` or `max_messages`) to be met, allowing subsequent processing steps to commence without delay.
+- **Increased Responsiveness**: Systems that require high responsiveness will benefit from not having to wait for the timeout conditions (`max_wait_time` or `max_messages`) to be met, allowing subsequent processing steps to start without delay.
 
-- **Efficient Resource Utilization**: By avoiding unnecessary waiting times, system resources can be better utilized for processing rather than idling, potentially leading to cost optimizations and improved throughput.
+- **Efficient Resource Utilization**: By avoiding unnecessary waiting times, system resources can be better used for processing rather than idling, potentially leading to cost optimizations and improved throughput.
 
 ### Downsides of Early Yield
 

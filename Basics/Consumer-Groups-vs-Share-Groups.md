@@ -303,7 +303,7 @@ Until share group support arrives in Karafka, you can achieve many of the benefi
 - **[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)** (Pro): Parallelize processing within a single partition, enabling concurrency beyond the one-consumer-per-partition limit. This is the closest existing analog to share group parallelism for IO-bound workloads.
 - **[Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue/)**: Handle poison messages by dispatching them to a DLQ topic after a configurable number of retries, similar to share group delivery count limits.
 - **[Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/)** (Pro): Process messages that take longer than `max.poll.interval.ms` without being removed from the consumer group.
-- **Increasing partition count**: If you need more consumer parallelism and ordering within each partition is sufficient, adding partitions remains a straightforward scaling approach.
+- **Increasing partition count**: If you need more consumer parallelism and ordering within each partition is enough, adding partitions remains a straightforward scaling approach.
 
 ## Summary
 

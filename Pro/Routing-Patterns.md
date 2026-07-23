@@ -4,7 +4,7 @@ Karafka's Routing Patterns is a powerful feature that offers flexibility in rout
 
 Routing Patterns is not just about using regex patterns. It's about the marriage of regexp and Karafka's topic routing system.
 
-When you define a route using a regexp pattern, Karafka monitors the Kafka topics. As soon as a topic matching the pattern emerges, Karafka takes the initiative. Without waiting for manual interventions or service restarts, it dynamically adds the topic to the routing tree, initiates a consumer for this topic, and starts processing data.
+When you define a route using a regexp pattern, Karafka monitors the Kafka topics. As soon as a topic matching the pattern emerges, Karafka takes the initiative. Without waiting for manual interventions or service restarts, it dynamically adds the topic to the routing tree, starts a consumer for this topic, and starts processing data.
 
 Below, you can find a conceptual diagram of how the discovery process works:
 
@@ -312,7 +312,7 @@ Please ensure you're familiar with these considerations to harness the full powe
 
 This feature requires careful attention when used alongside [Dead Letter Queues (DLQs)](Consumer-Groups-Dead-Letter-Queue) to avoid unintended behaviors. A common pitfall arises from using regular expressions that are not precise enough, leading to scenarios where the base topic consumer consumes the DLQ topics themselves.
 
-The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can initiate an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
+The issue occurs when a regular expression, designed to match topics for consumption, also inadvertently matches the DLQ topics. This mistake can start an endless cycle of consuming and failing messages from the DLQ, creating a loop that hampers the error-handling process.
 
 Such a case can lead to situations where messages destined for the DLQ due to processing errors are re-consumed as regular messages, only to fail and be sent back to the DLQ, perpetuating a cycle.
 
@@ -457,11 +457,11 @@ This comparative testing method offers a straightforward way to ensure your regu
 
 1. **Error and Debug Topics**: Special topics created for debugging or error tracking, like `errors_critical`, `debug_minor`, can be consumed automatically using patterns.
 
-1. **Dedicated DLQ (Dead Letter Queue) Topics**: Handling erroneous or unprocessable messages becomes crucial as applications scale. Systems can isolate and address these problematic messages by employing dedicated Kafka topics for DLQ, such as `dlq_orders`, `dlq_notifications`. Karafka's Routing Patterns can be leveraged to automatically detect and route messages to these DLQ topics, ensuring efficient monitoring and subsequent troubleshooting.
+1. **Dedicated DLQ (Dead Letter Queue) Topics**: Handling erroneous or unprocessable messages becomes crucial as applications scale. Systems can isolate and address these problematic messages by employing dedicated Kafka topics for DLQ, such as `dlq_orders`, `dlq_notifications`. Karafka's Routing Patterns can be used to automatically detect and route messages to these DLQ topics, ensuring efficient monitoring and subsequent troubleshooting.
 
 ## Summary
 
-Karafka's Routing Patterns offers a dynamic solution for message routing, utilizing the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality ensures agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
+Karafka's Routing Patterns offers a dynamic solution for message routing, using the power of regular expressions. By defining regexp patterns within routes, this feature allows automatic detection and consumption of Kafka topics that match the specified patterns. This functionality ensures agile integration of new and pre-existing topics that have yet to be defined in routes, simplifying the management process and eliminating the need for manual configuration. Whether handling tenant-specific or dedicated Dead Letter Queue topics, Karafka's Routing Patterns enhance flexibility and efficiency in data flow management.
 
 ## See Also
 

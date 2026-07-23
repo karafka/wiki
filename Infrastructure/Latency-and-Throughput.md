@@ -131,7 +131,7 @@ When configuring `socket.nagle.disable`, consider your application's priorities:
 
 - **Low Latency Needs** (default in newer versions): For Karafka >= 2.5.1 and WaterDrop >= 2.8.7, the Nagle algorithm is disabled by default. For older versions, explicitly set `socket.nagle.disable: true` to minimize latency.
 
-- **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to leverage the Nagle algorithm for reduced network traffic.
+- **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to use the Nagle algorithm for reduced network traffic.
 
 Here's an example configuration:
 
@@ -172,7 +172,7 @@ producer.produce_many_async(
 
 Tuning producers may seem straightforward, but managing consumers is a different and more complex matter. Understanding and optimizing consumer latency and throughput requires a deep dive into various aspects spanning several book chapters. The sections below should be viewed as an introduction rather than exhaustive documentation.
 
-Consumer management is influenced by numerous external factors that go beyond the framework itself. These include:
+Consumer management is influenced by many external factors that go beyond the framework itself. These include:
 
 - **Types of Data Consumed**: Different data types may require different processing strategies and resources.
 
@@ -415,7 +415,7 @@ end
 
 ### Parallel Processing
 
-Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka leverages native Ruby threads and supports multiple concurrency features to handle processing efficiently.
+Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka uses native Ruby threads and supports multiple concurrency features to handle processing efficiently.
 
 !!! warning "Polling-Related Factors Affecting Parallel Processing"
 
@@ -467,7 +467,7 @@ Below, you can find a table summarizing the key aspects of Karafka's parallel pr
   <tr>
     <td>Swarm Mode for Enhanced Concurrency</td>
     <td>
-      Forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) mechanism.
+      Forks independent processes to optimize CPU utilization, using Ruby's Copy-On-Write (CoW) mechanism.
       It may enhance throughput and scalability by distributing the workload across multiple CPU cores.
     </td>
     <td>
@@ -564,11 +564,11 @@ If a Karafka consumer process is assigned only one topic partition, the prefetch
 
 #### Conclusion
 
-Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and utilizing strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This ensures that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
+Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and using strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This ensures that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
 
 ### Subscription Group Blocking Polls
 
-Karafka is designed to prebuffer data to ensure efficient message processing. Still, it's important to understand that this prefetched data is not utilized until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
+Karafka is designed to prebuffer data to ensure efficient message processing. Still, it's important to understand that this prefetched data is not used until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
 
 This approach prevents race conditions and ensures data consistency. The poll operation in Kafka acts as a heartbeat mechanism governed by the `max.poll.interval.ms` setting. This interval defines the maximum delay between poll invocations before the consumer is considered dead, triggering a rebalance. By ensuring that all jobs from the previous poll are finished before new data is used, Karafka maintains data integrity and avoids processing the same message multiple times.
 
@@ -590,7 +590,7 @@ To address these issues, consider the following strategies:
 
 ### Summary
 
-Managing consumers in Karafka involves numerous internal and external factors. Each case presents unique challenges, requiring a tailored approach to optimization.
+Managing consumers in Karafka involves many internal and external factors. Each case presents unique challenges, requiring a tailored approach to optimization.
 
 Consumer management is influenced by data types, infrastructure, processing nature (CPU vs. IO-intensive), data volume, and worker threads. Key Karafka settings like `max_wait_time`, `max_messages`, and `fetch.wait.max.ms` play a crucial role in data fetching and processing efficiency.
 

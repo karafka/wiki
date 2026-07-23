@@ -248,7 +248,7 @@ producer.setup do |config|
 end
 ```
 
-Keep in mind, that in order to use `zstd`, you need to install `libzstd-dev`:
+Keep in mind, that to use `zstd`, you need to install `libzstd-dev`:
 
 ```shell
 apt-get install -y libzstd-dev

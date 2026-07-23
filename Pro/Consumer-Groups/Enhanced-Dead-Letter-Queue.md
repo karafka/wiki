@@ -232,7 +232,7 @@ This adjustment ensures that messages dispatched to the DLQ and the marking of t
 
 ## Advanced Error Tracking
 
-Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to leverage historical error data to inform recovery strategies, ensuring a nuanced approach to handling errors based on past failures.
+Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to use historical error data to inform recovery strategies, ensuring a nuanced approach to handling errors based on past failures.
 
 The errors_tracker API in Karafka's ErrorsTracker class is designed to accumulate and manage a history of errors during the `#consume` method execution. It tracks up to the last 100 errors to prevent memory leaks from endless error loops.
 
@@ -327,7 +327,7 @@ This approach enables you to:
 
 ## Custom Context-Aware Recovery Strategies
 
-Karafka allows for implementing custom DLQ handling and recovery strategies, leveraging the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
+Karafka allows for implementing custom DLQ handling and recovery strategies, using the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
 
 This method offers significant benefits, including more efficient processing, reduced noise from non-recoverable errors, and enhanced opportunity for successful message recovery, leading to a more robust and error-tolerant system.
 

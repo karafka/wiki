@@ -121,7 +121,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 ## Conclusion
 
-While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're leveraging the multi-cluster configuration for valid business reasons.
+While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're using the multi-cluster configuration for valid business reasons.
 
 ## See Also
 

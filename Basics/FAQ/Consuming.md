@@ -355,7 +355,7 @@ The [Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature adheres t
 
 However, it's essential to use this feature properly. If your regular workloads don't push the limits of `max.poll.interval.ms`, enabling Long Running Jobs might degrade performance. This is because pausing the partition prevents data polling, which can lead to inefficiencies in situations where message processing is typically fast.
 
-In conclusion, while Long Running Jobs provide a powerful tool to maintain stability during extended message processing tasks, it's crucial to understand your data and processing patterns to utilize them effectively. Otherwise, you might inadvertently introduce performance bottlenecks.
+In conclusion, while Long Running Jobs provide a powerful tool to maintain stability during extended message processing tasks, it's crucial to understand your data and processing patterns to use them effectively. Otherwise, you might inadvertently introduce performance bottlenecks.
 
 ## What is the principle of strong ordering in Kafka and its implications?
 
@@ -363,7 +363,7 @@ Strong ordering in Kafka means that records are strictly ordered in the partitio
 
 ## Why Karafka is consuming the same message multiple times?
 
-When you use Karafka and notice that the same message is being consumed multiple times, several reasons might be causing this. Here are the common reasons why you may experience the same message being processed numerous times:
+When you use Karafka and notice that the same message is being consumed multiple times, several reasons might be causing this. Here are the common reasons why you may experience the same message being processed many times:
 
 - **At-Least-Once Delivery**: Kafka guarantees at-least-once delivery, which means a message can be delivered more than once in specific scenarios. This is a trade-off to ensure that no messages are lost during transport. As a result, it's up to the consumer to handle duplicate messages appropriately.
 

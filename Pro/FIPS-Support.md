@@ -31,7 +31,7 @@ Karafka supports FIPS 140-2 Level 3 requirements in specific configurations, as 
 
 Karafka achieves FIPS compatibility through:
 
-- Use of FIPS-validated cryptographic modules: Karafka leverages librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
+- Use of FIPS-validated cryptographic modules: Karafka uses librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
 - Secure communications: All network traffic can be encrypted using TLS/SSL with FIPS-approved algorithms
 - In-flight encryption: Data transmitted between Karafka clients and Kafka brokers uses FIPS-compatible encryption algorithms
 - At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, AES for encryption)

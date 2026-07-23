@@ -36,9 +36,9 @@ end
 
 ### Producing Messages One After Another
 
-When a WaterDrop producer is set up in a transactional mode, every single message production will automatically initiate its transaction when it isn't wrapped within a transaction block. While this ensures atomicity for each message, there are more efficient approaches. Each transaction will introduce additional latency due to the overhead of starting and completing a transaction for every message.
+When a WaterDrop producer is set up in a transactional mode, every single message production will automatically start its transaction when it isn't wrapped within a transaction block. While this ensures atomicity for each message, there are more efficient approaches. Each transaction will introduce additional latency due to the overhead of starting and completing a transaction for every message.
 
-For optimized performance, it's advisable to leverage batch dispatches. By batching messages, you can reduce the number of transactions and, consequently, the associated overheads. This will improve throughput and minimize the latency introduced by frequent transaction initiations and completions. In a transactional setting, batching is key to balancing consistency and performance.
+For optimized performance, it's advisable to use batch dispatches. By batching messages, you can reduce the number of transactions and, consequently, the associated overheads. This will improve throughput and minimize the latency introduced by frequent transaction initiations and completions. In a transactional setting, batching is key to balancing consistency and performance.
 
 **BAD**:
 
@@ -77,7 +77,7 @@ end
 
 ### Producing In Batches
 
-When utilizing WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, ensuring that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
+When using WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, ensuring that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
 
 ```ruby
 # In case of batch messages production, the `#transaction` wrapper is not needed.
@@ -257,7 +257,7 @@ Because of the above, delivery reports may seem useless, however, while delivery
 
 WaterDrop is designed to be intelligent about handling transaction-related errors. It discerns which errors can be retried and will attempt based on the configuration settings. The retries aren't immediate - they come with a backoff period, giving the system a brief respite before trying again. This approach can mitigate transient issues that might resolve themselves after a short period.
 
-Regardless of the nature of the error - whether retryable or not - WaterDrop ensures transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be initiated if a pattern of errors emerges.
+Regardless of the nature of the error - whether retryable or not - WaterDrop ensures transparency by publishing instrumentation events to `error.occurred` channel. This feature keeps the stakeholders informed, and potential interventions or investigations can be started if a pattern of errors emerges.
 
 Errors encapsulated as `Rdkafka::RdkafkaError` offer insight into their nature, helping formulate a response strategy. Here's how you can interpret them:
 
@@ -378,7 +378,7 @@ By adhering to these recommendations, you can ensure reliable transactional proc
 
 In certain situations, developers might inadvertently nest transactions within one another. With WaterDrop, this is gracefully handled to prevent any undesired side effects.
 
-When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you initiate a nested transaction - starting another transaction inside an existing one - the producer won't get confused or initiate a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
+When using the WaterDrop producer, it possesses an inherent awareness of an ongoing transaction. If you start a nested transaction - starting another transaction inside an existing one - the producer won't get confused or start a separate, inner transaction. Instead, it will treat the entire sequence of operations as if they were under a single wrapping transaction from the beginning.
 
 This intelligent behavior ensures:
 
@@ -386,7 +386,7 @@ This intelligent behavior ensures:
 
 1. **Consistency**: Whether it's a single or mistakenly nested transaction, the outcome remains consistent; messages will either all be committed or aborted.
 
-1. **Performance**: Since WaterDrop recognizes and avoids initiating multiple transactions, there's no additional overhead or latency from nested transaction initiations.
+1. **Performance**: Since WaterDrop recognizes and avoids starting multiple transactions, there's no additional overhead or latency from nested transaction initiations.
 
 While it's generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they're handled seamlessly without any adverse effects.
 
@@ -520,7 +520,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
     > Broker: Producer attempted a transactional operation in an invalid state (invalid_txn_state)
 
 - **Thread Safety with WaterDrop**: While WaterDrop is inherently thread-safe, there are specifics to keep in mind for transactions:
-    - **Lock During Transactions**: WaterDrop locks access to itself when a transaction is underway. For those anticipating high transactional loads, consider leveraging multiple producers. This way, while one producer is engaged in a transaction in one thread, others can operate independently.
+    - **Lock During Transactions**: WaterDrop locks access to itself when a transaction is underway. For those anticipating high transactional loads, consider using multiple producers. This way, while one producer is engaged in a transaction in one thread, others can operate independently.
 
     - **Exclusive Transactional Usage**: Should you configure a producer as transactional, be aware that it cannot then be used for non-transactional messaging, and all producer operations will be wrapped with a transaction.
 
@@ -532,7 +532,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
       <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_transactional.png" alt="karafka web ui transactional explorer"/>
     </p>
 
-These limitations underline the importance of a thorough understanding and careful implementation when leveraging Kafka transactions, especially with tools like WaterDrop.
+These limitations underline the importance of a thorough understanding and careful implementation when using Kafka transactions, especially with tools like WaterDrop.
 
 ## Example Use Cases
 

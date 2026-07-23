@@ -76,7 +76,7 @@ These headers provide vital information for troubleshooting and understanding th
 
 Karafka Pro supports [exactly-once semantics](Pro-Consumer-Groups-Transactions) within its message piping feature, ensuring that messages are processed and forwarded precisely once, even in case of failures or retries. This is crucial in scenarios where message duplication or loss could lead to inconsistencies or erroneous behaviors in downstream systems.
 
-Here's how you can utilize transactions with message piping:
+Here's how you can use transactions with message piping:
 
 ```ruby
 class Consumer < ApplicationConsumer

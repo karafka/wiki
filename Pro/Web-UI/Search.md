@@ -19,7 +19,7 @@ The search modal includes several fields and options to refine your search:
 
 - **Messages**: Select the limit on the number of messages to scan. The available options ensure the search operation remains efficient and does not overload the system.
 
-Once you have configured your search parameters, click the "Search" button to initiate the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
+Once you have configured your search parameters, click the "Search" button to start the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-search1.png)
 
@@ -86,7 +86,7 @@ Below, you can find a detailed list of search capabilities' limitations from an 
 
 1. **Search Timeout**: The search operation has a maximum duration (timeout) of 30,000 milliseconds (30 seconds). If a search takes longer, it will be stopped automatically, potentially leaving some messages unchecked.
 
-1. **Limit on Number of Messages**: The search can only handle a certain number of messages (limits). This constraint ensures performance but may not be sufficient for huge data sets.
+1. **Limit on Number of Messages**: The search can only handle a certain number of messages (limits). This constraint ensures performance but may not be enough for huge data sets.
 
 1. **Case Sensitivity**: The default search matchers (`RawPayloadIncludes`, `RawKeyIncludes`, `RawHeaderIncludes`) are case-sensitive, which might not meet the needs of users who require case-insensitive searches.
 
@@ -104,7 +104,7 @@ These limitations highlight the trade-offs made to balance performance, simplici
 
 The Search Metadata Details section provides detailed insights into the performance and outcomes of your search query. This type of information may be crucial for understanding the efficiency and effectiveness of your search and can help diagnose potential issues.
 
-When you initiate a search, the results page contains a hidden detailed summary and partition-specific information, offering valuable insights into the search process. You can display it by clicking the stats icon above the search results.
+When you start a search, the results page contains a hidden detailed summary and partition-specific information, offering valuable insights into the search process. You can display it by clicking the stats icon above the search results.
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-search2.png)
 

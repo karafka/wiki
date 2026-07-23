@@ -54,7 +54,7 @@ For production workloads where write availability during maintenance matters, us
 
 ## Compression
 
-Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio - approximately 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
+Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio - about 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
 
 On the broker side, set `compression.type=producer` to store messages using whatever compression the producer applied. This avoids recompression overhead. Never compress at the broker level; it just adds unnecessary CPU load.
 
@@ -186,7 +186,7 @@ Whatever format you choose, include a schema version indicator in your messages 
 
 ## Cluster Capacity Planning
 
-Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without sufficient headroom, this redistribution can cascade into cluster-wide issues.
+Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without enough headroom, this redistribution can cascade into cluster-wide issues.
 
 ### CPU Utilization Guidelines
 

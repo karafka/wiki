@@ -38,7 +38,7 @@ These errors indicate processes in the middle of certain operations during a for
     - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
     - Disable Spring in development if you're encountering persistent issues
 
-Note that forking issues typically occur when the required dependencies aren't loaded in the parent process prior to forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
+Note that forking issues typically occur when the required dependencies aren't loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
 ## Conclusion
 

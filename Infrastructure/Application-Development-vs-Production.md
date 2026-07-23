@@ -95,7 +95,7 @@ end
 
 ## Manual Topic Creation and Consumer Starting Sequence
 
-Creating a topic manually or by sending the first message and then initiating a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
+Creating a topic manually or by sending the first message and then starting a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
 
 ## Adjust Topic Metadata Refresh Interval for Production
 
@@ -148,7 +148,7 @@ The `compression.codec` parameter in Kafka's configuration allows you to specify
 
 There are several reasons why you should configure compression for your production environments and why it needs to be set on both Kafka and Karafka levels:
 
-- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth utilized. Remember that compression **needs** to be set for both Kafka topics and Karafka to ensure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
+- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth used. Remember that compression **needs** to be set for both Kafka topics and Karafka to ensure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
 
 - **Consistency**: Keeping the compression setting consistent between producers, consumers, and brokers ensures the data is uniformly compressed throughout its lifecycle. This minimizes issues related to unsupported compression formats or mismatched compression expectations.
 
@@ -183,7 +183,7 @@ When you switch between classic protocol assignment strategies, be aware that:
 
 To ensure a smooth transition when adjusting the classic protocol assignment strategy, follow these steps:
 
-1. **Backup Configuration**: Initiate the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
+1. **Backup Configuration**: Start the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
 
 1. **Test in a Non-Production Environment**: Before rolling out changes in a live setting, validate the new strategy in a controlled, non-production environment.
 
@@ -259,7 +259,7 @@ In Karafka it has specific implications:
 
 - **Delayed Writing to Newly Created Topics**: In Karafka, it's advisable not to start producing messages for a topic immediately after its creation using the Karafka Admin API. Due to Kafka's asynchronous nature, the topic might not be fully recognized across the cluster, leading to message delivery issues. Messages sent to these "in-limbo" topics get queued and might fail if the topic becomes unavailable within the propagation time.
 
-- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing sufficient time for topics to stabilize within the Kafka ecosystem before initiating message production.
+- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing enough time for topics to stabilize within the Kafka ecosystem before starting message production.
 
 - **Handling Topic Resets**: Resetting topics in Karafka, especially in a production environment, should be approached with caution. Resetting a topic (deleting and recreating it) may lead to immediate marking of the topic as non-existent, as the propagation time does not apply in this scenario. This can cause significant disruptions in message flow and processing. We **do not** recommend removing and recreating topics on running systems. Always stop your producers and consumers before attempting to do so.
 
@@ -301,7 +301,7 @@ You can find an extensive explanation of Karafka ecosystem components forking su
 
 ## Be Aware of WaterDrop Default Producer Middleware Modifications
 
-When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also utilizes this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
+When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also uses this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
 
 For example, when applying such a middleware:
 
@@ -421,7 +421,7 @@ When deploying Kafka with the `cooperative-sticky` rebalance strategy in environ
 
 The `shutdown_timeout` configuration defines the maximum time consumers can shut down gracefully. In larger deployments with many partitions, rebalances can take longer due to the complexity of ensuring minimal partition movement and maintaining a balanced load. A higher `shutdown_timeout` helps in:
 
-- **Ensuring Graceful Shutdowns**: Allows consumers sufficient time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
+- **Ensuring Graceful Shutdowns**: Allows consumers enough time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
 
 - **Reducing Rebalance Interruptions**: Prevents premature shutdowns during rebalances, which can cause additional rebalances and increase system instability.
 

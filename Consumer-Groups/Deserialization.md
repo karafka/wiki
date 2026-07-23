@@ -60,7 +60,7 @@ Karafka makes specific assumptions about incoming data format, setting defaults 
 
 ### Setting Defaults
 
-In Karafka, you can configure default deserializers for all topics by utilizing the `#defaults` block within your routing configuration. This is particularly useful if your application generally handles messages in a specific format and you wish to apply a consistent deserialization approach across multiple topics.
+In Karafka, you can configure default deserializers for all topics by using the `#defaults` block within your routing configuration. This is particularly useful if your application generally handles messages in a specific format and you wish to apply a consistent deserialization approach across multiple topics.
 
 ```ruby
 class KarafkaApp < Karafka::App

@@ -24,7 +24,7 @@ The tombstone message effectively sets the message payload to null using the sam
 
 ## Enabling Scheduled Messages
 
-Karafka provides a convenient API to facilitate the scheduling of messages directly within your routing configuration. By invoking the `#scheduled_messages` method, you can easily set up a consumer group and topics dedicated to handling your scheduled messages. This setup involves minimal configuration from the user's end and leverages Karafka's built-in declarative topics API for needed topics management.
+Karafka provides a convenient API to facilitate the scheduling of messages directly within your routing configuration. By invoking the `#scheduled_messages` method, you can easily set up a consumer group and topics dedicated to handling your scheduled messages. This setup involves minimal configuration from the user's end and uses Karafka's built-in declarative topics API for needed topics management.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -325,18 +325,18 @@ enveloped = Karafka::Pro::ScheduledMessages.schedule(
 
     The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
 
-If you must ensure that particular messages are dispatched in a specific order, you can utilize the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key ensures that:
+If you must ensure that particular messages are dispatched in a specific order, you can use the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key ensures that:
 
 - All related messages (sharing the same raw message key) are dispatched to the same partition.
 - The order of messages is preserved as per the sequence of their scheduling.
 
-This strategy leverages Kafka's partitioning mechanism, providing a predictable processing order. Messages with the same `partition_key` are guaranteed to be sent to the same partition and thus processed in the order they were sent:
+This strategy uses Kafka's partitioning mechanism, providing a predictable processing order. Messages with the same `partition_key` are guaranteed to be sent to the same partition and thus processed in the order they were sent:
 
 ### Cancelling Scheduled Messages
 
 Karafka provides a straightforward mechanism to cancel scheduled messages before they are dispatched. This capability is essential for scenarios where conditions change after a message has been scheduled and the message is no longer required or needs to be replaced.
 
-To cancel a scheduled message, you will utilize the `#cancel` method provided by Karafka's Scheduled Messages feature. This method lets you specify the unique key of the message you want to cancel. This key should be the same as the one used in the message envelope when the message was originally scheduled.
+To cancel a scheduled message, you will use the `#cancel` method provided by Karafka's Scheduled Messages feature. This method lets you specify the unique key of the message you want to cancel. This key should be the same as the one used in the message envelope when the message was originally scheduled.
 
 To cancel a scheduled message:
 
@@ -618,7 +618,7 @@ Delayed Topics in Karafka provide a mechanism to delay message consumption from 
 
 ### Delayed Piping
 
-[Piping](Pro-Consumer-Groups-Piping) with [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) offers an advanced alternative to Scheduled Messages by leveraging both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
+[Piping](Pro-Consumer-Groups-Piping) with [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) offers an advanced alternative to Scheduled Messages by using both Delayed Processing and Piping to create "time buckets." With this approach, you can create multiple delayed topics (e.g., `messages_5m`, `messages_30m`, `messages_1h`) that act as buffers for different delay durations. Once the delay period expires, messages are piped from these delayed topics to their final destination for processing.
 
 Use Cases:
 
@@ -652,7 +652,7 @@ Use Cases:
 
 - **Regulatory Compliance Reports**: Schedule a message to deliver a critical compliance report right before the audit deadline, ensuring all data is fresh and the submission is timely without last-minute rushes.
 
-- **Data Processing Kickoff**: Send a scheduled message to initiate a complex ETL process at the start of a financial quarter, ensuring data is processed at the right moment for analysis and reporting.
+- **Data Processing Kickoff**: Send a scheduled message to start a complex ETL process at the start of a financial quarter, ensuring data is processed at the right moment for analysis and reporting.
 
 - **SLA Compliance Check**: Set up a message to trigger an SLA compliance verification exactly when a new service level agreement goes into effect, automating the monitoring process without manual setup each time.
 

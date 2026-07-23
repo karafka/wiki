@@ -154,7 +154,7 @@ In the WaterDrop gem, `partition_key` and `key` are two distinct options that ca
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
 
-To ensure that Karafka.producer does not block or delay your processing, you can utilize the `produce_async` and `produce_many_async`. These methods only block the execution flow if the underlying `librdkafka` queue is full.
+To ensure that Karafka.producer does not block or delay your processing, you can use the `produce_async` and `produce_many_async`. These methods only block the execution flow if the underlying `librdkafka` queue is full.
 
 By default, if the queue is full, Karafka will enter a backoff state and wait for a specified time before retrying. The `wait_backoff_on_queue_full` and `wait_timeout_on_queue_full` settings in your Karafka configuration file control this behavior. If you want to disable the waiting behavior altogether, you can set the `wait_on_queue_full` option to `false`.
 
@@ -383,7 +383,7 @@ It auto-batches the requests. If the queue is full, a throttle will kick in. You
 
 ## How can I namespace messages for producing in Karafka?
 
-You can namespace messages topics for producing automatically in Karafka by leveraging the [middleware in WaterDrop](WaterDrop-Middleware) to transform the destination topics.
+You can namespace messages topics for producing automatically in Karafka by using the [middleware in WaterDrop](WaterDrop-Middleware) to transform the destination topics.
 
 ## Does librdkafka queue messages when using Waterdrop's `#produce_sync` method?
 

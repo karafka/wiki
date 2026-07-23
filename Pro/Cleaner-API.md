@@ -18,7 +18,7 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
 
 ## Using Cleaner API
 
-When utilizing the Cleaner API, it is paramount to understand the implications on the message's data.
+When using the Cleaner API, it is paramount to understand the implications on the message's data.
 
 Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
 
@@ -78,7 +78,7 @@ else
 end
 ```
 
-Regardless of where you are in your code, as long as the message object is accessible, you can leverage the `#cleaned?` method to determine the cleaning state of the message and proceed accordingly.
+Regardless of where you are in your code, as long as the message object is accessible, you can use the `#cleaned?` method to determine the cleaning state of the message and proceed accordingly.
 
 ## Benefits
 
@@ -134,7 +134,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/1mb_stdev.png" />
 </p>
 
-**Conclusion**: For messages approximately 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
+**Conclusion**: For messages about 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
 
 ### Message size of 100KB
 
@@ -158,7 +158,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/10kb_stdev.png" />
 </p>
 
-**Conclusion**: When processing messages of approximately 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
+**Conclusion**: When processing messages of about 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
 
 ### Message size of 1KB
 
@@ -188,7 +188,7 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 - **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it's crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
 
-Understanding these limitations is essential for users to effectively and efficiently leverage the Cleaner API without encountering unforeseen issues or complications in their processes.
+Understanding these limitations is essential for users to effectively and efficiently use the Cleaner API without encountering unforeseen issues or complications in their processes.
 
 ## Example Use Cases
 

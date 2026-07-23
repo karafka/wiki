@@ -6,7 +6,7 @@ A specific failure pattern can cause consumer lag to jump suddenly from near zer
 
 The observable symptoms are distinctive:
 
-- Consumer lag for one or more topics rises near-vertically from approximately zero to the topic's full retention age (for example, from 0 seconds to 9 days of lag within minutes)
+- Consumer lag for one or more topics rises near-vertically from about zero to the topic's full retention age (for example, from 0 seconds to 9 days of lag within minutes)
 - The lag plateau sits at or near the retention ceiling, then drains slowly over several hours as the consumer reprocesses already-consumed messages
 - The pattern repeats on a regular schedule - often daily - and may intensify during periods of higher deployment or scaling activity
 - Only a subset of topics may be affected; topics with higher message rates tend to show the most visible spikes because more messages are reprocessed per unit of time
@@ -68,7 +68,7 @@ Three related librdkafka issues interact with the `cooperative-sticky` partition
 
 ### What Makes #4686 Fire
 
-Bug #4686 does not require any explicit pause/resume from your application code. The implicit resume that `cooperative-sticky` issues on kept partitions during a rebalance is sufficient to trigger the stale-fetch-start path. Any `cooperative-sticky` consumer on librdkafka below `2.4.0` is exposed whenever a rebalance occurs.
+Bug #4686 does not require any explicit pause/resume from your application code. The implicit resume that `cooperative-sticky` issues on kept partitions during a rebalance is enough to trigger the stale-fetch-start path. Any `cooperative-sticky` consumer on librdkafka below `2.4.0` is exposed whenever a rebalance occurs.
 
 The reset always lands at the full retention ceiling rather than a small backward nudge because the stale anchor points to a position that retention has long since trimmed. Each rebalance produces a full-retention-age lag spike, drains over hours as the consumer catches up, then repeats on the next rebalance.
 
@@ -86,7 +86,7 @@ A daily spike cadence typically points to a scheduled external trigger rather th
   <tbody>
     <tr>
       <td>Automatic dyno/container cycling</td>
-      <td>Platforms like Heroku restart dynos approximately every 24 hours. Each restart causes a consumer to leave and rejoin the group, triggering a cooperative rebalance.</td>
+      <td>Platforms like Heroku restart dynos about every 24 hours. Each restart causes a consumer to leave and rejoin the group, triggering a cooperative rebalance.</td>
     </tr>
     <tr>
       <td>Daily deployments</td>

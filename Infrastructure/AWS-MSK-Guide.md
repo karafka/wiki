@@ -2,7 +2,7 @@
 
 This document addresses the unique operational characteristics and recurring issues observed when running Karafka with AWS Managed Streaming for Apache Kafka (MSK) and MSK Express. While AWS MSK provides a fully managed Kafka service, it introduces several distinct behaviors compared to other Kafka vendors that affect how Karafka and librdkafka operate.
 
-Over time, users of the Karafka and rdkafka ecosystems have reported numerous recurring incidents specific to MSK deployments that rarely occur with other vendors. Issues such as `unknown_partition` errors during consumption, authentication failures after cluster maintenance, and complete consumer group stalls during broker patching prompted the creation of this guide.
+Over time, users of the Karafka and rdkafka ecosystems have reported many recurring incidents specific to MSK deployments that rarely occur with other vendors. Issues such as `unknown_partition` errors during consumption, authentication failures after cluster maintenance, and complete consumer group stalls during broker patching prompted the creation of this guide.
 
 While some documented issues may occur with other Kafka deployments, this guide is built on the collective experience of production MSK incidents, workarounds, and solutions discovered by the community. Each pattern and solution has been validated in real MSK environments where these problems consistently manifested.
 
@@ -177,7 +177,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 !!! warning "Increase Timeout Before Investigating Further"
 
-    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, increasing the budget alone is not sufficient - see [Idle Connection Reaping](#idle-connection-reaping).
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, increasing the budget alone is not enough - see [Idle Connection Reaping](#idle-connection-reaping).
 
 ### Idle Connection Reaping
 

@@ -227,7 +227,7 @@ producer.tombstone_sync(
 
 ## Labeling
 
-Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and utilizing labeling, please visit [this](WaterDrop-Labeling) dedicated wiki page.
+Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and using labeling, please visit [this](WaterDrop-Labeling) dedicated wiki page.
 
 ## Error Handling
 
@@ -514,7 +514,7 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
 
 However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a WaterDrop producer:
 
@@ -613,7 +613,7 @@ Each WaterDrop producer maintains its own set of TCP connections to Kafka broker
 
 ### When to Consider Variants Instead
 
-[WaterDrop Variants](WaterDrop-Variants) may be sufficient for simpler differences in delivery requirements. Variants share TCP connections while allowing customization of certain topic-specific settings. Consider variants when differences are limited to:
+[WaterDrop Variants](WaterDrop-Variants) may be enough for simpler differences in delivery requirements. Variants share TCP connections while allowing customization of certain topic-specific settings. Consider variants when differences are limited to:
 
 - `acks` settings (acknowledgment levels)
 - `compression.type` (compression algorithm selection)

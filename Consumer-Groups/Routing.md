@@ -137,7 +137,7 @@ end
 
 ### Routing Patterns
 
-For users leveraging the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain comprehensive insights.
+For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain comprehensive insights.
 
 ## Overriding Defaults
 
@@ -272,7 +272,7 @@ end
 
 Karafka uses the `inherit` flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
 
-This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By leveraging the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
+This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By using the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -354,7 +354,7 @@ Karafka.routing.draw do
 end
 ```
 
-By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
+By using the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
 
 ## See Also
 

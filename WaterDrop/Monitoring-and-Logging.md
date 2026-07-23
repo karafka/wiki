@@ -178,7 +178,7 @@ The statistics include all of the metrics from `librdkafka` (complete list [here
 
 ### Statistics Decorator
 
-For several attributes like `txmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
+For several attributes like `txmsgs`, `librdkafka` publishes only the totals. To make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
 
 !!! note "Decorator Scope"
 

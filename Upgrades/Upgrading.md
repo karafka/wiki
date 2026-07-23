@@ -40,7 +40,7 @@ The practical recommendation is: **apply patch releases as soon as they are avai
 
 1. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
 
-1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, utilizing a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
+1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, using a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
 
 1. **Deploy to production**: When deploying the upgraded Karafka application, it is recommended first to deploy all the consumers and only then deploy the Web UI component. This sequential deployment ensures that the consumers are up and running to process incoming messages from Kafka while the Web UI is being upgraded.
 

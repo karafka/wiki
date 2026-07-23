@@ -106,9 +106,9 @@ The Adaptive Iterator is designed to monitor message processing times and stop p
 
 ### Impact on Performance
 
-The primary impact on performance arises when the Adaptive Iterator stops processing frequently and initiates a seek operation. Seeking is not a lightweight operation; it involves the consumer resetting its position in the partition, introducing a delay. If seeking happens with every batch, especially when `the max.poll.interval.ms` is set to a lower value (default is 5 minutes), this overhead can become significant.
+The primary impact on performance arises when the Adaptive Iterator stops processing frequently and starts a seek operation. Seeking is not a lightweight operation; it involves the consumer resetting its position in the partition, introducing a delay. If seeking happens with every batch, especially when `the max.poll.interval.ms` is set to a lower value (default is 5 minutes), this overhead can become significant.
 
-However, it's important to note the relative impact of seeking in the context of typical configurations. Assuming that seeking back takes approximately 5 seconds, this delay is still only around 2% of the total processing time if the safety margin is set to 10% of the poll interval. In cases where the interval is longer and seeking happens infrequently, this impact is minimal.
+However, it's important to note the relative impact of seeking in the context of typical configurations. Assuming that seeking back takes about 5 seconds, this delay is still only around 2% of the total processing time if the safety margin is set to 10% of the poll interval. In cases where the interval is longer and seeking happens infrequently, this impact is minimal.
 
 The performance hit becomes more noticeable if seeking occurs with every batch, which can lead the consumer to spend a disproportionate amount of time managing offsets instead of processing messages, ultimately reducing throughput. Thus, the key consideration is the frequency of seeking and the `configured max.poll.interval.ms` - the lower the interval, the higher the relative cost of frequent seeks. Proper configuration of the safety margin is crucial to balance processing efficiency against the risk of exceeding the poll interval.
 

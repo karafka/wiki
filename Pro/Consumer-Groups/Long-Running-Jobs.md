@@ -203,7 +203,7 @@ If a manual pause is needed, it is recommended to compute its duration based on 
 
 This will ensure that the consumer has enough time to process all the messages in the batch before the partition is resumed.
 
-Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and leveraging the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
+Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and using the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
 
 ## Non-Blocking Jobs: Complementing Long-Running Job Pausing
 

@@ -4,7 +4,7 @@ Karafka Web UI is a tool for managing and monitoring data within Kafka-based sys
 
 ## Data Storage and Management
 
-Karafka Web UI utilizes Apache Kafka as its core for data management, eliminating the need for third-party databases. This direct integration offers several advantages:
+Karafka Web UI uses Apache Kafka as its core for data management, eliminating the need for third-party databases. This direct integration offers several advantages:
 
 - **Streamlined Data Handling**: Data is managed directly within Kafka, providing a unified and efficient approach to data processing and storage.
 
@@ -49,7 +49,7 @@ However, this delay is generally irrelevant when analyzing patterns and conducti
 
 ## Conclusion
 
-Karafka Web UI offers a robust, efficient, and reliable solution for monitoring Karafka-based environments. Its direct use of Kafka for data storage and sophisticated schema management and migration capabilities positions it as a powerful tool for users seeking to leverage Kafka within their applications.
+Karafka Web UI offers a robust, efficient, and reliable solution for monitoring Karafka-based environments. Its direct use of Kafka for data storage and sophisticated schema management and migration capabilities positions it as a powerful tool for users seeking to use Kafka in their applications.
 
 ## See Also
 

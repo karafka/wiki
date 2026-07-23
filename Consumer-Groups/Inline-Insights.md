@@ -87,7 +87,7 @@ In Karafka Pro, there's an option to define in the routing that insights are man
 
 ## Insights Freshness
 
-When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to leverage. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process until new metrics become available. This means that metrics may be updated while you are processing the data. Metrics, however, will never disappear, meaning you can rely on their presence if you have a metrics state. They may be updated, but they will not disappear.
+When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to use. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process until new metrics become available. This means that metrics may be updated while you are processing the data. Metrics, however, will never disappear, meaning you can rely on their presence if you have a metrics state. They may be updated, but they will not disappear.
 
 ```ruby
 # Simulate slow processing on a regular (non LRJ) consumer
@@ -118,7 +118,7 @@ Karafka ensures that consumers can continue processing with insights throughout 
 
 ## Memory Footprint
 
-One of the primary considerations for any system is the memory footprint of its features, and Karafka's Inline Insights is no exception. The insights occupy 4KB of space for a single topic partition. Thus, even if you have a multitude of partitions, the memory footprint remains low, enabling you to leverage insights without significantly impacting your system's performance.
+One of the primary considerations for any system is the memory footprint of its features, and Karafka's Inline Insights is no exception. The insights occupy 4KB of space for a single topic partition. Thus, even if you have a multitude of partitions, the memory footprint remains low, enabling you to use insights without significantly impacting your system's performance.
 
 ### Insights Tracker Cache Management
 

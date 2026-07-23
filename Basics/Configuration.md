@@ -40,7 +40,7 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 
 **Prerequisites**
 
-1. Initiate the Karafka application setup
+1. Start the Karafka application setup
 1. Verify if the external components requiring configuration are available
 
 **Procedure**
@@ -114,7 +114,7 @@ end
 
 !!! note "Note"
 
-    In order to use `zstd`, you need to install `libzstd-dev`:
+    To use `zstd`, you need to install `libzstd-dev`:
 
     ```shell
     apt-get install -y libzstd-dev

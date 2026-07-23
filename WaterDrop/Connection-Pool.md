@@ -12,7 +12,7 @@ WaterDrop provides a built-in `ConnectionPool` for efficient producer management
 
 ## Prerequisites
 
-WaterDrop's `ConnectionPool` utilizes the `connection_pool` gem internally, which is not included as a dependency by default, as most users don't require connection pooling functionality.
+WaterDrop's `ConnectionPool` uses the `connection_pool` gem internally, which is not included as a dependency by default, as most users don't require connection pooling functionality.
 
 Add the `connection_pool` gem to your Gemfile:
 

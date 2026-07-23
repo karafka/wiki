@@ -158,7 +158,7 @@ A practical approach is to reason from what you know about the incident:
 
 - **If you know when the coordinator failed**, use that timestamp minus ten to fifteen minutes. This gives enough buffer to capture the last successful commits even if there was a lag between the failure and when it was noticed.
 - **If the failure time is uncertain**, start with a one to two hour lookback. If the returned offsets look plausible (not suspiciously old), they are good to use. If they are further back than expected, the group may have had low commit frequency or the failure happened earlier than assumed.
-- **If the group processes high-throughput topics**, committed offsets are written frequently and a shorter lookback of five to ten minutes before the known failure time is usually sufficient.
+- **If the group processes high-throughput topics**, committed offsets are written frequently and a shorter lookback of five to ten minutes before the known failure time is usually enough.
 - **If the group processes low-throughput topics** where commits happen infrequently, extend the lookback window generously - potentially several hours - to ensure you capture the most recent commit rather than an empty result.
 
 When in doubt, err on the side of a longer lookback. The scan is read-only and has no side effects.

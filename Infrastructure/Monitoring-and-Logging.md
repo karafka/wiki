@@ -220,7 +220,7 @@ Karafka may be configured to emit internal metrics at a fixed interval by settin
 
 The statistics include all of the metrics from `librdkafka` (full list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
-For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages received between statistics emitted events) and state changes, Karafka compares all the numeric values against previously available numbers enriching the original payload with following values:
+For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. To make it easier to track the progress (for example number of messages received between statistics emitted events) and state changes, Karafka compares all the numeric values against previously available numbers enriching the original payload with following values:
 
 - `METRIC_KEY_d` - delta computed as a difference between current and previous value - useful for trends.
 - `METRIC_KEY_fd` - freeze duration. Informs how long (in milliseconds) the given metric did not change - helpful for staleness detection.
@@ -629,7 +629,7 @@ kafka_message[:label] = label
 Karafka.producer.produce_async(kafka_message)
 ```
 
-To complete the tracing lifecycle, you must handle the acknowledgment of message delivery or manage delivery failures. This involves finalizing the spans you initiated during the production step.
+To complete the tracing lifecycle, you must handle the acknowledgment of message delivery or manage delivery failures. This involves finalizing the spans you started during the production step.
 
 Here's how to handle the finalization of the trace when a message is acknowledged or when an error occurs:
 
@@ -678,7 +678,7 @@ end
 
 In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, ensuring that the span is marked with the error and then finished.
 
-By leveraging these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
+By using these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
 
 ### DataDog Ruby APM Integration
 
