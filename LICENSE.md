@@ -2,7 +2,7 @@
 
     Please note that this license applies exclusively to the Wiki's **original content** and does not apply to any specific Karafka ecosystem components or third-party sourced content.
 
-    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information about the licensing of particular Karafka components.
+    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
 
     **Third-party content** (such as content sourced from librdkafka documentation or other external sources) retains its original licensing terms and is not subject to the restrictions outlined in this license.
 

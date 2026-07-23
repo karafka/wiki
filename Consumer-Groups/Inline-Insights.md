@@ -81,7 +81,7 @@ end
 
 ### Crucial Insights Presence with Karafka Pro
 
-For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities about Inline Insights, you can ensure that insights are always available when you need them.
+For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities regarding Inline Insights, you can ensure that insights are always available when you need them.
 
 In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Consumer-Groups-Enhanced-Inline-Insights).
 

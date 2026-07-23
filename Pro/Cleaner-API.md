@@ -94,7 +94,7 @@ Regardless of where you are in your code, as long as the message object is acces
 
 The efficacy and benefits of the Cleaner API are closely linked to the sizes of the raw payload and the deserialized payload of messages.
 
-The magnitude of memory management gains directly correlates with the average size of these payloads and the number of messages got in a single batch.
+The magnitude of memory management gains directly correlates with the average size of these payloads and the number of messages obtained in a single batch.
 
 In scenarios where the raw payload of a message is under 1KB, the advantages derived from using the Cleaner API tend to be minimal and may even appear negligible. This is because the memory space occupied by smaller messages is relatively minor. However, as the size of messages increases, the benefits of using the Cleaner API become increasingly pronounced. Large messages, when retained in memory after processing, can lead to significant memory congestion, and clearing them out promptly can free up sizable memory chunks, enhancing overall system performance.
 

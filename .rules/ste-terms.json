@@ -1,5 +1,5 @@
 {
-  "_comment": "Karafka Simplified Technical English (STE) term list. INSPIRED BY the ASD-STE100 dictionary; this is our own curated list and NOT a redistribution of the ASD dictionary. Consumed by .rules/no-unapproved-terms.js. Add words here to extend the controlled vocabulary. Keep 'substitutions' safe and exact (1:1, inflection-matched) so auto-fix stays reliable; put anything context-dependent in 'flag'.",
+  "_comment": "Karafka Simplified Technical English (STE) term list. INSPIRED BY the ASD-STE100 dictionary; this is our own curated list and NOT a redistribution of the ASD dictionary. Consumed by .rules/no-unapproved-terms.js. Add words here to extend the controlled vocabulary. Keep 'substitutions' safe and exact (1:1, inflection-matched, collocation-independent) so auto-fix stays reliable; put anything context- or collocation-dependent in 'flag'.",
   "_docs": "See Development/Technical-Writing.md for the full house style and the rationale behind each entry.",
 
   "substitutions": [
@@ -30,10 +30,7 @@
     { "term": "obtain", "fix": "get" },
     { "term": "obtains", "fix": "gets" },
     { "term": "obtaining", "fix": "getting" },
-    { "term": "obtained", "fix": "got" },
 
-    { "term": "regarding", "fix": "about" },
-    { "term": "concerning", "fix": "about" },
     { "term": "approximately", "fix": "about" },
     { "term": "sufficient", "fix": "enough" },
     { "term": "numerous", "fix": "many" },
@@ -49,6 +46,9 @@
     { "term": "ensures", "suggest": "Context-dependent. Guarantee -> keep 'ensures' or use 'guarantees'; instruction -> 'makes sure that <clause>'." },
     { "term": "ensuring", "suggest": "Context-dependent. Guarantee -> keep 'ensuring'; instruction -> 'making sure that <clause>'." },
     { "term": "ensured", "suggest": "Context-dependent. Guarantee -> keep 'ensured' or use 'guaranteed'; instruction -> 'made sure that <clause>'." },
+    { "term": "regarding", "suggest": "Collocation-dependent. 'about' fits informational nouns (information/questions/details regarding -> about); capability/policy/compatibility nouns take 'for'/'on'/'in'/'with', or keep 'regarding'." },
+    { "term": "concerning", "suggest": "Collocation-dependent. Prefer 'about' for informational nouns; otherwise 'for'/'on'/'with', or keep 'concerning'." },
+    { "term": "obtained", "suggest": "Do not swap to 'got'. The past participle breaks in passive/attributive use ('was obtained' -> 'was got'). Keep 'obtained' or restructure to active voice with 'get'." },
     { "term": "terminate", "suggest": "Use 'stop' or 'end'." },
     { "term": "terminates", "suggest": "Use 'stops' or 'ends'." },
     { "term": "terminating", "suggest": "Use 'stopping' or 'ending'." },

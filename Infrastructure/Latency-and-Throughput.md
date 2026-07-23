@@ -419,7 +419,7 @@ Aside from the fast polling of data from Kafka, Karafka optimizes the processing
 
 !!! warning "Polling-Related Factors Affecting Parallel Processing"
 
-    Various polling-related factors can impact Karafka's ability to distribute and process got data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It's important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
+    Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It's important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
 
 Below, you can find a table summarizing the key aspects of Karafka's parallel processing capabilities, along with detailed descriptions and tips for optimizing latency and throughput:
 
@@ -516,7 +516,7 @@ The presented example illustrates a growing latency due to the non-virtualized p
 
 ### Prefetching Messages
 
-Karafka is designed to prefetch data from Kafka while previously got messages are being processed. This prefetching occurs independently for each subscription group, ensuring continuous data flow as long as more data is available in Kafka. Prefetching behavior is governed by several settings mentioned in previous sections, such as `queued.max.messages.kbytes`, `fetch.wait.max.ms`, `fetch.min.bytes`, and `fetch.message.max.bytes`.
+Karafka is designed to prefetch data from Kafka while previously obtained messages are being processed. This prefetching occurs independently for each subscription group, ensuring continuous data flow as long as more data is available in Kafka. Prefetching behavior is governed by several settings mentioned in previous sections, such as `queued.max.messages.kbytes`, `fetch.wait.max.ms`, `fetch.min.bytes`, and `fetch.message.max.bytes`.
 
 #### Prefetching Behavior
 

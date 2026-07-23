@@ -272,7 +272,7 @@ It's crucial to be aware, especially if you're using a third-party Kafka provide
 
 ### Summary
 
-In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications about system performance and potential costs. Proper configuration and mindful usage can help use its benefits while mitigating downsides.
+In conclusion, while the `#pause` and `#seek` methods in Karafka provide valuable functionalities, it's vital to understand their implications regarding system performance and potential costs. Proper configuration and mindful usage can help use its benefits while mitigating downsides.
 
 ## See Also
 

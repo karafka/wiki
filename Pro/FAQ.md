@@ -235,7 +235,7 @@ Please read our [Security statement](Pro-Security) for details on this manner.
 
 ## What is Karafka Data Collection and GDPR Policy?
 
-We understand the importance of user privacy and data protection, especially in today's digital world. For this reason, we want to provide absolute clarity about the data practices associated with Karafka and Karafka Pro.
+We understand the importance of user privacy and data protection, especially in today's digital world. For this reason, we want to provide absolute clarity regarding the data practices associated with Karafka and Karafka Pro.
 
 - **Data Collection**: Karafka and Karafka Pro do NOT collect any data from the servers they operate on. Our primary concern is to deliver functionality without infringing on the privacy of our users.
 
@@ -289,7 +289,7 @@ Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org
 
 ## Can I use Karafka Pro with an offline license without using the Karafka gem server?
 
-We understand that some companies have strict policies about their open-source supply chain, and we are happy to provide a solution that meets those needs.
+We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
 Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an Enterprise agreement.
 

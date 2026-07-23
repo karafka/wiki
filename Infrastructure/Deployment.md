@@ -864,7 +864,7 @@ Karafka provides flexibility through a listener that allows integration with any
 Karafka and WaterDrop producers accept `config.oauth.token_provider_listener`, executed whenever tokens must be refreshed. Inside of the `event` object, there will be a `:bearer` on which you should invoke either:
 
 - `#oauthbearer_set_token` with `:token`, `:lifetime_ms` and `:principal_name`.
-- `#oauthbearer_set_token_failure` with a string reason explaining why the token was not got.
+- `#oauthbearer_set_token_failure` with a string reason explaining why the token was not obtained.
 
 !!! tip "Default Producer Auto-Configuration"
 

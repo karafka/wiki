@@ -31,7 +31,7 @@ If the LSO hangs or is stuck, it signifies that new records have yet to be commi
 
 The Karafka Web UI is equipped with robust health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
 
-Karafka's Web UI has visual cues to indicate potential problems about the LSO:
+Karafka's Web UI has visual cues to indicate potential problems concerning the LSO:
 
 1. **At Risk (Yellow Highlight)**
 

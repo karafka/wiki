@@ -204,7 +204,7 @@ puts offset_metadata
 
 Virtual Partitions in Karafka introduce an additional layer of complexity to how work is distributed from one topic partition to multiple virtual partitions. This intricacy extends to the behavior of Offset Metadata Storage, which can be configured to operate in two distinct ways. This behavior is governed by the `offset_metadata_strategy` flag, set during the configuration of virtual partitions in routing.
 
-When the Virtual Offset Manager is in the process of materializing an offset to store, it faces a choice about which metadata to use. The decision is based on the `offset_metadata_strategy` setting:
+When the Virtual Offset Manager is in the process of materializing an offset to store, it faces a choice regarding which metadata to use. The decision is based on the `offset_metadata_strategy` setting:
 
 1. **Current Strategy (`:current`) / Default**: When set to current, the system uses the most recently provided metadata for the offset being materialized. This approach assumes that the latest metadata is the most relevant or accurate for the current processing state. However, it may only sometimes precisely align with the specific offset, especially in high-throughput or rapidly changing environments.
 

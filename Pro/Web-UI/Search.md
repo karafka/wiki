@@ -78,7 +78,7 @@ end
 
 ## Limitations
 
-Below, you can find a detailed list of search capabilities' limitations from an end-user perspective. Understanding these limitations is important for effectively using the search functionality and managing expectations about its performance and scope.
+Below, you can find a detailed list of search capabilities' limitations from an end-user perspective. Understanding these limitations is important for effectively using the search functionality and managing expectations regarding its performance and scope.
 
 !!! tip "Possibility Of Reconfiguration"
 
