@@ -1,10 +1,10 @@
-Cleaner API is a feature designed to enhance the performance and efficiency of batch-processing tasks by promptly freeing up memory once a message payload is no longer needed. By addressing potential memory spikes, the Cleaner API makes sure a more stable and efficient processing environment, especially beneficial when handling payloads of size 10KB and larger.
+Cleaner API is a feature designed to enhance the performance and efficiency of batch-processing tasks by promptly freeing up memory once a message payload is no longer needed. By addressing potential memory spikes, the Cleaner API ensures a more stable and efficient processing environment, especially beneficial when handling payloads of size 10KB and larger.
 
 ## How does it work
 
 This functionality extends both the message batch and individual message objects. Messages can indicate when their payload is no longer necessary. Once a message conveys this information, the Cleaner API completely removes both the payload and the raw payload from memory.
 
-Remarkably, this memory clearance occurs before the entire batch is processed, effectively allowing only a single deserialized payload to be kept in memory. This mechanism is particularly advantageous when sequentially processing messages, especially within large batches containing hundreds of messages or more. This makes sure optimal memory management and faster processing, as no longer needed data is eradicated immediately after processing, rather than waiting for the entire batch to conclude.
+Remarkably, this memory clearance occurs before the entire batch is processed, effectively allowing only a single deserialized payload to be kept in memory. This mechanism is particularly advantageous when sequentially processing messages, especially within large batches containing hundreds of messages or more. This ensures optimal memory management and faster processing, as no longer needed data is eradicated immediately after processing, rather than waiting for the entire batch to conclude.
 
 The below example illustrates how the Cleaner API releases both `payload` and `raw_payload` after each of the processed messages.
 
@@ -20,7 +20,7 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
 
 When using the Cleaner API, it is paramount to understand the implications on the message's data.
 
-Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please make sure that, under any circumstances, you do not try to use this data after it has been cleaned.
+Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
 
 ### Cleaning One Message at a Time
 
@@ -82,7 +82,7 @@ Regardless of where you are in your code, as long as the message object is acces
 
 ## Benefits
 
-- **Memory Efficiency**: Cleaner API optimizes memory usage by promptly releasing unused messages payloads, making sure that your application uses memory judiciously.
+- **Memory Efficiency**: Cleaner API optimizes memory usage by promptly releasing unused messages payloads, ensuring that your application uses memory judiciously.
 
 - **Performance Boost**: By avoiding significant memory spikes and congestion, applications can run smoother and process batches faster.
 
@@ -106,7 +106,7 @@ The examples provided here illustrate the memory management across three styles 
 
 2. **Immediate**: This method first invokes the `#payloads` function, deserializing all messages before any further processing occurs. This pre-deserialization can influence the overall memory consumption as all messages get loaded into memory up front.
 
-3. **Cleaned**: This processing style uses the `#each` loop but with an added parameter `cleaned: true`. This makes sure that after each message is processed, its payload is promptly cleaned from memory, thus potentially reducing memory spikes and promoting efficient memory use.
+3. **Cleaned**: This processing style uses the `#each` loop but with an added parameter `cleaned: true`. This ensures that after each message is processed, its payload is promptly cleaned from memory, thus potentially reducing memory spikes and promoting efficient memory use.
 
 For these examples, the primary metric used to measure memory consumption is RSS or Resident Set Size. RSS represents the portion of a process's memory that is held in RAM. This measurement clearly indicates the actual memory footprint of the process during its execution. In the context of these examples, the RSS value is displayed in megabytes (MBs).
 
@@ -134,7 +134,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/1mb_stdev.png" />
 </p>
 
-**Conclusion**: For messages about 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and making sure smoother, more efficient operations.
+**Conclusion**: For messages about 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
 
 ### Message size of 100KB
 
@@ -180,9 +180,9 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 - **Not Suitable for Tiny Payloads**: The efficacy of the Cleaner API is more pronounced for larger message payloads, typically those sized 10KB and above. When dealing with tiny payloads, the memory management benefits are negligible, and the overhead might overshadow any gains.
 
-- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of making sure that any `#mark_as_consumed` operations happen strictly after complete processing.
+- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
 
-- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to make sure each message is `#marked_as_consumed` before invoking the `#clean!` method. Please do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
+- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Please do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
 
 - **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
 
@@ -196,11 +196,11 @@ Understanding these limitations is essential for users to effectively and effici
 
 - **E-Commerce Transaction Processing**: E-commerce platforms process millions of daily transactions, including user data, product information, and payment details. Each transaction can be a sizeable chunk of data.
 
-- **IoT Data Ingestion**: IoT devices can send vast amounts of data, especially in smart cities or industrial IoT scenarios. This data often contains sensor readings, device status updates, and more. The Cleaner API can help quickly clean up processed data, making sure efficient memory usage as millions of messages pour in.
+- **IoT Data Ingestion**: IoT devices can send vast amounts of data, especially in smart cities or industrial IoT scenarios. This data often contains sensor readings, device status updates, and more. The Cleaner API can help quickly clean up processed data, ensuring efficient memory usage as millions of messages pour in.
 
-- **Financial Data Analysis**: Financial institutions process large datasets daily, including stock market feeds, transactions, and trading data. These data packets can vary in size and come in rapid succession. To make sure that analysis tools and algorithms function at peak efficiency, the Cleaner API can be employed to release memory as soon as a data packet has been processed, maintaining system responsiveness.
+- **Financial Data Analysis**: Financial institutions process large datasets daily, including stock market feeds, transactions, and trading data. These data packets can vary in size and come in rapid succession. To ensure that analysis tools and algorithms function at peak efficiency, the Cleaner API can be employed to release memory as soon as a data packet has been processed, maintaining system responsiveness.
 
-In all these use cases, the key value of the Cleaner API is in enhancing memory management, making sure that systems maintain optimal performance even when dealing with substantial or varied data loads with various message sizes.
+In all these use cases, the key value of the Cleaner API is in enhancing memory management, ensuring that systems maintain optimal performance even when dealing with substantial or varied data loads with various message sizes.
 
 ## See Also
 

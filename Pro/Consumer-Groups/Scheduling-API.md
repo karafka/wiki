@@ -6,7 +6,7 @@ The Scheduling API was designed to control when specific consumption jobs are pl
 
 2. **Efficient Resource Distribution**: By controlling when jobs are queued, the scheduling API facilitates granular resource allocation. This feature is handy in environments where resources are limited or must be distributed effectively among multiple tasks.
 
-3. **Strategic Job Sequencing**: The API allows for the sequencing of jobs so that some can be withheld until others are completed. This capability is crucial for maintaining dependencies between tasks and making sure that high-priority jobs are processed promptly.
+3. **Strategic Job Sequencing**: The API allows for the sequencing of jobs so that some can be withheld until others are completed. This capability is crucial for maintaining dependencies between tasks and ensuring that high-priority jobs are processed promptly.
 
 4. **Adaptive Scheduling Based on System State**: Beyond static scheduling, the API can adapt job queuing based on the current system state. This means the scheduling decisions can respond to real-time conditions, such as workload changes, resource availability, or custom-defined metrics.
 
@@ -20,13 +20,13 @@ Karafka's interaction with Kafka and subsequent job processing are fundamentally
 
 The Listener thread serves two critical functions:
 
-1. **Fetching Data from Kafka**: The Listener thread constantly polls Kafka to retrieve messages. This continuous polling is essential to make sure that new data is fetched as it becomes available.
+1. **Fetching Data from Kafka**: The Listener thread constantly polls Kafka to retrieve messages. This continuous polling is essential to ensure that new data is fetched as it becomes available.
 
 2. **Triggering Work Scheduling**: Once the Listener thread has successfully fetched messages from Kafka, its next responsibility is to trigger the scheduling of this work. This step is crucial as it involves handing the fetched messages to the scheduler. The scheduler then determines the appropriate time and order for these jobs to be processed based on the current system state and any custom logic defined within the scheduler.
 
-The Listener thread, therefore, acts as the bridge between Kafka and Karafka's internal processing mechanisms, making sure a steady flow of data into the system.
+The Listener thread, therefore, acts as the bridge between Kafka and Karafka's internal processing mechanisms, ensuring a steady flow of data into the system.
 
-It is important to note that the Listener thread in Karafka is designed to recognize when not to poll more data from Kafka. This mechanism makes sure that it refrains from fetching additional messages if the system is currently processing a workload or if certain conditions necessitating a data ingestion pause are met. Essentially, the Listener thread only polls for more data when the system is ready, thereby maintaining a balanced and efficient processing environment.
+It is important to note that the Listener thread in Karafka is designed to recognize when not to poll more data from Kafka. This mechanism ensures that it refrains from fetching additional messages if the system is currently processing a workload or if certain conditions necessitating a data ingestion pause are met. Essentially, the Listener thread only polls for more data when the system is ready, thereby maintaining a balanced and efficient processing environment.
 
 ### Worker Threads
 
@@ -40,7 +40,7 @@ In environments with high volumes of data or complex processing requirements, mu
 
 ### Conclusion
 
-The Listener and Worker threads in Karafka are central to its architecture, working in tandem to make sure efficient data flow and processing. The Listener thread's role in fetching data and triggering scheduling, combined with the Worker thread's job execution responsibilities, creates a robust and scalable system capable of handling the demands of real-time data processing with Kafka.
+The Listener and Worker threads in Karafka are central to its architecture, working in tandem to ensure efficient data flow and processing. The Listener thread's role in fetching data and triggering scheduling, combined with the Worker thread's job execution responsibilities, creates a robust and scalable system capable of handling the demands of real-time data processing with Kafka.
 
 Below, you can find a simplified illustration of the cooperation of Listener and Worker threads and their connection via the jobs queue.
 
@@ -62,7 +62,7 @@ To effectively use Scheduling API, it is recommended to understand the Karafka p
 
 - **Explicit Locking for Delayed Jobs**: Your scheduler may wait to place jobs on the jobs queue. In cases where a job needs to be delayed or withheld from immediate queuing, explicit locking is required. This is achieved using the jobs queue's `#lock` method. A locked job must be explicitly unlocked before it can be enqueued using the `#unlock` method. This lock-unlock mechanism allows developers to control the timing of job enqueuing while still adhering to Kafka's polling expectations.
 
-- **Making sure All Jobs are Enqueued**: A fundamental principle in Karafka's job management is that every job, regardless of its perceived importance or urgency, must eventually be enqueued unless given subscription group is in a recovery state. Discarding jobs, even if they appear unnecessary, can disrupt the delicate balance of the polling mechanism and lead to data consistency or lost messages. Make sure that all jobs are eventually enqueued. This applies to scenarios that seem irrelevant, for example, for topics revoked after a rebalance. Karafka's internal logic will detect if the job is no longer needed. In such cases, the worker will bypass the user-defined logic, preventing unnecessary processing and saving system resources. However, the scheduler still needs to schedule the work.
+- **Ensuring All Jobs are Enqueued**: A fundamental principle in Karafka's job management is that every job, regardless of its perceived importance or urgency, must eventually be enqueued unless given subscription group is in a recovery state. Discarding jobs, even if they appear unnecessary, can disrupt the delicate balance of the polling mechanism and lead to data consistency or lost messages. Ensure that all jobs are eventually enqueued. This applies to scenarios that seem irrelevant, for example, for topics revoked after a rebalance. Karafka's internal logic will detect if the job is no longer needed. In such cases, the worker will bypass the user-defined logic, preventing unnecessary processing and saving system resources. However, the scheduler still needs to schedule the work.
 
 ## Implementing a Scheduler
 
@@ -70,7 +70,7 @@ This section provides a guide on implementing and using a custom scheduler. It w
 
 !!! warning "Make Sure All Jobs Are Scheduled"
 
-    Please make sure that every job provided to the scheduler gets scheduled except for the subscription group recovery case. It's okay if job scheduling is delayed, but all jobs must end up in the jobs queue. Not doing this can cause problems with how the system works.
+    Please ensure that every job provided to the scheduler gets scheduled except for the subscription group recovery case. It's okay if job scheduling is delayed, but all jobs must end up in the jobs queue. Not doing this can cause problems with how the system works.
 
 !!! danger "Unhandled Scheduler Errors Trigger a Client Reset and a Rebalance"
 
@@ -231,7 +231,7 @@ end
 
     Besides viewing the example scheduler below, we encourage you to check Karafka's default schedulers in the Karafka sources for more real-life examples.
 
-Below is an example scheduler that locks all jobs and makes sure that only one job can run at a time. While this particular scheduler is probably not what you aim for, it illustrates healthy usage of locking, scheduling jobs, and storing jobs in an intermediate buffer before they are scheduled for execution.
+Below is an example scheduler that locks all jobs and ensures that only one job can run at a time. While this particular scheduler is probably not what you aim for, it illustrates healthy usage of locking, scheduling jobs, and storing jobs in an intermediate buffer before they are scheduled for execution.
 
 ```ruby
 # This scheduler withholds processing of jobs all except one.
@@ -294,9 +294,9 @@ end
 
 ## Concurrency And Ticking Frequency Management
 
-Karafka's scheduling system is designed for efficient concurrency and ticking frequency management. A single scheduler operates in a multi-threaded environment across all subscription groups. This centralized approach helps manage tasks coherently. The system employs a mutex under the hood to prevent race conditions during scheduling, making sure that multiple threads can operate without conflicting. Significantly, this scheduling lock does not block the worker threads from polling data, allowing for parallel processing of jobs.
+Karafka's scheduling system is designed for efficient concurrency and ticking frequency management. A single scheduler operates in a multi-threaded environment across all subscription groups. This centralized approach helps manage tasks coherently. The system employs a mutex under the hood to prevent race conditions during scheduling, ensuring that multiple threads can operate without conflicting. Significantly, this scheduling lock does not block the worker threads from polling data, allowing for parallel processing of jobs.
 
-The scheduler's ticking frequency, set by default to five seconds, can be adjusted in the settings to meet specific application needs. This ticking, crucial for job initiation, occurs independently in each subscription group listener thread. However, the frequency of these ticks is consistent with the configured value, making sure a uniform approach to job processing.
+The scheduler's ticking frequency, set by default to five seconds, can be adjusted in the settings to meet specific application needs. This ticking, crucial for job initiation, occurs independently in each subscription group listener thread. However, the frequency of these ticks is consistent with the configured value, ensuring a uniform approach to job processing.
 
 Finally, Karafka emphasizes the need for the scheduler to be fast and efficient. Since the scheduler can block data polling, its performance is vital for maintaining the system's efficiency.
 
@@ -317,7 +317,7 @@ In Karafka, revocation and shutdown jobs, much like consumption jobs, can techni
 Revocation and shutdown jobs are not frequent occurrences in the lifecycle of a Kafka application. They represent specific moments in the application's operation, such as when a consumer leaves a group (revocation), or the application shuts down (shutdown). Given their infrequent nature, these events rarely require the kind of complex scheduling logic that might be necessary for regular consumption jobs.
 Another essential aspect is the interaction between these lifecycle jobs and the ongoing consumption jobs. When a consumption job for the same topic partition is withheld, one might wonder if it's appropriate to proceed with revocation or shutdown jobs. The answer is yes; running these jobs is reasonable and recommended. Karafka's design allows it to detect when a scheduled consumption job is no longer necessary - for instance if the consumer has already been revoked or shut down. In such cases, Karafka will not execute the redundant consumption job but will run the required housekeeping internal logic.
 
-This approach makes sure that the system remains efficient and responsive to its operational state without the need for complex custom scheduling logic for revocation and shutdown events. By default, the `Base` scheduler is well-equipped to handle these events effectively, making it advisable to rely on these built-in mechanisms for most use cases.
+This approach ensures that the system remains efficient and responsive to its operational state without the need for complex custom scheduling logic for revocation and shutdown events. By default, the `Base` scheduler is well-equipped to handle these events effectively, making it advisable to rely on these built-in mechanisms for most use cases.
 
 ## Expired Jobs Scheduling
 
@@ -333,11 +333,11 @@ When a partition assignment is lost, it seems logical to discard any related job
 
 1. **Recognition of Lost Partitions**: Karafka is designed with the intelligence to recognize when a partition has been lost. In such cases, even though a job related to that partition is scheduled, the system can determine whether the execution of user code is still relevant or necessary.
 
-1. **Selective Execution**: Upon scheduling, Karafka evaluates the context of each job. If the system identifies a specific job associated with a lost partition, it will refrain from executing the user code linked to that job. This selective execution makes sure that resources are well-spent on tasks that are no longer applicable or necessary due to the changed state of the assignment.
+1. **Selective Execution**: Upon scheduling, Karafka evaluates the context of each job. If the system identifies a specific job associated with a lost partition, it will refrain from executing the user code linked to that job. This selective execution ensures that resources are well-spent on tasks that are no longer applicable or necessary due to the changed state of the assignment.
 
-1. **Maintaining System Coherence**: This scheduling process and then selectively executing or skipping jobs makes sure that Karafka maintains a coherent state. It avoids scenarios where ignoring the scheduling of these jobs might lead to inconsistencies or missed execution of critical housekeeping tasks.
+1. **Maintaining System Coherence**: This scheduling process and then selectively executing or skipping jobs ensures that Karafka maintains a coherent state. It avoids scenarios where ignoring the scheduling of these jobs might lead to inconsistencies or missed execution of critical housekeeping tasks.
 
-In summary, scheduling all jobs, including those that may initially appear expired or invalid due to a lost assignment, is a fundamental aspect of Karafka's design. This approach makes sure that all necessary housekeeping and management routines are executed, maintaining the system's stability and integrity. Karafka's intelligent job evaluation mechanism is crucial in this process, making sure that resources are used efficiently and that user code is only executed when relevant.
+In summary, scheduling all jobs, including those that may initially appear expired or invalid due to a lost assignment, is a fundamental aspect of Karafka's design. This approach ensures that all necessary housekeeping and management routines are executed, maintaining the system's stability and integrity. Karafka's intelligent job evaluation mechanism is crucial in this process, ensuring that resources are used efficiently and that user code is only executed when relevant.
 
 ## Rejecting Jobs of a Subscription Group Under Recovery
 
@@ -349,7 +349,7 @@ In Karafka, during recovery scenarios, there's a specific exception to the usual
 
 1. **Matching Jobs with `#group_id`**: Jobs in the scheduler that haven't been scheduled yet should be matched against this group ID using their `#group_id` method.
 
-1. **Rejecting Specific Jobs**: Any unscheduled job associated with the group under-recovery should be removed instead of scheduled. This is done to prevent conflicts and make sure a smooth recovery process.
+1. **Rejecting Specific Jobs**: Any unscheduled job associated with the group under-recovery should be removed instead of scheduled. This is done to prevent conflicts and ensure a smooth recovery process.
 
 In essence, during recovery, your scheduler should selectively reject and remove unscheduled jobs related to the group in recovery, rather than scheduling them. This is the only exception to the general rule of scheduling all jobs.
 
@@ -361,7 +361,7 @@ To understand the significance of the assignments tracker, let's draw a comparis
 
 Adhering to a fixed workload distribution in a Kafka environment can be inefficient and lead to resource wastage. For instance, consider a scenario where a custom scheduler allocates 50% of workers to one topic and 50% to another. If the Kafka assignment only assigns one of these topics to a particular consumer group, 50% of the workers will remain idle, not performing any work. This example highlights the potential inefficiencies in a static workload distribution model within a Karafka setup.
 
-Karafka addresses this issue by recommending the use of its assignments monitoring API when building complex schedulers. Through `Karafka::App.assignments`, users can access current assignments, allowing the scheduler to base its decisions on the actual assigned topics and partitions. This approach makes sure the system can dynamically react to assignment changes, optimizing overall resource utilization. By constantly monitoring and adapting to the current state of topic and partition assignments, your scheduler can make sure that all workers are engaged efficiently, contributing to a more balanced and effective processing environment.
+Karafka addresses this issue by recommending the use of its assignments monitoring API when building complex schedulers. Through `Karafka::App.assignments`, users can access current assignments, allowing the scheduler to base its decisions on the actual assigned topics and partitions. This approach ensures the system can dynamically react to assignment changes, optimizing overall resource utilization. By constantly monitoring and adapting to the current state of topic and partition assignments, your scheduler can ensure that all workers are engaged efficiently, contributing to a more balanced and effective processing environment.
 
 Below is an example of a custom scheduler dedicating an even number of workers based on the assigned topic count.
 
@@ -433,15 +433,15 @@ end
 
 Here is a list of use cases where the Scheduling API can be useful:
 
-- **Long-Running Jobs Management**: Scheduling API can effectively manage long-running jobs to prevent them from monopolizing resources. This makes sure these jobs don't disrupt regular tasks or cause system imbalances, maintaining overall system efficiency and reliability.
+- **Long-Running Jobs Management**: Scheduling API can effectively manage long-running jobs to prevent them from monopolizing resources. This ensures these jobs don't disrupt regular tasks or cause system imbalances, maintaining overall system efficiency and reliability.
 
 - **Dynamic Resource Allocation Based on Traffic Volume**: Automatically adjust resource allocation in real-time based on the volume of incoming messages from Kafka. This helps in scaling up resources during peak times and scaling down during low-traffic periods.
 
-- **Prioritization of Critical Jobs**: Implement prioritization within the job queue to make sure that critical or time-sensitive messages from Kafka are processed first, optimizing response times for high-priority tasks.
+- **Prioritization of Critical Jobs**: Implement prioritization within the job queue to ensure that critical or time-sensitive messages from Kafka are processed first, optimizing response times for high-priority tasks.
 
 - **Resource Allocation Based on Job Complexity**: Schedule jobs to the queue based on their complexity, allocating more resources to complex jobs and fewer to simpler tasks, thus optimizing processing times and resource usage.
 
-- **Resource Intensive Job Throttling**: Implement throttling for resource-intensive jobs. Schedule these jobs to balance the load on the system, preventing any single job type from monopolizing CPU, memory, or network bandwidth and making sure stable system performance.
+- **Resource Intensive Job Throttling**: Implement throttling for resource-intensive jobs. Schedule these jobs to balance the load on the system, preventing any single job type from monopolizing CPU, memory, or network bandwidth and ensuring stable system performance.
 
 - **Job Prioritization Based on Data Urgency**: Prioritize and schedule jobs based on the urgency of the data they process. For instance, real-time analytics jobs can be given higher priority over batch processing jobs.
 
@@ -451,7 +451,7 @@ Here is a list of use cases where the Scheduling API can be useful:
 
 The Karafka Scheduling API provides advanced capabilities for managing consumption jobs within a process, emphasizing precise control and efficient resource distribution. It enables granular scheduling of tasks, sequencing of jobs, and adaptive scheduling based on the system's current state.
 
-It supports custom scheduler implementation, with stateful and stateless options, and includes a variety of methods for job management. The API's design makes sure concurrency and frequency management. Its flexibility and efficiency make it ideal for diverse scenarios, including long-running job management, dynamic resource allocation, and adaptive scheduling based on traffic patterns or job complexity.
+It supports custom scheduler implementation, with stateful and stateless options, and includes a variety of methods for job management. The API's design ensures concurrency and frequency management. Its flexibility and efficiency make it ideal for diverse scenarios, including long-running job management, dynamic resource allocation, and adaptive scheduling based on traffic patterns or job complexity.
 
 ## See Also
 

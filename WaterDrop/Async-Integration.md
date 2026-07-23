@@ -1,6 +1,6 @@
 # Async Ecosystem Integration
 
-WaterDrop seamlessly integrates with Ruby's async ecosystem and fiber scheduler, providing proper fiber yielding during blocking operations. This integration makes sure optimal concurrency when using WaterDrop alongside async gems and fiber-based frameworks.
+WaterDrop seamlessly integrates with Ruby's async ecosystem and fiber scheduler, providing proper fiber yielding during blocking operations. This integration ensures optimal concurrency when using WaterDrop alongside async gems and fiber-based frameworks.
 
 ## Fiber Yielding During Blocking Operations
 
@@ -8,7 +8,7 @@ When using `#produce_sync` or `#produce_many_sync`, WaterDrop automatically yiel
 
 ### How It Works
 
-WaterDrop uses Ruby's fiber-yielding mechanisms to make sure that when `#produce_sync` or `#produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
+WaterDrop uses Ruby's fiber-yielding mechanisms to ensure that when `#produce_sync` or `#produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
 
 **Key behaviors:**
 
@@ -153,4 +153,4 @@ WaterDrop's native async support makes it the optimal Kafka producer for fiber-b
 
 **Performance Without Compromise**: WaterDrop delivers both excellent async performance and robust Kafka functionalities. You don't have to choose between concurrency benefits and production-ready features like delivery guarantees, error handling, and monitoring capabilities.
 
-**Future-Proof Architecture**: As Ruby's async ecosystem continues to evolve, WaterDrop's architecture makes sure compatibility with new fiber scheduler implementations and async frameworks.
+**Future-Proof Architecture**: As Ruby's async ecosystem continues to evolve, WaterDrop's architecture ensures compatibility with new fiber scheduler implementations and async frameworks.

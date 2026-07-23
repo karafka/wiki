@@ -79,7 +79,7 @@ The number of messages consumed by your regular Karafka consumers **does not dir
         </tr>
         <tr>
             <td>Web UI Topics Configuration</td>
-            <td>Properly manage and configure Web UI topics to make sure efficient data handling and storage.</td>
+            <td>Properly manage and configure Web UI topics to ensure efficient data handling and storage.</td>
         </tr>
     </tbody>
 </table>

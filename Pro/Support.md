@@ -20,7 +20,7 @@ Please email using the same domain as the original license email or explain your
 
     While we will always investigate issues reported by Pro users, we cannot always provide fixes or mitigations for cases involving outdated versions of Karafka components, Ruby, or dependencies-especially those beyond their End-of-Life (EOL) dates.
 
-    Resolving issues in EOL versions may require backporting fixes to unsupported Ruby versions or deprecated dependencies, which may not be feasible or maintainable. We strongly recommend keeping your software stack current to make sure you can receive effective support and timely fixes.
+    Resolving issues in EOL versions may require backporting fixes to unsupported Ruby versions or deprecated dependencies, which may not be feasible or maintainable. We strongly recommend keeping your software stack current to ensure you can receive effective support and timely fixes.
 
 ## Onboarding
 
@@ -40,17 +40,17 @@ Upgrading Karafka can be a critical task for maintaining the health and performa
 
 We recognize the significance of prompt and effective bug resolution for your ongoing projects and application stability. Hence, with the Karafka Pro version, we assure a superior level of attention to any bugs or issues you might encounter during your application development. Here's how we do it:
 
-1. **Priority in the Queue**: Karafka Pro users' bug reports get precedence over standard reports. Any reported bugs are placed at the top of the triage process, which allows us to start the debugging and resolution process sooner. This priority queue makes sure that we address your issues quickly and keep your projects moving.
+1. **Priority in the Queue**: Karafka Pro users' bug reports get precedence over standard reports. Any reported bugs are placed at the top of the triage process, which allows us to start the debugging and resolution process sooner. This priority queue ensures that we address your issues quickly and keep your projects moving.
 
-2. **Faster Release Cycles for Bug Fixes**: In line with our commitment to serving our Pro customers better, bug fixes for issues reported by Pro users get released faster. We make sure that these fixes are incorporated into our release cycle promptly, significantly reducing the wait time for bug resolution.
+2. **Faster Release Cycles for Bug Fixes**: In line with our commitment to serving our Pro customers better, bug fixes for issues reported by Pro users get released faster. We ensure that these fixes are incorporated into our release cycle promptly, significantly reducing the wait time for bug resolution.
 
-3. **Proactive Communication**: We believe in maintaining clear and proactive communication with our users. We will keep you updated on the status of your reported bugs. You will be notified about the progress from the moment we begin working on the bug until its final resolution. This helps keep you in the loop and makes sure transparency.
+3. **Proactive Communication**: We believe in maintaining clear and proactive communication with our users. We will keep you updated on the status of your reported bugs. You will be notified about the progress from the moment we begin working on the bug until its final resolution. This helps keep you in the loop and ensures transparency.
 
-4. **Enhanced Testing**: We understand the unique requirements and high standards of our Karafka Pro users. We perform additional layers of testing for bug fixes reported by Pro users to make sure the stability and reliability of the solution.
+4. **Enhanced Testing**: We understand the unique requirements and high standards of our Karafka Pro users. We perform additional layers of testing for bug fixes reported by Pro users to ensure the stability and reliability of the solution.
 
 5. **Consideration for Backporting Features or Fixes**: We understand that certain features or fixes can significantly enhance the functionality and stability of your current projects. As a Karafka Pro user, you can request a backport of a particular feature or fix to support your specific needs. Please note that the possibility of backporting will be assessed on a case-by-case basis, taking into account factors like the feasibility of the backport and its impact on system stability.
 
-By opting for Karafka Pro, you are not just purchasing a product but partnering with people committed to making sure the smooth operation of your applications.
+By opting for Karafka Pro, you are not just purchasing a product but partnering with people committed to ensuring the smooth operation of your applications.
 
 !!! note "Note"
 

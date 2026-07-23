@@ -66,15 +66,15 @@ If the `#pause` method is called without any of these keyword arguments, the sys
 
 Granular Backoffs can be valuable in many situations, including:
 
-1. **High-Importance Topics**: For a topic of high relevance to your application (e.g., containing updates that need immediate processing), you should assign a shorter backoff time and a higher retry count. This makes sure any processing issues related to this topic are addressed promptly.
+1. **High-Importance Topics**: For a topic of high relevance to your application (e.g., containing updates that need immediate processing), you should assign a shorter backoff time and a higher retry count. This ensures any processing issues related to this topic are addressed promptly.
 
 2. **Low-Importance Topics**: In contrast, for a topic of low relevance to your application, you should assign a longer backoff time and a lower retry count. This can help alleviate system load as less processing power is expended in resolving issues with this topic.
 
-3. **High-Frequency Updates**: For a topic that updates frequently, you should assign a shorter pause time and a higher retry count. This makes sure your consumer can keep pace with the update rate.
+3. **High-Frequency Updates**: For a topic that updates frequently, you should assign a shorter pause time and a higher retry count. This ensures your consumer can keep pace with the update rate.
 
-4. **Resource-Intensive Topics**: For a topic that requires substantial resources to process (e.g., containing messages that necessitate complex computations), you should assign a longer backoff time. This makes sure your consumer has adequate time to free up resources before retrying to process a message from this topic.
+4. **Resource-Intensive Topics**: For a topic that requires substantial resources to process (e.g., containing messages that necessitate complex computations), you should assign a longer backoff time. This ensures your consumer has adequate time to free up resources before retrying to process a message from this topic.
 
-5. **Topics Making External HTTP Calls**: Topics involving external HTTP calls could benefit from a longer backoff time. This makes sure external systems, especially those encountering temporary issues, have enough recovery time before the subsequent request.
+5. **Topics Making External HTTP Calls**: Topics involving external HTTP calls could benefit from a longer backoff time. This ensures external systems, especially those encountering temporary issues, have enough recovery time before the subsequent request.
 
 ## Example Use Cases
 
@@ -92,7 +92,7 @@ Granular Backoffs can be valuable in many situations, including:
 
 ## Summary
 
-Granular Backoffs is a powerful feature, allowing for the per-topic customization of pause, backoff, and retry time settings. This makes sure a flexible and tailored approach to handling and processing messages based on their respective topic characteristics.
+Granular Backoffs is a powerful feature, allowing for the per-topic customization of pause, backoff, and retry time settings. This ensures a flexible and tailored approach to handling and processing messages based on their respective topic characteristics.
 
 ## See Also
 

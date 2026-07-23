@@ -208,9 +208,9 @@ def consume
 end
 ```
 
-It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, making sure that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
+It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
-In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It makes sure that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
+In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
 !!! note "Note"
 
@@ -387,7 +387,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This configuration makes sure that as soon as the end of a partition is reached, any accumulated messages are immediately processed, enhancing the system responsiveness and efficiency.
+This configuration ensures that as soon as the end of a partition is reached, any accumulated messages are immediately processed, enhancing the system responsiveness and efficiency.
 
 ## Consuming with the Iterator API
 
@@ -445,7 +445,7 @@ Karafka includes dedicated handling for end-of-partition (EOF) scenarios, allowi
 
 ### Enabling EOF Handling
 
-To use EOF features, make sure that both the `enable.partition.eof` option and the `eofed` setting are configured properly:
+To use EOF features, ensure that both the `enable.partition.eof` option and the `eofed` setting are configured properly:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -475,7 +475,7 @@ EOF signaling can happen in two ways:
 
 !!! tip "Full Coverage of EOF"
 
-    To make sure full coverage of EOF scenarios, use both the `#eofed` method and the `#eofed?` method. This makes sure that EOF is handled whether it occurs with or without new messages.
+    To ensure full coverage of EOF scenarios, use both the `#eofed` method and the `#eofed?` method. This ensures that EOF is handled whether it occurs with or without new messages.
 
 #### `#eofed` Method
 
@@ -548,9 +548,9 @@ The `#wrap` method encompasses the consumer's entire execution flow, not just us
 
 1. **User-Defined Logic**: The custom message processing logic implemented in all actions such as `#consume`, `#revoked`, etc. methods.
 2. **Framework-Level Operations**: Core functionalities such as offset management, message acknowledgment, and internal state synchronization.
-3. **Error Handling and Recovery**: Makes sure proper transactional rollbacks or retries in case of failures.
+3. **Error Handling and Recovery**: Ensures proper transactional rollbacks or retries in case of failures.
 
-To implement `#wrap`, override it in your consumer class. The method makes sure that `yield` is **always** invoked, regardless of any failures or conditions. This is critical, because skipping `yield` can disrupt Karafka ability to execute its internal processes, leading to inconsistencies or data loss.
+To implement `#wrap`, override it in your consumer class. The method ensures that `yield` is **always** invoked, regardless of any failures or conditions. This is critical, because skipping `yield` can disrupt Karafka ability to execute its internal processes, leading to inconsistencies or data loss.
 
 In the following example, `#wrap` implementation is shown:
 
@@ -591,4 +591,4 @@ end
 - [Deserialization](Consumer-Groups-Deserialization) - Transform raw message data into structured Ruby objects
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Handle consumer errors and implement retry strategies
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Understand parallel processing and threading in Karafka
-- [Testing](Basics-Testing) - Write tests for your message consumers to make sure correct behavior
+- [Testing](Basics-Testing) - Write tests for your message consumers to ensure correct behavior

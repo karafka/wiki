@@ -8,7 +8,7 @@ No action needs to be taken. Please follow the [Active Job setup](Consumer-Group
 
 ## Ordered Jobs
 
-With the Karafka Enhanced Active Job adapter, you can make sure jobs processing order. This means that with proper `partitioner` usage, you can make sure that for a given resource, only one job runs at a time and that jobs will run in the order in which they were enqueued.
+With the Karafka Enhanced Active Job adapter, you can ensure jobs processing order. This means that with proper `partitioner` usage, you can ensure that for a given resource, only one job runs at a time and that jobs will run in the order in which they were enqueued.
 
 You can tell Karafka to which partition send a given job based on the job arguments. For it to work, Karafka provides two `karafka_options` options you can set:
 
@@ -34,7 +34,7 @@ class Job < ActiveJob::Base
 end
 ```
 
-The above code will make sure that jobs related to the same user will always be dispatched to the same consumer.
+The above code will ensure that jobs related to the same user will always be dispatched to the same consumer.
 
 We recommend using the `:key` as then it can be used for combining Enhanced Active Job with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
@@ -52,7 +52,7 @@ Karafka supports job scheduling via the [Scheduled Messages](Pro-Scheduled-Messa
 
 To use the Scheduled Jobs functionality in Karafka, you must:
 
-1. **Configure the Scheduled Messages Feature**: Make sure the Scheduled Messages feature is properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages) within your Karafka setup. This involves setting up the necessary Kafka topics and making sure Karafka knows these configurations.
+1. **Configure the Scheduled Messages Feature**: Ensure the Scheduled Messages feature is properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages) within your Karafka setup. This involves setting up the necessary Kafka topics and ensuring Karafka knows these configurations.
 
 1. **Configure the Job Class**: Each job class that requires scheduling must have the scheduled_messages_topic configured. This setting informs Karafka about the specific Kafka topic that serves as the proxy for handling the scheduling of these messages.
 
@@ -105,7 +105,7 @@ class HighPriorityJob < ActiveJob::Base
 end
 ```
 
-In the above example, `HighPriorityJob` is configured to use a specifically tailored producer variant for critical events. This producer variant is configured with a higher acknowledgment setting (`all`), making sure that all replicas confirm each message before it is successfully delivered. This setup is particularly beneficial for jobs where data loss or delivery failure is unacceptable.
+In the above example, `HighPriorityJob` is configured to use a specifically tailored producer variant for critical events. This producer variant is configured with a higher acknowledgment setting (`all`), ensuring that all replicas confirm each message before it is successfully delivered. This setup is particularly beneficial for jobs where data loss or delivery failure is unacceptable.
 
 Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it's adjusting the acknowledgment levels, managing timeouts, or using specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within ActiveJob, opening up new possibilities for system optimization and performance improvement.
 
@@ -197,7 +197,7 @@ end
 
 ### Partitioning in Continuation Jobs
 
-Pro allows you to combine continuation with partitioning to make sure ordered processing of multi-step jobs for specific resources:
+Pro allows you to combine continuation with partitioning to ensure ordered processing of multi-step jobs for specific resources:
 
 ```ruby
 class ProcessUserDataJob < ActiveJob::Base
@@ -236,7 +236,7 @@ class ProcessUserDataJob < ActiveJob::Base
 end
 ```
 
-This configuration makes sure that all continuation steps for a given user are processed in order on the same partition, preventing race conditions while allowing parallel processing of different users.
+This configuration ensures that all continuation steps for a given user are processed in order on the same partition, preventing race conditions while allowing parallel processing of different users.
 
 ### Requirements
 
@@ -274,7 +274,7 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 
 ## Behaviour on Shutdown
 
-When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to make sure that all the work is done before committing the offsets.
+When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
 
 For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-shutdown).
 

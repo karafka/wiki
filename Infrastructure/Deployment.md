@@ -245,7 +245,7 @@ sasl_ssl://broker1.us-east-1.amazonaws.com:9092/bootstrap:
 Connection setup timed out in state CONNECT (after 30037ms in state CONNECT)
 ```
 
-This means Kafka is unreachable. Check your brokers' addresses and make sure you use a proper port: `9096` with SSL or `9092` when plaintext. Also, make sure your instance can access AWS MSK at all.
+This means Kafka is unreachable. Check your brokers' addresses and ensure you use a proper port: `9096` with SSL or `9092` when plaintext. Also, make sure your instance can access AWS MSK at all.
 
 ### Connection failures and timeouts
 
@@ -335,7 +335,7 @@ To make it work you need to follow few steps:
     end
     ```
 
-1. If you use explicit consumer groups, make sure they are prefixed with `KAFKA_PREFIX`.
+1. If you use explicit consumer groups, ensure they are prefixed with `KAFKA_PREFIX`.
 
     ```ruby
     class KarafkaApp < Karafka::App
@@ -517,7 +517,7 @@ Please read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention
 
 ## Kubernetes
 
-Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to make sure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can make sure that their mission-critical applications stay up and running, even in the face of unexpected failures.
+Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
 
 ### Basic deployment spec
 
@@ -555,7 +555,7 @@ When deploying Karafka consumers using Kubernetes, it's generally not recommende
 
 For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue.
 
-Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can make sure that your Karafka application stays reliable and performant.
+Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
 
 ### Choosing the Right Rebalance Strategy
 
@@ -619,7 +619,7 @@ This configuration allows you to handle scenarios where Karafka hangs, or the us
 
 !!! warning "Important Note on Liveness Probes in Swarm Mode"
 
-    The standard Karafka Kubernetes liveness listener is not suitable for Swarm Mode. In Swarm Mode, the default listener will cause Kubernetes to inaccurately mark the Karafka process as dead due to its inability to assess the health of individual swarm nodes correctly. Karafka offers a specialized liveness listener for Swarm Mode to make sure accurate health checks and prevent unnecessary restarts. Make sure you use the correct listener for Swarm Mode deployments to maintain your application's reliability in a Kubernetes environment.
+    The standard Karafka Kubernetes liveness listener is not suitable for Swarm Mode. In Swarm Mode, the default listener will cause Kubernetes to inaccurately mark the Karafka process as dead due to its inability to assess the health of individual swarm nodes correctly. Karafka offers a specialized liveness listener for Swarm Mode to ensure accurate health checks and prevent unnecessary restarts. Ensure you use the correct listener for Swarm Mode deployments to maintain your application's reliability in a Kubernetes environment.
 
 Below you can find an example of how to require, configure and connect the liveness HTTP listener.
 
@@ -720,7 +720,7 @@ This response format allows for more granular monitoring and debugging while mai
 
 The `#healthy?` method in the liveness listener is a public method that can be expanded to include additional application-specific health checks. By default, this method verifies whether the Karafka process operates as expected. However, you can override or extend it to include custom checks tailored to your application's requirements.
 
-For example, if your application depends on external services (like a database or an API), you can extend the `#healthy?` method to make sure these services are also reachable. If any of these checks fail, you can return a `500` status, prompting Kubernetes to restart the container, thereby increasing the resilience of your deployment.
+For example, if your application depends on external services (like a database or an API), you can extend the `#healthy?` method to ensure these services are also reachable. If any of these checks fail, you can return a `500` status, prompting Kubernetes to restart the container, thereby increasing the resilience of your deployment.
 
 This flexibility allows you to go beyond the default liveness check, adding layers of health verification specific to your application's architecture and dependencies.
 
@@ -738,11 +738,11 @@ end
 
 ### Liveness In the Swarm Mode
 
-Karafka provides a specialized Kubernetes liveness listener for applications operating in the Swarm Mode. This adaptation makes sure accurate health monitoring and management of the supervisor process within the swarm
+Karafka provides a specialized Kubernetes liveness listener for applications operating in the Swarm Mode. This adaptation ensures accurate health monitoring and management of the supervisor process within the swarm
 
 The `SwarmLivenessListener` is tailored to supervise the health of the Karafka supervisor process in Swarm Mode, addressing unique operational dynamics. It provides:
 
-- **Controlling TTL**: A configurable time-to-live (TTL) for supervising thread activity, making sure the supervisor actively manages child nodes. Set this with consideration for normal and shutdown states to avoid false positives.
+- **Controlling TTL**: A configurable time-to-live (TTL) for supervising thread activity, ensuring the supervisor actively manages child nodes. Set this with consideration for normal and shutdown states to avoid false positives.
 
 - **Minimal HTTP Server**: Similar to the standard listener, it runs an HTTP server for health checks, responding with:
     - `200`: The supervisor is active and controlling, as expected, with detailed JSON status information.
@@ -779,7 +779,7 @@ To integrate the `SwarmLivenessListener` into your Karafka application, follow t
       timeoutSeconds: 5
     ```
 
-By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, making sure that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
+By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
 #### Additional processes inside the same pod
 
@@ -812,7 +812,7 @@ Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka i
 
     !!! tip "Region Selection"
 
-        Make sure that the region selected has low latency to your application servers to reduce the message delivery time.
+        Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
 
 1. **Configure Kafka Topics**
 
@@ -830,7 +830,7 @@ Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka i
 
 1. **Configure Web UI Topics**
 
-    Since Confluent Cloud does not support automatic topic creation, you must make sure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
+    Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
 
     The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](Web-UI-Getting-Started#manual-web-ui-topics-management).
 

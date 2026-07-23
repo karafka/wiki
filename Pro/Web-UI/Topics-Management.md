@@ -55,7 +55,7 @@ To delete a topic:
         - Applications dependent on this topic may experience errors or disruptions
         - Consumer group offsets associated with this topic will be lost
 
-    !!! info "Before proceeding, make sure that"
+    !!! info "Before proceeding, ensure that"
 
         - All applications consuming from this topic have been properly shut down
         - All producers to this topic have been stopped
@@ -119,9 +119,9 @@ To modify a specific configuration parameter:
 
     !!! info "Before updating this configuration"
 
-        - Make sure you understand the impact of changing this value
+        - Ensure you understand the impact of changing this value
         - Consider testing the change in a non-production environment first
-        - Monitor the topic after the change to make sure expected behavior
+        - Monitor the topic after the change to ensure expected behavior
 
 1. You'll see:
 
@@ -157,7 +157,7 @@ To increase the number of partitions:
 
     !!! info "Before increasing partitions"
 
-        - Make sure all consumers support dynamic partition detection
+        - Ensure all consumers support dynamic partition detection
         - Consider the impact on message ordering in your applications
         - Plan for temporary rebalancing as consumers detect the change
         - Monitor consumer lag during and after the operation
@@ -186,7 +186,7 @@ When managing topics through the Karafka Web UI Pro, consider these best practic
 1. **Permission Control**: Use the [Policies feature](Pro-Web-UI-Policies) to control who can manage topics
 1. **Change Documentation**: Document significant topic changes for team awareness
 1. **Testing**: Test configuration changes in non-production environments when possible
-1. **Monitoring**: Monitor topic metrics after making changes to make sure desired behavior
+1. **Monitoring**: Monitor topic metrics after making changes to ensure desired behavior
 
 ## Limitations and Considerations
 

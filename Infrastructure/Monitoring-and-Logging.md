@@ -166,7 +166,7 @@ end
 
 ### Recommended Setup Location
 
-Place your custom uptime listeners in your `karafka.rb` file after the configuration block, making sure they're loaded when Karafka starts:
+Place your custom uptime listeners in your `karafka.rb` file after the configuration block, ensuring they're loaded when Karafka starts:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -196,7 +196,7 @@ Here are some examples where instrumenting custom events can be beneficial:
 
 ### Naming Considerations for Custom Events
 
-Making sure that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
+Ensuring that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
 
 For example, a custom event to monitor external API calls could be named `app.external_api_call`:
 
@@ -208,7 +208,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
 !!! warning "Always keep `statistics.emitted` handlers concise and non-blocking"
 
-    When subscribing to `statistics.emitted`, make sure your code is concise and non-blocking, as this runs every 5 seconds and during active processing. Long-running handlers can impede the polling process, affecting message consumption. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your consumption process.
+    When subscribing to `statistics.emitted`, ensure your code is concise and non-blocking, as this runs every 5 seconds and during active processing. Long-running handlers can impede the polling process, affecting message consumption. Rigorously test your handlers - failures in processing these statistics can lead to critical exceptions that disrupt your consumption process.
 
     Operations in statistics event handlers must be fast and non-blocking. In some rdkafka configurations, fibers are used instead of threads for event delivery. This means that a slow or blocking statistics handler will prevent subsequent events from other producers/consumers from being processed, causing delays across your entire application.
 
@@ -301,21 +301,21 @@ The Karafka AppSignal integration provides an extensive set of metrics with both
 
 Key Metrics Include:
 
-- Performance Metrics: Monitor the performance of your Karafka consumers, making sure optimal message processing times.
+- Performance Metrics: Monitor the performance of your Karafka consumers, ensuring optimal message processing times.
 
 - Error Reporting: Gain insights into errors and exceptions within your Karafka application. AppSignal will help you identify and diagnose issues quickly, including asynchronous operation-related errors.
 
 - Dead Letter Queue: Keep an eye on messages that have failed to be processed and understand why they ended up in the dead letter queue.
 
-By using the Karafka AppSignal integration, you can proactively manage your Kafka-based applications, making sure they operate smoothly and reliably.
+By using the Karafka AppSignal integration, you can proactively manage your Kafka-based applications, ensuring they operate smoothly and reliably.
 
 !!! note "Note"
 
-    When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Make sure the correct sequence for accurate monitoring and data integrity.
+    When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
 
 ### Error Tracking
 
-Monitoring errors in Karafka consumers and producers is as critical as tracking performance and stability. Doing so provides a holistic view of system health, making sure no issues or anomalies are overlooked. With the integration of Appsignal, you gain an additional layer of instrumentation specifically for this purpose. Appsignal integration tracks and reports all errors, including the internal asynchronous ones that might arise while working with Kafka. This comprehensive error tracking makes sure timely detection and resolution, safeguarding your Kafka operations' integrity and reliability.
+Monitoring errors in Karafka consumers and producers is as critical as tracking performance and stability. Doing so provides a holistic view of system health, ensuring no issues or anomalies are overlooked. With the integration of Appsignal, you gain an additional layer of instrumentation specifically for this purpose. Appsignal integration tracks and reports all errors, including the internal asynchronous ones that might arise while working with Kafka. This comprehensive error tracking ensures timely detection and resolution, safeguarding your Kafka operations' integrity and reliability.
 
 Below, you can find instructions on how to enable the errors instrumentation:
 
@@ -344,7 +344,7 @@ Karafka.producer.monitor.subscribe(appsignal_errors_listener)
 
 ### Metrics Instrumentation
 
-The AppSignal integration offers comprehensive instrumentation, making sure that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
+The AppSignal integration offers comprehensive instrumentation, ensuring that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
 
 Below, you can find instructions on how to enable the metrics instrumentation:
 
@@ -382,7 +382,7 @@ end
 
 !!! info "Two DataDog Integration Options Available"
 
-    Karafka offers two DataDog integration options: a native Karafka-maintained instrumentation (documented below) and DataDog's own Ruby APM integration. **You cannot use both simultaneously as they may conflict with each other.** The native Karafka integration provides Kafka-specific metrics and is maintained by us to make sure timely updates and compatibility with new Karafka releases, independent of DataDog's release cycles. DataDog's APM offers broader Ruby application monitoring. Choose the one that best fits your monitoring needs.
+    Karafka offers two DataDog integration options: a native Karafka-maintained instrumentation (documented below) and DataDog's own Ruby APM integration. **You cannot use both simultaneously as they may conflict with each other.** The native Karafka integration provides Kafka-specific metrics and is maintained by us to ensure timely updates and compatibility with new Karafka releases, independent of DataDog's release cycles. DataDog's APM offers broader Ruby application monitoring. Choose the one that best fits your monitoring needs.
 
 !!! note "Enable WaterDrop Instrumentation Separately"
 
@@ -603,7 +603,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ##### Async Producer Tracing With The Consumption Context
 
-Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This makes sure that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and make sure that messages produced asynchronously are linked to their consumption traces.
+Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
 
 One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
 
@@ -676,7 +676,7 @@ def on_error_occurred(event)
 end
 ```
 
-In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, making sure that the span is marked with the error and then finished.
+In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, ensuring that the span is marked with the error and then finished.
 
 By using these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
 
@@ -849,7 +849,7 @@ Such a custom monitor will intercept specific events while delegating to the par
 
 !!! warning "Avoid Calling super Multiple Times in Custom Monitors"
 
-    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it's crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always make sure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
+    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it's crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
 
 ## Implications of Broken Instrumentation listeners/listeners Causing Errors
 
@@ -861,9 +861,9 @@ Secondly, faulty listeners can adversely affect your Karafka application's perfo
 
 In specific scenarios, instrumentation errors in the Kafka listener threads can force Karafka into a recovery mode, causing continuous attempts to reconnect to Kafka and triggering rebalances. This can temporarily halt message consumption and impact workload distribution among consumer instances. Furthermore, instrumentation listener errors in worker threads responsible for processing messages might prevent proper acknowledgment of work or cause double processing of messages, resulting in issues like message loss or duplicate processing.
 
-For those using custom instrumentation listeners, it's vital to make sure they are thoroughly tested and not performing heavy or error-prone tasks. These listeners can introduce additional complexity, and maintaining a balance between gathering valuable insights and keeping the listeners lightweight and error-free is essential.
+For those using custom instrumentation listeners, it's vital to ensure they are thoroughly tested and not performing heavy or error-prone tasks. These listeners can introduce additional complexity, and maintaining a balance between gathering valuable insights and keeping the listeners lightweight and error-free is essential.
 
-To avert these issues, it's crucial to make sure your Karafka applications' instrumentation and monitoring listeners function correctly.
+To avert these issues, it's crucial to ensure your Karafka applications' instrumentation and monitoring listeners function correctly.
 
 In conclusion, maintaining the stability, performance, and reliability of Karafka-based applications requires the proper functioning of any custom instrumentation and monitoring listeners.
 

@@ -115,7 +115,7 @@ WaterDrop uses a [shorter default](https://github.com/karafka/waterdrop/blob/mas
 
 !!! note "Timeout Ordering Requirement"
 
-    Keep `message.timeout.ms` **greater than** `socket.timeout.ms`. librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)`. When `message.timeout.ms` is the smaller value, it becomes the ProduceRequest timeout - consuming the message's entire delivery budget with no time left for a retry. The MSK configuration above sets `socket.timeout.ms: 90_000` - make sure `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the detailed mechanism.
+    Keep `message.timeout.ms` **greater than** `socket.timeout.ms`. librdkafka computes the ProduceRequest timeout as `min(socket.timeout.ms, remaining message.timeout.ms)`. When `message.timeout.ms` is the smaller value, it becomes the ProduceRequest timeout - consuming the message's entire delivery budget with no time left for a retry. The MSK configuration above sets `socket.timeout.ms: 90_000` - ensure `message.timeout.ms` remains above this value. See [Idle Connection Reaping](#idle-connection-reaping) for the detailed mechanism.
 
 **Recommended MSK configuration for standard producers:**
 
@@ -360,7 +360,7 @@ Karafka.monitor.subscribe('error.occurred') do |event|
 end
 ```
 
-This makes sure a clean restart rather than continuing with a potentially corrupted metadata state.
+This ensures a clean restart rather than continuing with a potentially corrupted metadata state.
 
 **Preventive configuration:**
 
@@ -383,11 +383,11 @@ These settings force more frequent metadata updates and enable automatic recover
 
 !!! info "Capacity Planning for Metadata Stability"
 
-    Always maintain at least 30-40% headroom on MSK and MSK Express instances. Running close to maximum recommended capacity significantly increases the risk of metadata synchronization failures, particularly with high partition counts. Monitor CPU utilization and partition counts against AWS recommended limits to make sure adequate operational margin.
+    Always maintain at least 30-40% headroom on MSK and MSK Express instances. Running close to maximum recommended capacity significantly increases the risk of metadata synchronization failures, particularly with high partition counts. Monitor CPU utilization and partition counts against AWS recommended limits to ensure adequate operational margin.
 
     As a general rule, average CPU load should not exceed your vCPU count. With a 3-broker cluster running at 60% CPU each, losing one broker during maintenance forces the remaining two to handle 90% load each - leaving no headroom for the increased coordination overhead during failover. This can trigger cascading failures where brokers cannot acknowledge messages quickly enough, resulting in `msg_timed_out` errors even with increased timeout values.
 
-    For production MSK clusters, target 40-50% average CPU utilization. This makes sure that losing one broker (whether planned or unplanned) keeps remaining brokers at manageable load levels. If you consistently see 60%+ CPU utilization, consider scaling horizontally to 6+ brokers rather than vertically upgrading instance sizes - horizontal scaling provides better fault isolation and reduces the proportional impact of any single broker failure.
+    For production MSK clusters, target 40-50% average CPU utilization. This ensures that losing one broker (whether planned or unplanned) keeps remaining brokers at manageable load levels. If you consistently see 60%+ CPU utilization, consider scaling horizontally to 6+ brokers rather than vertically upgrading instance sizes - horizontal scaling provides better fault isolation and reduces the proportional impact of any single broker failure.
 
 Two MSK Express users reported cases where this error did **not** recover, requiring manual intervention. Both involved topics had more than 1000 partitions. In at least one confirmed case, MSK Express instances were running close to the recommended maximum capacity. The combination of high partition counts and near-capacity operation creates conditions where metadata becomes permanently skewed, possibly due to MSK Express's internal handling during automatic maintenance operations when resources are already constrained.
 
@@ -425,10 +425,10 @@ For credential propagation delays (most common):
 
 For persistent authentication failures:
 
-1. **Verify ACL configuration** - Make sure ACLs allow the necessary operations for your SASL/SCRAM users.
+1. **Verify ACL configuration** - Ensure ACLs allow the necessary operations for your SASL/SCRAM users.
 1. **Check ANONYMOUS user permissions** - If using cluster-level ACLs, verify the ANONYMOUS user has necessary permissions for inter-broker communication.
 1. **Re-associate Secrets Manager secrets** - If authentication failures persist after 10+ minutes.
-1. **Verify KMS key permissions** - If secrets use a custom KMS key, make sure the MSK service role maintains access to the key
+1. **Verify KMS key permissions** - If secrets use a custom KMS key, ensure the MSK service role maintains access to the key
 
 !!! warning "Public MSK Clusters Require Explicit ACLs"
 
@@ -464,7 +464,7 @@ With 4 brokers and `min.insync.replicas=2`, the cluster can tolerate two simulta
 
 !!! warning "3-Broker Clusters Are Not Maintenance-Safe"
 
-    While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to make sure write availability during maintenance operations.
+    While 3-broker clusters with `min.insync.replicas=2` and `replication.factor=3` appear to provide redundancy on paper, the dual-broker outage pattern observed during MSK maintenance makes this configuration unreliable for production workloads. Budget for 4+ brokers to ensure write availability during maintenance operations.
 
 ## AWS Health Dashboard Alerts for Replication Factor
 

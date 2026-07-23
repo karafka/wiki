@@ -1,9 +1,9 @@
-The Adaptive Iterator is a Karafka Pro feature designed to proactively monitor the processing of messages within a batch to prevent exceeding Kafka's `max.poll.interval.ms`. By estimating the processing cost of each message and halting processing when the remaining time is insufficient, the Adaptive Iterator makes sure smooth operation without exceeding Kafka's poll interval limit. This feature is particularly useful in environments where message processing times vary, and occasional long-processing times risk reaching the `max.poll.interval.ms`.
+The Adaptive Iterator is a Karafka Pro feature designed to proactively monitor the processing of messages within a batch to prevent exceeding Kafka's `max.poll.interval.ms`. By estimating the processing cost of each message and halting processing when the remaining time is insufficient, the Adaptive Iterator ensures smooth operation without exceeding Kafka's poll interval limit. This feature is particularly useful in environments where message processing times vary, and occasional long-processing times risk reaching the `max.poll.interval.ms`.
 
 Consider the Adaptive Iterator as a solution when:
 
 - Your application experiences occasional spikes in processing times that risk exceeding the Kafka poll interval.
-- You want to make sure the consumer does not exceed the `max.poll.interval.ms`, preventing rebalancing and potential downtimes.
+- You want to ensure the consumer does not exceed the `max.poll.interval.ms`, preventing rebalancing and potential downtimes.
 - You are processing messages one after another, as the Adaptive Iterator is designed to handle sequential message processing efficiently.
 
 Do not use the Adaptive Iterator if:
@@ -28,13 +28,13 @@ Do not use the Adaptive Iterator if:
 
 ## Benefits of Adaptive Iterator
 
-- **Prevents Poll Interval Expiry**: Dynamically monitors the remaining time to avoid exceeding the Kafka poll interval, making sure consumer group stability.
+- **Prevents Poll Interval Expiry**: Dynamically monitors the remaining time to avoid exceeding the Kafka poll interval, ensuring consumer group stability.
 
 - **Seeks Back on Timeout**: When it determines that processing further messages in a batch could exceed the poll interval, it stops and seeks back, allowing the next poll to reset the timer.
 
 - **Automated Handling**: Provides built-in capabilities for operations such as stopping processing if the consumer is revoked or auto-marking messages based on your configuration.
 
-- **Configurable Safety Margin**: Allows configuring a safety margin to leave a buffer for post-processing activities, making sure smooth handling of messages.
+- **Configurable Safety Margin**: Allows configuring a safety margin to leave a buffer for post-processing activities, ensuring smooth handling of messages.
 
 ## Using Adaptive Iterator
 

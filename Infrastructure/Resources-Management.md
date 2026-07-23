@@ -26,7 +26,7 @@ This detailed view can provide invaluable insights, helping you understand how y
 
 In the current implementation, each Karafka producer employs a relatively simple threading model to efficiently handle asynchronous message delivery to Kafka. A vital characteristic of this model is that each producer instantiates at least two additional threads. Here's how these threads function:
 
-- **Ruby Thread**: The first thread operates within the Ruby environment. Its primary role is to manage communication with librdkafka, making sure that messages are queued and sent to the Kafka cluster efficiently. This thread also handles various events and callbacks that arise during the message delivery process.
+- **Ruby Thread**: The first thread operates within the Ruby environment. Its primary role is to manage communication with librdkafka, ensuring that messages are queued and sent to the Kafka cluster efficiently. This thread also handles various events and callbacks that arise during the message delivery process.
 
 - **librdkafka Thread**: The second thread is managed by librdkafka itself, the native library Karafka uses for interacting with Kafka. This thread is crucial for performing network I/O operations and managing internal events of the Kafka protocol.
 
@@ -36,11 +36,11 @@ Despite adding these threads, the overall impact on system resources is minimal.
 
 ## Kafka TCP Connections
 
-Karafka's efficient management of TCP connections is substantially powered by librdkafka. This native library implements a smart connection strategy to optimize network interactions with Kafka brokers, making sure robustness and efficiency. Below, you can find a general description of how librdkafka deals with both consumer and producer connections. Please refer to the appropriate sub-section for context-specific details.
+Karafka's efficient management of TCP connections is substantially powered by librdkafka. This native library implements a smart connection strategy to optimize network interactions with Kafka brokers, ensuring robustness and efficiency. Below, you can find a general description of how librdkafka deals with both consumer and producer connections. Please refer to the appropriate sub-section for context-specific details.
 
 - **Selective Connections**: librdkafka only attempts to establish TCP connections with brokers necessary for its operation. This includes one of the brokers listed in `bootstrap.servers`, partition leaders, and specific coordinators (group and transaction). This targeted approach helps minimize unnecessary network traffic and optimizes connection management.
 
-- **Bootstrap and Failover Mechanism**: The connection process begins with the `bootstrap.servers`. If the first attempted bootstrap server is unavailable, librdkafka will try the next server in a randomized order. This failover mechanism makes sure the client can connect to the cluster even if some brokers are down.
+- **Bootstrap and Failover Mechanism**: The connection process begins with the `bootstrap.servers`. If the first attempted bootstrap server is unavailable, librdkafka will try the next server in a randomized order. This failover mechanism ensures the client can connect to the cluster even if some brokers are down.
 
 - **Metadata Requests**: Upon establishing the first connection with any broker, librdkafka sends a Metadata request. This request is crucial as it retrieves a complete list of all brokers within the cluster, along with their roles and capabilities.
 
@@ -167,7 +167,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **No Known Memory Leaks**: Karafka has no known memory leaks within its components as of the latest updates.
 
-- **Batch Processing and Memory Release**: By default, Karafka retains the memory occupied by messages and their payload until an entire batch is processed. Karafka makes no assumptions about the nature of the processing. While this makes sure flexibility in handling complex workflows, it can also increase memory usage during high-throughput operations. For those looking to optimize memory management and release message memory more proactively, Karafka Pro offers a [Cleaner API](Pro-Cleaner-API).
+- **Batch Processing and Memory Release**: By default, Karafka retains the memory occupied by messages and their payload until an entire batch is processed. Karafka makes no assumptions about the nature of the processing. While this ensures flexibility in handling complex workflows, it can also increase memory usage during high-throughput operations. For those looking to optimize memory management and release message memory more proactively, Karafka Pro offers a [Cleaner API](Pro-Cleaner-API).
 
 - **Ruby Version Considerations**: It's important to note that external factors such as Ruby versions can affect memory usage. For instance, Ruby `3.3.0` has been observed to have memory leak issues due to bugs introduced in that version.
 
@@ -175,7 +175,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **Multithreaded Environment**: Karafka's use of multiple threads to process tasks in parallel can lead to a larger memory footprint than single-threaded applications. Each thread consumes memory for its stack and may duplicate particular objects, leading to higher overall memory usage.
 
-- **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to make sure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
+- **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to ensure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
 
 ## CPU Usage
 

@@ -17,7 +17,7 @@ The search modal includes several fields and options to refine your search:
     - **Offset**: Specify an exact offset to start from.
     - **Timestamp**: Provide a timestamp (in milliseconds) to start the search from a specific point in time.
 
-- **Messages**: Select the limit on the number of messages to scan. The available options make sure the search operation remains efficient and does not overload the system.
+- **Messages**: Select the limit on the number of messages to scan. The available options ensure the search operation remains efficient and does not overload the system.
 
 Once you have configured your search parameters, click the "Search" button to start the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
 
@@ -86,7 +86,7 @@ Below, you can find a detailed list of search capabilities' limitations from an 
 
 1. **Search Timeout**: The search operation has a maximum duration (timeout) of 30,000 milliseconds (30 seconds). If a search takes longer, it will be stopped automatically, potentially leaving some messages unchecked.
 
-1. **Limit on Number of Messages**: The search can only handle a certain number of messages (limits). This constraint makes sure performance but may not be enough for huge data sets.
+1. **Limit on Number of Messages**: The search can only handle a certain number of messages (limits). This constraint ensures performance but may not be enough for huge data sets.
 
 1. **Case Sensitivity**: The default search matchers (`RawPayloadIncludes`, `RawKeyIncludes`, `RawHeaderIncludes`) are case-sensitive, which might not meet the needs of users who require case-insensitive searches.
 
@@ -140,7 +140,7 @@ The Search Metadata Details are highly useful for several reasons:
 
 ## Custom Matchers
 
-Creating custom matchers allows you to tailor the search functionality to meet your needs. Matchers define how messages are searched and can be customized to handle different data types or search criteria. Additionally, matchers can be configured to be available only for the topics that are relevant to them, making sure that they are applied appropriately and efficiently.
+Creating custom matchers allows you to tailor the search functionality to meet your needs. Matchers define how messages are searched and can be customized to handle different data types or search criteria. Additionally, matchers can be configured to be available only for the topics that are relevant to them, ensuring that they are applied appropriately and efficiently.
 
 ### Why Create Custom Matchers?
 
@@ -150,7 +150,7 @@ Creating custom matchers allows you to tailor the search functionality to meet y
 
 - **Flexibility**: Custom matchers provide the flexibility to extend the default search capabilities of Karafka Web UI, making it adaptable to a wide range of use cases.
 
-- **Security**: Custom matchers allow you to limit or expand search capabilities based on specific topics. This makes sure that sensitive data is only accessible through appropriate matchers, enhancing overall security by restricting search operations to relevant topics.
+- **Security**: Custom matchers allow you to limit or expand search capabilities based on specific topics. This ensures that sensitive data is only accessible through appropriate matchers, enhancing overall security by restricting search operations to relevant topics.
 
 ### How to Build Custom Matchers
 
@@ -224,15 +224,15 @@ end
 
 ### Important Considerations
 
-- **Performance**: If your custom matcher involves deserialization or complex processing, be mindful of the impact of the performance. Deserialization can be resource-intensive, so make sure your matcher is optimized for performance.
+- **Performance**: If your custom matcher involves deserialization or complex processing, be mindful of the impact of the performance. Deserialization can be resource-intensive, so ensure your matcher is optimized for performance.
 
-- **Error Handling**: Make sure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it’s crucial to catch and manage potential errors within the matcher.
+- **Error Handling**: Ensure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it’s crucial to catch and manage potential errors within the matcher.
 
 - **Network Traffic**: Searches retrieve all messages within the specified range, which can increase network traffic, especially with Kafka vendors that charge based on usage. If live polling is enabled, it will re-trigger searches every 5 seconds by default, further increasing data transfer and potentially raising costs. Consider disabling or adjusting live-polling intervals to manage these costs effectively if you use a Kafka vendor that charges for the network traffic.
 
 ## Summary
 
-By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, making sure that only the necessary matchers are applied to each topic, optimizing performance and relevance.
+By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, ensuring that only the necessary matchers are applied to each topic, optimizing performance and relevance.
 
 ## See Also
 

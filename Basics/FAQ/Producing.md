@@ -84,7 +84,7 @@ and you can use them.
 There are a few things to keep in mind, though:
 
 1. Producers should be long-lived.
-1. Producers should be closed before the process shutdown to make sure proper resource finalization.
+1. Producers should be closed before the process shutdown to ensure proper resource finalization.
 1. You need to instrument each producer using the WaterDrop instrumentation API.
 1. Karafka itself uses the `Karafka#producer` internal reasons such as error tracking, DLQ dispatches, and more. This means that the default producer instance should be configured to operate within the scope of Karafka's internal functionalities.
 
@@ -150,11 +150,11 @@ You can find the `SpecProducerClient` API [here](https://karafka.io/docs/code/ka
 In the WaterDrop gem, `partition_key` and `key` are two distinct options that can be used to set message keys, but they have different purposes and work slightly differently.
 
 - `partition_key` is used to determine the partition to which a message is sent and computes the destination partition in the Ruby process using the configured `partitioner` algorithm. The partitioner calculates a hash value based on the partition_key value and uses this hash value to select a partition for the message.
-- `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which makes sure that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment.
+- `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which ensures that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
 
-To make sure that Karafka.producer does not block or delay your processing, you can use the `produce_async` and `produce_many_async`. These methods only block the execution flow if the underlying `librdkafka` queue is full.
+To ensure that Karafka.producer does not block or delay your processing, you can use the `produce_async` and `produce_many_async`. These methods only block the execution flow if the underlying `librdkafka` queue is full.
 
 By default, if the queue is full, Karafka will enter a backoff state and wait for a specified time before retrying. The `wait_backoff_on_queue_full` and `wait_timeout_on_queue_full` settings in your Karafka configuration file control this behavior. If you want to disable the waiting behavior altogether, you can set the `wait_on_queue_full` option to `false`.
 
@@ -186,11 +186,11 @@ You can read more about this [here](Basics-Producing-Messages#producer-shutdown)
 
 WaterDrop's `max_payload_size` and librdkafka's `message.max.bytes` are both settings related to message size in Kafka, but they play distinct roles and operate at different stages.
 
-WaterDrop's `max_payload_size` is a configuration parameter employed for internal validation within the WaterDrop producer library. This setting is used to limit the size of the messages before they're dispatched. If a message exceeds the `max_payload_size`, an error is raised, preventing the dispatch attempt. This setting helps make sure that you don't send messages larger than intended.
+WaterDrop's `max_payload_size` is a configuration parameter employed for internal validation within the WaterDrop producer library. This setting is used to limit the size of the messages before they're dispatched. If a message exceeds the `max_payload_size`, an error is raised, preventing the dispatch attempt. This setting helps ensure that you don't send messages larger than intended.
 
 On the other hand, librdkafka's `message.max.bytes` configuration is concerned with the Kafka protocol's message size. It represents the maximum permissible size of a message in line with the Kafka protocol, and the librdkafka library validates it. Essentially, it determines the maximum size of a ProduceRequest in Kafka.
 
-It's advisable to align these two settings to maintain consistency between the maximum payload size defined by WaterDrop and the Kafka protocol. To make sure that larger-than-expected messages are not accepted, it's beneficial to set the `max_payload_size` in WaterDrop. And for `message.max.bytes` in librdkafka, you might want to set it to the same value or even higher, bearing in mind its role in the Kafka protocol.
+It's advisable to align these two settings to maintain consistency between the maximum payload size defined by WaterDrop and the Kafka protocol. To ensure that larger-than-expected messages are not accepted, it's beneficial to set the `max_payload_size` in WaterDrop. And for `message.max.bytes` in librdkafka, you might want to set it to the same value or even higher, bearing in mind its role in the Kafka protocol.
 
 There are a few nuances to be aware of, which are often seen as "edge cases." One notable aspect is that the producer checks the uncompressed size of a message against the `message.max.bytes` setting while the broker validates the compressed size.
 
@@ -204,7 +204,7 @@ Lastly, while the term `message.max.bytes` may not be intuitively understandable
 
 The specifics of why you're encountering this error will depend on the context of your use of WaterDrop and Kafka. Here are some possible causes:
 
-- Kafka is not running or unreachable: Make sure that Kafka is running and accessible from your application. If your application is running in a different environment (e.g., Docker, a different server, etc.), make sure there are no networking issues preventing communication.
+- Kafka is not running or unreachable: Ensure that Kafka is running and accessible from your application. If your application is running in a different environment (e.g., Docker, a different server, etc.), ensure there are no networking issues preventing communication.
 
 - Invalid configuration: Your WaterDrop and/or Kafka configuration may be incorrect. This could involve things like incorrect broker addresses, authentication details, etc.
 
@@ -214,7 +214,7 @@ The specifics of why you're encountering this error will depend on the context o
 
 - Kafka cluster is in a remote location with significant latency: Apache Kafka is designed to handle high-volume real-time data streams with low latency. If your Kafka cluster is located in a geographically distant location from your application or the network connectivity between your application and the Kafka cluster could be better, you may experience high latency. This can cause a variety of issues, including `WaterDrop::Errors::ProduceError`.
 
-- Access Control Lists (ACLs) misconfiguration: ACLs control the permissions for Kafka resources; incorrect configurations might prevent messages from being produced or consumed. To diagnose, verify your Kafka ACLs settings to make sure your producer has the correct permissions for the operations it's trying to perform.
+- Access Control Lists (ACLs) misconfiguration: ACLs control the permissions for Kafka resources; incorrect configurations might prevent messages from being produced or consumed. To diagnose, verify your Kafka ACLs settings to ensure your producer has the correct permissions for the operations it's trying to perform.
 
 When you receive the `WaterDrop::Errors::ProduceError` error, you can check the underlying cause by invoking the `#cause` method on the received error:
 
@@ -232,7 +232,7 @@ puts error.cause
 #<Rdkafka::AbstractHandle::WaitTimeoutError: Waiting for delivery timed out after 5 seconds>
 ```
 
-Please note that in the case of the `WaitTimeoutError`, the message may actually be delivered but in a more extended time because of the network or other issues. Always instrument your producers to make sure that you are notified about errors occurring in Karafka and WaterDrop internal background threads as well.
+Please note that in the case of the `WaitTimeoutError`, the message may actually be delivered but in a more extended time because of the network or other issues. Always instrument your producers to ensure that you are notified about errors occurring in Karafka and WaterDrop internal background threads as well.
 
 The exact cause can often be determined by examining the error message and stack trace accompanying the `WaterDrop::Errors::ProduceError`. Also, check the Kafka logs for more information. If the error message or logs aren't clear, you should debug your code or configuration to identify the problem.
 
@@ -280,15 +280,15 @@ WaterDrop works so that when the producer is requested to be closed, it triggers
 
 If Kafka is down, WaterDrop will still attempt to wait before closing for as long as there is even a single message in the queue. This waiting time is governed by the `message.timeout.ms` setting in the Kafka configuration. This setting determines how long the `librdkafka` library should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 5 minutes.
 
-Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering the messages until after this default timeout period of 5 minutes. This makes sure maximum efforts are made to deliver the messages even under difficult circumstances.
+Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering the messages until after this default timeout period of 5 minutes. This ensures maximum efforts are made to deliver the messages even under difficult circumstances.
 
 If a message is eventually evicted from the queue due to unsuccessful delivery, an error is emitted via the `error.occurred` channel in the WaterDrop's instrumentation bus. This allows developers to catch, handle, and log these events, giving them insight into any issues that might be causing message delivery failures.
 
-In summary, the hanging issue you are experiencing when attempting to close WaterDrop is a designed behavior intended to make sure all buffered messages are delivered to Kafka before the client stops, even if the Kafka cluster is temporarily unavailable.
+In summary, the hanging issue you are experiencing when attempting to close WaterDrop is a designed behavior intended to ensure all buffered messages are delivered to Kafka before the client stops, even if the Kafka cluster is temporarily unavailable.
 
 ## What can be done to log why the `produce_sync` has failed?
 
-WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under error.occurred notification key. You can subscribe to this event to make sure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered:
+WaterDrop allows you to listen to all errors that occur while producing messages and in its internal background threads. Things like reconnecting to Kafka upon network errors and others unrelated to publishing messages are all available under error.occurred notification key. You can subscribe to this event to ensure your setup is healthy and without any problems that would otherwise go unnoticed as long as messages are delivered:
 
 ```ruby
 Karafka.producer.monitor.subscribe('error.occurred') do |event|
@@ -331,7 +331,7 @@ Yes, it's possible to use a Karafka producer without a consumer in two ways:
 
 1. Alternatively, if you have Karafka already in your application, avoid running the `karafka server` command, as it won't make sense without any topics to consume. You can run other processes and produce messages from them. In scenarios like that, there is no need to define any routes. `Karafka#producer` should operate without any problems.
 
-Remember, if you're using Karafka without a consumer and encounter errors, make sure your consumer is set to inactive (active false), and refrain from running commands that necessitate a consumer, such as karafka server.
+Remember, if you're using Karafka without a consumer and encounter errors, ensure your consumer is set to inactive (active false), and refrain from running commands that necessitate a consumer, such as karafka server.
 
 ## Where can I find producer idempotence settings?
 
@@ -405,7 +405,7 @@ By default, WaterDrop will not drop messages when the librdkafka buffer overflow
 
 When WaterDrop detects that the librdkafka queue is full, an exception will not be immediately raised. Instead, it waits for a specified amount of time before attempting to resend the message. This backoff period allows librdkafka to dispatch previously buffered messages, freeing up space in the queue. During this waiting period, an error is logged in the `error.occurred` notification pipeline. While this error is recoverable, frequent occurrences might indicate underlying issues that need to be addressed.
 
-If the queue remains full even after the backoff period, WaterDrop will continue to retry sending the message until there is enough space. This retry mechanism makes sure that messages are not lost.
+If the queue remains full even after the backoff period, WaterDrop will continue to retry sending the message until there is enough space. This retry mechanism ensures that messages are not lost.
 
 This behavior can be aligned by changing appropriate configuration settings.
 
@@ -421,7 +421,7 @@ You can use the `produce_many_sync` method to send large batches of messages, as
 
 ## Is it worth pursuing transactions for a low throughput but high-importance topic?
 
-Yes, for low throughput but high-importance topics, it is advisable to use transactions. Transactions make sure that operations are tied together and can be managed atomically, reducing the risk of data inconsistency. Even though the finalization of a transaction is synchronous, it provides an additional layer of reliability for critical data flows.
+Yes, for low throughput but high-importance topics, it is advisable to use transactions. Transactions ensure that operations are tied together and can be managed atomically, reducing the risk of data inconsistency. Even though the finalization of a transaction is synchronous, it provides an additional layer of reliability for critical data flows.
 
 ## Does the Waterdrop producer retry to deliver messages after errors such as `librdkafka.error` and `librdkafka.dispatch_error`, or are the messages lost?
 
@@ -429,7 +429,7 @@ It depends on the type of error. Waterdrop will retry the delivery for intermedi
 
 ## In a Rails request, can I publish a message asynchronously, continue the request, and block at the end to wait for the publish to finish?
 
-Yes, you can publish a message asynchronously using Waterdrop. You can get the handler for the async publish and wait on it before the response is returned. This approach makes sure that the request continues while the publish happens in parallel. It blocks only at the end to make sure the publish is complete.
+Yes, you can publish a message asynchronously using Waterdrop. You can get the handler for the async publish and wait on it before the response is returned. This approach ensures that the request continues while the publish happens in parallel. It blocks only at the end to ensure the publish is complete.
 
 ## Why do I see WaterDrop error events but no raised exceptions in sync producer?
 
@@ -502,7 +502,7 @@ This separation is particularly useful when:
 - You want to use a different attribute for partition selection than what makes sense as a logical message key
 - You need to change how messages are partitioned without affecting downstream consumers that rely on the message key
 
-Remember that messages with the same `partition_key` (or `key` if no `partition_key` is specified) will always be routed to the same partition, making sure ordered processing within that data subset.
+Remember that messages with the same `partition_key` (or `key` if no `partition_key` is specified) will always be routed to the same partition, ensuring ordered processing within that data subset.
 
 ## How can I distinguish between sync and async producer errors in the `error.occurred` notification?
 

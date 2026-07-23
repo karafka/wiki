@@ -1,17 +1,17 @@
 This document covers the concepts of idempotence and acknowledgments in the context of using WaterDrop.
 
-It explores the roles of idempotence, acknowledgments, and relevant configurations like `replication_factor` and `min.insync.replicas`. These mechanisms work together to make sure data consistency, fault tolerance, and durability in distributed messaging systems like Kafka.
+It explores the roles of idempotence, acknowledgments, and relevant configurations like `replication_factor` and `min.insync.replicas`. These mechanisms work together to ensure data consistency, fault tolerance, and durability in distributed messaging systems like Kafka.
 
 ## Idempotence
 
-**Idempotence** makes sure that an operation can be performed multiple times without changing the result beyond the initial application. In the context of Kafka and message processing:
+**Idempotence** ensures that an operation can be performed multiple times without changing the result beyond the initial application. In the context of Kafka and message processing:
 
 - When a producer sends messages to Kafka, idempotence guarantees that **duplicate messages** (caused by retries, network issues, or any other transient errors) will **not be written more than once**.
 - This is particularly useful in distributed systems where retries are common, and the goal is to **avoid processing the same message multiple times**.
 
 ### WaterDrop Idempotence
 
-Producer idempotence makes sure **exactly-once semantics (EOS)** by tracking a unique message ID for each message and preventing duplicate writes even if the producer retries. To enable idempotence in WaterDrop, configure the producer with `enable.idempotence` set to `true`:
+Producer idempotence ensures **exactly-once semantics (EOS)** by tracking a unique message ID for each message and preventing duplicate writes even if the producer retries. To enable idempotence in WaterDrop, configure the producer with `enable.idempotence` set to `true`:
 
 ```ruby
 WaterDrop.setup do |config|
@@ -24,8 +24,8 @@ end
 
 When idempotence is enabled in WaterDrop producer:
 
-- Kafka makes sure that even if a message is retried, it will not be written again.
-- The producer will assign a sequence number to each message, and Kafka makes sure that messages with the same sequence number are deduplicated.
+- Kafka ensures that even if a message is retried, it will not be written again.
+- The producer will assign a sequence number to each message, and Kafka ensures that messages with the same sequence number are deduplicated.
 
 !!! info "Related: Fatal Error Recovery for Idempotent Producers"
 
@@ -47,7 +47,7 @@ Acknowledgements (`acks`) dictate how the producer and the broker agree that a m
 
 ### Interaction with `min.insync.replicas`
 
-The `acks` `all` configuration works in conjunction with `min.insync.replicas` to make sure that a message is only considered acknowledged when a certain number of replicas are in sync and able to receive the message. It is important to remember, that you can have more replicas than the number required to be in sync.
+The `acks` `all` configuration works in conjunction with `min.insync.replicas` to ensure that a message is only considered acknowledged when a certain number of replicas are in sync and able to receive the message. It is important to remember, that you can have more replicas than the number required to be in sync.
 
 ## Replication Factor
 
@@ -114,7 +114,7 @@ end
 In this scenario:
 
 - At least two replicas must be in sync for the producer to successfully write a message.
-- If one of the replicas is out of sync or down, Kafka will block writes to make sure data consistency.
+- If one of the replicas is out of sync or down, Kafka will block writes to ensure data consistency.
 
 ## Replication Factor vs `min.insync.replicas`
 
@@ -135,7 +135,7 @@ In this scenario:
     <tr>
       <td>Purpose</td>
       <td>Controls fault tolerance via redundancy.</td>
-      <td>Makes sure write durability and data integrity.</td>
+      <td>Ensures write durability and data integrity.</td>
     </tr>
     <tr>
       <td>Write Impact</td>
@@ -144,7 +144,7 @@ In this scenario:
     </tr>
     <tr>
       <td>Relation to Failures</td>
-      <td>Makes sure the partition is available across multiple brokers in case of failure.</td>
+      <td>Ensures the partition is available across multiple brokers in case of failure.</td>
       <td>Determines how many replicas must acknowledge a write for it to be considered successful when acks=all.</td>
     </tr>
     <tr>
@@ -163,9 +163,9 @@ In this scenario:
 ## Best Practices
 
 - Enable idempotence: Always enable producer idempotence for critical data to avoid duplicate messages during retries.
-- Use `acks` set to `all`: Combine idempotence with `acks` `all` to make sure that your data is acknowledged by all in-sync replicas.
-- Set appropriate `min.insync.replicas`: Make sure that `min.insync.replicas` is set to a value that matches your fault tolerance requirements (e.g., `2` for a replication factor of `3`).
-- Monitor replicas: Regularly monitor your Kafka cluster to make sure that all replicas are in sync and healthy.
+- Use `acks` set to `all`: Combine idempotence with `acks` `all` to ensure that your data is acknowledged by all in-sync replicas.
+- Set appropriate `min.insync.replicas`: Ensure that `min.insync.replicas` is set to a value that matches your fault tolerance requirements (e.g., `2` for a replication factor of `3`).
+- Monitor replicas: Regularly monitor your Kafka cluster to ensure that all replicas are in sync and healthy.
 
 ## See Also
 

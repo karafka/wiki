@@ -2,7 +2,7 @@
 
 !!! info "Future Web UI Enhancement"
 
-    Persistent pausing support in Karafka Web UI is planned, but there is no ETA for it yet. This is a complex feature that requires careful consideration of distributed state management, rebalancing scenarios, and API design to make sure it works reliably across different deployment architectures. Until then, the Filtering API approach described below provides a robust solution for persistent pausing needs.
+    Persistent pausing support in Karafka Web UI is planned, but there is no ETA for it yet. This is a complex feature that requires careful consideration of distributed state management, rebalancing scenarios, and API design to ensure it works reliably across different deployment architectures. Until then, the Filtering API approach described below provides a robust solution for persistent pausing needs.
 
 Karafka's [Web UI pausing](Pro-Web-UI-Commanding#pause-and-resume-partitions) is **not** persistent - it's designed for emergency "oh gosh, there's a bug" scenarios where you need immediate, temporary relief. When the process restarts or rebalances, Web UI pauses are lost.
 

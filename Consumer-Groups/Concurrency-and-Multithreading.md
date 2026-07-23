@@ -152,23 +152,23 @@ There are a few ways to measure the saturation in Karafka:
 - You can log the `messages.metadata.processing_lag` value, which describes how long a batch had to wait before it was picked up by one of the workers.
 - If you are using our [Datadog](Infrastructure-Monitoring-and-Logging#datadog-and-statsd-integration) integration, it contains the `processing_lag` metrics.
 
-Job saturation in Karafka isn't inherently critical, but it may lead to increased consumption lag, resulting in potential delays in processing tasks. This is because when the system is overloaded with jobs, it takes longer to consume and process new incoming data. Moreover, heavily saturated processes can create an additional issue; they may exceed the max.poll.interval.ms configuration parameter. This parameter sets the maximum delay allowed before the Kafka broker considers the consumer unresponsive and reassigns its partitions. In such a scenario, maintaining an optimal balance in job saturation becomes crucial for making sure efficient message processing.
+Job saturation in Karafka isn't inherently critical, but it may lead to increased consumption lag, resulting in potential delays in processing tasks. This is because when the system is overloaded with jobs, it takes longer to consume and process new incoming data. Moreover, heavily saturated processes can create an additional issue; they may exceed the max.poll.interval.ms configuration parameter. This parameter sets the maximum delay allowed before the Kafka broker considers the consumer unresponsive and reassigns its partitions. In such a scenario, maintaining an optimal balance in job saturation becomes crucial for ensuring efficient message processing.
 
 ## Subscription Group Blocking Polls
 
-In the Karafka framework, the default operation mode favors minimal connections to Kafka, typically using just one connection per process for all assigned topic partitions. This approach is generally efficient and makes sure even workload distribution when data is evenly spread across partitions. However, this model might lead to reduced parallelism in scenarios where significant lag and many messages accumulate in a few partitions. This happens because polling under such circumstances retrieves many messages from the lagging partitions, concentrating work there rather than distributing it.
+In the Karafka framework, the default operation mode favors minimal connections to Kafka, typically using just one connection per process for all assigned topic partitions. This approach is generally efficient and ensures even workload distribution when data is evenly spread across partitions. However, this model might lead to reduced parallelism in scenarios where significant lag and many messages accumulate in a few partitions. This happens because polling under such circumstances retrieves many messages from the lagging partitions, concentrating work there rather than distributing it.
 
 Karafka's default compliance with the `max.poll.interval.ms` setting exacerbates this issue. The framework will start a new poll once all data from the previous poll is processed, potentially leading to periods where no further messages are being consumed because the system is busy processing a backlog from one or a few partitions. This behavior can dramatically reduce the system's overall concurrency and throughput in extreme cases of lag across many partitions.
 
 To address these challenges and enhance parallel processing, Karafka offers several strategies:
 
-- **Optimizing Polling**: Adjusting the `fetch.message.max.bytes` setting can reduce the number of messages fetched per partition in each poll. This makes sure a more effective round-robin distribution of work and prevents any single partition from overwhelming the system.
+- **Optimizing Polling**: Adjusting the `fetch.message.max.bytes` setting can reduce the number of messages fetched per partition in each poll. This ensures a more effective round-robin distribution of work and prevents any single partition from overwhelming the system.
 
-- **[Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)**: This approach allows the same connection to fetch new messages while previous messages are still being processed. It uses a sophisticated pausing strategy to manage the flow, making sure processing stays caught up in polling.
+- **[Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs)**: This approach allows the same connection to fetch new messages while previous messages are still being processed. It uses a sophisticated pausing strategy to manage the flow, ensuring processing stays caught up in polling.
 
 - **[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)**: By subdividing actual Kafka partitions into smaller, virtual ones, Karafka can parallelize the processing of messages from a single physical partition. This can significantly increase the processing throughput and efficiency.
 
-- **[Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, making sure that a lag in one doesn't halt the polling of others.
+- **[Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, ensuring that a lag in one doesn't halt the polling of others.
 
 - **[Subscription Groups](Consumer-Groups-Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)**: Organizes topics into groups for parallel data polling from multiple topics, mitigating lag effects and improving performance by using multiple threads.
 
@@ -178,7 +178,7 @@ Choosing the right strategy (or combination of strategies) depends on your syste
 
 Karafka provides an advanced operation mode known as Swarm, designed to optimize the framework's performance by using Ruby's Copy-On-Write (CoW) mechanism and multi-process architecture. This mode significantly enhances Karafka's ability to use multiple CPU cores more efficiently, thus improving the throughput and scalability of your Ruby applications that process Kafka messages.
 
-In Swarm Mode, Karafka forks multiple independent processes, each capable of running concurrently. This approach allows the framework to manage and supervise these processes effectively, making sure high availability and resilience. By doing so, Karafka can better distribute the workload across available CPU cores, minimizing bottlenecks and maximizing processing speed.
+In Swarm Mode, Karafka forks multiple independent processes, each capable of running concurrently. This approach allows the framework to manage and supervise these processes effectively, ensuring high availability and resilience. By doing so, Karafka can better distribute the workload across available CPU cores, minimizing bottlenecks and maximizing processing speed.
 
 Swarm has its own section. You can read about it [here](Infrastructure-Swarm-Multi-Process).
 
@@ -186,7 +186,7 @@ Swarm has its own section. You can read about it [here](Infrastructure-Swarm-Mul
 
 Karafka supports explicit thread priority configuration. Adjusting thread priorities can mitigate performance issues caused by mixed workloads, particularly by reducing latency when running IO-bound and CPU-bound tasks concurrently.
 
-Karafka processing threads have a default priority set to `-1`. Lowering this priority further can significantly reduce tail latency for IO-bound tasks, making sure more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
+Karafka processing threads have a default priority set to `-1`. Lowering this priority further can significantly reduce tail latency for IO-bound tasks, ensuring more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -197,11 +197,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Lowering thread priority (e.g., negative values like `-1`, `-3`) can significantly reduce tail latency for IO-bound tasks. This makes sure more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
+Lowering thread priority (e.g., negative values like `-1`, `-3`) can significantly reduce tail latency for IO-bound tasks. This ensures more balanced resource allocation, especially in scenarios with CPU-intensive workloads that could monopolize the Global VM Lock (GVL).
 
 !!! tip "Thread Priority and GVL"
 
-    Ruby employs a Global VM Lock (GVL) that makes sure only one thread executes Ruby code at a time. The Ruby VM switches threads roughly every 100ms (thread quantum) unless explicitly released (such as during IO operations). CPU-intensive tasks holding the GVL for the entire quantum period can significantly increase latency for other threads, especially those performing quick IO tasks. Adjusting thread priority mitigates this issue by influencing the scheduling decisions and allowing shorter, IO-bound threads more frequent access to the CPU.
+    Ruby employs a Global VM Lock (GVL) that ensures only one thread executes Ruby code at a time. The Ruby VM switches threads roughly every 100ms (thread quantum) unless explicitly released (such as during IO operations). CPU-intensive tasks holding the GVL for the entire quantum period can significantly increase latency for other threads, especially those performing quick IO tasks. Adjusting thread priority mitigates this issue by influencing the scheduling decisions and allowing shorter, IO-bound threads more frequent access to the CPU.
 
 ## See Also
 

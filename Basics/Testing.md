@@ -1,6 +1,6 @@
 Karafka provides a dedicated testing library, [`karafka-testing`](https://github.com/karafka/karafka-testing), designed to facilitate testing Karafka producers and consumers without the need to run Kafka server. This library effectively mocks Kafka interactions, allowing developers to write and run tests for consumers and producers in an isolated environment. The primary aim of `karafka-testing` is to eliminate the complexities and overhead of connecting to an actual Kafka cluster, starting consumers, and managing producers during testing. This approach significantly reduces the setup time and resources needed for testing Kafka-related functionalities.
 
-By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight, efficient solution for developers to make sure the integrity of message handling in their applications without depending on a live Kafka setup.
+By focusing solely on consumer and producer interactions, `karafka-testing` provides a lightweight, efficient solution for developers to ensure the integrity of message handling in their applications without depending on a live Kafka setup.
 
 !!! note "Testing Scope Limitations"
 
@@ -204,7 +204,7 @@ karafka.produce_to(
 
 When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer`, but will buffer them internally.
 
-This allows you to verify your application flow, making sure that your logic functions as expected:
+This allows you to verify your application flow, ensuring that your logic functions as expected:
 
 ```ruby
 # Example class in which there is a message production
@@ -243,9 +243,9 @@ Therefore, when you write tests for producer transactions in Karafka, you can:
 
 1. Simulate the successful transaction completion and check if messages were placed into the buffers.
 
-1. Simulate an aborted transaction and make sure that no messages reach the buffers.
+1. Simulate an aborted transaction and ensure that no messages reach the buffers.
 
-This approach allows you to verify the behavior of your code within transactional boundaries, making sure that messages are handed as expected in both successful and aborted transaction scenarios.
+This approach allows you to verify the behavior of your code within transactional boundaries, ensuring that messages are handed as expected in both successful and aborted transaction scenarios.
 
 ```ruby
 class UsersBuilder
@@ -281,7 +281,7 @@ end
 
 ### Testing Consumer Groups and Topics Structure
 
-When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the Karafka:```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that makes sure a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the Karafka:```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.routes do
@@ -449,7 +449,7 @@ The `#produce_to` method accepts the same parameters as `#produce` for message m
 
 When running Minitest, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
 
-This allows you to review your application flow, making sure your logic functions as intended:
+This allows you to review your application flow, ensuring your logic functions as intended:
 
 ```ruby
 class UsersBuilderTest < ActiveSupport::TestCase

@@ -4,7 +4,7 @@ In Apache Kafka, a partitioner determines how records are placed among the parti
 
 ## Reasons for Using a Custom Partitioner
 
-1. **Specific Data Distribution Needs**: You may want to distribute messages based on specific data attributes, such as making sure all messages from a particular user or entity end up in the same partition to maintain order.
+1. **Specific Data Distribution Needs**: You may want to distribute messages based on specific data attributes, such as ensuring all messages from a particular user or entity end up in the same partition to maintain order.
 
 1. **Load Balancing**: If the data has certain hotspots (e.g., a few keys are very common), a custom partitioner can help distribute the load more evenly across the partitions, preventing any single partition from becoming a bottleneck.
 
@@ -29,7 +29,7 @@ producer.partition_count('users_events') => 5
 
 !!! warning "Failure To Fetch Partition Count"
 
-    If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Make sure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
+    If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Ensure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
 
 ### Fully External Custom Partitioner
 
@@ -43,7 +43,7 @@ Advantages:
 Drawbacks:
 
 - **Complexity**: This method introduces additional layers to your architecture, potentially increasing the complexity of your system.
-- **Maintenance**: You need to make sure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
+- **Maintenance**: You need to ensure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
 
 ```ruby
 class UserPartitioner

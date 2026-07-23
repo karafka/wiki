@@ -4,7 +4,7 @@
 
 Using Karafka Pro for filtering and rate limiting also eliminates the need for developers to manually manage message processing, which can be time-consuming and error-prone. With Karafka Pro, you can rely on a robust and efficient system that automatically takes care of these tasks.
 
-Overall, using Karafka Pro for filtering and rate limiting not only simplifies the development process but also makes sure that message processing is handled in a reliable and scalable manner.
+Overall, using Karafka Pro for filtering and rate limiting not only simplifies the development process but also ensures that message processing is handled in a reliable and scalable manner.
 
 Karafka allows you to pause processing for a defined time. This can be used, for example, to apply a manual back-off policy or throttling. To pause a given partition from within the consumer, you need to use the `#pause` method that accepts the pause offset (what should be the first message to get again after resuming) and the time for which the pause should be valid.
 
@@ -50,7 +50,7 @@ end
 
 **GOOD**:
 
-Invoking `return` after `#pause` will make sure no consecutive messages are processed. They will be processed after pause has expired:
+Invoking `return` after `#pause` will ensure no consecutive messages are processed. They will be processed after pause has expired:
 
 ```ruby
 def consume
@@ -178,7 +178,7 @@ When using the `#seek` API in Karafka, it's crucial to understand the behavior o
 
 By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is not reset. This means that the position to which you're seeking won't automatically update the current offset in memory.
 
-Additionally, Karafka implements a safeguard to make sure data consistency and integrity. By default, it prevents committing offsets earlier than the highest offset committed on a consumer instance. This mechanism helps avoid scenarios where a consumer might read and process messages out of order, potentially leading to data duplication or loss.
+Additionally, Karafka implements a safeguard to ensure data consistency and integrity. By default, it prevents committing offsets earlier than the highest offset committed on a consumer instance. This mechanism helps avoid scenarios where a consumer might read and process messages out of order, potentially leading to data duplication or loss.
 
 To address scenarios where you need to explicitly move the consumer's offset and update the in-memory position, the `#seek` method accepts an additional flag: `reset_offset`. When this flag is set to true, Karafka will move the consumer to the specified location and update the in-memory offset to match this new position.
 
@@ -209,7 +209,7 @@ end
 
 - **Time-based Processing**: If your messages have a timestamp and you wish to process or reprocess messages from a specific time, you can seek the offset corresponding to that timestamp.
 
-- **Consumer Recovery**: In the event of consumer crashes or restarts, you can use seek to make sure that the consumer starts processing from where it left off, making sure no missed messages.
+- **Consumer Recovery**: In the event of consumer crashes or restarts, you can use seek to ensure that the consumer starts processing from where it left off, ensuring no missed messages.
 
 - **Testing and Debugging**: During development or debugging, you might want to read specific messages multiple times. Seeking allows you to jump to those messages easily.
 
@@ -225,17 +225,17 @@ Benefits of Smart Seek:
 
 - **Buffer Integrity**: One of the most significant benefits is preserving prefetched messages. Since unnecessary `#seek` operations are ignored, the prefetch buffers aren't purged without cause. This results in better utilization of fetched messages and reduces the need to re-fetch them, thus saving network resources.
 
-- **Reduced Network Traffic**: By preventing unnecessary #seek operations, Karafka makes sure that there's less need to re-fetch messages from the broker, which subsequently leads to reduced network traffic.
+- **Reduced Network Traffic**: By preventing unnecessary #seek operations, Karafka ensures that there's less need to re-fetch messages from the broker, which subsequently leads to reduced network traffic.
 
 - **Efficiency and Performance**: Ignoring #seek operations that don't change the cursor's position means fewer operations for the consumer to handle, leading to more efficient processing and reduced latency.
 
-- **Smart Pausing**: The Smart Seek logic extends to the `#pause` functionality. Just like with seeking, Karafka checks if pausing would be redundant and, if so, ignores the operation. This smart behavior makes sure optimal performance even when applications try to pause consumption frequently.
+- **Smart Pausing**: The Smart Seek logic extends to the `#pause` functionality. Just like with seeking, Karafka checks if pausing would be redundant and, if so, ignores the operation. This smart behavior ensures optimal performance even when applications try to pause consumption frequently.
 
 ## `#pause` and `#seek` Usage Potential Networking Impact
 
 When using the `#pause` or `#seek` method in Karafka, you're essentially instructing the system to halt the fetching of messages for a specific topic partition. However, this is not just a simple "pause" in the regular sense of the word.
 
-When one of those methods is invoked, Karafka stops fetching new messages and purges its internal buffer that holds messages from that specific partition. It's essential to recognize that Karafka, by default, pre-buffers 1MB of data per topic partition for efficiency reasons. This buffer makes sure that there is always a consistent supply of messages ready for processing without constantly waiting for new fetches.
+When one of those methods is invoked, Karafka stops fetching new messages and purges its internal buffer that holds messages from that specific partition. It's essential to recognize that Karafka, by default, pre-buffers 1MB of data per topic partition for efficiency reasons. This buffer ensures that there is always a consistent supply of messages ready for processing without constantly waiting for new fetches.
 
 The challenge arises here: If you use the `#pause` or `#seek` method frequently and for short durations, you might inadvertently create substantial network traffic. Every time you resume from a pause or seek to a location, Karafka will attempt to re-buffer the 1MB of data, which can result in frequently re-fetching the same data, thereby causing redundant network activity.
 
@@ -259,7 +259,7 @@ The challenge arises here: If you use the `#pause` or `#seek` method frequently 
 
 ### Cost Implications with Third-party Providers
 
-It's crucial to be aware, especially if you're using a third-party Kafka provider that charges based on the number of messages sent, that frequent pausing and resuming can inflate costs. This is due to the aforementioned frequent prefetching of the same data, which can result in the same messages being counted multiple times for billing purposes. Always make sure alignment and configuration are optimized to prevent unnecessary financial implications.
+It's crucial to be aware, especially if you're using a third-party Kafka provider that charges based on the number of messages sent, that frequent pausing and resuming can inflate costs. This is due to the aforementioned frequent prefetching of the same data, which can result in the same messages being counted multiple times for billing purposes. Always ensure alignment and configuration are optimized to prevent unnecessary financial implications.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/seek-impact.png" alt="karafka seek misuse impact" />

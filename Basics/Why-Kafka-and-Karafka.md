@@ -127,7 +127,7 @@ Crucially, different consumer groups are completely independent. Your analytics 
 
 Within a partition, Kafka guarantees that messages arrive in exactly the order they were produced. Messages with the same key are always routed to the same partition. This gives you per-entity ordering without giving up parallelism.
 
-If you need to make sure all events for a given user, order, or account are processed in sequence, use that entity's ID as the message key. Kafka handles the rest.
+If you need to ensure all events for a given user, order, or account are processed in sequence, use that entity's ID as the message key. Kafka handles the rest.
 
 This is a meaningful advantage over typical queueing systems, which offer no ordering guarantee, and over SQS Standard, which explicitly does not guarantee ordering.
 
@@ -206,7 +206,7 @@ Kafka is operationally dense. Partitions need to be managed. Offsets need to be 
 
 Karafka exposes extensive administrative APIs that make these operations first-class Ruby citizens. You can query cluster state, manage consumer group offsets, inspect topic configurations, and coordinate consumer lifecycle from within your application or from a Rake task - without dropping into the Kafka CLI or writing bespoke JVM tooling.
 
-This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that leverage. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
+This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that use. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
 
 ![Karafka Web UI health dashboard](https://karafka.io/assets/misc/printscreens/web-ui/health.png)
 

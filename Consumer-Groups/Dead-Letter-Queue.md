@@ -52,7 +52,7 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 !!! warning "Default Behavior with `manual_offset_management`"
 
-    When `manual_offset_management` is enabled, the `mark_after_dispatch` option is set to `false` by default. This means that messages moved to the Dead Letter Queue (DLQ) will not have their offsets automatically marked as consumed. You need to handle offset marking manually or set `mark_after_dispatch` to `true` explicitly to make sure proper message acknowledgment and avoid reprocessing the same message repeatedly.
+    When `manual_offset_management` is enabled, the `mark_after_dispatch` option is set to `false` by default. This means that messages moved to the Dead Letter Queue (DLQ) will not have their offsets automatically marked as consumed. You need to handle offset marking manually or set `mark_after_dispatch` to `true` explicitly to ensure proper message acknowledgment and avoid reprocessing the same message repeatedly.
 
 ## DLQ Configuration Options
 
@@ -95,7 +95,7 @@ The table below contains options the `#dead_letter_queue` routing method accepts
     <tr>
       <td><code>mark_after_dispatch</code></td>
       <td>Boolean</td>
-      <td>Controls whether the message offset is marked as consumed after it's moved to the DLQ. When <code>true</code> (default for non-MOM), the offset is committed, making sure smooth continuation of message processing. By default, it is set to <code>false</code> when <code>manual_offset_management(true)</code> is used.</td>
+      <td>Controls whether the message offset is marked as consumed after it's moved to the DLQ. When <code>true</code> (default for non-MOM), the offset is committed, ensuring smooth continuation of message processing. By default, it is set to <code>false</code> when <code>manual_offset_management(true)</code> is used.</td>
     </tr>
   </tbody>
 </table>
@@ -109,7 +109,7 @@ This approach is based on the presumption that the entire batch might be problem
 
 This collective approach might not align with specific use cases with independent message processing. In such cases, the failure of one message does not necessarily imply a problem with the entire batch.
 
-Karafka's independent flag introduces a nuanced approach to DLQ recovery, treating each message as an individual entity with its error counter. When enabled, this flag allows Karafka to reset the error count for each message as soon as it is successfully consumed, making sure that each message is processed on its own merits, independent of the batch. This feature is especially beneficial in scenarios where messages are not interdependent, providing a more targeted and efficient error-handling process for each message within a batch.
+Karafka's independent flag introduces a nuanced approach to DLQ recovery, treating each message as an individual entity with its error counter. When enabled, this flag allows Karafka to reset the error count for each message as soon as it is successfully consumed, ensuring that each message is processed on its own merits, independent of the batch. This feature is especially beneficial in scenarios where messages are not interdependent, providing a more targeted and efficient error-handling process for each message within a batch.
 
 To enable it, add `independent: true` to your DLQ topic definition:
 
@@ -167,7 +167,7 @@ In some cases, it can be beneficial to delay the processing of messages dispatch
 
 Another benefit of delaying the processing of messages dispatched to a DLQ topic is that it can allow developers to investigate the underlying issues that caused the message to fail in the first place. With delayed processing, you can give your team time to investigate and address the root cause of the issue rather than simply reprocessing the message repeatedly and potentially compounding the problem.
 
-Overall, delaying the processing of messages dispatched to a DLQ topic can help make sure the stability and reliability of your system while also giving your team the time and resources needed to address underlying issues and prevent future failures.
+Overall, delaying the processing of messages dispatched to a DLQ topic can help ensure the stability and reliability of your system while also giving your team the time and resources needed to address underlying issues and prevent future failures.
 
 You can read more about the Karafka Delayed Topics feature [here](Pro-Consumer-Groups-Delayed-Topics).
 
@@ -257,7 +257,7 @@ If skipping batches is something you would use, please get in touch with us so w
 
 Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older ones when the log compaction process kicks in.
 
-Karafka Pro sets the `key` value based on the errored message partition to make sure the same partition delivery for consecutive errors from the same original partition.
+Karafka Pro sets the `key` value based on the errored message partition to ensure the same partition delivery for consecutive errors from the same original partition.
 
 We recommend either:
 
@@ -309,11 +309,11 @@ You can read more about producing to multiple clusters [here](Basics-Producing-M
 
 When using the Dead Letter Queue (DLQ) feature in Karafka, messages are handled with specific dispatch and marking behaviors critical for understanding how message failures are managed. By default, Karafka employs asynchronous dispatch and non-blocking marking as consumed. However, these can be configured to behave synchronously for stricter processing guarantees.
 
-For environments where message processing integrity is critical, you should configure dispatch and marking to operate synchronously. This makes sure that each message is not only sent to the DLQ but also acknowledged by Kafka before proceeding and, similarly, that a message is confirmed as consumed before moving on.
+For environments where message processing integrity is critical, you should configure dispatch and marking to operate synchronously. This ensures that each message is not only sent to the DLQ but also acknowledged by Kafka before proceeding and, similarly, that a message is confirmed as consumed before moving on.
 
-To configure synchronous dispatch, you can set the `dispatch_method` option to `:produce_sync`. This setting makes sure that the producer waits for a response from Kafka, confirming that the message has been received and stored before it returns control to the application.
+To configure synchronous dispatch, you can set the `dispatch_method` option to `:produce_sync`. This setting ensures that the producer waits for a response from Kafka, confirming that the message has been received and stored before it returns control to the application.
 
-Similarly, to configure blocking marking, you can set the `marking_method` to `:mark_as_consumed!`. This makes sure that the message is marked as consumed in your application when Kafka confirms that it has been committed, reducing the risk of losing the message's consumption state.
+Similarly, to configure blocking marking, you can set the `marking_method` to `:mark_as_consumed!`. This ensures that the message is marked as consumed in your application when Kafka confirms that it has been committed, reducing the risk of losing the message's consumption state.
 
 Here is an example configuration that uses synchronous dispatch and blocking marking for messages sent to the DLQ:
 
@@ -342,7 +342,7 @@ end
 
     - **Risk:** This can lead to undetected message loss or delayed delivery to the DLQ, causing inconsistency in how failures are handled.
 
-    For critical systems where message integrity is essential, it's recommended to use synchronous dispatch (`dispatch_method: :produce_sync`), making sure the DLQ message is successfully acknowledged by Kafka before continuing.
+    For critical systems where message integrity is essential, it's recommended to use synchronous dispatch (`dispatch_method: :produce_sync`), ensuring the DLQ message is successfully acknowledged by Kafka before continuing.
 
 ## DLQ Topic Configuration Management
 
@@ -379,7 +379,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This approach makes sure that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
+This approach ensures that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
 
 ## Pro Enhanced Dead Letter Queue
 
@@ -395,19 +395,19 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-
 
 ## Example Use Cases
 
-- Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, making sure no payment is lost.
+- Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, ensuring no payment is lost.
 
-- Email delivery: In email delivery systems, DLQs can be used to capture email messages that fail to deliver due to invalid email addresses, network issues, or other issues. These messages can be later reviewed and resent, making sure that important emails are not lost.
+- Email delivery: In email delivery systems, DLQs can be used to capture email messages that fail to deliver due to invalid email addresses, network issues, or other issues. These messages can be later reviewed and resent, ensuring that important emails are not lost.
 
-- Order processing: In e-commerce systems, DLQs can be used to capture orders that fail to process due to system errors, payment failures, or other issues. These orders can be reviewed and processed later, making sure no orders are lost, and customer satisfaction is maintained.
+- Order processing: In e-commerce systems, DLQs can be used to capture orders that fail to process due to system errors, payment failures, or other issues. These orders can be reviewed and processed later, ensuring no orders are lost, and customer satisfaction is maintained.
 
-- Data pipeline processing: In data pipeline systems, DLQs can be used to capture data events that fail to process due to data schema issues, data quality issues, or other issues. These events can be later reviewed and processed, making sure that important data is not lost and data integrity is maintained.
+- Data pipeline processing: In data pipeline systems, DLQs can be used to capture data events that fail to process due to data schema issues, data quality issues, or other issues. These events can be later reviewed and processed, ensuring that important data is not lost and data integrity is maintained.
 
 - Fraud detection: In financial systems, DLQs can be used to capture suspicious transactions that fail to process due to system errors, network issues, or other issues.
 
 - Gaming platforms: In gaming systems, DLQs can be used to capture game events that fail to process due to connectivity issues, data quality problems, or other issues.
 
-The Karafka Dead Letter Queue is worth using because it provides a way to handle messages that cannot be processed for any reason without losing data. The DLQ allows the failed messages to be reviewed and processed later, reducing the risk of data loss and providing greater reliability and resilience to the system. The DLQ in Karafka is easy to set up and can be configured to handle different scenarios, including retry mechanisms, error handling, and version incompatibilities. This makes it an essential feature for businesses that want to make sure the reliability of their messaging system and avoid data loss in case of errors.
+The Karafka Dead Letter Queue is worth using because it provides a way to handle messages that cannot be processed for any reason without losing data. The DLQ allows the failed messages to be reviewed and processed later, reducing the risk of data loss and providing greater reliability and resilience to the system. The DLQ in Karafka is easy to set up and can be configured to handle different scenarios, including retry mechanisms, error handling, and version incompatibilities. This makes it an essential feature for businesses that want to ensure the reliability of their messaging system and avoid data loss in case of errors.
 
 ## See Also
 

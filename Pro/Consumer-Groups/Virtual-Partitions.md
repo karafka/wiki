@@ -51,7 +51,7 @@ The return value of this partitioner needs to classify messages that should be g
 
 !!! warning "User-Handled Errors in Partitioner"
 
-    Handling errors within the `partitioner` is primarily the user's responsibility. However, Karafka will catch partitioning errors. Suppose an error occurs even once for a given message in a batch. In that case, Karafka will emit an error via `error.occurred` and will proceed by assigning all messages from that batch to a single virtual partition. Despite this safeguard, users must manage and mitigate any exceptions or errors in their custom partitioning logic to make sure their application's smooth operation and prevent unexpected behavior and potential data processing issues.
+    Handling errors within the `partitioner` is primarily the user's responsibility. However, Karafka will catch partitioning errors. Suppose an error occurs even once for a given message in a batch. In that case, Karafka will emit an error via `error.occurred` and will proceed by assigning all messages from that batch to a single virtual partition. Despite this safeguard, users must manage and mitigate any exceptions or errors in their custom partitioning logic to ensure their application's smooth operation and prevent unexpected behavior and potential data processing issues.
 
 ## Available Options
 
@@ -69,7 +69,7 @@ Below is a list of arguments the `#virtual_partitions` topic method accepts.
     <tr>
       <td><code>max_partitions</code></td>
       <td>Integer</td>
-      <td>Max number of virtual partitions that can come from the single distribution flow. When set to more than the Karafka threading, it will create more work than workers. When less, we can make sure we have spare resources to process other things in parallel.</td>
+      <td>Max number of virtual partitions that can come from the single distribution flow. When set to more than the Karafka threading, it will create more work than workers. When less, we can ensure we have spare resources to process other things in parallel.</td>
     </tr>
     <tr>
       <td><code>partitioner</code></td>
@@ -93,7 +93,7 @@ Below is a list of arguments the `#virtual_partitions` topic method accepts.
         Strategy used to distribute messages across virtual partitions:
         <ul style="margin-top: 10px;">
           <li>
-            <code>:consistent</code> (default) makes sure messages with the same key always go to the same virtual partition, maintaining consistency across batches.
+            <code>:consistent</code> (default) ensures messages with the same key always go to the same virtual partition, maintaining consistency across batches.
           </li>
           <li>
             <code>:balanced</code> distributes work evenly across workers while preserving message order within key groups, improving utilization by up to 50% for uneven workloads.
@@ -173,7 +173,7 @@ end
 
 ### Round-Robin Partitioning
 
-If your messages are independent, you can also distribute them round-robin, making sure their even distribution even during periods of lower traffic.
+If your messages are independent, you can also distribute them round-robin, ensuring their even distribution even during periods of lower traffic.
 
 ```ruby
 # Create your partitioner
@@ -217,7 +217,7 @@ These strategies give you flexibility in optimizing message distribution based o
 
 #### Consistent Distribution (Default)
 
-By default, Karafka uses a consistent distribution strategy that makes sure messages with the same partitioner result are always assigned to the same virtual partition consumer. This provides predictable and stable message routing, particularly important for stateful processing or when message order within a key group must be preserved across multiple batches.
+By default, Karafka uses a consistent distribution strategy that ensures messages with the same partitioner result are always assigned to the same virtual partition consumer. This provides predictable and stable message routing, particularly important for stateful processing or when message order within a key group must be preserved across multiple batches.
 
 ```ruby
 routes.draw do
@@ -234,7 +234,7 @@ routes.draw do
 end
 ```
 
-The consistent distribution strategy makes sure that:
+The consistent distribution strategy ensures that:
 
 1. The same virtual partition always processes messages with the same partitioner outcome
 2. Distribution remains stable between batches
@@ -267,7 +267,7 @@ The balanced distribution strategy operates as follows:
 3. Each key group is assigned to the worker with the least current workload
 4. Messages within each group maintain their offset order
 
-This approach makes sure that:
+This approach ensures that:
 
 - Larger message groups are processed first
 - Work is distributed more evenly across available workers
@@ -387,15 +387,15 @@ end
 
 ## Virtual Offset Management
 
-When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, making sure that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling seamless and streamlined data flow within your system.
+When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling seamless and streamlined data flow within your system.
 
-This feature operates on a few layers to provide as good warranties as possible while making sure that each virtual partition can work independently. Below you can find a detailed explanation of each component making Virtual Offset Management.
+This feature operates on a few layers to provide as good warranties as possible while ensuring that each virtual partition can work independently. Below you can find a detailed explanation of each component making Virtual Offset Management.
 
 ### Collective State Materialization
 
-While each of the Virtual Partitions operates independently, they are bound together to a single Kafka Partition. Collective State Materialization transforms the knowledge of messages marked as consumed in each virtual partition into a Kafka offset that can be committed. This process involves computing the highest possible offset by considering all the messages marked as consumed from all the virtual partitions. By analyzing the offsets across virtual partitions, Karafka can determine the maximum offset reached, allowing for an accurate and reliable offset commit to Kafka. This makes sure that the state of consumption is properly synchronized and maintained.
+While each of the Virtual Partitions operates independently, they are bound together to a single Kafka Partition. Collective State Materialization transforms the knowledge of messages marked as consumed in each virtual partition into a Kafka offset that can be committed. This process involves computing the highest possible offset by considering all the messages marked as consumed from all the virtual partitions. By analyzing the offsets across virtual partitions, Karafka can determine the maximum offset reached, allowing for an accurate and reliable offset commit to Kafka. This ensures that the state of consumption is properly synchronized and maintained.
 
-Whenever you `mark_as_consumed` when using Virtual Partitions, Karafka will make sure that Kafka receives the highest possible continuous offset matching the underlying partition.
+Whenever you `mark_as_consumed` when using Virtual Partitions, Karafka will ensure that Kafka receives the highest possible continuous offset matching the underlying partition.
 
 Below you can find a few examples of how Karafka transforms messages marked as consumed in virtual partitions into an appropriate offset that can be committed to Kafka.
 
@@ -417,9 +417,9 @@ Below you can find an example illustrating which of the messages will be virtual
 
 ### Reprocessing Exclusions
 
-When using Virtual Partitions, Karafka automatically skips previously consumed messages upon retries. This feature makes sure that in the event of an error during message processing in one virtual partition, Karafka will not attempt to reprocess the messages that have already been marked as consumed in any of the virtual partitions.
+When using Virtual Partitions, Karafka automatically skips previously consumed messages upon retries. This feature ensures that in the event of an error during message processing in one virtual partition, Karafka will not attempt to reprocess the messages that have already been marked as consumed in any of the virtual partitions.
 
-By automatically skipping already consumed messages upon encountering an error, Karafka helps make sure the reliability and consistency of message processing. It prevents the application from reprocessing messages unnecessarily and avoids potential data duplication issues during error recovery scenarios.
+By automatically skipping already consumed messages upon encountering an error, Karafka helps ensure the reliability and consistency of message processing. It prevents the application from reprocessing messages unnecessarily and avoids potential data duplication issues during error recovery scenarios.
 
 This behavior is advantageous in scenarios where message processing involves external systems or operations that are not idempotent. Skipping previously consumed messages reduces the risk of executing duplicate actions and helps maintain the integrity of the overall system.
 
@@ -497,7 +497,7 @@ end
 
 When working with Virtual Partitions in Karafka, users can manually invoke a collapsing operation. This provides flexibility and control, especially when non-linear message processing is required.
 
-Just as an error in a Virtual Partition will trigger a collapse, making sure adherence to Kafka's ordering warranties upon retries, users can also start this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
+Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also start this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
 
 To manually collapse your Virtual Partitions, you need to invoke the `#collapse_until!` method as follows:
 
@@ -521,7 +521,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-When multiple Virtual Partitions invoke the `#collapse_until!` method concurrently, Karafka makes sure consistency by considering all requested offsets. If different partitions request different offsets, the system will prioritize and collapse until the highest requested offset. This makes sure that no messages before that offset are processed out of order, maintaining the integrity of your message stream even in complex processing scenarios. So, if multiple collapses are requested simultaneously, the most conservative (highest offset) collapse request takes precedence.
+When multiple Virtual Partitions invoke the `#collapse_until!` method concurrently, Karafka ensures consistency by considering all requested offsets. If different partitions request different offsets, the system will prioritize and collapse until the highest requested offset. This ensures that no messages before that offset are processed out of order, maintaining the integrity of your message stream even in complex processing scenarios. So, if multiple collapses are requested simultaneously, the most conservative (highest offset) collapse request takes precedence.
 
 ## Ordering Warranties
 
@@ -543,7 +543,7 @@ Virtual Partitions provide three types of warranties in regards to order:
 
 When using Virtual Partitions in Karafka, multiple consumers will concurrently operate on data from the same topic partition. This can lead to potential data races and inconsistencies if not properly managed. To help with this, Karafka provides a mechanism to synchronize access among these consumers using the `#synchronize` method.
 
-Karafka's `#synchronize` method uses a mutex to guarantee that the code inside its block will not face race conditions with other consumers. This makes sure that only one consumer can execute the synchronized block of code at a time, thus providing a way to perform operations that should be atomic safely.
+Karafka's `#synchronize` method uses a mutex to guarantee that the code inside its block will not face race conditions with other consumers. This ensures that only one consumer can execute the synchronized block of code at a time, thus providing a way to perform operations that should be atomic safely.
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -562,15 +562,15 @@ end
 
 ## Thread Management and Consumers Assignment
 
-Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design makes sure that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
+Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design ensures that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
 
-One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that makes sure efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control.
+One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control.
 
-The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key makes sure that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
+The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key ensures that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
 
-Karafka's architecture involves maintaining a map of consumer instances mapped to virtual partitions. These instances are managed dynamically and persist as long as the partition assignment is active. This persistence makes sure stability and consistency in message processing, even as threads are reassigned between batches.
+Karafka's architecture involves maintaining a map of consumer instances mapped to virtual partitions. These instances are managed dynamically and persist as long as the partition assignment is active. This persistence ensures stability and consistency in message processing, even as threads are reassigned between batches.
 
-By decoupling thread assignment from consumer instances and making sure dedicated, long-lived consumer instances per virtual partition, Karafka achieves a balance between flexibility and consistency. This design allows for efficient resource utilization, consistent message processing, and the ability to handle high-throughput scenarios effectively.
+By decoupling thread assignment from consumer instances and ensuring dedicated, long-lived consumer instances per virtual partition, Karafka achieves a balance between flexibility and consistency. This design allows for efficient resource utilization, consistent message processing, and the ability to handle high-throughput scenarios effectively.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/virtual_partitions/virtualization_flow.svg" />
@@ -584,7 +584,7 @@ By decoupling thread assignment from consumer instances and making sure dedicate
 
 In Karafka, the default reducer for Virtual Partitions is a method designed to distribute messages across virtual partitions. It does this by using a simple mathematical operation on the sum of the stringified version of the virtual key. While this method is generally effective, it may not be fully optimal under certain configurations. For example, it could consistently use only 60% or less of the available threads, leading to inefficiencies and underutilization of resources.
 
-Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can make sure that all available threads are optimally used, leading to better performance and throughput for your application.
+Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally used, leading to better performance and throughput for your application.
 
 ### Implementing a Custom Reducer
 
@@ -622,7 +622,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This class defines a custom reducer with a `#call` method. The method uses an MD5 hash function to compute an integer based on the virtual key, making sure a more distributed and potentially collision-resistant assignment of messages to virtual partitions.
+This class defines a custom reducer with a `#call` method. The method uses an MD5 hash function to compute an integer based on the virtual key, ensuring a more distributed and potentially collision-resistant assignment of messages to virtual partitions.
 
 ### Benefits of Using a Custom Reducer
 
@@ -630,7 +630,7 @@ This class defines a custom reducer with a `#call` method. The method uses an MD
 
 - **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that's handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
 
-- **Scalability**: By refining how messages are distributed across virtual partitions, custom reducers can help make sure that processing scales efficiently as the volume of messages increases.
+- **Scalability**: By refining how messages are distributed across virtual partitions, custom reducers can help ensure that processing scales efficiently as the volume of messages increases.
 
 ### When to Use a Custom Reducer
 
@@ -678,7 +678,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 - **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-used.
 
-- **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs make sure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
+- **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
 
 - **Parallel Segments**: PSs handle uneven polling differently - each consumer group polls and downloads all messages from the partition, then filters to process only their assigned subset. This approach provides consistent workload distribution across segments regardless of polling patterns, but at the cost of increased network bandwidth usage since each segment downloads the full message set.
 

@@ -139,13 +139,13 @@ high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 
 ## Edge-Cases and Details
 
-When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of to make sure optimal performance and behavior:
+When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of to ensure optimal performance and behavior:
 
 - **Buffering Behavior Across Variants**: It is crucial to understand that while `topic_config` specific settings are preserved per message, the `max_wait_timeout` applied during the flush operation will correspond to the variant that starts the flushing. This means that messages from other variants that were buffered may be dispatched using the `max_wait_timeout` of the variant currently flushing the data. Since variants share a single producer buffer, this can affect how messages are processed.
 
 - **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. For a deeper understanding of this issue and how it might affect your Kafka operations, refer to the [Error Handling](WaterDrop-Error-Handling) documentation.
 
-- **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, it is important to note that the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as making sure exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
+- **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, it is important to note that the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as ensuring exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
 
 These details are critical in effectively managing and troubleshooting your Kafka message production environment, especially when using the flexibility of variants for different topic configurations.
 

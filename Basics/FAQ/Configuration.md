@@ -335,9 +335,9 @@ This depends on many factors:
 - are your jobs long-running?
 - are you ok with intermediate rebalances?
 
-The general rule is that if you want to make sure all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It won't accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
+The general rule is that if you want to ensure all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It won't accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
 
-If you want to make sure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
+If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
 
 If you decide to do a full deployment, you can send `TSTP` to all the processes, wait for all the work to be done (you can monitor if using the [Web UI](Web-UI-Getting-Started)), and then stop the processes using `TERM`.
 
@@ -363,7 +363,7 @@ By supporting multiple strategies in the codebase, Karafka can cater to a wide r
 
 If the method call is successful, it indicates that the Karafka application was able to connect to the Kafka cluster and retrieve metadata about the brokers and topics. However, it's important to note that this does not necessarily mean everything with the cluster is okay.
 
-"Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, it's essential to use additional monitoring and alerting mechanisms to make sure the reliability and availability of your Kafka cluster.
+"Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, it's essential to use additional monitoring and alerting mechanisms to ensure the reliability and availability of your Kafka cluster.
 
 You can read more about this topic [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#is-kafka-up).
 
@@ -396,7 +396,7 @@ it indicates that you have duplicate topic names in your configuration of the sa
 
 In Karafka, each topic within a consumer group should have a unique name. This requirement is in place because each consumer within a consumer group reads from a unique partition of a specific topic. If there are duplicate topic names, then the consumers will not be able to distinguish between these topics.
 
-To solve this issue, you need to make sure that all topic names within a single consumer group in your Karafka configuration are unique.
+To solve this issue, you need to ensure that all topic names within a single consumer group in your Karafka configuration are unique.
 
 ## What is the release schedule for Karafka and its components?
 
@@ -408,7 +408,7 @@ Karafka and Karafka Pro do not follow a fixed official release schedule. Instead
 
 - Bug fixes that don't involve API changes are released immediately.
 
-We prioritize bugs and critical performance improvements to make sure optimal user experience and software performance. It's worth noting that most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
+We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. It's worth noting that most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
@@ -416,11 +416,11 @@ Karafka, by itself, does not manage PostgreSQL or any other database connections
 
 ## Is it recommended to add the `waterdrop` gem to the Gemfile, or just `karafka` and `karafka-testing`?
 
-Adding the `waterdrop` gem to the Gemfile is unnecessary since `karafka` already depends on `waterdrop`. Karafka will make sure it selects the most compatible version of `waterdrop` on its own.
+Adding the `waterdrop` gem to the Gemfile is unnecessary since `karafka` already depends on `waterdrop`. Karafka will ensure it selects the most compatible version of `waterdrop` on its own.
 
 ## Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?
 
-Karafka does not persistently store the Kafka server address or cache any information about the cluster's IP addresses or hostnames. The issue you're experiencing is likely due to your cluster setup, as Karafka performs discovery based on the initial host address provided in the `config.kafka` setup. Upon startup, Karafka uses this initial address to discover the rest of the cluster. Make sure your configurations are correctly updated across your Docker setup, and restart the process to clear any temporary caches. Karafka has no intrinsic knowledge of AWS hosts or any hardcoded cluster information; it relies entirely on the configuration provided at startup.
+Karafka does not persistently store the Kafka server address or cache any information about the cluster's IP addresses or hostnames. The issue you're experiencing is likely due to your cluster setup, as Karafka performs discovery based on the initial host address provided in the `config.kafka` setup. Upon startup, Karafka uses this initial address to discover the rest of the cluster. Ensure your configurations are correctly updated across your Docker setup, and restart the process to clear any temporary caches. Karafka has no intrinsic knowledge of AWS hosts or any hardcoded cluster information; it relies entirely on the configuration provided at startup.
 
 ## Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
 
@@ -442,7 +442,7 @@ You're seeing this error most likely because you have moved the `karafka.rb` fil
 
 ## What does the `strict_topics_namespacing` configuration setting control?
 
-The `strict_topics_namespacing` configuration in Karafka enforces consistent naming for topics by making sure they use either dots (`.`) or underscores (`_`) but not a mix of both in a topic name. This validation helps prevent inconsistencies in topic names, which is crucial because inconsistent namespacing can lead to issues like Kafka metrics reporting name collisions. Such collisions occur because Kafka uses these characters to structure metric names, and mixing them can cause metrics to overlap or be misinterpreted, leading to inaccurate monitoring and difficulties in managing Kafka topics. By enabling `strict_topics_namespacing`, you make sure that all topic names follow a uniform pattern, avoiding these potential problems. This validation can be turned off by setting `config.strict_topics_namespacing` to false if your environment does not require uniform naming.
+The `strict_topics_namespacing` configuration in Karafka enforces consistent naming for topics by ensuring they use either dots (`.`) or underscores (`_`) but not a mix of both in a topic name. This validation helps prevent inconsistencies in topic names, which is crucial because inconsistent namespacing can lead to issues like Kafka metrics reporting name collisions. Such collisions occur because Kafka uses these characters to structure metric names, and mixing them can cause metrics to overlap or be misinterpreted, leading to inaccurate monitoring and difficulties in managing Kafka topics. By enabling `strict_topics_namespacing`, you ensure that all topic names follow a uniform pattern, avoiding these potential problems. This validation can be turned off by setting `config.strict_topics_namespacing` to false if your environment does not require uniform naming.
 
 ## Why does Karafka routing accept consumer classes rather than instances?
 
@@ -464,7 +464,7 @@ This design decision offers several important benefits:
 
 1. **Instance lifecycle management**: Karafka needs to control when and how consumer instances are created to properly manage the message processing lifecycle.
 
-1. **Resource management**: By controlling instantiation, Karafka makes sure proper resource cleanup after message processing is complete.
+1. **Resource management**: By controlling instantiation, Karafka ensures proper resource cleanup after message processing is complete.
 
 1. **Concurrency considerations**: When running with multiple threads or processes, Karafka creates separate consumer instances for each concurrent execution unit to maintain thread safety.
 
@@ -527,7 +527,7 @@ This approach follows established software architecture principles and provides 
 
 **Contingency Planning:**
 
-- **Adoption Commitment**: If the `avro` gem becomes unmaintained, we will adopt and maintain it to make sure continued support
+- **Adoption Commitment**: If the `avro` gem becomes unmaintained, we will adopt and maintain it to ensure continued support
 - **Alternative Solutions**: We monitor alternative Avro libraries and can recommend migrations if needed
 - **Enterprise Priority**: Enterprise customers using Avro receive priority support for any Avro-related issues
 

@@ -109,11 +109,11 @@ If your problems originate from batch and message sizes, we recommend looking in
 
 ## How can I optimize memory usage in Karafka?
 
-- **Use Cleaner API**: The [Cleaner API](Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and making sure a steadier memory usage pattern.
+- **Use Cleaner API**: The [Cleaner API](Pro-Cleaner-API), a part of Karafka Pro, provides a powerful mechanism to release memory used by message payloads once processed. This becomes particularly beneficial for 10KB or larger payloads, yielding considerable memory savings and ensuring a steadier memory usage pattern.
 
 - **Adjust `librdkafka` Memory Settings**: The underlying library, `librdkafka`, has configurations related to memory usage. Tuning these settings according to your application's needs can optimize the memory footprint. Amongst others you may be interested in looking into the following settings: `fetch.message.max.bytes`, `queued.min.messages`, `queued.max.messages.kbytes` and `receive.message.max.bytes`
 
-- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Make sure that you balance memory usage with processing efficiency while adjusting this value.
+- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
 
 While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
 
@@ -123,7 +123,7 @@ Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are desig
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
-Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition makes sure that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
+Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations - database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
@@ -165,7 +165,7 @@ Optimizing latency in Karafka involves tweaking various configurations and makin
 
 - **Batch Size Adjustments**: Use the `max_messages` parameter to control the number of messages fetched in a single poll. Decreasing the batch size can reduce the time taken to process each batch, potentially reducing end-to-end latency. However, note that smaller batches can also decrease throughput, so balance is key.
 
-- **Increase Consumer Instances**: Scale out by adding more consumer instances to your application. This allows you to process more messages concurrently. However, make sure you have an appropriate number of topic partitions to distribute among the consumers and monitor the utilization of Karafka processes.
+- **Increase Consumer Instances**: Scale out by adding more consumer instances to your application. This allows you to process more messages concurrently. However, ensure you have an appropriate number of topic partitions to distribute among the consumers and monitor the utilization of Karafka processes.
 
 - **Use Virtual Partitions**: Virtual Partitions can be beneficial if your workload is IO-bound. You can better use available resources and potentially reduce processing latency by enabling further parallelization within a single partition.
 
@@ -211,7 +211,7 @@ Karafka uses multiple threads to consume and process data, allowing operations a
 
 - **Subscription Groups**: You can set up multiple subscription groups within a single consumer group. Each subscription group can subscribe to different topics, enabling parallel data fetching within the same consumer group.
 
-- **Configuration**: Make sure your settings like `max.partition.fetch.bytes` and `max.poll.records are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
+- **Configuration**: Ensure your settings like `max.partition.fetch.bytes` and `max.poll.records are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
 
 By properly configuring consumer and subscription groups and optimizing Kafka connection settings, you can achieve effective parallel data processing in Karafka.
 
@@ -235,7 +235,7 @@ Best practices for setting up consumer groups in Karafka to optimize parallel pr
 
 - **Subscription Group Utilization**: Within a consumer group, use subscription groups to handle different topics or partitions. This setup provides flexibility in managing which part of your application handles specific data streams.
 
-- **Resource Allocation**: Make sure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
+- **Resource Allocation**: Ensure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
 
 - **Monitoring and Scaling**: Regularly monitor the performance of your consumer groups and adjust their configurations as necessary. Use Karafka’s monitoring tools to track processing times, throughput, and lag to make informed scaling decisions.
 
@@ -255,7 +255,7 @@ Scaling processes can help up to the number of partitions available. For instanc
 
 ## What is the optimal strategy for scaling in Karafka to handle high consumer lag?
 
-The optimal strategy depends on your specific processing patterns and data distribution. A balanced approach involves using a combination of more partitions and virtual partitions. For example, with 6 partitions, you could configure 2 processes with VPs that use half the concurrency each and a multiplexing factor of 2. This setup can balance cost and performance well, making sure you have enough headroom to handle lag spikes efficiently.
+The optimal strategy depends on your specific processing patterns and data distribution. A balanced approach involves using a combination of more partitions and virtual partitions. For example, with 6 partitions, you could configure 2 processes with VPs that use half the concurrency each and a multiplexing factor of 2. This setup can balance cost and performance well, ensuring you have enough headroom to handle lag spikes efficiently.
 
 ## How does Karafka behave under heavy lag, and what should be considered in configuration?
 

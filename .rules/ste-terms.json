@@ -3,11 +3,6 @@
   "_docs": "See Development/Technical-Writing.md for the full house style and the rationale behind each entry.",
 
   "substitutions": [
-    { "term": "ensure", "fix": "make sure" },
-    { "term": "ensures", "fix": "makes sure" },
-    { "term": "ensuring", "fix": "making sure" },
-    { "term": "ensured", "fix": "made sure" },
-
     { "term": "utilize", "fix": "use" },
     { "term": "utilizes", "fix": "uses" },
     { "term": "utilizing", "fix": "using" },
@@ -45,12 +40,15 @@
 
     { "term": "prior to", "fix": "before" },
     { "term": "in order to", "fix": "to" },
-    { "term": "a number of", "fix": "many" },
     { "term": "due to the fact that", "fix": "because" },
     { "term": "in the event that", "fix": "if" }
   ],
 
   "flag": [
+    { "term": "ensure", "suggest": "Not a drop-in for 'make sure'. Rewrite to 'make sure that <clause>' or use a precise verb (keep, protect, maintain, check)." },
+    { "term": "ensures", "suggest": "Not a drop-in for 'makes sure'. Rewrite to 'makes sure that <clause>' or use a precise verb." },
+    { "term": "ensuring", "suggest": "Not a drop-in for 'making sure'. Rewrite to 'making sure that <clause>' or use a precise verb." },
+    { "term": "ensured", "suggest": "Rewrite to 'made sure that <clause>' or use a precise verb." },
     { "term": "terminate", "suggest": "Use 'stop' or 'end'." },
     { "term": "terminates", "suggest": "Use 'stops' or 'ends'." },
     { "term": "terminating", "suggest": "Use 'stopping' or 'ending'." },

@@ -18,7 +18,7 @@ There are a few things worth keeping in mind if you work with transactional data
 
 - **Producer Locking & Web UI Impact**: An essential aspect to note is that when a WaterDrop transaction is started, the producer is locked to the specific thread executing the transaction. This means that other threads could be left waiting for the current transaction to complete. This thread-specific locking has implications for the Karafka Web UI's reporting and processing capabilities. For instance, if a user-started transaction lasts 30 seconds, the Karafka Web UI may be incapable of reporting states during this duration.
 
-    To mitigate this, in case of heavy usage of transactions, users are advised to create and use a dedicated Web UI producer that operates alongside the default producer. By doing this, even if user code transactions take longer, the Web UI's capability to report states remains unaffected, making sure consistent and uninterrupted monitoring.
+    To mitigate this, in case of heavy usage of transactions, users are advised to create and use a dedicated Web UI producer that operates alongside the default producer. By doing this, even if user code transactions take longer, the Web UI's capability to report states remains unaffected, ensuring consistent and uninterrupted monitoring.
 
 ## Configuring a Dedicated Web UI Producer
 

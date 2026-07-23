@@ -203,13 +203,13 @@ Lazy deserialization provides following benefits:
 
 - **Flexibility and Control**: Developers have more control over when and how data is processed, allowing for customized handling based on the content of the messages.
 
-Lazy deserialization in Karafka provides a robust mechanism for managing data processing in a Kafka-based messaging environment. It makes sure that applications remain efficient and responsive even as data volume and complexity grow.
+Lazy deserialization in Karafka provides a robust mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
 
 ## Handling of Tombstone Messages
 
 In Apache Kafka, tombstone messages are specific messages with the message key present, but the payload is null. These messages serve a critical role in Kafka's log compaction feature, which reduces the size of the log by removing outdated records. A tombstone message indicates that any previous messages with the same key should be considered deleted or obsolete, allowing Kafka to maintain only the most current data state for each key.
 
-Even if your current application logic does not specifically handle or generate tombstone messages, it is important to design your systems to accommodate them. This makes sure that your application can correctly interpret and react to data streams that might include tombstone messages, particularly when integrating with other systems or when changes to data handling policies are implemented.
+Even if your current application logic does not specifically handle or generate tombstone messages, it is important to design your systems to accommodate them. This ensures that your application can correctly interpret and react to data streams that might include tombstone messages, particularly when integrating with other systems or when changes to data handling policies are implemented.
 
 When creating custom deserializers, you should explicitly manage the possibility of encountering tombstone messages. The deserializer should be able to gracefully handle `nil` payloads without causing errors or unintended behavior in the application. Here is how you can implement this in a custom XML deserializer:
 
@@ -225,7 +225,7 @@ class XmlDeserializer
 end
 ```
 
-By properly managing tombstone messages in your Kafka consumers, you can make sure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka's log compaction feature.
+By properly managing tombstone messages in your Kafka consumers, you can ensure that your application remains stable and consistent, even when dealing with evolving data states facilitated by Kafka's log compaction feature.
 
 ## Dynamic Deserialization Based on Topic or Message Metadata
 
@@ -293,13 +293,13 @@ Let's explain these two concepts:
 
 1. **Local Filesystem Schemas**: When using Avro, you define how your data should be structured using schemas. These schemas are often stored as `.avsc` files on your local filesystem. `avro_turf` can read these schema files and use them to encode your data into Avro's binary format or decode binary data back into its original form.
 
-2. **Schema Registry**: A Schema Registry is a server that stores Avro schemas in a central location. It is handy in a microservice architecture where many services may need to share and access common schemas. Keeping your Avro schemas in a Schema Registry allows different services to look up the schema associated with a particular version of data, making sure that data can be correctly decoded even as your schemas evolve.
+2. **Schema Registry**: A Schema Registry is a server that stores Avro schemas in a central location. It is handy in a microservice architecture where many services may need to share and access common schemas. Keeping your Avro schemas in a Schema Registry allows different services to look up the schema associated with a particular version of data, ensuring that data can be correctly decoded even as your schemas evolve.
 
 ### Serialization using Avro
 
 #### Local Filesystem Schemas
 
-To serialize data with Avro and `avro_turf` for use with Karafka, you'll first need to define an Avro schema for the data you want to send. Once you have the schema, you need to create an Avro reference object, point it to your schema and make sure that during deserialization, Karafka knows which schema to use:
+To serialize data with Avro and `avro_turf` for use with Karafka, you'll first need to define an Avro schema for the data you want to send. Once you have the schema, you need to create an Avro reference object, point it to your schema and ensure that during deserialization, Karafka knows which schema to use:
 
 ```ruby
 avro = AvroTurf.new(schemas_path: 'app/schemas/')

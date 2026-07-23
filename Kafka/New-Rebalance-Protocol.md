@@ -134,7 +134,7 @@ Before migrating:
 1. Verify brokers are running in KRaft mode
 1. Upgrade all the Karafka ecosystem components to the most recent versions
 1. Test the migration in a staging environment first
-1. Make sure monitoring tools are ready to track the new protocol
+1. Ensure monitoring tools are ready to track the new protocol
 
 ### Rolling Migration
 
@@ -159,7 +159,7 @@ If issues arise, remove `'group.protocol': 'consumer'` from your configuration a
 
 ### Migration Checklist
 
-Use this checklist to make sure a smooth migration to KIP-848:
+Use this checklist to ensure a smooth migration to KIP-848:
 
 **Prerequisites:**
 
@@ -177,7 +177,7 @@ Use this checklist to make sure a smooth migration to KIP-848:
 
 **Code Review (if using regex subscriptions):**
 
-- [ ] Review all regex patterns to make sure they match complete topic names (e.g., use `^topic.*` instead of `^topic`)
+- [ ] Review all regex patterns to ensure they match complete topic names (e.g., use `^topic.*` instead of `^topic`)
 - [ ] Test regex patterns against the RE2/J engine behavior (full-match, not partial-match)
 - [ ] Update [Routing Patterns](Pro-Routing-Patterns) regexes if needed (e.g., `pattern(/prefix.*/)` instead of `pattern(/prefix/)`)
 
@@ -260,9 +260,9 @@ KIP-848 introduces several important behavioral changes compared to the classic 
 
     - **Deployment Impact:** You cannot quickly replace a consumer with the same `group.instance.id` unless the old consumer shuts down cleanly first
     - **Recovery Impact:** After crashes, replacements will be blocked until the broker's session timeout expires (removing the zombie member)
-    - **Recommendation:** Make sure robust shutdown hooks and consider whether static membership is necessary for your use case
+    - **Recommendation:** Ensure robust shutdown hooks and consider whether static membership is necessary for your use case
 
-- **Implication:** This reversal prevents accidental takeovers. Make sure clean consumer shutdown before starting replacements with the same `group.instance.id`. If a consumer crashes without graceful shutdown, the replacement will be blocked until the broker's session timeout expires and removes the existing member.
+- **Implication:** This reversal prevents accidental takeovers. Ensure clean consumer shutdown before starting replacements with the same `group.instance.id`. If a consumer crashes without graceful shutdown, the replacement will be blocked until the broker's session timeout expires and removes the existing member.
 
 ### Regex Subscription Changes
 
@@ -279,14 +279,14 @@ As part of adopting the `consumer` protocol, librdkafka (and derived clients) no
     - `^topic` or `^topic*` - matches both topics in the `classic` protocol, but **no partitions are assigned** with the `consumer` protocol
     - `^topic.*` - works correctly with **both** protocols
 
-    Always make sure your regex patterns use explicit wildcards (like `.*`) to match the full topic name.
+    Always ensure your regex patterns use explicit wildcards (like `.*`) to match the full topic name.
 
 In Karafka, the [Routing Patterns](Pro-Routing-Patterns) feature internally prepends `^` to the regex source. This means:
 
 - `pattern(/prefix/)` produces `^prefix` - **fails** under the consumer protocol for topics like `prefix-1`
 - `pattern(/prefix.*/)` produces `^prefix.*` - **works** under both protocols
 
-If you are migrating to the consumer protocol and use regex-based subscriptions, review all your patterns to make sure they include explicit wildcards where needed. See the [Routing Patterns documentation](Pro-Routing-Patterns#regexp-implementation-differences) for more details.
+If you are migrating to the consumer protocol and use regex-based subscriptions, review all your patterns to ensure they include explicit wildcards where needed. See the [Routing Patterns documentation](Pro-Routing-Patterns#regexp-implementation-differences) for more details.
 
 ### Unknown and Unauthorized Topics
 

@@ -26,7 +26,7 @@ Configuring Karafka for multiple clusters requires attention to two primary area
 
 ### Consumer Settings
 
-To consume data from multiple clusters, the configuration within the `kafka` scope needs to be updated per topic. Specifically, for topics that originate from a secondary cluster, you need to make sure that they are correctly pointed to the appropriate cluster. By doing this, you enable Karafka to know from which cluster to fetch the messages for a particular topic:
+To consume data from multiple clusters, the configuration within the `kafka` scope needs to be updated per topic. Specifically, for topics that originate from a secondary cluster, you need to ensure that they are correctly pointed to the appropriate cluster. By doing this, you enable Karafka to know from which cluster to fetch the messages for a particular topic:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -56,11 +56,11 @@ end
 
 !!! note "Note"
 
-    Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, making sure efficient resource utilization and streamlined data consumption across clusters.
+    Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, ensuring efficient resource utilization and streamlined data consumption across clusters.
 
 ### Producer Settings
 
-While the consumption settings make sure Karafka knows where to pull messages from, the production settings dictate where Karafka sends the outbound messages. An extra setup is essential when producing messages to multiple clusters to make sure that the messages are directed to the correct location.
+While the consumption settings ensure Karafka knows where to pull messages from, the production settings dictate where Karafka sends the outbound messages. An extra setup is essential when producing messages to multiple clusters to ensure that the messages are directed to the correct location.
 
 Remember, a correct configuration is crucial for the efficient and error-free operation of Karafka when working with multiple Kafka clusters.
 
@@ -99,29 +99,29 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 - **Ignoring Primary Default**: Forgetting that `Karafka.producer` and ActiveJob jobs default to the primary cluster can lead to unexpected routing of messages.
 
-- **Mismatched Cluster Configuration**: Make sure that all specified clusters in the configuration have the correct broker addresses.
+- **Mismatched Cluster Configuration**: Ensure that all specified clusters in the configuration have the correct broker addresses.
 
 - **Web UI Assumption**: Assuming that the Web UI processes data on the cluster it shows. Remember, data processing is done on the primary cluster unless overridden.
 
-- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Make sure there's a clear need for this before diving in.
+- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Ensure there's a clear need for this before diving in.
 
-- **Monitoring Challenges**: Monitoring and alerting can become challenging with multiple clusters. Make sure you have a solid monitoring strategy.
+- **Monitoring Challenges**: Monitoring and alerting can become challenging with multiple clusters. Ensure you have a solid monitoring strategy.
 
 ## Example use-cases
 
 - **Geographical Distribution**: For businesses operating in different regions, separate clusters can help localize data processing closer to where data is produced or consumed.
 
-- **Disaster Recovery**: A secondary cluster can be crucial for backup and recovery, making sure business continuity even if the primary cluster fails.
+- **Disaster Recovery**: A secondary cluster can be crucial for backup and recovery, ensuring business continuity even if the primary cluster fails.
 
 - **Data Segregation**: For businesses handling data with different security or compliance requirements, other clusters can segregate data based on these requirements.
 
-- **Load Distribution**: High-traffic applications can distribute their load across multiple clusters to make sure no single cluster becomes a bottleneck.
+- **Load Distribution**: High-traffic applications can distribute their load across multiple clusters to ensure no single cluster becomes a bottleneck.
 
-- **Multi-Tenancy**: For businesses offering multi-tenant solutions, different clusters can cater to various tenants, making sure isolation and independent scalability.
+- **Multi-Tenancy**: For businesses offering multi-tenant solutions, different clusters can cater to various tenants, ensuring isolation and independent scalability.
 
 ## Conclusion
 
-While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and make sure you're using the multi-cluster configuration for valid business reasons.
+While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're using the multi-cluster configuration for valid business reasons.
 
 ## See Also
 

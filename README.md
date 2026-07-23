@@ -48,7 +48,7 @@ Located in the `bin/` directory:
 
 ### Continuous Integration
 
-The CI pipeline makes sure documentation quality through:
+The CI pipeline ensures documentation quality through:
 
 - **Markdown Linting**: Uses `markdownlint-cli2` to enforce consistent formatting
 - **Structure Validation**: Validates cross-references, anchor links, and documentation structure

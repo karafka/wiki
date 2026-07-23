@@ -69,7 +69,7 @@
     **Improvements Implemented:**
 
     - Reduced failover activation threshold from 15 minutes to about 60 seconds
-    - Relocated the standby server to a fully independent provider and datacenter, making sure infrastructure-level isolation from the primary
+    - Relocated the standby server to a fully independent provider and datacenter, ensuring infrastructure-level isolation from the primary
     - Upgraded health checks from periodic to continuous 60-second interval monitoring with automatic traffic rerouting
     - Improved data synchronization frequency between primary and standby servers
 

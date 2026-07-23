@@ -18,7 +18,7 @@ KRaft provides substantial operational improvements: support for up to 2 million
 
 ## Kafka Version Planning
 
-When upgrading to Kafka 4.0, make sure all brokers and clients are at version 2.1+ first, and migrate from MirrorMaker 1 to MirrorMaker 2 beforehand. Older message formats (v0/v1) were removed in 4.0.
+When upgrading to Kafka 4.0, ensure all brokers and clients are at version 2.1+ first, and migrate from MirrorMaker 1 to MirrorMaker 2 beforehand. Older message formats (v0/v1) were removed in 4.0.
 
 The [new consumer group protocol](Kafka-New-Rebalance-Protocol) (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available - worth enabling once your cluster supports it.
 
@@ -42,7 +42,7 @@ Messages are only ordered within a partition; cross-partition ordering is never 
 
 Set your replication factor to 3 or higher at topic creation time. Changing it later requires partition reassignment, which copies all data over the network - an expensive and risky operation you want to avoid.
 
-For production topics, configure `min.insync.replicas` to at least 2 and use `acks=all` on producers. This makes sure messages are acknowledged by all in-sync replicas before the producer considers the write successful. Pair this with `enable.idempotence=true` to prevent duplicate messages during retries - the producer will automatically deduplicate based on sequence numbers, giving you exactly-once producer semantics.
+For production topics, configure `min.insync.replicas` to at least 2 and use `acks=all` on producers. This ensures messages are acknowledged by all in-sync replicas before the producer considers the write successful. Pair this with `enable.idempotence=true` to prevent duplicate messages during retries - the producer will automatically deduplicate based on sequence numbers, giving you exactly-once producer semantics.
 
 One common misconfiguration: setting `min.insync.replicas` equal to `replication.factor`. This means all replicas must acknowledge every write, so if even one broker goes down, all writes fail. Leave yourself headroom.
 
@@ -170,7 +170,7 @@ Pick one separator style and stick with it. Mixing periods and underscores cause
 
 !!! warning "Warning"
 
-    Consumer group names must be globally unique within the cluster. Make sure your naming scheme prevents collisions between environments if they share a cluster.
+    Consumer group names must be globally unique within the cluster. Ensure your naming scheme prevents collisions between environments if they share a cluster.
 
 Disable `auto.create.topics.enable` in production and enforce naming through CI/CD. Ad-hoc topic creation inevitably leads to inconsistent names you'll regret later.
 
@@ -349,5 +349,5 @@ Different providers have distinct trade-offs that affect operational flexibility
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration
-- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Handling broker outages and making sure availability
+- [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Handling broker outages and ensuring availability
 - [Latency and Throughput](Infrastructure-Latency-and-Throughput) - Consumer performance tuning and optimization

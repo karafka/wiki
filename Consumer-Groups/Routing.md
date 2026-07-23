@@ -145,7 +145,7 @@ Almost all the default settings configured can be changed on either on the ```to
 
 ## Shared Defaults
 
-This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also makes sure consistency throughout your application.
+This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also ensures consistency throughout your application.
 
 Here's how you can set up routing defaults and then define a topic that overrides one of those defaults:
 
@@ -272,7 +272,7 @@ end
 
 Karafka uses the `inherit` flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
 
-This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By using the inherit option, you can streamline your configurations, reduce redundancy, and make sure that only the necessary changes are applied on a per-topic basis.
+This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By using the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
 
 ```ruby
 class KarafkaApp < Karafka::App

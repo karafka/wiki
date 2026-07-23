@@ -58,7 +58,7 @@ end
 
 Once the dedicated Web UI producer is set up, it becomes the default for all the Web UI components.
 
-!!! warning "Make sure Access to the Web UI Topics"
+!!! warning "Ensure Access to the Web UI Topics"
 
     A custom Web UI producer must be able to deliver messages to all the Web UI internal topics. If it points to a different cluster or uses restricted credentials, the Web UI will not be able to report or materialize its states. You can find the list of the required topics in the [Getting Started](Web-UI-Getting-Started) guide.
 
@@ -183,9 +183,9 @@ end
 
 In this setup, the `env_suffix` is created by converting the current Rails environment into a string. The `env_suffix` is then appended to the base topic name for each of the internal topics (`karafka_errors`, `karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics` and `karafka_consumers_commands`).
 
-This naming convention makes sure that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
+This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
 
-After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command makes sure that all topics are set up correctly and ready for use within their respective environments.
+After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
 
 ## In-Memory Cluster Data Caching
 
@@ -208,11 +208,11 @@ end
 
 ### Cache Refresh
 
-One of the features to note is that whenever the Status view is accessed, the cache gets invalidated and refreshed. This makes sure that users get the most recent and accurate information when they visit this view.
+One of the features to note is that whenever the Status view is accessed, the cache gets invalidated and refreshed. This ensures that users get the most recent and accurate information when they visit this view.
 
 ### Consideration for Multiple Processes Deployment
 
-If you've deployed Karafka Web UI across multiple processes, simply refreshing the cache in one process (by visiting the Cluster view) might not be enough. This is because subsequent requests could be routed to different processes, each with its cache state. In such scenarios, the cache would need to be refreshed in each of these processes to make sure consistency.
+If you've deployed Karafka Web UI across multiple processes, simply refreshing the cache in one process (by visiting the Cluster view) might not be enough. This is because subsequent requests could be routed to different processes, each with its cache state. In such scenarios, the cache would need to be refreshed in each of these processes to ensure consistency.
 
 ### Summary
 

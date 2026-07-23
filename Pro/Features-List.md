@@ -6,7 +6,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Web UI](Pro-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
 
-- [Transactions](Pro-Consumer-Groups-Transactions) - Transactions make sure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, making sure that either all succeed or none.
+- [Transactions](Pro-Consumer-Groups-Transactions) - Transactions ensure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, ensuring that either all succeed or none.
 
 - [Offset Metadata Storage](Pro-Consumer-Groups-Offset-Metadata-Storage) - Offset Metadata Storage allows attaching custom metadata to message offsets during commit to Kafka. This feature enriches message processing by providing additional data annotations and enhancing system capabilities, traceability, and intelligence through retrievable metadata.
 
@@ -18,11 +18,11 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Long-Running Jobs are jobs that run continuously and handle messages from a Kafka topic over an extended time beyond `max.poll.interval.ms`. These jobs are designed to handle tasks requiring longer execution times, such as data processing, transformation, and analysis.
 
-- [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Non-Blocking Jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, making sure efficient and timely data handling.
+- [Non-Blocking Jobs](Pro-Consumer-Groups-Non-Blocking-Jobs) - Non-Blocking Jobs optimize performance by allowing continuous data polling from multiple partitions without blocking processing, ensuring efficient and timely data handling.
 
 - [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) - Monitors message processing times to prevent exceeding Kafka's `max.poll.interval.ms` by stopping and seeking back when time runs low, ideal for handling sporadic processing spikes while maintaining consumer stability.
 
-- [Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs) - Periodic Jobs enable consumers to perform operations at regular intervals, even without new data. This feature allows for advanced window-based operations and makes sure consumers remain active and ready, facilitating consistent processing capabilities regardless of data inflow.
+- [Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs) - Periodic Jobs enable consumers to perform operations at regular intervals, even without new data. This feature allows for advanced window-based operations and ensures consumers remain active and ready, facilitating consistent processing capabilities regardless of data inflow.
 
 - [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) - Karafka's Expiring Messages feature allows messages to be excluded from processing automatically in case they are too old.
 
@@ -44,15 +44,15 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results seamlessly to subsequent stages or other applications.
 
-- [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, making sure consistent and reliable execution.
+- [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, ensuring consistent and reliable execution.
 
 - [Scheduled Messages](Pro-Scheduled-Messages) - Allows the scheduling of Kafka messages for future processing, allowing users to control precise timing for message delivery.
 
 - [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) - Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
-- [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, making sure resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
+- [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, ensuring resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
 
-- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, making sure that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
+- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, ensuring that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
 
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
 
