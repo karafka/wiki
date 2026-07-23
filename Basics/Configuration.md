@@ -18,7 +18,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Settings Can Be Redefined Per Topic"
 
     Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you, for example, to connect to multiple Kafka clusters.
 
@@ -68,7 +68,7 @@ end
 
 Your external components will be automatically configured once per process after Karafka completes its initialization sequence.
 
-!!! note "Note"
+!!! note "Config Has Access to Finalized Settings"
     The configuration will have access to all finalized Karafka settings and can reliably use framework components like loggers, metrics, and other initialized resources.
 
 ## Environment variables settings
@@ -79,7 +79,7 @@ There are several env settings you can use with Karafka. They are described unde
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-!!! note "Note"
+!!! note "Supported Producer Compression Types"
 
     Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
 
@@ -112,7 +112,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "zstd Requires libzstd-dev"
 
     To use `zstd`, you need to install `libzstd-dev`:
 

@@ -135,7 +135,7 @@ end
 
 This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
 
-!!! note "Note"
+!!! note "Config active Differs From active Method"
 
     Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
 

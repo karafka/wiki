@@ -57,7 +57,7 @@ Some of the options are:
 | `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
 | `statistics_decorator`                      | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
 
-!!! info "Info"
+!!! info "Full List of Root Configuration Options"
 
     Full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
@@ -338,7 +338,7 @@ Below you can find examples where each of the validations layers fails:
     #     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
     ```
 
-!!! note "Note"
+!!! note "msg_size_too_large Has Two Indistinguishable Causes"
 
     The `msg_size_too_large error` can arise from:
 

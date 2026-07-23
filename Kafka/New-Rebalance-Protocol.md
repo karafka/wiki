@@ -149,7 +149,7 @@ KIP-848 supports live migration without downtime. When the first consumer using 
     - Continue restarting remaining consumers one at a time
     - Monitor for any errors during the rollout
 
-    !!! warning "Warning"
+    !!! warning "Complete Migration Within a Few Hours"
 
         Complete the migration within a few hours. Don't leave the group in a mixed state for extended periods.
 

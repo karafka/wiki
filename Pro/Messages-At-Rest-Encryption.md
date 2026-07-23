@@ -32,7 +32,7 @@ Once everything is configured, Karafka will automatically produce encrypted mess
 
 Karafka keeps messages encrypted until their deserialization.
 
-!!! note "Note"
+!!! note "Only Payloads Are Encrypted, Not Keys or Headers"
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
 
@@ -109,7 +109,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Use This Pattern Only With Trusted Entities"
 
     Such a pattern should only be used when working with trusted entities.
 

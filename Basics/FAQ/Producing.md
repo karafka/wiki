@@ -319,7 +319,7 @@ Karafka.producer.monitor.subscribe(
 )
 ```
 
-!!! note "Note"
+!!! note "error.occurred Also Captures librdkafka Errors"
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 

@@ -473,7 +473,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
 end
 ```
 
-!!! note "Note"
+!!! note "Minitest Transaction Testing Mirrors RSpec"
 
     If you're seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 

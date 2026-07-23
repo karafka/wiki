@@ -9,7 +9,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 - settings level - root settings that will be used everywhere
 - topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
-!!! note "Note"
+!!! note "Most Settings Are Optional With Defaults"
 
     Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Basics-Configuration) of the app itself.
 

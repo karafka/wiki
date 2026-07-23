@@ -46,7 +46,7 @@ Example of work distribution amongst two workers:
   <img src="https://karafka.io/assets/misc/charts/processing-workers.svg" />
 </p>
 
-!!! note "Note"
+!!! note "Virtual Partitions Parallelize a Single Partition"
 
     Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
@@ -100,15 +100,15 @@ end
   </small>
 </p>
 
-!!! note "Note"
+!!! note "Karafka May Create More Subscription Groups"
 
     This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that are within different subscription groups.
 
-!!! note "Note"
+!!! note "Subscription Groups Differ From Consumer Groups"
 
     Subscription groups are a different concept than consumer groups. It is an internal Karafka concept; you can have many subscription groups in one consumer group.
 
-!!! note "Note"
+!!! note "How librdkafka Fetches Messages"
 
     If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
 

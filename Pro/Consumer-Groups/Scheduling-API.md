@@ -92,7 +92,7 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 ### API Methods
 
-!!! note "Note"
+!!! note "Each Method Has a Non-Blocking on_ Counterpart"
 
     Please note that each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 
@@ -227,7 +227,7 @@ end
 
 ### Example Custom Scheduler
 
-!!! note "Note"
+!!! note "Study Default Schedulers for Real Examples"
 
     Besides viewing the example scheduler below, we encourage you to check Karafka's default schedulers in the Karafka sources for more real-life examples.
 
@@ -321,7 +321,7 @@ This approach ensures that the system remains efficient and responsive to its op
 
 ## Expired Jobs Scheduling
 
-!!! note "Note"
+!!! note "Every Job Must Be Scheduled"
 
     In Karafka, all jobs given to the scheduler must be scheduled, even if they seem redundant. This is essential for maintaining system integrity and efficiency. The only exception is for accumulated jobs of a subscription group under recovery.
 

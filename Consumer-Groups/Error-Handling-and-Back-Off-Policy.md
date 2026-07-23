@@ -110,7 +110,7 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-!!! note "Note"
+!!! note "Retried Batches May Contain Different Messages"
 
     Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
@@ -181,7 +181,7 @@ Karafka.monitor.subscribe 'error.occurred' do |event|
 end
 ```
 
-!!! note "Note"
+!!! note "Batch Errors May Not Pinpoint the Message"
 
     When doing batch operations, this message may not be the exact cause of the processing error.
 
@@ -201,7 +201,7 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
   <img src="https://karafka.io/assets/misc/charts/on_errors_behaviour.svg" />
 </p>
 
-!!! note "Note"
+!!! note "Virtual Partitions Behave Differently on Errors"
 
     This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
 

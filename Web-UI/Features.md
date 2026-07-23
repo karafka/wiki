@@ -98,7 +98,7 @@ The `join_state` field reflects the internal state of the librdkafka consumer gr
 
 ## Jobs
 
-!!! info "Info"
+!!! info "More Metrics in Pro"
 
     More metrics are available in our Pro offering.
 

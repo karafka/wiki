@@ -175,7 +175,7 @@ Here's an explanation of the benefits of marking each message as consumed:
 
 - Handling Long-running Processing: If the processing time for each message is significant, explicitly marking them as consumed provides better visibility into the progress. It allows you to identify any potential bottlenecks or delays in processing and take appropriate actions if needed.
 
-!!! note "Note"
+!!! note "Mark Each Message With Virtual Partitions"
 
     When using Karafka [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), it is recommended to mark each message as consumed due to how [Virtual Offset Management](Pro-Consumer-Groups-Virtual-Partitions#virtual-offset-management) works.
 
