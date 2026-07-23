@@ -85,7 +85,7 @@ For example, in case you want to pause the processing, you need to return the fo
 - number of milliseconds to pause under `#timeout`.
 - message containing the desired offset from which to start processing after un-pausing under `#cursor`.
 
-!!! note "Note"
+!!! note "User Actions Take Precedence Over Filters"
 
     User actions always take precedence over Filtering API automatic actions. This means that even if you issue a `:pause` action request, in case of a user manual pause, it will be applied and not the filter one. Same applies to the `:seek` logic.
 

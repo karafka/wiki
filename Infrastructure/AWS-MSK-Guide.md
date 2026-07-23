@@ -207,7 +207,7 @@ Receive failed: Disconnected (after 600Xms in state UP)
 
 The broker sends a TCP FIN; librdkafka detects it promptly on the next read and reconnects. Because the broker only reaps after `connections.max.idle.ms` of genuine inactivity, there are no in-flight ProduceRequests at reap time - nothing to drop.
 
-!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+!!! note "`msg_timed_out` Means Unconfirmed, Not Necessarily Lost"
 
     When a ProduceRequest times out, the broker may have already written the message to the log before the client gave up waiting for the acknowledgment. The actual delivery status is **POSSIBLY_PERSISTED** - the message is unconfirmed, not guaranteed lost. For non-idempotent producers, this creates genuine ambiguity between data loss and duplication. Use idempotent or transactional producers when exactly-once delivery semantics are required.
 

@@ -105,7 +105,7 @@ bundle exec karafka-web install --replication-factor 5
 
 ## Usage with Heroku Kafka Multi-Tenant add-on
 
-!!! note "Note"
+!!! note "Applies Only to Multi-Tenant Add-On Mode"
 
     This section **only** applies to the Multi-Tenant add-on mode.
 

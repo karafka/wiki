@@ -247,7 +247,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 </tbody>
 </table>
 
-!!! note "Note"
+!!! note "Web UI Topics Are Not Declaratively Managed by Default"
 
     Karafka Web UI topics are **not** managed via the [Declarative topics API](Infrastructure-Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
@@ -441,7 +441,7 @@ And that is all.
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
 
-!!! note "Note"
+!!! note "Both Enabled by Default, Reporting Every 5 Seconds"
 
     Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 

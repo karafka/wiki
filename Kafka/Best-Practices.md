@@ -34,7 +34,7 @@ Pick a count with many divisors (6, 12, 24, 60) to give yourself flexible consum
 
 Messages are only ordered within a partition; cross-partition ordering is never guaranteed. The tradeoffs: too few partitions limit parallelism, while too many increase end-to-end latency (roughly 20ms per 1,000 partitions replicated), create more file handles, and extend broker recovery time.
 
-!!! warning "Warning"
+!!! warning "Stay Under 4,000 Partitions Per Broker"
 
     Stay under 4,000 partitions per broker. Beyond this, you'll see degraded performance and longer recovery times.
 
@@ -168,7 +168,7 @@ Use past tense for events (`created`, `updated`) and imperative for commands (`p
 
 Pick one separator style and stick with it. Mixing periods and underscores causes metric name collisions in monitoring systems. Avoid including fields that change, like team names or service owners.
 
-!!! warning "Warning"
+!!! warning "Consumer Group Names Must Be Unique Per Cluster"
 
     Consumer group names must be globally unique within the cluster. Ensure your naming scheme prevents collisions between environments if they share a cluster.
 

@@ -61,7 +61,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Pro Enhanced Adapter Adds More Features"
 
     [Pro Enhanced ActiveJob](Pro-Consumer-Groups-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
 

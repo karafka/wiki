@@ -196,7 +196,7 @@ karafka.produce_to(
 )
 ```
 
-!!! note "When to Use produce_to"
+!!! note "When to Use `#produce_to`"
 
     Use `#produce_to` when you have multiple consumer groups subscribing to the same topic. For single-consumer scenarios, the standard `#produce` method works as expected.
 
@@ -473,7 +473,7 @@ class UsersBuilderTest < ActiveSupport::TestCase
 end
 ```
 
-!!! note "Note"
+!!! note "Minitest Transaction Testing Mirrors RSpec"
 
     If you're seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 

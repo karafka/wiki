@@ -64,7 +64,7 @@ Karafka and its components versions or release series are categorized below into
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
-!!! note "Note"
+!!! note "Older Ruby May Work but Is Unsupported"
 
     If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
