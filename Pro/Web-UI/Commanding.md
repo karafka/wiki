@@ -99,7 +99,7 @@ A special command message is dispatched to the targeted consumer when the "Trace
 
 ### Quieting
 
-Quieting is a command designed to gracefully reduce the activity of a consumer process. When a quiet command is issued, the consumer stops accepting new jobs or batches but continues to process any currently active tasks. This feature is particularly useful during deployments or when a controlled slowdown in consumer activities is required. Quieting makes sure that ongoing processing completes successfully while preventing new work from being started, aiding in smooth transitions and system maintenance without abrupt interruptions.
+Quieting is a command designed to gracefully reduce the activity of a consumer process. When a quiet command is issued, the consumer stops accepting new jobs or batches but continues to process any currently active tasks. This feature is particularly useful during deployments or when a controlled slowdown in consumer activities is required. Quieting ensures that ongoing processing completes successfully while preventing new work from being started, aiding in smooth transitions and system maintenance without abrupt interruptions.
 
 !!! tip "Stability Through Quiet State"
     Moving to and staying in a quiet state means that no rebalance will be triggered. Although the consumer will not process new messages, it will not relinquish its assignments, maintaining its position within the consumer group.
@@ -118,16 +118,16 @@ Quieting is a command designed to gracefully reduce the activity of a consumer p
 The stopping command is used to halt a consumer process entirely. This command should be used with caution as it stops all processing activities after `shutdown_timeout` is reached. Stopping is typically employed when a consumer needs to be taken offline for upgrades, troubleshooting, or when decommissioning is required. Once stopped, a consumer process will need to be manually restarted, and it will resume from the last committed offset in Kafka, ensuring no loss of data but requiring careful management to avoid processing delays or other operational impacts.
 
 !!! warning "Topics and Partitions Reassignment"
-    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, making sure that message processing continues seamlessly without interruption.
+    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues seamlessly without interruption.
 
 #### Use Cases
 
 1. **Emergency Shutdown**: Quickly shutting down a consumer that is causing severe problems, such as data corruption or excessive resource consumption, to prevent further damage to the system.
 2. **System Overhaul**: Stopping consumers completely to allow for major system upgrades or reconfigurations that require a complete halt of data processing activities.
-3. **Decommissioning Nodes**: Stopping consumers on specific nodes that are being decommissioned or replaced, making sure that these nodes no longer participate in processing.
+3. **Decommissioning Nodes**: Stopping consumers on specific nodes that are being decommissioned or replaced, ensuring that these nodes no longer participate in processing.
 4. **Bug Fixes**: Halting a consumer to apply critical bug fixes that cannot be addressed while the consumer is running, ensuring the integrity of the fix deployment.
 5. **Resource Reallocation**: Stopping a consumer to reallocate resources such as memory and CPU to other critical applications, especially in resource-constrained environments.
-6. **Testing Failover**: Stopping consumers to test the resilience and failover capabilities of the system, making sure that other consumers or nodes can take over smoothly.
+6. **Testing Failover**: Stopping consumers to test the resilience and failover capabilities of the system, ensuring that other consumers or nodes can take over smoothly.
 7. **Performance Benchmarking**: Temporarily stopping consumers from performing clean-slate performance benchmarking without background noise from ongoing data processing.
 
 ## Partition-Level Processing Control
@@ -291,7 +291,7 @@ To adjust a partition offset:
 
 ## Connection Management
 
-The commanding feature in Karafka Pro uses the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and makes sure that the connection remains responsive as long as the entire Ruby process is operational.
+The commanding feature in Karafka Pro uses the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
 
 Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
 
@@ -301,7 +301,7 @@ This dedicated subscription, while not "mission-critical", is designed to be rel
 
 The `karafka_consumers_commands` topic is designed with a single partition and operates as a pub-sub mechanism. Each consumer process maintains an active subscription to this topic, creating continuous polling activity that generates consistent network traffic, even when no commands are actively being issued.
 
-This traffic pattern is normal and expected. While the volume is typically insignificant due to the low-intensity nature of the topic, it may appear more prominent on network monitoring graphs, particularly when other topics have lower traffic volumes. The constant polling makes sure that administrative commands can be delivered and executed with minimal latency.
+This traffic pattern is normal and expected. While the volume is typically insignificant due to the low-intensity nature of the topic, it may appear more prominent on network monitoring graphs, particularly when other topics have lower traffic volumes. The constant polling ensures that administrative commands can be delivered and executed with minimal latency.
 
 If this network traffic is a concern or if commanding functionality is not needed in your environment, it can be disabled by setting `config.commanding.active` to `false` as shown in the Configuration section above.
 
@@ -315,7 +315,7 @@ Key points include:
 
 ## Summary
 
-Karafka Pro's consumer control capabilities are essential for any organization looking to use Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, making sure that Kafka clusters are performant and resilient under various operating conditions.
+Karafka Pro's consumer control capabilities are essential for any organization looking to use Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
 The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
 

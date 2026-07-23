@@ -24,7 +24,6 @@ Treat this as a clarity floor, not a straitjacket. Apply the rules hardest to pr
 The linter rewrites or flags a controlled vocabulary. A representative sample of the safe substitutions:
 
 ```text
-ensure         ->  make sure
 utilize        ->  use
 leverage       ->  use
 regarding      ->  about
@@ -39,6 +38,8 @@ numerous       ->  many
 ```
 
 The full, authoritative list lives in `.rules/ste-terms.json`. Extend the vocabulary by editing that file, not the rule code.
+
+Some words are flagged rather than auto-substituted, because they need a per-sentence decision. `ensure` is the main one: it often means *guarantee* (a mechanism `ensures` a property), where `make sure` is weaker and wrong. Keep `ensure` (or use `guarantees`) for a guarantee; rewrite it to `make sure that <clause>` only when it is an instruction to the reader.
 
 ## Sentences
 

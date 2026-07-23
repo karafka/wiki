@@ -26,7 +26,7 @@ This detailed view can provide invaluable insights, helping you understand how y
 
 In the current implementation, each Karafka producer employs a relatively simple threading model to efficiently handle asynchronous message delivery to Kafka. A vital characteristic of this model is that each producer instantiates at least two additional threads. Here's how these threads function:
 
-- **Ruby Thread**: The first thread operates within the Ruby environment. Its primary role is to manage communication with librdkafka, making sure that messages are queued and sent to the Kafka cluster efficiently. This thread also handles various events and callbacks that arise during the message delivery process.
+- **Ruby Thread**: The first thread operates within the Ruby environment. Its primary role is to manage communication with librdkafka, ensuring that messages are queued and sent to the Kafka cluster efficiently. This thread also handles various events and callbacks that arise during the message delivery process.
 
 - **librdkafka Thread**: The second thread is managed by librdkafka itself, the native library Karafka uses for interacting with Kafka. This thread is crucial for performing network I/O operations and managing internal events of the Kafka protocol.
 
@@ -175,7 +175,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **Multithreaded Environment**: Karafka's use of multiple threads to process tasks in parallel can lead to a larger memory footprint than single-threaded applications. Each thread consumes memory for its stack and may duplicate particular objects, leading to higher overall memory usage.
 
-- **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to make sure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
+- **Reporting Memory Issues**: No software is entirely free of issues, and memory leaks can occur for various reasons, including interactions with other software components. If you suspect Karafka has a memory leak, you should report this. Such issues are treated with high urgency to ensure that they are resolved promptly, maintaining the high reliability of Karafka for all users.
 
 ## CPU Usage
 

@@ -74,7 +74,7 @@ All linting checks are enforced through GitHub Actions CI workflows. Separate jo
 By default, Renovate is configured with a **7-day cooldown period** for dependency updates. This means new versions of linting tools are not automatically proposed until they have been available for at least 7 days. This policy exists for:
 
 - **Security**: Allows time for the community to discover and report critical issues in new releases
-- **Stability**: Makes sure that newly released versions are stable and don't contain showstopper bugs
+- **Stability**: Ensures that newly released versions are stable and don't contain showstopper bugs
 - **Quality**: Gives maintainers time to address early-adopter feedback before wider adoption
 
 However, for **critical dependency updates** that have been validated and tested, early updates can be and are performed manually when needed, bypassing the cooldown period. This provides flexibility for urgent security patches or important bug fixes while maintaining conservative defaults for routine updates.

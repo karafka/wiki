@@ -449,7 +449,7 @@ This comparative testing method offers a straightforward way to ensure your regu
 
 1. **Date-based Topics**: The feature becomes invaluable for systems that rotate topics based on timeframes, like `logs_202301` and `logs_202302`, ensuring no topic goes unnoticed.
 
-1. **Special-event Topics**: Seasonal events, promotions, or sales like `blackfriday_deals`, `holiday_discounts` often have dedicated topics. This feature makes sure that such transient topics are efficiently catered to.
+1. **Special-event Topics**: Seasonal events, promotions, or sales like `blackfriday_deals`, `holiday_discounts` often have dedicated topics. This feature ensures that such transient topics are efficiently catered to.
 
 1. **Automated Testing Topics**: In CI/CD pipelines, where automated tests might create on-the-fly topics like `test_run_001`, `test_run_002`, regexp routing can prove to be a boon.
 

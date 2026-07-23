@@ -28,7 +28,7 @@ Enterprise users are not tied to our gem server for license gem download and ver
 
 ### Private Fork Usage
 
-One of the standout features of the Enterprise version is the extended permission granted to users. You can continue using your private fork of Karafka even after your license expires or your subscription concludes. This makes sure that your operations remain unaffected, granting you more control over your ecosystem.
+One of the standout features of the Enterprise version is the extended permission granted to users. You can continue using your private fork of Karafka even after your license expires or your subscription concludes. This ensures that your operations remain unaffected, granting you more control over your ecosystem.
 
 ### Flexible Payment Options
 
@@ -36,13 +36,13 @@ Understanding the diverse needs of large organizations, the Enterprise version o
 
 ### Compliance Documentation Support
 
-Legal compliance, especially in today's complex regulatory environment, is paramount. With the Enterprise version, I am available to assist your organization in crafting any security or compliance documentation. This bespoke service makes sure that your usage of Karafka aligns with industry standards and meets organizational requirements.
+Legal compliance, especially in today's complex regulatory environment, is paramount. With the Enterprise version, I am available to assist your organization in crafting any security or compliance documentation. This bespoke service ensures that your usage of Karafka aligns with industry standards and meets organizational requirements.
 
 For information about why certain compliance certifications (SOC 2, ISO 27001) do not apply to Karafka as a self-hosted framework, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
 ### Custom License Agreement
 
-While Karafka Pro is sold with its set terms and conditions, Enterprise customers may request contract changes. Recognizing that enterprise businesses might have specific requirements or concerns, we offer the flexibility for Enterprise users to request changes to the terms and conditions of the license agreement. This level of customization makes sure that your organization's unique needs and preferences are met.
+While Karafka Pro is sold with its set terms and conditions, Enterprise customers may request contract changes. Recognizing that enterprise businesses might have specific requirements or concerns, we offer the flexibility for Enterprise users to request changes to the terms and conditions of the license agreement. This level of customization ensures that your organization's unique needs and preferences are met.
 
 ## Who Should Choose Karafka Enterprise?
 
@@ -54,7 +54,7 @@ Enterprise offers the flexibility of invoicing for payments, which is essential 
 
 - **Organizations Betting Their Business on Karafka**:
 
-For companies that plan to heavily rely on Karafka for their core business operations, Enterprise provides extended contingency rights. This makes sure that even if the subscription expires, the organization can continue using the existing version of Karafka, thereby minimizing operational risks.
+For companies that plan to heavily rely on Karafka for their core business operations, Enterprise provides extended contingency rights. This ensures that even if the subscription expires, the organization can continue using the existing version of Karafka, thereby minimizing operational risks.
 
 - **Organizations with Strict Security Requirements**:
 
@@ -66,9 +66,9 @@ Unlike Karafka Pro, which comes with standard terms and conditions, Karafka Ente
 
 - **Organizations Requiring Special Documentation**:
 
-Enterprise includes support for creating custom compliance and security documentation. This service makes sure that the organization’s use of Karafka meets industry standards and regulatory requirements, which is essential for legal and compliance audits.
+Enterprise includes support for creating custom compliance and security documentation. This service ensures that the organization’s use of Karafka meets industry standards and regulatory requirements, which is essential for legal and compliance audits.
 
-By choosing Karafka Enterprise, organizations can make sure that their Kafka and Karafka implementations are robust, secure, and aligned with their specific business and operational needs.
+By choosing Karafka Enterprise, organizations can ensure that their Kafka and Karafka implementations are robust, secure, and aligned with their specific business and operational needs.
 
 ## See Also
 

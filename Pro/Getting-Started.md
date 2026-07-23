@@ -61,7 +61,7 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
 
 1. (First-time setup only) **Verify the karafka-license gem checksum**:
 
-    After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and ensure it matches the checksum provided in the email you received. This makes sure that the correct gem version is being used and matches the one issued with your license.
+    After running `bundle lock --add-checksums`, locate the checksum of the karafka-license gem in the Gemfile.lock file and ensure it matches the checksum provided in the email you received. This ensures that the correct gem version is being used and matches the one issued with your license.
 
     Use the following command to extract the checksum of the karafka-license gem from the Gemfile.lock:
 
@@ -77,7 +77,7 @@ To enable checksum verification with Bundler 2.6 or newer, follow these steps:
     bundle config lockfile_checksums true
     ```
 
-    This will make sure that every new project or lockfile you create will have checksums included.
+    This will ensure that every new project or lockfile you create will have checksums included.
 
 #### Protecting All Gems, Not Just `karafka-license`
 
@@ -144,7 +144,7 @@ fi
 
 Due to the nature of how Bundler works, it is **recommended** to run this script twice in the CI/CD:
 
-1. First, before `bundle install` is executed, to make sure that the gem server is serving the correct data.
+1. First, before `bundle install` is executed, to ensure that the gem server is serving the correct data.
 1. Second time after `bundle install` to ensure consistency of the fetched package.
 
 To use it:
@@ -157,7 +157,7 @@ To use it:
 
 1. Run `bundle install`
 
-1. Run `MODE=after bin/verify_karafka_license_checksum` to make sure that the stored artefact was not compromised.
+1. Run `MODE=after bin/verify_karafka_license_checksum` to ensure that the stored artefact was not compromised.
 
 In case the verification fails, script will exit with the exit code `1`.
 

@@ -125,7 +125,7 @@ In the case of scenario `2`, there is nothing you need to do. Karafka will conti
 
 ### Revocation without re-assignment
 
-If partition becomes assigned to a different process, this process will pick up the same messages you are currently working with. To mitigate this, Karafka has a `#revoked?` method you can periodically check to make sure that a given process still owns the partition you are working with.
+If partition becomes assigned to a different process, this process will pick up the same messages you are currently working with. To mitigate this, Karafka has a `#revoked?` method you can periodically check to ensure that a given process still owns the partition you are working with.
 
 This method, in the case of the Long-Running Jobs feature, does **not** require marking messages as consumed or taking any other actions. Group state is updated asynchronously alongside the work being done.
 
@@ -167,7 +167,7 @@ By default, Long-Running Jobs defined alongside regular jobs will be grouped in 
 
 In case of a regular job blocking beyond `max.poll.interval.ms`, Kafka will revoke the regular jobs and the defined Long-Running Jobs.
 
-If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth doing. This will make sure that external factors do not influence Long-Running Jobs's stability.
+If you expect that your regular jobs within the same subscription group may cause Kafka rebalances or any other issues, separating them into different subscription groups is worth doing. This will ensure that external factors do not influence Long-Running Jobs's stability.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -201,9 +201,9 @@ If a manual pause is needed, it is recommended to compute its duration based on 
 
 `max_remaining_processing_time + 2 * max_wait_time`
 
-This will make sure that the consumer has enough time to process all the messages in the batch before the partition is resumed.
+This will ensure that the consumer has enough time to process all the messages in the batch before the partition is resumed.
 
-Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and using the built-in features of the framework, we can make sure that the system remains reliable, scalable, and performs as expected.
+Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and using the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
 
 ## Non-Blocking Jobs: Complementing Long-Running Job Pausing
 

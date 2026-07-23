@@ -2,7 +2,7 @@ When working with Karafka and Kafka, it's essential to understand the nuances be
 
 ## Avoid Using Karafka's Reload Mode in Production
 
-While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always make sure that this mode is disabled before deploying to production.
+While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always ensure that this mode is disabled before deploying to production.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -95,7 +95,7 @@ end
 
 ## Manual Topic Creation and Consumer Starting Sequence
 
-Creating a topic manually or by sending the first message and then starting a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Making sure that the topic exists before starting a consumer reduces potential delays.
+Creating a topic manually or by sending the first message and then starting a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
 
 ## Adjust Topic Metadata Refresh Interval for Production
 
@@ -219,13 +219,13 @@ When Kafka and the consumer drift apart in time, it doesn't just result in the o
 
 ### How to Prevent Time Drift
 
-1. **Ensure NTP is Installed**: Always make sure that NTP is installed on all machines running Kafka brokers and consumer applications.
+1. **Ensure NTP is Installed**: Always ensure that NTP is installed on all machines running Kafka brokers and consumer applications.
 
 2. **Monitor NTP Status**: Regularly monitor the NTP status to ensure it's running and is in sync with its time sources.
 
 3. **Configure Alerts**: Set alerts for any significant time drift between the servers. This can provide early warnings before time drift becomes a problem.
 
-4. **Synchronize Frequently**: Reduce the time between synchronization intervals to make sure that even minor drifts are corrected promptly.
+4. **Synchronize Frequently**: Reduce the time between synchronization intervals to ensure that even minor drifts are corrected promptly.
 
 In conclusion, while Kafka is a powerful tool, it's essential to remember the importance of time synchronization to ensure the reliable delivery and consumption of messages. Regularly monitoring and ensuring the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
 
@@ -279,7 +279,7 @@ Unsupported value "zstd" for configuration property "compression.codec": libzstd
 
 This issue occurs because of karafka-rdkafka not being linked against `libzstd`, even if `brew install zstd` was previously used to provide `zstd` support.
 
-To resolve this issue, make sure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
+To resolve this issue, ensure that `pkg-config` is installed on your macOS machine. The absence of `pkg-config` can prevent `librdkafka` from finding `libzstd` during the build process.
 
 ```shell
 brew install pkg-config
@@ -415,7 +415,7 @@ end
 
 ## Configure `shutdown_timeout` for Cooperative-Sticky Strategy in Large Deployments
 
-When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This makes sure that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
+When deploying Kafka with the `cooperative-sticky` rebalance strategy in environments with many consumers and partitions, setting the `shutdown_timeout` to an appropriately high value is crucial. This ensures that the rebalance and shutdown processes are completed smoothly without causing consumer disruptions.
 
 ### Why Set a High `shutdown_timeout`?
 

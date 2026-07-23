@@ -14,7 +14,7 @@ This documentation provides an overview of Kafka ACLs, how to use the ACLs with 
 
 Kafka ACLs are rules that determine how users and applications can interact with Kafka resources, such as topics, consumer groups, and brokers. Each ACL entry specifies the allowed or denied operations for a particular principal (user or client) on a given resource. Operations can include reading from a topic, writing to a topic, or creating a consumer group.
 
-ACLs make sure that only authorized entities can access Kafka's functionalities, which is vital for maintaining data security and operational integrity.
+ACLs ensure that only authorized entities can access Kafka's functionalities, which is vital for maintaining data security and operational integrity.
 
 ## Types
 
@@ -297,8 +297,8 @@ end
 - **Consumer Group Management**: Control which principals can create or interact with consumer groups.
 - **Transactional Access Control**: Manage access to transactional IDs for applications using Kafka transactions, ensuring only authorized producers can use specific transaction identifiers.
 - **Administrative Restriction**: Limit who can create, alter, or delete topics within the Kafka cluster.
-- **Security**: Make sure that only authorized entities can perform operations, maintaining data integrity and security.
-- **Securing Data**: Whenever you need to secure your Kafka data, make sure that only authorized users and services can access or modify it.
+- **Security**: Ensure that only authorized entities can perform operations, maintaining data integrity and security.
+- **Securing Data**: Whenever you need to secure your Kafka data, ensure that only authorized users and services can access or modify it.
 - **Multi-tenant Systems**: In systems where multiple users or services interact with Kafka, you must enforce strict access controls.
 - **Compliance and Auditing**: Your application must comply with security standards or require auditing capabilities for access and operations.
 

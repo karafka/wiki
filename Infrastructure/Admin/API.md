@@ -12,7 +12,7 @@ Karafka provides application administrative functions via the built-in `Karafka:
 
 ## Configuration
 
-`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also uses this same consumer group as it uses the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, make sure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also uses this same consumer group as it uses the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
 
 `Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
 
@@ -596,7 +596,7 @@ Karafka::Admin.rename_consumer_group(
 )
 ```
 
-When using `rename_consumer_group`, the method makes sure that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
+When using `rename_consumer_group`, the method ensures that offsets from the old consumer group are transferred to the new one, maintaining continuity in message consumption. You need to specify which topics should have their offsets migrated during the rename, giving you control over the process. By default, the original consumer group is deleted after the rename, but you can retain it by setting `delete_previous` to `false`.
 
 !!! tip "Offset Merger with Existing Consumer Groups"
 
@@ -618,7 +618,7 @@ Karafka::Admin.copy_consumer_group(
 )
 ```
 
-When using `#copy_consumer_group`, the method makes sure that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
+When using `#copy_consumer_group`, the method ensures that offsets from the source consumer group are transferred to the target one, maintaining continuity in message consumption. You need to specify which topics should have their offsets copied during the process, giving you control over what gets migrated.
 
 !!! tip "Offset Merger with Existing Consumer Groups"
 

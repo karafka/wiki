@@ -1,4 +1,4 @@
-Non-blocking jobs do not block polling of the underlying listener for other topic partitions. This makes sure that a single Kafka connection can efficiently poll data from multiple topics and partitions.
+Non-blocking jobs do not block polling of the underlying listener for other topic partitions. This ensures that a single Kafka connection can efficiently poll data from multiple topics and partitions.
 
 ## Using Non-Blocking Jobs
 

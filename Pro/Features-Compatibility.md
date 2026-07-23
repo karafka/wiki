@@ -93,7 +93,7 @@ You can read more about this issue [here](Pro-Routing-Patterns#dlq-accidental-au
 
 ## Messages At Rest Encryption + Custom Headers Deserializer and Encryption
 
-When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to make sure that encryption functionalities are properly integrated and maintained within your application.
+When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
 
 ## Adaptive Iterator + Long-Running Jobs
 

@@ -55,7 +55,7 @@ To delete a topic:
         - Applications dependent on this topic may experience errors or disruptions
         - Consumer group offsets associated with this topic will be lost
 
-    !!! info "Before proceeding, make sure that"
+    !!! info "Before proceeding, ensure that"
 
         - All applications consuming from this topic have been properly shut down
         - All producers to this topic have been stopped

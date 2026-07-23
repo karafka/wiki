@@ -6,7 +6,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Web UI](Pro-Web-UI) - The Enhanced Web UI offers additional features and capabilities that are not available in the free version, making it a better option for those looking for more robust monitoring and management capabilities for their Karafka applications.
 
-- [Transactions](Pro-Consumer-Groups-Transactions) - Transactions make sure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, making sure that either all succeed or none.
+- [Transactions](Pro-Consumer-Groups-Transactions) - Transactions ensure that a series of produce and consume operations are either all successfully executed or none are, maintaining data integrity even in the face of system failures or crashes. It allows for coupling, consuming, and producing messages to multiple topics together, ensuring that either all succeed or none.
 
 - [Offset Metadata Storage](Pro-Consumer-Groups-Offset-Metadata-Storage) - Offset Metadata Storage allows attaching custom metadata to message offsets during commit to Kafka. This feature enriches message processing by providing additional data annotations and enhancing system capabilities, traceability, and intelligence through retrievable metadata.
 
@@ -52,7 +52,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, ensuring resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
 
-- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, making sure that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
+- [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, ensuring that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
 
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
 

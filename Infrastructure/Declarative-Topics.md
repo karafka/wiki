@@ -14,7 +14,7 @@ Keeping Kafka topics configuration as code has several benefits:
 
 - Version Control: By keeping the topic settings as code, you can track changes over time and easily understand historical changes related to the topics. This is particularly important in a production environment where changes need to be carefully managed.
 
-- Reproducibility: When you define Kafka topics settings as code, you can easily recreate the same topic with the same settings in multiple environments. This makes sure that your development, staging, and production environments are consistent, which can help prevent unexpected issues and bugs.
+- Reproducibility: When you define Kafka topics settings as code, you can easily recreate the same topic with the same settings in multiple environments. This ensures that your development, staging, and production environments are consistent, which can help prevent unexpected issues and bugs.
 
 - Automation: If you use code to define Kafka topics settings, you can automate the process of creating and updating topics. This can save time and reduce the risk of human error.
 
@@ -168,7 +168,7 @@ Please keep in mind that topics management API does **not** provide any means of
 
 Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that ensures all topics, including Dead Letter Queue (DLQ), are declared via the definitions of the declarative topics. When set to `true`, this flag enforces validation during routing to confirm that all topics are properly defined as declarative topics, even if they are inactive.
 
-This setting is particularly useful if you want to make sure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
+This setting is particularly useful if you want to ensure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
 
 You can enable this validation by adding the following to your `karafka.rb`:
 
@@ -208,7 +208,7 @@ This will ensure the correct exit code is returned based on the operation's outc
 - `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
 - If a topic is used by several consumer groups defined in one application, only the first `config` defined will be used.
 - Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one will be managed.
-- Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed. This means it is up to you to make sure that two topic CLI commands are not running in parallel during the deployments.
+- Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed. This means it is up to you to ensure that two topic CLI commands are not running in parallel during the deployments.
 - Topics commands are **not** transactional. It means that the state application may be partial in case of errors.
 - Topics commands **are** idempotent. Broken set of operations can be retried after fixes without worry.
 - Karafka will **never** alter any topics that are not defined in the routing.

@@ -1,6 +1,6 @@
 # Web UI Components
 
-Karafka Web UI is an intuitive tool that visually represents the metrics related to the operation status of Karafka processes. It centralizes data, offers insights into the system's health, and makes sure that users can understand and analyze the functioning of their Karafka processes in real time.
+Karafka Web UI is an intuitive tool that visually represents the metrics related to the operation status of Karafka processes. It centralizes data, offers insights into the system's health, and ensures that users can understand and analyze the functioning of their Karafka processes in real time.
 
 ## How Karafka Web UI Works
 

@@ -12,7 +12,7 @@ When no database replication is involved, Karafka automatically manages ActiveRe
 
 ## Dealing with Database Replicas
 
-In database replication scenarios, Karafka requires manual intervention to ensure connections are appropriately handled. Specifically, for each database replica, connections need to be manually released back to the pool. This is achieved by subscribing to the `worker.completed` event, which signals the completion of a worker's messages processing task. Implementing a handler for this event allows for explicit connection management, making sure that resources are correctly managed and reducing the risk of connection saturation.
+In database replication scenarios, Karafka requires manual intervention to ensure connections are appropriately handled. Specifically, for each database replica, connections need to be manually released back to the pool. This is achieved by subscribing to the `worker.completed` event, which signals the completion of a worker's messages processing task. Implementing a handler for this event allows for explicit connection management, ensuring that resources are correctly managed and reducing the risk of connection saturation.
 
 ```ruby
 ::Karafka::App.monitor.subscribe('worker.completed') do
@@ -33,7 +33,7 @@ In production environments, database connections can sometimes become  "dead" or
 
 ActiveRecord includes a feature known as the connection "reaper." The reaper periodically checks connections in the pool and removes any dead or idle for too long. This helps maintain a pool of valid connections, but immediate action might be needed when a connection is found dead during a database operation.
 
-ActiveRecord provides the `#verify!` method to handle dead connections dynamically. This method can be called to check if the current connection is still valid. If it is found invalid, `#verify!` will automatically attempt to re-establish it. This method is essential for making sure that your application can recover from connection issues on the fly.
+ActiveRecord provides the `#verify!` method to handle dead connections dynamically. This method can be called to check if the current connection is still valid. If it is found invalid, `#verify!` will automatically attempt to re-establish it. This method is essential for ensuring that your application can recover from connection issues on the fly.
 
 ### Implementing Immediate Dead Connection Handling
 

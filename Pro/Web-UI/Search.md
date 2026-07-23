@@ -140,7 +140,7 @@ The Search Metadata Details are highly useful for several reasons:
 
 ## Custom Matchers
 
-Creating custom matchers allows you to tailor the search functionality to meet your needs. Matchers define how messages are searched and can be customized to handle different data types or search criteria. Additionally, matchers can be configured to be available only for the topics that are relevant to them, making sure that they are applied appropriately and efficiently.
+Creating custom matchers allows you to tailor the search functionality to meet your needs. Matchers define how messages are searched and can be customized to handle different data types or search criteria. Additionally, matchers can be configured to be available only for the topics that are relevant to them, ensuring that they are applied appropriately and efficiently.
 
 ### Why Create Custom Matchers?
 
@@ -150,7 +150,7 @@ Creating custom matchers allows you to tailor the search functionality to meet y
 
 - **Flexibility**: Custom matchers provide the flexibility to extend the default search capabilities of Karafka Web UI, making it adaptable to a wide range of use cases.
 
-- **Security**: Custom matchers allow you to limit or expand search capabilities based on specific topics. This makes sure that sensitive data is only accessible through appropriate matchers, enhancing overall security by restricting search operations to relevant topics.
+- **Security**: Custom matchers allow you to limit or expand search capabilities based on specific topics. This ensures that sensitive data is only accessible through appropriate matchers, enhancing overall security by restricting search operations to relevant topics.
 
 ### How to Build Custom Matchers
 
@@ -232,7 +232,7 @@ end
 
 ## Summary
 
-By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, making sure that only the necessary matchers are applied to each topic, optimizing performance and relevance.
+By creating and configuring custom matchers, you can extend the functionality of Karafka Web UI to suit your needs better, providing more precise and relevant search capabilities. The `.active?` method allows you to conditionally activate matchers, ensuring that only the necessary matchers are applied to each topic, optimizing performance and relevance.
 
 ## See Also
 

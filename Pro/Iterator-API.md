@@ -51,7 +51,7 @@ end
 
 One everyday use case for Karafka Pro Iterator API is to fetch the last N messages from each topic partition and process them instead of starting from the beginning. This can be useful when you need to perform data analysis or processing on the most recent data without dealing with the entire dataset. By using the Iterator API to fetch the last N messages from each partition, you can save time and resources and focus on processing only the most relevant data.
 
-When subscribing with a negative offset, Karafka will compute the offset from which it should start for each partition independently, making sure that at least the requested number of messages is being processed.
+When subscribing with a negative offset, Karafka will compute the offset from which it should start for each partition independently, ensuring that at least the requested number of messages is being processed.
 
 ```ruby
 # Read and iterate over the last 10 000 messages available in each
@@ -130,9 +130,9 @@ end
 
 ### Stopping the Iterator
 
-When working with the Karafka Pro Iterator, there may be scenarios where you need to halt the iteration process entirely. Using the `#stop` method is recommended in such cases. This method provides a clean and graceful termination of the iterator, making sure that all resources are properly managed and released. This approach is recommended over simply breaking out of the iteration loop, as it allows for a more controlled and efficient shutdown process.
+When working with the Karafka Pro Iterator, there may be scenarios where you need to halt the iteration process entirely. Using the `#stop` method is recommended in such cases. This method provides a clean and graceful termination of the iterator, ensuring that all resources are properly managed and released. This approach is recommended over simply breaking out of the iteration loop, as it allows for a more controlled and efficient shutdown process.
 
-Using `#stop` is straightforward. Once invoked, the method sets an internal flag that indicates the iterator should cease processing as soon as possible. This check is performed internally within the iterator's loop, making sure that the iteration stops cleanly after the current message processing completes.
+Using `#stop` is straightforward. Once invoked, the method sets an internal flag that indicates the iterator should cease processing as soon as possible. This check is performed internally within the iterator's loop, ensuring that the iteration stops cleanly after the current message processing completes.
 
 Here’s an example of how to use `#stop` effectively:
 
@@ -148,7 +148,7 @@ end
 
 ### Marking As Consumed
 
-In scenarios where precise tracking of message consumption is crucial, the Karafka Pro Iterator provides functionality similar to that of a traditional Karafka consumer. This allows for marking messages as consumed, which is essential for managing the offsets of processed messages. This feature is handy to make sure that messages are not reprocessed unintentionally on subsequent iterations, maintaining the integrity and accuracy of data processing.
+In scenarios where precise tracking of message consumption is crucial, the Karafka Pro Iterator provides functionality similar to that of a traditional Karafka consumer. This allows for marking messages as consumed, which is essential for managing the offsets of processed messages. This feature is handy to ensure that messages are not reprocessed unintentionally on subsequent iterations, maintaining the integrity and accuracy of data processing.
 
 The Iterator can mark messages as consumed using two methods:
 

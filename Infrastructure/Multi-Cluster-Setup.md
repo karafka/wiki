@@ -26,7 +26,7 @@ Configuring Karafka for multiple clusters requires attention to two primary area
 
 ### Consumer Settings
 
-To consume data from multiple clusters, the configuration within the `kafka` scope needs to be updated per topic. Specifically, for topics that originate from a secondary cluster, you need to make sure that they are correctly pointed to the appropriate cluster. By doing this, you enable Karafka to know from which cluster to fetch the messages for a particular topic:
+To consume data from multiple clusters, the configuration within the `kafka` scope needs to be updated per topic. Specifically, for topics that originate from a secondary cluster, you need to ensure that they are correctly pointed to the appropriate cluster. By doing this, you enable Karafka to know from which cluster to fetch the messages for a particular topic:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -60,7 +60,7 @@ end
 
 ### Producer Settings
 
-While the consumption settings ensure Karafka knows where to pull messages from, the production settings dictate where Karafka sends the outbound messages. An extra setup is essential when producing messages to multiple clusters to make sure that the messages are directed to the correct location.
+While the consumption settings ensure Karafka knows where to pull messages from, the production settings dictate where Karafka sends the outbound messages. An extra setup is essential when producing messages to multiple clusters to ensure that the messages are directed to the correct location.
 
 Remember, a correct configuration is crucial for the efficient and error-free operation of Karafka when working with multiple Kafka clusters.
 
@@ -99,7 +99,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 - **Ignoring Primary Default**: Forgetting that `Karafka.producer` and ActiveJob jobs default to the primary cluster can lead to unexpected routing of messages.
 
-- **Mismatched Cluster Configuration**: Make sure that all specified clusters in the configuration have the correct broker addresses.
+- **Mismatched Cluster Configuration**: Ensure that all specified clusters in the configuration have the correct broker addresses.
 
 - **Web UI Assumption**: Assuming that the Web UI processes data on the cluster it shows. Remember, data processing is done on the primary cluster unless overridden.
 

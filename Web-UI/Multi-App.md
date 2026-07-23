@@ -32,7 +32,7 @@ Here are the steps necessary to configure Karafka Web-UI to work in a multi-app 
 
 !!! warning "Critical Setup Requirement"
 
-    It is critical to make sure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
+    It is critical to ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
 
     Having any Karafka server process report to the Web UI before it is correctly bootstrapped via `bundle exec karafka-web migrate` may lead to critical state inconsistencies and other hard-to-debug issues. These inconsistencies can disrupt the accurate materialization of metrics and state data, causing unreliable or incorrect information to be displayed in the Web UI. To maintain a stable and reliable setup, ensure the Web UI is fully initialized and migrated before starting any Karafka server processes.
 
@@ -127,7 +127,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-In this configuration, the DLQ is defined with the topic marked explicitly for the Web UI's awareness. This setup makes sure that the Web UI, when launched, can accurately reflect the state and contents of DLQ topics.
+In this configuration, the DLQ is defined with the topic marked explicitly for the Web UI's awareness. This setup ensures that the Web UI, when launched, can accurately reflect the state and contents of DLQ topics.
 
 ## Example Use Cases
 

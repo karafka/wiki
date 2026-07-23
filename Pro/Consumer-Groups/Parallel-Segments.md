@@ -60,7 +60,7 @@ end
 
 !!! tip "Migration from Existing Consumer Groups"
 
-    Parallel Segments are **not** plug-and-play when migrating from an existing consumer group to a parallel segments setup. If you're converting an existing consumer group to use parallel segments, you must use the CLI `distribute` command to make sure that the parallel segments start processing from the correct offsets for each topic and partition.
+    Parallel Segments are **not** plug-and-play when migrating from an existing consumer group to a parallel segments setup. If you're converting an existing consumer group to use parallel segments, you must use the CLI `distribute` command to ensure that the parallel segments start processing from the correct offsets for each topic and partition.
 
     Without running the distribution command, the parallel segment consumer groups will start from the beginning of each topic (or from the latest offset, depending on your configuration), potentially causing message reprocessing or missing messages.
 
@@ -133,7 +133,7 @@ consumer_group :analytics do
 end
 ```
 
-Without topic-aware partitioning, all topics in the consumer group would use the same partitioning logic, which may not be appropriate for different data types. This approach makes sure that each topic can use its own optimal partitioning strategy while still benefiting from the parallel processing capabilities of Parallel Segments.
+Without topic-aware partitioning, all topics in the consumer group would use the same partitioning logic, which may not be appropriate for different data types. This approach ensures that each topic can use its own optimal partitioning strategy while still benefiting from the parallel processing capabilities of Parallel Segments.
 
 For more complex scenarios, you can also extract the partitioning logic into a dedicated class:
 

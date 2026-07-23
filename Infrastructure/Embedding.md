@@ -265,15 +265,15 @@ When Karafka is embedded in another process, you might find that code reloading 
 
 ### Concurrency Settings
 
-Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you make sure that all tasks and responsibilities of your process can effectively access and use the resources they need without causing undue strain.
+Maintaining a conservative approach when setting concurrency levels with Karafka in the Embedded mode is advisable. A high concurrency setting might overtax your system resources, leading to potential slowdowns or bottlenecks. By keeping your concurrency settings on the lower side, you ensure that all tasks and responsibilities of your process can effectively access and use the resources they need without causing undue strain.
 
 ### Preloading/Eager Loading
 
-Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This makes sure that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
+Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
 
 ### Critical Error Handling
 
-When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to make sure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored.
+When operating Karafka in Embedded mode, it's crucial to understand that certain critical errors might be silently overlooked if the supervising process for Karafka Embedding does not correctly signal those errors. While Karafka might recognize and attempt to raise an error and notify about it via its instrumentation pipeline, the supervising process might not propagate or report this, leading to potential silent failures or unnoticed issues. For robust and reliable production deployments, it's critical to ensure that any errors Karafka might produce are not only correctly signaled by the supervising process but also reported and monitored.
 
 ### Partial/Silent Crashes
 
@@ -281,7 +281,7 @@ When using Karafka in an embedded mode, it's vital to be aware of Partial or Sil
 
 Certain critical errors, such as incompatible changes to the `partition.assignment.strategy`, can cause the embedded Karafka process to emit an error and terminate. However, this termination is isolated to Karafka itself, and may not propagate to the parent or supervising process.
 
-For example, when running Karafka within a Puma worker in the event of a critical Karafka crash, the Puma worker will remain unaffected. This means the HTTP server, despite the Karafka crash, will continue to accept and process messages. While this makes sure that your HTTP server remains responsive, it also poses a risk since Karafka, a crucial component for processing, is no longer operational.
+For example, when running Karafka within a Puma worker in the event of a critical Karafka crash, the Puma worker will remain unaffected. This means the HTTP server, despite the Karafka crash, will continue to accept and process messages. While this ensures that your HTTP server remains responsive, it also poses a risk since Karafka, a crucial component for processing, is no longer operational.
 
 To ensure system resilience and reliability:
 

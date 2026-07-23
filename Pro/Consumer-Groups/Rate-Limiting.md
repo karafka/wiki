@@ -2,7 +2,7 @@ Rate Limiting mechanism that allows controlling the speed at which messages are 
 
 The Rate Limiting mechanism in Karafka is implemented using a window throttler that monitors the message consumption rate and pauses the consumption of a given topic partition when the configured limit is reached. The window throttler maintains a sliding window of the last processed messages and calculates the consumption rate by dividing the number of messages consumed in the window by the window size. If the consumption rate exceeds the configured limit, the throttler pauses the consumption of the topic for some time until the consumption rate falls below the limit.
 
-The Rate Limiting feature in Karafka can be configured on a per-topic basis. This means that different topics can have different consumption limits depending on the message volume and processing requirements. For example, a high-priority topic can have a lower limit than a low-priority topic to make sure that important messages are processed faster.
+The Rate Limiting feature in Karafka can be configured on a per-topic basis. This means that different topics can have different consumption limits depending on the message volume and processing requirements. For example, a high-priority topic can have a lower limit than a low-priority topic to ensure that important messages are processed faster.
 
 ## Enabling Rate Limiting
 
@@ -31,7 +31,7 @@ end
 
 ## Behaviour on errors
 
-When an error occurs during message processing in Karafka, the Rate Limiting feature behaves in a way that makes sure that the same message is not re-processed immediately. Instead, Karafka waits for a configurable period (known as the "backoff") before retrying the message.
+When an error occurs during message processing in Karafka, the Rate Limiting feature behaves in a way that ensures that the same message is not re-processed immediately. Instead, Karafka waits for a configurable period (known as the "backoff") before retrying the message.
 
 During this retry interval, the message is not counted towards the rate limiting, so it does not contribute to the overall message processing rate. Once the retry interval has elapsed, Karafka will attempt to process the message again, and it will count towards the overall rate limiting as usual.
 

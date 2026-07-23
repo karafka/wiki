@@ -183,9 +183,9 @@ end
 
 In this setup, the `env_suffix` is created by converting the current Rails environment into a string. The `env_suffix` is then appended to the base topic name for each of the internal topics (`karafka_errors`, `karafka_consumers_reports`, `karafka_consumers_states`, `karafka_consumers_metrics` and `karafka_consumers_commands`).
 
-This naming convention makes sure that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
+This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
 
-After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command makes sure that all topics are set up correctly and ready for use within their respective environments.
+After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
 
 ## In-Memory Cluster Data Caching
 
@@ -208,7 +208,7 @@ end
 
 ### Cache Refresh
 
-One of the features to note is that whenever the Status view is accessed, the cache gets invalidated and refreshed. This makes sure that users get the most recent and accurate information when they visit this view.
+One of the features to note is that whenever the Status view is accessed, the cache gets invalidated and refreshed. This ensures that users get the most recent and accurate information when they visit this view.
 
 ### Consideration for Multiple Processes Deployment
 

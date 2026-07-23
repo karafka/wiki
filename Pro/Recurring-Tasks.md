@@ -1,4 +1,4 @@
-This feature provides a mechanism for scheduling and managing recurring tasks within Kafka-based applications. It allows you to define tasks that run at specified intervals, using cron-like syntax, making sure that essential tasks are executed at the right time without manual intervention. This feature uses Kafka as the state store, so no extra database or third-party components are needed.
+This feature provides a mechanism for scheduling and managing recurring tasks within Kafka-based applications. It allows you to define tasks that run at specified intervals, using cron-like syntax, ensuring that essential tasks are executed at the right time without manual intervention. This feature uses Kafka as the state store, so no extra database or third-party components are needed.
 
 ```ruby
 # Example schedule for recurring tasks and events
@@ -26,11 +26,11 @@ end
 
 Recurring Tasks use Kafka to manage scheduled tasks efficiently without needing third-party databases.
 
-Karafka, with its unique approach, stores the state of each recurring task, including the last and next execution times, directly in a Kafka topic. This use of Kafka makes sure that even if your application crashes or restarts, the task state is preserved, allowing Karafka to resume tasks accurately. Kafka also handles commands like `enable`, `disable`, or `trigger`, which are sent to and processed by the managing consumer, allowing for dynamic task management at runtime.
+Karafka, with its unique approach, stores the state of each recurring task, including the last and next execution times, directly in a Kafka topic. This use of Kafka ensures that even if your application crashes or restarts, the task state is preserved, allowing Karafka to resume tasks accurately. Kafka also handles commands like `enable`, `disable`, or `trigger`, which are sent to and processed by the managing consumer, allowing for dynamic task management at runtime.
 
 One key advantage of Recurring Tasks is its independence from external databases for managing task schedules. All necessary information is stored in Kafka, simplifying deployment and maintenance.
 
-Karafka makes sure that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes don't run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
+Karafka ensures that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes don't run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
 
 In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and seamless task execution continuity, even during unexpected failures.
 
@@ -146,9 +146,9 @@ If you do not use Declarative Topics, please make sure to create those topics ma
 
 #### Replication Factor Configuration for the Production Environment
 
-Setting the replication factor for Kafka topics used by the recurring tasks feature to more than 1 in production environments is crucial. The replication factor determines how many copies of the data are stored across different Kafka brokers. Having a replication factor greater than 1 makes sure that the data is highly available and fault-tolerant, even in the case of broker failures.
+Setting the replication factor for Kafka topics used by the recurring tasks feature to more than 1 in production environments is crucial. The replication factor determines how many copies of the data are stored across different Kafka brokers. Having a replication factor greater than 1 ensures that the data is highly available and fault-tolerant, even in the case of broker failures.
 
-For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, making sure that your recurring tasks continue to operate without interruption.
+For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, ensuring that your recurring tasks continue to operate without interruption.
 
 Here's an example of how to reconfigure the Recurring Tasks topics so they have replication factor of 3:
 
@@ -251,7 +251,7 @@ You can manage tasks dynamically using the following`Karafka::Pro::RecurringTask
 
 - **Trigger a Task Manually**: `Karafka::Pro::RecurringTasks.trigger(task_id)` immediately triggers the execution of a task, bypassing the schedule.
 
-When you call these methods, a Kafka command event is produced, which is then processed by the consumer responsible for managing the recurring tasks. This mechanism makes sure that only the designated consumer executes the commands, maintaining consistency across your application.
+When you call these methods, a Kafka command event is produced, which is then processed by the consumer responsible for managing the recurring tasks. This mechanism ensures that only the designated consumer executes the commands, maintaining consistency across your application.
 
 If you use `'*'` as the `task_id`, the command will apply to all tasks available in the current schedule. This allows you to enable, disable, or trigger all tasks in one operation, giving you flexible control over task management.
 
@@ -282,13 +282,13 @@ Karafka::Pro::RecurringTasks.trigger('*')
 
 ## Schedule Versioning
 
-Versioning is an optional feature that adds a layer of safety and consistency during rolling deployments. It helps make sure that tasks are only executed when the assigned process has an appropriate schedule version, preventing older instances from accidentally running outdated schedules.
+Versioning is an optional feature that adds a layer of safety and consistency during rolling deployments. It helps ensure that tasks are only executed when the assigned process has an appropriate schedule version, preventing older instances from accidentally running outdated schedules.
 
 When defining your recurring tasks schedule, you can specify a version number. This version is a safeguard during deployments, particularly in scenarios where multiple instances of your application might run simultaneously with both older and newer schedule definitions.
 
-During a rolling deployment, there might be a brief period when some instances of your application are still running an older code version with a different schedule. If an older instance of your application receives recurring task assignments, it will recognize that the schedule is no longer compatible with its in-memory definition. The older instance will halt the execution of the task and will raise an error, preventing any outdated schedules from being run. This makes sure that only the new schedule version is executed, maintaining consistency and avoiding potential issues caused by version mismatches.
+During a rolling deployment, there might be a brief period when some instances of your application are still running an older code version with a different schedule. If an older instance of your application receives recurring task assignments, it will recognize that the schedule is no longer compatible with its in-memory definition. The older instance will halt the execution of the task and will raise an error, preventing any outdated schedules from being run. This ensures that only the new schedule version is executed, maintaining consistency and avoiding potential issues caused by version mismatches.
 
-If you don't specify a version, Karafka will operate without this safeguard. Regardless of its deployment stage, Karafka will attempt to execute the schedule it has in memory if it receives the schedules topic assignment. Versioning is recommended if you want to make sure that only the most up-to-date schedule is used during deployments.
+If you don't specify a version, Karafka will operate without this safeguard. Regardless of its deployment stage, Karafka will attempt to execute the schedule it has in memory if it receives the schedules topic assignment. Versioning is recommended if you want to ensure that only the most up-to-date schedule is used during deployments.
 
 ## Tasks Execution Logging
 
@@ -366,7 +366,7 @@ end
 
 In larger setups, it's advisable to run a dedicated consumer process for executing recurring tasks and managing the Web UI (if used) to prevent potential saturation with other workloads.
 
-By isolating the recurring tasks execution in its own consumer process, you make sure that these tasks do not compete with other consumers for resources, which can be particularly important in high-throughput environments. This dedicated process will handle all scheduling and execution, leaving other consumers free to manage their specific workloads.
+By isolating the recurring tasks execution in its own consumer process, you ensure that these tasks do not compete with other consumers for resources, which can be particularly important in high-throughput environments. This dedicated process will handle all scheduling and execution, leaving other consumers free to manage their specific workloads.
 
 Karafka provides CLI flag to facilitate running only dedicated consumer groups:
 
@@ -416,11 +416,11 @@ expect { cleanup_task.execute }.not_to raise_error
 
 Recurring Tasks provides strong execution warranties by using Kafka’s robust architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
 
-- **Single Process Execution**: Karafka makes sure that only one process can execute the scheduled tasks by assigning Kafka partitions to a single consumer. This prevents multiple processes from executing the same task simultaneously, offering a strong guarantee of task uniqueness and timing precision.
+- **Single Process Execution**: Karafka ensures that only one process can execute the scheduled tasks by assigning Kafka partitions to a single consumer. This prevents multiple processes from executing the same task simultaneously, offering a strong guarantee of task uniqueness and timing precision.
 
 - **Automatic Failover**: In the event of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process immediately picks up from where the previous one left off, ensuring continuous task execution without losing the state or missing any scheduled runs.
 
-- **Consistency Across Deployments**: With the optional versioning feature, Karafka further makes sure that only the appropriate version of the schedule is executed, preventing older instances from running outdated tasks during rolling deployments.
+- **Consistency Across Deployments**: With the optional versioning feature, Karafka further ensures that only the appropriate version of the schedule is executed, preventing older instances from running outdated tasks during rolling deployments.
 
 ## Limitations
 
@@ -442,15 +442,15 @@ Recurring Tasks provides strong execution warranties by using Kafka’s robust a
 
 - **Regulatory Compliance and Auditing**: Schedule regular tasks to automatically generate and store compliance reports, ensuring your organization meets audit requirements without manual intervention.
 
-- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, making sure that data flows seamlessly from one stage to the next.
+- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, ensuring that data flows seamlessly from one stage to the next.
 
 - **SLA-Based Monitoring and Alerts**: Monitor service-level agreements (SLAs) by scheduling checks that ensure critical metrics are within acceptable thresholds. Automatically trigger alerts or remediation actions if SLAs are breached.
 
 - **Automated Infrastructure Scaling**: Dynamically adjust cloud resources by scheduling scaling operations based on expected traffic patterns. For example, scale up resources during peak hours and scale down during off-peak hours to optimize costs.
 
-- **End-of-Day Financial Reconciliation**: Automate the end-of-day reconciliation of financial transactions, making sure that all accounts are balanced and any discrepancies are flagged for manual review.
+- **End-of-Day Financial Reconciliation**: Automate the end-of-day reconciliation of financial transactions, ensuring that all accounts are balanced and any discrepancies are flagged for manual review.
 
-- **Automated Backup and Disaster Recovery**: Schedule regular backups of critical data and systems and automate disaster recovery drills to make sure that your organization is prepared for unexpected outages.
+- **Automated Backup and Disaster Recovery**: Schedule regular backups of critical data and systems and automate disaster recovery drills to ensure that your organization is prepared for unexpected outages.
 
 - **User Engagement Events**: Trigger user engagement events, such as sending personalized notifications or emails based on user behavior or inactivity, at specific times to increase user retention.
 

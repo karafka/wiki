@@ -196,7 +196,7 @@ Here are some examples where instrumenting custom events can be beneficial:
 
 ### Naming Considerations for Custom Events
 
-Making sure that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
+Ensuring that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
 
 For example, a custom event to monitor external API calls could be named `app.external_api_call`:
 
@@ -344,7 +344,7 @@ Karafka.producer.monitor.subscribe(appsignal_errors_listener)
 
 ### Metrics Instrumentation
 
-The AppSignal integration offers comprehensive instrumentation, making sure that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
+The AppSignal integration offers comprehensive instrumentation, ensuring that you have a clear view of your application's performance and other vital metrics. In addition, a ready-to-import dashboard has been made available for instant insights. You can access and explore this dashboard [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/appsignal/dashboard.json).
 
 Below, you can find instructions on how to enable the metrics instrumentation:
 
@@ -603,7 +603,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ##### Async Producer Tracing With The Consumption Context
 
-Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This makes sure that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and make sure that messages produced asynchronously are linked to their consumption traces.
+Tracing asynchronous producer operations in data consumption requires a mechanism to persist the trace context from consumer to producer. This ensures that a message's lifecycle - from consumption to its asynchronous production and delivery is fully traceable coherently. This is crucial for systems where you must maintain traceability across distributed systems and ensure that messages produced asynchronously are linked to their consumption traces.
 
 One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
 
@@ -676,7 +676,7 @@ def on_error_occurred(event)
 end
 ```
 
-In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, making sure that the span is marked with the error and then finished.
+In these methods, the `#on_message_acknowledged` is responsible for finalizing the span when the message is successfully delivered, updating the trace with the offset and partition information. The `#on_error_occurred` method handles situations where a delivery error occurs, ensuring that the span is marked with the error and then finished.
 
 By using these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
 

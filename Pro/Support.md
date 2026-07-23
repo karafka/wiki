@@ -40,9 +40,9 @@ Upgrading Karafka can be a critical task for maintaining the health and performa
 
 We recognize the significance of prompt and effective bug resolution for your ongoing projects and application stability. Hence, with the Karafka Pro version, we assure a superior level of attention to any bugs or issues you might encounter during your application development. Here's how we do it:
 
-1. **Priority in the Queue**: Karafka Pro users' bug reports get precedence over standard reports. Any reported bugs are placed at the top of the triage process, which allows us to start the debugging and resolution process sooner. This priority queue makes sure that we address your issues quickly and keep your projects moving.
+1. **Priority in the Queue**: Karafka Pro users' bug reports get precedence over standard reports. Any reported bugs are placed at the top of the triage process, which allows us to start the debugging and resolution process sooner. This priority queue ensures that we address your issues quickly and keep your projects moving.
 
-2. **Faster Release Cycles for Bug Fixes**: In line with our commitment to serving our Pro customers better, bug fixes for issues reported by Pro users get released faster. We make sure that these fixes are incorporated into our release cycle promptly, significantly reducing the wait time for bug resolution.
+2. **Faster Release Cycles for Bug Fixes**: In line with our commitment to serving our Pro customers better, bug fixes for issues reported by Pro users get released faster. We ensure that these fixes are incorporated into our release cycle promptly, significantly reducing the wait time for bug resolution.
 
 3. **Proactive Communication**: We believe in maintaining clear and proactive communication with our users. We will keep you updated on the status of your reported bugs. You will be notified about the progress from the moment we begin working on the bug until its final resolution. This helps keep you in the loop and ensures transparency.
 

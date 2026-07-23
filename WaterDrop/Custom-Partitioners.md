@@ -43,7 +43,7 @@ Advantages:
 Drawbacks:
 
 - **Complexity**: This method introduces additional layers to your architecture, potentially increasing the complexity of your system.
-- **Maintenance**: You need to make sure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
+- **Maintenance**: You need to ensure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
 
 ```ruby
 class UserPartitioner

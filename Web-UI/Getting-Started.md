@@ -24,7 +24,7 @@ To use it:
 
     !!! warning "Karafka Web UI Installation Guidance"
 
-        Please make sure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+        Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
     !!! warning "Essential Environment Migration Step"
 
@@ -353,7 +353,7 @@ Rails.application.routes.draw do
 end
 ```
 
-By implementing these practices, you make sure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
+By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
 
 ## Kafka ACL Requirements
 
@@ -409,7 +409,7 @@ To address this:
 
 1. **Re-create Web UI Topics**: With all Karafka processes stopped, use the appropriate CLI commands to recreate the Web UI topics. This action guarantees that the topics are configured properly to receive and present data in the Web UI.
 
-1. **Start Karafka Processes**: After the topics have been recreated, restart the `karafka server` processes. Keep an eye on the Web UI to make sure that the topics are now displaying data.
+1. **Start Karafka Processes**: After the topics have been recreated, restart the `karafka server` processes. Keep an eye on the Web UI to ensure that the topics are now displaying data.
 
 You should carefully follow these steps to resolve the data display issue in the Web UI topics. Always use the prescribed methods for creating topics to sidestep such issues in the future.
 
@@ -460,7 +460,7 @@ Without that, Karafka will **not** be able to report anything.
 
 If you encounter the `Broker: Not enough in-sync replicas` error, it typically means there are insufficient in-sync replicas to handle message persistence. Here are the steps to resolve this issue:
 
-- Make sure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist.
+- Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist.
 
   In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreate the topics with the correct replication factor.
 
@@ -488,7 +488,7 @@ Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics 
 
 By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 1000 Karafka instances within the default Kafka payload limit.
 
-However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, making sure that Karafka Web UI continues to function optimally and efficiently.
+However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.
 
 ## Web UI Schema Compatibility Notice
 
@@ -498,7 +498,7 @@ Starting from version `0.7.4`, the Karafka Web UI introduces enhanced schema det
 
 Furthermore, it's worth noting that if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
 
-Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we make sure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
+Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
 It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
 

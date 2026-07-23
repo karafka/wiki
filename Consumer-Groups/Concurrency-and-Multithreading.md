@@ -168,7 +168,7 @@ To address these challenges and enhance parallel processing, Karafka offers seve
 
 - **[Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions)**: By subdividing actual Kafka partitions into smaller, virtual ones, Karafka can parallelize the processing of messages from a single physical partition. This can significantly increase the processing throughput and efficiency.
 
-- **[Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, making sure that a lag in one doesn't halt the polling of others.
+- **[Connection Multiplexing](Pro-Consumer-Groups-Multiplexing)**: Establishing multiple connections for the same consumer group allows for independent polling and processing. Each connection handles a subset of partitions, ensuring that a lag in one doesn't halt the polling of others.
 
 - **[Subscription Groups](Consumer-Groups-Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups)**: Organizes topics into groups for parallel data polling from multiple topics, mitigating lag effects and improving performance by using multiple threads.
 

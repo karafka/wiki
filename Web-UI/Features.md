@@ -142,7 +142,7 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
     This functionality is available only in our Pro offering.
 
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer makes sure that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](Pro-Web-UI#explorer).
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](Pro-Web-UI#explorer).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />

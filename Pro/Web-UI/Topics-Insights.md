@@ -59,7 +59,7 @@ Moreover, the Distribution tab features a graph that visually represents the dis
 ### Benefits of Distribution Insights
 
 - **Performance Optimization**: Understanding message distribution helps in tuning the system for better performance by reallocating resources or adjusting partitioning.
-- **Scalability Planning**: Identifying hot partitions allows for proactive scalability efforts, making sure that the system can handle increases in load without performance degradation.
+- **Scalability Planning**: Identifying hot partitions allows for proactive scalability efforts, ensuring that the system can handle increases in load without performance degradation.
 - **Troubleshooting and Maintenance**: Uneven distribution can be a symptom of broader issues, such as configuration errors or network problems. Early detection enables quicker resolution.
 
 ## Offsets

@@ -44,7 +44,7 @@ If you are looking for seamless message piping in Kafka-based systems, see [Pipi
 
 Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or rake tasks, make sure to call the `#close` method on the producer.
 
-This is because the `#close` method makes sure that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
+This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
 
 !!! info "Info"
 
@@ -172,7 +172,7 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating Karafka producers into your Ruby applications, it is essential to make sure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
+While integrating Karafka producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
 
 However, there might be scenarios where such specific hooks are not available or suitable. In these cases, employ Ruby's `at_exit` hook as a universal fallback to close the producer before the Ruby process exits.
 

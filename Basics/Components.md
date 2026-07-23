@@ -55,7 +55,7 @@ The following image provides a visual preview of the Karafka Web UI interface, s
 
 ## Karafka-Rdkafka
 
-Karafka uses its fork of the `rdkafka-ruby`. It is done to make sure that each release is complete, stable, and tested against the Karafka ecosystem. Providing our driver layer makes sure that upgrades are safe and reliable.
+Karafka uses its fork of the `rdkafka-ruby`. It is done to ensure that each release is complete, stable, and tested against the Karafka ecosystem. Providing our driver layer ensures that upgrades are safe and reliable.
 
 ## Rdkafka-ruby
 

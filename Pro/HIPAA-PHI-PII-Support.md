@@ -24,13 +24,13 @@ PHI is a specific subset of PII, which encompasses a broader range of sensitive 
 
 ## Karafka and HIPAA/PHI/PII Compliance: Core Capabilities
 
-Karafka and Karafka Web UI come equipped with a set of features designed to facilitate compliance with the privacy and security requirements of HIPAA, PHI, and PII regulations. These capabilities make sure that sensitive information is adequately protected at every stage of its lifecycle, from ingestion and processing to presentation and logging.
+Karafka and Karafka Web UI come equipped with a set of features designed to facilitate compliance with the privacy and security requirements of HIPAA, PHI, and PII regulations. These capabilities ensure that sensitive information is adequately protected at every stage of its lifecycle, from ingestion and processing to presentation and logging.
 
 ### 1. Data Encryption
 
 #### At-Rest Data Encryption
 
-Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), making sure that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
+Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -47,7 +47,7 @@ end
 
 #### In-Transit Encryption
 
-Data in transit must be protected as it moves between components in a distributed system. Karafka supports secure communication using Transport Layer Security (TLS/SSL), which encrypts data while it is transmitted between clients, brokers, and the Web UI. This protection is essential to meet HIPAA's technical safeguard requirements, making sure that PHI or PII is not exposed to unauthorized interception during network communication.
+Data in transit must be protected as it moves between components in a distributed system. Karafka supports secure communication using Transport Layer Security (TLS/SSL), which encrypts data while it is transmitted between clients, brokers, and the Web UI. This protection is essential to meet HIPAA's technical safeguard requirements, ensuring that PHI or PII is not exposed to unauthorized interception during network communication.
 
 ### 2. Access Control and Authentication
 
@@ -75,7 +75,7 @@ You can learn more about the Polices [here](Pro-Web-UI-Policies).
 
 Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By using this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
 
-Additionally, the provided code APIs enable you to define custom access policies, making sure that only authorized users can interact with specific components of the Web UI.
+Additionally, the provided code APIs enable you to define custom access policies, ensuring that only authorized users can interact with specific components of the Web UI.
 
 ### 3. Granular Data Presentation
 

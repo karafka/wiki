@@ -81,7 +81,7 @@ end
 
 ### Crucial Insights Presence with Karafka Pro
 
-For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities about Inline Insights, you can make sure that insights are always available when you need them.
+For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities about Inline Insights, you can ensure that insights are always available when you need them.
 
 In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Consumer-Groups-Enhanced-Inline-Insights).
 
@@ -110,11 +110,11 @@ end
 
 ## Behaviour on Revocation
 
-Insights are only collected for partitions a given consumer owns. This means that if a consumer does not have ownership of a particular partition, no insights will be collected. This design makes sure that the metrics are always pertinent and directly related to the partitions being consumed, maintaining the relevance and efficiency of the insights provided.
+Insights are only collected for partitions a given consumer owns. This means that if a consumer does not have ownership of a particular partition, no insights will be collected. This design ensures that the metrics are always pertinent and directly related to the partitions being consumed, maintaining the relevance and efficiency of the insights provided.
 
-There can be scenarios where a partition might be involuntarily revoked from a consumer by Kafka. In such events, rather than leaving the consumer without any insights, Karafka takes a proactive approach. Karafka will provide the last known metrics before the partition was forcefully revoked. This is paramount as it makes sure that metrics are consistently available to the consumer, even during unforeseen Kafka operations.
+There can be scenarios where a partition might be involuntarily revoked from a consumer by Kafka. In such events, rather than leaving the consumer without any insights, Karafka takes a proactive approach. Karafka will provide the last known metrics before the partition was forcefully revoked. This is paramount as it ensures that metrics are consistently available to the consumer, even during unforeseen Kafka operations.
 
-Karafka makes sure that consumers can continue processing with insights throughout their entire operation by ensuring the continuous availability of metrics, even post-revocation. This approach minimizes disruptions and ensures consumers won't be left operating without metrics even if Kafka alters assignments.
+Karafka ensures that consumers can continue processing with insights throughout their entire operation by ensuring the continuous availability of metrics, even post-revocation. This approach minimizes disruptions and ensures consumers won't be left operating without metrics even if Kafka alters assignments.
 
 ## Memory Footprint
 
@@ -122,7 +122,7 @@ One of the primary considerations for any system is the memory footprint of its 
 
 ### Insights Tracker Cache Management
 
-The Karafka Inline Insights Tracker is designed with optimal memory usage in mind. It employs a caching system that retains metrics data for up to 5 minutes. This means that any metric data related to a partition that is no longer relevant or needed - like when a partition is lost or revoked - will be automatically cleared from the cache after a maximum of five minutes. This cache management approach makes sure that memory is used efficiently, keeping only relevant and recent metrics in memory and preventing accumulating stale or unnecessary data.
+The Karafka Inline Insights Tracker is designed with optimal memory usage in mind. It employs a caching system that retains metrics data for up to 5 minutes. This means that any metric data related to a partition that is no longer relevant or needed - like when a partition is lost or revoked - will be automatically cleared from the cache after a maximum of five minutes. This cache management approach ensures that memory is used efficiently, keeping only relevant and recent metrics in memory and preventing accumulating stale or unnecessary data.
 
 ## Example Use Cases
 

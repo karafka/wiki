@@ -16,7 +16,7 @@ By investing a few hours, you're setting yourself up to save weeks of collective
 
 - **Mastering Advanced Karafka Concepts**: No stone goes unturned. Delve into the intricate features of Karafka, including virtual partitions, retries, batch processing, and more.
 
-- **Wrap-Up with Key Insights**: As we conclude, we make sure that you're equipped with a comprehensive understanding of the journey traversed. We'll share additional resources and guide you on the subsequent steps, empowering you to navigate the Karafka landscape confidently.
+- **Wrap-Up with Key Insights**: As we conclude, we ensure that you're equipped with a comprehensive understanding of the journey traversed. We'll share additional resources and guide you on the subsequent steps, empowering you to navigate the Karafka landscape confidently.
 
 ## Schedule
 

@@ -352,7 +352,7 @@ producer.close
 
 Properly shutting down WaterDrop producers is crucial to ensure graceful handling and prevent potential resource leaks causing VM crashes. This section explains how to close WaterDrop producers and the implications of doing so.
 
-It is essential to close the WaterDrop producer before exiting the Ruby process. Closing the producer allows it to release resources, complete ongoing operations, and make sure that all messages are either successfully delivered to the Kafka cluster or purged due to exceeding the `message.timeout.ms` value.
+It is essential to close the WaterDrop producer before exiting the Ruby process. Closing the producer allows it to release resources, complete ongoing operations, and ensure that all messages are either successfully delivered to the Kafka cluster or purged due to exceeding the `message.timeout.ms` value.
 
 The `#close` method is used to shut down the producer. It is important to note that `#close` is a blocking operation, meaning it will block the execution of your program until all the necessary resources are cleaned up. Therefore, it is not recommended to start the `#close` operation in a separate thread and not wait for it to finish, as this may lead to unexpected behavior.
 
@@ -368,7 +368,7 @@ producer.close
 
 In specific scenarios, such as working with unstable Kafka clusters or when you need to finalize your application fast, disregarding the risk of potential data loss, you may use the `#close!` method.
 
-The `#close!` method attempts to wait until a specified `max_wait_timeout` (default is `180` seconds) for any pending operations to complete. However, if the producer cannot be shut down gracefully within this timeframe, it will forcefully purge the dispatch queue and cancel all outgoing requests. This effectively prevents the closing procedure from blocking for an extensive period, making sure that your application can exit more quickly.
+The `#close!` method attempts to wait until a specified `max_wait_timeout` (default is `180` seconds) for any pending operations to complete. However, if the producer cannot be shut down gracefully within this timeframe, it will forcefully purge the dispatch queue and cancel all outgoing requests. This effectively prevents the closing procedure from blocking for an extensive period, ensuring that your application can exit more quickly.
 
 ```ruby
 producer = WaterDrop::Producer.new do |config|
@@ -514,7 +514,7 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating WaterDrop producers into your Ruby applications, it's essential to make sure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
 
 However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a WaterDrop producer:
 
