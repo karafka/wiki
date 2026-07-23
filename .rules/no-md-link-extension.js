@@ -8,6 +8,11 @@ module.exports = {
   tags: ['style', 'links'],
   parser: 'markdownit',
   function: function rule(params, onError) {
+    // The repo README is a GitHub file, not a wiki page - its links (for example
+    // ](LICENSE.md)) follow GitHub file-link conventions, so skip it.
+    if (/(^|\/)README\.md$/i.test(params.name || '')) {
+      return;
+    }
     const lines = params.lines;
     let inCodeBlock = false;
     const linkTarget = /\]\(([^)]+)\)/g;

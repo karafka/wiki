@@ -109,6 +109,6 @@ BUNDLE_GEMFILE=Gemfile.lint bundle exec yard-lint lib/
 
 ## See Also
 
-- [Technical Writing](Development-Technical-Writing.md) - Documentation style guidelines
-- [Naming Conventions](Development-Naming-Conventions.md) - Naming patterns across Karafka
-- [Gems Publishing](Development-Gems-Publishing.md) - Release process for Karafka gems
+- [Technical Writing](Development-Technical-Writing) - Documentation style guidelines
+- [Naming Conventions](Development-Naming-Conventions) - Naming patterns across Karafka
+- [Gems Publishing](Development-Gems-Publishing) - Release process for Karafka gems
