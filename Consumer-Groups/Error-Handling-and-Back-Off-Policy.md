@@ -82,7 +82,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
     <tr>
       <td><code>#wrap</code></td>
       <td>No</td>
-      <td>Wraps the entire consumption lifecycle, including framework-level operations and user-defined logic. Must <strong>always</strong> call <code>yield</code> to ensure that all processing, synchronization, and cleanup actions are executed, even in error scenarios.</td>
+      <td>Wraps the entire consumption lifecycle, including framework-level operations and user-defined logic. Must <strong>always</strong> call <code>yield</code> to make sure that all processing, synchronization, and cleanup actions are executed, even in error scenarios.</td>
     </tr>
   </tbody>
 </table>
@@ -256,7 +256,7 @@ Karafka handles framework and Kafka-related errors on several layers, ensuring r
 Karafka employs multiple layers of error handling to manage issues seamlessly:
 
 - **Framework-Level Recovery**: Errors related to Karafka's internal operations are handled within the framework. This includes automatic retries and recovery procedures to maintain the stability of the message processing flow.
-- **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka ensures that these errors do not disrupt the overall processing pipeline.
+- **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka makes sure that these errors do not disrupt the overall processing pipeline.
 
 ### Final Recovery Strategy
 

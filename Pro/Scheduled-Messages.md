@@ -1,4 +1,4 @@
-Karafka's Scheduled Messages feature allows users to designate specific times for messages to be sent to particular Kafka topics. This capability ensures that messages are delivered at predetermined times, optimizing workflows and allowing for precise processing and message handling timing in case a message should not arrive immediately.
+Karafka's Scheduled Messages feature allows users to designate specific times for messages to be sent to particular Kafka topics. This capability makes sure that messages are delivered at predetermined times, optimizing workflows and allowing for precise processing and message handling timing in case a message should not arrive immediately.
 
 Conceptually, it works in a similar way to the [ETF1 Kafka Message Scheduler](https://github.com/etf1/kafka-message-scheduler/).
 
@@ -6,7 +6,7 @@ Conceptually, it works in a similar way to the [ETF1 Kafka Message Scheduler](ht
 
 Karafka's Scheduled Messages feature provides a straightforward approach to scheduling Kafka messages for future delivery, allowing users to set precise timings for when messages should reach the desired topics. Using a specialized API, Karafka allows users to easily specify the delivery time for messages without having to handle the complex scheduling details directly. This is achieved by wrapping the messages in an envelope that includes all necessary scheduling information and dispatching them to a special "in-the-middle" topic, which is then managed automatically by Karafka.
 
-Each day at midnight, Karafka's scheduler, a dedicated consumer, reloads and scans a specific Kafka topic designated for storing scheduled messages. This routine includes loading new messages meant for the day, ensuring they are ready for dispatch at specified times. To maintain a seamless and continuous operation, the scheduler dispatches messages at regular intervals, typically every 15 seconds, which is configurable. This ensures that all scheduled messages are delivered when needed.
+Each day at midnight, Karafka's scheduler, a dedicated consumer, reloads and scans a specific Kafka topic designated for storing scheduled messages. This routine includes loading new messages meant for the day, ensuring they are ready for dispatch at specified times. To maintain a seamless and continuous operation, the scheduler dispatches messages at regular intervals, typically every 15 seconds, which is configurable. This makes sure that all scheduled messages are delivered when needed.
 
 One key aspect of Karafka's handling of scheduled messages is its treatment of message payloads. It ensures the payload and user headers remain untouched by simply proxy-passing them with added trace headers.
 
@@ -18,7 +18,7 @@ One key aspect of Karafka's handling of scheduled messages is its treatment of m
   </small>
 </p>
 
-When Karafka dispatches a scheduled message, it also produces a special tombstone message that goes back to the scheduled messages topic. This tombstone message serves as a marker to indicate that a particular message has already been dispatched. In case of a system failure or a consumer group rebalance, this tombstone prevents the same message from being sent multiple times, ensuring that messages are processed exactly once.
+When Karafka dispatches a scheduled message, it also produces a special tombstone message that goes back to the scheduled messages topic. This tombstone message serves as a marker to indicate that a particular message has already been dispatched. In case of a system failure or a consumer group rebalance, this tombstone prevents the same message from being sent multiple times, making sure that messages are processed exactly once.
 
 The tombstone message effectively sets the message payload to null using the same key as the scheduled message. This is recognized by Kafka, which then uses this marker to eventually remove the message from the schedules topic. Kafka's log compaction feature looks for these null payloads and purges them during the cleanup, preventing duplicate processing and optimizing the storage by removing obsolete data. Additionally, this compaction process has the benefit of streamlining Karafka's daily schedule loading. After midnight, when the scheduler re-reads the topic to load the day's schedule, compacted messages marked with tombstone messages and subsequently removed are not even sent from Kafka. This reduces the amount of data the scheduler needs to process, allowing for faster and more efficient loading of the daily schedule, thus enhancing the overall performance and responsiveness of the scheduling system.
 
@@ -127,13 +127,13 @@ If you do not use Declarative Topics, please make sure to create those topics ma
 
 !!! warning "Topic Partition Consistency Required"
 
-    When manually creating or reconfiguring topics for scheduled messages, ensure that both topics have the **same** number of partitions. This consistency is crucial for maintaining the integrity and reliability of the message scheduling and state tracking processes.
+    When manually creating or reconfiguring topics for scheduled messages, make sure that both topics have the **same** number of partitions. This consistency is crucial for maintaining the integrity and reliability of the message scheduling and state tracking processes.
 
 ### Replication Factor Configuration for the Production Environment
 
-Setting the replication factor for Kafka topics used by the scheduled messages feature to more than 1 in production environments is crucial. The replication factor determines how many copies of the data are stored across different Kafka brokers. Having a replication factor greater than 1 ensures that the data is highly available and fault-tolerant, even in the case of broker failures.
+Setting the replication factor for Kafka topics used by the scheduled messages feature to more than 1 in production environments is crucial. The replication factor determines how many copies of the data are stored across different Kafka brokers. Having a replication factor greater than 1 makes sure that the data is highly available and fault-tolerant, even in the case of broker failures.
 
-For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, ensuring that your recurring tasks continue to operate without interruption.
+For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, making sure that your recurring tasks continue to operate without interruption.
 
 Here's an example of how to reconfigure the scheduled messages topics so they have replication factor of 3:
 
@@ -183,7 +183,7 @@ When deploying Karafka's Scheduled Messages feature across multiple applications
 
 ### Consumer Group Isolation
 
-The most critical aspect of running scheduled messages across multiple applications is ensuring that each application uses a unique consumer group ID and dedicated schedule topics. This prevents applications from interfering with each other's message processing and ensures that scheduled messages are handled correctly by their intended applications.
+The most critical aspect of running scheduled messages across multiple applications is making sure that each application uses a unique consumer group ID and dedicated schedule topics. This prevents applications from interfering with each other's message processing and makes sure that scheduled messages are handled correctly by their intended applications.
 
 ```ruby
 # Application 1 - "orders_app"
@@ -295,7 +295,7 @@ This call places the wrapped message into the designated scheduling topic, which
 
 When using this feature, it is crucial to understand dispatched messages keys and their uniqueness operations. Each message sent to the scheduler must have a distinct key within its partition to ensure accurate scheduling and prevent any potential overlaps or errors during the dispatch process.
 
-By default, Karafka generates a unique key for each scheduled message envelope. This key is a combination of the topic to which the message will eventually be dispatched and a UUID. The formula used is something akin to: "{target_topic}-{UUID}". This key is then assigned to the `:key` field in the envelope, ensuring that each message is uniquely identified within the scheduling system.
+By default, Karafka generates a unique key for each scheduled message envelope. This key is a combination of the topic to which the message will eventually be dispatched and a UUID. The formula used is something akin to: "{target_topic}-{UUID}". This key is then assigned to the `:key` field in the envelope, making sure that each message is uniquely identified within the scheduling system.
 
 This generated key serves multiple purposes:
 
@@ -303,7 +303,7 @@ This generated key serves multiple purposes:
 
 - **Management**: Facilitates updating or canceling the scheduled dispatch of the message.
 
-Suppose the original message contains `partition_key` or a direct `partition` reference. In that case, Karafka will also attempt to use any of those values as the envelope `partition_key` to ensure that consecutive messages with the same details are always dispatched to the same partition and later sent to a target topic in order.
+Suppose the original message contains `partition_key` or a direct `partition` reference. In that case, Karafka will also attempt to use any of those values as the envelope `partition_key` to make sure that consecutive messages with the same details are always dispatched to the same partition and later sent to a target topic in order.
 
 If you prefer to use your key instead of relying on the auto-generated key, you can provide your chosen key directly in the envelope. When you specify your key this way, Karafka will use it without generating a new one. This approach allows you to maintain consistency or alignment with other systems or data structures you might be using:
 
@@ -325,7 +325,7 @@ enveloped = Karafka::Pro::ScheduledMessages.schedule(
 
     The custom key you use must remain unique within the scheduler topic's partition context. Reusing the same key for multiple messages in the same partition is not advisable, as each subsequent message will overwrite the previous one in the scheduling system, regardless of their scheduled times.
 
-If you must ensure that particular messages are dispatched in a specific order, you can use the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key ensures that:
+If you must make sure that particular messages are dispatched in a specific order, you can use the `partition_key` field in the envelope. While the key may still be automatically generated to maintain uniqueness, setting the `partition_key` to a value that matches the underlying message key makes sure that:
 
 - All related messages (sharing the same raw message key) are dispatched to the same partition.
 - The order of messages is preserved as per the sequence of their scheduling.
@@ -361,13 +361,13 @@ To cancel a scheduled message:
 
 The unique key is critical in the cancellation process for several reasons:
 
-- **Targeting the Correct Message**: It ensures that the exact message intended for cancellation is correctly identified.
+- **Targeting the Correct Message**: It makes sure that the exact message intended for cancellation is correctly identified.
 
 - **Avoiding Conflicts**: By maintaining unique keys for each message, you prevent potential issues where multiple messages might be inadvertently affected by a single cancellation command.
 
 !!! tip "Custom Keys and Automatic Key Generation"
 
-    When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, it's important to use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and ensures that the correct message is targeted for cancellation.
+    When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, it's important to use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and makes sure that the correct message is targeted for cancellation.
 
 !!! tip "Handling Cancellations with `partition_key`"
 
@@ -377,7 +377,7 @@ The unique key is critical in the cancellation process for several reasons:
 
 Karafka's Scheduled Messages feature allows updating messages that have already been scheduled but not yet dispatched. This functionality is crucial when a scheduled message's content, timing, or conditions need to be modified before its dispatch.
 
-Updating a scheduled message in Karafka involves a straightforward process similar to scheduling a new message, with a key distinction: you must use the same unique envelope key used for the original scheduling. This ensures that the new message parameters overwrite the old ones in the scheduling system.
+Updating a scheduled message in Karafka involves a straightforward process similar to scheduling a new message, with a key distinction: you must use the same unique envelope key used for the original scheduling. This makes sure that the new message parameters overwrite the old ones in the scheduling system.
 
 To update the scheduled message:
 
@@ -445,7 +445,7 @@ Aside from the periodic state updates sent to the states topic, the error report
 
 - **Metrics Collection**: Metrics for error rates, processing times, and other key performance indicators are collected and can be viewed in the Karafka Web UI or through integrated monitoring tools.
 
-This consistent monitoring and error reporting approach ensures that administrators and developers can use familiar tools and processes to manage and troubleshoot scheduled message consumers, simplifying system maintenance and oversight.
+This consistent monitoring and error reporting approach makes sure that administrators and developers can use familiar tools and processes to manage and troubleshoot scheduled message consumers, simplifying system maintenance and oversight.
 
 ## Web UI Management
 
@@ -473,7 +473,7 @@ This feature is designed to ensure robust error handling and efficient retry mec
 
 - **No Deserialization of Payload**: Karafka does not deserialize the payload of scheduled messages; it passes the raw data through. This approach eliminates serialization errors, common sources of faults in message processing systems.
 
-- **Raw Values for Keys and Headers**: Similarly to the payload, Karafka uses raw values for keys and headers. This ensures that the data integrity is maintained without introducing serialization or format errors during the handling process.
+- **Raw Values for Keys and Headers**: Similarly to the payload, Karafka uses raw values for keys and headers. This makes sure that the data integrity is maintained without introducing serialization or format errors during the handling process.
 
 - **No Default DLQ (Dead Letter Queue) Strategies**: By default, Karafka does not implement any Dead Letter Queue strategies for intermediate message topics used in scheduling. Any blocking errors may require manual intervention.
 
@@ -481,7 +481,7 @@ This feature is designed to ensure robust error handling and efficient retry mec
 
 - **Default User Configuration**: Karafka relies on the default retry policies specified in the user's configuration settings. This means that delivery errors and other operational errors will trigger retries according to the predefined rules in the configuration.
 
-- **Handling Dispatch Errors**: While dispatch errors and other issues may cause messages to be dispatched more than once, the system is designed to ensure that no messages are skipped.
+- **Handling Dispatch Errors**: While dispatch errors and other issues may cause messages to be dispatched more than once, the system is designed to make sure that no messages are skipped.
 
 **Schema Compatibility and System Upgrades:**
 
@@ -491,13 +491,13 @@ This feature is designed to ensure robust error handling and efficient retry mec
 
 - **Rolling Deployments**: The halt-on-incompatibility feature supports rolling deployments by allowing parts of a system to be updated incrementally. During this process, message dispatching is safely paused until all components are confirmed to be compatible, minimizing downtime and disruption.
 
-This feature's error handling and retry strategies ensure that the system remains resilient and reliable, even in the face of operational challenges. Its approach to managing dispatch errors, retries, and schema changes ensures that messages are handled appropriately under all circumstances, supporting continuous and dependable operations.
+This feature's error handling and retry strategies make sure that the system remains resilient and reliable, even in the face of operational challenges. Its approach to managing dispatch errors, retries, and schema changes makes sure that messages are handled appropriately under all circumstances, supporting continuous and dependable operations.
 
 ## Warranties
 
 Karafka's Scheduled Messages feature offers a set of warranties designed to ensure robust functionality and reliability within production environments. Here's a summary of the key guarantees and limitations:
 
-- **Message Delivery Guarantee**: Karafka ensures that all scheduled messages will be delivered at least once, minimizing the risk of message loss. However, messages might be delivered multiple times under certain circumstances like network or Kafka cluster disruptions.
+- **Message Delivery Guarantee**: Karafka makes sure that all scheduled messages will be delivered at least once, minimizing the risk of message loss. However, messages might be delivered multiple times under certain circumstances like network or Kafka cluster disruptions.
 
 - **Timeliness of Message Dispatch**: While Karafka aims to dispatch messages close to their scheduled times, there is a flexibility window influenced by the dispatch frequency (default is every 15 seconds). This means that exact second-by-second scheduling might see slight deviations.
 
@@ -513,7 +513,7 @@ Karafka's Scheduled Messages feature offers a set of warranties designed to ensu
 
 Karafka's Scheduled Messages feature provides transactional support to ensure exactly-once delivery of messages when used with a transactional WaterDrop producer. This support hinges on the proper configuration and execution of message batching and transaction handling within the Karafka ecosystem.
 
-When using a transactional WaterDrop producer, the Scheduled Messages feature can achieve exactly once delivery by including the dispatched message to the target topic and the corresponding tombstone message in a single transaction batch. This approach ensures that both sending the message and marking it as dispatched (via the tombstone) are atomically committed to Kafka, thus preventing any duplication or message loss during processing.
+When using a transactional WaterDrop producer, the Scheduled Messages feature can achieve exactly once delivery by including the dispatched message to the target topic and the corresponding tombstone message in a single transaction batch. This approach makes sure that both sending the message and marking it as dispatched (via the tombstone) are atomically committed to Kafka, thus preventing any duplication or message loss during processing.
 
 ## Limitations
 
@@ -529,7 +529,7 @@ While Scheduled Messages offer powerful message scheduling and dispatch capabili
 
 1. **No Real-Time Cancellation Feedback**: When a scheduled message is canceled, there is no immediate feedback or confirmation that the message has been successfully removed from the schedule.
 
-1. **Message Duplication Risks**: Due to the nature of Kafka and the possibility of retries in the event of critical delivery errors, message duplication is a risk unless a transactional producer is used. While Karafka ensures that messages are not lost, duplicate messages may be delivered under certain failure scenarios.
+1. **Message Duplication Risks**: Due to the nature of Kafka and the possibility of retries in the event of critical delivery errors, message duplication is a risk unless a transactional producer is used. While Karafka makes sure that messages are not lost, duplicate messages may be delivered under certain failure scenarios.
 
 1. **No Priority Queueing**: Karafka does not support priority queueing for scheduled messages. Messages are dispatched in the order they are due, without any mechanism to prioritize specific messages over others, regardless of urgency.
 
@@ -567,7 +567,7 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 - **Update and Maintenance Windows**: If possible, schedule maintenance and updates during off-peak hours. Choose times when the impact on scheduled message processing would be minimal, ideally when there are fewer critical tasks scheduled.
 
-- **Disaster Recovery and High Availability**: Ensure that your deployment strategy includes provisions for disaster recovery and high availability. This could involve replicating the scheduling components across multiple data centers or using cloud services that provide built-in redundancy and failover capabilities.
+- **Disaster Recovery and High Availability**: Make sure that your deployment strategy includes provisions for disaster recovery and high availability. This could involve replicating the scheduling components across multiple data centers or using cloud services that provide built-in redundancy and failover capabilities.
 
 ## External Producers Support
 
@@ -583,7 +583,7 @@ When using external producers to schedule messages, it's crucial to follow a spe
 
 - `schedule_target_topic`: Defines the Kafka topic to which the message should be dispatched when its scheduled time arrives.
 
-- `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
+- `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for making sure that messages are uniquely identified and managed within the scheduling system.
 
 Additional optional headers can include:
 
@@ -591,7 +591,7 @@ Additional optional headers can include:
 
 - `schedule_target_partition_key`: Used to determine the partition to which the message will be routed within the target topic based on Kafka's partitioning algorithm.
 
-When implementing an external producer to schedule messages for Karafka, ensure that the message conforms to the required header format and includes all necessary scheduling information.
+When implementing an external producer to schedule messages for Karafka, make sure that the message conforms to the required header format and includes all necessary scheduling information.
 
 ## Alternatives
 
@@ -632,7 +632,7 @@ Use Cases:
 
 - Flexibility to create multiple time delays for different types of messages.
 - Allows you to group delayed messages into "buckets" based on their time requirements.
-- Seamless integration of delayed processing with piping ensures that messages are forwarded to their final destination once their delay expires.
+- Seamless integration of delayed processing with piping makes sure that messages are forwarded to their final destination once their delay expires.
 - Simplifies complex workflows that require messages to be processed after various time intervals.
 
 **Cons**:

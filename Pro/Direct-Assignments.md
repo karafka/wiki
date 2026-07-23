@@ -1,6 +1,6 @@
 The Direct Assignments feature allows precise control over Kafka topic and partition consumption. This feature bypasses the standard consumer group partition assignment mechanism, allowing you to manually specify which partitions and topics each consumer should process. This can be particularly useful for building complex data pipelines and applications that require explicit partition handling.
 
-Direct Assignments enable scenarios where automatic partition assignments could be suboptimal or inappropriate. With direct assignments, you can explicitly define partition ownership, ensuring that specific consumers only process data from specified partitions.
+Direct Assignments enable scenarios where automatic partition assignments could be suboptimal or inappropriate. With direct assignments, you can explicitly define partition ownership, making sure that specific consumers only process data from specified partitions.
 
 ## Key Features
 
@@ -56,13 +56,13 @@ end
 
 ## Example Use Cases
 
-- **Complex Data Pipeline Integration**: In complex data pipelines, certain data processing stages may need to operate on specific partitions due to dependencies or processing requirements. With Direct Assignments, you can ensure that these requirements are explicitly handled, reducing the risk of processing errors and inefficiencies.
+- **Complex Data Pipeline Integration**: In complex data pipelines, certain data processing stages may need to operate on specific partitions due to dependencies or processing requirements. With Direct Assignments, you can make sure that these requirements are explicitly handled, reducing the risk of processing errors and inefficiencies.
 
 - **High-Performance Requirements**: For applications requiring high throughput and low latency, managing partition assignments directly can minimize rebalances and optimize data locality, leading to faster processing times.
 
 - **Predictable Scaling**: When scaling out consumers in a Kafka application, Direct Assignments allow for predictable performance by explicitly controlling partition distribution among consumers. This is especially useful in scenarios where adding more consumers must be meticulously planned to avoid performance degradation.
 
-- **Data Isolation for Security or Compliance**: Certain use cases might require data isolation for security or compliance reasons. Direct Assignments allow you to segregate data processing to specific consumers, ensuring that sensitive data is only accessible to authorized processes.
+- **Data Isolation for Security or Compliance**: Certain use cases might require data isolation for security or compliance reasons. Direct Assignments allow you to segregate data processing to specific consumers, making sure that sensitive data is only accessible to authorized processes.
 
 - **Stateful Stream Processing**: Applications requiring stateful operations across messages can benefit from Direct Assignments, which guarantee that specific consumers always process certain partitions. This setup is crucial for systems like event sourcing or complex event processing (CEP), where maintaining order and state consistency is vital.
 

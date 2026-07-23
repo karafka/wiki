@@ -67,7 +67,7 @@ You can create producers with different `kafka` settings. Full list of the Kafka
 
 ## Idempotence
 
-When idempotence is enabled, the producer will ensure that messages are successfully produced exactly once and in the original production order.
+When idempotence is enabled, the producer will make sure that messages are successfully produced exactly once and in the original production order.
 
 To enable idempotence, you need to set the `enable.idempotence` kafka scope setting to `true`:
 
@@ -87,7 +87,7 @@ The following Kafka configuration properties are adjusted automatically (if not 
 - `retries` set to `2147483647`
 - `acks` set to `all`
 
-The idempotent producer ensures that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system ensures that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
+The idempotent producer makes sure that messages are always delivered in the correct order and without duplicates. In other words, when an idempotent producer sends a message, the messaging system makes sure that the message is only delivered once to the message broker and subsequently to the consumers, even if the producer tries to send the message multiple times.
 
 You can read more about idempotence and acknowledgements settings [here](WaterDrop-Idempotence-and-Acknowledgements).
 
@@ -121,7 +121,7 @@ When enabled, WaterDrop will:
 1. Wait for the configured backoff period before retrying the operation
 1. Track reload attempts to prevent infinite loops
 
-The reload mechanism helps ensure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
+The reload mechanism helps make sure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
 
 !!! warning "Producer Client Reload Impact"
 
@@ -278,7 +278,7 @@ There are three primary parameters to consider:
 
     - librdkafka, before publishing, validates the **uncompressed** size of the message.
 
-    - This check ensures that the message size adheres to configured standards even before compression.
+    - This check makes sure that the message size adheres to configured standards even before compression.
 
 1. **Broker-Side Validation**:
 

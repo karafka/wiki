@@ -127,7 +127,7 @@ Here are some potential use cases for Delayed Topics:
 
 - General: By using Delayed Topics in conjunction with a Dead Letter Queue, you can create a more robust and dynamic system that is capable of handling a variety of failure scenarios and providing a more efficient and effective message processing system.
 
-- Data crawling: The Delayed Topics feature can be helpful in data crawling applications, where immediately published data may not be immediately available due to HTTP caches. In such cases, it may be beneficial to delay the processing of messages for a fixed period, to ensure that all the caches have expired and the data is fully available. By using delayed processing, you can avoid processing incomplete or stale data and ensure that your application works with the latest, fully available information.
+- Data crawling: The Delayed Topics feature can be helpful in data crawling applications, where immediately published data may not be immediately available due to HTTP caches. In such cases, it may be beneficial to delay the processing of messages for a fixed period, to make sure that all the caches have expired and the data is fully available. By using delayed processing, you can avoid processing incomplete or stale data and make sure that your application works with the latest, fully available information.
 
 - E-commerce: Delay processing of orders for a short period to allow for cancellation or modification of orders by customers. During this delay, additional validation can be performed, such as stock availability or fraud detection. If there is a problem with processing an order, it can be moved to a Dead Letter Queue for reprocessing later.
 
@@ -137,7 +137,7 @@ Here are some potential use cases for Delayed Topics:
 
 - Real-Time Monitoring: Delay processing of real-time monitoring data to enable better performance and reduce network congestion. By batching data and delaying processing, it can be processed more efficiently and effectively, and results can be displayed to users in a more timely manner.
 
-- Machine Learning: Delay processing of machine learning training data to avoid training on stale or inaccurate data. By delaying data processing, it is possible to ensure that the data used for training is up-to-date and accurate.
+- Machine Learning: Delay processing of machine learning training data to avoid training on stale or inaccurate data. By delaying data processing, it is possible to make sure that the data used for training is up-to-date and accurate.
 
 ## Summary
 

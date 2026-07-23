@@ -8,7 +8,7 @@ When using `#produce_sync` or `#produce_many_sync`, WaterDrop automatically yiel
 
 ### How It Works
 
-WaterDrop uses Ruby's fiber-yielding mechanisms to ensure that when `#produce_sync` or `#produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
+WaterDrop uses Ruby's fiber-yielding mechanisms to make sure that when `#produce_sync` or `#produce_many_sync` operations encounter blocking I/O (such as network communication with Kafka brokers), control is properly yielded to other fibers in the system. This prevents blocking the entire fiber scheduler and maintains application responsiveness.
 
 **Key behaviors:**
 

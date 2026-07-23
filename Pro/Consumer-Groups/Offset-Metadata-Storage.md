@@ -115,9 +115,9 @@ In this example, `#mark_as_consumed!` marks a message as consumed and simultaneo
 
 Automatic flows in Karafka refer to scenarios where offset marking is not explicitly invoked by the user but is handled internally by the system. This could be the case when automatic offset management is enabled or when certain features like the Dead Letter Queue (DLQ) are enabled. The system may implicitly use marking methods like `#mark_as_consumed` or `#mark_as_consumed!` without direct user intervention.
 
-The main challenge in automatic flows is ensuring that the relevant offset metadata is correctly associated with the message being processed, even though the user does not explicitly invoke the marking method. This is crucial for maintaining a coherent state and enabling more intelligent processing.
+The main challenge in automatic flows is making sure that the relevant offset metadata is correctly associated with the message being processed, even though the user does not explicitly invoke the marking method. This is crucial for maintaining a coherent state and enabling more intelligent processing.
 
-To address this challenge, Karafka provides the `#store_offset_metadata` method. This method allows you to store offset metadata in advance, ensuring that it will be used with the following marking, regardless of whether the marking is triggered by user-based actions or by automatic internal processes.
+To address this challenge, Karafka provides the `#store_offset_metadata` method. This method allows you to store offset metadata in advance, making sure that it will be used with the following marking, regardless of whether the marking is triggered by user-based actions or by automatic internal processes.
 
 ```ruby
 def consume
@@ -173,7 +173,7 @@ It's important to note the behavior of the `#offset_metadata` method about the `
 
 The primary use case for offset metadata is to pass stateful information that can be crucial during rebalances or when the assignment of partitions changes. For example, in a distributed system where multiple consumers work on different partitions, a rebalance might change the partition assignment of consumers. In such cases, the offset metadata can provide the necessary context or state information to the newly assigned consumer, allowing it to pick up the processing exactly where the previous consumer left off.
 
-One crucial aspect is that the `#offset_metadata` method may return `false` if the given partition is no longer part of the consumer's assignment. This safety mechanism ensures that your consumer does not act on stale or irrelevant metadata. Always check the return value of `#offset_metadata` and handle the false case appropriately in your application logic.
+One crucial aspect is that the `#offset_metadata` method may return `false` if the given partition is no longer part of the consumer's assignment. This safety mechanism makes sure that your consumer does not act on stale or irrelevant metadata. Always check the return value of `#offset_metadata` and handle the false case appropriately in your application logic.
 
 ## Offset Metadata Usage From Within Filters
 

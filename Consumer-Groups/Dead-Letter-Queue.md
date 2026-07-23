@@ -109,7 +109,7 @@ This approach is based on the presumption that the entire batch might be problem
 
 This collective approach might not align with specific use cases with independent message processing. In such cases, the failure of one message does not necessarily imply a problem with the entire batch.
 
-Karafka's independent flag introduces a nuanced approach to DLQ recovery, treating each message as an individual entity with its error counter. When enabled, this flag allows Karafka to reset the error count for each message as soon as it is successfully consumed, ensuring that each message is processed on its own merits, independent of the batch. This feature is especially beneficial in scenarios where messages are not interdependent, providing a more targeted and efficient error-handling process for each message within a batch.
+Karafka's independent flag introduces a nuanced approach to DLQ recovery, treating each message as an individual entity with its error counter. When enabled, this flag allows Karafka to reset the error count for each message as soon as it is successfully consumed, making sure that each message is processed on its own merits, independent of the batch. This feature is especially beneficial in scenarios where messages are not interdependent, providing a more targeted and efficient error-handling process for each message within a batch.
 
 To enable it, add `independent: true` to your DLQ topic definition:
 
@@ -309,11 +309,11 @@ You can read more about producing to multiple clusters [here](Basics-Producing-M
 
 When using the Dead Letter Queue (DLQ) feature in Karafka, messages are handled with specific dispatch and marking behaviors critical for understanding how message failures are managed. By default, Karafka employs asynchronous dispatch and non-blocking marking as consumed. However, these can be configured to behave synchronously for stricter processing guarantees.
 
-For environments where message processing integrity is critical, you should configure dispatch and marking to operate synchronously. This ensures that each message is not only sent to the DLQ but also acknowledged by Kafka before proceeding and, similarly, that a message is confirmed as consumed before moving on.
+For environments where message processing integrity is critical, you should configure dispatch and marking to operate synchronously. This makes sure that each message is not only sent to the DLQ but also acknowledged by Kafka before proceeding and, similarly, that a message is confirmed as consumed before moving on.
 
-To configure synchronous dispatch, you can set the `dispatch_method` option to `:produce_sync`. This setting ensures that the producer waits for a response from Kafka, confirming that the message has been received and stored before it returns control to the application.
+To configure synchronous dispatch, you can set the `dispatch_method` option to `:produce_sync`. This setting makes sure that the producer waits for a response from Kafka, confirming that the message has been received and stored before it returns control to the application.
 
-Similarly, to configure blocking marking, you can set the `marking_method` to `:mark_as_consumed!`. This ensures that the message is marked as consumed in your application when Kafka confirms that it has been committed, reducing the risk of losing the message's consumption state.
+Similarly, to configure blocking marking, you can set the `marking_method` to `:mark_as_consumed!`. This makes sure that the message is marked as consumed in your application when Kafka confirms that it has been committed, reducing the risk of losing the message's consumption state.
 
 Here is an example configuration that uses synchronous dispatch and blocking marking for messages sent to the DLQ:
 
@@ -379,7 +379,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This approach ensures that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
+This approach makes sure that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
 
 ## Pro Enhanced Dead Letter Queue
 
@@ -397,11 +397,11 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-
 
 - Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, ensuring no payment is lost.
 
-- Email delivery: In email delivery systems, DLQs can be used to capture email messages that fail to deliver due to invalid email addresses, network issues, or other issues. These messages can be later reviewed and resent, ensuring that important emails are not lost.
+- Email delivery: In email delivery systems, DLQs can be used to capture email messages that fail to deliver due to invalid email addresses, network issues, or other issues. These messages can be later reviewed and resent, making sure that important emails are not lost.
 
 - Order processing: In e-commerce systems, DLQs can be used to capture orders that fail to process due to system errors, payment failures, or other issues. These orders can be reviewed and processed later, ensuring no orders are lost, and customer satisfaction is maintained.
 
-- Data pipeline processing: In data pipeline systems, DLQs can be used to capture data events that fail to process due to data schema issues, data quality issues, or other issues. These events can be later reviewed and processed, ensuring that important data is not lost and data integrity is maintained.
+- Data pipeline processing: In data pipeline systems, DLQs can be used to capture data events that fail to process due to data schema issues, data quality issues, or other issues. These events can be later reviewed and processed, making sure that important data is not lost and data integrity is maintained.
 
 - Fraud detection: In financial systems, DLQs can be used to capture suspicious transactions that fail to process due to system errors, network issues, or other issues.
 

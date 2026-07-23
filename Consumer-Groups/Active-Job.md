@@ -127,11 +127,11 @@ Job.perform_all_later(jobs)
 
 ## `karafka_options` Partial Inheritance
 
-When an ActiveJob class defines `karafka_options`, these options are designed to be inherited by any subclass of the job. This inheritance mechanism ensures that all the settings are consistently applied across different jobs, simplifying configuration management and promoting reusability.
+When an ActiveJob class defines `karafka_options`, these options are designed to be inherited by any subclass of the job. This inheritance mechanism makes sure that all the settings are consistently applied across different jobs, simplifying configuration management and promoting reusability.
 
 By default, when a subclass inherits from a parent job class with predefined `karafka_options`, the subclass automatically inherits all of these options. If no explicit `karafka_options` are defined in the subclass, it will use the options set in its parent class.
 
-However, when `karafka_options` are set in a subclass, it does not necessarily have to redefine all the options specified in the parent class. Instead, it can choose to overwrite only specific options. Karafka will merge the options defined in the subclass with those of the parent class. This merging process ensures that any option not explicitly overridden in the subclass retains its value from the parent class.
+However, when `karafka_options` are set in a subclass, it does not necessarily have to redefine all the options specified in the parent class. Instead, it can choose to overwrite only specific options. Karafka will merge the options defined in the subclass with those of the parent class. This merging process makes sure that any option not explicitly overridden in the subclass retains its value from the parent class.
 
 For example, consider a parent job class configured with multiple karafka_options:
 
@@ -286,7 +286,7 @@ class ProcessImportJob < ActiveJob::Base
 end
 ```
 
-The `resume_options = { wait: 0 }` configuration ensures that continuation jobs resume immediately, bypassing the need for scheduled message support.
+The `resume_options = { wait: 0 }` configuration makes sure that continuation jobs resume immediately, bypassing the need for scheduled message support.
 
 ### Enhanced Continuation in Pro
 

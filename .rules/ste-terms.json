@@ -3,6 +3,11 @@
   "_docs": "See Development/Technical-Writing.md for the full house style and the rationale behind each entry.",
 
   "substitutions": [
+    { "term": "ensure that", "fix": "make sure that" },
+    { "term": "ensures that", "fix": "makes sure that" },
+    { "term": "ensuring that", "fix": "making sure that" },
+    { "term": "ensured that", "fix": "made sure that" },
+
     { "term": "utilize", "fix": "use" },
     { "term": "utilizes", "fix": "uses" },
     { "term": "utilizing", "fix": "using" },

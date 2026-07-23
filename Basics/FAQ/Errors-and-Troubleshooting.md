@@ -49,7 +49,7 @@ Fatal error: Broker: Static consumer fenced by other consumer with same group.in
 It can mean two things:
 
 1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
-1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+1. Your `group.instance.id` is not unique within your consumer group. You must always make sure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
@@ -139,7 +139,7 @@ The error `Broker failed to validate record (invalid_record)` in Kafka means tha
 There are several reasons why a Kafka broker might reject some messages:
 
 - Invalid message format: If the message format does not match the expected format of the topic, the broker may reject the message.
-- Missing message key. If you use log compaction as your `cleanup.policy` Kafka will require you to provide the key. Log compaction ensures that Kafka will always retain at least the last known value for each message key within the log of data for a single topic partition. If you enable compaction for a topic, messages without a key may be rejected.
+- Missing message key. If you use log compaction as your `cleanup.policy` Kafka will require you to provide the key. Log compaction makes sure that Kafka will always retain at least the last known value for each message key within the log of data for a single topic partition. If you enable compaction for a topic, messages without a key may be rejected.
 - Schema validation failure: If the message contains data that does not conform to the schema, the broker may reject the message. This can happen if the schema has changed or the data was not properly validated before being sent to Kafka.
 - Authorization failure: If the client does not have the required permissions to write to the topic, the broker may reject the message.
 - Broker capacity limitations: If the broker has limited resources and cannot handle the incoming message traffic, it may reject some messages.
@@ -154,10 +154,10 @@ There are several possible reasons why this error might occur:
 
 - The topic or partition may not exist on the broker. Double-check that the topic and partition you are trying to access exists on the Kafka cluster you are connecting to.
 - The topic or partition may still need to be created. If you are trying to access a topic or partition that has not been created yet, you will need to create it before you can use it.
-- The client may not have permission to access the topic or partition. Ensure that the client has the necessary permissions to read from or write to the topic or partition you are trying to access.
+- The client may not have permission to access the topic or partition. Make sure that the client has the necessary permissions to read from or write to the topic or partition you are trying to access.
 - The client may be using an incorrect topic or partition name. Ensure you use the correct topic or partition name in your client code.
 
-You can use Karafka Web UI or Karafka Admin API to inspect your cluster topics and ensure that the requested topic and partition exist.
+You can use Karafka Web UI or Karafka Admin API to inspect your cluster topics and make sure that the requested topic and partition exist.
 
 ## Why am I having problems running Karafka and Karafka Web with remote Kafka?
 
@@ -263,7 +263,7 @@ Healing means that Amazon MSK is running an internal operation, like replacing a
 
 1. **WaterDrop and Karafka use `karafka-rdkafka`, which is patched and provides specific improvements**: Both WaterDrop and Karafka use a variant of `rdkafka-ruby`, known as `karafka-rdkafka`. This version is patched, meaning it includes improvements and modifications that the standard `rdkafka-ruby` client does not. These patches may offer enhanced performance, additional features, and/or bug fixes that can impact how the two systems behaves.
 
-1. **Different setup conditions**: Comparing different Kafka clients or frameworks can be like comparing apples to oranges if they aren't set up under the same conditions. Factors such as client configuration, Kafka cluster configuration, network latency, message sizes, targeted topics, and batching settings can significantly influence the behavior and performance of Kafka clients. Therefore, when you notice a discrepancy between the behavior of `rdkafka-ruby` and Karafka or WaterDrop, it might be because the conditions they are running under are not identical. To make a fair comparison, ensure that they are configured similarly and are running under the same conditions.
+1. **Different setup conditions**: Comparing different Kafka clients or frameworks can be like comparing apples to oranges if they aren't set up under the same conditions. Factors such as client configuration, Kafka cluster configuration, network latency, message sizes, targeted topics, and batching settings can significantly influence the behavior and performance of Kafka clients. Therefore, when you notice a discrepancy between the behavior of `rdkafka-ruby` and Karafka or WaterDrop, it might be because the conditions they are running under are not identical. To make a fair comparison, make sure that they are configured similarly and are running under the same conditions.
 
 In summary, while `rdkafka-ruby`, Karafka, and WaterDrop all provide ways to interact with Kafka from a Ruby environment, differences in their design, their handling of errors, and the conditions under which they are run can result in different behavior. Always consider these factors when evaluating or troubleshooting these systems.
 
@@ -292,11 +292,11 @@ There are several potential reasons why you can produce messages to your local K
 
 1. **Incorrect Consumer Group**: If you're consuming messages from a topic that a different consumer has already consumed in the same group, you won't see any messages. Kafka uses consumer groups to manage which messages have been consumed. You should use a new group or reset the offset of the existing group.
 
-1. **Security Protocols**: If you've set up your Kafka instance with security protocols like SSL/TLS or SASL, you'll need to ensure that your consumer is correctly configured to use these protocols.
+1. **Security Protocols**: If you've set up your Kafka instance with security protocols like SSL/TLS or SASL, you'll need to make sure that your consumer is correctly configured to use these protocols.
 
 1. **Offset Issue**: The consumer might be reading from an offset where no messages exist. This often happens if the offset is set to the latest, but the messages were produced before the consumer started. Try consuming from the earliest offset to see if this resolves the issue.
 
-1. **Zookeeper Connection Issue**: Sometimes, the issue could be a faulty connection between Kafka and Zookeeper. Ensure that your Zookeeper instance is running without issues.
+1. **Zookeeper Connection Issue**: Sometimes, the issue could be a faulty connection between Kafka and Zookeeper. Make sure that your Zookeeper instance is running without issues.
 
 Remember, these issues are common, so don't worry if you face them. Persistence and careful debugging are key in these situations.
 
@@ -358,7 +358,7 @@ In Karafka, this error might surface during two scenarios:
 
 Should you encounter this error during a Web UI migration, we recommend manually creating the necessary topics and fine-tuning the settings to match your policies. You can review the settings Karafka relies on for these topics [here](Web-UI-Getting-Started#manual-web-ui-topics-management).
 
-On the other hand, if this error appears while using Declarative Topics, kindly review your current configuration. Ensure that it's in harmony with the broker's policies and limitations.
+On the other hand, if this error appears while using Declarative Topics, kindly review your current configuration. Make sure that it's in harmony with the broker's policies and limitations.
 
 ## Why am I getting a `Error querying watermark offsets for partition 0 of karafka_consumers_states` error?
 
@@ -410,7 +410,7 @@ This error occurs when a consumer tries to join a consumer group in Apache Kafka
 
 1. Check the configuration of your consumer to ensure you're setting an appropriate session timeout value.
 
-1. Ensure that the value lies within the broker's allowable range, which you can find in the broker's configuration.
+1. Make sure that the value lies within the broker's allowable range, which you can find in the broker's configuration.
 
 1. Adjust the consumer's session timeout value to be within this range and try reconnecting.
 
@@ -477,7 +477,7 @@ It is worth pointing out that this is not a Karafka-specific issue. While the is
 
 The `Broker: Policy violation (policy_violation)` error in Karafka typically occurs due to exceeding Kafka's quota limitations or issues with Access Control Lists (ACLs). This error indicates that an operation attempted by Karafka has violated the policies set on your Kafka cluster. To resolve this issue, follow these steps:
 
-1. **ACL Verification**: Ensure that your Kafka cluster's ACLs are configured correctly. ACLs control the permissions for topic creation, access, and modification. If ACLs are not properly set up, Karafka might be blocked from performing necessary operations.
+1. **ACL Verification**: Make sure that your Kafka cluster's ACLs are configured correctly. ACLs control the permissions for topic creation, access, and modification. If ACLs are not properly set up, Karafka might be blocked from performing necessary operations.
 
 1. **Quota Checks**: Kafka administrators can set quotas on various resources, such as data throughput rates and the number of client connections. If Karafka exceeds these quotas, it may trigger a `policy_violation` error. Review your Kafka cluster's quota settings to ensure they align with your usage patterns.
 
@@ -495,11 +495,11 @@ This issue is typically caused by a gem conflict related to the Thor gem version
 
 This error indicates that there are not enough in-sync replicas to handle the message persistence. Here's how to address the issue:
 
-1. **Check Cluster Size and Configuration:** Ensure that your Kafka cluster has enough brokers to meet the required replication factor for the topics. If your replication factor is set to `3`, you need at least `3` brokers.
+1. **Check Cluster Size and Configuration:** Make sure that your Kafka cluster has enough brokers to meet the required replication factor for the topics. If your replication factor is set to `3`, you need at least `3` brokers.
 
 1. **Increase Broker Storage Size:** If your brokers are running out of storage space, they will not be able to stay in sync. Increasing the storage size, if insufficient, can help maintain enough in-sync replicas.
 
-1. **Check the Cluster's `min.insync.replicas` Setting:** Ensure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
+1. **Check the Cluster's `min.insync.replicas` Setting:** Make sure that the `min.insync.replicas` setting in your Kafka cluster is not higher than the replication factor of your topics. If `min.insync.replicas` is set to a value higher than the replication factor of a topic, this error will persist. In such cases, manually adjust the affected topics' replication factor to match the required `min.insync.replicas` or recreating the topics with the correct replication factor.
 
 1. **Check for RF=MinISR Misconfiguration:** Setting `min.insync.replicas` equal to `replication.factor` causes write failures during broker maintenance. See [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) for detailed scenarios and recommendations.
 
@@ -555,13 +555,13 @@ There are a couple of reasons `librdkafka` might lose SSL and SASL support in a 
 
 1. **Removing Essential Build Dependencies Too Early**: In multi-stage builds, it's common to install libraries and development tools in an earlier stage and then copy the built software into a slimmer final stage to reduce the image size. However, if the necessary packages (like `libssl-dev` and `libsasl2-dev`) are removed or not available during the initial build stage, librdkafka will compile without SSL and SASL support.
 
-    **Solution**: Ensure that `libssl-dev`, `libsasl2-dev`, and other required libraries are installed in the stage where you build librdkafka. Only clean up or remove these libraries after the build is complete.
+    **Solution**: Make sure that `libssl-dev`, `libsasl2-dev`, and other required libraries are installed in the stage where you build librdkafka. Only clean up or remove these libraries after the build is complete.
 
 1. **Build Layers Removal During Docker Image Creation**:
 
     During the process of building Docker images, each command in the Dockerfile creates a new layer. When a layer is removed, all the changes made in that layer (including installed libraries) are also discarded. If the layers containing the installation of `libssl-dev`, `libsasl2-dev`, or other dependencies are removed before librdkafka is fully built and linked, then the resulting image will lack SSL and SASL support.
 
-    **Solution**: To avoid this issue, ensure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
+    **Solution**: To avoid this issue, make sure that any cleanup commands (like `apt-get` remove or `rm`) are executed after the software is compiled and only if you do not need those libraries anymore for runtime.
 
 ## Why am I getting "could not obtain a connection from the pool" errors?
 

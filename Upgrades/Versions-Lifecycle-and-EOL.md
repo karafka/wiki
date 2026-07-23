@@ -98,7 +98,7 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 
 Karafka and its components are designed to maintain compatibility with all Kafka versions that meet the following conditions:
 
-- **Kafka Versions**: Karafka supports all Kafka versions that have yet to reach their End of Life (EOL). This ensures that users can confidently use Karafka with Kafka versions that are actively maintained and receive necessary security and bug fixes.
+- **Kafka Versions**: Karafka supports all Kafka versions that have yet to reach their End of Life (EOL). This makes sure that users can confidently use Karafka with Kafka versions that are actively maintained and receive necessary security and bug fixes.
 
 - **librdkafka Compatibility**: The underlying broker support for Karafka is anchored by the librdkafka library. As of now, librdkafka supports Kafka brokers in versions `1.0` or higher.
 

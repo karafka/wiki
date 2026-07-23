@@ -324,13 +324,13 @@ Yes, with the Karafka Pro license, you must fetch the license from the Source UR
 
 However, the Enterprise license would be more suitable if your use case requires total offline usage or involves private gem registries.
 
-Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
+Moreover, the Enterprise license comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which make sure that you're covered even after your contract has ended.
 
 ## Can I use Karafka Pro with a private gem server / private registry?
 
 Yes, however, you need a specific Enterprise agreement allowing you to use this capability.
 
-Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which ensure that you're covered even after your contract has ended.
+Once the Enterprise agreement is made, you'll be given offline access to the license and necessary instructions on how to proceed. This type of agreement comes with additional legal benefits. These include contingency warranties, which provide safeguards against unforeseen or unexpected events, and post-contract usage warranties, which make sure that you're covered even after your contract has ended.
 
 ## Can I pay via invoice and purchase order?
 
@@ -423,7 +423,7 @@ If you have questions about your specific contractor or agency arrangement, cont
 - **Community Influence**: Active community members' feedback heavily influences feature prioritization
 - **Custom Development**: For Enterprise customers, I can discuss custom development arrangements on a case-by-case basis, though never as a contracting service.
 
-The open-source nature of Karafka means that development is driven by community needs and practical use cases rather than contractual obligations. This approach has proven effective over nearly a decade of development, ensuring that features are thoroughly tested and genuinely valuable to the community.
+The open-source nature of Karafka means that development is driven by community needs and practical use cases rather than contractual obligations. This approach has proven effective over nearly a decade of development, making sure that features are thoroughly tested and genuinely valuable to the community.
 
 ## Do you provide consulting or contracting services?
 
@@ -514,7 +514,7 @@ Payment issues can occur due to various reasons such as expired cards, insuffici
 
 ### License Termination
 
-Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach ensures that temporary payment problems don't immediately disrupt your production systems.
+Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach makes sure that temporary payment problems don't immediately disrupt your production systems.
 
 If you experience any billing issues, please contact us immediately to avoid any service interruption.
 

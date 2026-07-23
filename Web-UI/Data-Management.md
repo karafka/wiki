@@ -37,7 +37,7 @@ For materialized topics, especially those holding aggregated statistics and metr
 
 - **Migration Execution**: The engine executes necessary migrations to bring materialized and aggregated topic data to the correct consistency state.
 
-- **Ensuring Data Integrity**: This system ensures that data across various versions remains consistent and reliable, essential for accurate data analysis and reporting.
+- **Ensuring Data Integrity**: This system makes sure that data across various versions remains consistent and reliable, essential for accurate data analysis and reporting.
 
 ## Eventual Consistency of Web UI Data
 
@@ -45,7 +45,7 @@ Karafka Web UI data is eventually consistent, meaning that while the system stri
 
 Under certain circumstances, such as heavy lags on multiple partitions, the data presented on the graphs may be outdated by a few minutes. This latency occurs because the consumer and producer processes may not immediately reflect the latest state of the system when they are under significant load.
 
-However, this delay is generally irrelevant when analyzing patterns and conducting general health assessments. The eventual consistency model ensures that, despite temporary delays, the data will ultimately reflect the accurate state of the system. This approach allows users to identify trends and monitor the overall health of their Kafka-based environment effectively, even if some metrics are momentarily lagging.
+However, this delay is generally irrelevant when analyzing patterns and conducting general health assessments. The eventual consistency model makes sure that, despite temporary delays, the data will ultimately reflect the accurate state of the system. This approach allows users to identify trends and monitor the overall health of their Kafka-based environment effectively, even if some metrics are momentarily lagging.
 
 ## Conclusion
 

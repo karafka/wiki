@@ -77,7 +77,7 @@ end
 
 ### Producing In Batches
 
-When using WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, ensuring that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
+When using WaterDrop's `#produce_many_sync` and `#produce_many_async` methods, there's an inherent convenience built-in: WaterDrop will automatically encase the dispatch within a transaction. Hence, if your producer is already configured to be transactional, there's no need for an additional outer `#transaction` block. It streamlines the process, making sure that your batch messages get delivered or none at all without requiring extra layers of transactional wrapping.
 
 ```ruby
 # In case of batch messages production, the `#transaction` wrapper is not needed.
@@ -91,9 +91,9 @@ producer.produce_many_async(messages)
 
 ### Aborting Transaction
 
-Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This ensures that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
+Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This makes sure that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
 
-Below, you can find an example that ensures that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka:
+Below, you can find an example that makes sure that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka:
 
 ```ruby
 producer.transaction do
@@ -192,7 +192,7 @@ However, the behavior differs between versions:
 - **pre 2.8.0**: Exiting a transaction using `return`, `break`, or `throw` would cause the transaction to rollback.
 - **2.8.0 and Newer**: Exiting a transaction using these methods will raise an error.
 
-It is **not** recommended to use early exiting methods. To ensure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
+It is **not** recommended to use early exiting methods. To make sure that transactions are handled correctly, refactor your code to avoid using `return`, `break`, or `throw` directly inside transactional blocks. Instead, manage flow control outside the transaction block.
 
 **BAD**:
 
@@ -306,11 +306,11 @@ The `transaction.timeout.ms` parameter in Kafka is a configuration setting speci
 
 This behavior may impact you in the following ways:
 
-- **Ensures Bounded Transaction Durations**: With `transaction.timeout.ms` in place, WaterDrop ensures that no transaction lingers indefinitely. This is especially crucial when unforeseen issues might prevent a transaction from completing normally. Having a set timeout ensures system resources aren't indefinitely tied up with stalled or zombie transactions.
+- **Ensures Bounded Transaction Durations**: With `transaction.timeout.ms` in place, WaterDrop makes sure that no transaction lingers indefinitely. This is especially crucial when unforeseen issues might prevent a transaction from completing normally. Having a set timeout ensures system resources aren't indefinitely tied up with stalled or zombie transactions.
 
 - **Enhances System Resilience**: By auto-aborting transactions that surpass the set timeout, we avoid potential deadlocks or long-running transactions that might block other critical operations.
 
-- **Determines Batch Size**: If you're sending a batch of messages as a part of a single transaction in WaterDrop, you need to ensure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
+- **Determines Batch Size**: If you're sending a batch of messages as a part of a single transaction in WaterDrop, you need to make sure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
 
 - **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, it's crucial to handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
 
@@ -322,7 +322,7 @@ This behavior may impact you in the following ways:
 
 ## `transactional.id` Management and Fencing
 
-One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka ensures that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
+One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka makes sure that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
 
 Below, you can find an example of how fencing works. After `producer2` first transaction, `producer1` will no longer be able to produce messages and will raise an error:
 
@@ -364,7 +364,7 @@ Here are some recommendations on how to set the `transactional.id` value:
 
 1. **Consistent Mapping**: If you have a particular processing task or a set of tasks, always assign the same `transactional.id` to them. This consistent mapping helps maintain exactly-once semantics, especially if jobs or producers restart.
 
-1. **Storage**: Consider storing the mapping of `transactional.id` to specific tasks or workflows in durable storage. This ensures that even if your application restarts, you can consistently assign the correct `transactional.id` to each task.
+1. **Storage**: Consider storing the mapping of `transactional.id` to specific tasks or workflows in durable storage. This makes sure that even if your application restarts, you can consistently assign the correct `transactional.id` to each task.
 
 1. **Monitoring**: Regularly monitor the transactions in your Kafka cluster. Look for anomalies or issues related to specific `transactional.id`, such as frequent aborts. This can help in early detection of potential problems.
 
@@ -421,7 +421,7 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.marked_as_consumed`
 - `transaction.finished`
 
-Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
+Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature makes sure that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
 !!! warning "Event Subscription with Multiple Producers"
 
@@ -463,11 +463,11 @@ end
 
 ## Fatal Errors Recovery Strategy
 
-When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
+When a fatal transactional error occurs, the producer can close and recreate its underlying client. This makes sure that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
 
 The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process.
 
-The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
+The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it makes sure that all errors result in a rollback, maintaining system integrity.
 
 If you find this behaviour undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
 
@@ -505,7 +505,7 @@ The setting is disabled by default (`0`). Waiting for that acknowledgement means
 
 Karafka producer transactions provide atomicity over streams, but users should be mindful of the following limitations:
 
-- **Not Database Transactions**: WaterDrop transactions are distinct from database transactions. They don't support the rollback states typically in databases. Aborting a transaction ensures that the messages are not published but won't "undo" other side effects arising from message processing.
+- **Not Database Transactions**: WaterDrop transactions are distinct from database transactions. They don't support the rollback states typically in databases. Aborting a transaction makes sure that the messages are not published but won't "undo" other side effects arising from message processing.
 
 - **Latency**: Transactions necessitate coordination amongst Kafka brokers, leading to added latency.
 

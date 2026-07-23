@@ -75,11 +75,11 @@ When that happens, Karafka will retry two times and continue processing despite 
 
 !!! warning "Critical Configuration Notice"
 
-    Setting the `topic` value to `nil` when disabling dispatch will fully disable the Dead Letter Queue. If you intend to turn off dispatch but still want DLQ functionality, ensure the `topic` value is set to `false` instead of `nil`. This ensures that DLQ handling remains active while preventing message dispatch.
+    Setting the `topic` value to `nil` when disabling dispatch will fully disable the Dead Letter Queue. If you intend to turn off dispatch but still want DLQ functionality, ensure the `topic` value is set to `false` instead of `nil`. This makes sure that DLQ handling remains active while preventing message dispatch.
 
 ## Dispatch Warranties
 
-Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
+Enhanced Dead Letter Queue makes sure that messages moved to the DLQ topic will always reach the same partition and in order, even when the DLQ topic has a different number of partitions. This means that you can implement pipelines for processing broken messages and rely on the ordering warranties from the original topic.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/enhanced_dlq_flow.svg" />
@@ -91,7 +91,7 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
 
 !!! note "Note"
 
-    The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
+    The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will make sure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
 ## Additional Headers For Increased Traceability
 
@@ -228,7 +228,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This adjustment ensures that messages dispatched to the DLQ and the marking of their consumption are processed separately, providing you with the flexibility to align Karafka's behavior with your system's needs.
+This adjustment makes sure that messages dispatched to the DLQ and the marking of their consumption are processed separately, providing you with the flexibility to align Karafka's behavior with your system's needs.
 
 ## Advanced Error Tracking
 
@@ -272,7 +272,7 @@ end
 
 ### Error Tracking with Virtual Partitions
 
-When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it ensures that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
+When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which operate in parallel within a single Kafka partition, Karafka aggregates errors across all virtual partitions. This aggregation means that errors from all virtual partitions are available during the recovery phase, providing a comprehensive view of the issues encountered. This capability is crucial for implementing effective recovery strategies, as it makes sure that the error-handling logic can account for the diverse range of errors that may occur across parallel processing threads.
 
 ## Accessing Error Context in DLQ Message Enhancement
 

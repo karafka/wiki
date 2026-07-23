@@ -1,4 +1,4 @@
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing.
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer makes sure that users can access deserialized data effortlessly for seamless viewing.
 
 Below you can find the primary features of the Karafka Data Explorer.
 

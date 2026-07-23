@@ -29,7 +29,7 @@ If some of your Karafka consumer subscriptions are not visible in the Karafka We
 
 - You are using Karafka Web older than the `0.4.1` version. Older Karafka Web UI versions used to only shows subscriptions that have at least one message processed.
 - The consumer group that the subscription belongs to is not active. Karafka only displays active consumer groups in the Web UI. Make - sure that your consumer group is up and running.
-The subscription is not properly configured. Ensure that your subscription is appropriately defined, has the correct topic, and is active.
+The subscription is not properly configured. Make sure that your subscription is appropriately defined, has the correct topic, and is active.
 - There is a delay in the Karafka Web UI updating its data. Karafka Web UI may take a few seconds to update its data, especially if many subscriptions or messages are being processed.
 
 If none of these reasons explain why your subscriptions are not visible in the Karafka Web UI, you may need to investigate further and check your Karafka logs for any errors or warnings.
@@ -38,7 +38,7 @@ If none of these reasons explain why your subscriptions are not visible in the K
 
 While it is possible to create the necessary topics manually using the Kafka command-line tools, it is generally recommended to use the `bundle exec karafka-web install` command instead.
 
-This is because the `karafka-web install` command ensures that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
+This is because the `karafka-web install` command makes sure that the topics are created with the correct configuration settings, including the appropriate number of partitions, retention policies, and other critical parameters for efficient and reliable message processing. If you create the topics manually, there is a risk that you may miss some configuration settings or make mistakes that can cause performance or stability issues.
 
 Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
@@ -100,11 +100,11 @@ Please ensure you have **all** the Karafka Web UI required OS commands installed
 
 If you've checked Karafka Web UI topics in an alternative Kafka UI, you may notice that topics seem to contain binary/unicode data rather than plain text. It's not an oversight or an error. This design choice is rooted in our data management and transmission efficiency approach.
 
-- **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, ensuring that Kafka remains efficient and responsive.
+- **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, making sure that Kafka remains efficient and responsive.
 
 - **Independent Compression without External Dependencies**: We understand the significance of maintaining a lightweight, hassle-free setup for our users. We chose Zlib for data compression - it comes bundled with every Ruby version. This means there's no need to rely on third-party libraries or go through configuration changes to your Kafka cluster to use Karafka Web UI.
 
-By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
+By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby makes sure that Karafka remains user-friendly without compromising data transmission efficiency.
 
 While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it's a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
 
@@ -166,15 +166,15 @@ No.
 
 If the "Dead" tab in your Karafka Web UI is empty, especially within a multi-app setup, there are two primary reasons to consider based on the DLQ routing awareness section:
 
-1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Ensure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
+1. **DLQ Topic References Not Configured**: The most likely reason is that the Dead Letter Queue (DLQ) topics have yet to be explicitly referenced in the `karafka.rb` configuration of the application serving the Web UI. Without these references, the Web UI lacks the context to identify which topics are designated as DLQs. This means that even if messages are being routed to a DLQ, the Web UI will not display these topics under the "Dead" tab because it does not recognize them as such. Make sure that all DLQ topics are correctly defined in the routing configuration of the Karafka application hosting the Web UI to resolve this issue. You can read more about this issue [here](Web-UI-Multi-App#dlq-routing-awareness).
 
 1. **Non-existent DLQ Topic**: Another possibility is that the DLQ topic itself does not exist. In scenarios where messages fail processing and are supposed to be routed to a DLQ, the absence of the designated DLQ topic would result in no messages being stored or visible in the "Dead" tab. This could occur if the DLQ topic were never created in Kafka or if there needs to be a misconfiguration in the topic name within your application's settings, leading to a mismatch between where Karafka attempts to route failed messages and the actual topic structure in Kafka.
 
 To troubleshoot and resolve this issue, you should:
 
-- **Verify DLQ Topic Configuration**: Double-check your `karafka.rb` file to ensure that DLQ topics are correctly referenced within the routing configuration. Ensure the topic names match the expected DLQ topics in your Kafka setup.
+- **Verify DLQ Topic Configuration**: Double-check your `karafka.rb` file to make sure that DLQ topics are correctly referenced within the routing configuration. Ensure the topic names match the expected DLQ topics in your Kafka setup.
 
-- **Check Kafka for DLQ Topic Existence**: Ensure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
+- **Check Kafka for DLQ Topic Existence**: Make sure that the DLQ topics are created and exist within your Kafka cluster. You can use Kafka command-line tools or a Kafka management UI to list topics and verify their existence.
 
 - **Review Topic Naming Consistency**: Ensure consistency in topic naming across your Kafka configuration and Karafka setup. Any discrepancy could lead to failed message routing.
 
@@ -190,7 +190,7 @@ To view the actual payload of messages sent from producer to consumer, you can u
 
 The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It's not critical, but it needs to be set.
 
-Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Ensure that the secret is consistent across all deployment instances, with one value per environment.
+Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Make sure that the secret is consistent across all deployment instances, with one value per environment.
 
 ## Can we change the name of Karafka's internal topic for the Web UI?
 

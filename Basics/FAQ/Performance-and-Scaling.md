@@ -113,7 +113,7 @@ If your problems originate from batch and message sizes, we recommend looking in
 
 - **Adjust `librdkafka` Memory Settings**: The underlying library, `librdkafka`, has configurations related to memory usage. Tuning these settings according to your application's needs can optimize the memory footprint. Amongst others you may be interested in looking into the following settings: `fetch.message.max.bytes`, `queued.min.messages`, `queued.max.messages.kbytes` and `receive.message.max.bytes`
 
-- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
+- **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Make sure that you balance memory usage with processing efficiency while adjusting this value.
 
 While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
 
@@ -123,7 +123,7 @@ Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are desig
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
-Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
+Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition makes sure that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations - database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
@@ -235,7 +235,7 @@ Best practices for setting up consumer groups in Karafka to optimize parallel pr
 
 - **Subscription Group Utilization**: Within a consumer group, use subscription groups to handle different topics or partitions. This setup provides flexibility in managing which part of your application handles specific data streams.
 
-- **Resource Allocation**: Ensure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
+- **Resource Allocation**: Make sure that each consumer group and subscription group is allocated adequate resources such as CPU and memory to handle the expected workload. This allocation prevents performance bottlenecks due to resource contention.
 
 - **Monitoring and Scaling**: Regularly monitor the performance of your consumer groups and adjust their configurations as necessary. Use Karafka’s monitoring tools to track processing times, throughput, and lag to make informed scaling decisions.
 

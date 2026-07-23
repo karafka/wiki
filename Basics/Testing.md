@@ -204,7 +204,7 @@ karafka.produce_to(
 
 When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer`, but will buffer them internally.
 
-This allows you to verify your application flow, ensuring that your logic functions as expected:
+This allows you to verify your application flow, making sure that your logic functions as expected:
 
 ```ruby
 # Example class in which there is a message production
@@ -243,9 +243,9 @@ Therefore, when you write tests for producer transactions in Karafka, you can:
 
 1. Simulate the successful transaction completion and check if messages were placed into the buffers.
 
-1. Simulate an aborted transaction and ensure that no messages reach the buffers.
+1. Simulate an aborted transaction and make sure that no messages reach the buffers.
 
-This approach allows you to verify the behavior of your code within transactional boundaries, ensuring that messages are handed as expected in both successful and aborted transaction scenarios.
+This approach allows you to verify the behavior of your code within transactional boundaries, making sure that messages are handed as expected in both successful and aborted transaction scenarios.
 
 ```ruby
 class UsersBuilder

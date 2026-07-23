@@ -36,7 +36,7 @@ Even when no retries are requested, applying a back-off strategy is crucial in m
 
 When Karafka encounters an error processing a message, it might be due to a temporary or intermittent issue. Even if retries are not set, the system needs a moment to recover and stabilize after an error before moving on to the next message.
 
-By applying a back-off strategy, Karafka ensures that a pause is introduced between the occurrence of the error and the dispatch of the message to the Dead Letter Queue (DLQ) or the processing of the next message. This brief pause allows the system's resources to recover.
+By applying a back-off strategy, Karafka makes sure that a pause is introduced between the occurrence of the error and the dispatch of the message to the Dead Letter Queue (DLQ) or the processing of the next message. This brief pause allows the system's resources to recover.
 For instance, if the error were due to a sudden spike in CPU usage, the back-off time would give the CPU a chance to cool down. If the error was due to a momentary network issue, the pause allows time for the network to stabilize.
 
 Without the back-off mechanism, even if retries are not requested, Karafka would move on to the next message immediately after an error. If errors are frequent, this could lead to the system getting into a state where it is constantly encountering errors and never getting a chance to recover. This, in turn, could lead to an overload of the system, causing degraded performance or even a complete system crash.
@@ -156,7 +156,7 @@ When `pause_with_exponential_backoff` is enabled, the timeout period for retries
 
 ## Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?
 
-When a message is piped to the DLQ, if you decide to consume data from the DLQ topic, it defaults to using the default deserializer unless explicitly specified otherwise for the DLQ  topic. This behavior occurs because the deserializer setting is tied to specific topics rather than the consumer. If you require a different deserializer for the DLQ, you must define it directly on the DLQ topic within your routing setup. This setup ensures that each topic, including the DLQ, can have unique processing logic tailored to its specific needs.
+When a message is piped to the DLQ, if you decide to consume data from the DLQ topic, it defaults to using the default deserializer unless explicitly specified otherwise for the DLQ  topic. This behavior occurs because the deserializer setting is tied to specific topics rather than the consumer. If you require a different deserializer for the DLQ, you must define it directly on the DLQ topic within your routing setup. This setup makes sure that each topic, including the DLQ, can have unique processing logic tailored to its specific needs.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -180,13 +180,13 @@ end
 
 ## What should I consider when manually dispatching messages to the DLQ in Karafka?
 
-When manually dispatching a message to the DLQ in Karafka, it's essential to understand that the dispatch action itself only moves the message to the DLQ and does not mark it as consumed. If your intention is to prevent further processing of the original message and to avoid halting the offset commitment, you need to explicitly mark the message as consumed. This can be crucial in maintaining the flow of message processing and ensuring that message consumption offsets are correctly committed.
+When manually dispatching a message to the DLQ in Karafka, it's essential to understand that the dispatch action itself only moves the message to the DLQ and does not mark it as consumed. If your intention is to prevent further processing of the original message and to avoid halting the offset commitment, you need to explicitly mark the message as consumed. This can be crucial in maintaining the flow of message processing and making sure that message consumption offsets are correctly committed.
 
 ## How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
 
 If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue), you might encounter an issue where the `dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
 
-In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This ensures that specific methods are not used outside their intended context, maintaining a clean and safe API.
+In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This makes sure that specific methods are not used outside their intended context, maintaining a clean and safe API.
 
 To handle this, you can use a guard to check whether the `#dispatch_to_dlq` method is available before calling it. Here are a couple of approaches:
 
@@ -216,7 +216,7 @@ To handle this, you can use a guard to check whether the `#dispatch_to_dlq` meth
     end
     ```
 
-When using the same consumer for both a topic and its DLQ in Karafka, ensure that you handle method availability appropriately to avoid errors. Using guards like checking the topic context with `topic.dead_letter_queue?` can help maintain robustness and prevent unexpected exceptions during reprocessing.
+When using the same consumer for both a topic and its DLQ in Karafka, make sure that you handle method availability appropriately to avoid errors. Using guards like checking the topic context with `topic.dead_letter_queue?` can help maintain robustness and prevent unexpected exceptions during reprocessing.
 
 ## What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?
 

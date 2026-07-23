@@ -112,7 +112,7 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
         end
         ```
 
-1. It's vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
+1. It's vital to also adjust the `karafka.rb` configuration file. This makes sure that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
 
     ```ruby
     # Other Karafka configuration here...

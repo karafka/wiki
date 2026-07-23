@@ -14,7 +14,7 @@ The producer and consumer sides of a Kafka system have distinct roles and,  cons
 
 ## Producer Management
 
-Managing latency and throughput on the producer side is critical for ensuring that messages are sent efficiently and quickly. This section covers the key aspects of producer latency management, including configuration tuning,  batching and compression, asynchronous sending, and best practices.
+Managing latency and throughput on the producer side is critical for making sure that messages are sent efficiently and quickly. This section covers the key aspects of producer latency management, including configuration tuning,  batching and compression, asynchronous sending, and best practices.
 
 ### Configuration Tuning
 
@@ -196,7 +196,7 @@ The strategy and methods selected for consumer management can vary significantly
 
 - **Prioritizing Throughput**: When the goal is to maximize throughput, the focus is on efficiently processing large volumes of data. Strategies include increasing batch sizes, optimizing worker thread counts, and ensuring consumers can handle high loads without frequent pauses. This approach might accept higher latency for processing more messages per unit of time.
 
-- **Prioritizing Latency**: This strategy, when low latency is the priority, is a swift approach that minimizes the time taken for each message to be processed and acknowledged. It involves reducing batch sizes, using faster data processing methods, and ensuring that the consumer system is highly responsive. Here, throughput might be sacrificed, but the assurance of quick message processing is maintained.
+- **Prioritizing Latency**: This strategy, when low latency is the priority, is a swift approach that minimizes the time taken for each message to be processed and acknowledged. It involves reducing batch sizes, using faster data processing methods, and making sure that the consumer system is highly responsive. Here, throughput might be sacrificed, but the assurance of quick message processing is maintained.
 
 !!! info "No Silver Bullet for Latency and Throughput Tuning"
 
@@ -351,7 +351,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Remember that this value applies to each subscription group connection independently.</li>
         <li>Set higher values to allow for more data to be pre-fetched and buffered, which can improve throughput.</li>
         <li>Lower values can help reduce memory usage and improve responsiveness in low-latency scenarios.</li>
-        <li>Monitor memory consumption to ensure that increasing this value does not lead to excessive memory usage.</li>
+        <li>Monitor memory consumption to make sure that increasing this value does not lead to excessive memory usage.</li>
         <li>Adjust this setting in conjunction with <code>fetch.min.bytes</code> and <code>fetch.message.max.bytes</code> to balance throughput and memory usage.</li>
       </ul>
     </td>
@@ -375,7 +375,7 @@ The presented example illustrates how big of an impact latency configuration can
 
 In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, it's important to understand the implications of such configurations.
 
-When reconfiguring settings per topic, Karafka will create a distinct subscription group and an independent connection to Kafka for each topic with altered non-default settings. This isolation ensures that the specific configurations are applied correctly but also means that these topics will be managed independently, which can impact resource usage and system behavior.
+When reconfiguring settings per topic, Karafka will create a distinct subscription group and an independent connection to Kafka for each topic with altered non-default settings. This isolation makes sure that the specific configurations are applied correctly but also means that these topics will be managed independently, which can impact resource usage and system behavior.
 
 ```ruby
 class App < Karafka::App
@@ -495,7 +495,7 @@ Below, you can find a table summarizing the key aspects of Karafka's parallel pr
     <td>
       <ul>
         <li>Use <code>partitioner</code> that will provide you a good distribution of data.</li>
-        <li>Analyze the <code>reducer</code> virtual key operations to ensure that the reduction process does not limit the parallelization.</li>
+        <li>Analyze the <code>reducer</code> virtual key operations to make sure that the reduction process does not limit the parallelization.</li>
         <li>Make sure your virtualization does not oversaturate the jobs queue.</li>
       </ul>
     </td>
@@ -552,7 +552,7 @@ To mitigate the impact of large batch prefetching under lag conditions and to en
 
 1. **Prefetching Configuration Tuning**: Adjust prefetching-related settings such as `queued.max.messages.kbytes`, `fetch.wait.max.ms`, `fetch.min.bytes`, and `fetch.message.max.bytes` to fine-tune the balance between throughput and latency. Tailoring these settings to your specific workload can optimize prefetching behavior.
 
-1. **Multiple Subscription Groups**: Configure multiple subscription groups to ensure that data from independent partitions (across one or many topics) is prefetching and processing independently. This setup can enhance system utilization, reduce latency, and increase throughput by allowing Karafka to handle more partitions concurrently.
+1. **Multiple Subscription Groups**: Configure multiple subscription groups to make sure that data from independent partitions (across one or many topics) is prefetching and processing independently. This setup can enhance system utilization, reduce latency, and increase throughput by allowing Karafka to handle more partitions concurrently.
 
 1. **Connection Multiplexing**: Use connection multiplexing to create multiple connections for a single subscription group. This enables Karafka to independently prefetch data from different partitions, improving parallel processing capabilities.
 
@@ -564,13 +564,13 @@ If a Karafka consumer process is assigned only one topic partition, the prefetch
 
 #### Conclusion
 
-Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and using strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This ensures that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
+Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and using strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This makes sure that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
 
 ### Subscription Group Blocking Polls
 
 Karafka is designed to prebuffer data to ensure efficient message processing. Still, it's important to understand that this prefetched data is not used until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
 
-This approach prevents race conditions and ensures data consistency. The poll operation in Kafka acts as a heartbeat mechanism governed by the `max.poll.interval.ms` setting. This interval defines the maximum delay between poll invocations before the consumer is considered dead, triggering a rebalance. By ensuring that all jobs from the previous poll are finished before new data is used, Karafka maintains data integrity and avoids processing the same message multiple times.
+This approach prevents race conditions and ensures data consistency. The poll operation in Kafka acts as a heartbeat mechanism governed by the `max.poll.interval.ms` setting. This interval defines the maximum delay between poll invocations before the consumer is considered dead, triggering a rebalance. By making sure that all jobs from the previous poll are finished before new data is used, Karafka maintains data integrity and avoids processing the same message multiple times.
 
 #### Impact of Uneven Work Distribution
 
@@ -584,9 +584,9 @@ To address these issues, consider the following strategies:
 
 1. **Multiplexing**: Use connection multiplexing to create multiple connections for a single subscription group. This allows Karafka to fetch and process data from different partitions independently, improving parallel processing and reducing latency.
 
-2. **Multiple Subscription Groups**: Configure multiple subscription groups to distribute the workload more evenly. By isolating topics with significantly different workloads into separate subscription groups, you can ensure that heavy processing on one topic does not delay processing on another.
+2. **Multiple Subscription Groups**: Configure multiple subscription groups to distribute the workload more evenly. By isolating topics with significantly different workloads into separate subscription groups, you can make sure that heavy processing on one topic does not delay processing on another.
 
-3. **Monitoring and Tuning Work Distribution**: Regularly monitor the performance and work distribution of your virtual partitions. Ensure that your partition key and reducer are well-balanced to avoid uneven workloads. Fine-tuning these elements can help maintain efficient and timely processing across all partitions.
+3. **Monitoring and Tuning Work Distribution**: Regularly monitor the performance and work distribution of your virtual partitions. Make sure that your partition key and reducer are well-balanced to avoid uneven workloads. Fine-tuning these elements can help maintain efficient and timely processing across all partitions.
 
 ### Summary
 

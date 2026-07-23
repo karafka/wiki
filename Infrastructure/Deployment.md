@@ -517,7 +517,7 @@ Please read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention
 
 ## Kubernetes
 
-Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
+Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to make sure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can make sure that their mission-critical applications stay up and running, even in the face of unexpected failures.
 
 ### Basic deployment spec
 
@@ -555,7 +555,7 @@ When deploying Karafka consumers using Kubernetes, it's generally not recommende
 
 For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue.
 
-Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
+Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can make sure that your Karafka application stays reliable and performant.
 
 ### Choosing the Right Rebalance Strategy
 
@@ -779,7 +779,7 @@ To integrate the `SwarmLivenessListener` into your Karafka application, follow t
       timeoutSeconds: 5
     ```
 
-By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
+By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, making sure that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
 #### Additional processes inside the same pod
 
@@ -812,7 +812,7 @@ Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka i
 
     !!! tip "Region Selection"
 
-        Ensure that the region selected has low latency to your application servers to reduce the message delivery time.
+        Make sure that the region selected has low latency to your application servers to reduce the message delivery time.
 
 1. **Configure Kafka Topics**
 
@@ -830,7 +830,7 @@ Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka i
 
 1. **Configure Web UI Topics**
 
-    Since Confluent Cloud does not support automatic topic creation, you must ensure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
+    Since Confluent Cloud does not support automatic topic creation, you must make sure that all necessary Karafka Web UI topics are created before using the Web UI to monitor and manage your Kafka setup.
 
     The detailed list and settings of all required Web UI topics are in the Karafka documentation under the Web UI Getting Started guide, specifically in the section on [manual web UI topic management](Web-UI-Getting-Started#manual-web-ui-topics-management).
 

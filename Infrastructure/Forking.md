@@ -10,7 +10,7 @@ When forking Ruby processes, ensuring there are no active connections to Kafka i
 
 ## Karafka's Swarm Forking Strategy
 
-Karafka uses forking in its [Swarm Mode](Infrastructure-Swarm-Multi-Process). This process is carefully designed to ensure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
+Karafka uses forking in its [Swarm Mode](Infrastructure-Swarm-Multi-Process). This process is carefully designed to make sure that forks occur only when no Kafka connections are active. After forking, new connections are established in the child processes, thus maintaining clean and safe operations.
 
 ## Forking Issues on macOS
 
@@ -29,7 +29,7 @@ These errors indicate processes in the middle of certain operations during a for
     require 'rdkafka'
     ```
 
-    This ensures that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
+    This makes sure that the necessary libraries and Objective-C dynamic libraries (DLLs) are properly loaded before forking, preventing segmentation faults.
 
 1. **Environment Variable**: You can set the environment variable `OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` to help manage initialization issues related to forking in macOS environments.
 

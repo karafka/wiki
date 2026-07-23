@@ -4,7 +4,7 @@ Karafka uses RSA asymmetric encryption, so your producers do not have to have th
 
 !!! warning "Custom Headers Deserializer and Encryption"
 
-    When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
+    When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to make sure that encryption functionalities are properly integrated and maintained within your application.
 
 ## Enabling Encryption
 
@@ -84,7 +84,7 @@ Karafka will automatically detect and use the correct private key to decrypt mes
 
 ## Using Multiple Public and Private Keys to Support Multiple Customers
 
-There are scenarios where you may want your customers to publish messages directly to your Kafka cluster. You can ensure that this communication is also private and, At-Rest encrypted.
+There are scenarios where you may want your customers to publish messages directly to your Kafka cluster. You can make sure that this communication is also private and, At-Rest encrypted.
 
 All you need to do for this to happen is:
 
@@ -135,7 +135,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This mechanism of ensuring message integrity is distinct from the CRC (Cyclic Redundancy Check) integrity check provided by Kafka. While Kafka's CRC check ensures that a message has not been corrupted in transit, providing a form of transport-level integrity, it does not protect against decryption with the wrong key. Karafka's fingerprinting feature addresses this gap by offering an additional layer of security that ensures the decrypted message is the exact message that was encrypted initially, thereby safeguarding against processing corrupted data due to key mismanagement or other errors.
+This mechanism of ensuring message integrity is distinct from the CRC (Cyclic Redundancy Check) integrity check provided by Kafka. While Kafka's CRC check makes sure that a message has not been corrupted in transit, providing a form of transport-level integrity, it does not protect against decryption with the wrong key. Karafka's fingerprinting feature addresses this gap by offering an additional layer of security that ensures the decrypted message is the exact message that was encrypted initially, thereby safeguarding against processing corrupted data due to key mismanagement or other errors.
 
 This feature is especially critical in industries subject to stringent regulations around handling sensitive data, such as healthcare, finance, and government. By ensuring the integrity of decrypted messages, Karafka helps organizations maintain compliance with regulations like HIPAA and GDPR, which mandate strict controls over the confidentiality and integrity of sensitive information.
 
@@ -155,7 +155,7 @@ This feature is especially critical in industries subject to stringent regulatio
 
 - Human Resources: Human resources departments may store sensitive employee data such as social security numbers, payroll information, and performance reviews in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring regulatory compliance and maintaining employee trust.
 
-Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
+Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, making sure that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
 
 ## See Also
 

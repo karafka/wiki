@@ -398,4 +398,4 @@ There are a few existing special cases in the Karafka ecosystem where the `it-` 
 | **Document any unavoidable exceptions** | With clear reasoning |
 | **Consider environment isolation** | For additional safety in shared development environments |
 
-This convention ensures that test topics can be easily identified, managed, and cleaned up across the entire Karafka ecosystem while maintaining clear separation from production topics.
+This convention makes sure that test topics can be easily identified, managed, and cleaned up across the entire Karafka ecosystem while maintaining clear separation from production topics.
