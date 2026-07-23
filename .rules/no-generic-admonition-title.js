@@ -9,7 +9,9 @@ const GENERIC_TITLES = new Set([
   'danger', 'success', 'example', 'abstract', 'summary', 'quote', 'question',
   'faq', 'bug', 'failure', 'caution', 'error', 'important', 'important note',
   'please note', 'please read', 'read this', 'read me', 'heads up', 'fyi',
-  'attention', 'notice', 'psa', 'reminder', 'todo', 'to do', 'nb', 'disclaimer'
+  'attention', 'notice', 'psa', 'reminder', 'todo', 'to do', 'nb', 'disclaimer',
+  'pro feature', 'pro only functionality', 'pro only', 'pro enhancements',
+  'karafka pro enhancements', 'enterprise feature', 'enterprise only'
 ]);
 
 function wordCount(text) {

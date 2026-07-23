@@ -79,9 +79,9 @@ bundle exec karafka server --exclude-topics topic_name2,topic_name5
 
 ## Karafka Topics Health
 
-!!! note "Pro Feature"
+!!! info "`topics health` Is a Pro Command"
 
-    The `topics health` command is a Pro feature available exclusively to Karafka Pro users.
+    The `topics health` command is part of [Karafka Pro](https://karafka.io/#become-pro).
 
 The `topics health` command analyzes your Kafka topics for replication and durability issues. It inspects each topic's replication factor and `min.insync.replicas` setting to detect potential risks, grouping findings by color-coded severity with actionable recommendations.
 
