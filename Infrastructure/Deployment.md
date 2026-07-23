@@ -312,9 +312,7 @@ Details about how Kafka for Heroku works can also be found here:
 
 ### Heroku Kafka Prefix Convention
 
-!!! note "Applies Only to Multi-Tenant Add-On Mode"
-
-    This section **only** applies to the Multi-Tenant add-on mode.
+This section **only** applies to the Multi-Tenant add-on mode.
 
 All Kafka Basic topics and consumer groups begin with a unique prefix associated with your add-on. This prefix is accessible via the `KAFKA_PREFIX` environment variable.
 

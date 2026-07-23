@@ -109,9 +109,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Use This Pattern Only With Trusted Entities"
-
-    Such a pattern should only be used when working with trusted entities.
+Such a pattern should only be used when working with trusted entities.
 
 ## Messages Fingerprinting
 

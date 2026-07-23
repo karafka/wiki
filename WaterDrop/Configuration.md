@@ -57,9 +57,7 @@ Some of the options are:
 | `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
 | `statistics_decorator`                      | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
 
-!!! info "Full List of Root Configuration Options"
-
-    Full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
+The full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
 ## Kafka configuration options
 
