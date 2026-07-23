@@ -4,7 +4,7 @@ Karafka documentation follows a controlled writing style we call Karafka Simplif
 
 Treat this as a clarity floor, not a straitjacket. Apply the rules hardest to procedures, reference, and instructions. Keep conceptual and overview pages readable, and prefer clarity over a rigid rule when the two ever conflict. Promotional and marketing passages (for example the Pro upsell blocks) sit outside what STE was designed for - apply it loosely there, or exclude those blocks from enforcement.
 
-!!! info "Scope"
+!!! info "Applies to Hand-Authored Prose Only"
 
     This style applies to hand-authored prose only. Do **not** edit the auto-generated files - component changelogs, the generated `Librdkafka` references (`Changelog`, `Errors`, `Statistics`, `Configuration`), instrumentation events, and the integration tests catalog - they regenerate from upstream. Everything else, including the hand-authored `Librdkafka/Threads-and-Pipe-Patterns.md`, is in scope.
 

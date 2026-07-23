@@ -168,7 +168,7 @@ Use past tense for events (`created`, `updated`) and imperative for commands (`p
 
 Pick one separator style and stick with it. Mixing periods and underscores causes metric name collisions in monitoring systems. Avoid including fields that change, like team names or service owners.
 
-!!! warning "Consumer Group Names Must Be Globally Unique"
+!!! warning "Consumer Group Names Must Be Unique Per Cluster"
 
     Consumer group names must be globally unique within the cluster. Ensure your naming scheme prevents collisions between environments if they share a cluster.
 

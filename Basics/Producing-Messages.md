@@ -54,7 +54,7 @@ Overall, calling `#close` on the Karafka producer is a best practice that helps 
 
 In the following sections, you can find an example of how to `#close` the producer used in various Ruby processes.
 
-!!! warning "Do Not Close Producer With Embedding API"
+!!! warning "Do Not Manually Close the Producer When Embedding"
 
     Note, that you should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
 

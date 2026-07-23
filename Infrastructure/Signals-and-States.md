@@ -26,7 +26,7 @@ instrumentation/logger_listener.rb:77:in `on_process_notice_signal'
 ...
 ```
 
-!!! note "Signal Printing Requires LoggerListener"
+!!! note "Signal Printing Needs LoggerListener (On by Default)"
 
     You need to have the `LoggerListener` enabled for this signal to print. It is enabled by default, so this signal should work out of the box unless you altered that.
 

@@ -321,7 +321,7 @@ This approach ensures that the system remains efficient and responsive to its op
 
 ## Expired Jobs Scheduling
 
-!!! note "Every Job Must Be Scheduled"
+!!! note "Schedule Every Job Except During Recovery"
 
     In Karafka, all jobs given to the scheduler must be scheduled, even if they seem redundant. This is essential for maintaining system integrity and efficiency. The only exception is for accumulated jobs of a subscription group under recovery.
 
