@@ -101,7 +101,7 @@ Karafka **does**, however, support:
 - [Standard SASL + SSL mechanisms](#aws-msk-cluster-setup).
 - [Custom OAuth Token Providers](#custom-oauth-token-providers) flow.
 
-Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](#custom-oauth-token-providers) section.
+Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom OAuth Token Providers](#custom-oauth-token-providers) section.
 
 !!! info "AWS Integration with Custom OAuth Token Providers"
 

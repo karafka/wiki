@@ -184,7 +184,7 @@ This closes the gap between Kafka and classic message queues for workloads that 
 
 Karafka is a production-ready Ruby and Rails framework for building Kafka consumers. It handles the operational concerns that would otherwise fall on you: consumer lifecycle management, offset committing, partition rebalancing, multi-threaded processing, error handling, and observability.
 
-WaterDrop, part of the same ecosystem, handles the producer side - publishing messages to Kafka topics from any Ruby process, including Rails controllers, ActiveJob callbacks, and Rake tasks.
+WaterDrop, part of the same ecosystem, handles the producer side - publishing messages to Kafka topics from any Ruby process, including Rails controllers, Active Job callbacks, and Rake tasks.
 
 Karafka Web UI rounds out the picture on the operational side. It is a self-hosted monitoring interface that gives you real-time visibility into consumer group health, partition lag, message throughput, and individual consumer status - all without leaving your browser and without any external dependencies beyond what you already run. When something goes wrong at two in the morning, you will want it.
 

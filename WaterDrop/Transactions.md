@@ -322,7 +322,7 @@ This behavior may impact you in the following ways:
 
 ## `transactional.id` Management and Fencing
 
-One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka ensures that the older producer instance can't commit any more messages, preventing potential duplicates. This behaviour is called fencing.
+One of the critical aspects of `transactional.id` is its ability to "fence out" older instances of a producer. If a producer instance with a given `transactional.id` crashes and another instance starts with the same `transactional.id`, Kafka ensures that the older producer instance can't commit any more messages, preventing potential duplicates. This behavior is called fencing.
 
 Below, you can find an example of how fencing works. After `producer2` first transaction, `producer1` will no longer be able to produce messages and will raise an error:
 
@@ -469,7 +469,7 @@ The reloading mechanism is used exclusively within locked transactions, eliminat
 
 The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
 
-If you find this behaviour undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
+If you find this behavior undesired, you have the power to set the `reload_on_transaction_fatal_error` configuration value to `false`. In this case, the producer client will not be reloaded, giving you control over the system's response to fatal errors.
 
 ## Aborting Right After Producing
 

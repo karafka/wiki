@@ -208,7 +208,7 @@
 - [Custom Styling](Pro-Web-UI#custom-styling)
 - [Topics Management](Pro-Web-UI-Topics-Management)
 
-## Librdkafka
+## librdkafka
 
 - [Configuration](Librdkafka-Configuration)
 - [Statistics](Librdkafka-Statistics)

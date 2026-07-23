@@ -339,15 +339,15 @@ They are located in the WaterDrop wiki [idempotence section](WaterDrop-Configura
 
 ## Can I use `Karafka.producer` to produce messages that will then be consumed by ActiveJob jobs?
 
-You cannot use `Karafka#producer` to produce messages that will then be consumed by ActiveJob jobs. The reason is that when integrating ActiveJob with Karafka, you should use ActiveJob's scheduling API, specifically `Job.perform_later`, and not the Karafka producer methods.
+You cannot use `Karafka#producer` to produce messages that will then be consumed by Active Job jobs. The reason is that when integrating Active Job with Karafka, you should use Active Job's scheduling API, specifically `Job.perform_later`, and not the Karafka producer methods.
 
-Attempting to use the Karafka producer to send messages for ActiveJob consumption results in mismatches and errors. Karafka's ActiveJob integration has its way of handling messages internally, and how those messages look and what is being sent is abstracted away from the developer. The developer's responsibility is to stick with the ActiveJob APIs.
+Attempting to use the Karafka producer to send messages for Active Job consumption results in mismatches and errors. Karafka's Active Job integration has its way of handling messages internally, and how those messages look and what is being sent is abstracted away from the developer. The developer's responsibility is to stick with the Active Job APIs.
 
-When you want to consume a message produced by an external source, it is not the domain of ActiveJob anymore. That would be regular Karafka consuming, which is different from job scheduling and execution with ActiveJob.
+When you want to consume a message produced by an external source, it is not the domain of Active Job anymore. That would be regular Karafka consuming, which is different from job scheduling and execution with Active Job.
 
 ## Can I use `Karafka.producer` from within ActiveJob jobs running in the karafka server?
 
-**Yes**, any ActiveJob job running in the karafka server can access and use the `Karafka.producer`.
+**Yes**, any Active Job job running in the karafka server can access and use the `Karafka.producer`.
 
 ## Do you recommend using the singleton producer in Karafka for all apps/consumers/jobs in a system?
 

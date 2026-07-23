@@ -1,4 +1,4 @@
-Karafka's behaviour can be altered with the following environment variables:
+Karafka's behavior can be altered with the following environment variables:
 
 <table>
   <thead>

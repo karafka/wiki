@@ -69,7 +69,7 @@ Visit the [CLI](Infrastructure-CLI) section of our docs to learn more about how 
 
 ## Does Karafka restart dead PG connections?
 
-Karafka will automatically release no longer used ActiveRecord connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Infrastructure-Active-Record-Connections-Management#dealing-with-dead-database-connections).
+Karafka will automatically release no longer used Active Record connections. They should be handled and reconnected by the Rails connection reaper. You can implement custom logic to reconnect them yourself if needed beyond the reaping frequency. More details on that can be found [here](Infrastructure-Active-Record-Connections-Management#dealing-with-dead-database-connections).
 
 ## Does Karafka require gems to be thread-safe?
 

@@ -78,6 +78,6 @@ The benefits scale with partition count - even at 100+ partitions, the reduced p
 
 ## See Also
 
-- [Librdkafka Statistics](Librdkafka-Statistics) - Reference for all available statistics fields
+- [librdkafka Statistics](Librdkafka-Statistics) - Reference for all available statistics fields
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - Multiple connections that compound statistics overhead without this optimization
 - [Web UI](Web-UI-Features) - Benefits from reduced statistics processing overhead
