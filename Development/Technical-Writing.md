@@ -26,7 +26,6 @@ The linter rewrites or flags a controlled vocabulary. A representative sample of
 ```text
 utilize        ->  use
 leverage       ->  use
-regarding      ->  about
 prior to       ->  before
 in order to    ->  to
 commence       ->  start
@@ -39,7 +38,13 @@ numerous       ->  many
 
 The full, authoritative list lives in `.rules/ste-terms.json`. Extend the vocabulary by editing that file, not the rule code.
 
-Some words are flagged rather than auto-substituted, because they need a per-sentence decision. `ensure` is the main one: it often means *guarantee* (a mechanism `ensures` a property), where `make sure` is weaker and wrong. Keep `ensure` (or use `guarantees`) for a guarantee; rewrite it to `make sure that <clause>` only when it is an instruction to the reader.
+Some words are flagged rather than auto-substituted, because a blind swap changes meaning or grammar. Rewrite these per sentence. Do **not** find-and-replace them:
+
+- `ensure` is semantically overloaded. It often means *guarantee* (a mechanism `ensures` a property), where `make sure` is weaker and wrong. Keep `ensure` (or use `guarantees`) for a guarantee; rewrite to `make sure that <clause>` only for an instruction to the reader.
+- `regarding` and `concerning` are collocation-dependent. `about` fits informational nouns (`information regarding` becomes `information about`), but capability, policy, and compatibility nouns take `for`, `on`, `in`, or `with` (`capabilities regarding` is **not** `capabilities about`).
+- `obtained` has an irregular participle. `obtained` to `got` breaks passive and attributive use (`was obtained` becomes `was got`). Keep `obtained`, or restructure to active voice with `get`.
+
+The rule of thumb: auto-substitute a word only when it is a plain synonym that keeps the same grammar in every position (`utilize` to `use`). When the swap depends on the surrounding words, or on which sense is meant, flag it instead.
 
 ## Sentences
 
