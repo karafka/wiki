@@ -115,6 +115,7 @@ We build our own term list and do **not** redistribute the ASD dictionary.
 ## Tooling and Rollout
 
 - The controlled vocabulary and sentence-length checks live in `.rules/no-unapproved-terms.js` and `.rules/max-sentence-length.js`. The word list lives in `.rules/ste-terms.json`.
+- The convention checks live in `.rules/no-markdown-tables.js` (HTML tables only), `.rules/no-generic-admonition-title.js` (descriptive titles), and `.rules/no-md-link-extension.js` (bare wiki-slug links). Dash bullets and `shell` (not `bash`) fences are already enforced by `MD004` and `mkdocs-material-linter`.
 - Run `npm run lint` to check a change. Run `npm run lint:fix` to auto-apply the safe substitutions.
 - Auto-fix never touches code fences, inline code, or link targets, so config keys and examples stay intact.
 - The rules roll out in phases. They are registered but disabled while the existing docs are normalized, then enabled in CI so new content stays compliant.
