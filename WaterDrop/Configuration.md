@@ -338,7 +338,7 @@ Below you can find examples where each of the validations layers fails:
     #     Broker: Message size too large (msg_size_too_large)> (WaterDrop::Errors::ProduceError)
     ```
 
-!!! note "msg_size_too_large Has Two Indistinguishable Causes"
+!!! note "`msg_size_too_large` Has Two Indistinguishable Causes"
 
     The `msg_size_too_large error` can arise from:
 

@@ -212,7 +212,7 @@ By using the `read_topic` method, you can read data from a given topic partition
 
     While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
-!!! note "read_topic Skips Compacted and Transaction Offsets"
+!!! note "`read_topic` Skips Compacted and Transaction Offsets"
 
     When using the `#read_topic` method in the Karafka Admin API to retrieve messages from a topic partition, it's essential to understand that this method skips offsets of compacted messages and transactions-related messages. This means that these specific messages won't be fetched or displayed even if they exist in the topic partition. However, while these messages are skipped during retrieval, they are still included in the total counts for those in that partition.
 

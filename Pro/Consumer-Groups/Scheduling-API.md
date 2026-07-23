@@ -92,7 +92,7 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 ### API Methods
 
-!!! note "Each Method Has a Non-Blocking on_ Counterpart"
+!!! note "Each Method Has a Non-Blocking `on_` Counterpart"
 
     Please note that each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 

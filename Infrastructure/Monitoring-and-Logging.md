@@ -597,9 +597,7 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 ![Example Karafka DD dashboard](https://karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
 
-!!! note "Tracing Contributed by Bruno Martins"
-
-    Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
+Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
 ##### Async Producer Tracing With The Consumption Context
 
@@ -847,7 +845,7 @@ end
 
 Such a custom monitor will intercept specific events while delegating to the parent monitor to maintain framework functionality. This pattern enables proper error handling, cleanup, and integration with external monitoring systems that require execution to be wrapped in a block.
 
-!!! warning "Avoid Calling super Multiple Times in Custom Monitors"
+!!! warning "Avoid Calling `super` Multiple Times in Custom Monitors"
 
     When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it's crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
 

@@ -196,7 +196,7 @@ karafka.produce_to(
 )
 ```
 
-!!! note "When to Use produce_to"
+!!! note "When to Use `#produce_to`"
 
     Use `#produce_to` when you have multiple consumer groups subscribing to the same topic. For single-consumer scenarios, the standard `#produce` method works as expected.
 

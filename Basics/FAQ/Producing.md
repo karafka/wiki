@@ -319,7 +319,7 @@ Karafka.producer.monitor.subscribe(
 )
 ```
 
-!!! note "error.occurred Also Captures librdkafka Errors"
+!!! note "`error.occurred` Also Captures librdkafka Errors"
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
@@ -537,7 +537,7 @@ With inverted ordering (`message.timeout.ms` < `socket.timeout.ms`): the message
 
     Before WaterDrop 2.9.0, `message.timeout.ms` defaulted to 50,000ms while librdkafka's `socket.timeout.ms` defaults to 60,000ms - the inverted case. Every ProduceRequest on a stale socket exhausts the message budget with no retry possible. Upgrade to WaterDrop >= 2.9.0, or explicitly set `message.timeout.ms` above `socket.timeout.ms` on older versions.
 
-!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+!!! note "`msg_timed_out` Means Unconfirmed, Not Necessarily Lost"
 
     When a ProduceRequest times out, the broker may have already committed the write before the client gave up. Delivery status is **POSSIBLY_PERSISTED** - unconfirmed, not guaranteed lost. Use idempotent or transactional producers if exactly-once semantics are required.
 

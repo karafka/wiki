@@ -22,7 +22,7 @@ end
 
     Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you, for example, to connect to multiple Kafka clusters.
 
-!!! tip "Use a Distinct client_id Per Instance"
+!!! tip "Use a Distinct `client_id` Per Instance"
 
     kafka `client.id` is a string passed to the server when making requests. It is used to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore, the `client_id` should **not** be shared across multiple instances in a cluster or a horizontally scaled application but distinct for each application instance.
 
@@ -112,7 +112,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "zstd Requires libzstd-dev"
+!!! note "`zstd` Requires `libzstd-dev`"
 
     To use `zstd`, you need to install `libzstd-dev`:
 

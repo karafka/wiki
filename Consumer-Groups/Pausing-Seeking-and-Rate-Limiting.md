@@ -28,7 +28,7 @@ def consume
 end
 ```
 
-!!! note "#pause Does Not Stop Processing Flow"
+!!! note "`#pause` Does Not Stop Processing Flow"
 
     It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
 

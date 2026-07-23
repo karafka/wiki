@@ -79,7 +79,7 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 2. Partition is revoked and re-assigned to the same process.
 3. Partition is revoked and assigned to a different process.
 
-!!! note "revoked? Updates Even When Workers Are Busy"
+!!! note "`#revoked?` Updates Even When Workers Are Busy"
 
     The `#revoked?` method value changes independently from the workers' occupation. This means that the revocation status will be updated even if all the workers are busy processing long-running jobs.
 

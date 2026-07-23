@@ -46,7 +46,7 @@ Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or
 
 This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
 
-!!! info "Skipping #close Loses Messages and Leaks Resources"
+!!! info "Skipping `#close` Loses Messages and Leaks Resources"
 
     If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data. In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
 

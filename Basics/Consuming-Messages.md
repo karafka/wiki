@@ -212,11 +212,11 @@ It is worth noting, however, that under normal operating conditions, Karafka wil
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
-!!! note "revoked? Works Without Marking Messages"
+!!! note "`#revoked?` Works Without Marking Messages"
 
     The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
 
-!!! note "revoked? Changes Independently With Long-Running Jobs"
+!!! note "`#revoked?` Changes Independently With Long-Running Jobs"
 
     With [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 

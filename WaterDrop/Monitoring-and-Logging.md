@@ -22,7 +22,7 @@ producer.produce_async(topic: 'events', payload: 'data')
 producer.close
 ```
 
-!!! info "See EVENTS for All Supported Events"
+!!! info "See `EVENTS` for All Supported Events"
 
     See the `WaterDrop::Instrumentation::Notifications::EVENTS` for the list of all the supported events.
 
@@ -274,11 +274,11 @@ end
 # WaterDrop error occurred: Local: Broker transport failure (transport)
 ```
 
-!!! note "error.occurred Includes Synchronous librdkafka Errors"
+!!! note "`error.occurred` Includes Synchronous librdkafka Errors"
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
-!!! note "error.occurred Excludes Transaction Purge Errors"
+!!! note "`error.occurred` Excludes Transaction Purge Errors"
 
     The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](WaterDrop-Transactions) documentation.
 
