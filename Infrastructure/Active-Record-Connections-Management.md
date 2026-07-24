@@ -1,14 +1,14 @@
-Karafka interacts with ActiveRecord in the context of database connection management. This integration is designed to ensure efficient resource use and stability during message processing.
+Karafka interacts with Active Record in the context of database connection management. This integration is designed to ensure efficient resource use and stability during message processing.
 
 ## Rails and ActiveRecord Connection Management
 
-Rails, with ActiveRecord, employs a connection pooling mechanism to manage database connections. Connection pooling aims to reuse existing connections, avoiding the overhead of establishing new connections for every database interaction. This mechanism is particularly beneficial in web applications and background job processing, where efficient database connections can significantly impact performance and scalability.
+Rails, with Active Record, employs a connection pooling mechanism to manage database connections. Connection pooling aims to reuse existing connections, avoiding the overhead of establishing new connections for every database interaction. This mechanism is particularly beneficial in web applications and background job processing, where efficient database connections can significantly impact performance and scalability.
 
-In a typical Rails application, ActiveRecord automatically manages database connections. It checks out connections from the pool when needed and returns them after the request or job is completed. However, in the context of background processing frameworks like Karafka, especially when dealing with database replicas, additional steps, as mentioned above, might be necessary to ensure connections are properly managed.
+In a typical Rails application, Active Record automatically manages database connections. It checks out connections from the pool when needed and returns them after the request or job is completed. However, in the context of background processing frameworks like Karafka, especially when dealing with database replicas, additional steps, as mentioned above, might be necessary to ensure connections are properly managed.
 
 ## Automatic Connection Management
 
-When no database replication is involved, Karafka automatically manages ActiveRecord database connections. This means that after processing messages, Karafka releases the connections back to the ActiveRecord connection pool, preventing potential connection leakage and ensuring connections are available for other processes or threads that might need them.
+When no database replication is involved, Karafka automatically manages Active Record database connections. This means that after processing messages, Karafka releases the connections back to the Active Record connection pool, preventing potential connection leakage and ensuring connections are available for other processes or threads that might need them.
 
 ## Dealing with Database Replicas
 
@@ -29,11 +29,11 @@ end
 
 ## Dealing with Dead Database Connections
 
-In production environments, database connections can sometimes become  "dead" or unusable due to various issues like network disruptions,  database restarts, or other unexpected problems. Rails, through ActiveRecord, provides mechanisms to handle such situations, ensuring your application can recover and continue functioning smoothly.
+In production environments, database connections can sometimes become  "dead" or unusable due to various issues like network disruptions,  database restarts, or other unexpected problems. Rails, through Active Record, provides mechanisms to handle such situations, ensuring your application can recover and continue functioning smoothly.
 
-ActiveRecord includes a feature known as the connection "reaper." The reaper periodically checks connections in the pool and removes any dead or idle for too long. This helps maintain a pool of valid connections, but immediate action might be needed when a connection is found dead during a database operation.
+Active Record includes a feature known as the connection "reaper." The reaper periodically checks connections in the pool and removes any dead or idle for too long. This helps maintain a pool of valid connections, but immediate action might be needed when a connection is found dead during a database operation.
 
-ActiveRecord provides the `#verify!` method to handle dead connections dynamically. This method can be called to check if the current connection is still valid. If it is found invalid, `#verify!` will automatically attempt to re-establish it. This method is essential for ensuring that your application can recover from connection issues on the fly.
+Active Record provides the `#verify!` method to handle dead connections dynamically. This method can be called to check if the current connection is still valid. If it is found invalid, `#verify!` will automatically attempt to re-establish it. This method is essential for ensuring that your application can recover from connection issues on the fly.
 
 ### Implementing Immediate Dead Connection Handling
 
@@ -66,7 +66,7 @@ Karafka provides automatic database connection management for standard setups. H
 
 ## See Also
 
-- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) - Set up Karafka with Rails and ActiveRecord
+- [Integrating with Ruby on Rails and other frameworks](Infrastructure-Integrating-with-Ruby-on-Rails-and-other-frameworks) - Set up Karafka with Rails and Active Record
 - [Forking](Infrastructure-Forking) - Understand connection handling when using forking and Swarm mode
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) - Manage database connections across threads
 - [Resources Management](Infrastructure-Resources-Management) - Optimize overall resource usage including database connections

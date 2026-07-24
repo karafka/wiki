@@ -84,7 +84,7 @@ Unlike typical open-source projects that rely on volunteer maintenance, Karafka 
 - Built-in Web UI for monitoring and management
 - Live consumer management (pause/resume partitions in real-time)
 - Comprehensive error handling and Dead Letter Queue functionality
-- Rails integration and ActiveJob backend support
+- Rails integration and Active Job backend support
 - Professional monitoring integrations (AppSignal, StatsD/DataDog)
 
 ### **Long-Term Commitment**

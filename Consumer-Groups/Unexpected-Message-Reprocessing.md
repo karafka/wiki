@@ -66,7 +66,7 @@ Consider a batch where message 4 fails three times before succeeding, and messag
 
 The same counter accumulation can, in certain patterns, cause individual messages to be retried fewer times than expected rather than more, depending on which messages fail and in which order.
 
-The following configuration will exhibit this behaviour. With a shared counter, message 7 "inherits" the retries already spent on message 4 and hits the DLQ after fewer attempts than `max_retries` would suggest:
+The following configuration will exhibit this behavior. With a shared counter, message 7 "inherits" the retries already spent on message 4 and hits the DLQ after fewer attempts than `max_retries` would suggest:
 
 ```ruby
 class KarafkaApp < Karafka::App

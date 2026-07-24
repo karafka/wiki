@@ -12,7 +12,7 @@ Karafka is a robust framework that allows applications to interact with multiple
 
     - The `Karafka.producer` will always refer to the primary cluster defined unless overwritten.
 
-    - ActiveJob jobs, when scheduled with Karafka's ActiveJob backend, will also always go to the primary cluster.
+    - Active Job jobs, when scheduled with Karafka's Active Job backend, will also always go to the primary cluster.
 
 4. Admin Operations and Web UI:
 
@@ -97,7 +97,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 ## Common Mistakes
 
-- **Ignoring Primary Default**: Forgetting that `Karafka.producer` and ActiveJob jobs default to the primary cluster can lead to unexpected routing of messages.
+- **Ignoring Primary Default**: Forgetting that `Karafka.producer` and Active Job jobs default to the primary cluster can lead to unexpected routing of messages.
 
 - **Mismatched Cluster Configuration**: Ensure that all specified clusters in the configuration have the correct broker addresses.
 

@@ -251,7 +251,7 @@ end
 
 Below, you can find a few examples of resources worth preparing and cleaning before forking:
 
-- **Database Connections**: Re-establish database connections to prevent sharing connections between processes, which could lead to locking issues or other concurrency problems. For ActiveRecord, this typically involves calling ActiveRecord::Base.establish_connection.
+- **Database Connections**: Re-establish database connections to prevent sharing connections between processes, which could lead to locking issues or other concurrency problems. For Active Record, this typically involves calling ActiveRecord::Base.establish_connection.
 
 - **Thread Cleanup**: If the preloaded application spawns threads, ensure they are stopped or re-initialized post-fork to avoid sharing thread execution contexts.
 

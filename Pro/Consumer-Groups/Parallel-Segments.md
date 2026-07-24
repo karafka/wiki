@@ -269,7 +269,7 @@ Parallel Segments use a two-step process:
 
 The default reducer is: `->(partition_key) { partition_key.to_s.sum % count }`
 
-This can lead to sub-optimal behaviours where different partition keys map to the same segment.
+This can lead to sub-optimal behaviors where different partition keys map to the same segment.
 
 #### Example of Reducer Collision
 

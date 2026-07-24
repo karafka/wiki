@@ -55,4 +55,4 @@ Karafka Web UI offers a robust, efficient, and reliable solution for monitoring 
 
 - [About Web UI](Web-UI-About) - For an overview of Web UI capabilities
 - [Pro Cleaner API](Pro-Cleaner-API) - For managing and cleaning Web UI data topics
-- [Librdkafka Configuration](Librdkafka-Configuration) - For configuration options that affect Web UI behavior
+- [librdkafka Configuration](Librdkafka-Configuration) - For configuration options that affect Web UI behavior

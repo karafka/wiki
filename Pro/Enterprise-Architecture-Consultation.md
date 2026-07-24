@@ -57,8 +57,8 @@ Getting the most out of Karafka's Web UI:
 Connecting Karafka with your existing stack:
 
 - **Rails integration** - Proper initialization, connection management, and request/background separation
-- **ActiveJob backend** - When to use Karafka as a job backend vs. dedicated message processing
-- **ActiveRecord connections** - Managing database connection pools with concurrent consumers
+- **Active Job backend** - When to use Karafka as a job backend vs. dedicated message processing
+- **Active Record connections** - Managing database connection pools with concurrent consumers
 - **Testing strategies** - Unit testing consumers, integration testing with Kafka, and CI/CD setup
 - **Monitoring integration** - DataDog, AppSignal, StatsD, and custom instrumentation
 

@@ -171,7 +171,7 @@ end
 
 #### External Services not Thread-Safe
 
-Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails ActiveRecord is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
+Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails Active Record is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
 
 #### Manual Thread Management in Consumer
 

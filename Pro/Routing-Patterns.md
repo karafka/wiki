@@ -121,7 +121,7 @@ end
 
 ### ActiveJob Routing Patterns
 
-In the case of ActiveJob, a new method is available called `#active_job_pattern` that allows you to define pattern matchings for ActiveJob jobs. Its API is similar to the `#pattern` one and works the same way:
+In the case of Active Job, a new method is available called `#active_job_pattern` that allows you to define pattern matchings for Active Job jobs. Its API is similar to the `#pattern` one and works the same way:
 
 ```ruby
 class KarafkaApp < Karafka::App
