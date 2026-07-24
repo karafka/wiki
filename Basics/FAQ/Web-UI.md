@@ -42,7 +42,7 @@ This is because the `karafka-web install` command ensures that the topics are cr
 
 Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
-If you need to create them manually, please include the settings listed [here](Web-UI-Getting-Started).
+If you need to create them manually, include the settings listed [here](Web-UI-Getting-Started).
 
 ## Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?
 
@@ -94,7 +94,7 @@ it typically indicates that the Karafka Web UI is trying to execute the `ps` com
 
 - **Restricted Permissions**: It could be a permission issue. The process/user running the Web UI may not have the necessary permissions to execute the `ps` command.
 
-Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
+Ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
 
 ## Why do Karafka Web UI topics contain binary/Unicode data instead of text?
 

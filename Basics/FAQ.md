@@ -12,4 +12,4 @@ The Karafka FAQ is organized into the following categories for easier navigation
 
 !!! note "See Pro Docs for Pro Questions"
 
-    For Pro-specific questions, please refer to the relevant Pro feature documentation pages.
+    For Pro-specific questions, refer to the relevant Pro feature documentation pages.

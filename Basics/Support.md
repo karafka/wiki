@@ -30,15 +30,15 @@ We acknowledge that understanding your specific applications and their configura
 
 !!! info "No ETAs or Timelines in OSS"
 
-    Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there won't be one. Please do not ask for timelines unless I've already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
+    Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there won't be one. Do not ask for timelines unless I've already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
 
-    If a bug affects your business operations and you need prioritized support, please consider supporting Karafka by upgrading to the Pro offering. This allows me to prioritize issues differently and consider your business needs.
+    If a bug affects your business operations and you need prioritized support, consider supporting Karafka by upgrading to the Pro offering. This allows me to prioritize issues differently and consider your business needs.
 
 !!! tip "Enhance Your Karafka Experience with Pro Support"
 
     For users seeking assistance with application-specific issues, we offer a Pro version of Karafka. This subscription provides comprehensive support, including help with application-specific problems.
 
-    For more information about our Pro offering, please visit [this](https://karafka.io/#become-pro) page.
+    For more information about our Pro offering, visit [this](https://karafka.io/#become-pro) page.
 
 ## Issue Reporting Guide
 
@@ -48,7 +48,7 @@ When reporting an issue within the Karafka ecosystem, providing detailed informa
 
     Failing to provide the below information may result in the issue **being closed** without assessment.
 
-Please include as many of the following details as possible to help me understand and address the issue:
+Include as many of the following details as possible to help me understand and address the issue:
 
 <table>
   <tr>

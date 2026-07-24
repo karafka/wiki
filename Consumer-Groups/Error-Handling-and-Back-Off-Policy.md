@@ -203,7 +203,7 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
 
 !!! note "Virtual Partitions Behave Differently on Errors"
 
-    This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
+    This behavior is different in the case of Virtual Partitions. Refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
 
 ### Offset Management Errors
 

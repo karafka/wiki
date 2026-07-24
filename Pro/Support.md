@@ -6,7 +6,7 @@ Karafka Pro offers priority support via a dedicated per-organization private Sla
 
 ## Version Support
 
-Please check out the [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) for information about supported versions.
+Check out the [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) for information about supported versions.
 
 ## Priority Support
 
@@ -14,7 +14,7 @@ Thinking about introducing Kafka to your Ruby and Rails stack?
 
 With Karafka Pro, you can get priority support with a max response time of **4 business days**. Enterprise customers receive even faster support with a max response time of **2 business days**. For support, email `contact@karafka.io` or send us a message via the dedicated private channels on our [Slack](https://karafka.slack.com/).
 
-Please email using the same domain as the original license email or explain your connection to the licensed company.
+Email using the same domain as the original license email or explain your connection to the licensed company.
 
 !!! warning "Support for EOL Versions"
 
@@ -26,7 +26,7 @@ Please email using the same domain as the original license email or explain your
 
 Yearly Pro customers may request a two-hour video chat session with Maciej Mensfeld to discuss their application(s), requirements, and how best to use the various Karafka features. Contact us at `contact@karafka.io` to set up your session.
 
-Please email using the same domain as the original license email or explain your connection to the licensed company.
+Email using the same domain as the original license email or explain your connection to the licensed company.
 
 ## Upgrade Support
 

@@ -24,7 +24,7 @@ To use it:
 
     !!! warning "Karafka Web UI Installation Guidance"
 
-        Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+        Ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
     !!! warning "Essential Environment Migration Step"
 
@@ -288,7 +288,7 @@ The procedure ensures the uninterrupted operation of your Karafka servers while 
 
 Karafka Web UI can be configured to monitor and report data about many applications to a single dashboard.
 
-Please visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
+Visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
 
 ## Authentication
 
@@ -388,7 +388,7 @@ The Web UI uses two consumer groups that need ACL permissions:
 
 As mentioned above, the initial setup **requires** you to run `bundle exec karafka-web install` once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
 
-Before reporting an issue, please make sure that:
+Before reporting an issue, make sure that:
 
 - You have visited the Karafka Web [status](Web-UI-Features#status) page
 - All the topics required by Karafka Web exist

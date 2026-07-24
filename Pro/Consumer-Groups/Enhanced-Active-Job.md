@@ -4,7 +4,7 @@ Enhanced Active Job adapter provides extra capabilities to regular Active Job to
 
 ## Enabling Enhanced Active Job
 
-No action needs to be taken. Please follow the [Active Job setup](Consumer-Groups-Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
+No action needs to be taken. Follow the [Active Job setup](Consumer-Groups-Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
 
 ## Ordered Jobs
 

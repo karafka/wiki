@@ -27,7 +27,7 @@ iterator.each do |message|
 end
 ```
 
-Please read the sections below for more details.
+Read the sections below for more details.
 
 ### Subscription Modes
 

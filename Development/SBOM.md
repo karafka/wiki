@@ -12,7 +12,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
 !!! tip "License Variability in OSS Dependencies"
 
-    Please be aware that the license status of the dependencies within the Karafka ecosystem may change over time due to the dynamic nature of open-source software (OSS) and dependency management. While we strive to keep this SBOM as accurate and up-to-date as possible, it represents a best-effort snapshot. For those seeking to construct a comprehensive and current SBOM for their projects, incorporating all dependencies accurately, we recommend using tools such as [Mend.io](https://www.mend.io/open-source-license-compliance/). Mend.io can help automate the creation of a detailed SBOM, ensuring it reflects the complete state of your target software, including any license changes in its dependencies.
+    Be aware that the license status of the dependencies within the Karafka ecosystem may change over time due to the dynamic nature of open-source software (OSS) and dependency management. While we strive to keep this SBOM as accurate and up-to-date as possible, it represents a best-effort snapshot. For those seeking to construct a comprehensive and current SBOM for their projects, incorporating all dependencies accurately, we recommend using tools such as [Mend.io](https://www.mend.io/open-source-license-compliance/). Mend.io can help automate the creation of a detailed SBOM, ensuring it reflects the complete state of your target software, including any license changes in its dependencies.
 
 ## karafka + subcomponents
 

@@ -73,7 +73,7 @@ The below example illustrates the usage of the `migrate` command to align the nu
 
 <div class="asciinema" data-cols="100" data-rows="16" data-cast="topics-migrate">
   <span style="display: none;">
-    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Please use our
+    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Use our
     <a href="https://karafka.io/docs">online</a>
     documentation instead.
   </span>

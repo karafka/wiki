@@ -269,7 +269,7 @@ Maintaining a conservative approach when setting concurrency levels with Karafka
 
 ### Preloading/Eager Loading
 
-Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Please do this to avoid missing dependencies or unexpected errors during runtime.
+Before you start the embedded Karafka server, your application code must be preloaded or eager loaded. This ensures that all necessary components, classes, and modules are available and loaded into memory when Karafka starts. Do this to avoid missing dependencies or unexpected errors during runtime.
 
 ### Critical Error Handling
 

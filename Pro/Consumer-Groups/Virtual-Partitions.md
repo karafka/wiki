@@ -383,7 +383,7 @@ end
 
 !!! note "Virtual Partitions Lifespan"
 
-    Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
+    Remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
 ## Virtual Offset Management
 

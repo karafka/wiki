@@ -8,7 +8,7 @@ Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secur
 
 !!! info "No Warranty"
 
-    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, please contact us so we can enhance the codebase accordingly.
+    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, contact us so we can enhance the codebase accordingly.
 
 !!! warning "OSS Version Limitations"
 
@@ -66,9 +66,9 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
+All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
 
-For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
+For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, consult our [Security Guidelines documentation](Pro-Security).
 
 ## librdkafka FIPS Support
 

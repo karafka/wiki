@@ -12,7 +12,7 @@ While some documented issues may occur with other Kafka deployments, this guide 
 
 !!! note "Help Improve This Guide"
 
-    This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, please reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
+    This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
 
 ## MSK vs. Other Kafka Vendors
 

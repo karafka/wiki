@@ -2,7 +2,7 @@ Enhanced Dead Letter Queue feature provides additional functionalities and warra
 
 This documentation only covers extra functionalities enhancing the Dead Letter Queue feature.
 
-Please refer to the [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) documentation for more details on its core principles.
+Refer to the [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) documentation for more details on its core principles.
 
 ## Using Enhanced Dead Letter Queue
 

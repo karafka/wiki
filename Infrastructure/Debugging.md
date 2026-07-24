@@ -1,6 +1,6 @@
 This document was created in response to recurring community questions and confusion around Karafka's double-processing or missed message behaviors. While it's understandable given the complexity of message-driven systems, it's important to clarify up front:
 
-- **There are no confirmed bugs in the most recent version of Karafka** (at the time of writing) that cause unintended double-processing or skipped messages. If you observe such behavior and can reliably reproduce it, please open an issue with a minimal test case.
+- **There are no confirmed bugs in the most recent version of Karafka** (at the time of writing) that cause unintended double-processing or skipped messages. If you observe such behavior and can reliably reproduce it, open an issue with a minimal test case.
 
 - Karafka includes a **comprehensive integration test suite**, which features a dedicated assertion layer ensuring:
     - Messages are not fetched more than once.
@@ -32,7 +32,7 @@ When used correctly and under healthy conditions (no ungraceful termination), Ka
 
 !!! tip "Introductory Overview"
 
-    This section provides a high-level introduction to Karafka's architecture and lifecycle. For more comprehensive details on Karafka's internal mechanisms, configuration options, and operational best practices, please refer to other sections of this documentation where these concepts are explored in greater depth.
+    This section provides a high-level introduction to Karafka's architecture and lifecycle. For more comprehensive details on Karafka's internal mechanisms, configuration options, and operational best practices, refer to other sections of this documentation where these concepts are explored in greater depth.
 
 Karafka is a multi-threaded Kafka consumer framework for Ruby/Rails applications. Understanding its internals will help pinpoint where duplicates arise:
 
@@ -285,7 +285,7 @@ In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller b
 
 ## Memory Usage / Memory Leaks
 
-As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, please follow these steps:
+As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, follow these steps:
 
 1. **Upgrade to the Latest Version**: Ensure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
 
@@ -355,7 +355,7 @@ Karafka is designed to be efficient with memory, but many factors can contribute
 
 6. **Code Review**: Regularly review your code for inefficient memory usage patterns, such as large data structures or extensive caching without expiration policies.
 
-If you have followed these steps and still believe there is a memory leak in Karafka, please report it through one of the following channels:
+If you have followed these steps and still believe there is a memory leak in Karafka, report it through one of the following channels:
 
 - [The Karafka official Slack channel](https://slack.karafka.io)
 - [Open a GitHub issue](https://github.com/karafka/karafka/issues/new)

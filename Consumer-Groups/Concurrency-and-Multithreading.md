@@ -9,7 +9,7 @@ Additionally, Karafka supports [Swarm Mode](Infrastructure-Swarm-Multi-Process) 
 
 !!! tip "Separate Resources Management Documentation"
 
-    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Infrastructure-Resources-Management). This page provides insights into the allocation and optimization of system resources by Karafka components.
+    Be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Infrastructure-Resources-Management). This page provides insights into the allocation and optimization of system resources by Karafka components.
 
 ## Parallel Messages Processing
 
@@ -48,7 +48,7 @@ Example of work distribution amongst two workers:
 
 !!! note "Virtual Partitions Parallelize a Single Partition"
 
-    Please keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
+    Keep in mind that if you scale horizontally and end up with one Karafka process being subscribed only to a single topic partition, you can still process data from it in parallel using the **Virtual Partitions** feature.
 
 ### Parallel Kafka connections within a Single Consumer Group (Subscription Groups)
 
@@ -110,7 +110,7 @@ end
 
 !!! note "How librdkafka Fetches Messages"
 
-    If you are interested in how `librdkafka` fetches messages, please refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
+    If you are interested in how `librdkafka` fetches messages, refer to [this](https://github.com/edenhill/librdkafka/wiki/FAQ#how-are-partitions-fetched) documentation.
 
 ### Parallel Processing Of a Single Topic Partition (Virtual Partitions)
 

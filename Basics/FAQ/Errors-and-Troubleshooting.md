@@ -48,7 +48,7 @@ Fatal error: Broker: Static consumer fenced by other consumer with same group.in
 
 It can mean two things:
 
-1. You are using the Karafka version before `2.0.20`. If that is the case, please upgrade.
+1. You are using the Karafka version before `2.0.20`. If that is the case, upgrade.
 1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
 
 ## Why am I seeing an `Implement this in a subclass` error?
@@ -118,7 +118,7 @@ broker certificate could not be verified, verify that ssl.ca.location is correct
 root CA certificates are installed (brew install openssl) (after 170ms in state SSL_HANDSHAKE)
 ```
 
-Please disable the SSL verification in your configuration:
+Disable the SSL verification in your configuration:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -177,7 +177,7 @@ Failed to complete configure task
 `block in execute'
 ```
 
-you need to make sure that your Alpine-based image includes bash. Alpine Linux Docker image by default does **not** include it. To add it, please make sure to add this line before you run the `bundle install` process:
+you need to make sure that your Alpine-based image includes bash. Alpine Linux Docker image by default does **not** include it. To add it, make sure to add this line before you run the `bundle install` process:
 
 ```shell
 RUN apk update && apk add bash
@@ -223,7 +223,7 @@ You can read more about this issue [here](https://github.com/confluentinc/librdk
 
 When you see both the `Disconnected` error and the `all_brokers_down` error, it means that the TCP connection to the cluster was closed and that you no longer have any active connections.
 
-Please read the explanation of the previous question to understand the reasons and get tips on mitigating this issue.
+Read the explanation of the previous question to understand the reasons and get tips on mitigating this issue.
 
 ```text
 rdkafka: [thrd:node_url]: node_url: Disconnected (after 660461ms in state UP)
@@ -314,7 +314,7 @@ it most likely arises when there's an authorization issue related to the consume
 
 When using the Admin API or the Web UI in the context of Karafka, you are operating under the consumer groups named `karafka_admin` and `karafka_web`.
 
-Please review and update your Kafka ACLs or broker configurations to ensure these groups have all the permissions they need.
+Review and update your Kafka ACLs or broker configurations to ensure these groups have all the permissions they need.
 
 ## Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?
 
@@ -328,7 +328,7 @@ To address and potentially resolve this problem, you can update your system gems
 gem update --system
 ```
 
-Once you've done this, attempt to install the `karafka-license` gem again. If the problem persists, please get in touch with us.
+Once you've done this, attempt to install the `karafka-license` gem again. If the problem persists, get in touch with us.
 
 ## Why do I see `Rdkafka::Config::ClientCreationError` when changing the `partition.assignment.strategy`?
 
