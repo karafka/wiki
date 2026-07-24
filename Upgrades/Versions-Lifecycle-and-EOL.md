@@ -2,7 +2,7 @@ This page lists the current maintenance status of the various Karafka versions.
 
 ## Versioning Strategy
 
-Karafka and its components use a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here's how we structure our versioning:
+Karafka and its components use a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here is how we structure our versioning:
 
 - **Major Version Upgrades**: The first digit in our version number represents significant rewrites or major changes in the architecture of Karafka gems. For example, transitioning from `0.x` to `1.0` or from `1.x` to `2.0` signifies transformative changes that introduce new concepts or substantially modify the system's design.
 

@@ -1,6 +1,6 @@
 !!! tip "Recommendation: Related Regulatory Documentation"
 
-    If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
+    If you are working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
 
     For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
@@ -66,7 +66,7 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
+All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they do not use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
 
 For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, consult our [Security Guidelines documentation](Pro-Security).
 

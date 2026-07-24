@@ -35,27 +35,27 @@ end
 
 Some of the options are:
 
-| Option                                      | Description                                                                    |
-|---------------------------------------------|--------------------------------------------------------------------------------|
-| `id`                                        | id of the producer for instrumentation and logging                             |
-| `logger`                                    | Logger that we want to use                                                     |
-| `client_class`                              | Client class for creating the underlying client used to dispatch messages      |
-| `deliver`                                   | Should we send messages to Kafka or just fake the delivery                     |
-| `max_wait_timeout`                          | Waits that long for the delivery report or raises an error                     |
-| `wait_on_queue_full`                        | Should be wait on queue full or raise an error when that happens               |
-| `wait_backoff_on_queue_full`                | Waits that long before retry when queue is full                                |
-| `wait_timeout_on_queue_full`                | If back-offs and attempts that that much time, error won't be retried more     |
-| `wait_backoff_on_transaction_command`       | How long to wait before retrying a retryable transaction related error         |
-| `max_attempts_on_transaction_command`       | How many times to retry a retryable transaction related error before giving up |
-| `reload_on_idempotent_fatal_error`          | Automatically reload producer after fatal errors on idempotent producers       |
-| `wait_backoff_on_idempotent_fatal_error`    | Time to wait (ms) before retrying after an idempotent fatal error reload       |
-| `max_attempts_on_idempotent_fatal_error`    | Maximum number of reload attempts for idempotent fatal errors                  |
-| `reload_on_transaction_fatal_error`         | Automatically reload producer after fatal errors in transactions               |
-| `wait_backoff_on_transaction_fatal_error`   | Time to wait (ms) before continuing after a transactional fatal error reload   |
-| `max_attempts_on_transaction_fatal_error`   | Maximum number of reload attempts for transactional fatal errors               |
-| `wait_timeout_on_transaction_abort`         | Max time to wait (ms) for the first delivery before aborting a transaction     |
-| `instrument_on_wait_queue_full`             | Should we instrument when `queue_full` occurs                                  |
-| `statistics_decorator`                      | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
+| Option                                    | Description                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------ |
+| `id`                                      | id of the producer for instrumentation and logging                             |
+| `logger`                                  | Logger that we want to use                                                     |
+| `client_class`                            | Client class for creating the underlying client used to dispatch messages      |
+| `deliver`                                 | Should we send messages to Kafka or just fake the delivery                     |
+| `max_wait_timeout`                        | Waits that long for the delivery report or raises an error                     |
+| `wait_on_queue_full`                      | Should be wait on queue full or raise an error when that happens               |
+| `wait_backoff_on_queue_full`              | Waits that long before retry when queue is full                                |
+| `wait_timeout_on_queue_full`              | If back-offs and attempts that that much time, error will not be retried more  |
+| `wait_backoff_on_transaction_command`     | How long to wait before retrying a retryable transaction related error         |
+| `max_attempts_on_transaction_command`     | How many times to retry a retryable transaction related error before giving up |
+| `reload_on_idempotent_fatal_error`        | Automatically reload producer after fatal errors on idempotent producers       |
+| `wait_backoff_on_idempotent_fatal_error`  | Time to wait (ms) before retrying after an idempotent fatal error reload       |
+| `max_attempts_on_idempotent_fatal_error`  | Maximum number of reload attempts for idempotent fatal errors                  |
+| `reload_on_transaction_fatal_error`       | Automatically reload producer after fatal errors in transactions               |
+| `wait_backoff_on_transaction_fatal_error` | Time to wait (ms) before continuing after a transactional fatal error reload   |
+| `max_attempts_on_transaction_fatal_error` | Maximum number of reload attempts for transactional fatal errors               |
+| `wait_timeout_on_transaction_abort`       | Max time to wait (ms) for the first delivery before aborting a transaction     |
+| `instrument_on_wait_queue_full`           | Should we instrument when `queue_full` occurs                                  |
+| `statistics_decorator`                    | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas   |
 
 The full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
@@ -119,7 +119,7 @@ When enabled, WaterDrop will:
 1. Wait for the configured backoff period before retrying the operation
 1. Track reload attempts to prevent infinite loops
 
-The reload mechanism helps ensure that transient fatal errors don't permanently disable your producer, improving the overall resilience of your application.
+The reload mechanism helps ensure that transient fatal errors do not permanently disable your producer, improving the overall resilience of your application.
 
 !!! warning "Producer Client Reload Impact"
 
@@ -254,7 +254,7 @@ apt-get install -y libzstd-dev
 
 ## Message Size Validation
 
-When working with WaterDrop, it's essential to know the various checks and validations to ensure the integrity and feasibility of producing messages. This section explains the message size validation process in WaterDrop, librdkafka, and Kafka.
+When working with WaterDrop, it is essential to know the various checks and validations to ensure the integrity and feasibility of producing messages. This section explains the message size validation process in WaterDrop, librdkafka, and Kafka.
 
 There are three primary parameters to consider:
 
@@ -352,7 +352,7 @@ Below you can find examples where each of the validations layers fails:
 
 1. **Disabling max_payload_size**:
 
-    - If you don't use dummy or buffered clients for testing, it's possible to turn off `max_payload_size`.
+    - If you do not use dummy or buffered clients for testing, it is possible to turn off `max_payload_size`.
 
     - This can be done by setting it to a high value and bypassing this validation step.
 
@@ -362,7 +362,7 @@ Below you can find examples where each of the validations layers fails:
 
     - A discrepancy between `max_payload_size` and `message.max.bytes` may arise due to the additional size from metadata, headers, and keys.
 
-    - Hence, it's possible to bypass WaterDrop's validation but fail on librdkafka's end.
+    - Hence, it is possible to bypass WaterDrop's validation but fail on librdkafka's end.
 
 ### Conclusion
 

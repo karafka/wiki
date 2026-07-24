@@ -33,7 +33,7 @@ producer.partition_count('users_events') => 5
 
 ### Fully External Custom Partitioner
 
-This approach involves creating a partitioner that operates outside of the WaterDrop producer. Essentially, you're looking at writing a wrapper or a separate component that manages partitioning before handing off the message to the producer.
+This approach involves creating a partitioner that operates outside of the WaterDrop producer. Essentially, you are looking at writing a wrapper or a separate component that manages partitioning before handing off the message to the producer.
 
 Advantages:
 
@@ -43,7 +43,7 @@ Advantages:
 Drawbacks:
 
 - **Complexity**: This method introduces additional layers to your architecture, potentially increasing the complexity of your system.
-- **Maintenance**: You need to ensure that the external partitioner and the producer are well-integrated and that any changes in one don't adversely affect the other.
+- **Maintenance**: You need to ensure that the external partitioner and the producer are well-integrated and that any changes in one do not adversely affect the other.
 
 ```ruby
 class UserPartitioner
@@ -72,7 +72,7 @@ Advantages:
 
 Drawbacks:
 
-- **Limited Data Access**: Middleware operates on the message after it's been prepared for dispatch. This means it only has access to the data post-serialization. This could be a significant limitation if your partitioning logic needs to work with the data in its original format. However, it can be bypassed if you decide to serialize data directly in the middleware.
+- **Limited Data Access**: Middleware operates on the message after it has been prepared for dispatch. This means it only has access to the data post-serialization. This could be a significant limitation if your partitioning logic needs to work with the data in its original format. However, it can be bypassed if you decide to serialize data directly in the middleware.
 
 - **Implicit Flow**: Implementing partitioning logic as middleware might not be explicitly clear, leading to confusion. The middleware's internal workings and position in the execution chain must be well understood.
 

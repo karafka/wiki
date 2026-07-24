@@ -134,7 +134,7 @@ end
 
 ### Heroku Multi-Tenant Retention Policy Impact
 
-When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Infrastructure-Deployment#heroku-retention-policy-impact-on-the-web-ui).
+When using Heroku Kafka in MultiTenant mode, it is important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Infrastructure-Deployment#heroku-retention-policy-impact-on-the-web-ui).
 
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Infrastructure-Deployment#heroku).
 
@@ -142,7 +142,7 @@ You can read about working with Heroku Kafka Multi-Tenant add-on [here](Infrastr
 
 Upgrading your Karafka Web UI to a newer version is a three-step operation. You must be diligent about the order of operations to avoid unexpected errors. The process is as follows:
 
-1. **Update Karafka and Its Dependencies**: First, ensure that you're running the latest version of Karafka, along with its key dependencies, which include `karafka-core`, `karafka-rdkafka`, and `waterdrop`.
+1. **Update Karafka and Its Dependencies**: First, ensure that you are running the latest version of Karafka, along with its key dependencies, which include `karafka-core`, `karafka-rdkafka`, and `waterdrop`.
 1. **Deploy All Karafka Consumer Processes**: Your first step should be to deploy all the Karafka consumer processes on all nodes where the `karafka server` command runs. Ensure that all your consumers are up-to-date and working with the most recent consumer version.
 1. **Deploy the Web UI Update to Your Web Server**: After all the consumer processes have been upgraded, you can safely deploy the updated Web UI to your web server. The updated web UI will have the necessary code and schema changes to work with the latest consumer version.
 

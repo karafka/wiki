@@ -243,7 +243,7 @@ To adjust a partition offset:
 4. Configure offset adjustment:
 
    - **New Offset**: Enter the desired offset position (limited by the partition's low and high watermarks)
-   - **Prevent Overtaking**: Option to only adjust if consumer hasn't moved beyond requested offset
+   - **Prevent Overtaking**: Option to only adjust if consumer has not moved beyond requested offset
    - **Resume Immediately**: If partition is paused, resume processing immediately
 
 5. Click **Adjust Offset**
@@ -269,7 +269,7 @@ To adjust a partition offset:
 - **Replay Processing**: Move backward to reprocess messages after fixing a bug
 - **Debugging**: Examine specific messages by positioning the consumer at exact offsets
 - **Testing**: Validate message handling by processing specific message ranges
-- **Catch-up**: Skip ahead to reduce processing lag when historical data isn't required
+- **Catch-up**: Skip ahead to reduce processing lag when historical data is not required
 
 #### Pause/Resume Use Cases
 

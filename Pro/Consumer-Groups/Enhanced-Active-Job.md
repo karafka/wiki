@@ -107,7 +107,7 @@ end
 
 In the above example, `HighPriorityJob` is configured to use a specifically tailored producer variant for critical events. This producer variant is configured with a higher acknowledgment setting (`all`), ensuring that all replicas confirm each message before it is successfully delivered. This setup is particularly beneficial for jobs where data loss or delivery failure is unacceptable.
 
-Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it's adjusting the acknowledgment levels, managing timeouts, or using specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within Active Job, opening up new possibilities for system optimization and performance improvement.
+Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it is adjusting the acknowledgment levels, managing timeouts, or using specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within Active Job, opening up new possibilities for system optimization and performance improvement.
 
 ## Routing Patterns
 

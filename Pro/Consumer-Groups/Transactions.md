@@ -31,7 +31,7 @@ Karafka transactions provide Exactly-Once Semantics by ensuring that producing t
       (kafka.coordinator.group.GroupMetadataManager)
     ```
 
-    To ensure reliable and predictable processing, always commit offsets using the mode within your consumer. If transactional processing is enabled, all offset commits should be part of a transaction. If you're processing offsets non-transactionally, do not mix this with transactional operations.
+    To ensure reliable and predictable processing, always commit offsets using the mode within your consumer. If transactional processing is enabled, all offset commits should be part of a transaction. If you are processing offsets non-transactionally, do not mix this with transactional operations.
 
 Before using transactions, you need to configure your producer to be transactional. This is done by setting `transactional.id` in the kafka settings scope:
 
@@ -72,7 +72,7 @@ In case the transaction fails (for any reason), neither of the messages will be 
 
 ### Aborting Transactions
 
-Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This ensures that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction won't be committed, preserving data consistency.
+Any exception or error raised within a transaction block will automatically result in the transaction being aborted. This ensures that if there are unexpected behaviors or issues during message production or processing, the entire batch of messages within that transaction will not be committed, preserving data consistency.
 
 Below, you can find an example that ensures that all the messages are successfully processed and only in such cases all produced messages are being sent to Kafka together with marking of last message as consumed:
 
@@ -154,7 +154,7 @@ Consequently, if a transaction is prematurely aborted or encounters a failure, t
 
 !!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
-    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you are fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
 
 When using Manual Offset Management, you can provide a custom producer to the `#transaction` method as its first argument. This allows for greater flexibility in managing transactions, particularly in scenarios requiring advanced control over producers and offsets.
 
@@ -186,7 +186,7 @@ end
 
 Karafka's `#transaction` method is designed to handle complex message processing scenarios efficiently, especially in highly-traffic systems. It allows using a custom producer instance instead of the default `Karafka.producer`. This functionality is crucial in two primary contexts:
 
-- **Dedicated Transactional Producer**: You can use a separate, dedicated producer for transactions when you need stronger guarantees about the atomicity and consistency of operations. This specialized producer works in tandem with the standard, faster, non-transactional producer, and it's beneficial for operations where maintaining transaction integrity is critical.
+- **Dedicated Transactional Producer**: You can use a separate, dedicated producer for transactions when you need stronger guarantees about the atomicity and consistency of operations. This specialized producer works in tandem with the standard, faster, non-transactional producer, and it is beneficial for operations where maintaining transaction integrity is critical.
 
 ```ruby
 def consume
@@ -264,7 +264,7 @@ In essence, with support for dedicated transactional producers, Karafka's `#tran
 
 !!! warning "Direct Transactional Producer Usage Is Not Recommended"
 
-    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you're fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
+    Using a transactional producer directly in a `#consume` method, bypassing the `#wrap` mechanism, is strongly discouraged unless you are fully managing the offsets in your consumer. While this approach may seem straightforward for basic use cases, it fails to accommodate advanced offset management scenarios, such as handling messages that need to be redirected to a Dead Letter Queue (DLQ).
 
     In these scenarios, the Karafka framework might invoke the transactional producer after the main consumption logic completes. This implicit usage could lead to unintended transactional behavior or conflicts, undermining the integrity of your processing logic.
 
@@ -343,7 +343,7 @@ Understand the implications of this producer reassignment:
 
 - **Implications for Long-Running Jobs**: For long-running jobs actions `#revoked` that might run parallel with the consumption process, the transactional producer (the custom producer provided to the transaction) may be used for these operations. This could be a concern if the transactional producer is locked for an extended period due to a lengthy transaction, potentially affecting parallel processing.
 
-- **Recommendation for Systems with Parallel Processing Needs**: If your system frequently handles long-running jobs alongside message consumption, especially if these jobs are expected to run in parallel with transactions, it's advisable to use WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) consistently. Doing so ensures that a locked producer in a lengthy transaction doesn't hinder the performance or progress of other parallel operations. Instead of relying on the default `#producer` consumer reference, using WaterDrop's [`ConnectionPool`](WaterDrop-Connection-Pool) can significantly enhance system robustness and concurrency, allowing each transaction or job to operate with its dedicated producer resource.
+- **Recommendation for Systems with Parallel Processing Needs**: If your system frequently handles long-running jobs alongside message consumption, especially if these jobs are expected to run in parallel with transactions, it is advisable to use WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) consistently. Doing so ensures that a locked producer in a lengthy transaction does not hinder the performance or progress of other parallel operations. Instead of relying on the default `#producer` consumer reference, using WaterDrop's [`ConnectionPool`](WaterDrop-Connection-Pool) can significantly enhance system robustness and concurrency, allowing each transaction or job to operate with its dedicated producer resource.
 
 ```ruby
 # Example consumer that due to usage of LRJ in the routing can have the `#consume`
@@ -424,7 +424,7 @@ end
 
 ### Transactions After Revocation
 
-Specific scenarios, like partition revocation, can introduce complexities that must be handled gracefully. Here's how Karafka transactions behave after revocation:
+Specific scenarios, like partition revocation, can introduce complexities that must be handled gracefully. Here is how Karafka transactions behave after revocation:
 
 1. **Transactions Post-Revocation**: Transactions in Karafka that solely focus on producing messages, without marking any message as consumed, continue to function normally even after revocation. This feature is handy in specific scenarios, such as executing transactions within the `#revoked` method, where you might want to continue producing messages based on some internal state or logic.
 
@@ -444,13 +444,13 @@ This section explains how transactions interact with the DLQ and the implication
 
     !!! note "Disabling Transactions During DLQ Dispatches"
 
-        This behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka won't use transactions to move messages to the DLQ. You can read more about this [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
+        This behavior can be adjusted. If the transactional mode in the DLQ configuration is turned off, Karafka will not use transactions to move messages to the DLQ. You can read more about this [here](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
-1. **Error Handling and Retries**: If an error occurs during the DLQ operation, such as partition revocation or networking issues, Karafka's default behavior is to retry processing the same batch. This retry mechanism ensures that transient failures don't lead to message loss or unacknowledged message consumption. The system attempts to process the batch again, allowing the operation to succeed.
+1. **Error Handling and Retries**: If an error occurs during the DLQ operation, such as partition revocation or networking issues, Karafka's default behavior is to retry processing the same batch. This retry mechanism ensures that transient failures do not lead to message loss or unacknowledged message consumption. The system attempts to process the batch again, allowing the operation to succeed.
 
-1. **Considerations for DLQ Dispatching**: In certain situations, particularly under specific configurations or system constraints, DLQ dispatches might not be possible. For instance, if network issues prevent communication with the DLQ topic or transactional integrity can't be maintained due to partition revocations, the DLQ operations might not proceed as expected.
+1. **Considerations for DLQ Dispatching**: In certain situations, particularly under specific configurations or system constraints, DLQ dispatches might not be possible. For instance, if network issues prevent communication with the DLQ topic or transactional integrity cannot be maintained due to partition revocations, the DLQ operations might not proceed as expected.
 
-In such cases, it's important to understand that the DLQ might not operate, meaning that messages that fail processing persistently might not be moved to the DLQ. This situation underscores the importance of monitoring and potentially adjusting the system configuration or handling mechanisms to ensure that messages are either processed successfully or reliably moved to the DLQ.
+In such cases, it is important to understand that the DLQ might not operate, meaning that messages that fail processing persistently might not be moved to the DLQ. This situation underscores the importance of monitoring and potentially adjusting the system configuration or handling mechanisms to ensure that messages are either processed successfully or reliably moved to the DLQ.
 
 In conclusion, while transactions in Karafka provide a mechanism for processing messages consistently and atomically, their interaction with the DLQ introduces specific behaviors and considerations.
 
@@ -458,7 +458,7 @@ In conclusion, while transactions in Karafka provide a mechanism for processing 
 
 Karafka, using Kafka's Transactional Producer, offers solid delivery warranties that ensure data integrity and reliable message processing in distributed systems.
 
-Here's how Karafka's delivery warranties manifest in transactions:
+Here is how Karafka's delivery warranties manifest in transactions:
 
 - **Atomicity Across Partitions and Topics**: Karafka transactions maintain atomicity within a single partition or topic and across multiple ones. This feature is invaluable when a transaction spans producing and consuming from multiple topics or partitions, ensuring that all these operations succeed or fail as a single unit.
 
@@ -466,9 +466,9 @@ Here's how Karafka's delivery warranties manifest in transactions:
 
 - **Idempotent Writes**: Through the use of Kafka's Transactional Producer, Karafka ensures idempotent writes within transactions. Even if the transactional producer attempts to send a message multiple times, each message is written only once, preventing data duplication and contributing to the EOS guarantee.
 
-- **Consistent State in Failure Scenarios**: Karafka's transactional processing is designed to maintain system consistency, even when failures occur. If a transaction doesn't complete successfully due to issues like system crashes or network failures, it's aborted. This rollback mechanism ensures that incomplete or partial transactions don't corrupt the system state.
+- **Consistent State in Failure Scenarios**: Karafka's transactional processing is designed to maintain system consistency, even when failures occur. If a transaction does not complete successfully due to issues like system crashes or network failures, it is aborted. This rollback mechanism ensures that incomplete or partial transactions do not corrupt the system state.
 
-- **Isolation and Concurrency Control**: Transactions in Karafka are well-isolated, ensuring that the operations of an ongoing transaction aren't visible to others until the transaction is committed. This level of isolation is crucial in maintaining data consistency, particularly in environments where transactions are highly concurrent.
+- **Isolation and Concurrency Control**: Transactions in Karafka are well-isolated, ensuring that the operations of an ongoing transaction are not visible to others until the transaction is committed. This level of isolation is crucial in maintaining data consistency, particularly in environments where transactions are highly concurrent.
 
 - **Robust Failure Recovery**: Karafka is built to handle failures gracefully. If a transaction is interrupted (e.g., due to a producer crash), Karafka ensures that the system can recover consistently, aligning with the last committed transaction. This resilience is key to maintaining continuous and reliable operations.
 
@@ -476,19 +476,19 @@ Here's how Karafka's delivery warranties manifest in transactions:
 
 Transactions Instrumentation is directly tied to the **producer** handling the transaction. To effectively monitor transaction behavior, integrate your instrumentation with the transactional producers. This ensures accurate tracking and analysis of transactional activities, enhancing system monitoring and reliability. Refer to the [WaterDrop Transactions Instrumentation](WaterDrop-Transactions#instrumentation) section for a comprehensive approach to transaction instrumentation.
 
-However, **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
+However, **consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it is bypassing the consumer's offset manager.
 
 !!! warning "Consumer Lag Monitoring"
 
-    **Consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it's bypassing the consumer's offset manager.
+    **Consumer lag monitoring** for transactional consumers behaves differently. Since offsets are committed as part of the transaction by the producer rather than by the consumer, the usual consumer metrics (like `consumer_lag_stored`) will not be published or will show `-1` (or remain at whatever initial offset they had when subscribing). In other words, **consumer lag is not directly visible at the consumer level** because it is bypassing the consumer's offset manager.
 
 ### Karafka Web UI
 
-Karafka Web UI compensates for the lack of lag reporting in the `statistics.emitted` and **tracks offsets that are updated post-transaction**. In the Web UI, you'll see lag that is "more or less" accurate - though you might notice small `+1/-1` discrepancies due to offset reporting nuances.
+Karafka Web UI compensates for the lack of lag reporting in the `statistics.emitted` and **tracks offsets that are updated post-transaction**. In the Web UI, you will see lag that is "more or less" accurate - though you might notice small `+1/-1` discrepancies due to offset reporting nuances.
 
 ### Custom Instrumentation
 
-If you've built custom instrumentation around consumer lag or offsets, you'll need to compensate manually. Because the consumer doesn't store the offsets, you can't rely on the usual consumer statistics to get the lag. You'll need to base your metrics on **post-transaction offsets** or handle offset tracking in your own way.
+If you have built custom instrumentation around consumer lag or offsets, you will need to compensate manually. Because the consumer does not store the offsets, you cannot rely on the usual consumer statistics to get the lag. You will need to base your metrics on **post-transaction offsets** or handle offset tracking in your own way.
 
 ### Transaction Event Notification
 

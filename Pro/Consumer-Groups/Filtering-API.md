@@ -66,7 +66,7 @@ Filter instance is created when Karafka encounters a given topic partition for t
 
     Using `#seek` and `#pause` within a Filter requires a clear understanding of their implications. Misuse can result in unexpected behavior and performance issues.
 
-    For full details and best practices, refer to the [pausing and seeking](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) documentation. Ensure you're informed before integrating these operations.
+    For full details and best practices, refer to the [pausing and seeking](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) documentation. Ensure you are informed before integrating these operations.
 
 By default, filters applied to messages do not alter the execution or polling behavior of Karafka. This means that even if a message is filtered out, Karafka will continue to poll for messages at the same rate. However, it is possible to alter this behavior by overwriting the `#action` method in a custom consumer. This method is responsible for executing the logic of a given message. By overwriting it, developers can modify the behavior of their Karafka application based on the result of the filtering. For example, they might choose to pause processing or resume from a particular message.
 
@@ -253,7 +253,7 @@ end
 
 Filtering API allows you to register multiple filters for a consumer group or topic. When multiple filters are registered, they are executed in the order in which they were registered. This means that the filter registered later will receive data already pre-filtered by the previously registered one.
 
-For example, let's say you have two filters registered for a topic:
+For example, suppose you have two filters registered for a topic:
 
 ```ruby
 routes.draw do
@@ -267,7 +267,7 @@ end
 
 In this case, `FilterOne` will be executed first, and its output will be passed as input to `FilterTwo`. The output of `FilterTwo` will then be used in the further steps of work distribution.
 
-This order dependency allows you to chain multiple filters together to create more complex filtering logic. For example, you could have a first filter that removes all messages with invalid headers, followed by a second filter that removes messages that don't match a specific pattern in the payload.
+This order dependency allows you to chain multiple filters together to create more complex filtering logic. For example, you could have a first filter that removes all messages with invalid headers, followed by a second filter that removes messages that do not match a specific pattern in the payload.
 
 Remember that the order in which you register filters can affect the performance of your Karafka Pro application. If you have many filters registered, each filter adds overhead to message processing. Therefore, design your filter logic carefully and only register the filters you need to achieve the desired functionality.
 
@@ -277,7 +277,7 @@ Remember that the order in which you register filters can affect the performance
 
 - **Use Factories to Create Filter Instances**: When registering filters using Karafka routing API, use factories to create filter instances instead of class or filter instances. This ensures that each partition has its independent filter instance, making them thread-safe and able to handle messages concurrently without interfering with each other.
 
-- **Register Filters in the Correct Order**: When registering multiple filters, register them in the correct order. Filters are executed in the order in which they are registered, and each filter adds overhead to message processing. Therefore, it's crucial to design your filter logic carefully and only register the filters you need to achieve the desired functionality. It would be best if you also considered their performance to filter out the biggest number of messages using the fastest one.
+- **Register Filters in the Correct Order**: When registering multiple filters, register them in the correct order. Filters are executed in the order in which they are registered, and each filter adds overhead to message processing. Therefore, it is crucial to design your filter logic carefully and only register the filters you need to achieve the desired functionality. It would be best if you also considered their performance to filter out the biggest number of messages using the fastest one.
 
 - **Monitor Filter Performance**: Monitoring filter performance is essential to ensure that your Karafka Pro application processes messages efficiently. Keep an eye on the performance metrics for your filters, and keep in mind that slow filters will add additional lag to the consumption process.
 
@@ -299,9 +299,9 @@ By following these best practices, you can ensure that your Karafka Pro Filterin
 
 - **Data Sampling**: Filters can be used to sample incoming messages. For example, you can randomly select a subset of messages for further processing or analysis.
 
-- **Data Quality**: Filters can be used to measure the quality of incoming messages. For example, you can check the completeness or accuracy of messages and log or discard those that don't meet a certain threshold.
+- **Data Quality**: Filters can be used to measure the quality of incoming messages. For example, you can check the completeness or accuracy of messages and log or discard those that do not meet a certain threshold.
 
-- **Data Filtering**: Finally, filters can be used to filter out unwanted messages. For example, you can discard messages that contain spam or malware or messages that don't match specific criteria.
+- **Data Filtering**: Finally, filters can be used to filter out unwanted messages. For example, you can discard messages that contain spam or malware or messages that do not match specific criteria.
 
 ## Summary
 

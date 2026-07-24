@@ -135,7 +135,7 @@ Setting the replication factor for Kafka topics used by the scheduled messages f
 
 For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, ensuring that your recurring tasks continue to operate without interruption.
 
-Here's an example of how to reconfigure the scheduled messages topics so they have replication factor of 3:
+Here is an example of how to reconfigure the scheduled messages topics so they have replication factor of 3:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -179,7 +179,7 @@ Refer to the code sources for more details.
 
 ## Multi-Application Deployments
 
-When deploying Karafka's Scheduled Messages feature across multiple applications within the same Kafka cluster, it's **essential** to ensure proper isolation and prevent conflicts between applications. This section covers configuration for managing scheduled messages in multi-application environments.
+When deploying Karafka's Scheduled Messages feature across multiple applications within the same Kafka cluster, it is **essential** to ensure proper isolation and prevent conflicts between applications. This section covers configuration for managing scheduled messages in multi-application environments.
 
 ### Consumer Group Isolation
 
@@ -467,7 +467,7 @@ Additionally, the Web UI offers a detailed exploration of scheduled messages, sh
 
 ## Error Handling and Retries
 
-This feature is designed to ensure error handling and efficient retry mechanisms, minimizing the potential impact of errors on scheduled message dispatches. Here's an overview of how error handling and retries are managed:
+This feature is designed to ensure error handling and efficient retry mechanisms, minimizing the potential impact of errors on scheduled message dispatches. Here is an overview of how error handling and retries are managed:
 
 **Key Points on Error Handling:**
 
@@ -495,7 +495,7 @@ This feature's error handling and retry strategies ensure that the system remain
 
 ## Warranties
 
-Karafka's Scheduled Messages feature offers a set of warranties designed to ensure functionality and reliability within production environments. Here's a summary of the key guarantees and limitations:
+Karafka's Scheduled Messages feature offers a set of warranties designed to ensure functionality and reliability within production environments. Here is a summary of the key guarantees and limitations:
 
 - **Message Delivery Guarantee**: Karafka ensures that all scheduled messages will be delivered at least once, minimizing the risk of message loss. However, messages might be delivered multiple times under certain circumstances like network or Kafka cluster disruptions.
 
@@ -547,7 +547,7 @@ While Scheduled Messages offer message scheduling and dispatch capabilities, use
 
     - **Estimate Nature**: The state information for future days includes all messages scheduled up to the last system check. However, it may not accurately reflect cancellations or other modifications to these messages until the schedules are fully reloaded the following day.
 
-    - **Reliance on Daily Reloads**: This limitation is due to the system's design, which relies on daily reloads to update and confirm the accuracy of the scheduled messages. Until this reload occurs, any cancellations made after the last update won't be reflected in the state reports.
+    - **Reliance on Daily Reloads**: This limitation is due to the system's design, which relies on daily reloads to update and confirm the accuracy of the scheduled messages. Until this reload occurs, any cancellations made after the last update will not be reflected in the state reports.
 
 ## Production Deployment
 
@@ -555,7 +555,7 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 - **Long-Running Stability**: Scheduled messages are designed to operate in a continuous, long-running manner. This setup is crucial because the feature involves daily reloading of schedules based on predefined times (midnight). Ensuring these processes are not interrupted by deployments or other operational changes is key to maintaining their reliability.
 
-- **Isolation from Other Processes**: Due to the significant resource consumption during data loading phases-both in terms of memory and network bandwidth-it's beneficial to isolate the scheduled messages handling from other processes. This separation helps prevent any potential performance degradation in different parts of your system due to the intensive data-loading activities in scheduled message processing.
+- **Isolation from Other Processes**: Due to the significant resource consumption during data loading phases-both in terms of memory and network bandwidth-it is beneficial to isolate the scheduled messages handling from other processes. This separation helps prevent any potential performance degradation in different parts of your system due to the intensive data-loading activities in scheduled message processing.
 
 ### Best Practices
 

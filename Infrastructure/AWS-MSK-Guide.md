@@ -18,7 +18,7 @@ While some documented issues may occur with other Kafka deployments, this guide 
 
 The most significant operational difference between MSK and other Kafka vendors lies in their maintenance and update strategies.
 
-MSK performs maintenance via rolling updates, rebooting brokers one at a time. During this process, brokers are taken offline sequentially, and Kafka automatically moves leadership to another online broker. The next broker isn't rebooted until the partitions on the current broker fully catch up (become in sync). A broker size update typically takes 10-15 minutes per broker, so maintenance for a 6-broker cluster can take up to 90 minutes.
+MSK performs maintenance via rolling updates, rebooting brokers one at a time. During this process, brokers are taken offline sequentially, and Kafka automatically moves leadership to another online broker. The next broker is not rebooted until the partitions on the current broker fully catch up (become in sync). A broker size update typically takes 10-15 minutes per broker, so maintenance for a 6-broker cluster can take up to 90 minutes.
 
 When updating cluster configurations, Amazon MSK performs rolling restarts when necessary. After restarting each broker, MSK lets the broker catch up on any data it might have missed during the configuration update before moving to the next broker. This sequential approach prioritizes cluster availability over update speed.
 
@@ -397,7 +397,7 @@ The broker-side error `Broker: Unknown topic or partition (unknown_topic_or_part
 
 **Common causes with MSK:**
 
-**ACL misconfiguration on public MSK clusters** is the leading cause. When `allow.everyone.if.no.acl.found=false` is set on the broker (MSK's default for public access), it supersedes `auto.create.topics.enable=true`. This means even if auto-creation is enabled, topics won't be created without explicit ACL permissions.
+**ACL misconfiguration on public MSK clusters** is the leading cause. When `allow.everyone.if.no.acl.found=false` is set on the broker (MSK's default for public access), it supersedes `auto.create.topics.enable=true`. This means even if auto-creation is enabled, topics will not be created without explicit ACL permissions.
 
 Always pre-create all topics before making the MSK cluster publicly accessible, or configure Kafka ACLs to grant topic creation and access permissions.
 
@@ -432,7 +432,7 @@ For persistent authentication failures:
 
 !!! warning "Public MSK Clusters Require Explicit ACLs"
 
-    If you've made your MSK cluster publicly accessible and set `allow.everyone.if.no.acl.found=false`, you **must** configure explicit ACLs for all SASL/SCRAM users. Heal operations can sometimes reset or corrupt ACL state, requiring manual re-application of ACLs. Document your ACL configuration and maintain scripts to quickly re-apply permissions if needed.
+    If you have made your MSK cluster publicly accessible and set `allow.everyone.if.no.acl.found=false`, you **must** configure explicit ACLs for all SASL/SCRAM users. Heal operations can sometimes reset or corrupt ACL state, requiring manual re-application of ACLs. Document your ACL configuration and maintain scripts to quickly re-apply permissions if needed.
 
 ## Idempotent Producer Fatal Errors
 

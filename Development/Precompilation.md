@@ -4,7 +4,7 @@ As of 2025, **native extensions (precompiled binaries) are now available** for t
 
 ## The Challenge (Solved)
 
-The `rdkafka` gem previously required 60-90 seconds of compilation during installation. Here's the before and after:
+The `rdkafka` gem previously required 60-90 seconds of compilation during installation. Here is the before and after:
 
 | Area | Before | After |
 | --- | --- | --- |

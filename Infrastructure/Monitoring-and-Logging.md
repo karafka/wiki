@@ -97,7 +97,7 @@ Rather than modifying Karafka's default logger behavior, the recommended approac
 
 ### Creating a Simple Uptime Listener
 
-Here's a basic example that logs polling activity at the `info` level:
+Here is a basic example that logs polling activity at the `info` level:
 
 ```ruby
 class UptimeListener
@@ -166,7 +166,7 @@ end
 
 ### Recommended Setup Location
 
-Place your custom uptime listeners in your `karafka.rb` file after the configuration block, ensuring they're loaded when Karafka starts:
+Place your custom uptime listeners in your `karafka.rb` file after the configuration block, ensuring they are loaded when Karafka starts:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -192,11 +192,11 @@ Here are some examples where instrumenting custom events can be beneficial:
 
 - **External Service Calls**: If your application interacts with external APIs or services, you can instrument events to monitor the success, failure, and response time of these external calls.
 
-- **Data Flow Monitoring**: In data-intensive applications, you can instrument events to monitor data flow as it's ingested, processed, transformed, or exported.
+- **Data Flow Monitoring**: In data-intensive applications, you can instrument events to monitor data flow as it is ingested, processed, transformed, or exported.
 
 ### Naming Considerations for Custom Events
 
-Ensuring that your custom events' names don't clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
+Ensuring that your custom events' names do not clash with Karafka's internal events is essential. As a best practice, consider prefixing your event names with a unique identifier like `app.` or any other prefix that distinguishes your events from Karafka's. This approach prevents naming conflicts and provides clarity when observing and debugging events.
 
 For example, a custom event to monitor external API calls could be named `app.external_api_call`:
 
@@ -311,7 +311,7 @@ By using the Karafka AppSignal integration, you can proactively manage your Kafk
 
 !!! note "Subscribe to Error Listener Before Metrics"
 
-    When setting up listeners for both metrics and errors, it's **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
+    When setting up listeners for both metrics and errors, it is **crucial** to subscribe to the error listener first and then the metrics listener. Doing so in reverse may result in incorrect propagation of namespace and transaction details, leading to potential data inconsistencies. Ensure the correct sequence for accurate monitoring and data integrity.
 
 ### Error Tracking
 
@@ -605,7 +605,7 @@ Tracing asynchronous producer operations in data consumption requires a mechanis
 
 One powerful tool to facilitate this traceability in Karafka using Datadog is the WaterDrop [Labeling API](WaterDrop-Labeling). It allows you to attach consumer trace information directly to messages being produced, preserving the trace context. This enables Datadog to accurately associate the producer actions with the consumer context, without prematurely finalizing the trace.
 
-Here's how you can modify the message payload to include trace context information:
+Here is how you can modify the message payload to include trace context information:
 
 ```ruby
 # Check if there is an active parent span already (for example from consumer)
@@ -629,7 +629,7 @@ Karafka.producer.produce_async(kafka_message)
 
 To complete the tracing lifecycle, you must handle the acknowledgment of message delivery or manage delivery failures. This involves finalizing the spans you started during the production step.
 
-Here's how to handle the finalization of the trace when a message is acknowledged or when an error occurs:
+Here is how to handle the finalization of the trace when a message is acknowledged or when an error occurs:
 
 ```ruby
 def on_message_acknowledged(event)
@@ -753,7 +753,7 @@ end
 
 ## Example Listener with Errbit/Airbrake Support
 
-Here's a simple example of a listener used to handle errors logging into Airbrake/Errbit.
+Here is a simple example of a listener used to handle errors logging into Airbrake/Errbit.
 
 ```ruby
 # Example Airbrake/Errbit listener for error notifications in Karafka
@@ -847,7 +847,7 @@ Such a custom monitor will intercept specific events while delegating to the par
 
 !!! warning "Avoid Calling `super` Multiple Times in Custom Monitors"
 
-    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it's crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
+    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it is crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
 
 ## Implications of Broken Instrumentation listeners/listeners Causing Errors
 
@@ -859,7 +859,7 @@ Secondly, faulty listeners can adversely affect your Karafka application's perfo
 
 In specific scenarios, instrumentation errors in the Kafka listener threads can force Karafka into a recovery mode, causing continuous attempts to reconnect to Kafka and triggering rebalances. This can temporarily halt message consumption and impact workload distribution among consumer instances. Furthermore, instrumentation listener errors in worker threads responsible for processing messages might prevent proper acknowledgment of work or cause double processing of messages, resulting in issues like message loss or duplicate processing.
 
-For those using custom instrumentation listeners, it's vital to ensure they are thoroughly tested and not performing heavy or error-prone tasks. These listeners can introduce additional complexity, and maintaining a balance between gathering valuable insights and keeping the listeners lightweight and error-free is essential.
+For those using custom instrumentation listeners, it is vital to ensure they are thoroughly tested and not performing heavy or error-prone tasks. These listeners can introduce additional complexity, and maintaining a balance between gathering valuable insights and keeping the listeners lightweight and error-free is essential.
 
 To avert these issues, ensure your Karafka applications' instrumentation and monitoring listeners function correctly.
 

@@ -9,7 +9,7 @@ Naming conventions serve several critical purposes:
 | Purpose | Benefit |
 | ------- | ------- |
 | **Consistency** | Predictable patterns across the codebase |
-| **Clarity** | Self-documenting code that's easier to understand |
+| **Clarity** | Self-documenting code that is easier to understand |
 | **Maintainability** | Easier refactoring and debugging |
 | **Community Alignment** | Following established Kafka ecosystem patterns |
 | **Scalability** | Conventions that work as systems grow |
@@ -137,7 +137,7 @@ events-[0-9], metrics-[0-4], logs-[0]
 
 #### Topic Lists Without Partition Details
 
-When partition information isn't relevant, use simple topic names.
+When partition information is not relevant, use simple topic names.
 
 **Examples:**
 
@@ -278,7 +278,7 @@ user-events-5-value
 **Key Guidelines:**
 
 - Be consistent within each context
-- Choose format based on whether it's an identifier or a collection
+- Choose format based on whether it is an identifier or a collection
 
 ## Integration and Unit Test Topics
 

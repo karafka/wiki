@@ -27,7 +27,7 @@ Many developers expect that when a consumer subscribes to a non-existent topic w
 
 - **Consumer subscription to non-existent topics**: The consumer monitors the topic name in metadata requests and subscribes only when the topic exists
 - **Topic creation timing**: Topics are created during the **first message production** using WaterDrop, not during consumer subscription
-- **Consumer behavior**: If a topic doesn't exist, the consumer waits and "keeps an eye on it" until the topic is created
+- **Consumer behavior**: If a topic does not exist, the consumer waits and "keeps an eye on it" until the topic is created
 
 ## Technical Details
 
@@ -57,18 +57,18 @@ $ kafka-topics.sh --list | grep my-topic
 my-topic
 ```
 
-This CLI behavior is implementation-specific and doesn't reflect standard consumer behavior.
+This CLI behavior is implementation-specific and does not reflect standard consumer behavior.
 
 ## Summary
 
 Understanding topic auto-creation behavior is crucial for building reliable event-driven applications:
 
-- **Consumers don't create topics** - they only subscribe to existing ones
+- **Consumers do not create topics** - they only subscribe to existing ones
 - **WaterDrop producers create topics** - during the first `produce_sync` or `produce_async` call
 - **Plan for topic lifecycle** - consider pre-creating topics in production using declarative topics
 - **Monitor metadata refresh** - newly created topics may not be immediately visible to consumers
 
-This behavior ensures topics are created only when there's actual data to store, not merely because a consumer is interested in potentially receiving messages.
+This behavior ensures topics are created only when there is actual data to store, not merely because a consumer is interested in potentially receiving messages.
 
 ## See Also
 

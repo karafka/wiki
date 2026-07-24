@@ -22,7 +22,7 @@ We also have an [example Ruby on Rails application](https://github.com/karafka/e
 
 ## Integrating with Sinatra and other frameworks
 
-Non-Rails applications differ from one another. There are single-file applications and apps similar to the Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow to integrate it with Sinatra based application:
+Non-Rails applications differ from one another. There are single-file applications and apps similar to the Rails structure. That is why we cannot provide a simple single tutorial. Here are some guidelines that you should follow to integrate it with Sinatra based application:
 
 Add Karafka to your application Gemfile:
 

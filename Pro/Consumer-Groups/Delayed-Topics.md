@@ -16,7 +16,7 @@ This makes the Delayed Topic feature a great choice for applications that need t
 
 ## Enabling Delayed Topics
 
-To enable the Delayed Topics feature in Karafka, you need to add the `delay_by` option to your Karafka routing configuration. Here's an example of how to do that:
+To enable the Delayed Topics feature in Karafka, you need to add the `delay_by` option to your Karafka routing configuration. Here is an example of how to do that:
 
 ```ruby
 class KarafkaApp < Karafka::App

@@ -2,7 +2,7 @@ This document provides a detailed examination of threading, TCP connection manag
 
 ## Threading
 
-Karafka's multithreaded nature is one of its strengths, allowing it to manage many tasks simultaneously. To understand how it achieves this, it's essential to realize that Karafka's threading model isn't just about worker poll threads. It also extends to other aspects of Karafka's functionality.
+Karafka's multithreaded nature is one of its strengths, allowing it to manage many tasks simultaneously. To understand how it achieves this, it is essential to realize that Karafka's threading model is not just about worker poll threads. It also extends to other aspects of Karafka's functionality.
 
 ### Consumer
 
@@ -24,7 +24,7 @@ This detailed view can provide invaluable insights, helping you understand how y
 
 ### Producer
 
-In the current implementation, each Karafka producer employs a relatively simple threading model to efficiently handle asynchronous message delivery to Kafka. A vital characteristic of this model is that each producer instantiates at least two additional threads. Here's how these threads function:
+In the current implementation, each Karafka producer employs a relatively simple threading model to efficiently handle asynchronous message delivery to Kafka. A vital characteristic of this model is that each producer instantiates at least two additional threads. Here is how these threads function:
 
 - **Ruby Thread**: The first thread operates within the Ruby environment. Its primary role is to manage communication with librdkafka, ensuring that messages are queued and sent to the Kafka cluster efficiently. This thread also handles various events and callbacks that arise during the message delivery process.
 
@@ -114,7 +114,7 @@ puts total #=> 15
 - The number of connections per subscription group depends on **which specific brokers** are needed, not the total number of brokers in the cluster
 - If all partitions for a topic are on the same broker, only one connection to that broker is needed per subscription group
 - If partitions are spread across multiple brokers, connections to each relevant broker are established
-- The group coordinator connection may be to a broker that's already connected to for partition leadership
+- The group coordinator connection may be to a broker that is already connected to for partition leadership
 
 **Practical Example**:
 
@@ -153,7 +153,7 @@ puts total #=> 25 000
 
 Karafka, by itself, does not manage PostgreSQL or any other database connections directly. When using frameworks like Ruby on Rails, database connections are typically managed by the [Active Record Connection Pool](https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html).
 
-Under normal circumstances, Karafka will use the `concurrency` number of database connections at most. This is because, at any given time, that's the maximum number of workers that can run in parallel.
+Under normal circumstances, Karafka will use the `concurrency` number of database connections at most. This is because, at any given time, that is the maximum number of workers that can run in parallel.
 
 However, the number of potential concurrent database connections might increase when using advanced Karafka APIs, such as the Filtering API, or making alterations to the scheduler and invoking DB requests from it. This is because these APIs operate from the listeners threads. In such advanced scenarios, the maximum number of concurrent DB connections would be the sum of the number of workers (`concurrency`) and the total number of subscription groups.
 

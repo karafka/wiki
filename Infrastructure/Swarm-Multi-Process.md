@@ -115,7 +115,7 @@ Swarm Mode supports Static Group Membership, integrating this capability into it
 
 When deploying your application in Swarm Mode, Karafka takes care of the underlying complexity associated with static group memberships.
 
-Here's how Karafka ensures consistency and efficiency in this process:
+Here is how Karafka ensures consistency and efficiency in this process:
 
 - **Automatic ID Management**: Karafka automatically assigns and manages `group.instance.id` for each node within the swarm, ensuring that each node's identity is unique and consistent across sessions. This automatic management simplifies setup and reduces potential configuration errors that could lead to rebalance issues.
 
@@ -125,7 +125,7 @@ Here's how Karafka ensures consistency and efficiency in this process:
 
 - **Seamless Nodes Restarts**: With Karafka Pro's [enhanced monitoring](Pro-Enhanced-Swarm-Multi-Process), nodes can restart without causing consumer group rebalances, thanks to static group memberships. The `group.instance.id` remains constant across restarts, enabling swift recovery and reconnection to the consumer group. This ensures minimal processing disruption and maintains throughput, showcasing Karafka's fault-tolerant and efficient data-handling capability.
 
-While Karafka handles the complexities of `group.instance.id` assignments behind the scenes, developers should know how static group memberships are configured within their applications. Here's an example snippet for reference:
+While Karafka handles the complexities of `group.instance.id` assignments behind the scenes, developers should know how static group memberships are configured within their applications. Here is an example snippet for reference:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -171,7 +171,7 @@ end
 
 !!! abstract "Health Checks vs. `max_wait_time`"
 
-    In Swarm Mode, ensure `max_wait_time` doesn't exceed the `node_report_timeout` interval (default 60 seconds). Setting it too high could prevent nodes from reporting their health promptly, affecting system monitoring and stability.
+    In Swarm Mode, ensure `max_wait_time` does not exceed the `node_report_timeout` interval (default 60 seconds). Setting it too high could prevent nodes from reporting their health promptly, affecting system monitoring and stability.
 
 Two scenarios may necessitate shutting down a node:
 
@@ -255,7 +255,7 @@ Below, you can find a few examples of resources worth preparing and cleaning bef
 
 - **Thread Cleanup**: If the preloaded application spawns threads, ensure they are stopped or re-initialized post-fork to avoid sharing thread execution contexts.
 
-- **Closing Unneeded File Descriptors**: Explicitly close or reopen file descriptors that shouldn't be shared across processes to avoid leaks and ensure the independent operation of each process.
+- **Closing Unneeded File Descriptors**: Explicitly close or reopen file descriptors that should not be shared across processes to avoid leaks and ensure the independent operation of each process.
 
 Given the potential complexities and dangers associated with preloading the entire application, Karafka makes this feature opt-in. This cautious approach enables developers to enable preloading when effectively managing the related resources.
 
@@ -490,17 +490,17 @@ Karafka's scalability and workload management strategies include Swarm Mode, mul
 
 - **Virtual Partitions** increase Karafka's scalability beyond Kafka's partition limits by simulating additional partitions, improving load distribution and processing for I/O-bound tasks.
 
-- **Multiplexing** allows a single process to subscribe to multiple topics or partitions with multiple connections, optimizing throughput without additional processes or threads. It's useful for high-partition topics but requires careful consumer instance management to maintain processing efficiency.
+- **Multiplexing** allows a single process to subscribe to multiple topics or partitions with multiple connections, optimizing throughput without additional processes or threads. It is useful for high-partition topics but requires careful consumer instance management to maintain processing efficiency.
 
 Each strategy offers unique advantages for Karafka application optimization. Swarm Mode and multi-threading address CPU-intensive and I/O-bound workloads, respectively, while virtual partitions and multiplexing overcome Kafka partition scalability limits. Selecting the appropriate strategy depends on your workload's characteristics and scalability goals.
 
 ## Producer Full Reconfiguration
 
-When operating in Swarm Mode, each forked node automatically inherits most of the producer configuration from the parent process. However, to ensure proper functionality and avoid potential conflicts, it's crucial to understand how to fully reconfigure producers post-fork.
+When operating in Swarm Mode, each forked node automatically inherits most of the producer configuration from the parent process. However, to ensure proper functionality and avoid potential conflicts, it is crucial to understand how to fully reconfigure producers post-fork.
 
 By default, while Karafka takes care of most internal reconfigurations automatically, there are cases where you might want to fully reconfigure the producer with your settings or modify specific configuration parameters. This is particularly important when dealing with producer-specific identifiers or when you need to customize the producer behavior for different nodes.
 
-Here's an example of how to fully reconfigure a producer after forking:
+Here is an example of how to fully reconfigure a producer after forking:
 
 ```ruby
 # In your karafka.rb after all other setup
@@ -528,7 +528,7 @@ This approach ensures that:
 Complete reconfiguration is significant when:
 
 1. You need to set node-specific client IDs
-1. You're using transactional producers (which require unique transactional IDs)
+1. You are using transactional producers (which require unique transactional IDs)
 1. You want to customize producer behavior based on node characteristics
 1. You need to modify connection or authentication settings per node
 
@@ -538,7 +538,7 @@ When operating in Swarm Mode, each forked node inherits the Karafka producer con
 
 The transactional.id configuration parameter requires special attention in Swarm Mode. While other configuration parameters can be safely inherited, using the same `transactional.id` across multiple producer instances will cause transaction fencing issues. When a producer instance begins a transaction, it receives an epoch number from the transaction coordinator. If another producer instance with the same `transactional.id` starts a transaction, it will receive a higher epoch number and fence off (invalidate) the previous producer instance.
 
-To prevent fencing issues, you must ensure each node's producer has a unique `transactional.id`. Here's an example of how to properly configure transactional producers in Swarm Mode:
+To prevent fencing issues, you must ensure each node's producer has a unique `transactional.id`. Here is an example of how to properly configure transactional producers in Swarm Mode:
 
 ```ruby
 # In your karafka.rb after all other setup
@@ -558,7 +558,7 @@ end
 This approach will ensure that:
 
 1. Each node gets a unique `transactional.id`
-1. Transactions from different nodes won't interfere with each other
+1. Transactions from different nodes will not interfere with each other
 1. The producer can maintain proper transaction isolation and exactly once semantics
 
 !!! warning "Transactional ID Conflicts"

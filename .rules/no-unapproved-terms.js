@@ -52,10 +52,10 @@ for (const entry of terms.banned || []) {
     fix: null
   });
 }
-for (const contraction of terms.contractions || []) {
+for (const [contraction, expansion] of Object.entries(terms.contractions || {})) {
   checks.push({
     regex: new RegExp('\\b' + escapeRegExp(contraction) + '\\b', 'gi'),
-    detail: `Avoid contractions in documentation - write it out instead of "${contraction}" (STE).`,
+    detail: `Avoid contractions in documentation - write "${contraction}" as "${expansion}" (STE).`,
     fix: null
   });
 }

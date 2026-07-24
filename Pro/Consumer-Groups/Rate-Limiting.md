@@ -6,7 +6,7 @@ The Rate Limiting feature in Karafka can be configured on a per-topic basis. Thi
 
 ## Enabling Rate Limiting
 
-To enable the Rate Limiting feature in Karafka, you need to add the `throttle` option to your Karafka routing configuration. Here's an example of how to do that:
+To enable the Rate Limiting feature in Karafka, you need to add the `throttle` option to your Karafka routing configuration. Here is an example of how to do that:
 
 ```ruby
 class KarafkaApp < Karafka::App

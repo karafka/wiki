@@ -2,7 +2,7 @@ Dive deep into the world of event-driven applications and supercharge your devel
 
 ## Why Invest in This Workshop?
 
-By investing a few hours, you're setting yourself up to save weeks of collective team efforts later. Grasp the intricate nuances of Karafka and sidestep the common pitfalls and potential bugs that could be harmful later. The complexities of Karafka and event-driven architecture demand a precise, methodical introduction - and our workshop is tailor-made to deliver just that.
+By investing a few hours, you are setting yourself up to save weeks of collective team efforts later. Grasp the intricate nuances of Karafka and sidestep the common pitfalls and potential bugs that could be harmful later. The complexities of Karafka and event-driven architecture demand a precise, methodical introduction - and our workshop is tailor-made to deliver just that.
 
 ## What We Offer
 
@@ -12,11 +12,11 @@ By investing a few hours, you're setting yourself up to save weeks of collective
 
 - **In-Depth Exploration with Karafka**: Transition from Kafka to Karafka. Learn the core functionalities of the Karafka framework and how it facilitates building top-tier event-driven Ruby applications. This segment equips you with hands-on knowledge, from Karafka setup to mastering its user interface.
 
-- **Crafting with Karafka**: Theoretical knowledge bears fruit only when put into practice. Experience a live coding session, where you'll forge a rudimentary Karafka application with consistent guidance and support from our seasoned instructor.
+- **Crafting with Karafka**: Theoretical knowledge bears fruit only when put into practice. Experience a live coding session, where you will forge a rudimentary Karafka application with consistent guidance and support from our seasoned instructor.
 
 - **Mastering Advanced Karafka Concepts**: No stone goes unturned. Delve into the intricate features of Karafka, including virtual partitions, retries, batch processing, and more.
 
-- **Wrap-Up with Key Insights**: As we conclude, we ensure that you're equipped with a comprehensive understanding of the journey traversed. We'll share additional resources and guide you on the subsequent steps, empowering you to navigate the Karafka landscape confidently.
+- **Wrap-Up with Key Insights**: As we conclude, we ensure that you are equipped with a comprehensive understanding of the journey traversed. We will share additional resources and guide you on the subsequent steps, empowering you to navigate the Karafka landscape confidently.
 
 ## Schedule
 
@@ -53,7 +53,7 @@ By investing a few hours, you're setting yourself up to save weeks of collective
 1. **Karafka Enterprise Subscription**: You must have an active paid Karafka Enterprise subscription.
 2. **Advance Notice**: Submit your workshop session request at least two weeks before the desired date.
 3. **Attendee Limit**: The session can accommodate up to 6 people.
-4. **Experience**: While you don’t need any prior knowledge of Kafka or Karafka, attendees should understand Ruby and Ruby on Rails to get the most out of the workshop.
+4. **Experience**: While you do not need any prior knowledge of Kafka or Karafka, attendees should understand Ruby and Ruby on Rails to get the most out of the workshop.
 5. **Technical Requirements**:
     - Operating System: Mac/Linux.
     - Software: Docker and Ruby 3.2.

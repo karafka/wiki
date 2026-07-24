@@ -28,7 +28,7 @@ Modify the `KAFKA_ADVERTISED_HOST_NAME` to match your docker host IP if you want
 KAFKA_ADVERTISED_HOST_NAME: 192.168.0.5
 ```
 
-Once you've changed that, you should be able to connect from other docker containers to your Kafka by using the host IP address:
+Once you have changed that, you should be able to connect from other docker containers to your Kafka by using the host IP address:
 
 ```shell
 # Run an example docker container to check it via telnet

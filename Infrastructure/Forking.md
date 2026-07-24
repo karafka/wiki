@@ -36,9 +36,9 @@ These errors indicate processes in the middle of certain operations during a for
 1. **Rails Spring Strategy**: For developers using Rails' Spring loader, managing forking can be particularly complex. This complexity arises because parts of `librdkafka` may not load correctly when Spring forks the Ruby process. Consider one of these approaches:
 
     - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
-    - Disable Spring in development if you're encountering persistent issues
+    - Disable Spring in development if you are encountering persistent issues
 
-Forking issues typically occur when the required dependencies aren't loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
+Forking issues typically occur when the required dependencies are not loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
 ## Conclusion
 

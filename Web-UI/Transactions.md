@@ -4,7 +4,7 @@ Karafka's Web UI has been designed to support transactionally created data. This
 
 There are a few things worth keeping in mind if you work with transactional data:
 
-- **Dynamic Producer Types**: Karafka Web UI allows flexibility with its producer configuration. It's feasible to toggle your Karafka producer from transactional to non-transactional mode and vice versa, depending on the specific needs of a given process.
+- **Dynamic Producer Types**: Karafka Web UI allows flexibility with its producer configuration. It is feasible to toggle your Karafka producer from transactional to non-transactional mode and vice versa, depending on the specific needs of a given process.
 
 - **Offset-Based Explorer**: The Karafka Explorer operates on an offset-based system. This means that it does more than just showcase the user messages. Instead, it fully views the Kafka topic, including compacted offsets, system entries, and aborted messages represented as system records. This comprehensive view gives users a granular understanding of the topic's state and helps diagnose potential issues or anomalies.
 
@@ -50,7 +50,7 @@ Karafka::Web.setup do |config|
 end
 ```
 
-Once the dedicated Web UI producer is set up, it becomes the default for all Web UI components. It is pivotal in various tasks, from reporting consumer states and tracking producers' errors to publishing aggregated data states. Additionally, if there's a need to republish data, this producer facilitates the process directly from the Web UI.
+Once the dedicated Web UI producer is set up, it becomes the default for all Web UI components. It is pivotal in various tasks, from reporting consumer states and tracking producers' errors to publishing aggregated data states. Additionally, if there is a need to republish data, this producer facilitates the process directly from the Web UI.
 
 ## See Also
 

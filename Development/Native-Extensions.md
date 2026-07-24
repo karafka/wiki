@@ -9,7 +9,7 @@ This eliminates the need to compile C extensions during installation, resulting 
 Native extensions are platform-specific compiled binaries that contain:
 
 - **Pre-compiled librdkafka libraries** with all dependencies statically linked
-- **Self-contained binaries** that don't require system dependencies
+- **Self-contained binaries** that do not require system dependencies
 - **Cryptographically verified dependencies** with SHA256 checksums for supply chain security
 - **Full feature support** including SSL/TLS, SASL, Kerberos/GSSAPI, and compression
 
@@ -79,7 +79,7 @@ ldd --version
 ldd 2>&1 | head -1
 ```
 
-If your platform isn't supported or doesn't meet the minimum requirements, `rdkafka-ruby` will automatically fall back to source compilation.
+If your platform is not supported or does not meet the minimum requirements, `rdkafka-ruby` will automatically fall back to source compilation.
 
 ## Installation Benefits
 
@@ -187,7 +187,7 @@ gem 'rdkafka', platforms: [:x86_64_linux_gnu]
 
 ### Fallback to Source Compilation
 
-If native extensions don't work for your platform:
+If native extensions do not work for your platform:
 
 ```shell
 # Force source compilation
@@ -213,7 +213,7 @@ gem 'rdkafka', force_ruby_platform: true
 
 ## Migration from Source Compilation
 
-If you're currently using source compilation:
+If you are currently using source compilation:
 
 1. **Remove build dependencies** from your Dockerfile/CI
 2. **Update Gemfile** to allow native extensions:
@@ -223,4 +223,4 @@ If you're currently using source compilation:
    gem 'rdkafka'  # Will automatically use native extensions
    ```
 
-3. **Rebuild** your containers - they'll be much faster!
+3. **Rebuild** your containers - they will be much faster!

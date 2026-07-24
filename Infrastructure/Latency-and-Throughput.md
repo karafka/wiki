@@ -95,7 +95,7 @@ Compression reduces the size of the messages sent to the broker, potentially dec
 
 The `request.required.acks` parameter determines the number of acknowledgments the leader broker must receive from an in-sync replica (ISR) brokers before responding to the producer. This setting is crucial for balancing message durability and producer latency.
 
-- **0 (No Acknowledgement)**: The broker does not respond to the producer, and the message is considered delivered the moment it is dispatched. This setting provides the lowest latency since the producer doesn't wait for acknowledgments. It's highly performant, allowing for rapid message dispatch, but it risks data loss because there's no confirmation that the broker received the message. Suitable for non-critical data where speed is crucial.
+- **0 (No Acknowledgement)**: The broker does not respond to the producer, and the message is considered delivered the moment it is dispatched. This setting provides the lowest latency since the producer does not wait for acknowledgments. It is highly performant, allowing for rapid message dispatch, but it risks data loss because there is no confirmation that the broker received the message. Suitable for non-critical data where speed is crucial.
 
 - **1 (Leader Acknowledgement)**: The leader broker responds once it has written the message to its log. This setting balances latency and durability, providing a quick acknowledgment while ensuring the leader broker logs the message. It offers a good trade-off for most use cases, ensuring reasonable reliability with moderate latency.
 
@@ -121,7 +121,7 @@ The `socket.nagle.disable` parameter in librdkafka controls the use of the Nagle
 
     Starting from **Karafka 2.5.1** and **WaterDrop 2.8.7**, the Nagle algorithm is **disabled by default** (`socket.nagle.disable: true`). This change was made to improve latency out of the box, ensuring messages are sent immediately without waiting to combine them into larger packets.
 
-    **For older versions**: If you're using Karafka < 2.5.1 or WaterDrop < 2.8.7, the Nagle algorithm may still be enabled by default. It is **recommended** to explicitly disable it by setting `socket.nagle.disable: true` in your configuration to achieve better latency.
+    **For older versions**: If you are using Karafka < 2.5.1 or WaterDrop < 2.8.7, the Nagle algorithm may still be enabled by default. It is **recommended** to explicitly disable it by setting `socket.nagle.disable: true` in your configuration to achieve better latency.
 
 - `true` (default since Karafka 2.5.1 and WaterDrop 2.8.7): Disables the Nagle algorithm, ensuring messages are sent immediately without waiting to combine them into larger packets. This setting significantly reduces latency, particularly in scenarios with many small messages, but may increase network overhead due to more frequent transmissions.
 
@@ -133,7 +133,7 @@ When configuring `socket.nagle.disable`, consider your application's priorities:
 
 - **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to use the Nagle algorithm for reduced network traffic.
 
-Here's an example configuration:
+Here is an example configuration:
 
 ```ruby
 class App < Karafka::App
@@ -419,7 +419,7 @@ Aside from the fast polling of data from Kafka, Karafka optimizes the processing
 
 !!! warning "Polling-Related Factors Affecting Parallel Processing"
 
-    Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It's important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
+    Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It is important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
 
 Below, you can find a table summarizing the key aspects of Karafka's parallel processing capabilities, along with detailed descriptions and tips for optimizing latency and throughput:
 
@@ -568,7 +568,7 @@ Understanding and configuring the prefetching behavior in Karafka is crucial for
 
 ### Subscription Group Blocking Polls
 
-Karafka is designed to prebuffer data to ensure efficient message processing. Still, it's important to understand that this prefetched data is not used until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
+Karafka is designed to prebuffer data to ensure efficient message processing. Still, it is important to understand that this prefetched data is not used until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
 
 This approach prevents race conditions and ensures data consistency. The poll operation in Kafka acts as a heartbeat mechanism governed by the `max.poll.interval.ms` setting. This interval defines the maximum delay between poll invocations before the consumer is considered dead, triggering a rebalance. By ensuring that all jobs from the previous poll are finished before new data is used, Karafka maintains data integrity and avoids processing the same message multiple times.
 
@@ -594,7 +594,7 @@ Managing consumers in Karafka involves many internal and external factors. Each 
 
 Consumer management is influenced by data types, infrastructure, processing nature (CPU vs. IO-intensive), data volume, and worker threads. Key Karafka settings like `max_wait_time`, `max_messages`, and `fetch.wait.max.ms` play a crucial role in data fetching and processing efficiency.
 
-External factors, such as infrastructure setup, network conditions, and data production patterns, can significantly impact performance. To stay ahead of these potential issues, it's crucial to emphasize the need for regular monitoring of consumption and processing latency. This practice is key to identifying bottlenecks and ensuring the system's responsiveness.
+External factors, such as infrastructure setup, network conditions, and data production patterns, can significantly impact performance. To stay ahead of these potential issues, it is crucial to emphasize the need for regular monitoring of consumption and processing latency. This practice is key to identifying bottlenecks and ensuring the system's responsiveness.
 
 Optimization strategies, including multiple subscription groups, connection multiplexing, and virtual partitions, help balance workloads and enhance parallel processing. Each use case demands a unique configuration, underscoring the need for a thorough understanding of the framework and application requirements.
 

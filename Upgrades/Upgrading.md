@@ -2,7 +2,7 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 !!! tip "Pro & Enterprise Upgrade Support"
 
-    If you're gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you've got a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
+    If you are gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you have a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
 
 ## Pre-Upgrade Considerations
 
@@ -14,7 +14,7 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 1. **Test Environment**: Set up a separate test environment that closely mirrors your production environment. Perform the upgrade and necessary tests in this environment before applying it to the production environment. This allows you to identify and resolve any potential issues or conflicts beforehand.
 
-Considering these points, you'll be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
+Considering these points, you will be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
 
 ## Why Staying Current Matters
 

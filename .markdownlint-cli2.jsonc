@@ -28,7 +28,8 @@
     "./.rules/no-markdown-tables.js",
     "./.rules/no-generic-admonition-title.js",
     "./.rules/no-md-link-extension.js",
-    "./.rules/no-please.js"
+    "./.rules/no-please.js",
+    "./.rules/no-contractions.js"
   ],
   "config": {
     "default": true,
@@ -67,6 +68,7 @@
     "no-markdown-tables": false,
     "no-generic-admonition-title": true,
     "no-md-link-extension": true,
-    "no-please": true
+    "no-please": true,
+    "no-contractions": true
   }
 }

@@ -25,7 +25,7 @@ The `plan_topic_replication` method generates a detailed plan for increasing a t
 
 ### Basic Usage with Automatic Broker Distribution
 
-When you don't specify broker assignments, Karafka automatically distributes replicas across available brokers:
+When you do not specify broker assignments, Karafka automatically distributes replicas across available brokers:
 
 ```ruby
 # Generate a plan to increase replication factor to 3
@@ -69,7 +69,7 @@ Manual assignment is useful when you need to:
 
 ## Rebalancing Replicas
 
-After adding new brokers to your cluster, existing topics won't automatically use them. The `rebalance` method helps redistribute replicas across all available brokers while maintaining the current replication factor:
+After adding new brokers to your cluster, existing topics will not automatically use them. The `rebalance` method helps redistribute replicas across all available brokers while maintaining the current replication factor:
 
 ```ruby
 # Rebalance replicas across all brokers without changing replication factor
@@ -179,13 +179,13 @@ The verify command will show progress for each partition. The reassignment is co
 
 The Replication API validates your request before generating a plan. Common validation errors include:
 
-| Error                           | Cause                                          | Solution                                           |
-|---------------------------------|------------------------------------------------|----------------------------------------------------|
-| Target RF must exceed current   | Attempting to decrease or maintain current RF  | Use a higher replication factor value              |
-| Target RF exceeds broker count  | Not enough brokers available                   | Add more brokers or use a lower RF                 |
-| Missing partition assignments   | Manual assignment doesn't cover all partitions | Include all partition IDs in the brokers hash      |
-| Duplicate brokers in assignment | Same broker listed twice for a partition       | Each broker ID must appear only once per partition |
-| Invalid broker ID               | Referenced broker doesn't exist                | Use only broker IDs present in the cluster         |
+| Error                           | Cause                                           | Solution                                           |
+| ------------------------------- | ----------------------------------------------- | -------------------------------------------------- |
+| Target RF must exceed current   | Attempting to decrease or maintain current RF   | Use a higher replication factor value              |
+| Target RF exceeds broker count  | Not enough brokers available                    | Add more brokers or use a lower RF                 |
+| Missing partition assignments   | Manual assignment does not cover all partitions | Include all partition IDs in the brokers hash      |
+| Duplicate brokers in assignment | Same broker listed twice for a partition        | Each broker ID must appear only once per partition |
+| Invalid broker ID               | Referenced broker does not exist                | Use only broker IDs present in the cluster         |
 
 ### Example: Handling Validation Errors
 

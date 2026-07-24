@@ -4,7 +4,7 @@
 
     Persistent pausing support in Karafka Web UI is planned, but there is no ETA for it yet. This is a complex feature that requires careful consideration of distributed state management, rebalancing scenarios, and API design to ensure it works reliably across different deployment architectures. Until then, the Filtering API approach described below provides a solution for persistent pausing needs.
 
-Karafka's [Web UI pausing](Pro-Web-UI-Commanding#pause-and-resume-partitions) is **not** persistent - it's designed for emergency "oh gosh, there's a bug" scenarios where you need immediate, temporary relief. When the process restarts or rebalances, Web UI pauses are lost.
+Karafka's [Web UI pausing](Pro-Web-UI-Commanding#pause-and-resume-partitions) is **not** persistent - it is designed for emergency "oh gosh, there is a bug" scenarios where you need immediate, temporary relief. When the process restarts or rebalances, Web UI pauses are lost.
 
 For **planned migrations, maintenance windows, or controlled rollouts**, you need persistent pausing that survives restarts and affects all consumers. This is where the [Filtering API](Pro-Consumer-Groups-Filtering-API), combined with feature toggles like Flipper, comes into play.
 
@@ -107,7 +107,7 @@ end
 
     You can monitor the pause status of partitions in the [Web UI Health section](Pro-Web-UI-Health). However, because this implementation uses time-based pausing (e.g., 60-second intervals), you may observe brief flickering in the UI where a partition appears to unpause momentarily and then pause again.
 
-    **This is expected behavior.** Here's what happens:
+    **This is expected behavior.** Here is what happens:
 
     1. The filter pauses the partition for 60 seconds
     2. After 60 seconds, Karafka automatically unpauses to poll
@@ -128,7 +128,7 @@ Flipper.enable("pause_topic_orders")
 All running consumers will check this flag every 60 seconds (the `PAUSE_DURATION`) and stop fetching new messages. The pause persists across process restarts, rebalances, and deployments.
 
 **During migration:**
-Perform your database migrations, schema changes, or maintenance work. Consumers remain paused but healthy - they're still part of the consumer group and maintain their partition assignments.
+Perform your database migrations, schema changes, or maintenance work. Consumers remain paused but healthy - they are still part of the consumer group and maintain their partition assignments.
 
 **Resume processing:**
 
@@ -137,7 +137,7 @@ Perform your database migrations, schema changes, or maintenance work. Consumers
 Flipper.disable("pause_topic_orders")
 ```
 
-This approach gives you **persistent, centrally-managed topic pausing** that's perfect for planned maintenance, migrations, and controlled rollouts - without touching the Web UI or redeploying code.
+This approach gives you **persistent, centrally-managed topic pausing** that is perfect for planned maintenance, migrations, and controlled rollouts - without touching the Web UI or redeploying code.
 
 ## See Also
 

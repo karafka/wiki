@@ -31,7 +31,7 @@ The async integration provides several practical advantages:
 
 ## Usage with Async Gem
 
-WaterDrop works out of the box with the async gem ecosystem. Here's a typical usage pattern:
+WaterDrop works out of the box with the async gem ecosystem. Here is a typical usage pattern:
 
 ```ruby
 require 'async'
@@ -145,12 +145,12 @@ end
 
 ## Why WaterDrop is the Right Choice for Async Applications
 
-WaterDrop's native async support makes it the optimal Kafka producer for fiber-based and async applications. Here's why:
+WaterDrop's native async support makes it the optimal Kafka producer for fiber-based and async applications. Here is why:
 
 **Purpose-Built Integration**: Unlike other Kafka libraries that treat async support as an afterthought, WaterDrop was designed with fiber yielding as a core feature. This means reliable, tested behavior rather than bolted-on compatibility.
 
 **Zero-Configuration Excellence**: WaterDrop automatically detects and integrates with fiber schedulers without requiring configuration changes, environment variables, or special initialization. Your existing code immediately benefits from improved concurrency.
 
-**Performance Without Compromise**: WaterDrop delivers both excellent async performance and Kafka functionalities. You don't have to choose between concurrency benefits and production-ready features like delivery guarantees, error handling, and monitoring capabilities.
+**Performance Without Compromise**: WaterDrop delivers both excellent async performance and Kafka functionalities. You do not have to choose between concurrency benefits and production-ready features like delivery guarantees, error handling, and monitoring capabilities.
 
 **Future-Proof Architecture**: As Ruby's async ecosystem continues to evolve, WaterDrop's architecture ensures compatibility with new fiber scheduler implementations and async frameworks.

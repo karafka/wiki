@@ -198,7 +198,7 @@ end
 
 ### Method Availability
 
-When using a share group consumer, certain methods don't apply:
+When using a share group consumer, certain methods do not apply:
 
 | Method | Consumer Group | Share Group |
 | ------ | -------------- | ----------- |
@@ -212,7 +212,7 @@ When using a share group consumer, certain methods don't apply:
 | `seek` | Yes | No (raises error) |
 | `pause/resume` | Yes | No (raises error) |
 
-Methods that don't apply to share groups will raise a descriptive error when called.
+Methods that do not apply to share groups will raise a descriptive error when called.
 
 ## Statistics Exposure
 

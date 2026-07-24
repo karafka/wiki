@@ -36,7 +36,7 @@ Make sure your topic contains more than one partition. Only then Karafka can dis
 
 The optimal number of threads for a specific application depends on various factors, including the number of processors and cores available, the amount of memory available, and the particular tasks the application performs and their type. In general, increasing number of threads brings the most significant benefits for IO-bound operations.
 
-It's recommended to use the number of available cores to determine the optimal number of threads for an application.
+It is recommended to use the number of available cores to determine the optimal number of threads for an application.
 
 When working with Karafka, you also need to take into consideration things that may reduce the number of threads being in use, that is:
 
@@ -89,7 +89,7 @@ After processing each message or batch, consumers can commit the offset of messa
 
 Now, if we look at Karafka, it follows a similar mechanism. In Karafka, by default, offsets are committed automatically in batches after a batch of messages is processed. That means if a batch is still being processed, the messages from that batch are not marked as consumed, even if some of them have already been processed, and hence those messages will still be considered as part of the consumer lag.
 
-This lag will grow with incoming messages, which is why it's not uncommon to see a lag of the size of one or two batches, especially in topics with high data traffic.
+This lag will grow with incoming messages, which is why it is not uncommon to see a lag of the size of one or two batches, especially in topics with high data traffic.
 
 To mitigate this situation, you can configure Karafka to prioritize latency over throughput. That means making Karafka commit offsets more frequently, even after each message, to decrease the lag and to fetch data more frequently in smaller batches. But committing offsets more frequently comes with the cost of reduced throughput, as each offset commit is a network call and can slow down the rate at which messages are consumed.
 
@@ -101,7 +101,7 @@ Several factors may lead to increased memory consumption:
 
 - **Large Payloads**: Handling large message payloads can inherently consume more memory. Remember that Karafka will keep the raw payload alongside newly deserialized information after the message is deserialized.
 
-- **Batch Processing**: This can accumulate memory usage if you're processing large batches containing bigger messages.
+- **Batch Processing**: This can accumulate memory usage if you are processing large batches containing bigger messages.
 
 - **Memory Leaks**: There might be memory leaks in your application or the libraries you use.
 
@@ -119,15 +119,15 @@ While tuning these settings can help optimize memory usage, it may also influenc
 
 ## Are Virtual Partitions effective in case of not having IO or not having a lot of data?
 
-Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there's minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there's a data buildup due to processing delays.
+Karafka's [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) are designed to parallelize data processing from a single partition, which can significantly enhance throughput when IO operations are involved. However, if there is minimal IO and not many messages to process, Virtual Partitions may not bring much advantage, as their primary benefit is realized in the presence of IO bottlenecks or large volumes of data. That said, even if your topics have a low average throughput, Virtual Partitions can still be a game-changer when catching up on lags. Virtual Partitions can speed up the catch-up process by processing the backlog of messages concurrently when there is a data buildup due to processing delays.
 
 ## Is the "one process per one topic partition" recommendation in Kafka also applicable to Karafka?
 
-Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here's why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
+Having one process per one topic partition in Kafka is a solid recommendation, especially for CPU-bound work. Here is why: When processing is CPU-intensive, having a single process per partition ensures that each partition gets dedicated computational resources. This prevents any undue contention or resource sharing, maximizing the efficiency of CPU utilization.
 
 However, Karafka's design philosophy and strengths come into play in a slightly different context. Most real-world applications involve IO operations - database reads/writes, network calls, or file system interactions. These operations inherently introduce waiting times, where Karafka stands out. Being multi-threaded, Karafka allows for concurrent processing. So, even when one thread waits for an IO operation, another can actively process data. This means that for many IO-bound applications, consuming a single Karafka process from multiple partitions can be more efficient, maximizing resource utilization during IO waits.
 
-Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you're consuming data from a single topic partition, you can still use the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
+Furthermore, Karafka introduces an additional layer of flexibility with its [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). Even if you are consuming data from a single topic partition, you can still use the power of parallelism using Virtual Partitions. They enable concurrently processing data from a singular topic partition, thus giving you the benefits of multi-threading even in scenarios with fewer actual topic partitions than processing threads.
 
 In summary, while the "one process per partition" recommendation is sound for CPU-intensive tasks when IO operations are the predominant factor, Karafka's multi-threaded design combined with the capability of Virtual Partitions can offer a more efficient processing strategy.
 
@@ -135,7 +135,7 @@ In summary, while the "one process per partition" recommendation is sound for CP
 
 Yes, but only when you employ [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions).
 
-Without using Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you're operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
+Without using Virtual Partitions, Karafka's behavior is such that it will use, at most, as many worker threads concurrently as there are assigned partitions. This means that if you are operating on a single partition without virtualization, only one worker thread will be actively processing messages at a given time, even if multiple worker threads are available.
 
 However, with Virtual Partitions, you can parallelize data processing even from a single partition. Virtual Partitions allow the data from one Kafka partition to be virtually "split", enabling multiple worker threads to process that data concurrently. This mechanism can be especially beneficial when dealing with IO operations or other tasks that introduce latencies, as other threads can continue processing while one is waiting.
 
@@ -147,15 +147,15 @@ In summary, while operating on a single partition typically uses just one worker
 
 [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) in Karafka are primarily designed to increase parallelism when processing messages, which can significantly improve throughput in the right circumstances. However, there are several scenarios where the benefits of Virtual Partitions might not be evident:
 
-1. **Not Enough Messages in Batches**: If there aren't many messages within the batches you're processing, splitting these already-small batches among multiple virtual partitions won't yield noticeable performance gains. There needs to be more work to be shared among the virtual partitions, leading to underutilization.
+1. **Not Enough Messages in Batches**: If there are not many messages within the batches you are processing, splitting these already-small batches among multiple virtual partitions will not yield noticeable performance gains. There needs to be more work to be shared among the virtual partitions, leading to underutilization.
 
-1. **No IO Involved**: Virtual Partitions shine in scenarios where IO operations (e.g., database reads/writes, network calls) are predominant. These operations often introduce latencies, and with virtual partitions, while one thread waits on an IO operation, another can process data. If your processing doesn't involve IO, the parallelism introduced by virtual partitions might not offer substantial benefits.
+1. **No IO Involved**: Virtual Partitions shine in scenarios where IO operations (e.g., database reads/writes, network calls) are predominant. These operations often introduce latencies, and with virtual partitions, while one thread waits on an IO operation, another can process data. If your processing does not involve IO, the parallelism introduced by virtual partitions might not offer substantial benefits.
 
 1. **Heavy CPU Computations**: If the primary task of your consumer is CPU-intensive computations, then the overhead introduced by managing multiple threads might offset the benefits. CPU-bound tasks usually require dedicated computational resources, and adding more threads (even with virtual partitions) might introduce contention without increasing throughput.
 
 1. **Virtual Partitioner Assigns Data to a Single Virtual Partition**: The purpose of virtual partitions is to distribute messages across multiple virtual sub-partitions for concurrent processing. If your virtual partitioner, for whatever reason, is consistently assigning messages to only one virtual partition, you effectively negate the benefits. This scenario is akin to not using virtual partitions, as all messages would be processed serially in a single "stream".
 
-In conclusion, while Virtual Partitions can be a potent tool for improving throughput in certain scenarios, their utility is context-dependent. It's essential to understand the nature of the work being done, the volume of messages, and the behavior of the virtual partitioner to ascertain the effectiveness of virtual partitions in your setup.
+In conclusion, while Virtual Partitions can be a potent tool for improving throughput in certain scenarios, their utility is context-dependent. It is essential to understand the nature of the work being done, the volume of messages, and the behavior of the virtual partitioner to ascertain the effectiveness of virtual partitions in your setup.
 
 ## What can I do to optimize the latency in Karafka?
 
@@ -175,7 +175,7 @@ Remember, the best practices for optimizing latency in Karafka will largely depe
 
 ## What is the maximum recommended concurrency value for Karafka?
 
-For a system with a single topic and a process assigned per partition, there's generally no need for multiple workers. `50` workers are a lot, and you might not fully use them because of the overhead from context switching. While Sidekiq and Karafka differ in their internals, not setting concurrency too high is a valid point for both. The same applies to the connection pool.
+For a system with a single topic and a process assigned per partition, there is generally no need for multiple workers. `50` workers are a lot, and you might not fully use them because of the overhead from context switching. While Sidekiq and Karafka differ in their internals, not setting concurrency too high is a valid point for both. The same applies to the connection pool.
 
 ## Are there concerns about having unused worker threads for a Karafka consumer process?
 
@@ -195,11 +195,11 @@ Increasing topic partition count and Karafka concurrency (so that total worker t
 
 ## How do Virtual Partitions compare to multiple subscription groups regarding performance?
 
-Using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) is not the same as increasing the number of partitions. You'd need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
+Using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) is not the same as increasing the number of partitions. You would need to align the number of processes and match them with partitions to achieve similar results with multiple subscription groups. However, this might increase the number of Kafka connections, potentially leading to misassignments and sub-optimal resource allocation.
 
 ## Why Is Kafka Using Only 7 Out of 12 Partitions Despite Specific Settings?
 
-The issue you're encountering typically arises due to how Kafka calculates partition assignments when a key is provided. Kafka uses a hashing function (CRC32 by default) to determine the partition for each key. This function might not evenly distribute keys, especially if the key space is not large or diverse enough.
+The issue you are encountering typically arises due to how Kafka calculates partition assignments when a key is provided. Kafka uses a hashing function (CRC32 by default) to determine the partition for each key. This function might not evenly distribute keys, especially if the key space is not large or diverse enough.
 
 As discussed, since the partitioner was configured to use the first argument (carrier name) as the key, the diversity and number of unique carrier names directly influence the distribution across partitions. If some carrier names hash the same partition, you will see less than 12 partitions being used.
 
@@ -243,7 +243,7 @@ Implementing these best practices will help you fully use Karafka’s capabiliti
 
 ## Is Multiplexing an alternative to running multiple Karafka processes but using Threads?
 
-No, multiplexing serves a different use case. It's primarily for handling IO-bound operations, dealing with connections, and polling rather than work distribution and execution. Multiplexing is specifically for connection multiplexing within the same topic. Tuning Karafka processing is complex due to its flexibility. It can be influenced by the nature of your processing, deployment type, and data patterns, and there is no one best solution.
+No, multiplexing serves a different use case. It is primarily for handling IO-bound operations, dealing with connections, and polling rather than work distribution and execution. Multiplexing is specifically for connection multiplexing within the same topic. Tuning Karafka processing is complex due to its flexibility. It can be influenced by the nature of your processing, deployment type, and data patterns, and there is no one best solution.
 
 ## How can Virtual Partitions help with handling increased consumer lag in Karafka?
 
@@ -265,7 +265,7 @@ Under heavy lag, incorrect settings can reduce Karafka's ability to use multiple
 
 This is typically caused by a multiplexing configuration that creates more connections than available partitions. When you use `multiplexing(max: N)`, each multiplexed connection is treated by Kafka as a separate process/consumer. If your `max` value equals or exceeds your partition count, all partitions are already assigned to the existing multiplexed connections, leaving no partitions available for newly scaled consumers.
 
-Here's what may happen:
+Here is what may happen:
 
 - Topic has 4 partitions
 - Single consumer process with `multiplexing(max: 4)`
@@ -280,7 +280,7 @@ Here's what may happen:
 multiplexing(min: 1, max: YOUR_ENV_VARIABLE, boot: 1)
 ```
 
-This starts with minimal multiplexing (1 connection) and only scales up multiplexing when there's available capacity after at least one minute from the last rebalance.
+This starts with minimal multiplexing (1 connection) and only scales up multiplexing when there is available capacity after at least one minute from the last rebalance.
 
 **Reduce multiplexing max value:**
 

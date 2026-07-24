@@ -51,7 +51,7 @@ end
 
 ### Automatic Cleaning with `#each`
 
-The Cleaner API allows you to automate the cleanup process for a more streamlined approach. By providing the `clean: true` parameter to the `#each` method, each message's payload is automatically cleaned from memory as soon as it's processed.
+The Cleaner API allows you to automate the cleanup process for a more streamlined approach. By providing the `clean: true` parameter to the `#each` method, each message's payload is automatically cleaned from memory as soon as it is processed.
 
 ```ruby
 def consume
@@ -170,7 +170,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/1kb_stdev.png" />
 </p>
 
-**Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application doesn't notably affect the memory usage metrics for such small messages. However, even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there's an anticipation of intermittently receiving messages with increased payloads.
+**Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application does not notably affect the memory usage metrics for such small messages. However, even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there is an anticipation of intermittently receiving messages with increased payloads.
 
 ## Limitations
 
@@ -180,13 +180,13 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 - **Not Suitable for Tiny Payloads**: The efficacy of the Cleaner API is more pronounced for larger message payloads, typically those sized 10KB and above. When dealing with tiny payloads, the memory management benefits are negligible, and the overhead might overshadow any gains.
 
-- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
+- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API cannot be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
 
-- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
+- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it is required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
 
 - **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
 
-- **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it's crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
+- **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it is crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
 
 Understanding these limitations is essential for users to effectively and efficiently use the Cleaner API without encountering unforeseen issues or complications in their processes.
 

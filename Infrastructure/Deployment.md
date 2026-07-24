@@ -8,11 +8,11 @@ Karafka is currently being used in production with the following deployment meth
 - [Confluent Cloud](#confluent-cloud)
 - [Custom OAuth Token Providers](#custom-oauth-token-providers)
 
-Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
+Since the only thing that is long-running is the Karafka server, it should not be hard to make it work with other deployment and CD tools.
 
 ## systemd (+ Capistrano)
 
-You can easily manage Karafka applications with `systemd`. Here's an example `.service` file that you can use.
+You can easily manage Karafka applications with `systemd`. Here is an example `.service` file that you can use.
 
 ```shell
 # Move to /lib/systemd/system/karafka.service
@@ -45,7 +45,7 @@ SyslogIdentifier=karafka
 WantedBy=multi-user.target
 ```
 
-If you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
+If you want to use `systemd` based solution together with Capistrano, you do not need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
 
 ```ruby
 # frozen_string_literal: true
@@ -131,7 +131,7 @@ Follow the below instructions for both cluster initialization and Karafka config
     </p>
 
 1. Setup your VPC and networking details.
-1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
+1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there will not be any authentication beyond those imposed by your security groups and VPC.
 1. **Disable** `IAM role-based authentication`.
 1. **Enable** `SASL/SCRAM authentication`
 
@@ -507,7 +507,7 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 
 **Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
 
-**Solution 2**: Make sure you've created appropriate consumer groups **prior** to them being used via the Heroku CLI.
+**Solution 2**: Make sure you have created appropriate consumer groups **prior** to them being used via the Heroku CLI.
 
 #### Missing Information or "Initial Consumers State Missing" Notice After a While
 
@@ -515,7 +515,7 @@ Read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy
 
 ## Kubernetes
 
-Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
+Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it is vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it is easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
 
 ### Basic deployment spec
 
@@ -549,11 +549,11 @@ spec:
               value: production
 ```
 
-When deploying Karafka consumers using Kubernetes, it's generally not recommended to use strategies other than `Recreate`. This is because other strategies, such as `RollingUpdate` may cause extensive rebalancing among the consumer processes. This can lead to slow deployments and double-processing of messages, which can be a significant problem.
+When deploying Karafka consumers using Kubernetes, it is generally not recommended to use strategies other than `Recreate`. This is because other strategies, such as `RollingUpdate` may cause extensive rebalancing among the consumer processes. This can lead to slow deployments and double-processing of messages, which can be a significant problem.
 
-For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue.
+For larger deployments with many consumer processes, it is especially important to be mindful of the rebalancing issue.
 
-Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
+Overall, when deploying Karafka consumers using Kubernetes, it is important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
 
 ### Choosing the Right Rebalance Strategy
 

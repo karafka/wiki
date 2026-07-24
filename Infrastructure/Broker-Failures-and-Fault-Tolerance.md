@@ -24,8 +24,8 @@ When a broker goes down (during maintenance, rolling updates, or unexpected fail
 
 During broker failures, there can be brief periods where:
 
-- The old leader hasn't fully acknowledged that it's no longer the leader
-- The new leader hasn't fully assumed leadership
+- The old leader has not fully acknowledged that it is no longer the leader
+- The new leader has not fully assumed leadership
 - Client metadata is temporarily inconsistent across the cluster
 
 **Impact**: Producers may receive `not_leader_for_partition` errors even after metadata refresh. librdkafka handles this by:
@@ -36,7 +36,7 @@ During broker failures, there can be brief periods where:
 
 #### Edge Case 2: Partial Metadata Updates
 
-In large clusters, metadata propagation isn't always atomic. You may encounter:
+In large clusters, metadata propagation is not always atomic. You may encounter:
 
 - Some brokers report the new leader, while others still report the old one
 - Inconsistent ISR (In-Sync Replica) information across brokers
@@ -329,7 +329,7 @@ Broker: Not enough in-sync replicas (not_enough_replicas)
 Broker: Messages are rejected since there are fewer in-sync replicas than required
 ```
 
-- **Cause**: Message was written to leader but couldn't be replicated to enough followers
+- **Cause**: Message was written to leader but could not be replicated to enough followers
 - **Solution**: Same as above
 
 ### Configuration Commands
@@ -395,7 +395,7 @@ The topic configuration management feature allows you to view and modify the con
 
 1. **Replication Factor**: Ensure topics have a replication factor of `3` or higher for any production environment. Setting a replication factor of `1` might lead to offline partitions during broker maintenance
 
-2. **Minimum In-Sync Replicas**: Set minimum in-sync replicas (`min.insync.replicas`) to a value of (replication factor - 1) or less. A minISR value that's equal to the replication factor might prevent you from producing to the cluster during maintenance
+2. **Minimum In-Sync Replicas**: Set minimum in-sync replicas (`min.insync.replicas`) to a value of (replication factor - 1) or less. A minISR value that is equal to the replication factor might prevent you from producing to the cluster during maintenance
 
 3. **Connection Strings**: Ensure client connection strings include brokers from multiple availability zones or racks. Having multiple brokers in a client's connection string allows for failover when specific brokers are offline
 

@@ -139,7 +139,7 @@ This feature is especially critical in industries subject to stringent regulatio
 
 !!! warning "Selection of Fingerprinting Algorithm"
 
-    The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It's essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
+    The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It is essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
 
 ## Example Use Cases
 
@@ -153,7 +153,7 @@ This feature is especially critical in industries subject to stringent regulatio
 
 - Human Resources: Human resources departments may store sensitive employee data such as social security numbers, payroll information, and performance reviews in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring regulatory compliance and maintaining employee trust.
 
-Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
+Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it does not require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
 
 ## See Also
 

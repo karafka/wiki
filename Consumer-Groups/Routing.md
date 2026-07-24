@@ -147,7 +147,7 @@ Almost all the default settings configured can be changed on either on the ```to
 
 This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also ensures consistency throughout your application.
 
-Here's how you can set up routing defaults and then define a topic that overrides one of those defaults:
+Here is how you can set up routing defaults and then define a topic that overrides one of those defaults:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -185,7 +185,7 @@ end
 
 When you decide to override any default option for a topic within the `#topic` block, you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
 
-Karafka will not use the user-specified defaults you've defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
+Karafka will not use the user-specified defaults you have defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -328,7 +328,7 @@ One of Karafka's routing beauties is the ability to call the #draw method multip
 
 - **Scalability**: As modules grow, they can independently evolve their messaging strategies.
 
-- **Maintainability**: Changes to routing in one module won't impact others, making it easier to manage and refactor.
+- **Maintainability**: Changes to routing in one module will not impact others, making it easier to manage and refactor.
 
 Within each module, you can define a Karafka routing block using the #draw method:
 

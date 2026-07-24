@@ -8,7 +8,7 @@ One of the major benefits of the Iterator API is its flexibility. You can use it
 
 !!! info "Iterator API and Compacted Messages"
 
-    When using Karafka's Iterator API to access Kafka data, it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
+    When using Karafka's Iterator API to access Kafka data, it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they are counted in the total.
 
 ## Usage
 
@@ -134,7 +134,7 @@ When working with the Karafka Pro Iterator, there may be scenarios where you nee
 
 Using `#stop` is straightforward. Once invoked, the method sets an internal flag that indicates the iterator should cease processing as soon as possible. This check is performed internally within the iterator's loop, ensuring that the iteration stops cleanly after the current message processing completes.
 
-Here’s an example of how to use `#stop` effectively:
+Here is an example of how to use `#stop` effectively:
 
 ```ruby
 iterator.each do |message, iterator|
@@ -200,7 +200,7 @@ end
 
 By default, the iterator terminates when every subscribed partition has reached its end at least once - this is the "at-least-once-EOF" rule. Understanding what happens around that boundary is important for snapshot-style iteration.
 
-After a partition EOFs, the iterator keeps fetching it. The partition is not paused (only an explicit `#stop_partition` call pauses a partition). This means that if new messages arrive on a partition that has already EOFed - while the iterator is still alive because other partitions haven't finished yet - those messages are delivered and yielded normally.
+After a partition EOFs, the iterator keeps fetching it. The partition is not paused (only an explicit `#stop_partition` call pauses a partition). This means that if new messages arrive on a partition that has already EOFed - while the iterator is still alive because other partitions have not finished yet - those messages are delivered and yielded normally.
 
 Once a partition enters the "reached its end" set, it stays there permanently. New arrivals on an already-EOFed partition do not remove it from that set. The termination condition is therefore: *all partitions have reached their end at least once*, not *all partitions are simultaneously at their end right now*.
 
@@ -246,7 +246,7 @@ end
 
 ### Partition Consumption Early Stop
 
-There may be situations when using the iterator where you may want to stop consuming data from specific partitions while continuing to consume data from other partitions. This can be useful in scenarios where you were looking for pieces of information in each of the partitions, and in some, you've already found it. In such scenarios, further processing of those partitions will not provide any benefits and will only consume resources.
+There may be situations when using the iterator where you may want to stop consuming data from specific partitions while continuing to consume data from other partitions. This can be useful in scenarios where you were looking for pieces of information in each of the partitions, and in some, you have already found it. In such scenarios, further processing of those partitions will not provide any benefits and will only consume resources.
 
 To early stop one partition without stopping the iterator process, you can use the `#stop_partition` or `#stop_current_partition` methods.
 
@@ -277,7 +277,7 @@ The [Cleaner API](Pro-Cleaner-API) is designed to enhance batch processing effic
 
 The Cleaner API can be integrated with the Iterator API to ensure optimal memory management during long-running iterations. When processing large datasets or streaming data over extended periods, keep memory usage under control to avoid performance degradation or crashes due to memory overload.
 
-Here's how you can use the Cleaner API with the Iterator API to process messages and clean up memory efficiently:
+Here is how you can use the Cleaner API with the Iterator API to process messages and clean up memory efficiently:
 
 ```ruby
 # Initialize the iterator for a specific topic

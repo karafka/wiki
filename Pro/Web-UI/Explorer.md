@@ -14,17 +14,17 @@ Before diving deep into the data, having a bird's eye view of all available topi
 
 ### Per Topic View
 
-This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you don't miss out on the latest insights.
+This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you do not miss out on the latest insights.
 
 #### Limitations
 
-1. **Data Merging from Multiple Partitions**: When using the Per Topic View, the system merges data from several partitions. However, there's a limitation. If the number of partitions exceeds the number of elements allowed to be displayed on a single page, not all data might be visible immediately. For example, if there are 30 partitions but the page only shows data from 25, you would only see the combined data from those 25 partitions on the first page. The remaining data from the other partitions would be visible on the subsequent pages (Page 2, Page 3, and so on).
+1. **Data Merging from Multiple Partitions**: When using the Per Topic View, the system merges data from several partitions. However, there is a limitation. If the number of partitions exceeds the number of elements allowed to be displayed on a single page, not all data might be visible immediately. For example, if there are 30 partitions but the page only shows data from 25, you would only see the combined data from those 25 partitions on the first page. The remaining data from the other partitions would be visible on the subsequent pages (Page 2, Page 3, and so on).
 
 1. **Displaying Sparse Data from Many Partitions**: Another limitation might arise in situations where topics have a small number of messages. If a topic has many partitions (say more than 25) but only a few messages, not all may be visible in the Per Topic View. This is due to the merging process, where data from many partitions might overshadow those few messages.
 
-1. **Low Watermark Offset Viewing**: The limitations mentioned mainly apply when observing data close to the low watermark offset, typically when there's not much data present (less than 100 messages). In such cases, the view might provide a partial picture due to the abovementioned constraints.
+1. **Low Watermark Offset Viewing**: The limitations mentioned mainly apply when observing data close to the low watermark offset, typically when there is not much data present (less than 100 messages). In such cases, the view might provide a partial picture due to the abovementioned constraints.
 
-However, in most other scenarios, where there's a substantial amount of data, the Per Topic View should function, providing a holistic and accurate representation of the most recent data across all partitions.
+However, in most other scenarios, where there is a substantial amount of data, the Per Topic View should function, providing a holistic and accurate representation of the most recent data across all partitions.
 
 ### Per Partition View with Offset-Based Pagination
 
@@ -60,7 +60,7 @@ Occasionally, there might be a need to republish a message for various reasons. 
 
 ### Summary
 
-The Karafka Data Explorer is your go-to solution for an in-depth exploration of data produced to Kafka. It's not just about viewing the data; it's about understanding it.
+The Karafka Data Explorer is your go-to solution for an in-depth exploration of data produced to Kafka. It is not just about viewing the data; it is about understanding it.
 
 ## See Also
 

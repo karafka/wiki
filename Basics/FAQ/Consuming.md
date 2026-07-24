@@ -67,7 +67,7 @@ This behavior can occur if you are using blocking `mark_as_consumed!` method and
 
 !!! tip "Consider KIP-848 for Improved Rebalancing"
 
-    If you're using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
+    If you are using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
 
 ## What will happen with uncommitted offsets during a rebalance?
 
@@ -105,7 +105,7 @@ To troubleshoot the issue, you can try:
 
 ## Can I consume the same topic independently using two consumers within the same application?
 
-Yes. You can define independent consumer groups operating within the same application. Let's say you want to consume messages from a topic called `event` using two consumers. You can do this as follows:
+Yes. You can define independent consumer groups operating within the same application. Suppose you want to consume messages from a topic called `event` using two consumers. You can do this as follows:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -167,7 +167,7 @@ While Kafka's offset mechanism automatically tracks the progress of message cons
 
 In such cases, marking each message as consumed provides finer-grained control over the consuming progress. By explicitly acknowledging the consumption of each message, you ensure that even if a crash or failure occurs during processing, the consumer can resume from the last successfully processed message.
 
-Here's an explanation of the benefits of marking each message as consumed:
+Here is an explanation of the benefits of marking each message as consumed:
 
 - Granular Progress Tracking: Marking each message as consumed allows you to have a more detailed view of the processing progress. You can precisely identify the last processed message and easily determine the remaining messages that need to be processed.
 
@@ -231,7 +231,7 @@ While Karafka uses `librdkafa` under the hood, they serve slightly purposes and 
 
 Karafka is designed with certain assumptions, such as auto-committing offsets, to simplify its usage for Ruby developers. One of the key decisions is to commit offsets on rebalances and assume that the offset management is done using Kafka itself with optional additional offset storage when needed. The reason behind this is to ensure that messages are processed only once in the case of a group rebalance. By committing offsets on rebalances, Karafka tries to ensure at-least-once delivery. That is, every message will be processed at least once, and no message will be lost, which is a typical requirement in many data processing tasks.
 
-On the other hand, `librdkafka` is a C library that implements the Apache Kafka protocol. It's designed to be more flexible and to offer more control to the user. It doesn't commit offsets on rebalances by default because it gives power to the application developer to decide when and how to commit offsets and where to store them. Depending on the specific requirements of your application, you may want to handle offsets differently.
+On the other hand, `librdkafka` is a C library that implements the Apache Kafka protocol. It is designed to be more flexible and to offer more control to the user. It does not commit offsets on rebalances by default because it gives power to the application developer to decide when and how to commit offsets and where to store them. Depending on the specific requirements of your application, you may want to handle offsets differently.
 
 So the difference between the two libraries is mainly due to their different design principles and target audiences: Karafka is more opinionated and tries to simplify usage for Ruby developers, while `librdkafka` is more flexible and provides more control to the user but at the same time requires much more knowledge and effort.
 
@@ -259,7 +259,7 @@ The assignment strategy is not a one-size-fits-all solution and can be changed b
 
 3. **Legacy strategies** - `range` or `roundrobin` for specific use cases or compatibility requirements
 
-It's important to consider your Kafka broker version, particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
+It is important to consider your Kafka broker version, particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
 
 For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
 
@@ -267,11 +267,11 @@ For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer g
 
 The assignment strategy or protocol for a Karafka consumer group might not be visible if a topic is empty, no data has been consumed, and no offsets were stored. These conditions indicate that no data has been produced to the topic and no consumer group has read any data, leaving no record of consumed data.
 
-In such cases, Kafka doesn't have any information to establish an assignment strategy. Hence, it remains invisible until data is produced, consumed, and offsets are committed.
+In such cases, Kafka does not have any information to establish an assignment strategy. Hence, it remains invisible until data is produced, consumed, and offsets are committed.
 
 ## Does Kafka guarantee message processing orders within a single partition for single or multiple topics? And does this mean Kafka topics consumption run on a single thread?
 
-Yes, within Kafka, the order of message processing is guaranteed for messages within a single partition, irrespective of whether you're dealing with one or multiple topics. However, this doesn't imply that all Kafka topics run on a single thread. In contrast, Karafka allows for multithreaded processing of topics, making it possible to process multiple topics or partitions concurrently. In some cases, you can even process data from one topic partition concurrently.
+Yes, within Kafka, the order of message processing is guaranteed for messages within a single partition, irrespective of whether you are dealing with one or multiple topics. However, this does not imply that all Kafka topics run on a single thread. In contrast, Karafka allows for multithreaded processing of topics, making it possible to process multiple topics or partitions concurrently. In some cases, you can even process data from one topic partition concurrently.
 
 ## Can I pass custom parameters during consumer initialization?
 
@@ -285,7 +285,7 @@ Yes, within Kafka, the order of message processing is guaranteed for messages wi
 
 - While you can perform actions during initialization, be cautious not to overload this phase with heavy tasks or large resource loads like extensive caches. This is because the initialization happens in the listener loop thread, and any extensive process here could block message consumption.
 
-- If there's a minor delay (a few seconds) during initialization, it's acceptable.
+- If there is a minor delay (a few seconds) during initialization, it is acceptable.
 
 Furthermore, with no arguments in the initialize method, this API structure is designed for your customization, and there are no plans to change this in the foreseeable future.
 
@@ -337,25 +337,25 @@ Getting the exact number of messages in a Kafka topic is more complicated due to
     end
     ```
 
-The first approach offers rapid results, especially for topics with substantial messages. However, its accuracy may be compromised by factors such as log compaction. Conversely, the second method promises greater precision, but it's important to note that it could necessitate extensive data transfer and potentially operate at a reduced speed.
+The first approach offers rapid results, especially for topics with substantial messages. However, its accuracy may be compromised by factors such as log compaction. Conversely, the second method promises greater precision, but it is important to note that it could necessitate extensive data transfer and potentially operate at a reduced speed.
 
 ## Does running #mark_as_consumed increase the processing time?
 
-When working with Karafka, the `#mark_as_consumed` method is designed to be asynchronous, meaning it doesn't immediately commit the offset but schedules it to be committed later. In contrast, the `#mark_as_consumed!` (with the exclamation mark) is synchronous and commits the offset immediately, thus having a more noticeable impact on processing time.
+When working with Karafka, the `#mark_as_consumed` method is designed to be asynchronous, meaning it does not immediately commit the offset but schedules it to be committed later. In contrast, the `#mark_as_consumed!` (with the exclamation mark) is synchronous and commits the offset immediately, thus having a more noticeable impact on processing time.
 
-Given the asynchronous nature of `#mark_as_consumed`, its impact on the overall processing time should be marginal, less than 1%. It's optimized for performance and efficiency to ensure that offset management doesn't significantly slow down your primary processing logic.
+Given the asynchronous nature of `#mark_as_consumed`, its impact on the overall processing time should be marginal, less than 1%. It is optimized for performance and efficiency to ensure that offset management does not significantly slow down your primary processing logic.
 
 We recommend using `#mark_as_consumed` for most cases because of its non-blocking nature. By default, Karafka flushes the offsets every five seconds and during each rebalances. This approach strikes a good balance between ensuring offset accuracy and maintaining high throughput in message processing.
 
 ## What are Long Running Jobs in Kafka and Karafka, and when should I consider using them?
 
-Despite its name, "Long Running Jobs" doesn't refer to the longevity of the underlying Ruby process (like a typical long-running Linux process). Instead, it denotes the duration of message processing. The term "Long Running Jobs" was chosen due to its popularity, even though a more accurate name might have been "Long Running Consumers".
+Despite its name, "Long Running Jobs" does not refer to the longevity of the underlying Ruby process (like a typical long-running Linux process). Instead, it denotes the duration of message processing. The term "Long Running Jobs" was chosen due to its popularity, even though a more accurate name might have been "Long Running Consumers".
 
 The [Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature adheres to the strategy recommended by Confluent. It involves "pausing" a given partition during message processing and then "resuming" the processing of that partition once the task is completed. This ensures that as long as no rebalances occur (which would result in the partition being revoked), the `poll()` command can happen within the confines of the `max.poll.interval.ms`, preventing unwanted rebalances and errors.
 
-However, it's essential to use this feature properly. If your regular workloads don't push the limits of `max.poll.interval.ms`, enabling Long Running Jobs might degrade performance. This is because pausing the partition prevents data polling, which can lead to inefficiencies in situations where message processing is typically fast.
+However, it is essential to use this feature properly. If your regular workloads do not push the limits of `max.poll.interval.ms`, enabling Long Running Jobs might degrade performance. This is because pausing the partition prevents data polling, which can lead to inefficiencies in situations where message processing is typically fast.
 
-In conclusion, while Long Running Jobs provide a powerful tool to maintain stability during extended message processing tasks, it's crucial to understand your data and processing patterns to use them effectively. Otherwise, you might inadvertently introduce performance bottlenecks.
+In conclusion, while Long Running Jobs provide a powerful tool to maintain stability during extended message processing tasks, it is crucial to understand your data and processing patterns to use them effectively. Otherwise, you might inadvertently introduce performance bottlenecks.
 
 ## What is the principle of strong ordering in Kafka and its implications?
 
@@ -365,15 +365,15 @@ Strong ordering in Kafka means that records are strictly ordered in the partitio
 
 When you use Karafka and notice that the same message is being consumed multiple times, several reasons might be causing this. Here are the common reasons why you may experience the same message being processed many times:
 
-- **At-Least-Once Delivery**: Kafka guarantees at-least-once delivery, which means a message can be delivered more than once in specific scenarios. This is a trade-off to ensure that no messages are lost during transport. As a result, it's up to the consumer to handle duplicate messages appropriately.
+- **At-Least-Once Delivery**: Kafka guarantees at-least-once delivery, which means a message can be delivered more than once in specific scenarios. This is a trade-off to ensure that no messages are lost during transport. As a result, it is up to the consumer to handle duplicate messages appropriately.
 
 - **Consumer Failures**: If a consumer crashes after processing a message but before it has had a chance to commit its offset, the consumer might process the same message again upon retry.
 
-- **Commit Interval**: The interval at which the consumer commits its offset can also lead to messages being consumed multiple times. If the commit interval is too long, and there's a crash before an offset is committed, messages received since the last commit will be re-consumed.
+- **Commit Interval**: The interval at which the consumer commits its offset can also lead to messages being consumed multiple times. If the commit interval is too long, and there is a crash before an offset is committed, messages received since the last commit will be re-consumed.
 
-- **Similar-Looking Messages**: It's possible that the messages aren't actually duplicates, but they look alike. This can be particularly common in systems where certain events occur regularly or when there's a glitch in the producing service. It's essential to check the message key, timestamp, or other unique identifiers to ascertain if two messages are identical or have similar payloads.
+- **Similar-Looking Messages**: It is possible that the messages are not actually duplicates, but they look alike. This can be particularly common in systems where certain events occur regularly or when there is a glitch in the producing service. It is essential to check the message key, timestamp, or other unique identifiers to ascertain if two messages are identical or have similar payloads.
 
-- **Dead Letter Queue (DLQ) Misconfiguration with Manual Offset Management**: If you're using a Dead Letter Queue in combination with manual offset management, it's possible to get into a situation where messages are consumed multiple times. If a message cannot be processed and is forwarded to the DLQ, but its offset isn't correctly committed, or the message isn't marked as consumed, the consumer may pick up the same message again upon its next iteration or restart. This behavior can especially become evident when a message consistently fails to be processed correctly, leading to it being consumed multiple times and continually ending up in the DLQ. Ensuring a proper synchronization between message processing, DLQ forwarding, and offset management is essential to avoid such scenarios.
+- **Dead Letter Queue (DLQ) Misconfiguration with Manual Offset Management**: If you are using a Dead Letter Queue in combination with manual offset management, it is possible to get into a situation where messages are consumed multiple times. If a message cannot be processed and is forwarded to the DLQ, but its offset is not correctly committed, or the message is not marked as consumed, the consumer may pick up the same message again upon its next iteration or restart. This behavior can especially become evident when a message consistently fails to be processed correctly, leading to it being consumed multiple times and continually ending up in the DLQ. Ensuring a proper synchronization between message processing, DLQ forwarding, and offset management is essential to avoid such scenarios.
 
 Remember that distributed systems, Kafka included, are complex and can exhibit unexpected behaviors due to various factors. The key is to have comprehensive logging, monitoring, and alerting in place, which can provide insights into anomalies and help in their early detection and resolution.
 
@@ -407,7 +407,7 @@ The `initial_offset` setting in Karafka is relevant only during the initial star
 
 Implementing detailed, per-message tracing in Karafka involves modifying the monitoring and tracing setup to handle individual messages. This setup enhances visibility into each message's processing and integrates with many tracing products like DataDog.
 
-Here's how you can set up this  detailed tracing step-by-step:
+Here is how you can set up this  detailed tracing step-by-step:
 
 1. **Register Custom Event**
 
@@ -481,7 +481,7 @@ Your code will continue to execute until it is complete. However, marking messag
 
 ## Which component is responsible for committing the offset after consuming? Is it the listener or the worker?
 
-In the Karafka framework, the worker contains a consumer that handles the offset committing. The consumer within the worker sends a commit request to the underlying C client instance. This process involves the worker's consumer storing the offset to be saved, which then goes through a C thread for the actual commit operation. It's important to note that Karafka commits offsets asynchronously by default.
+In the Karafka framework, the worker contains a consumer that handles the offset committing. The consumer within the worker sends a commit request to the underlying C client instance. This process involves the worker's consumer storing the offset to be saved, which then goes through a C thread for the actual commit operation. It is important to note that Karafka commits offsets asynchronously by default.
 
 ## Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?
 
@@ -509,7 +509,7 @@ No, two Karafka server processes with the same `group_id` cannot consume message
 
 ## When does EOF (End of File) handling occur in Karafka, and how does it work?
 
-EOF handling in Karafka only occurs when it is explicitly enabled. However, it's important to understand that EOF execution may not always trigger when the end of a partition is reached during message processing.
+EOF handling in Karafka only occurs when it is explicitly enabled. However, it is important to understand that EOF execution may not always trigger when the end of a partition is reached during message processing.
 
 When messages are present in the final batch that reaches the end of a partition, Karafka will execute a regular consumption run with the `#eofed?` flag set to `true`, rather than triggering the EOF handling logic.
 

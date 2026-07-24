@@ -2,7 +2,7 @@
 
 Offset Metadata Storage is a feature within the Karafka framework allowing the addition of metadata to offsets. At its core, Offset Metadata Storage enables developers to attach custom metadata to message offsets when they are committed to the Kafka broker. This metadata, a form of annotation or additional data, can then be retrieved and used for many purposes, enhancing message processing systems' capability, traceability, and intelligence.
 
-In traditional Kafka consumption, a message's offset indicates its position within a partition. While this is crucial for ensuring messages are processed in order, and no message is missed or duplicated, the standard offset mechanism doesn't provide context or additional information about the processing state or the nature of the message. Offset Metadata Storage fills this gap by allowing developers to store custom, context-rich data alongside these offsets.
+In traditional Kafka consumption, a message's offset indicates its position within a partition. While this is crucial for ensuring messages are processed in order, and no message is missed or duplicated, the standard offset mechanism does not provide context or additional information about the processing state or the nature of the message. Offset Metadata Storage fills this gap by allowing developers to store custom, context-rich data alongside these offsets.
 
 This feature can be compelling in complex processing scenarios where understanding the state or history of a message's processing is crucial. For instance, in a distributed system where messages undergo multiple stages of processing, Offset Metadata Storage can be used to attach processing stage information, timestamps, or identifiers of the services that have already processed the message. This additional layer of information opens up new possibilities for monitoring, debugging, and orchestrating complex message flows.
 
@@ -165,11 +165,11 @@ def consume
 end
 ```
 
-It's important to note the behavior of the `#offset_metadata` method about the `:cache` configuration option:
+It is important to note the behavior of the `#offset_metadata` method about the `:cache` configuration option:
 
 - If `:cache` is set to `true`, the metadata will be cached until a rebalance occurs, preventing unnecessary round trips to Kafka and ensuring better performance.
 
-- If `:cache` is set to `false`, each invocation of the `#offset_metadata` method will make a round trip to Kafka to fetch the data. It's generally not recommended to set `:cache` to `false` unless necessary.
+- If `:cache` is set to `false`, each invocation of the `#offset_metadata` method will make a round trip to Kafka to fetch the data. It is generally not recommended to set `:cache` to `false` unless necessary.
 
 The primary use case for offset metadata is to pass stateful information that can be crucial during rebalances or when the assignment of partitions changes. For example, in a distributed system where multiple consumers work on different partitions, a rebalance might change the partition assignment of consumers. In such cases, the offset metadata can provide the necessary context or state information to the newly assigned consumer, allowing it to pick up the processing exactly where the previous consumer left off.
 

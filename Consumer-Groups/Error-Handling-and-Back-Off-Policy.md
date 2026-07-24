@@ -31,15 +31,15 @@ If a situation like that occurs, Karafka will exit with exit code **1**.
 
 Karafka has a couple of isolation layers that prevent it from being affected by **any** errors or exceptions from the application code.
 
-In any case, as long as system resources (like memory) are available, the Karafka process will **never** crash upon application errors. Also, threads for particular consumer groups and workers are isolated, so as long as you don't do any cross-consumer group work, they won't impact each other in any way.
+In any case, as long as system resources (like memory) are available, the Karafka process will **never** crash upon application errors. Also, threads for particular consumer groups and workers are isolated, so as long as you do not do any cross-consumer group work, they will not impact each other in any way.
 
 When processing messages from a Kafka topic, your code may raise any exception inherited from `StandardError`. The cause is typically because of one of the following reasons:
 
 - Your business logic does not behave as you think it should.
 - The message being processed is somehow malformed or is in an invalid format.
-- You're using external resources such as a database or a network API that are temporarily unavailable.
+- You are using external resources such as a database or a network API that are temporarily unavailable.
 
-Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That's why Karafka will **never** skip any messages.
+Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
 
 ### Retryable Methods
 
@@ -67,7 +67,7 @@ Understand how Karafka handles retries for different methods in the context of e
     <tr>
       <td><code>#shutdown</code></td>
       <td>No</td>
-      <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown doesn't align with its purpose.</td>
+      <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown does not align with its purpose.</td>
     </tr>
     <tr>
       <td><code>#tick</code></td>
@@ -77,7 +77,7 @@ Understand how Karafka handles retries for different methods in the context of e
     <tr>
       <td><code>#eofed</code></td>
       <td>No</td>
-      <td>This method is triggered when the end of a partition is reached. Since it's a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
+      <td>This method is triggered when the end of a partition is reached. Since it is a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
     </tr>
     <tr>
       <td><code>#wrap</code></td>
@@ -245,7 +245,7 @@ This setting is particularly useful for:
 
 Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. If this value is not set, Karafka will wait indefinitely for consumers to finish processing given messages.
 
-Setting this value high enough is highly recommended so that Karafka won't stop itself in the middle of some non-transactional partially finished operations.
+Setting this value high enough is highly recommended so that Karafka will not stop itself in the middle of some non-transactional partially finished operations.
 
 ## Internal Framework Errors
 

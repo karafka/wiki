@@ -12,7 +12,7 @@ Karafka Multiplexing is designed to enhance the efficiency and performance of me
 
 Multiplexing enables more effective data handling and improves performance by dividing the workload across several connections. This approach provides:
 
-- **Partition Isolation**: Each connection handles a subset of partitions, ensuring that lag in one doesn't halt polling of others
+- **Partition Isolation**: Each connection handles a subset of partitions, ensuring that lag in one does not halt polling of others
 - **Breaking Prefetch Patterns**: Under heavy load, librdkafka tends to prefetch large batches from single partitions; multiplexing breaks this pattern for more even distribution
 - **Better Work Distribution**: Processing becomes more balanced across partitions, even when data waits in internal queues
 
@@ -209,7 +209,7 @@ Karafka::Admin.seek_consumer_group(
 
 ## Multiplexing vs. Virtual Partitions
 
-Deciding between Multiplexing and Virtual Partitions isn't a strict either/or scenario; in fact, they can be complementary. While Virtual Partitions parallelize single-topic processing without extra Kafka connections, Multiplexing increases throughput by allowing a consumer to handle multiple partitions. Together, they can enhance capabilities, especially in IO-intensive workloads. For instance, with a concurrency of ten, you might use two Kafka connections and virtualize each into five virtual partitions. This approach uses both strategies for optimal performance, adapting to your application's needs, data intricacies, and anticipated load.
+Deciding between Multiplexing and Virtual Partitions is not a strict either/or scenario; in fact, they can be complementary. While Virtual Partitions parallelize single-topic processing without extra Kafka connections, Multiplexing increases throughput by allowing a consumer to handle multiple partitions. Together, they can enhance capabilities, especially in IO-intensive workloads. For instance, with a concurrency of ten, you might use two Kafka connections and virtualize each into five virtual partitions. This approach uses both strategies for optimal performance, adapting to your application's needs, data intricacies, and anticipated load.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -250,7 +250,7 @@ Know the following facts about this mode of operations:
 
 ### How Does It Work?
 
-Here's a breakdown of how it operates when the dynamic mode is enabled:
+Here is a breakdown of how it operates when the dynamic mode is enabled:
 
 - **Initial Connection Setup**: Upon startup, Karafka starts `boot` connections to Kafka or if not defined, half of available connections. This initial number is based on the configuration set for the multiplexing feature, representing the starting point for the dynamic scaling process.
 
@@ -365,7 +365,7 @@ end
 
 **Use Multiplexing When:**
 
-- High-volume, multi-partition scenarios where alternatives don't provide enough performance
+- High-volume, multi-partition scenarios where alternatives do not provide enough performance
 - Connection count is not a primary constraint
 - You need isolation between partition processing streams
 
@@ -405,7 +405,7 @@ The Dynamic Multiplexing feature in Karafka represents a refined approach to man
 
 When employing Multiplexing, each additional connection established by a process consumes more memory as it maintains its own set of buffers, offsets, and other metadata related to its subscribed topics. In scenarios where many connections are established to handle high volumes of data, the memory footprint can increase significantly.
 
-This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it's successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
+This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it is successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
 
 ## Example Use Cases
 
@@ -419,7 +419,7 @@ This increased memory usage is particularly notable when messages are large or w
 
 ## Summary
 
-Karafka Multiplexing is a tool designed to enhance the performance of your Kafka-based applications, especially under heavy load. Allowing multiple connections to the same topic from a single process provides a solution for handling high-volume data streams, optimizing resources, and ensuring high availability. Whether you're dealing with fluctuating workloads, aiming for high throughput, or seeking to improve fault tolerance, Multiplexing can provide significant benefits.
+Karafka Multiplexing is a tool designed to enhance the performance of your Kafka-based applications, especially under heavy load. Allowing multiple connections to the same topic from a single process provides a solution for handling high-volume data streams, optimizing resources, and ensuring high availability. Whether you are dealing with fluctuating workloads, aiming for high throughput, or seeking to improve fault tolerance, Multiplexing can provide significant benefits.
 
 ## See Also
 

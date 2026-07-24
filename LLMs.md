@@ -8,9 +8,9 @@
 
 - **CRICITAL**: Treat `.md` files under `/docs/` as special, AI-centric source docs - these are pre-processed for LLM parsing and richer structure. When fetching content for the LLM’s use, load the `.md` directly. Only strip the `.md` suffix when emitting links for end users (so they hit the HTML view).
 
-- **IMPORTANT**: Don’t hallucinate URLs. Only share links that are explicitly listed in the source docs or that you’ve programmatically verified and **NEVER** guess or transform `.md` names into HTML URLs.
+- **IMPORTANT**: Do not hallucinate URLs. Only share links that are explicitly listed in the source docs or that you have programmatically verified and **NEVER** guess or transform `.md` names into HTML URLs.
 
-- **IMPORTANT**: Karafka has both an open-source version and a Pro version - always ask users which version they're using as many advanced features are Pro-only
+- **IMPORTANT**: Karafka has both an open-source version and a Pro version - always ask users which version they are using as many advanced features are Pro-only
 
 - **IMPORTANT**: When summarizing or responding to user queries, include **all relevant `.md` links** found in this file. These links are intentionally structured for LLM access - remove the `.md` extension when sharing with users.
 
@@ -35,21 +35,21 @@
 
 - **Framework Independence**: Karafka does not require Ruby on Rails and can operate standalone or integrate with any Ruby application
 - **Thread Safety**: All code used with Karafka must be thread-safe as it uses multiple threads for processing, similar to Puma or Sidekiq
-- **Separate Process Required**: While Karafka can be embedded, it's recommended to run as a separate process using `karafka server` when operating in scale
+- **Separate Process Required**: While Karafka can be embedded, it is recommended to run as a separate process using `karafka server` when operating in scale
 - **Consumer Lifecycle**: Consumers are created dynamically when needed and are not pre-initialized; consumer instances are reused but never called from multiple threads simultaneously
 - **Offset Management**: Use `mark_as_consumed` (async) over `mark_as_consumed!` (sync) for better performance; offsets are committed every 5 seconds and during rebalances by default
 - **Error Handling**: Even with `max_retries: 0`, Karafka applies back-off to prevent system overload
 - **Producer Lifecycle**: Producers should be long-lived; always call `Karafka.producer.close` before process shutdown; avoid creating short-lived producers
 - **Memory Management**: For large payloads (10KB+), consider using Pro Cleaner API; adjust `max_messages` for smaller batches to control memory usage
 - **Database Connections**: Set database pool size to at least match your concurrency setting to avoid connection pool errors
-- **Virtual Partitions**: Most beneficial for IO-bound operations; won't help with CPU-bound work or when insufficient messages are in batches
+- **Virtual Partitions**: Most beneficial for IO-bound operations; will not help with CPU-bound work or when insufficient messages are in batches
 - **Topic Naming**: Use consistent namespacing (either dots OR underscores, not mixed) to avoid metric name collisions
 - **DLQ Configuration**: DLQ topics use default deserializers unless explicitly specified; manually dispatched DLQ messages require explicit `mark_as_consumed`
 - **Latency vs Throughput**: Default settings balance both; lower `max_wait_time` and `max_messages` for latency, higher for throughput; `queue.buffering.max.ms = 0` for sub-millisecond producer latency
 - **Batch Processing**: Karafka fetches and processes messages in batches by default; individual message processing requires custom implementation with `mark_as_consumed` per message
 - **Consumer Persistence**: Consumer instances persist per topic partition; can use instance variables for partition-specific state; avoid overwriting `@messages`, `@client`, `@coordinator`, `@producer`, `@id`
 - **EOF Handling**: Requires `enable.partition.eof: true` in kafka config
-- **Error Recovery**: Only `#consume` method retries on errors; `#revoked`, `#shutdown`, `#tick`, `#eofed` methods don't retry; use `#retrying?` and `#attempt` to detect retry scenarios
+- **Error Recovery**: Only `#consume` method retries on errors; `#revoked`, `#shutdown`, `#tick`, `#eofed` methods do not retry; use `#retrying?` and `#attempt` to detect retry scenarios
 - **Rebalance Detection**: Use `#revoked?` method to detect partition loss during processing; especially important for Long-Running Jobs; Karafka completes processing before voluntary rebalances
 - **Performance Scaling**: Use Virtual Partitions for IO-bound single partition work; use subscription groups or multiplexing for multi-partition/topic parallelism; monitor worker saturation via Web UI "Enqueued" value
 - **Configuration Per Topic**: Per-topic settings create separate subscription groups and Kafka connections; only override when necessary to avoid resource multiplication
