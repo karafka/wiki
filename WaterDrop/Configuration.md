@@ -246,7 +246,7 @@ producer.setup do |config|
 end
 ```
 
-Keep in mind, that to use `zstd`, you need to install `libzstd-dev`:
+To use `zstd`, you need to install `libzstd-dev`:
 
 ```shell
 apt-get install -y libzstd-dev
@@ -270,7 +270,7 @@ There are three primary parameters to consider:
 
     - Before a message reaches librdkafka, WaterDrop checks the `max_payload_size` to ensure the message payload is within permissible limits.
 
-    - It's worth noting that this validation only concerns the payload and not additional elements like metadata, headers, and key.
+    - This validation only concerns the payload and not additional elements like metadata, headers, and key.
 
 1. **librdkafka Validation**:
 

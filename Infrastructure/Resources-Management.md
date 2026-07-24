@@ -12,7 +12,7 @@ The C `librdkafka` client library, which Karafka uses under the hood, uses `2` t
 
 The Kafka cluster size can also affect the number of threads since Karafka maintains connections with multiple brokers in a cluster. Therefore, a larger cluster size may result in more threads. A single consumer group Karafka server process in a Ruby on Rails application on a small cluster will have about `25` to `30` threads.
 
-This may sound like a lot, but for comparison, Puma, a popular Ruby web server in a similar app, will have around `21` to `25` threads. It's important to note that having a higher thread count in Karafka is perfectly normal. Karafka is designed to handle the complexity of multiple brokers and consumer groups in a Kafka cluster, which inherently requires more threads.
+This may sound like a lot, but for comparison, Puma, a popular Ruby web server in a similar app, will have around `21` to `25` threads. Having a higher thread count in Karafka is perfectly normal. Karafka is designed to handle the complexity of multiple brokers and consumer groups in a Kafka cluster, which inherently requires more threads.
 
 Karafka Pro Web-UI gives you enhanced visibility into your Karafka server processes. This includes the ability to inspect the thread count on a per-process basis. This detailed view can provide invaluable insights, helping you understand how your Karafka server is performing and where any potential bottlenecks might occur.
 
@@ -157,7 +157,7 @@ Under normal circumstances, Karafka will use the `concurrency` number of databas
 
 However, the number of potential concurrent database connections might increase when using advanced Karafka APIs, such as the Filtering API, or making alterations to the scheduler and invoking DB requests from it. This is because these APIs operate from the listeners threads. In such advanced scenarios, the maximum number of concurrent DB connections would be the sum of the number of workers (`concurrency`) and the total number of subscription groups.
 
-It's important to note that a situation where all these threads would execute database operations simultaneously is highly unlikely. Therefore, in most use cases, the simplified assumption that only the `concurrency` parameter determines potential DB connections should suffice.
+A situation where all these threads would execute database operations simultaneously is highly unlikely. Therefore, in most use cases, the simplified assumption that only the `concurrency` parameter determines potential DB connections should suffice.
 
 ## Memory Usage
 
@@ -169,7 +169,7 @@ Karafka demonstrates robustness and efficiency in managing memory resources, par
 
 - **Batch Processing and Memory Release**: By default, Karafka retains the memory occupied by messages and their payload until an entire batch is processed. Karafka makes no assumptions about the nature of the processing. While this ensures flexibility in handling complex workflows, it can also increase memory usage during high-throughput operations. For those looking to optimize memory management and release message memory more proactively, Karafka Pro offers a [Cleaner API](Pro-Cleaner-API).
 
-- **Ruby Version Considerations**: It's important to note that external factors such as Ruby versions can affect memory usage. For instance, Ruby `3.3.0` has been observed to have memory leak issues due to bugs introduced in that version.
+- **Ruby Version Considerations**: External factors such as Ruby versions can affect memory usage. For instance, Ruby `3.3.0` has been observed to have memory leak issues due to bugs introduced in that version.
 
 - **Impact of High Throughput**: Karafka's design to handle tens of thousands of messages per second means that any memory leaks in other gems or the application code can be more problematic than in traditional web applications. The high message throughput can quickly escalate minor leaks into significant issues, affecting system stability and performance.
 

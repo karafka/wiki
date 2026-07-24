@@ -18,7 +18,7 @@ Kafka breaks the request-response constraint without requiring you to rewrite yo
 
 The practical consequences are significant:
 
-- **New consumers cost nothing to add.** A new service that needs to react to `order.placed` events simply subscribes to the topic. The publishing side changes nothing. There is no tight coupling between producers and consumers.
+- **New consumers cost nothing to add.** A new service that needs to react to `order.placed` events subscribes to the topic. The publishing side changes nothing. There is no tight coupling between producers and consumers.
 - **Replay is possible.** If you ship a bug in a consumer, fix it, reset the consumer offset, and reprocess from the point of failure. With Sidekiq, those jobs are gone.
 - **Multiple independent consumers read the same data.** Your analytics pipeline, your notification service, and your data warehouse can all read the same `user.signup` topic simultaneously without any of them affecting the others.
 - **Cross-service communication becomes a data contract.** Publishing a well-defined event is a stable interface that other teams can depend on without coordinating deployments.

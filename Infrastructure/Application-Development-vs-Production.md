@@ -197,7 +197,7 @@ To ensure a smooth transition when adjusting the classic protocol assignment str
 
 In Kafka, every message (or record) produced to a topic carries metadata, including a timestamp. This timestamp is set by the producer or the broker when the message gets appended to the log. Consumers then use the timestamp to understand the chronological order of messages.
 
-Under regular operations, this system works seamlessly. However, problems arise when there's a time drift between the Kafka cluster nodes and the consumer. Essentially, if the Kafka broker believes it's 2:00 PM, while the consumer thinks it's 1:50 PM, the messages produced in that 10-minute interval by the broker will appear as if they're coming from the "future" when consumed.
+Under regular operations, this system works seamlessly. However, problems arise when there's a time drift between the Kafka cluster nodes and the consumer. If the Kafka broker believes it's 2:00 PM, while the consumer thinks it's 1:50 PM, the messages produced in that 10-minute interval by the broker will appear as if they're coming from the "future" when consumed.
 
 The time synchronization issue usually boils down to the Network Time Protocol (NTP). NTP is a protocol used to synchronize the clocks of computers to some time reference, which can be an atomic clock, GPS, or another reliable source.
 
@@ -231,11 +231,11 @@ In conclusion, while Kafka is a powerful tool, it's essential to remember the im
 
 ### Impact on Karafka
 
-Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, please note that time-sensitive metrics may not be accurate.
+Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, time-sensitive metrics may not be accurate.
 
 ## Configure your brokers' `offsets.retention.minutes` policy
 
-`offsets.retention.minutes` in Apache Kafka is a configuration setting that determines how long the Kafka broker will retain the offsets of consumer groups. The offset is a crucial piece of information that records the position of a consumer in a topic, essentially marking which messages have been processed.
+`offsets.retention.minutes` in Apache Kafka is a configuration setting that determines how long the Kafka broker will retain the offsets of consumer groups. The offset is a crucial piece of information that records the position of a consumer in a topic, marking which messages have been processed.
 
 When a consumer is not running longer than the `offsets.retention.minutes` value, the following impacts can occur:
 
@@ -247,7 +247,7 @@ When a consumer is not running longer than the `offsets.retention.minutes` value
 
 It's essential to set the `offsets.retention.minutes` value considering your consumer applications' most extended expected downtime to avoid these issues. Setting a longer retention period for offsets can be crucial for systems where consumers might be down for extended periods.
 
-It's important to note that while the `offsets.retention.minutes` setting in Kafka might not seem particularly relevant in a development environment, it becomes crucial in a production setting.
+While the `offsets.retention.minutes` setting in Kafka might not seem particularly relevant in a development environment, it becomes crucial in a production setting.
 
 In development, consumer downtimes are generally short, and losing offsets might not have significant consequences as the data is often test data, and reprocessing might not be a concern. However, in a production environment, consumer downtime can be more impactful if a consumer is down for a time exceeding the `offsets.retention.minutes` value. The loss of offset data can lead to significant issues like message reprocessing or missing out on unprocessed messages. This can affect data integrity and processing efficiency.
 
@@ -265,7 +265,7 @@ In Karafka it has specific implications:
 
 - **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it's generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
 
-In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a robust and reliable streaming application.
+In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a reliable streaming application.
 
 ## `zstd` Support Issues on macOS
 

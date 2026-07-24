@@ -270,7 +270,7 @@ This makes deployments on Linux systems (especially in containers) simpler and m
 
 ## Zero-Downtime Deployment
 
-For those who consider `karafka server` indispensable to their production infrastructure, there's a way to integrate the Karafka Web UI without inducing downtime. Let's dive into the steps to introduce it seamlessly:
+For those who consider `karafka server` indispensable to their production infrastructure, there's a way to integrate the Karafka Web UI without inducing downtime. Let's dive into the steps to introduce it:
 
 1. **Integration**: Begin by installing the Karafka Web UI. Ensure it's appropriately configured in your `karafka.rb` and works for you locally.
 
@@ -353,7 +353,7 @@ Rails.application.routes.draw do
 end
 ```
 
-By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
+By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining security standards.
 
 ## Kafka ACL Requirements
 
@@ -496,7 +496,7 @@ When upgrading Karafka Web UI, particularly to versions with breaking changes, a
 
 Starting from version `0.7.4`, the Karafka Web UI introduces enhanced schema detection capabilities. If an older consumer responsible for materializing the Web UI results encounters an unsupported newer schema, it will detect this incompatibility. Upon detection, the consumer will emit an error and start a backoff procedure, ensuring the system's stability and predictability.
 
-Furthermore, it's worth noting that if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
+Furthermore, if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
 
 Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
