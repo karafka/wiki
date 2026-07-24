@@ -22,17 +22,13 @@ module.exports = {
   parser: 'markdownit',
   function: function rule(params, onError) {
     const lines = params.lines;
-    let inCodeBlock = false;
+    const codeLines = require('./code-lines')(params);
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmed = line.trim();
 
-      if (/^(`{3,}|~{3,})/.test(trimmed)) {
-        inCodeBlock = !inCodeBlock;
-        continue;
-      }
-      if (inCodeBlock) {
+      if (codeLines.has(i + 1)) {
         continue;
       }
       // Headings are anchor targets; pure nav/TOC items mirror them.
