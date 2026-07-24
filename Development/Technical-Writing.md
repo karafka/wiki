@@ -54,7 +54,7 @@ The rule of thumb: auto-substitute a word only when it is a plain synonym that k
 
 ## Terminology
 
-- Use US English (`behavior`, `initialize`, `cancel`), not UK spelling (`behaviour`, `initialise`).
+- Use US English spelling, never UK: `-ise`/`-yse` endings become `-ize`/`-yze` (`initialize`, `organize`, `optimize`, `optimization`, `customize`, `analyze`), `-our` becomes `-or` (`behavior`, `color`), and `-logue` becomes `-log` (`catalog`). Reserve a UK spelling only inside a code identifier or an external name you do not control.
 - In prose, write product and library names in their human form and reserve the code identifier for backticks: "Active Job" (`ActiveJob` in code), "Active Record" (`ActiveRecord` in code), "OAuth", "Web UI", and always lowercase "librdkafka" (even in links and headings).
 - Use one verb for sending a message: **produce** (it matches the `#produce` API). Do **not** use "dispatch" or "publish" for the same action.
 - `message` is the house term for a Kafka record. Use it consistently; do not switch to "record" or "event" for the same thing.
