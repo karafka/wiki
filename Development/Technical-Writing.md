@@ -26,6 +26,7 @@ Treat this as a clarity floor, not a straitjacket. Apply the rules hardest to pr
 - Do **not** use contractions. Write `do not`, not the shortened form.
 - Remove `please`. Documentation gives direct instructions.
 - Avoid marketing and hedge words such as `robust`, `powerful`, `seamless`, `simply`, and `easily`.
+- These vocabulary rules skip **heading** text. Rewriting an existing heading changes its anchor and breaks inbound links, so the linter does not enforce them there. Write headings in full, unhedged forms from the start rather than expanding or trimming a heading later.
 
 The linter rewrites or flags a controlled vocabulary. A representative sample of the safe substitutions:
 

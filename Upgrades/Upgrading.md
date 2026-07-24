@@ -2,7 +2,7 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 !!! tip "Pro & Enterprise Upgrade Support"
 
-    If you are gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you have got a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
+    If you are gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you have a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
 
 ## Pre-Upgrade Considerations
 

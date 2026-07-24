@@ -17,10 +17,11 @@ function maskProtected(line) {
 
 // Build one regex per contraction, tolerant of straight (') and curly (’)
 // apostrophes, with boundaries that ignore possessives/plurals (e.g. "don'ts").
-const checks = (terms.contractions || []).map((c) => ({
-  term: c,
+const checks = Object.entries(terms.contractions || {}).map(([term, fix]) => ({
+  term,
+  fix,
   regex: new RegExp(
-    "(?<![\\w'’])" + c.replace(/'/g, "['’]") + "(?![\\w'’])",
+    "(?<![\\w'’])" + term.replace(/'/g, "['’]") + "(?![\\w'’])",
     'gi'
   )
 }));
@@ -59,7 +60,7 @@ module.exports = {
         while ((match = check.regex.exec(masked)) !== null) {
           onError({
             lineNumber: i + 1,
-            detail: `Avoid contractions - write "${check.term}" out in full (STE).`,
+            detail: `Avoid contractions - write "${check.term}" as "${check.fix}" (STE).`,
             context: line.substr(match.index, match[0].length),
             range: [match.index + 1, match[0].length]
           });

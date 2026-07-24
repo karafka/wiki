@@ -300,7 +300,7 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Potential Regexp Differences**: The regular expressions in Ruby and `librdkafka` in C might not work identically. Always test the matching behaviors before deploying to production.
 
-1. **Runtime Topic Detection Is not Immediate**: When a new topic emerges, its detection is not real-time. It is influenced by the cache TTL, governed by the `topic.metadata.refresh.interval.ms` setting. The default is 5 seconds in development and 5 minutes in production. For most production scenarios, sticking to the 5-minute default is advised as it strikes a good balance between operational responsiveness and system load.
+1. **Runtime Topic Detection Is Not Immediate**: When a new topic emerges, its detection is not real-time. It is influenced by the cache TTL, governed by the `topic.metadata.refresh.interval.ms` setting. The default is 5 seconds in development and 5 minutes in production. For most production scenarios, sticking to the 5-minute default is advised as it strikes a good balance between operational responsiveness and system load.
 
 1. **Internal Regular Expression Requirements of `librdkafka`**: The library requires regular expression strings to start with `^`. Karafka's Routing Patterns adapt Ruby's regular expressions to fit this format internally. Remembering this transformation and thoroughly testing your patterns before deploying is important. You can find the adjusted regular expression in the Web UI under the routing page topic details view if you wish to review the adjusted regular expression.
 
