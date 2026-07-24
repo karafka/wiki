@@ -2,7 +2,7 @@ Periodic Jobs are a feature designed to allow consumers to perform operations at
 
 ## Using Periodic Jobs
 
-To use this functionality, you must enable and configure it within your routing and implement the corresponding `#tick` method in your consumer. Here's how to get started:
+To use this functionality, you must enable and configure it within your routing and implement the corresponding `#tick` method in your consumer. Here is how to get started:
 
 ### Enabling Periodic Jobs in Routing
 
@@ -92,7 +92,7 @@ To enable periodic jobs for a particular topic, specify it in the routing. This 
 
 ### Implementing the `#tick` Method
 
-After enabling periodic jobs in the routing, you must implement a `#tick` method in your consumer. This method is where you define the tasks to be performed at each tick. Here's an example of a consumer with a `#tick` method:
+After enabling periodic jobs in the routing, you must implement a `#tick` method in your consumer. This method is where you define the tasks to be performed at each tick. Here is an example of a consumer with a `#tick` method:
 
 ```ruby
 class Consumer < Karafka::BaseConsumer
@@ -201,7 +201,7 @@ Ticking relates to the scheduling of periodic jobs at regular intervals. The nua
 
 ### Managing Overlap in Periodic and Long-Running Jobs
 
-Karafka doesn't start Periodic Jobs for a given topic partition when a Long-Running Job (LRJ) is active by default. However, this doesn't prevent an LRJ from starting while a periodic job runs, as these are non-blocking and can overlap. While this overlapping can be advantageous for independent tasks, it might cause issues for tasks sharing resources or influencing each other.
+Karafka does not start Periodic Jobs for a given topic partition when a Long-Running Job (LRJ) is active by default. However, this does not prevent an LRJ from starting while a periodic job runs, as these are non-blocking and can overlap. While this overlapping can be advantageous for independent tasks, it might cause issues for tasks sharing resources or influencing each other.
 
 To prevent concurrent executions and potential conflicts, consider using the `#synchronize` method. This feature ensures that only one job instance runs simultaneously, safeguarding against overlapping.
 
@@ -230,15 +230,15 @@ To maintain accurate and independent ticking, irrespective of polling intervals 
 
 - **Independent Subscription Groups**: Use separate subscription groups for different topics or partitions. This isolates the periodic jobs, preventing the processing time of one group from affecting the ticking of another.
 
-- **Connection Multiplexing**: Implement multiple connections to Kafka within the same application. This ensures that lengthy processing in one part of your application doesn't delay the execution of periodic jobs in another.
+- **Connection Multiplexing**: Implement multiple connections to Kafka within the same application. This ensures that lengthy processing in one part of your application does not delay the execution of periodic jobs in another.
 
-- **Long-Running and Non-Blocking Jobs (LRJ/NBJ) Usage**: For scenarios where you are dealing with long-running or non-blocking jobs, it's beneficial to design your tasks so they do not block the main thread. In these cases, the work being processed is non-blocking, meaning that polling and ticking can continue at their configured intervals without being delayed by the processing times of given messages. For topics associated with such jobs, periodic jobs will also become non-blocking and will execute at a consistent and steady frequency. This approach ensures that message processing and periodic tasks can occur independently, maintaining system responsiveness and reliability.
+- **Long-Running and Non-Blocking Jobs (LRJ/NBJ) Usage**: For scenarios where you are dealing with long-running or non-blocking jobs, it is beneficial to design your tasks so they do not block the main thread. In these cases, the work being processed is non-blocking, meaning that polling and ticking can continue at their configured intervals without being delayed by the processing times of given messages. For topics associated with such jobs, periodic jobs will also become non-blocking and will execute at a consistent and steady frequency. This approach ensures that message processing and periodic tasks can occur independently, maintaining system responsiveness and reliability.
 
 ### Persistence of Periodic Jobs During Pauses
 
 By default, Periodic Jobs in Karafka continue to run even when the consumption of a given topic partition is paused. This feature ensures that scheduled tasks maintain their rhythm and execute as configured, regardless of the consumer's state.
 
-Message consumption halts temporarily when a topic partition is paused, typically to manage system load or during maintenance. However, the periodic jobs associated with that partition aren't tied directly to the message flow. They operate on a time-based schedule, independent of whether messages are being consumed. As a result, even in the paused state, periodic jobs continue to tick and execute their tasks.
+Message consumption halts temporarily when a topic partition is paused, typically to manage system load or during maintenance. However, the periodic jobs associated with that partition are not tied directly to the message flow. They operate on a time-based schedule, independent of whether messages are being consumed. As a result, even in the paused state, periodic jobs continue to tick and execute their tasks.
 
 This behavior is particularly beneficial for maintaining consistent operations like monitoring, reporting, or routine maintenance that need to continue irrespective of the consumer's state. It provides a layer of reliability and consistency, ensuring that vital tasks are not missed and that the system remains up-to-date and responsive.
 
@@ -287,9 +287,9 @@ end
 
 ### Behaviour on Errors
 
-In Karafka, handling errors occurring in periodic jobs within the `#tick` method is distinct from typical error-handling mechanisms like dead letter queues (DLQ) or retries applicable to the `#consume` method. The primary rationale for this approach is that the `#tick` method's functionality is not contingent on processing more data. Instead, it's designed to execute operations at predetermined intervals, irrespective of data presence.
+In Karafka, handling errors occurring in periodic jobs within the `#tick` method is distinct from typical error-handling mechanisms like dead letter queues (DLQ) or retries applicable to the `#consume` method. The primary rationale for this approach is that the `#tick` method's functionality is not contingent on processing more data. Instead, it is designed to execute operations at predetermined intervals, irrespective of data presence.
 
-When an error occurs within the `#tick` method, it doesn't trigger the conventional DLQ or retry mechanisms. This is because periodic jobs are inherently different from standard message consumption; they are not associated with a batch of messages that can be retried. Instead, they are period-triggered actions meant to occur regularly. If an error happens during the execution of a `#tick` method, it doesn't prevent the method from being invoked again at the next scheduled interval. The system is designed to continue with the subsequent ticks, ensuring that periodic tasks maintain their rhythm.
+When an error occurs within the `#tick` method, it does not trigger the conventional DLQ or retry mechanisms. This is because periodic jobs are inherently different from standard message consumption; they are not associated with a batch of messages that can be retried. Instead, they are period-triggered actions meant to occur regularly. If an error happens during the execution of a `#tick` method, it does not prevent the method from being invoked again at the next scheduled interval. The system is designed to continue with the subsequent ticks, ensuring that periodic tasks maintain their rhythm.
 
 Despite not being subject to DLQ or retries, monitor and manage errors effectively. In Karafka, errors within the `#tick` method are published to the `error.occurred` notification channel. This allows for centralized monitoring and handling of errors. Each error notification event carries a `:type` set to `consumer.tick.error`, distinguishing it clearly as an error from the periodic job's tick operation. This explicit categorization aids in pinpointing the source of errors and facilitates more efficient debugging and error-handling strategies.
 
@@ -344,7 +344,7 @@ Karafka's relationship between polling and ticking is vital for application desi
 
 Periodic Jobs in Karafka offer a versatile way to perform scheduled tasks at regular intervals, independent of message flow. This feature particularly benefits applications requiring consistent actions, like routine maintenance, data reporting, or heartbeat checks, even during low or no data activity periods.
 
-Periodic Jobs in Karafka provide a powerful tool for ensuring your application remains active and responsive, performing necessary tasks regularly. Whether you're maintaining system readiness, generating reports, or monitoring system status, periodic jobs can help keep your system efficient and reliable.
+Periodic Jobs in Karafka provide a powerful tool for ensuring your application remains active and responsive, performing necessary tasks regularly. Whether you are maintaining system readiness, generating reports, or monitoring system status, periodic jobs can help keep your system efficient and reliable.
 
 ## See Also
 

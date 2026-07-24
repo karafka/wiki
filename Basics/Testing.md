@@ -281,7 +281,7 @@ end
 
 ### Testing Consumer Groups and Topics Structure
 
-When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the Karafka:```Karafka::App.routes``` array and check everything you need. Here's an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
+When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the Karafka:```Karafka::App.routes``` array and check everything you need. Here is an example of a RSpec spec that ensures a custom ```XmlDeserializer``` is being used to a ```xml_data``` topic from the ```batched_group``` consumer group:
 
 ```ruby
 RSpec.describe Karafka::App.routes do
@@ -475,7 +475,7 @@ end
 
 !!! note "Minitest Transaction Testing Mirrors RSpec"
 
-    If you're seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
+    If you are seeking guidance on testing transactions with Minitest, consult the RSpec transactions testing documentation, as the testing methods are similar for both.
 
 ## Limitations
 

@@ -4,7 +4,7 @@ Karafka Enterprise includes **4 hours per year** of dedicated architecture consu
 
 ## Why Architecture Consultation Matters
 
-Kafka-based systems present unique challenges that aren't immediately obvious from documentation alone. The difference between a well-architected Kafka implementation and a problematic one often comes down to subtle configuration choices, partition strategies, and processing patterns that only become apparent under production load.
+Kafka-based systems present unique challenges that are not immediately obvious from documentation alone. The difference between a well-architected Kafka implementation and a problematic one often comes down to subtle configuration choices, partition strategies, and processing patterns that only become apparent under production load.
 
 Common issues that seem straightforward but have significant implications include:
 
@@ -66,9 +66,9 @@ Connecting Karafka with your existing stack:
 
 Production systems often exhibit unexpected behavior:
 
-- Latency spikes during batch processing that don't correlate with load
+- Latency spikes during batch processing that do not correlate with load
 - Consumer lag accumulating despite adequate resources
-- Memory growth patterns that don't match expected consumption
+- Memory growth patterns that do not match expected consumption
 - Throughput plateaus that resist straightforward scaling attempts
 - Network utilization suggesting inefficient batching or compression
 

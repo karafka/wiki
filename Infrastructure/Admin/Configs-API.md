@@ -106,7 +106,7 @@ These methods provide an interface for detailed management of configurations in 
 
 ## Usage
 
-Here's how you might typically use the API to manage Kafka configurations:
+Here is how you might typically use the API to manage Kafka configurations:
 
 ```ruby
 # Describe topic configurations

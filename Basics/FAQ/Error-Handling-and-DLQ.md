@@ -49,7 +49,7 @@ Without the back-off mechanism, even if retries are not requested, Karafka would
 
 When a message is dispatched to a [dead letter queue](Consumer-Groups-Dead-Letter-Queue) (DLQ) topic that does not exist in Apache Kafka, the behavior largely depends on the `auto.create.topics.enable` Kafka configuration setting and the permissions of the Kafka broker. If `auto.create.topics.enable` is `true`, Kafka will automatically create the non-existent DLQ topic with one partition using the broker's default configurations, and the message will then be stored in the new topic.
 
-On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client doesn't have permission to create topics or `unknown_topic_or_part` if the topic doesn't exist and auto-creation is disabled.
+On the other hand, if `auto.create.topics.enable` is set to `false`, Kafka will not auto-create the topic, and instead, an error will be raised when trying to produce to the non-existent DLQ topic. This error could be a topic authorization exception if the client does not have permission to create topics or `unknown_topic_or_part` if the topic does not exist and auto-creation is disabled.
 
 !!! note "Production Often Disables Topic Auto-Creation"
 
@@ -96,7 +96,7 @@ end
 
 If you make Karafka not retry, the system will not attempt retries on errors but will continue processing forward. You can achieve this in two methods:
 
-1. **Manual Exception Handling**: This involves catching all exceptions arising from your code and choosing to ignore them. This means the system doesn't wait or retry; it simply moves to the next task or message.
+1. **Manual Exception Handling**: This involves catching all exceptions arising from your code and choosing to ignore them. This means the system does not wait or retry; it simply moves to the next task or message.
 
     ```ruby
     def consume
@@ -144,11 +144,11 @@ If you make Karafka not retry, the system will not attempt retries on errors but
     end
     ```
 
-However, be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+However, be aware of the potential risks associated with these approaches. In the first method, there is a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
 ## What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?
 
-In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be used. This feature allows a message to be retried several times before it's moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Consumer-Groups-Dead-Letter-Queue).
+In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be used. This feature allows a message to be retried several times before it is moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Consumer-Groups-Dead-Letter-Queue).
 
 ## Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?
 
@@ -400,7 +400,7 @@ For more details on custom deserializers, see the [Deserialization](Consumer-Gro
 
 ## How should I handle missing or invalid records during message processing?
 
-When processing messages that reference external records (database rows, API resources, etc.), you may encounter situations where the referenced record doesn't exist or is in an unexpected state. The correct handling depends on whether the missing record is expected or indicates a problem.
+When processing messages that reference external records (database rows, API resources, etc.), you may encounter situations where the referenced record does not exist or is in an unexpected state. The correct handling depends on whether the missing record is expected or indicates a problem.
 
 **Pattern 1: Return early when records are optional or legitimately missing**
 

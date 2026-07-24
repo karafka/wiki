@@ -13,7 +13,7 @@ Variants are created using the `#with` and `#variant` methods. It is critical in
 
 Attributes placed inside the `topic_config` hash during variant creation are referred to as `topic_config` scoped. Conversely, settings like `max_wait_timeout`, which reside outside the `topic_config hash`, are considered root-scoped.
 
-Here's a simple example to demonstrate how to define and use variants with WaterDrop:
+Here is a simple example to demonstrate how to define and use variants with WaterDrop:
 
 ```ruby
 # Initialize the main producer with common settings

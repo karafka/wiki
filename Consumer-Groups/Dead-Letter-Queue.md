@@ -48,7 +48,7 @@ Once enabled, after the defined number of retries, problematic messages will be 
 
 !!! tip "Advanced DLQ Management in Karafka Pro"
 
-    If you're looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
+    If you are looking for advanced error handling and message recovery capabilities, Karafka Pro's [Enhanced DLQ](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) offers complex, context-aware strategies and additional DLQ-related features for superior message integrity and processing precision.
 
 !!! warning "Default Behavior with `manual_offset_management`"
 
@@ -95,14 +95,14 @@ The table below contains options the `#dead_letter_queue` routing method accepts
     <tr>
       <td><code>mark_after_dispatch</code></td>
       <td>Boolean</td>
-      <td>Controls whether the message offset is marked as consumed after it's moved to the DLQ. When <code>true</code> (default for non-MOM), the offset is committed, ensuring smooth continuation of message processing. By default, it is set to <code>false</code> when <code>manual_offset_management(true)</code> is used.</td>
+      <td>Controls whether the message offset is marked as consumed after it is moved to the DLQ. When <code>true</code> (default for non-MOM), the offset is committed, ensuring smooth continuation of message processing. By default, it is set to <code>false</code> when <code>manual_offset_management(true)</code> is used.</td>
     </tr>
   </tbody>
 </table>
 
 ## Independent Error Counting
 
-In standard operations, Karafka, while processing messages, does not make assumptions about the processing strategy employed by the user. Whether it’s individual message processing or batch operations, Karafka remains agnostic. This neutrality in the processing strategy becomes particularly relevant during the DLQ recovery phases.
+In standard operations, Karafka, while processing messages, does not make assumptions about the processing strategy employed by the user. Whether it is individual message processing or batch operations, Karafka remains agnostic. This neutrality in the processing strategy becomes particularly relevant during the DLQ recovery phases.
 
 Under normal circumstances, Karafka treats a batch of messages as a collective unit during DLQ recovery. For example, consider a batch of messages labeled `0` through `9`, where message `4` is problematic. Messages `0` to `3` are processed successfully, but message `4` causes a crash. Karafka then enters the DLQ flow, attempting to reprocess message `4` multiple times before eventually moving it to the DLQ and proceeding to message `5` after a brief backoff period.
 This approach is based on the presumption that the entire batch might be problematic, possibly due to issues like batch upserts. Hence, if a subsequent message in the same batch (say, message `7`) fails after message `4` has recovered, Karafka will move message `7` to the DLQ without resetting the counter and will restart processing from message `8`.
@@ -338,11 +338,11 @@ end
 
     When configuring the Dead Letter Queue (DLQ) in Karafka with asynchronous dispatch (`dispatch_method: :produce_async`), messages are immediately moved to a background queue and considered dispatched as soon as the action is triggered. This can create a potential risk where the application assumes a message has been delivered to the DLQ when, in reality, it may still be pending dispatch or could fail. In this case:
 
-    - **Edge Case:** If there's an error in the background dispatch (e.g., network failure or broker downtime), the application won't be aware immediately, and retry mechanisms might not handle the failed message correctly.
+    - **Edge Case:** If there is an error in the background dispatch (e.g., network failure or broker downtime), the application will not be aware immediately, and retry mechanisms might not handle the failed message correctly.
 
     - **Risk:** This can lead to undetected message loss or delayed delivery to the DLQ, causing inconsistency in how failures are handled.
 
-    For critical systems where message integrity is essential, it's recommended to use synchronous dispatch (`dispatch_method: :produce_sync`), ensuring the DLQ message is successfully acknowledged by Kafka before continuing.
+    For critical systems where message integrity is essential, it is recommended to use synchronous dispatch (`dispatch_method: :produce_sync`), ensuring the DLQ message is successfully acknowledged by Kafka before continuing.
 
 ## DLQ Topic Configuration Management
 
@@ -350,7 +350,7 @@ The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. M
 
 To manage the configuration of the DLQ topic, you need to define a separate route for it, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
-Here's an example of how to set up a DLQ topic with specific configurations:
+Here is an example of how to set up a DLQ topic with specific configurations:
 
 ```ruby
 class KarafkaApp < Karafka::App

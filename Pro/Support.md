@@ -38,7 +38,7 @@ Upgrading Karafka can be a critical task for maintaining the health and performa
 
 ## Prioritized Bug Fixes
 
-We recognize the significance of prompt and effective bug resolution for your ongoing projects and application stability. Hence, with the Karafka Pro version, we assure a superior level of attention to any bugs or issues you might encounter during your application development. Here's how we do it:
+We recognize the significance of prompt and effective bug resolution for your ongoing projects and application stability. Hence, with the Karafka Pro version, we assure a superior level of attention to any bugs or issues you might encounter during your application development. Here is how we do it:
 
 1. **Priority in the Queue**: Karafka Pro users' bug reports get precedence over standard reports. Any reported bugs are placed at the top of the triage process, which allows us to start the debugging and resolution process sooner. This priority queue ensures that we address your issues quickly and keep your projects moving.
 

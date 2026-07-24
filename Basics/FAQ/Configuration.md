@@ -333,7 +333,7 @@ This depends on many factors:
 - are your jobs long-running?
 - are you ok with intermediate rebalances?
 
-The general rule is that if you want to ensure all of your current work finishes before you stop Karafka or that there won't be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It won't accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
+The general rule is that if you want to ensure all of your current work finishes before you stop Karafka or that there will not be any short-lived rebalances, it is recommended to use `TSTP` and wait. When Karafka receives `TSTP` signal, it moves into a `quiet` mode. It will not accept any new work, but **all** the currently running and locally enqueued jobs will be finished. It will also **not** close any connections to Kafka, which means that rebalance will not be triggered.
 
 If you want to ensure that the shutdown always finishes in a given time, you should set the `shutdown_timeout` accordingly and use `TERM`, keeping in mind it may cause a forceful shutdown which kills the currently running jobs.
 
@@ -404,7 +404,7 @@ Karafka and Karafka Pro do not follow a fixed official release schedule. Instead
 
 - New features are released as soon as they are ready and thoroughly documented.
 
-- Bug fixes that don't involve API changes are released immediately.
+- Bug fixes that do not involve API changes are released immediately.
 
 We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. Most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
 
@@ -418,7 +418,7 @@ Adding the `waterdrop` gem to the Gemfile is unnecessary since `karafka` already
 
 ## Does Karafka store the Kafka server address anywhere, and are any extra steps required to make it work after changing the server IP/hostname?
 
-Karafka does not persistently store the Kafka server address or cache any information about the cluster's IP addresses or hostnames. The issue you're experiencing is likely due to your cluster setup, as Karafka performs discovery based on the initial host address provided in the `config.kafka` setup. Upon startup, Karafka uses this initial address to discover the rest of the cluster. Ensure your configurations are correctly updated across your Docker setup, and restart the process to clear any temporary caches. Karafka has no intrinsic knowledge of AWS hosts or any hardcoded cluster information; it relies entirely on the configuration provided at startup.
+Karafka does not persistently store the Kafka server address or cache any information about the cluster's IP addresses or hostnames. The issue you are experiencing is likely due to your cluster setup, as Karafka performs discovery based on the initial host address provided in the `config.kafka` setup. Upon startup, Karafka uses this initial address to discover the rest of the cluster. Ensure your configurations are correctly updated across your Docker setup, and restart the process to clear any temporary caches. Karafka has no intrinsic knowledge of AWS hosts or any hardcoded cluster information; it relies entirely on the configuration provided at startup.
 
 ## Is there a good way to quiet down `bundle exec karafka server` extensive logging in development?
 
@@ -436,7 +436,7 @@ Karafka.monitor.subscribe(
 
 ## Why am I getting the `all topic names within a single consumer group must be unique` error when changing the location of the boot file using `KARAFKA_BOOT_FILE`?
 
-You're seeing this error most likely because you have moved the `karafka.rb` file to a location that is automatically loaded, meaning that it is loaded and used by the Karafka framework and also by the framework of your choice. In the case of Ruby on Rails, it may be so if you've placed your `karafka.rb`, for example, inside the `config/initializers` directory.
+You are seeing this error most likely because you have moved the `karafka.rb` file to a location that is automatically loaded, meaning that it is loaded and used by the Karafka framework and also by the framework of your choice. In the case of Ruby on Rails, it may be so if you have placed your `karafka.rb`, for example, inside the `config/initializers` directory.
 
 ## What does the `strict_topics_namespacing` configuration setting control?
 
@@ -468,7 +468,7 @@ This design decision offers several important benefits:
 
 1. **Configuration integration**: Class-based routing allows Karafka to apply configuration and middleware to the class before instantiation.
 
-This pattern follows the principle of Inversion of Control (IoC), where the framework controls object creation rather than the application code. It's similar to how other Ruby frameworks (like Rails) reference controllers by class in routes, not by instances.
+This pattern follows the principle of Inversion of Control (IoC), where the framework controls object creation rather than the application code. It is similar to how other Ruby frameworks (like Rails) reference controllers by class in routes, not by instances.
 
 ## Why does Karafka define routing separate from consumer classes, unlike Sidekiq or Racecar?
 

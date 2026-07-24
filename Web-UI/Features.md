@@ -18,7 +18,7 @@ Below you can find a description of the most important features you can use.
 
     [Karafka Pro](https://karafka.io/#become-pro) adds more graphs to the dashboard.
 
-The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
+The dashboard provides an all-encompassing insight into your Karafka operations. It is an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
 
 <img src="https://karafka.io/assets/misc/printscreens/web-ui/dashboard.png" alt="karafka web dashboard view" />
 

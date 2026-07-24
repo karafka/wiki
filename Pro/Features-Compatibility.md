@@ -59,7 +59,7 @@ end
 
 ## Virtual Partitions + Transactions
 
-Due to the Virtual Partitions' nature, message production transactions work entirely as expected. However, transactions involving offset storage operate in a simulated mode. This means that even if `#mark_as_consumed` is used within a transaction, it doesn't become part of the transaction itself. Instead, it's committed right after the transaction successfully ends. This creates an edge case: there could be inconsistencies if a consumer is killed or loses its assignment right after the Kafka transaction completes but before the consumer offset is sent to Kafka.
+Due to the Virtual Partitions' nature, message production transactions work entirely as expected. However, transactions involving offset storage operate in a simulated mode. This means that even if `#mark_as_consumed` is used within a transaction, it does not become part of the transaction itself. Instead, it is committed right after the transaction successfully ends. This creates an edge case: there could be inconsistencies if a consumer is killed or loses its assignment right after the Kafka transaction completes but before the consumer offset is sent to Kafka.
 
 This behavior aligns with the principles of the underlying Virtual Offset Management system. This system is crafted to handle offsets in a way distinct from Kafka's native offset handling due to the underlying parallelization process. As a result, certain operations, like `#mark_as_consumed`, are executed outside the main transaction scope, which is a direct consequence of the design and functionality of the Virtual Offset Management.
 
@@ -87,7 +87,7 @@ In Karafka's Virtual Partitions, the offset_metadata_strategy setting, configura
 
 ## Routing Patterns + Dead Letter Queue
 
-While Karafka's Routing Patterns feature integrates with the Dead Letter Queue (DLQ) mechanism, developers are advised to exercise caution. Specifically, there's a potential issue where an imprecisely crafted regular expression could inadvertently match both primary and DLQ topics. This misconfiguration might result in messages from the DLQ being consumed in an unexpected loop, especially if the DLQ topic isn't explicitly targeted for consumption.
+While Karafka's Routing Patterns feature integrates with the Dead Letter Queue (DLQ) mechanism, developers are advised to exercise caution. Specifically, there is a potential issue where an imprecisely crafted regular expression could inadvertently match both primary and DLQ topics. This misconfiguration might result in messages from the DLQ being consumed in an unexpected loop, especially if the DLQ topic is not explicitly targeted for consumption.
 
 You can read more about this issue [here](Pro-Routing-Patterns#dlq-accidental-auto-consumption).
 

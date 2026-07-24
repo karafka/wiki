@@ -145,7 +145,7 @@ end
 
 ### Performance Considerations
 
-Understanding the performance implications of idle disconnection will help you make informed decisions about timeout configuration for your specific use case. While this feature provides significant resource and cost benefits, it's important to consider the potential impact on message delivery patterns and connection overhead in your application architecture.
+Understanding the performance implications of idle disconnection will help you make informed decisions about timeout configuration for your specific use case. While this feature provides significant resource and cost benefits, it is important to consider the potential impact on message delivery patterns and connection overhead in your application architecture.
 
 #### Benefits
 

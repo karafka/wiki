@@ -66,7 +66,7 @@ Remember, a correct configuration is crucial for the efficient and error-free op
 
 If you want to configure the primary `Karafka.producer` to write messages to a cluster different than the default one, refer to [this](WaterDrop-Reconfiguration) documentation section.
 
-To produce data across multiple clusters, set up individual producers for each targeted cluster. However, it's essential to manually integrate instrumentation and error tracking, as these producers won't be monitored by the default Karafka Web UI.
+To produce data across multiple clusters, set up individual producers for each targeted cluster. However, it is essential to manually integrate instrumentation and error tracking, as these producers will not be monitored by the default Karafka Web UI.
 
 ```ruby
 # Just create producers targeting other clusters
@@ -103,7 +103,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 - **Web UI Assumption**: Assuming that the Web UI processes data on the cluster it shows. Remember, data processing is done on the primary cluster unless overridden.
 
-- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Ensure there's a clear need for this before diving in.
+- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Ensure there is a clear need for this before diving in.
 
 - **Monitoring Challenges**: Monitoring and alerting can become challenging with multiple clusters. Ensure you have a solid monitoring strategy.
 
@@ -121,7 +121,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 ## Conclusion
 
-While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're using the multi-cluster configuration for valid business reasons.
+While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it is essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you are using the multi-cluster configuration for valid business reasons.
 
 ## See Also
 

@@ -60,11 +60,11 @@ end
 
 !!! tip "Migration from Existing Consumer Groups"
 
-    Parallel Segments are **not** plug-and-play when migrating from an existing consumer group to a parallel segments setup. If you're converting an existing consumer group to use parallel segments, you must use the CLI `distribute` command to ensure that the parallel segments start processing from the correct offsets for each topic and partition.
+    Parallel Segments are **not** plug-and-play when migrating from an existing consumer group to a parallel segments setup. If you are converting an existing consumer group to use parallel segments, you must use the CLI `distribute` command to ensure that the parallel segments start processing from the correct offsets for each topic and partition.
 
     Without running the distribution command, the parallel segment consumer groups will start from the beginning of each topic (or from the latest offset, depending on your configuration), potentially causing message reprocessing or missing messages.
 
-    This CLI step is only required for migrations. If you're creating a new consumer group with parallel segments enabled from the start, no additional setup is needed.
+    This CLI step is only required for migrations. If you are creating a new consumer group with parallel segments enabled from the start, no additional setup is needed.
 
 ## Configuration Options
 
@@ -200,7 +200,7 @@ The effectiveness of Parallel Segments depends heavily on your partitioning stra
 
 ### Performance Considerations
 
-Parallel Segments work the best, when messages can be filtered before deserialization, which minimizes CPU overhead during the filtering process. To maximize this benefit, your partitioner should ideally use data that doesn't require payload deserialization.
+Parallel Segments work the best, when messages can be filtered before deserialization, which minimizes CPU overhead during the filtering process. To maximize this benefit, your partitioner should ideally use data that does not require payload deserialization.
 
 #### Using Message Headers (Recommended)
 
@@ -222,7 +222,7 @@ end
 
 #### Using Message Key
 
-The message key is another efficient option as it's readily available:
+The message key is another efficient option as it is readily available:
 
 ```ruby
 consumer_group :order_processing do
@@ -297,7 +297,7 @@ This means that despite configuring 5 segments, the data will only use 2 segment
 
 #### Custom Reducer for Better Distribution
 
-If the default reducer doesn't provide good distribution, implement a custom one:
+If the default reducer does not provide good distribution, implement a custom one:
 
 ```ruby
 consumer_group :analytics do
@@ -480,7 +480,7 @@ karafka parallel_segments distribute --force
 #### How Distribution Works
 
 1. **Offset Collection**: Collects committed offsets from the original consumer group
-2. **Validation**: Checks that parallel segment groups don't already have offsets (unless `--force` is used)
+2. **Validation**: Checks that parallel segment groups do not already have offsets (unless `--force` is used)
 3. **Distribution**: Applies the original consumer group's offsets to all parallel segment groups
 4. **Preservation**: Keeps the original consumer group intact as a backup
 

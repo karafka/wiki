@@ -40,7 +40,7 @@ Once the listener subscribes, it will actively report any abnormalities to the s
 
 ### Configuration Parameters
 
-The Enhanced Liveness Listener accepts several parameters to customize its behavior. Here’s a table outlining the arguments, their expected types, default values, and descriptions:
+The Enhanced Liveness Listener accepts several parameters to customize its behavior. Here is a table outlining the arguments, their expected types, default values, and descriptions:
 
 <table>
   <thead>
@@ -156,7 +156,7 @@ end
 
 Direct Assignments allow you to specify which nodes should handle which topics and partitions.
 
-Configuring Direct Assignments involves specifying the partitions and the nodes that should handle them within the Karafka routing setup. Here's how you can define direct assignments for your topics:
+Configuring Direct Assignments involves specifying the partitions and the nodes that should handle them within the Karafka routing setup. Here is how you can define direct assignments for your topics:
 
 ```ruby
 class KarafkaApp < Karafka::App

@@ -174,7 +174,7 @@ The statistics include all of the metrics from `librdkafka` (complete list [here
 
 !!! note "Metrics Mix Milliseconds and Microseconds"
 
-    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
+    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It is imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you are referencing the correct unit for each metric to maintain accuracy in your data analysis.
 
 ### Statistics Decorator
 
@@ -313,7 +313,7 @@ end
 
 ## Labeling API
 
-Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
+Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you will need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
 
 ## Datadog and StatsD Integration
 

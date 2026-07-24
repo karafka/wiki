@@ -18,7 +18,7 @@ This detailed breakdown helps quickly understand how each topic is configured, m
 
 ## Replication
 
-The Replication tab provides insights into the replication dynamics of each topic. It's crucial for ensuring data durability and high availability in Kafka. The attributes included in this tab are:
+The Replication tab provides insights into the replication dynamics of each topic. It is crucial for ensuring data durability and high availability in Kafka. The attributes included in this tab are:
 
 - **Partition**: The specific partition of a topic.
 - **Leader**: The leader's broker ID for each partition.

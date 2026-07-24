@@ -30,7 +30,7 @@ We acknowledge that understanding your specific applications and their configura
 
 !!! info "No ETAs or Timelines in OSS"
 
-    Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there won't be one. Do not ask for timelines unless I've already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
+    Unless a specific timeline or ETA is explicitly provided for a bug fix or feature, there will not be one. Do not ask for timelines unless I have already mentioned them. As an open-source project, Karafka operates without contractual commitments - development happens when possible, balanced with other responsibilities.
 
     If a bug affects your business operations and you need prioritized support, consider supporting Karafka by upgrading to the Pro offering. This allows me to prioritize issues differently and consider your business needs.
 
@@ -135,7 +135,7 @@ Include as many of the following details as possible to help me understand and a
 
 ## Karafka API End-User API Definition
 
-The Karafka framework offers a range of functionalities to streamline building event-driven applications. Understanding what constitutes a Karafka API is essential for developers using its capabilities. While Karafka provides various public methods and interfaces, it's crucial to discern which ones are intended for direct use by end users.
+The Karafka framework offers a range of functionalities to streamline building event-driven applications. Understanding what constitutes a Karafka API is essential for developers using its capabilities. While Karafka provides various public methods and interfaces, it is crucial to discern which ones are intended for direct use by end users.
 
 ### Public Methods and Internal Usage
 

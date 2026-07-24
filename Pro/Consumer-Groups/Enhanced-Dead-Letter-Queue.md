@@ -151,7 +151,7 @@ It accepts two arguments:
 - `dlq_message` - a hash with all the details of the DLQ message that will be dispatched
 - `skippable_message` - Karafka message that we skip via the DLQ feature
 
-Let's say you want to add some headers and alter the payload. You can do it in the following way:
+Suppose you want to add some headers and alter the payload. You can do it in the following way:
 
 ```ruby
 class MyConsumer
@@ -209,7 +209,7 @@ end
 
 Karafka, by default, uses transactions to atomically dispatch messages to a Dead-Letter Queue (DLQ) and mark them as consumed when a transactional producer is available. However, you might prefer to handle these actions independently, especially when minimizing transactional overhead is a priority.
 
-To turn off transactional behavior for DLQ dispatches, set the transactional option to false in the DLQ routing configuration. Here's how to apply this setting:
+To turn off transactional behavior for DLQ dispatches, set the transactional option to false in the DLQ routing configuration. Here is how to apply this setting:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -280,7 +280,7 @@ When customizing DLQ messages using the `#enhance_dlq_message` method, you may w
 
 You can access the error information through the `#errors_tracker` method within your `#enhance_dlq_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
 
-Here's an example of how to add error information to your DLQ messages:
+Here is an example of how to add error information to your DLQ messages:
 
 ```ruby
 class MyConsumer

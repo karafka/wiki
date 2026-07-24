@@ -104,7 +104,7 @@ end
 
 To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish three key things:
 
-1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it's deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
+1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it is deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
 
 2. **Context-Aware Wrapper**: The wrapper used to sanitize the data should be able to understand its operating context. It should be aware of whether it is operating in a Web server context (in which case it should sanitize the data) or in a Karafka server context (in which case it should leave the data untouched). This ensures that sensitive information is only filtered when data is being presented on the Web UI and not during backend processing or other non-UI-related tasks.
 
@@ -112,7 +112,7 @@ To filter or sanitize part of the data to be presented in the Karafka Web-UI, it
 
 Ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
 
-Remember that the sanitization process should be implemented carefully to ensure that it doesn't interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
+Remember that the sanitization process should be implemented carefully to ensure that it does not interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
 
 Below you can find an example implementation of a wrapper that removes the replaces the `:address` key from the deserializers hash with a `[FILTERED]` string.
 

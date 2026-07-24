@@ -386,7 +386,7 @@ While `#close!` can be helpful when you want to finalize your application quickl
 
 ### Connection Pool Shutdown
 
-If you're using [connection pools](WaterDrop-Connection-Pool) in your application, you need to explicitly close them just like producers. Connection pools manage their own resources independently and must be shut down separately to prevent resource leaks:
+If you are using [connection pools](WaterDrop-Connection-Pool) in your application, you need to explicitly close them just like producers. Connection pools manage their own resources independently and must be shut down separately to prevent resource leaks:
 
 ```ruby
 # Close your connection pool instance
@@ -403,7 +403,7 @@ You can monitor connection pool shutdown operations using WaterDrop's connection
 
 ### Closing Producer Used in Karafka
 
-When you shut down Karafka consumer, the `Karafka.producer` WaterDrop instance automatically closes. There's no need to close it yourself. If you're using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
+When you shut down Karafka consumer, the `Karafka.producer` WaterDrop instance automatically closes. There is no need to close it yourself. If you are using multiple producers or a more advanced setup, you can use the `app.stopped` event during shutdown to handle them.
 
 ### Closing Producer Used in Puma (Single Mode)
 
@@ -500,7 +500,7 @@ end
 
     Note that this should be used only for custom producers and not for `Karafka.producer` that is closed automatically.
 
-When using custom WaterDrop producers within a Karafka application, it's important to properly close them before the application shuts down. It's recommended to use the `app.stopped` event as it signifies that Karafka has completed all processing, flushed all buffers, and is ready for final cleanup operations. At this point, no more messages will be processed, making it the ideal time to safely close your custom producers. Here's how you can do this:
+When using custom WaterDrop producers within a Karafka application, it is important to properly close them before the application shuts down. It is recommended to use the `app.stopped` event as it signifies that Karafka has completed all processing, flushed all buffers, and is ready for final cleanup operations. At this point, no more messages will be processed, making it the ideal time to safely close your custom producers. Here is how you can do this:
 
 ```ruby
 # Create producer in Rails initializer or other place suitable within your app
@@ -514,9 +514,9 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating WaterDrop producers into your Ruby applications, it's essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
+While integrating WaterDrop producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure graceful shutdowns and resource cleanup tailored to the application's lifecycle.
 
-However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here's a basic example of using at_exit with a WaterDrop producer:
+However, there might be scenarios where such specific hooks are not available or suitable. In these cases, Ruby's `at_exit` hook can be employed as a universal fallback to close the producer before the Ruby process exits. Here is a basic example of using at_exit with a WaterDrop producer:
 
 ```ruby
 at_exit do
@@ -660,7 +660,7 @@ Managing multiple topic delivery requirements in WaterDrop often requires a comb
 
 ## Forking and Potential Memory Problems
 
-If you work with forked processes, make sure you **don't** use the producer before the fork. You can easily configure the producer and then fork and use it.
+If you work with forked processes, make sure you **do not** use the producer before the fork. You can easily configure the producer and then fork and use it.
 
 !!! info "Closed Producers Do Not Resurrect After Fork"
 
@@ -690,7 +690,7 @@ If you work with forked processes, make sure you **don't** use the producer befo
 
     Only producers that were **never used and never closed** before forking can be safely used in the child process without reinitialization, as WaterDrop detects their unconnected state and establishes a fresh connection in the forked process.
 
-To tackle this [obstacle](https://github.com/appsignal/rdkafka-ruby/issues/15) related to rdkafka, WaterDrop adds finalizer to each of the producers to close the rdkafka client before the Ruby process is shutdown. Due to the [nature of the finalizers](https://www.mikeperham.com/2010/02/24/the-trouble-with-ruby-finalizers/), this implementation prevents producers from being GCed (except upon VM shutdown) and can cause memory leaks if you don't use persistent/long-lived producers in a long-running process or if you don't use the `#close` method of a producer when it is no longer needed. Creating a producer instance for each message is anyhow a rather bad idea, so we recommend not to.
+To tackle this [obstacle](https://github.com/appsignal/rdkafka-ruby/issues/15) related to rdkafka, WaterDrop adds finalizer to each of the producers to close the rdkafka client before the Ruby process is shutdown. Due to the [nature of the finalizers](https://www.mikeperham.com/2010/02/24/the-trouble-with-ruby-finalizers/), this implementation prevents producers from being GCed (except upon VM shutdown) and can cause memory leaks if you do not use persistent/long-lived producers in a long-running process or if you do not use the `#close` method of a producer when it is no longer needed. Creating a producer instance for each message is anyhow a rather bad idea, so we recommend not to.
 
 ## See Also
 

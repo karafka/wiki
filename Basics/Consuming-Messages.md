@@ -214,7 +214,7 @@ In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Gro
 
 !!! note "`#revoked?` Works Without Marking Messages"
 
-    The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
+    The `#revoked?` method detects partition revocation immediately. You do not need to mark messages as consumed for it to detect revocation.
 
 !!! note "`#revoked?` Changes Independently With Long-Running Jobs"
 
@@ -233,7 +233,7 @@ Karafka recreates the consumer instance only when a partition is lost and reassi
 
 !!! note "Use Manual Offsets When Buffering In Memory"
 
-    When buffering messages in memory, use manual offset management. Without it, you'll lose buffered data, if the process crashes before flushing.
+    When buffering messages in memory, use manual offset management. Without it, you will lose buffered data, if the process crashes before flushing.
 
 The following example contains a consumer that buffers messages until it reaches 1,000 of them before flushing:
 

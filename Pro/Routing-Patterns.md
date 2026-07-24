@@ -2,7 +2,7 @@ Karafka's Routing Patterns is a feature that offers flexibility in routing messa
 
 ## How It Works
 
-Routing Patterns is not just about using regex patterns. It's about the marriage of regexp and Karafka's topic routing system.
+Routing Patterns is not just about using regex patterns. It is about the marriage of regexp and Karafka's topic routing system.
 
 When you define a route using a regexp pattern, Karafka monitors the Kafka topics. As soon as a topic matching the pattern emerges, Karafka takes the initiative. Without waiting for manual interventions or service restarts, it dynamically adds the topic to the routing tree, starts a consumer for this topic, and starts processing data.
 
@@ -16,7 +16,7 @@ Below, you can find a conceptual diagram of how the discovery process works:
   </small>
 </p>
 
-Upon detecting a new topic, Karafka integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
+Upon detecting a new topic, Karafka integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they have not been previously defined in the routes.
 
 !!! warning "Regexp Implementation Differences"
 
@@ -37,11 +37,11 @@ To support this concept, from the Routing Patterns feature perspective, Karafka 
 
 2. **matcher**: This type signifies the representation of a regular expression used by `librdkafka`. It is the gateway for Karafka's dynamic topic discovery, laying the foundation for the `:discovered` type.
 
-3. **discovered** This type comes into play when there's a real, tangible topic that Karafka begins to listen to after it was matched with a regular expression.
+3. **discovered** This type comes into play when there is a real, tangible topic that Karafka begins to listen to after it was matched with a regular expression.
 
 The matcher topic holds a paramount position in the dynamic topic discovery mechanism. It embodies a regular expression subscription, acting as the initial point of discovery. When a new topic aligns with the matcher topic's criteria (whether during boot-up or at runtime), Karafka uses the matcher topic's configuration as the blueprint. This new topic inherits the settings and becomes part of the same consumer group and subscription group as its originating matcher topic.
 
-Subsequently, this newly registered topic is created as the `:discovered` type. To simplify its identification, especially in environments where multiple topics are at play, it's labeled as `:discovered` in the Web UI.
+Subsequently, this newly registered topic is created as the `:discovered` type. To simplify its identification, especially in environments where multiple topics are at play, it is labeled as `:discovered` in the Web UI.
 
 Diagram below represents the relationship between topics of various types and how they operate within Karafka routing:
 
@@ -90,11 +90,11 @@ The same usage contexts apply since this method is a twin to the `#topic`. You c
 
 Regardless of where you use it, it works similarly to the `#topic` method, but searches for topics based on patterns.
 
-Patterns crafted in such a way are called "anonymous patterns". This terminology highlights that these patterns don't have a predefined name. Instead, Karafka generates a name prefixed with "karafka-pattern-" based on the regular expression content. This approach ensures unique and distinguishable matcher topics but, at the same time, makes it much harder to exclude pattern routes from the CLI. Anonymous patterns are easy to start with and great for development. However, we do recommend assigning them names in the later stages before shipping to production.
+Patterns crafted in such a way are called "anonymous patterns". This terminology highlights that these patterns do not have a predefined name. Instead, Karafka generates a name prefixed with "karafka-pattern-" based on the regular expression content. This approach ensures unique and distinguishable matcher topics but, at the same time, makes it much harder to exclude pattern routes from the CLI. Anonymous patterns are easy to start with and great for development. However, we do recommend assigning them names in the later stages before shipping to production.
 
 ### Named Patterns
 
-Named and anonymous patterns in Karafka work the same way when setting up routing. The key difference is that named patterns have a specific name you choose, while anonymous patterns don't. This name is handy when picking or skipping certain routes in Karafka using the CLI. It's good to start with anonymous patterns when testing things out. But, as you finalize how you use them, switching to named patterns can make things more transparent and consistent.
+Named and anonymous patterns in Karafka work the same way when setting up routing. The key difference is that named patterns have a specific name you choose, while anonymous patterns do not. This name is handy when picking or skipping certain routes in Karafka using the CLI. It is good to start with anonymous patterns when testing things out. But, as you finalize how you use them, switching to named patterns can make things more transparent and consistent.
 
 You define named patterns similarly to anonymous by using the `#pattern` method but instead of providing only the regular expression, the expectation is that you provide both the name and the regexp:
 
@@ -149,7 +149,7 @@ Sometimes, you may need to route messages from topics that match a pattern but w
 
 When working with topic naming conventions like `[app_name].data_results`, you might want to process most topics matching this pattern with one consumer while directing a specific topic (e.g., `activities.data_results`) to a different consumer.
 
-Since neither the POSIX regular expressions used by `librdkafka` (classic protocol) nor the RE2/J engine used by the broker (consumer protocol) support negative lookahead assertions (`?!`) available in Ruby's regex engine, you'll need to use alternative approaches for exclusion patterns.
+Since neither the POSIX regular expressions used by `librdkafka` (classic protocol) nor the RE2/J engine used by the broker (consumer protocol) support negative lookahead assertions (`?!`) available in Ruby's regex engine, you will need to use alternative approaches for exclusion patterns.
 
 One effective method is to use character-by-character negative matching to exclude specific prefixes:
 
@@ -188,7 +188,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-While this pattern looks complex, it works by explicitly matching any string that doesn't start with "activities" followed by a period. The regex checks each character's position and ensures it either doesn't match the expected character in "activities" or, if it does match that far, it diverges afterward.
+While this pattern looks complex, it works by explicitly matching any string that does not start with "activities" followed by a period. The regex checks each character's position and ensures it either does not match the expected character in "activities" or, if it does match that far, it diverges afterward.
 
 ### Testing Exclusion Patterns
 
@@ -242,9 +242,9 @@ end
 
 While exclusion patterns provide a way to route messages, they should be used carefully:
 
-- They're ideal when you need different Karafka-level configurations (like virtual partitions or specific error handling) for different topics
+- They are ideal when you need different Karafka-level configurations (like virtual partitions or specific error handling) for different topics
 - They simplify routing logic by keeping it at the configuration level instead of embedding it in consumer code
-- They're most maintainable when the exclusion list is small and stable
+- They are most maintainable when the exclusion list is small and stable
 
 ### Limiting Patterns used per process
 
@@ -294,19 +294,19 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Changing Regexp in Anonymous Patterns**: If the regular expression for an anonymous pattern is changed, its name will change too.
 
-1. **Avoid Overlapping Regexps**: It's crucial to avoid defining multiple regular expressions within the same consumer group that might match the same topics. This can lead to unexpected behavior because of possible reassignments and rebalances.
+1. **Avoid Overlapping Regexps**: It is crucial to avoid defining multiple regular expressions within the same consumer group that might match the same topics. This can lead to unexpected behavior because of possible reassignments and rebalances.
 
-1. **Thoroughly Test Patterns**: Always ensure your patterns don't overlap within a single consumer group. Regular testing can prevent unwanted behavior.
+1. **Thoroughly Test Patterns**: Always ensure your patterns do not overlap within a single consumer group. Regular testing can prevent unwanted behavior.
 
 1. **Potential Regexp Differences**: The regular expressions in Ruby and `librdkafka` in C might not work identically. Always test the matching behaviors before deploying to production.
 
-1. **Runtime Topic Detection Isn't Immediate**: When a new topic emerges, its detection isn't real-time. It's influenced by the cache TTL, governed by the `topic.metadata.refresh.interval.ms` setting. The default is 5 seconds in development and 5 minutes in production. For most production scenarios, sticking to the 5-minute default is advised as it strikes a good balance between operational responsiveness and system load.
+1. **Runtime Topic Detection Is not Immediate**: When a new topic emerges, its detection is not real-time. It is influenced by the cache TTL, governed by the `topic.metadata.refresh.interval.ms` setting. The default is 5 seconds in development and 5 minutes in production. For most production scenarios, sticking to the 5-minute default is advised as it strikes a good balance between operational responsiveness and system load.
 
 1. **Internal Regular Expression Requirements of `librdkafka`**: The library requires regular expression strings to start with `^`. Karafka's Routing Patterns adapt Ruby's regular expressions to fit this format internally. Remembering this transformation and thoroughly testing your patterns before deploying is important. You can find the adjusted regular expression in the Web UI under the routing page topic details view if you wish to review the adjusted regular expression.
 
 1. **Too Broad Regular Expressions**: Broad regular expressions may unintentionally match a wide range of topics, leading to the over-consumption of topics that were not intended to be included. This can result in excessive resource utilization, unexpected data processing, and potential bottlenecks in the system.
 
-Ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
+Ensure you are familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
 
 ## DLQ Accidental Auto-Consumption
 
@@ -367,7 +367,7 @@ Ruby uses the **Oniguruma engine**, which differs from both of the above.
     The most impactful difference when migrating to the `consumer` protocol (KIP-848) is how regex matching is applied:
 
     - **Classic protocol (libc)**: The regex only needs to **match within** the topic name (partial match). A pattern like `^topic` matches `topic-1` because the prefix is found.
-    - **Consumer protocol (RE2/J)**: The regex must match the **complete** topic name (full match). The pattern `^topic` does **not** match `topic-1` because it doesn't cover the entire string.
+    - **Consumer protocol (RE2/J)**: The regex must match the **complete** topic name (full match). The pattern `^topic` does **not** match `topic-1` because it does not cover the entire string.
 
     **Example:** Given topics `topic-1` and `topic-2`:
 
@@ -382,9 +382,9 @@ Ruby uses the **Oniguruma engine**, which differs from both of the above.
 
 Given the differences between Ruby's and libc's regular expression engines, it is recommended to thoroughly test your regular expressions to ensure compatibility, especially when using them with Karafka for dynamic topic routing. Testing becomes crucial because a regular expression in Ruby might behave differently or not work with librdkafka.
 
-To bridge the gap and verify that your regular expressions work as expected in both environments, you can use the POSIX regex engine directly within a Ruby context through command-line tools like `grep`. This approach allows you to test regular expressions against the POSIX standard and ensure they're compatible with librdkafka.
+To bridge the gap and verify that your regular expressions work as expected in both environments, you can use the POSIX regex engine directly within a Ruby context through command-line tools like `grep`. This approach allows you to test regular expressions against the POSIX standard and ensure they are compatible with librdkafka.
 
-Here's how you can test a POSIX regular expression in a Unix-like terminal:
+Here is how you can test a POSIX regular expression in a Unix-like terminal:
 
 ```shell
 echo 'sample_string' | grep -E 'posix_regex'
@@ -445,7 +445,7 @@ This comparative testing method offers a straightforward way to ensure your regu
 
 1. **Environment-based Topics**: Development environments like staging, production, or QA might generate events. Using routing patterns can streamline the consumption process if these are categorized into topics like `staging_logs` and `prod_errors`.
 
-1. **Versioned Topics**: As systems evolve, data formats and structures change. Regexp patterns can handle these variations smoothly if you've chosen to version your topics, like `data_v1`, `data_v2`.
+1. **Versioned Topics**: As systems evolve, data formats and structures change. Regexp patterns can handle these variations smoothly if you have chosen to version your topics, like `data_v1`, `data_v2`.
 
 1. **Date-based Topics**: The feature becomes invaluable for systems that rotate topics based on timeframes, like `logs_202301` and `logs_202302`, ensuring no topic goes unnoticed.
 

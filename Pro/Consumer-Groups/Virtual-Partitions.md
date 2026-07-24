@@ -299,7 +299,7 @@ Consider these factors when selecting a distribution strategy:
       <td>Processing is stateless or state is managed externally</td>
     </tr>
     <tr>
-      <td>You're implementing window-based aggregations spanning multiple polls</td>
+      <td>You are implementing window-based aggregations spanning multiple polls</td>
       <td>Maximizing worker thread utilization is a priority</td>
     </tr>
     <tr>
@@ -628,7 +628,7 @@ This class defines a custom reducer with a `#call` method. The method uses an MD
 
 - **Enhanced Distribution**: Custom reducers allow for more complex and nuanced distribution strategies, which can better balance the load and reduce hotspots.
 
-- **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that's handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
+- **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that is handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
 
 - **Scalability**: By refining how messages are distributed across virtual partitions, custom reducers can help ensure that processing scales efficiently as the volume of messages increases.
 
@@ -656,7 +656,7 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Virtual Partitions vs. Increasing Number of Partitions vs. Parallel Segments
 
-When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, use Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
+When building a scalable Kafka consumer application with Karafka, you will likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, use Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
 
 ### Conceptual Differences
 
@@ -668,7 +668,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 ### Work Distribution
 
-- **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you're constrained by the fact that only one consumer can read from a partition at a given time.
+- **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you are constrained by the fact that only one consumer can read from a partition at a given time.
 
 - **Virtual Partitions**: VPs enable multiple workers to process data from a single partition. This is useful when data within a partition can be divided into independent logical chunks. The result is better work distribution and utilization of worker threads, especially in heavy-load scenarios.
 
@@ -676,7 +676,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 ### Polling Characteristics
 
-- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-used.
+- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there is uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-used.
 
 - **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
 
@@ -708,9 +708,9 @@ When aiming for maximum throughput and efficient resource utilization, especiall
 
 ### Scalability Constraints
 
-- **Physical Partitions**: There's a limit to how many physical partitions you can have, and re-partitioning a topic can be a complex task. Also, there's overhead associated with managing more partitions.
+- **Physical Partitions**: There is a limit to how many physical partitions you can have, and re-partitioning a topic can be a complex task. Also, there is overhead associated with managing more partitions.
 
-- **Virtual Partitions**: VPs provide scalability within the confines of existing physical partitions. They don't add to the management overhead of Kafka and offer a more flexible way to scale processing power without altering the topic's physical partitioning.
+- **Virtual Partitions**: VPs provide scalability within the confines of existing physical partitions. They do not add to the management overhead of Kafka and offer a more flexible way to scale processing power without altering the topic's physical partitioning.
 
 ## Customizing the partitioning engine / Load aware partitioning
 

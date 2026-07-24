@@ -156,7 +156,7 @@ Creating custom matchers allows you to tailor the search functionality to meet y
 
 To create a custom matcher, you need to define a class that inherits from the `Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base` class provided by Karafka. Your custom matcher must implement the call method, which takes a phrase and a message as arguments and returns a boolean indicating whether the phrase is found in the message.
 
-Here's an example of a custom matcher that searches within a specific JSON field:
+Here is an example of a custom matcher that searches within a specific JSON field:
 
 ```ruby
 class JsonFieldIncludes < Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base
@@ -198,7 +198,7 @@ end
 
 The `.active?` method enables or disables matchers for specific topics. This can be useful if certain matchers are only relevant to particular types of data or topics. By default, matchers are always active.
 
-Here’s an example of how to implement the `.active?` method to activate a matcher conditionally:
+Here is an example of how to implement the `.active?` method to activate a matcher conditionally:
 
 ```ruby
 class ConditionalMatcher < Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base
@@ -226,7 +226,7 @@ end
 
 - **Performance**: If your custom matcher involves deserialization or complex processing, be mindful of the impact of the performance. Deserialization can be resource-intensive, so ensure your matcher is optimized for performance.
 
-- **Error Handling**: Ensure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it’s crucial to catch and manage potential errors within the matcher.
+- **Error Handling**: Ensure any errors within your custom matcher are properly handled. Unhandled exceptions will bubble up and cause a 500 error in the Web UI. To prevent this, it is crucial to catch and manage potential errors within the matcher.
 
 - **Network Traffic**: Searches retrieve all messages within the specified range, which can increase network traffic, especially with Kafka vendors that charge based on usage. If live polling is enabled, it will re-trigger searches every 5 seconds by default, further increasing data transfer and potentially raising costs. Consider disabling or adjusting live-polling intervals to manage these costs effectively if you use a Kafka vendor that charges for the network traffic.
 

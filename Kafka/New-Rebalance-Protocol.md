@@ -24,7 +24,7 @@ Traditional consumer rebalancing requires **all** consumers to stop processing d
 
 - **With large consumer groups:** If your consumer groups have 10+ consumers managing many partitions, you will see the most dramatic improvements. For example, a group with 10 consumers adding 900 partitions completes rebalancing in 5 seconds instead of 103 seconds.
 
-- **For high-availability applications:** If your application can't afford processing interruptions, you will benefit from continuous message processing during rebalances. Financial services, real-time analytics, and fraud detection systems are ideal candidates.
+- **For high-availability applications:** If your application cannot afford processing interruptions, you will benefit from continuous message processing during rebalances. Financial services, real-time analytics, and fraud detection systems are ideal candidates.
 
 - **In frequently rebalancing environments:** If you have auto-scaling deployments, Kubernetes with frequent pod restarts, or development environments with continuous deployments, you will experience much less disruption.
 
@@ -151,7 +151,7 @@ KIP-848 supports live migration without downtime. When the first consumer using 
 
     !!! warning "Complete Migration Within a Few Hours"
 
-        Complete the migration within a few hours. Don't leave the group in a mixed state for extended periods.
+        Complete the migration within a few hours. Do not leave the group in a mixed state for extended periods.
 
 ### Rollback
 
@@ -191,7 +191,7 @@ Use this checklist to ensure a smooth migration to KIP-848:
 - [ ] Monitor first consumer restart for successful group protocol transition
 - [ ] Continue rolling restart across all consumer instances
 - [ ] Verify migration with `kafka-consumer-groups.sh --describe --group <group> --state` or using Karafka Web UI
-- [ ] Complete migration within a few hours (don't leave in mixed state)
+- [ ] Complete migration within a few hours (do not leave in mixed state)
 
 **Post-Migration Validation:**
 
@@ -291,7 +291,7 @@ If you are migrating to the consumer protocol and use regex-based subscriptions,
 ### Unknown and Unauthorized Topics
 
 - **KIP-848 Behavior:**
-    - `UNKNOWN_TOPIC_OR_PART` is no longer returned when subscribing to a topic that's missing from the local metadata cache. The subscription proceeds, and the consumer will discover the topic when metadata refreshes.
+    - `UNKNOWN_TOPIC_OR_PART` is no longer returned when subscribing to a topic that is missing from the local metadata cache. The subscription proceeds, and the consumer will discover the topic when metadata refreshes.
     - `TOPIC_AUTHORIZATION_FAILED` is reported once per heartbeat or subscription change, even if only one subscribed topic is unauthorized.
 
 - **Classic Protocol:** Errors were reported immediately upon subscription if topics were missing from the local metadata cache.

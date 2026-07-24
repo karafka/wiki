@@ -180,7 +180,7 @@ Permission types indicate the nature of the access being granted or denied, esse
 
 ## Usage
 
-When initializing an ACL in Karafka, you'll use several parameters to define these rules. Here's a breakdown of each argument you'll provide:
+When initializing an ACL in Karafka, you will use several parameters to define these rules. Here is a breakdown of each argument you will provide:
 
 <table>
   <thead>
@@ -192,11 +192,11 @@ When initializing an ACL in Karafka, you'll use several parameters to define the
   <tbody>
     <tr>
       <td class="nowrap"><code>resource_type</code></td>
-      <td>Determines the type of Kafka resource you're securing, such as a topic (<code>:topic</code>) or consumer group (<code>:consumer_group</code>). You can specify this as a symbol from <code>RESOURCE_TYPES_MAP</code> for readability or use a direct numerical type from <code>rdkafka</code>. Choose the resource type that aligns with the item you wish to control access to.</td>
+      <td>Determines the type of Kafka resource you are securing, such as a topic (<code>:topic</code>) or consumer group (<code>:consumer_group</code>). You can specify this as a symbol from <code>RESOURCE_TYPES_MAP</code> for readability or use a direct numerical type from <code>rdkafka</code>. Choose the resource type that aligns with the item you wish to control access to.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>resource_name</code></td>
-      <td>The specific name of the resource, like the name of a topic. This can sometimes be <code>nil</code>, mainly when your resource pattern type doesn't require a particular name. Use this to pinpoint the exact resource you're setting the ACL for.</td>
+      <td>The specific name of the resource, like the name of a topic. This can sometimes be <code>nil</code>, mainly when your resource pattern type does not require a particular name. Use this to pinpoint the exact resource you are setting the ACL for.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>resource_pattern_type</code></td>
@@ -204,7 +204,7 @@ When initializing an ACL in Karafka, you'll use several parameters to define the
     </tr>
     <tr>
       <td class="nowrap"><code>principal</code></td>
-      <td>The principal (usually a user or client identity) the ACL is for. This specifies who the ACL will apply to. It can sometimes be <code>nil</code> if you're defining a more general rule that isn't principal-specific.</td>
+      <td>The principal (usually a user or client identity) the ACL is for. This specifies who the ACL will apply to. It can sometimes be <code>nil</code> if you are defining a more general rule that is not principal-specific.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>host</code></td>
