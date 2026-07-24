@@ -31,19 +31,19 @@ If a situation like that occurs, Karafka will exit with exit code **1**.
 
 Karafka has a couple of isolation layers that prevent it from being affected by **any** errors or exceptions from the application code.
 
-In any case, as long as system resources (like memory) are available, the Karafka process will **never** crash upon application errors. Also, threads for particular consumer groups and workers are isolated, so as long as you don't do any cross-consumer group work, they won't impact each other in any way.
+In any case, as long as system resources (like memory) are available, the Karafka process will **never** crash upon application errors. Also, threads for particular consumer groups and workers are isolated, so as long as you do not do any cross-consumer group work, they will not impact each other in any way.
 
 When processing messages from a Kafka topic, your code may raise any exception inherited from `StandardError`. The cause is typically because of one of the following reasons:
 
 - Your business logic does not behave as you think it should.
 - The message being processed is somehow malformed or is in an invalid format.
-- You're using external resources such as a database or a network API that are temporarily unavailable.
+- You are using external resources such as a database or a network API that are temporarily unavailable.
 
-Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That's why Karafka will **never** skip any messages.
+Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
 
 ### Retryable Methods
 
-It's crucial to understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
+Understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
 
 <table border="1">
   <thead>
@@ -67,7 +67,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
     <tr>
       <td><code>#shutdown</code></td>
       <td>No</td>
-      <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown doesn't align with its purpose.</td>
+      <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown does not align with its purpose.</td>
     </tr>
     <tr>
       <td><code>#tick</code></td>
@@ -77,7 +77,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
     <tr>
       <td><code>#eofed</code></td>
       <td>No</td>
-      <td>This method is triggered when the end of a partition is reached. Since it's a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
+      <td>This method is triggered when the end of a partition is reached. Since it is a normal part of processing when a partition is fully read, retries are unnecessary and not applicable.</td>
     </tr>
     <tr>
       <td><code>#wrap</code></td>
@@ -87,7 +87,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
   </tbody>
 </table>
 
-It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable.
+Crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable.
 
 Errors in the other methods (`#revoked`, `#shutdown`, `#tick` and `#eofed`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
 
@@ -110,9 +110,9 @@ class EventsConsumer < ApplicationConsumer
 end
 ```
 
-!!! note "Note"
+!!! note "Retried Batches May Contain Different Messages"
 
-    Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
+    `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
 In addition to detecting retry scenarios with `#retrying?`, Karafka provides the `#attempt` method for more nuanced control. This method indicates the current attempt, offering opportunities for specific actions or alerts based on the number of retries. This advanced functionality allows tailored behavior adjustments during message processing retries, enhancing error-handling strategies.
 
@@ -181,7 +181,7 @@ Karafka.monitor.subscribe 'error.occurred' do |event|
 end
 ```
 
-!!! note "Note"
+!!! note "Batch Errors May Not Pinpoint the Message"
 
     When doing batch operations, this message may not be the exact cause of the processing error.
 
@@ -201,9 +201,9 @@ Karafka keeps track of the last committed offset alongside Kafka when you mark a
   <img src="https://karafka.io/assets/misc/charts/on_errors_behaviour.svg" />
 </p>
 
-!!! note "Note"
+!!! note "Virtual Partitions Behave Differently on Errors"
 
-    This behavior is different in the case of Virtual Partitions. Please refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
+    This behavior is different in the case of Virtual Partitions. Refer to [this Wiki section](Pro-Consumer-Groups-Virtual-Partitions#behaviour-on-errors) for more details.
 
 ### Offset Management Errors
 
@@ -245,15 +245,15 @@ This setting is particularly useful for:
 
 Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. If this value is not set, Karafka will wait indefinitely for consumers to finish processing given messages.
 
-Setting this value high enough is highly recommended so that Karafka won't stop itself in the middle of some non-transactional partially finished operations.
+Setting this value high enough is highly recommended so that Karafka will not stop itself in the middle of some non-transactional partially finished operations.
 
 ## Internal Framework Errors
 
-Karafka handles framework and Kafka-related errors on several layers, ensuring robust and reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
+Karafka handles framework and Kafka-related errors on several layers, ensuring reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
 
 ### Error Recovery and Retry Mechanisms
 
-Karafka employs multiple layers of error handling to manage issues seamlessly:
+Karafka employs multiple layers of error handling to manage issues:
 
 - **Framework-Level Recovery**: Errors related to Karafka's internal operations are handled within the framework. This includes automatic retries and recovery procedures to maintain the stability of the message processing flow.
 - **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka ensures that these errors do not disrupt the overall processing pipeline.

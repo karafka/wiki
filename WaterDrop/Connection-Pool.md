@@ -2,7 +2,7 @@
 
 WaterDrop provides a built-in `ConnectionPool` for efficient producer management and connection handling in high-intensity applications. The connection pool provides optimized connection handling, enabling efficient management of multiple producer instances in scenarios where this is necessary.
 
-!!! note "Important: Most Users Don't Need Connection Pools"
+!!! note "Important: Most Users Do not Need Connection Pools"
 
     Since WaterDrop producers are thread-safe, most applications can share a single producer instance across multiple threads without needing connection pooling. Connection pools are primarily beneficial for high-intensity applications with particular performance requirements or when you need to isolate producer configurations.
 
@@ -12,7 +12,7 @@ WaterDrop provides a built-in `ConnectionPool` for efficient producer management
 
 ## Prerequisites
 
-WaterDrop's `ConnectionPool` utilizes the `connection_pool` gem internally, which is not included as a dependency by default, as most users don't require connection pooling functionality.
+WaterDrop's `ConnectionPool` uses the `connection_pool` gem internally, which is not included as a dependency by default, as most users do not require connection pooling functionality.
 
 Add the `connection_pool` gem to your Gemfile:
 
@@ -26,7 +26,7 @@ Then run:
 bundle install
 ```
 
-If you attempt to use `WaterDrop::ConnectionPool` without the gem installed, you'll receive a helpful error message with installation instructions.
+If you attempt to use `WaterDrop::ConnectionPool` without the gem installed, you will receive a helpful error message with installation instructions.
 
 ## Getting Started with Connection Pools
 
@@ -62,7 +62,7 @@ To use connection pools with WaterDrop:
 
     !!! note "Auto-Closing in Karafka Applications"
 
-        When using the default connection pool within Karafka framework processes, the connection pool is automatically closed during framework shutdown, similar to how the default producer is handled. You don't need to close it manually in Karafka processes.
+        When using the default connection pool within Karafka framework processes, the connection pool is automatically closed during framework shutdown, similar to how the default producer is handled. You do not need to close it manually in Karafka processes.
 
 ## Working with Transactions
 

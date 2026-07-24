@@ -12,7 +12,7 @@ Karafka provides application administrative functions via the built-in `Karafka:
 
 ## Configuration
 
-`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. It's essential to understand that the Web UI also leverages this same consumer group as it utilizes the Admin API internally. If you're implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you're using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
+`Karafka::Admin` operates using the default cluster configuration, employing a distinct consumer group name, specifically `karafka_admin`. The Web UI also uses this same consumer group as it uses the Admin API internally. If you are implementing granular Kafka ACLs (Access Control List) permissions, ensure that the `karafka_admin` consumer group is granted the necessary permissions to function effectively. If you are using `karafka-web`, you will also need the same permissions applied to the `karafka_web` group as well.
 
 `Karafka::Admin` gets a consistent prefix alongside all other consumer groups, allowing you to streamline permissions across all the consumer groups associated with that application.
 
@@ -37,7 +37,7 @@ end
 
 We **strongly advise against** modifying the `config.admin.kafka` settings in their entirety, as they have been configured to meet the demands of admin operations. For any adjustments, we suggest adopting the granular approach outlined above.
 
-Please note that in the case of `kafka` settings, if a given setting is not found, the root `kafka` scope value will be used.
+In the case of `kafka` settings, if a given setting is not found, the root `kafka` scope value will be used.
 
 ### Multi-Cluster Setup
 
@@ -208,13 +208,13 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
 
-!!! note "Note"
+!!! note "Topic Details Require Defined Routes"
 
     While the returned messages are `Karafka::Messages::Message` objects, they may not hold the correct notion of the topic details unless the given topic is defined in Karafka routes. For topics that are not defined, defaults will be used.
 
-!!! note "Note"
+!!! note "`read_topic` Skips Compacted and Transaction Offsets"
 
-    When using the `#read_topic` method in the Karafka Admin API to retrieve messages from a topic partition, it's essential to understand that this method skips offsets of compacted messages and transactions-related messages. This means that these specific messages won't be fetched or displayed even if they exist in the topic partition. However, while these messages are skipped during retrieval, they are still included in the total counts for those in that partition.
+    When using the `#read_topic` method in the Karafka Admin API to retrieve messages from a topic partition, this method skips offsets of compacted messages and transactions-related messages. This means that these specific messages will not be fetched or displayed even if they exist in the topic partition. However, while these messages are skipped during retrieval, they are still included in the total counts for those in that partition.
 
     This behavior implies that if you request a certain number of the most recent messages, say the last 10, and all these 10 messages were either related to transactions or were compacted, then the `#read_topic` method will return no data. Thus, you might find situations where you expect data based on the total count but get none due to this offset-skipping behavior.
 
@@ -446,7 +446,7 @@ puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:time
 
 This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
 
-Using the following method, you can obtain the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
+Using the following method, you can get the lags and offsets for a specific consumer group across selected topics. This will provide insights into how far behind each partition is from the latest message.
 
 If consumer groups are not specified, the method will default to monitoring all consumer groups defined in the Karafka routing configuration with active topics, according to the `active_topics_only` parameter. This ensures comprehensive coverage of your Karafka setup, providing visibility into all potentially active consumption patterns without explicit specification.
 
@@ -532,7 +532,7 @@ end
 
 ### Reading Lags of Selected Consumer Groups and Topics
 
-To get lags for a specific subset of data, you can explicitly define the consumer groups and topics you're interested in:
+To get lags for a specific subset of data, you can explicitly define the consumer groups and topics you are interested in:
 
 ```ruby
 # Specify the consumer group and the topics you are interested in
@@ -624,7 +624,7 @@ When using `#copy_consumer_group`, the method ensures that offsets from the sour
 
     If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
-The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group doesn't exist or has no committed offsets for the specified topics).
+The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group does not exist or has no committed offsets for the specified topics).
 
 This functionality is particularly useful for:
 

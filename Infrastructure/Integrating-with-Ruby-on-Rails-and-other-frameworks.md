@@ -22,7 +22,7 @@ We also have an [example Ruby on Rails application](https://github.com/karafka/e
 
 ## Integrating with Sinatra and other frameworks
 
-Non-Rails applications differ from one another. There are single-file applications and apps similar to the Rails structure. That's why we cannot provide a simple single tutorial. Here are some guidelines that you should follow to integrate it with Sinatra based application:
+Non-Rails applications differ from one another. There are single-file applications and apps similar to the Rails structure. That is why we cannot provide a simple single tutorial. Here are some guidelines that you should follow to integrate it with Sinatra based application:
 
 Add Karafka to your application Gemfile:
 
@@ -40,7 +40,7 @@ After that, ensure that your application is loaded before setting up and booting
 
 ## See Also
 
-- [Active Job](Consumer-Groups-Active-Job) - Integrate Karafka with Rails ActiveJob for background processing
+- [Active Job](Consumer-Groups-Active-Job) - Integrate Karafka with Rails Active Job for background processing
 - [Active Record Connections Management](Infrastructure-Active-Record-Connections-Management) - Manage database connections in Karafka consumers
 - [Producing Messages](Basics-Producing-Messages) - Send messages to Kafka from Rails controllers and models
 - [Deployment](Infrastructure-Deployment) - Deploy Karafka alongside Rails applications in production

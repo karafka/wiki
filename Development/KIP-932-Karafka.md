@@ -35,15 +35,15 @@ This document captures the design decisions, architectural choices, naming conve
 
 - **No partition affinity:** records with the same key may land on different consumers
 - **No batch boundary:** records can be in-flight across polls
-- **No partition pause:** there's no per-partition anything on the client side
+- **No partition pause:** there is no per-partition anything on the client side
 - **Lock clock starts at fetch time, not poll time:** prefetched records can expire while buffered
-- **Virtual partitions have no equivalent:** ordering-per-key can't be reconstructed without partition affinity
+- **Virtual partitions have no equivalent:** ordering-per-key cannot be reconstructed without partition affinity
 
 ## Core Architectural Decisions
 
 ### Polling Model: Tight Loop, Not Aggressive Prefetch
 
-The architecture follows Spring Kafka's approach: **don't fetch more than you can immediately process.** The loop is:
+The architecture follows Spring Kafka's approach: **do not fetch more than you can immediately process.** The loop is:
 
 ```text
 loop:
@@ -54,7 +54,7 @@ loop:
   (loop; next poll happens when another slot frees)
 ```
 
-This sidesteps the prefetch-expiry problem (records acquired by the broker but sitting in local buffers until their lock expires) by never asking for records the application isn't ready to process.
+This sidesteps the prefetch-expiry problem (records acquired by the broker but sitting in local buffers until their lock expires) by never asking for records the application is not ready to process.
 
 ### Scaling: Horizontal via Concurrency, Not Vertical via Batching
 
@@ -68,7 +68,7 @@ This matches what KIP-932 was designed around: elastic scaling by adding consume
 
 ### Threading: Thread Per Consumer Instance
 
-Each share consumer instance owns its thread for the lifetime of the subscription group. librdkafka consumer instances have state that's expensive to set up and tear down; long-lived threads with dedicated consumers is the simplest and cheapest mapping.
+Each share consumer instance owns its thread for the lifetime of the subscription group. librdkafka consumer instances have state that is expensive to set up and tear down; long-lived threads with dedicated consumers is the simplest and cheapest mapping.
 
 - N threads = N `KafkaShareConsumer` instances
 - Ruby GIL impact depends on workload; threading primarily helps when processing is I/O-bound
@@ -80,7 +80,7 @@ Unlike Java's `KafkaShareConsumer`, librdkafka is thread-safe per consumer, so w
 
 ### Subscription Groups Stay Mode-Homogeneous
 
-A subscription group cannot mix consumer-group and share-group topics (protocols differ; one librdkafka consumer can't subscribe as both kinds simultaneously). Auto-split mixed declarations at routing construction time with a warning.
+A subscription group cannot mix consumer-group and share-group topics (protocols differ; one librdkafka consumer cannot subscribe as both kinds simultaneously). Auto-split mixed declarations at routing construction time with a warning.
 
 ### One Share Consumer Per Topic by Default
 
@@ -90,7 +90,7 @@ Cleaner backpressure, per-topic tuning, clearer ownership. Multi-topic share con
 
 For share groups under the tight-loop model, a separate JobsQueue between poller and workers is not needed. Each share consumer thread is self-contained: poll, process, ack.
 
-If a worker pool exists per consumer (for `workers_per_consumer > 1`), it's scoped to that consumer, not shared across modes.
+If a worker pool exists per consumer (for `workers_per_consumer > 1`), it is scoped to that consumer, not shared across modes.
 
 ## Consumer Instance Lifecycle
 
@@ -292,7 +292,7 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 
 - Priority is per-process local resource allocation, not distributed coordination
 - Extreme ratios can cause starvation of low-priority groups; document this
-- Different share groups subscribed to the same topic don't compete with each other at the broker level; the broker distributes to each group independently
+- Different share groups subscribed to the same topic do not compete with each other at the broker level; the broker distributes to each group independently
 
 ### Convenience Abstraction
 
@@ -310,7 +310,7 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 
 | Use case | Consumer group | Share group |
 | --- | --- | --- |
-| Backpressure | Pause partitions when saturated | Don't poll when workers are busy (tight loop handles this) |
+| Backpressure | Pause partitions when saturated | Do not poll when workers are busy (tight loop handles this) |
 | Retry with backoff | Pause + seek | RELEASE, or delay structure |
 | Long-running job | Pause partition for heartbeats | RENEW the lease |
 | Manual pause | `consumer.pause` | Stop polling (consumer-wide, no `pause` API) |
@@ -320,10 +320,10 @@ Higher-priority share groups ask for records more often; lower-priority ones sle
 
 The closest analog to "pause this" is:
 
-- "Don't ack, let lock expire" - record goes to another consumer
+- "Do not ack, let lock expire" - record goes to another consumer
 - "Stop polling for a while" - consumer-wide
 
-Document the "not supported" list clearly so users don't try to port partition-pause patterns.
+Document the "not supported" list clearly so users do not try to port partition-pause patterns.
 
 ## Feature Matrix by Mode
 
@@ -445,7 +445,7 @@ Karafka::
 ### Key Nesting Decisions
 
 - `Groups::` holds Kafka-level group types (CG and SG are kinds of Kafka groups)
-- `SubscriptionGroup` is a peer to `Groups::`, not inside it - it's a Karafka runtime construct, not a Kafka concept
+- `SubscriptionGroup` is a peer to `Groups::`, not inside it - it is a Karafka runtime construct, not a Kafka concept
 - `Topics::` is its own namespace (topics belong to groups via composition, not nesting)
 - `Features::` contains shared features directly, plus mode-specific sub-namespaces
 - `BatchMetadata` relaxes the plural rule because "BatchMetadatas" reads worse than the inconsistency costs
@@ -676,7 +676,7 @@ end
 ### Phase 0: Structural Preparation (No librdkafka Dependency)
 
 1. **Namespace refactor of CG code** under `ConsumerGroups::` with aliases at old paths. Purely mechanical.
-2. **Hidden-assumptions audit** in code that didn't move - find places secretly depending on offsets, partitions, or exclusive assignment.
+2. **Hidden-assumptions audit** in code that did not move - find places secretly depending on offsets, partitions, or exclusive assignment.
 3. **Subscription tracker extraction** - split responsibilities between shared `SubscriptionTracker` and CG-only partition-assignment.
 4. **Per-mode JobsQueue wiring** - introduce the runtime coordinator pattern even though only CG exists for now.
 5. **Topic and Consumer class hierarchies** - three-layer each (Base / ConsumerGroup / ShareGroup), feature registry per mode, expose `group_type` introspection.
@@ -727,7 +727,7 @@ end
 
 - Each step ships as a non-breaking minor release
 - Phase 0 spread across roughly one step per month, not rushed
-- Phase 1 and 2 may be faster because they're self-contained work against the fake broker
+- Phase 1 and 2 may be faster because they are self-contained work against the fake broker
 - Phase 3 gated by librdkafka share-consumer support availability
 
 ### Preview Labeling

@@ -38,7 +38,7 @@ For more details on how to use the WaterDrop producer and its various message pr
 
 ## Messages Piping
 
-If you are looking for seamless message piping in Kafka-based systems, see [Piping](Pro-Consumer-Groups-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+If you are looking for message piping in Kafka-based systems, see [Piping](Pro-Consumer-Groups-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
 
 ## Producer Shutdown
 
@@ -46,7 +46,7 @@ Before shutting down the Karafka producer in processes such as Puma, Sidekiq, or
 
 This is because the `#close` method ensures that any pending messages in the producer buffer are flushed to the Kafka broker before shutting down the producer.
 
-!!! info "Info"
+!!! info "Skipping `#close` Loses Messages and Leaks Resources"
 
     If you do not call `#close`, there is a risk that some messages may not be sent to the Kafka broker, resulting in lost or incomplete data. In addition, calling `#close` also releases any resources held by the producer, such as network connections, file handles, and memory buffers. Failing to release these resources can lead to memory leaks, socket exhaustion, or other system-level issues that can impact the stability and performance of your application.
 
@@ -54,9 +54,9 @@ Overall, calling `#close` on the Karafka producer is a best practice that helps 
 
 In the following sections, you can find an example of how to `#close` the producer used in various Ruby processes.
 
-!!! warning "Warning"
+!!! warning "Do Not Manually Close the Producer When Embedding"
 
-    Note, that you should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
+    You should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
 
 ### Closing Producer Used in Karafka
 
@@ -172,7 +172,7 @@ end
 
 ### Closing Producer in any Ruby Process
 
-While integrating Karafka producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend utilizing hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
+While integrating Karafka producers into your Ruby applications, it is essential to ensure that resources are managed correctly, especially when terminating processes. We generally recommend using hooks specific to the environment or framework within which the producer operates. These hooks ensure proper shutdowns and resource cleanup tailored to the application lifecycle.
 
 However, there might be scenarios where such specific hooks are not available or suitable. In these cases, employ Ruby's `at_exit` hook as a universal fallback to close the producer before the Ruby process exits.
 
@@ -223,14 +223,14 @@ class MyConsumer < ApplicationConsumer
 end
 ```
 
-The Web UI relies on per-producer listeners to monitor asynchronous errors. If you craft your consumers and utilize the Web UI, make sure that you configure this integration appropriately.
+The Web UI relies on per-producer listeners to monitor asynchronous errors. If you craft your consumers and use the Web UI, make sure that you configure this integration appropriately.
 
-By leveraging this flexibility in Karafka, you can effectively manage and direct message flow in multi-cluster Kafka environments, ensuring data reaches the right place based on your application's unique requirements.
+By using this flexibility in Karafka, you can effectively manage and direct message flow in multi-cluster Kafka environments, ensuring data reaches the right place based on your application's unique requirements.
 
 ## See Also
 
 - [Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
 - [Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
-- [Piping](Pro-Consumer-Groups-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
+- [Piping](Pro-Consumer-Groups-Piping) - Forward messages between Kafka topics with enhanced traceability
 - [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
 - [Consuming Messages](Basics-Consuming-Messages) - Learn how to consume the messages you produce

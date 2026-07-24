@@ -60,7 +60,7 @@ Karafka makes specific assumptions about incoming data format, setting defaults 
 
 ### Setting Defaults
 
-In Karafka, you can configure default deserializers for all topics by utilizing the `#defaults` block within your routing configuration. This is particularly useful if your application generally handles messages in a specific format and you wish to apply a consistent deserialization approach across multiple topics.
+In Karafka, you can configure default deserializers for all topics by using the `#defaults` block within your routing configuration. This is particularly useful if your application generally handles messages in a specific format and you wish to apply a consistent deserialization approach across multiple topics.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -86,7 +86,7 @@ While setting default deserializers is a reliable way to maintain consistency ac
 
 To set deserializers for a specific topic, you use the deserializers method within the topic configuration block in your routing setup. This allows you to define unique deserialization logic for the payload, key, and headers of messages consumed from that topic.
 
-Here's an example of how to configure deserializes for individual topics:
+Here is an example of how to configure deserializes for individual topics:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -161,7 +161,7 @@ end
 
 In Karafka, lazy deserialization extends beyond the payload to include both the message key and headers. This feature enhances performance by delaying the conversion of raw message data into a usable format until it is explicitly required. This approach is especially beneficial for operations such as metadata-based filtering or when dealing with large datasets where minimizing processing overhead is crucial.
 
-Karafka defers the deserialization for the payload, key, and headers. Here's how each component is handled:
+Karafka defers the deserialization for the payload, key, and headers. Here is how each component is handled:
 
 - **Payload**: Deserialization occurs when the `Karafka::Messages::Message#payload` method is invoked for the first time. The deserialized data is cached, so subsequent accesses do not trigger re-deserialization.
 
@@ -175,7 +175,7 @@ Access to the raw data for each component is also provided without triggering de
 - `Karafka::Messages::Message#raw_key` for keys,
 - `Karafka::Messages::Message#raw_headers` for headers.
 
-Here's an expanded example that illustrates the use of lazy deserialization across all components of a message. This example filters messages based on the content of the raw payload and headers, then processes and prints data from the deserialized payload and key:
+Here is an expanded example that illustrates the use of lazy deserialization across all components of a message. This example filters messages based on the content of the raw payload and headers, then processes and prints data from the deserialized payload and key:
 
 ```ruby
 class EventsConsumer < ApplicationConsumer
@@ -203,7 +203,7 @@ Lazy deserialization provides following benefits:
 
 - **Flexibility and Control**: Developers have more control over when and how data is processed, allowing for customized handling based on the content of the messages.
 
-Lazy deserialization in Karafka provides a robust mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
+Lazy deserialization in Karafka provides a mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
 
 ## Handling of Tombstone Messages
 
@@ -235,7 +235,7 @@ Instead of explicitly defining a deserializer for every topic, Karafka allows yo
 
 You can implement a custom deserializer that evaluates each message and applies the appropriate deserialization strategy based on the message's topic or other metadata (e.g., headers). Karafka will then use this dynamic deserializer when using the [Admin API](Infrastructure-Admin-API), [Iterator API](Pro-Iterator-API), and the [Web UI Explorer](Pro-Web-UI-Explorer).
 
-Here's an example of a dynamic deserializer setup:
+Here is an example of a dynamic deserializer setup:
 
 ```ruby
 # Dynamic deserializer that decides what format to use
@@ -281,15 +281,15 @@ This approach simplifies the management of topics and makes the deserialization 
 
 ## Apache Avro
 
-[Apache Avro](https://avro.apache.org/) is a data serialization system developed by the Apache Foundation, used widely in the Big Data and cloud computing field. It provides a compact, fast, binary data format with rich data structures. Its schema evolution capability allows for flexibility in data reading and writing, with old software being able to read new data and vice versa. This language-agnostic system aids efficient data interchange between programs and supports a seamless and efficient way of data storage, encoding, and decoding.
+[Apache Avro](https://avro.apache.org/) is a data serialization system developed by the Apache Foundation, used widely in the Big Data and cloud computing field. It provides a compact, fast, binary data format with rich data structures. Its schema evolution capability allows for flexibility in data reading and writing, with old software being able to read new data and vice versa. This language-agnostic system aids efficient data interchange between programs and supports an efficient way of data storage, encoding, and decoding.
 
 From the perspective of the Karafka framework, Avro is a serialization and deserialization layer, and there are no special things that are required to use it aside from making sure that you both serialize and deserialize your data using it.
 
 In other words, Avro is used to convert complex data structures into a format that can be easily transported over the network or stored, and later be converted back into the original data structure. This is crucial when working with Kafka, as data often needs to be sent between different services or stored for later use.
 
-The Ruby ecosystem offers an excellent gem for working with Avro called `avro_turf`. This gem provides a simple and effective way to encode and decode data using Avro, and it's compatible with both local filesystem schemas and schema registries.
+The Ruby ecosystem offers an excellent gem for working with Avro called `avro_turf`. This gem provides a simple and effective way to encode and decode data using Avro, and it is compatible with both local filesystem schemas and schema registries.
 
-Let's explain these two concepts:
+Here is an explanation of these two concepts:
 
 1. **Local Filesystem Schemas**: When using Avro, you define how your data should be structured using schemas. These schemas are often stored as `.avsc` files on your local filesystem. `avro_turf` can read these schema files and use them to encode your data into Avro's binary format or decode binary data back into its original form.
 
@@ -299,7 +299,7 @@ Let's explain these two concepts:
 
 #### Local Filesystem Schemas
 
-To serialize data with Avro and `avro_turf` for use with Karafka, you'll first need to define an Avro schema for the data you want to send. Once you have the schema, you need to create an Avro reference object, point it to your schema and ensure that during deserialization, Karafka knows which schema to use:
+To serialize data with Avro and `avro_turf` for use with Karafka, you will first need to define an Avro schema for the data you want to send. Once you have the schema, you need to create an Avro reference object, point it to your schema and ensure that during deserialization, Karafka knows which schema to use:
 
 ```ruby
 avro = AvroTurf.new(schemas_path: 'app/schemas/')
@@ -373,7 +373,7 @@ AvroProducer.produce_async(
 
 ### Deserialization using Avro
 
-When receiving Avro-encoded messages in a Karafka consumer, you'll need to deserialize these messages back into a usable form. One efficient way to handle this is by creating a custom Karafka deserializer.
+When receiving Avro-encoded messages in a Karafka consumer, you will need to deserialize these messages back into a usable form. One efficient way to handle this is by creating a custom Karafka deserializer.
 
 #### Local Filesystem Schemas
 

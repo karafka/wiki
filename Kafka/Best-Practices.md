@@ -12,7 +12,7 @@ This page covers critical decisions and recommendations when working with Apache
 
 ## KRaft Mode
 
-ZooKeeper was removed entirely in Kafka 4.0, so all new deployments should use KRaft mode. If you're running an existing ZooKeeper-based cluster, use Kafka 3.9 as your bridge release for migration - and don't delay planning, as ZooKeeper security support ended in November 2025.
+ZooKeeper was removed entirely in Kafka 4.0, so all new deployments should use KRaft mode. If you are running an existing ZooKeeper-based cluster, use Kafka 3.9 as your bridge release for migration - and do not delay planning, as ZooKeeper security support ended in November 2025.
 
 KRaft provides substantial operational improvements: support for up to 2 million partitions (versus 200,000 with ZooKeeper), dramatically faster controller failovers, and a simplified architecture with a single system to configure and monitor.
 
@@ -34,9 +34,9 @@ Pick a count with many divisors (6, 12, 24, 60) to give yourself flexible consum
 
 Messages are only ordered within a partition; cross-partition ordering is never guaranteed. The tradeoffs: too few partitions limit parallelism, while too many increase end-to-end latency (roughly 20ms per 1,000 partitions replicated), create more file handles, and extend broker recovery time.
 
-!!! warning "Warning"
+!!! warning "Stay Under 4,000 Partitions Per Broker"
 
-    Stay under 4,000 partitions per broker. Beyond this, you'll see degraded performance and longer recovery times.
+    Stay under 4,000 partitions per broker. Beyond this, you will see degraded performance and longer recovery times.
 
 ## Replication and Durability
 
@@ -54,7 +54,7 @@ For production workloads where write availability during maintenance matters, us
 
 ## Compression
 
-Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio - approximately 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
+Enable compression at the producer level using LZ4, which offers the best balance of speed and compression ratio - about 594 MB/s compression with 2,428 MB/s decompression. This suits high-throughput workloads without a significant latency impact.
 
 On the broker side, set `compression.type=producer` to store messages using whatever compression the producer applied. This avoids recompression overhead. Never compress at the broker level; it just adds unnecessary CPU load.
 
@@ -66,7 +66,7 @@ On the broker side, set `compression.type=producer` to store messages using what
 
 Kafka's scaling model differs fundamentally from traditional job queues like Sidekiq or RabbitMQ. In those systems, adding workers immediately increases parallelism. In Kafka, parallelism is bounded by partition count - one partition can only be consumed by one consumer within a consumer group.
 
-This means 10 consumers on a 3-partition topic leaves 7 consumers sitting idle. Match your partition count to your expected maximum consumer count, and don't expect adding consumers to solve performance problems once you've hit that ceiling.
+This means 10 consumers on a 3-partition topic leaves 7 consumers sitting idle. Match your partition count to your expected maximum consumer count, and do not expect adding consumers to solve performance problems once you have hit that ceiling.
 
 Watch for hot partitions caused by skewed key distribution. If most messages share similar keys, they end up in the same partition, creating a bottleneck that additional consumers cannot help with.
 
@@ -109,7 +109,7 @@ For most applications, broker sizing is driven by:
 
 **Scale consumers to match partitions**: Run enough consumer processes to cover your partition count. Additional processes beyond partition count provide failover capacity but not additional throughput.
 
-**Don't over-correlate**: You can safely run 50 consumer processes against a 3-broker cluster, or 3 consumer processes against a 12-broker cluster. These dimensions scale independently until you hit extreme connection counts.
+**Do not over-correlate**: You can safely run 50 consumer processes against a 3-broker cluster, or 3 consumer processes against a 12-broker cluster. These dimensions scale independently until you hit extreme connection counts.
 
 !!! tip "Connection Pooling at Scale"
 
@@ -125,7 +125,7 @@ Use a retry topic pattern with increasing delays:
 main-topic → topic-retry-1 → topic-retry-2 → topic-retry-3 → topic-dlq
 ```
 
-Limit retries to 3-5 attempts with exponential backoff before routing to the DLQ. Send non-retryable errors (deserialization failures, schema mismatches) directly to the DLQ - there's no point retrying something that will never succeed.
+Limit retries to 3-5 attempts with exponential backoff before routing to the DLQ. Send non-retryable errors (deserialization failures, schema mismatches) directly to the DLQ - there is no point retrying something that will never succeed.
 
 Include metadata in DLQ messages via headers: original topic, partition, offset, timestamp, and exception details. This context is invaluable when investigating failures later.
 
@@ -168,11 +168,11 @@ Use past tense for events (`created`, `updated`) and imperative for commands (`p
 
 Pick one separator style and stick with it. Mixing periods and underscores causes metric name collisions in monitoring systems. Avoid including fields that change, like team names or service owners.
 
-!!! warning "Warning"
+!!! warning "Consumer Group Names Must Be Unique Per Cluster"
 
     Consumer group names must be globally unique within the cluster. Ensure your naming scheme prevents collisions between environments if they share a cluster.
 
-Disable `auto.create.topics.enable` in production and enforce naming through CI/CD. Ad-hoc topic creation inevitably leads to inconsistent names you'll regret later.
+Disable `auto.create.topics.enable` in production and enforce naming through CI/CD. Ad-hoc topic creation inevitably leads to inconsistent names you will regret later.
 
 ## Serialization Format
 
@@ -186,7 +186,7 @@ Whatever format you choose, include a schema version indicator in your messages 
 
 ## Cluster Capacity Planning
 
-Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without sufficient headroom, this redistribution can cascade into cluster-wide issues.
+Running Kafka clusters with adequate capacity headroom is critical for fault tolerance. When a broker goes offline (planned maintenance, hardware failure, or network issues), the remaining brokers must absorb the additional load. Without enough headroom, this redistribution can cascade into cluster-wide issues.
 
 ### CPU Utilization Guidelines
 

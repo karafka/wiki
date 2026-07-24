@@ -2,7 +2,7 @@ This page lists the current maintenance status of the various Karafka versions.
 
 ## Versioning Strategy
 
-Karafka and its components utilize a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here's how we structure our versioning:
+Karafka and its components use a versioning strategy that does not strictly adhere to semantic versioning. Instead, it employs an approach to better accommodate the nature and needs of our software's development and maintenance. Here is how we structure our versioning:
 
 - **Major Version Upgrades**: The first digit in our version number represents significant rewrites or major changes in the architecture of Karafka gems. For example, transitioning from `0.x` to `1.0` or from `1.x` to `2.0` signifies transformative changes that introduce new concepts or substantially modify the system's design.
 
@@ -64,7 +64,7 @@ Karafka and its components versions or release series are categorized below into
 
 We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
 
-!!! note "Note"
+!!! note "Older Ruby May Work but Is Unsupported"
 
     If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
 
@@ -102,7 +102,7 @@ Karafka and its components are designed to maintain compatibility with all Kafka
 
 - **librdkafka Compatibility**: The underlying broker support for Karafka is anchored by the librdkafka library. As of now, librdkafka supports Kafka brokers in versions `1.0` or higher.
 
-- **Message Format**: Karafka mandates the use of Message Format v2 or later. This ensures efficient message handling and leverages the capabilities introduced in this format.
+- **Message Format**: Karafka mandates the use of Message Format v2 or later. This ensures efficient message handling and uses the capabilities introduced in this format.
 
 By adhering to these compatibility conditions, Karafka ensures its users receive a stable, reliable, and up-to-date experience when integrating with Kafka ecosystems.
 

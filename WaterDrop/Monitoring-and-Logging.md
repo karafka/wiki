@@ -22,7 +22,7 @@ producer.produce_async(topic: 'events', payload: 'data')
 producer.close
 ```
 
-!!! info "Info"
+!!! info "See `EVENTS` for All Supported Events"
 
     See the `WaterDrop::Instrumentation::Notifications::EVENTS` for the list of all the supported events.
 
@@ -112,7 +112,7 @@ Karafka [Web UI](Web-UI-Getting-Started) is a user interface for the Karafka fra
 
 WaterDrop comes equipped with a `LoggerListener`, a useful feature designed to facilitate the reporting of WaterDrop's operational details directly into the assigned logger. The `LoggerListener` provides a convenient way of tracking the events and operations that occur during the usage of WaterDrop, enhancing transparency and making debugging and issue tracking easier.
 
-However, it's important to note that this Logger Listener is not subscribed by default. This means that WaterDrop does not automatically send operation data to your logger out of the box. This design choice has been made to give users greater flexibility and control over their logging configuration.
+However, this Logger Listener is not subscribed by default. This means that WaterDrop does not automatically send operation data to your logger out of the box. This design choice has been made to give users greater flexibility and control over their logging configuration.
 
 To use this functionality, you need to manually subscribe the `LoggerListener` to WaterDrop instrumentation. Below, you will find an example demonstrating how to perform this subscription.
 
@@ -172,13 +172,13 @@ WaterDrop is configured to emit internal `librdkafka` metrics every five seconds
 
 The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
 
-!!! note "Note"
+!!! note "Metrics Mix Milliseconds and Microseconds"
 
-    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It's imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you're referencing the correct unit for each metric to maintain accuracy in your data analysis.
+    In the WaterDrop statistics metrics, specific measurements are denoted in milliseconds, while others are in microseconds. It is imperative to distinguish between these scales, as mistaking one for the other can lead to significant misinterpretations. Always ensure you are referencing the correct unit for each metric to maintain accuracy in your data analysis.
 
 ### Statistics Decorator
 
-For several attributes like `txmsgs`, `librdkafka` publishes only the totals. In order to make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
+For several attributes like `txmsgs`, `librdkafka` publishes only the totals. To make it easier to track the progress (for example number of messages sent between statistics emitted events), WaterDrop diffs all the numeric values against previously available numbers. All of those metrics are available under the same key as the metric but with additional `_d` postfix.
 
 !!! note "Decorator Scope"
 
@@ -236,7 +236,7 @@ sleep(2)
 producer.close
 ```
 
-!!! note "Note"
+!!! note "Metrics May Be Inconsistent Across Levels"
 
     The metrics returned may not be completely consistent between brokers, toppars and totals, due to the internal asynchronous nature of librdkafka. E.g., the top level tx total may be less than the sum of the broker tx values which it represents.
 
@@ -274,13 +274,13 @@ end
 # WaterDrop error occurred: Local: Broker transport failure (transport)
 ```
 
-!!! note "Note"
+!!! note "`error.occurred` Includes Synchronous librdkafka Errors"
 
     `error.occurred` will also include any errors originating from `librdkafka` for synchronous operations, including those that are raised back to the end user.
 
-!!! note "Note"
+!!! note "`error.occurred` Excludes Transaction Purge Errors"
 
-    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](WaterDrop-Transactions) documentation.
+    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, consult the [transactions](WaterDrop-Transactions) documentation.
 
 ## Acknowledgment Notifications
 
@@ -313,7 +313,7 @@ end
 
 ## Labeling API
 
-Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
+Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you will need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
 
 ## Datadog and StatsD Integration
 

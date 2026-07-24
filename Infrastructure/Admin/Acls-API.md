@@ -1,6 +1,6 @@
 # Admin ACLs (Access Control Lists) API
 
-Apache Kafka ACLs (Access Control Lists) provide a robust mechanism to control permissions and access rights for Kafka resources. They are crucial for ensuring data security, managing consumer and producer interactions, and maintaining overall cluster integrity. Karafka extends these capabilities with a simplified, Ruby-friendly API.
+Apache Kafka ACLs (Access Control Lists) provide a mechanism to control permissions and access rights for Kafka resources. They are crucial for ensuring data security, managing consumer and producer interactions, and maintaining overall cluster integrity. Karafka extends these capabilities with a simplified, Ruby-friendly API.
 
 The Karafka Admin ACLs API provides a structured and easy-to-use interface for managing Kafka ACLs. It allows developers to create, delete, and describe ACLs with Ruby symbol-based definitions, enhancing readability and ease of use compared to the direct usage of `librdkafka` types.
 
@@ -20,7 +20,7 @@ ACLs ensure that only authorized entities can access Kafka's functionalities, wh
 
 The Karafka Admin ACLs API defines several "types" that categorize and specify details for ACL management in a Kafka environment. These types are crucial for setting up detailed and secure access controls.
 
-These types play a critical role in the Karafka Admin ACLs API, providing a structured and comprehensive way to manage access controls within a Kafka environment. Understanding and utilizing these types enables you to secure and regulate operations in your Kafka clusters effectively.
+These types play a critical role in the Karafka Admin ACLs API, providing a structured way to manage access controls within a Kafka environment. Understanding and using these types enables you to secure and regulate operations in your Kafka clusters effectively.
 
 ### Resource Types
 
@@ -180,7 +180,7 @@ Permission types indicate the nature of the access being granted or denied, esse
 
 ## Usage
 
-When initializing an ACL in Karafka, you'll use several parameters to define these rules. Here's a breakdown of each argument you'll provide:
+When initializing an ACL in Karafka, you will use several parameters to define these rules. Here is a breakdown of each argument you will provide:
 
 <table>
   <thead>
@@ -192,11 +192,11 @@ When initializing an ACL in Karafka, you'll use several parameters to define the
   <tbody>
     <tr>
       <td class="nowrap"><code>resource_type</code></td>
-      <td>Determines the type of Kafka resource you're securing, such as a topic (<code>:topic</code>) or consumer group (<code>:consumer_group</code>). You can specify this as a symbol from <code>RESOURCE_TYPES_MAP</code> for readability or use a direct numerical type from <code>rdkafka</code>. Choose the resource type that aligns with the item you wish to control access to.</td>
+      <td>Determines the type of Kafka resource you are securing, such as a topic (<code>:topic</code>) or consumer group (<code>:consumer_group</code>). You can specify this as a symbol from <code>RESOURCE_TYPES_MAP</code> for readability or use a direct numerical type from <code>rdkafka</code>. Choose the resource type that aligns with the item you wish to control access to.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>resource_name</code></td>
-      <td>The specific name of the resource, like the name of a topic. This can sometimes be <code>nil</code>, mainly when your resource pattern type doesn't require a particular name. Use this to pinpoint the exact resource you're setting the ACL for.</td>
+      <td>The specific name of the resource, like the name of a topic. This can sometimes be <code>nil</code>, mainly when your resource pattern type does not require a particular name. Use this to pinpoint the exact resource you are setting the ACL for.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>resource_pattern_type</code></td>
@@ -204,7 +204,7 @@ When initializing an ACL in Karafka, you'll use several parameters to define the
     </tr>
     <tr>
       <td class="nowrap"><code>principal</code></td>
-      <td>The principal (usually a user or client identity) the ACL is for. This specifies who the ACL will apply to. It can sometimes be <code>nil</code> if you're defining a more general rule that isn't principal-specific.</td>
+      <td>The principal (usually a user or client identity) the ACL is for. This specifies who the ACL will apply to. It can sometimes be <code>nil</code> if you are defining a more general rule that is not principal-specific.</td>
     </tr>
     <tr>
       <td class="nowrap"><code>host</code></td>
@@ -304,9 +304,9 @@ end
 
 ## Summary
 
-Karafka's Admin ACLs API provides a powerful yet user-friendly way to manage Kafka ACLs, ensuring secure and authorized access to Kafka resources. By leveraging Ruby symbols and a structured API, it simplifies the process of ACL management, making it more accessible and less error-prone for Ruby developers.
+Karafka's Admin ACLs API provides a user-friendly way to manage Kafka ACLs, ensuring secure and authorized access to Kafka resources. By using Ruby symbols and a structured API, it simplifies the process of ACL management, making it more accessible and less error-prone for Ruby developers.
 
-Whether securing a small project or an enterprise-scale system, understanding and utilizing Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
+Whether securing a small project or an enterprise-scale system, understanding and using Kafka ACLs through Karafka can significantly enhance your application's security and data governance.
 
 ## See Also
 

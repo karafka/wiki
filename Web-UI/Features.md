@@ -2,11 +2,11 @@
 
 Karafka Web UI contains several features allowing you to understand your system's karafka consumption process.
 
-Below you can find a comprehensive description of the most important features you can use.
+Below you can find a description of the most important features you can use.
 
-!!! info "Karafka Pro Enhancements"
+!!! info "Web UI Enhancements in Karafka Pro"
 
-    Karafka Pro offers enhanced Web UI with many additional metrics and functionalities.
+    [Karafka Pro](https://karafka.io/#become-pro) adds many additional Web UI metrics and functionalities.
 
 !!! tip "Web UI Scope and Simplifications"
 
@@ -14,19 +14,19 @@ Below you can find a comprehensive description of the most important features yo
 
 ## Dashboard
 
-!!! info "Additional Graphs in Pro"
+!!! info "More Dashboard Graphs in Karafka Pro"
 
-    More graphs are available only in our Pro offering.
+    [Karafka Pro](https://karafka.io/#become-pro) adds more graphs to the dashboard.
 
-The dashboard provides an all-encompassing insight into your Karafka operations. It’s an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
+The dashboard provides an all-encompassing insight into your Karafka operations. It is an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
 
 <img src="https://karafka.io/assets/misc/printscreens/web-ui/dashboard.png" alt="karafka web dashboard view" />
 
 ## Consumers
 
-!!! info "Enhanced Consumer Metrics in Pro"
+!!! info "More Consumer Metrics in Karafka Pro"
 
-    More metrics and detailed consumers inspection are available only in our Pro offering.
+    [Karafka Pro](https://karafka.io/#become-pro) adds more consumer metrics and detailed consumer inspection.
 
 The consumers status view allows users to view and monitor the performance of Kafka-running consumers. The page displays real-time data and aggregated metrics about the status of the consumers, such as their current offset, lag, the current state of consumers, and others.
 
@@ -38,7 +38,7 @@ The following metrics are available for each consumer:
 
 - `Started` - The moment when the given consumer process was started.
 - `Memory` - RSS (Resident Set Size) measures memory usage in an operating system. It represents the portion of a process's memory held in RAM and is "resident" in the system.
-- `Utilization` - Displays the number of threads in a given process against a number of threads actively processing data in a given moment.
+- `Utilization` - Compares the number of threads actively processing data at a given moment against the total number of threads in a given process.
 - `Total lag` - Sumed lag from all the partitions actively consumed by a given process.
 
 ### Consumer Group Join States
@@ -98,9 +98,9 @@ The `join_state` field reflects the internal state of the librdkafka consumer gr
 
 ## Jobs
 
-!!! info "Info"
+!!! info "More Job Metrics in Karafka Pro"
 
-    More metrics are available in our Pro offering.
+    [Karafka Pro](https://karafka.io/#become-pro) adds more metrics to the jobs view.
 
 This page provides a real-time view of the jobs that are currently being processed, including information such as:
 
@@ -138,11 +138,11 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
 ## Explorer
 
-!!! info "Pro Only Functionality"
+!!! info "Data Explorer Is a Pro Feature"
 
-    This functionality is available only in our Pro offering.
+    The Data Explorer is part of [Karafka Pro](https://karafka.io/#become-pro).
 
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](Pro-Web-UI#explorer).
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for viewing. You can read more about it [here](Pro-Web-UI#explorer).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />
@@ -150,9 +150,9 @@ Karafka Data Explorer is an essential tool for users seeking to navigate and com
 
 ## Search
 
-!!! info "Pro Only Functionality"
+!!! info "Search Is a Pro Feature"
 
-    This functionality is available only in our Pro offering.
+    The Search feature is part of [Karafka Pro](https://karafka.io/#become-pro).
 
 The Search feature is a tool that enables users to search and filter messages efficiently. This feature allows users to search within one or multiple partitions, start from a specific time or offset, apply custom matchers to payloads, keys, or headers, and use custom deserializers for data.
 
@@ -180,9 +180,9 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 ## DLQ / Dead
 
-!!! info "Pro Only Functionality"
+!!! info "DLQ Dashboard Is a Pro Feature"
 
-    This functionality is available only in our Pro offering.
+    The DLQ dashboard is part of [Karafka Pro](https://karafka.io/#become-pro).
 
 The Dead Letter Queue (DLQ) dashboard allows users to view messages that have failed to be processed and were skipped and moved to the Dead Letter Queue topic with their original details.
 
@@ -247,5 +247,5 @@ Each check may display one of the following statuses:
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
 - [Pro Web UI](Pro-Web-UI) - Advanced Pro features for Web UI
-- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Monitoring and logging strategies
 - [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI

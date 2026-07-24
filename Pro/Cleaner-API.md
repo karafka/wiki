@@ -18,9 +18,9 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
 
 ## Using Cleaner API
 
-When utilizing the Cleaner API, it is paramount to understand the implications on the message's data.
+When using the Cleaner API, it is paramount to understand the implications on the message's data.
 
-Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
+Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
 
 ### Cleaning One Message at a Time
 
@@ -51,7 +51,7 @@ end
 
 ### Automatic Cleaning with `#each`
 
-The Cleaner API allows you to automate the cleanup process for a more streamlined approach. By providing the `clean: true` parameter to the `#each` method, each message's payload is automatically cleaned from memory as soon as it's processed.
+The Cleaner API allows you to automate the cleanup process for a more streamlined approach. By providing the `clean: true` parameter to the `#each` method, each message's payload is automatically cleaned from memory as soon as it is processed.
 
 ```ruby
 def consume
@@ -78,7 +78,7 @@ else
 end
 ```
 
-Regardless of where you are in your code, as long as the message object is accessible, you can leverage the `#cleaned?` method to determine the cleaning state of the message and proceed accordingly.
+Regardless of where you are in your code, as long as the message object is accessible, you can use the `#cleaned?` method to determine the cleaning state of the message and proceed accordingly.
 
 ## Benefits
 
@@ -134,7 +134,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/1mb_stdev.png" />
 </p>
 
-**Conclusion**: For messages approximately 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
+**Conclusion**: For messages about 1MB in size, the Cleaner API proves invaluable. It drastically cuts memory usage and stabilizes memory consumption patterns, reducing fluctuations and ensuring smoother, more efficient operations.
 
 ### Message size of 100KB
 
@@ -158,7 +158,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/10kb_stdev.png" />
 </p>
 
-**Conclusion**: When processing messages of approximately 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
+**Conclusion**: When processing messages of about 10KB, the Cleaner API's influence is more nuanced. The memory savings hover around 4-5%, which might seem modest compared to larger payloads. However, the standout benefit lies in the considerable reduction in standard deviation. This reduction means memory usage is more predictable, leading to improved and more consistent operational performance.
 
 ### Message size of 1KB
 
@@ -170,7 +170,7 @@ Each fetched batch contained at most 500 messages.
   <img src="https://karafka.io/assets/misc/charts/cleaner_api/1kb_stdev.png" />
 </p>
 
-**Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application doesn't notably affect the memory usage metrics for such small messages. However, it's worth noting that even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there's an anticipation of intermittently receiving messages with increased payloads.
+**Conclusion**: For messages approximating 1KB in size, the impact of employing the Cleaner API is virtually nonexistent. Its application does not notably affect the memory usage metrics for such small messages. However, even if most messages are of this size, there could be occasional or periodic inflows of larger payloads. In such scenarios, the Cleaner API can help manage these sporadic spikes in memory usage. Therefore, even with predominantly 1KB messages, integrating the Cleaner API can be a prudent strategy if there is an anticipation of intermittently receiving messages with increased payloads.
 
 ## Limitations
 
@@ -180,15 +180,15 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 - **Not Suitable for Tiny Payloads**: The efficacy of the Cleaner API is more pronounced for larger message payloads, typically those sized 10KB and above. When dealing with tiny payloads, the memory management benefits are negligible, and the overhead might overshadow any gains.
 
-- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
+- **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API cannot be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
 
-- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Please do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
+- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it is required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
 
 - **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
 
-- **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it's crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
+- **Lifecycle Hooks Limitations**: When working with lifecycle hooks like `#shutdown` or `#revoked`, it is crucial to approach carefully if Cleaner API has been used on the messages. The payloads for these cleaned messages will be unavailable from these hooks, which could affect operations relying on them.
 
-Understanding these limitations is essential for users to effectively and efficiently leverage the Cleaner API without encountering unforeseen issues or complications in their processes.
+Understanding these limitations is essential for users to effectively and efficiently use the Cleaner API without encountering unforeseen issues or complications in their processes.
 
 ## Example Use Cases
 

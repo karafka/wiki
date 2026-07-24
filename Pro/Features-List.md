@@ -26,7 +26,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) - Karafka's Expiring Messages feature allows messages to be excluded from processing automatically in case they are too old.
 
-- [Routing Patterns](Pro-Routing-Patterns) - Karafka's Routing Patterns feature allows users to define routes using regular expressions. When a Kafka topic matches the specified pattern, Karafka automatically initiates consumption, streamlining the handling of dynamically created topics without manual configuration.
+- [Routing Patterns](Pro-Routing-Patterns) - Karafka's Routing Patterns feature allows users to define routes using regular expressions. When a Kafka topic matches the specified pattern, Karafka automatically starts consumption, streamlining the handling of dynamically created topics without manual configuration.
 
 - [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) - Rate limiting allows you to control the pace at which messages are consumed.
 
@@ -42,7 +42,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 
-- [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results seamlessly to subsequent stages or other applications.
+- [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results to subsequent stages or other applications.
 
 - [Recurring Tasks](Pro-Recurring-Tasks) - Supports defining tasks that run at specific times on a regular basis, similar to cron jobs. It is ideal for automating periodic operations directly within Karafka, ensuring consistent and reliable execution.
 
@@ -60,4 +60,4 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability) - Enhanced Reliability provides improvements to achieve better performance and stability, especially on jobs that perform IO operations.
 
-- [Commercial Friendly License](Pro-License-Comm) - Besides its useful functionalities, buying Karafka Pro grants your organization a Karafka commercial license instead of the GNU LGPL, avoiding any legal issues your lawyers might raise. Please see the [Pro FAQ](Pro-FAQ) for further licensing details, including options for distributing Karafka Pro with your products.
+- [Commercial Friendly License](Pro-License-Comm) - Besides its useful functionalities, buying Karafka Pro grants your organization a Karafka commercial license instead of the GNU LGPL, avoiding any legal issues your lawyers might raise. See the [Pro FAQ](Pro-FAQ) for further licensing details, including options for distributing Karafka Pro with your products.

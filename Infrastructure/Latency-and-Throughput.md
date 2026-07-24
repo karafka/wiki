@@ -8,7 +8,7 @@ The producer and consumer sides of a Kafka system have distinct roles and,  cons
 
 !!! info "Understanding the Complexity of Latency and Throughput Management"
 
-    Latency management in Karafka is a complex and multifaceted topic. While this document provides a comprehensive overview of latency management techniques and best practices, it only covers some possible aspects. Many factors influence latency, including framework configuration, message types, scale, and the nature of your processing workload. These factors often extend beyond the scope of framework documentation.
+    Latency management in Karafka is a complex and multifaceted topic. While this document provides an overview of latency management techniques and best practices, it only covers some possible aspects. Many factors influence latency, including framework configuration, message types, scale, and the nature of your processing workload. These factors often extend beyond the scope of framework documentation.
 
     If you are seeking in-depth assistance or facing persistent latency issues, we recommend exploring our [commercial offerings](https://karafka.io/#become-pro), which include, among other things, high-performance features, support, and consultancy services.
 
@@ -95,7 +95,7 @@ Compression reduces the size of the messages sent to the broker, potentially dec
 
 The `request.required.acks` parameter determines the number of acknowledgments the leader broker must receive from an in-sync replica (ISR) brokers before responding to the producer. This setting is crucial for balancing message durability and producer latency.
 
-- **0 (No Acknowledgement)**: The broker does not respond to the producer, and the message is considered delivered the moment it is dispatched. This setting provides the lowest latency since the producer doesn't wait for acknowledgments. It's highly performant, allowing for rapid message dispatch, but it risks data loss because there's no confirmation that the broker received the message. Suitable for non-critical data where speed is crucial.
+- **0 (No Acknowledgement)**: The broker does not respond to the producer, and the message is considered delivered the moment it is dispatched. This setting provides the lowest latency since the producer does not wait for acknowledgments. It is highly performant, allowing for rapid message dispatch, but it risks data loss because there is no confirmation that the broker received the message. Suitable for non-critical data where speed is crucial.
 
 - **1 (Leader Acknowledgement)**: The leader broker responds once it has written the message to its log. This setting balances latency and durability, providing a quick acknowledgment while ensuring the leader broker logs the message. It offers a good trade-off for most use cases, ensuring reasonable reliability with moderate latency.
 
@@ -121,7 +121,7 @@ The `socket.nagle.disable` parameter in librdkafka controls the use of the Nagle
 
     Starting from **Karafka 2.5.1** and **WaterDrop 2.8.7**, the Nagle algorithm is **disabled by default** (`socket.nagle.disable: true`). This change was made to improve latency out of the box, ensuring messages are sent immediately without waiting to combine them into larger packets.
 
-    **For older versions**: If you're using Karafka < 2.5.1 or WaterDrop < 2.8.7, the Nagle algorithm may still be enabled by default. It is **recommended** to explicitly disable it by setting `socket.nagle.disable: true` in your configuration to achieve better latency.
+    **For older versions**: If you are using Karafka < 2.5.1 or WaterDrop < 2.8.7, the Nagle algorithm may still be enabled by default. It is **recommended** to explicitly disable it by setting `socket.nagle.disable: true` in your configuration to achieve better latency.
 
 - `true` (default since Karafka 2.5.1 and WaterDrop 2.8.7): Disables the Nagle algorithm, ensuring messages are sent immediately without waiting to combine them into larger packets. This setting significantly reduces latency, particularly in scenarios with many small messages, but may increase network overhead due to more frequent transmissions.
 
@@ -131,9 +131,9 @@ When configuring `socket.nagle.disable`, consider your application's priorities:
 
 - **Low Latency Needs** (default in newer versions): For Karafka >= 2.5.1 and WaterDrop >= 2.8.7, the Nagle algorithm is disabled by default. For older versions, explicitly set `socket.nagle.disable: true` to minimize latency.
 
-- **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to leverage the Nagle algorithm for reduced network traffic.
+- **Throughput Optimization**: If your application prioritizes throughput over latency and can tolerate increased latency, explicitly set `socket.nagle.disable` to `false` to use the Nagle algorithm for reduced network traffic.
 
-Here's an example configuration:
+Here is an example configuration:
 
 ```ruby
 class App < Karafka::App
@@ -172,7 +172,7 @@ producer.produce_many_async(
 
 Tuning producers may seem straightforward, but managing consumers is a different and more complex matter. Understanding and optimizing consumer latency and throughput requires a deep dive into various aspects spanning several book chapters. The sections below should be viewed as an introduction rather than exhaustive documentation.
 
-Consumer management is influenced by numerous external factors that go beyond the framework itself. These include:
+Consumer management is influenced by many external factors that go beyond the framework itself. These include:
 
 - **Types of Data Consumed**: Different data types may require different processing strategies and resources.
 
@@ -204,11 +204,11 @@ The strategy and methods selected for consumer management can vary significantly
 
 !!! info "Scope of this Guide"
 
-    This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, it's important to note that system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
+    This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
 
 ### Prerequisites and Initial References
 
-To effectively understand Karafka consumer processes latency and the topics discussed in this document, it is essential to be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
+To effectively understand Karafka consumer processes latency and the topics discussed in this document, be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
 
 - [Routing DSL](Consumer-Groups-Routing) including multi-consumer group and multi-subscription group operations.
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) design of the framework.
@@ -373,7 +373,7 @@ The presented example illustrates how big of an impact latency configuration can
 
 #### Per Topic Configuration
 
-In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, it's important to understand the implications of such configurations.
+In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, understand the implications of such configurations.
 
 When reconfiguring settings per topic, Karafka will create a distinct subscription group and an independent connection to Kafka for each topic with altered non-default settings. This isolation ensures that the specific configurations are applied correctly but also means that these topics will be managed independently, which can impact resource usage and system behavior.
 
@@ -415,11 +415,11 @@ end
 
 ### Parallel Processing
 
-Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka leverages native Ruby threads and supports multiple concurrency features to handle processing efficiently.
+Aside from the fast polling of data from Kafka, Karafka optimizes the processing phase to reduce latency by processing more data in parallel. Even when data is in the in-process buffer, latency increases if it cannot be processed promptly. Karafka uses native Ruby threads and supports multiple concurrency features to handle processing efficiently.
 
 !!! warning "Polling-Related Factors Affecting Parallel Processing"
 
-    Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It's important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
+    Various polling-related factors can impact Karafka's ability to distribute and process obtained data in parallel. In some scenarios, the nature of the data or how it is polled from Kafka may prevent or reduce Karafka's ability to effectively distribute and process work in parallel. It is important to consider these factors when configuring and tuning your Karafka setup to ensure optimal performance.
 
 Below, you can find a table summarizing the key aspects of Karafka's parallel processing capabilities, along with detailed descriptions and tips for optimizing latency and throughput:
 
@@ -467,7 +467,7 @@ Below, you can find a table summarizing the key aspects of Karafka's parallel pr
   <tr>
     <td>Swarm Mode for Enhanced Concurrency</td>
     <td>
-      Forks independent processes to optimize CPU utilization, leveraging Ruby's Copy-On-Write (CoW) mechanism.
+      Forks independent processes to optimize CPU utilization, using Ruby's Copy-On-Write (CoW) mechanism.
       It may enhance throughput and scalability by distributing the workload across multiple CPU cores.
     </td>
     <td>
@@ -564,11 +564,11 @@ If a Karafka consumer process is assigned only one topic partition, the prefetch
 
 #### Conclusion
 
-Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and utilizing strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This ensures that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
+Understanding and configuring the prefetching behavior in Karafka is crucial for optimizing performance, especially under varying data loads. By adjusting settings and using strategies like multiple subscription groups and connection multiplexing, you can enhance Karafka's ability to parallelize work, reduce latency, and increase throughput. This ensures that your Karafka deployment remains efficient and responsive, even during data spikes and lags recovery.
 
 ### Subscription Group Blocking Polls
 
-Karafka is designed to prebuffer data to ensure efficient message processing. Still, it's important to understand that this prefetched data is not utilized until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
+Karafka is designed to prebuffer data to ensure efficient message processing. Still, it is important to understand that this prefetched data is not used until all jobs based on data from the previous batch poll are completed. This behavior is by design and is a common characteristic of Kafka processors, not just in Ruby.
 
 This approach prevents race conditions and ensures data consistency. The poll operation in Kafka acts as a heartbeat mechanism governed by the `max.poll.interval.ms` setting. This interval defines the maximum delay between poll invocations before the consumer is considered dead, triggering a rebalance. By ensuring that all jobs from the previous poll are finished before new data is used, Karafka maintains data integrity and avoids processing the same message multiple times.
 
@@ -590,11 +590,11 @@ To address these issues, consider the following strategies:
 
 ### Summary
 
-Managing consumers in Karafka involves numerous internal and external factors. Each case presents unique challenges, requiring a tailored approach to optimization.
+Managing consumers in Karafka involves many internal and external factors. Each case presents unique challenges, requiring a tailored approach to optimization.
 
 Consumer management is influenced by data types, infrastructure, processing nature (CPU vs. IO-intensive), data volume, and worker threads. Key Karafka settings like `max_wait_time`, `max_messages`, and `fetch.wait.max.ms` play a crucial role in data fetching and processing efficiency.
 
-External factors, such as infrastructure setup, network conditions, and data production patterns, can significantly impact performance. To stay ahead of these potential issues, it's crucial to emphasize the need for regular monitoring of consumption and processing latency. This practice is key to identifying bottlenecks and ensuring the system's responsiveness.
+External factors, such as infrastructure setup, network conditions, and data production patterns, can significantly impact performance. To stay ahead of these potential issues, it is crucial to emphasize the need for regular monitoring of consumption and processing latency. This practice is key to identifying bottlenecks and ensuring the system's responsiveness.
 
 Optimization strategies, including multiple subscription groups, connection multiplexing, and virtual partitions, help balance workloads and enhance parallel processing. Each use case demands a unique configuration, underscoring the need for a thorough understanding of the framework and application requirements.
 

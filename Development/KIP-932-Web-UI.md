@@ -250,7 +250,7 @@ end
 **For share groups**:
 
 - State (EMPTY/STABLE/DEAD only)
-- NO join_state (doesn't exist)
+- NO join_state (does not exist)
 - NO rebalance metrics (cooperative model)
 - Possibly: acquisition lock duration, delivery attempt limit
 
@@ -282,7 +282,7 @@ end
 
 **File**: `lib/karafka/web/ui/models/health.rb`
 
-- `fetch_rebalance_ages` method doesn't apply to share groups
+- `fetch_rebalance_ages` method does not apply to share groups
 - Lag aggregation semantics differ for share groups
 - May need separate health calculations per group type
 

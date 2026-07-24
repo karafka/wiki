@@ -2,7 +2,7 @@
 
 !!! tip "Kafka Configuration Variability"
 
-    The defaults and exact list of cluster configuration options may differ between various Kafka versions. For the most accurate information, please refer to the documentation for the specific Kafka version.
+    The defaults and exact list of cluster configuration options may differ between various Kafka versions. For the most accurate information, refer to the documentation for the specific Kafka version.
 
 <style>
   .md-grid {

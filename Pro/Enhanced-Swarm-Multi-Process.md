@@ -4,7 +4,7 @@ Karafka's Enhanced Swarm / Multi-Process mode introduces Pro enhancements that e
 
 This documentation only covers extra functionalities enhancing the Swarm feature.
 
-Please refer to the [Swarm](Infrastructure-Swarm-Multi-Process) documentation for more details on its core principles.
+Refer to the [Swarm](Infrastructure-Swarm-Multi-Process) documentation for more details on its core principles.
 
 ## Enhanced Liveness Listener
 
@@ -40,7 +40,7 @@ Once the listener subscribes, it will actively report any abnormalities to the s
 
 ### Configuration Parameters
 
-The Enhanced Liveness Listener accepts several parameters to customize its behavior. Here’s a table outlining the arguments, their expected types, default values, and descriptions:
+The Enhanced Liveness Listener accepts several parameters to customize its behavior. Here is a table outlining the arguments, their expected types, default values, and descriptions:
 
 <table>
   <thead>
@@ -120,7 +120,7 @@ Allocating specific topics to specific nodes allows for more efficient resource 
 
 - **Improving Performance**: Tailoring node assignments can help optimize the processing time by ensuring that nodes are not overwhelmed by attempting to subscribe and process messages from topics that are too resource-intensive for their capacity.
 
-In Karafka, configuring node assignments is straightforward within the routing setup, utilizing the `#swarm` method to direct topic subscriptions to specified nodes. Nodes are indexed starting at `0`, allowing for individual or ranges of nodes to be targeted. Without explicit assignments, topics default to being accessible by all nodes. Below is a configuration example to demonstrate node assignment usage:
+In Karafka, configuring node assignments is straightforward within the routing setup, using the `#swarm` method to direct topic subscriptions to specified nodes. Nodes are indexed starting at `0`, allowing for individual or ranges of nodes to be targeted. Without explicit assignments, topics default to being accessible by all nodes. Below is a configuration example to demonstrate node assignment usage:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -156,7 +156,7 @@ end
 
 Direct Assignments allow you to specify which nodes should handle which topics and partitions.
 
-Configuring Direct Assignments involves specifying the partitions and the nodes that should handle them within the Karafka routing setup. Here's how you can define direct assignments for your topics:
+Configuring Direct Assignments involves specifying the partitions and the nodes that should handle them within the Karafka routing setup. Here is how you can define direct assignments for your topics:
 
 ```ruby
 class KarafkaApp < Karafka::App

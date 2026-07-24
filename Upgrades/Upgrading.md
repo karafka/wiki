@@ -1,8 +1,8 @@
-This documentation page provides recommended strategies for upgrading Karafka and its dependencies to ensure a smooth and seamless upgrade process. Upgrading Karafka and its dependencies is essential to benefit from the latest features, bug fixes, and security enhancements. It is necessary to follow these strategies to minimize disruptions and avoid compatibility issues during the upgrade.
+This documentation page provides recommended strategies for upgrading Karafka and its dependencies to ensure a smooth upgrade process. Upgrading Karafka and its dependencies is essential to benefit from the latest features, bug fixes, and security enhancements. It is necessary to follow these strategies to minimize disruptions and avoid compatibility issues during the upgrade.
 
 !!! tip "Pro & Enterprise Upgrade Support"
 
-    If you're gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you've got a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
+    If you are gearing up to upgrade to the latest Karafka version and are a Pro or Enterprise user, remember you have a dedicated lifeline! Reach out via the dedicated Slack channel for direct support to ensure everything has been covered.
 
 ## Pre-Upgrade Considerations
 
@@ -14,7 +14,7 @@ This documentation page provides recommended strategies for upgrading Karafka an
 
 1. **Test Environment**: Set up a separate test environment that closely mirrors your production environment. Perform the upgrade and necessary tests in this environment before applying it to the production environment. This allows you to identify and resolve any potential issues or conflicts beforehand.
 
-Considering these points, you'll be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
+Considering these points, you will be well-prepared for the upgrade process and can minimize potential disruptions or compatibility issues.
 
 ## Why Staying Current Matters
 
@@ -40,13 +40,13 @@ The practical recommendation is: **apply patch releases as soon as they are avai
 
 1. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
 
-1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, utilizing a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
+1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, using a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
 
 1. **Deploy to production**: When deploying the upgraded Karafka application, it is recommended first to deploy all the consumers and only then deploy the Web UI component. This sequential deployment ensures that the consumers are up and running to process incoming messages from Kafka while the Web UI is being upgraded.
 
     If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
-    It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+    Ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
 1. **Monitor**: During and after the upgrade, closely monitor the application's performance, logs, and error reports.
 

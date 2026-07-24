@@ -61,9 +61,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Pro Enhanced Adapter Adds More Features"
 
-    [Pro Enhanced ActiveJob](Pro-Consumer-Groups-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
+    [Pro Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) adapter supports `Long-Running Jobs`, `Virtual Partitions`, `Ordered Jobs`, `Scheduled Jobs`, and other Pro features.
 
 ## Usage
 
@@ -127,7 +127,7 @@ Job.perform_all_later(jobs)
 
 ## `karafka_options` Partial Inheritance
 
-When an ActiveJob class defines `karafka_options`, these options are designed to be inherited by any subclass of the job. This inheritance mechanism ensures that all the settings are consistently applied across different jobs, simplifying configuration management and promoting reusability.
+When an Active Job class defines `karafka_options`, these options are designed to be inherited by any subclass of the job. This inheritance mechanism ensures that all the settings are consistently applied across different jobs, simplifying configuration management and promoting reusability.
 
 By default, when a subclass inherits from a parent job class with predefined `karafka_options`, the subclass automatically inherits all of these options. If no explicit `karafka_options` are defined in the subclass, it will use the options set in its parent class.
 
@@ -164,7 +164,7 @@ Karafka marks each job as consumed using `#mark_as_consumed` after successfully 
 
 Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Consumer-Groups-Error-Handling-and-Back-Off-Policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
 
-Please keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
+Keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/aj_error_handling.svg" />
@@ -172,7 +172,7 @@ Please keep in mind that **as long as** the error persists, **no** other jobs fr
 
 ## Usage With the Dead Letter Queue
 
-The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of ActiveJob jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
+The Karafka Active Job adapter is fully compatible with the [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue) feature. Setting the `independent` flag to `true` when configuring DLQ with Active Job is advisable. This recommendation is based on the nature of Active Job jobs being inherently independent. The `independent` flag enhances the DLQ's handling of job failures by treating each job separately, aligning with Active Job's operational characteristics.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -239,19 +239,19 @@ Current.user_id = 1
 Job.perform_later # the job will output "user_id: 1"
 ```
 
-Karafka handles CurrentAttributes by including them as part of the job serialization process before pushing them to Kafka. These attributes are then deserialized by the ActiveJob consumer and set back in your CurrentAttributes classes before executing the job.
+Karafka handles CurrentAttributes by including them as part of the job serialization process before pushing them to Kafka. These attributes are then deserialized by the Active Job consumer and set back in your CurrentAttributes classes before executing the job.
 
 This approach is based on Sidekiq's approach to persisting current attributes: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
 
 ## ActiveJob Continuation
 
-Karafka supports Rails 8.1+ ActiveJob Continuation feature, which allows jobs to pause and resume their execution. This is useful for long-running jobs that need to be broken down into smaller steps, enabling jobs to be interrupted and resumed across application restarts.
+Karafka supports Rails 8.1+ Active Job Continuation feature, which allows jobs to pause and resume their execution. This is useful for long-running jobs that need to be broken down into smaller steps, enabling jobs to be interrupted and resumed across application restarts.
 
 ### Configuration for OSS
 
-In the OSS (Open Source) version of Karafka, ActiveJob Continuation requires specific configuration because delayed resumption is not available without the Pro [Scheduled Messages](Pro-Scheduled-Messages) feature.
+In the OSS (Open Source) version of Karafka, Active Job Continuation requires specific configuration because delayed resumption is not available without the Pro [Scheduled Messages](Pro-Scheduled-Messages) feature.
 
-To use ActiveJob Continuation in OSS Karafka, configure jobs to resume immediately without delay:
+To use Active Job Continuation in OSS Karafka, configure jobs to resume immediately without delay:
 
 ```ruby
 class ProcessImportJob < ActiveJob::Base
@@ -298,12 +298,12 @@ For advanced continuation capabilities including delayed resumes and partitionin
 
 !!! note "OSS and Pro Compatibility"
 
-    ActiveJob Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
+    Active Job Continuation is available in both OSS and Pro versions. The main difference is that OSS requires immediate resumption (`wait: 0`), while Pro supports delayed resumption through the Scheduled Messages feature.
 
 ## See Also
 
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) - Advanced features including long-running jobs, virtual partitions, and ordered jobs
-- [Testing](Basics-Testing) - Test your ActiveJob jobs with Karafka's testing helpers
+- [Testing](Basics-Testing) - Test your Active Job jobs with Karafka's testing helpers
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Handle failed jobs using DLQ with independent mode
 - [Long Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Allow jobs to run longer than max.poll.interval.ms
 - [Error Handling and Back Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understand error handling and retry behavior for jobs

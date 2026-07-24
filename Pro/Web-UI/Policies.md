@@ -1,4 +1,4 @@
-Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components.
+Karafka's Web UI includes a policies engine that provides granular control over user actions across all UI components.
 
 This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
@@ -20,7 +20,7 @@ In essence, Karafka offers both a broad-stroke and a fine-tuned approach to data
 
 The Requests Policies feature in Karafka's Web UI provides a mechanism for controlling access to specific pages and functionalities within the Web UI on a per-request basis. Configured via `ui.policies.requests`, this policy engine allows the definition and enforcement of rules that determine which users can access particular URLs, ensuring a foundational layer of security and access management.
 
-To utilize the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
+To use the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
 
 Below is an example of how to define and configure a custom Requests Policy:
 
@@ -104,15 +104,15 @@ end
 
 To filter or sanitize part of the data to be presented in the Karafka Web-UI, it is necessary to accomplish three key things:
 
-1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it's deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
+1. **Wrapping Deserializers with a Sanitizer Layer**: The deserializers, which are responsible for converting the raw Kafka payloads into a format your application understands, need to be wrapped with a sanitizer layer. However, this sanitization should only occur in the context of the Web server. In other words, the raw data is being transformed twice: first, when it is deserialized, and again when the sanitizer filters out sensitive information before it is displayed on the Web UI.
 
 2. **Context-Aware Wrapper**: The wrapper used to sanitize the data should be able to understand its operating context. It should be aware of whether it is operating in a Web server context (in which case it should sanitize the data) or in a Karafka server context (in which case it should leave the data untouched). This ensures that sensitive information is only filtered when data is being presented on the Web UI and not during backend processing or other non-UI-related tasks.
 
 3. **Routing Wrapper Injection**: The final step for sanitizing data displayed in the Karafka Web UI is Wrapper Routing Injection, where the sanitizing wrapper is incorporated into the Karafka routing. This ensures the data is filtered for sensitive content after deserialization but before being displayed on the UI.
 
-It is crucial to ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
+Ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
 
-Remember that the sanitization process should be implemented carefully to ensure that it doesn't interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
+Remember that the sanitization process should be implemented carefully to ensure that it does not interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
 
 Below you can find an example implementation of a wrapper that removes the replaces the `:address` key from the deserializers hash with a `[FILTERED]` string.
 
@@ -175,7 +175,7 @@ The filtering and sanitization feature can be handy in various scenarios, such a
 
 - **Audit and Compliance**: In industries like finance or healthcare, compliance officers or auditors may need to inspect data flow while ensuring sensitive data like financial transactions or patient health data remains secure. Filtering can help present the necessary information while maintaining data security and regulatory compliance.
 
-- **Data Analysis**: For data analysis or machine learning purposes, often raw data is used that may contain sensitive elements. A data analyst can utilize the filtering feature to see the data they need while still preserving the privacy of sensitive information.
+- **Data Analysis**: For data analysis or machine learning purposes, often raw data is used that may contain sensitive elements. A data analyst can use the filtering feature to see the data they need while still preserving the privacy of sensitive information.
 
 ## Summary
 

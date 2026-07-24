@@ -1,12 +1,12 @@
 !!! info "This License Applies Only to Original Wiki Content"
 
-    Please note that this license applies exclusively to the Wiki's **original content** and does not apply to any specific Karafka ecosystem components or third-party sourced content.
+    Note that this license applies exclusively to the Wiki's **original content** and does not apply to any specific Karafka ecosystem components or third-party sourced content.
 
-    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Please refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
+    Each Karafka ecosystem component has its distinct license (or licenses), which are provided in the respective repositories. Refer to the specific repository documentation for detailed information regarding the licensing of particular Karafka components.
 
     **Third-party content** (such as content sourced from librdkafka documentation or other external sources) retains its original licensing terms and is not subject to the restrictions outlined in this license.
 
-**librdkafka documentation** is used under explicit permission as stated in their INTRODUCTION.md: "You are free to reuse the librdkafka API and CONFIGURATION documentation in your project, but please do return any documentation improvements back to librdkafka (file a github pull request)."
+**librdkafka documentation** is used under explicit permission as stated in their INTRODUCTION.md: "You are free to reuse the librdkafka API and CONFIGURATION documentation in your project, but do return any documentation improvements back to librdkafka (file a github pull request)."
 
     This license is intended solely to govern the use of the Wiki's original content, ensuring proper restrictions and permitted non-commercial use as specified below.
 

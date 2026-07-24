@@ -1,4 +1,4 @@
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics.
+The "Topics Insights" feature in Karafka Pro Web UI is a suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics.
 
 ## Configuration Explorer
 
@@ -18,7 +18,7 @@ This detailed breakdown helps quickly understand how each topic is configured, m
 
 ## Replication
 
-The Replication tab provides insights into the replication dynamics of each topic. It's crucial for ensuring data durability and high availability in Kafka. The attributes included in this tab are:
+The Replication tab provides insights into the replication dynamics of each topic. It is crucial for ensuring data durability and high availability in Kafka. The attributes included in this tab are:
 
 - **Partition**: The specific partition of a topic.
 - **Leader**: The leader's broker ID for each partition.
@@ -79,9 +79,9 @@ Understanding offsets is useful in several scenarios:
 
 ## Summary
 
-In summary, the Distribution Insights feature of the Karafka Pro Web UI is a powerful tool that empowers users with the necessary insights to manage, optimize, and troubleshoot Kafka topics effectively. By providing detailed configurations, replication status, and distribution analytics, it enables administrators to maintain a robust and efficient Kafka environment, thereby enhancing performance, scalability, and troubleshooting capabilities.
+In summary, the Distribution Insights feature of the Karafka Pro Web UI is a tool that empowers users with the necessary insights to manage, optimize, and troubleshoot Kafka topics effectively. By providing detailed configurations, replication status, and distribution analytics, it enables administrators to maintain an efficient Kafka environment, thereby enhancing performance, scalability, and troubleshooting capabilities.
 
 ## See Also
 
-- [Librdkafka Statistics](Librdkafka-Statistics) - For understanding the underlying statistics that power insights
+- [librdkafka Statistics](Librdkafka-Statistics) - For understanding the underlying statistics that power insights
 - [Pro Topics Management](Pro-Web-UI-Topics-Management) - For managing topic configuration and partitions

@@ -1,4 +1,4 @@
-In complex systems where applications act as part of a larger data-processing ecosystem, efficiently passing data between processes is crucial. Karafka Pro includes a robust feature for message piping, allowing applications to forward processing results seamlessly to subsequent stages or other applications. This document explores the concept, use cases, and benefits of using message piping in Karafka Pro.
+In complex systems where applications act as part of a larger data-processing ecosystem, efficiently passing data between processes is crucial. Karafka Pro includes a feature for message piping, allowing applications to forward processing results to subsequent stages or other applications. This document explores the concept, use cases, and benefits of using message piping in Karafka Pro.
 
 ## What is Message Piping?
 
@@ -76,7 +76,7 @@ These headers provide vital information for troubleshooting and understanding th
 
 Karafka Pro supports [exactly-once semantics](Pro-Consumer-Groups-Transactions) within its message piping feature, ensuring that messages are processed and forwarded precisely once, even in case of failures or retries. This is crucial in scenarios where message duplication or loss could lead to inconsistencies or erroneous behaviors in downstream systems.
 
-Here's how you can utilize transactions with message piping:
+Here is how you can use transactions with message piping:
 
 ```ruby
 class Consumer < ApplicationConsumer
@@ -104,7 +104,7 @@ Transactional piping ensures that message forwarding completes successfully or n
 
 ## Conclusion
 
-Karafka Pro's message piping feature significantly enhances the flexibility and efficiency of Kafka-based systems. Facilitating smooth data transfer between components without tight coupling enables the creation of scalable, maintainable, and robust distributed systems. Note, however, that this feature is part of Karafka Pro and requires a commercial license.
+Karafka Pro's message piping feature significantly enhances the flexibility and efficiency of Kafka-based systems. Facilitating smooth data transfer between components without tight coupling enables the creation of scalable, maintainable, and robust distributed systems. This feature is part of Karafka Pro and requires a commercial license.
 
 ## See Also
 

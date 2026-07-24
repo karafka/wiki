@@ -102,11 +102,11 @@ Operations types within this API are used to specify the configuration changes b
   </tbody>
 </table>
 
-These methods provide a robust interface for detailed management of configurations in a Kafka environment, offering both retrieval and update functionalities.
+These methods provide an interface for detailed management of configurations in a Kafka environment, offering both retrieval and update functionalities.
 
 ## Usage
 
-Here's how you might typically use the API to manage Kafka configurations:
+Here is how you might typically use the API to manage Kafka configurations:
 
 ```ruby
 # Describe topic configurations
@@ -138,4 +138,4 @@ Karafka::Admin::Configs.alter(resource)
 ## See Also
 
 - [Admin API](Infrastructure-Admin-API) - General admin operations and topic management
-- [Librdkafka Configuration](Librdkafka-Configuration) - Available librdkafka configuration options
+- [librdkafka Configuration](Librdkafka-Configuration) - Available librdkafka configuration options

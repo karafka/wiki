@@ -69,7 +69,7 @@ end
 
 !!! warning "Long-Running Job Impact on Internal Queues"
 
-    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it's recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
+    When using Long-Running Jobs, be aware that pausing to manage `max.poll.interval.ms` will purge your internal message queue. This is due to `#pause` acting as a fencing mechanism, invalidating all messages currently in the queue. To avoid extensive network traffic from message re-fetching, it is recommended to reduce `queued.max.messages.kbytes`. This ensures a smaller pre-fetched message queue, which is crucial if you frequently seek, helping to optimize bandwidth usage. You can read more about this [here](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting#pause-and-seek-usage-potential-networking-impact).
 
 ## Processing during revocation
 
@@ -79,11 +79,11 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 2. Partition is revoked and re-assigned to the same process.
 3. Partition is revoked and assigned to a different process.
 
-!!! note "Note"
+!!! note "`#revoked?` Updates Even When Workers Are Busy"
 
     The `#revoked?` method value changes independently from the workers' occupation. This means that the revocation status will be updated even if all the workers are busy processing long-running jobs.
 
-!!! note "Note"
+!!! note "Revocation Jobs Do Not Block Polling"
 
     Revocation jobs are also non-blocking for long-running jobs. If the internal workers' batch is full, they will not block polling.
 
@@ -203,7 +203,7 @@ If a manual pause is needed, it is recommended to compute its duration based on 
 
 This will ensure that the consumer has enough time to process all the messages in the batch before the partition is resumed.
 
-Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and leveraging the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
+Overall, it is crucial to be mindful of the potential risks and issues associated with manual pausing when using Karafka Long-Running Jobs. By following best practices and using the built-in features of the framework, we can ensure that the system remains reliable, scalable, and performs as expected.
 
 ## Non-Blocking Jobs: Complementing Long-Running Job Pausing
 

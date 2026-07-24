@@ -1,0 +1,113 @@
+{
+  "_comment": "Karafka Simplified Technical English (STE) term list. INSPIRED BY the ASD-STE100 dictionary; this is our own curated list and NOT a redistribution of the ASD dictionary. Consumed by .rules/no-unapproved-terms.js. Add words here to extend the controlled vocabulary. Keep 'substitutions' safe and exact (1:1, inflection-matched, collocation-independent) so auto-fix stays reliable; put anything context- or collocation-dependent in 'flag'.",
+  "_docs": "See Development/Technical-Writing.md for the full house style and the rationale behind each entry.",
+
+  "substitutions": [
+    { "term": "utilize", "fix": "use" },
+    { "term": "utilizes", "fix": "uses" },
+    { "term": "utilizing", "fix": "using" },
+    { "term": "utilized", "fix": "used" },
+    { "term": "utilise", "fix": "use" },
+    { "term": "utilises", "fix": "uses" },
+    { "term": "utilising", "fix": "using" },
+    { "term": "utilised", "fix": "used" },
+
+    { "term": "leverage", "fix": "use" },
+    { "term": "leverages", "fix": "uses" },
+    { "term": "leveraging", "fix": "using" },
+    { "term": "leveraged", "fix": "used" },
+
+    { "term": "commence", "fix": "start" },
+    { "term": "commences", "fix": "starts" },
+    { "term": "commencing", "fix": "starting" },
+    { "term": "commenced", "fix": "started" },
+
+    { "term": "initiate", "fix": "start" },
+    { "term": "initiates", "fix": "starts" },
+    { "term": "initiating", "fix": "starting" },
+    { "term": "initiated", "fix": "started" },
+
+    { "term": "obtain", "fix": "get" },
+    { "term": "obtains", "fix": "gets" },
+    { "term": "obtaining", "fix": "getting" },
+
+    { "term": "approximately", "fix": "about" },
+    { "term": "sufficient", "fix": "enough" },
+    { "term": "numerous", "fix": "many" },
+
+    { "term": "prior to", "fix": "before" },
+    { "term": "in order to", "fix": "to" },
+    { "term": "due to the fact that", "fix": "because" },
+    { "term": "in the event that", "fix": "if" },
+
+    { "term": "behaviour", "fix": "behavior" },
+    { "term": "behaviours", "fix": "behaviors" },
+    { "term": "behavioural", "fix": "behavioral" },
+    { "term": "initialise", "fix": "initialize" },
+    { "term": "initialises", "fix": "initializes" },
+    { "term": "initialising", "fix": "initializing" },
+    { "term": "initialised", "fix": "initialized" },
+    { "term": "colour", "fix": "color" },
+    { "term": "colours", "fix": "colors" },
+    { "term": "customise", "fix": "customize" },
+    { "term": "customises", "fix": "customizes" },
+    { "term": "customising", "fix": "customizing" },
+    { "term": "customised", "fix": "customized" },
+    { "term": "organise", "fix": "organize" },
+    { "term": "organises", "fix": "organizes" },
+    { "term": "organising", "fix": "organizing" },
+    { "term": "organised", "fix": "organized" },
+    { "term": "optimise", "fix": "optimize" },
+    { "term": "optimises", "fix": "optimizes" },
+    { "term": "optimising", "fix": "optimizing" },
+    { "term": "optimised", "fix": "optimized" },
+    { "term": "optimisation", "fix": "optimization" },
+    { "term": "analyse", "fix": "analyze" },
+    { "term": "analysing", "fix": "analyzing" },
+    { "term": "analysed", "fix": "analyzed" },
+    { "term": "catalogue", "fix": "catalog" }
+  ],
+
+  "flag": [
+    { "term": "ensure", "suggest": "Context-dependent, do not blanket-swap. As a guarantee (a mechanism/property 'ensures' X) keep 'ensure' or use 'guarantees'; only as an instruction to the reader use 'make sure that <clause>'." },
+    { "term": "ensures", "suggest": "Context-dependent. Guarantee -> keep 'ensures' or use 'guarantees'; instruction -> 'makes sure that <clause>'." },
+    { "term": "ensuring", "suggest": "Context-dependent. Guarantee -> keep 'ensuring'; instruction -> 'making sure that <clause>'." },
+    { "term": "ensured", "suggest": "Context-dependent. Guarantee -> keep 'ensured' or use 'guaranteed'; instruction -> 'made sure that <clause>'." },
+    { "term": "regarding", "suggest": "Collocation-dependent. 'about' fits informational nouns (information/questions/details regarding -> about); capability/policy/compatibility nouns take 'for'/'on'/'in'/'with', or keep 'regarding'." },
+    { "term": "concerning", "suggest": "Collocation-dependent. Prefer 'about' for informational nouns; otherwise 'for'/'on'/'with', or keep 'concerning'." },
+    { "term": "obtained", "suggest": "Do not swap to 'got'. The past participle breaks in passive/attributive use ('was obtained' -> 'was got'). Keep 'obtained' or restructure to active voice with 'get'." },
+    { "term": "terminate", "suggest": "Use 'stop' or 'end'." },
+    { "term": "terminates", "suggest": "Use 'stops' or 'ends'." },
+    { "term": "terminating", "suggest": "Use 'stopping' or 'ending'." },
+    { "term": "terminated", "suggest": "Use 'stopped' or 'ended'." },
+    { "term": "additional", "suggest": "Use 'more' or 'an extra'." },
+    { "term": "attempt", "suggest": "Use 'try'." },
+    { "term": "facilitate", "suggest": "Use 'help' or 'make easier'." },
+    { "term": "robust", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "powerful", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "seamless", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "seamlessly", "suggest": "Marketing word - remove it or state the specific property." },
+    { "term": "simply", "suggest": "Hedge word - usually removable." },
+    { "term": "easily", "suggest": "Hedge word - usually removable." }
+  ],
+
+  "banned": [
+    { "term": "please", "message": "Remove 'please'. Documentation gives direct instructions." }
+  ],
+
+  "contractions": {
+    "don't": "do not", "doesn't": "does not", "didn't": "did not",
+    "isn't": "is not", "aren't": "are not", "wasn't": "was not",
+    "weren't": "were not", "won't": "will not", "wouldn't": "would not",
+    "can't": "cannot", "couldn't": "could not", "shouldn't": "should not",
+    "mustn't": "must not", "haven't": "have not", "hasn't": "has not",
+    "hadn't": "had not", "it's": "it is", "that's": "that is",
+    "there's": "there is", "here's": "here is", "what's": "what is",
+    "let's": "let us", "you're": "you are", "we're": "we are",
+    "they're": "they are", "i'm": "I am", "you'll": "you will",
+    "we'll": "we will", "they'll": "they will", "i'll": "I will",
+    "he'll": "he will", "she'll": "she will", "you've": "you have",
+    "we've": "we have", "they've": "they have", "i've": "I have",
+    "you'd": "you would", "we'd": "we would", "they'd": "they would"
+  }
+}

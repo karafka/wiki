@@ -18,7 +18,7 @@ By filtering messages before they are partitioned and dispatched, Karafka reduce
 
 ## Enabling Expiring Messages
 
-To enable the Expiring Messages feature in Karafka, you need to add the `expire_on` option to your Karafka routing configuration. Here's an example of how to do that:
+To enable the Expiring Messages feature in Karafka, you need to add the `expire_on` option to your Karafka routing configuration. Here is an example of how to do that:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -40,7 +40,7 @@ end
 
 Karafka's Expiring Messages feature ensures that failed messages are reprocessed after a short period. However, if the failed messages become too old, Karafka will skip them. This is because the Expiring Messages feature in Karafka automatically filters out messages that are older than the defined period. Therefore, if a failed message becomes older than the expiry period, it will not be included in the batch of messages that Karafka processes again. This is a design decision made to optimize resource utilization and prevent the processing of stale or irrelevant data.
 
-It is important to note that this behavior can be adjusted by changing the expiry period for messages in the configuration settings. It is also essential to ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
+This behavior can be adjusted by changing the expiry period for messages in the configuration settings. Also ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
 
 ## Limitations
 
@@ -58,13 +58,13 @@ Karafka's Expiring Messages feature allows you to set a maximum age for a messag
 
 On the other hand, Kafka's `log.retention.ms` setting allows for the complete removal of old data from Kafka. This setting specifies the maximum time a message can remain in a Kafka topic before being removed. Once the retention time has passed, Kafka deletes the messages from the topic, freeing up space for new data. This setting is useful in scenarios where the data has a limited lifetime and is no longer needed after a certain period.
 
-However, it's important to understand the limitations and behavior of `log.retention.ms`:
+However, it is important to understand the limitations and behavior of `log.retention.ms`:
 
-1. Cleanup Interval: Kafka's log retention cleanup doesn't run continuously. By default, the `log.cleanup.interval.ms` is set to 5 minutes (300000 ms). Even if you set a short retention period, the cleanup thread will only check and delete eligible messages every 5 minutes.
+1. Cleanup Interval: Kafka's log retention cleanup does not run continuously. By default, the `log.cleanup.interval.ms` is set to 5 minutes (300000 ms). Even if you set a short retention period, the cleanup thread will only check and delete eligible messages every 5 minutes.
 
 2. Deletion Conditions: The actual deletion process is subject to several conditions:
 
-   - Kafka won't delete segments that are currently active (being written to)
+   - Kafka will not delete segments that are currently active (being written to)
    - There must be at least one segment remaining after deletion
    - The segment file must be fully rolled before it can be considered for deletion
 

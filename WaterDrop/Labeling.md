@@ -1,12 +1,12 @@
 # WaterDrop Labeling
 
-When producing messages with WaterDrop, tracking the progress and status of each message is crucial. There are instances where you'll need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling capability, allowing you to assign label values to each message during production. These labels act as identifiers, linking the message with its delivery report.
+When producing messages with WaterDrop, tracking the progress and status of each message is crucial. There are instances where you will need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling capability, allowing you to assign label values to each message during production. These labels act as identifiers, linking the message with its delivery report.
 
 ## Importance of Labeling
 
-Labeling is an important feature, and we highly recommend utilizing it for enhanced message tracking and management. It provides the following benefits:
+Labeling is an important feature, and we highly recommend using it for enhanced message tracking and management. It provides the following benefits:
 
-1. **Traceability**: Labels provide a straightforward way to trace a message from the point it's produced until it's successfully consumed. This is particularly useful in complex systems where messages pass through various stages and services.
+1. **Traceability**: Labels provide a straightforward way to trace a message from the point it is produced until it is successfully consumed. This is particularly useful in complex systems where messages pass through various stages and services.
 
 1. **Debugging and Error Handling**: In case of delivery failures or errors, labels help quickly identify the affected messages. Developers can use this information to diagnose issues, understand the context of failures, and implement targeted fixes.
 
@@ -64,7 +64,7 @@ report.label == message #=> true
 ```
 
 !!! warning "Increased Memory Usage with Self-Referencing Labels"
-    Be cautious when self-referencing messages using labels, as this practice can lead to increased memory usage; the entire message will be retained in memory until its delivery succeeds or fails. This can significantly escalate memory consumption, particularly in scenarios where you're producing hundreds of thousands of messages.
+    Be cautious when self-referencing messages using labels, as this practice can lead to increased memory usage; the entire message will be retained in memory until its delivery succeeds or fails. This can significantly escalate memory consumption, particularly in scenarios where you are producing hundreds of thousands of messages.
 
 ## Distinguishing Between Sync and Async Producer Errors
 
@@ -74,7 +74,7 @@ This is particularly useful when you want to handle errors differently based on 
 
 ### Implementation Example
 
-Here's how you can use labels to distinguish between sync and async producer errors:
+Here is how you can use labels to distinguish between sync and async producer errors:
 
 ```ruby
 # Label async messages

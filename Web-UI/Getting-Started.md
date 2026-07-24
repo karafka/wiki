@@ -24,7 +24,7 @@ To use it:
 
     !!! warning "Karafka Web UI Installation Guidance"
 
-        Please ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
+        Ensure that `karafka server` is **not** running during the Web UI installation process and that you only start `karafka server` instances **after** running the `karafka-web install` command. Otherwise, if you use `auto.create.topics.enable` set to `true`, Kafka may accidentally create Web UI topics with incorrect settings, which may cause extensive memory usage and various performance issues.
 
     !!! warning "Essential Environment Migration Step"
 
@@ -54,7 +54,7 @@ To use it:
 
     !!! tip "`config.ui.sessions.secret` Usage"
 
-        The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not utilized outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
+        The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not used outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
 
         This secret is critical for cookie management and CSRF protection, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment.
 
@@ -247,7 +247,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
 </tbody>
 </table>
 
-!!! note "Note"
+!!! note "Web UI Topics Are Not Declaratively Managed by Default"
 
     Karafka Web UI topics are **not** managed via the [Declarative topics API](Infrastructure-Declarative-Topics). It is done that way, so your destructive infrastructure changes do not break the Web UI. If you want to include their management in your declarative topic's code, you can do so by defining their configuration manually in your routing setup. Injected routing can be found [here](https://github.com/karafka/karafka-web/blob/df679e742aa2988577b084abc3e3a83dd8cff055/lib/karafka/web/installer.rb#L42).
 
@@ -270,9 +270,9 @@ This makes deployments on Linux systems (especially in containers) simpler and m
 
 ## Zero-Downtime Deployment
 
-For those who consider `karafka server` indispensable to their production infrastructure, there's a way to integrate the Karafka Web UI without inducing downtime. Let's dive into the steps to introduce it seamlessly:
+For those who consider `karafka server` indispensable to their production infrastructure, there is a way to integrate the Karafka Web UI without inducing downtime. Follow the steps to introduce it:
 
-1. **Integration**: Begin by installing the Karafka Web UI. Ensure it's appropriately configured in your `karafka.rb` and works for you locally.
+1. **Integration**: Begin by installing the Karafka Web UI. Ensure it is appropriately configured in your `karafka.rb` and works for you locally.
 
 1. **Topic Creation**: Manually set up all the topics listed above using the specific configuration mentioned in the table provided above.
 
@@ -288,7 +288,7 @@ The procedure ensures the uninterrupted operation of your Karafka servers while 
 
 Karafka Web UI can be configured to monitor and report data about many applications to a single dashboard.
 
-Please visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
+Visit the [Web UI Multi-App](Web-UI-Multi-App) documentation page to learn more about it.
 
 ## Authentication
 
@@ -353,7 +353,7 @@ Rails.application.routes.draw do
 end
 ```
 
-By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining robust security standards.
+By implementing these practices, you ensure that the authentication process for the Karafka Web UI does not expose any sensitive information through timing analysis, thereby maintaining security standards.
 
 ## Kafka ACL Requirements
 
@@ -388,7 +388,7 @@ The Web UI uses two consumer groups that need ACL permissions:
 
 As mentioned above, the initial setup **requires** you to run `bundle exec karafka-web install` once so Karafka can build the initial data structures needed. Until this happens, upon accessing the Web UI, you may see a 404 error.
 
-Before reporting an issue, please make sure that:
+Before reporting an issue, make sure that:
 
 - You have visited the Karafka Web [status](Web-UI-Features#status) page
 - All the topics required by Karafka Web exist
@@ -401,13 +401,13 @@ If you were looking for a given process or other real-time information, the stat
 
 ### Web UI Topics Not Receiving Data Despite Processes Running
 
-Suppose your Web UI topics aren't displaying data despite active Karafka processes, and you encounter errors like `Rdkafka::AbstractHandle::WaitTimeoutError`. In that case, the topics might have been inadvertently auto-created while a Karafka process was running rather than being correctly initialized using the CLI commands.
+Suppose your Web UI topics are not displaying data despite active Karafka processes, and you encounter errors like `Rdkafka::AbstractHandle::WaitTimeoutError`. In that case, the topics might have been inadvertently auto-created while a Karafka process was running rather than being correctly initialized using the CLI commands.
 
 To address this:
 
 1. **Stop All Karafka Processes**: First, halt **all** running instances of `karafka server`. This step ensures no interference or further accidental topic creation during your troubleshooting.
 
-1. **Re-create Web UI Topics**: With all Karafka processes stopped, utilize the appropriate CLI commands to recreate the Web UI topics. This action guarantees that the topics are configured properly to receive and present data in the Web UI.
+1. **Re-create Web UI Topics**: With all Karafka processes stopped, use the appropriate CLI commands to recreate the Web UI topics. This action guarantees that the topics are configured properly to receive and present data in the Web UI.
 
 1. **Start Karafka Processes**: After the topics have been recreated, restart the `karafka server` processes. Keep an eye on the Web UI to ensure that the topics are now displaying data.
 
@@ -441,7 +441,7 @@ And that is all.
 
 Karafka uses its internal state knowledge and `librdkafka` metrics to report the states. This means that the `statistics.interval.ms` needs to be enabled and should match the reporting interval.
 
-!!! note "Note"
+!!! note "Both Enabled by Default, Reporting Every 5 Seconds"
 
     Both are enabled by default, and both report every 5 seconds, so unless you altered the defaults, you should be good.
 
@@ -484,23 +484,23 @@ bundle exec karafka-web migrate --replication-factor=CORRECT_FACTOR
 
 ## Limitations
 
-Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it's monitoring.
+Karafka Web UI materializes the aggregated state into Kafka. Aggregated metrics and statistics use 32 kilobytes of data. Additionally, each process monitored by Karafka adds around 120 bytes of data to this. This means that the overall amount of space needed is proportional to the number of processes it is monitoring.
 
 By default, Kafka has a payload limit of 1 megabyte. Considering the size of a fully bootstrapped Karafka state and the additional bytes for each monitored process, you should be able to handle up to around 1000 Karafka instances within the default Kafka payload limit.
 
-However, it's important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.
+However, it is important to note that as the number of instances increases, the space demand likewise increases. Therefore, if the number of Karafka instances exceeds 1000, it is recommended to increase the `karafka_consumers_states` topic max message size to 10MB. This accommodates the additional memory requirement, ensuring that Karafka Web UI continues to function optimally and efficiently.
 
 ## Web UI Schema Compatibility Notice
 
-When upgrading Karafka Web UI, particularly to versions with breaking changes, as noted in the changelogs, it's crucial to understand the implications for the rolling upgrades. Specifically, performing rolling upgrades under such circumstances can lead to schematic mismatches, which might introduce unintended behaviors.
+When upgrading Karafka Web UI, particularly to versions with breaking changes, as noted in the changelogs, it is crucial to understand the implications for the rolling upgrades. Specifically, performing rolling upgrades under such circumstances can lead to schematic mismatches, which might introduce unintended behaviors.
 
-Starting from version `0.7.4`, the Karafka Web UI introduces enhanced schema detection capabilities. If an older consumer responsible for materializing the Web UI results encounters an unsupported newer schema, it will detect this incompatibility. Upon detection, the consumer will emit an error and initiate a backoff procedure, ensuring the system's stability and predictability.
+Starting from version `0.7.4`, the Karafka Web UI introduces enhanced schema detection capabilities. If an older consumer responsible for materializing the Web UI results encounters an unsupported newer schema, it will detect this incompatibility. Upon detection, the consumer will emit an error and start a backoff procedure, ensuring the system's stability and predictability.
 
-Furthermore, it's worth noting that if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
+Furthermore, if Karafka Web UI detects older schema reports during its operation, it will ignore such reports. However, this behavior is exclusive to short-lived per-process reports and only occurs in the context of upgrades introducing breaking changes to the schema. Importantly, error reports will **always** be processed and are **never** ignored, regardless of their schema version.
 
 Ignoring these older schema reports might introduce slight discrepancies in the metrics. However, this approach is deliberate and is designed to safeguard the system. By ignoring such reports, we ensure that any potential incompatibilities in the reporting do not adversely affect the system's functionality. This serves as a safety mechanism, especially when it was impossible or overlooked to shut down all consumers during an upgrade.
 
-It's therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
+It is therefore highly recommended to refrain from rolling upgrades when updating versions with breaking changes. If such upgrades are inevitable, users can rely on the Karafka Web UI's built-in mechanisms to mitigate risks associated with schema incompatibilities.
 
 ## See Also
 

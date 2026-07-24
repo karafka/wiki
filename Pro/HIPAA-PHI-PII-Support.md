@@ -73,7 +73,7 @@ You can learn more about the Polices [here](Pro-Web-UI-Policies).
 
 #### Integration with Authentication Providers
 
-Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By leveraging this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
+Since Karafka Web UI is fundamentally a Rack application, it can be mounted directly into Rails routes. By using this capability, you can integrate Karafka Web UI with Rails' existing authentication mechanisms, whether they are standard username/password systems, Single Sign-On (SSO) providers, or multi-factor authentication (2FA).
 
 Additionally, the provided code APIs enable you to define custom access policies, ensuring that only authorized users can interact with specific components of the Web UI.
 
@@ -89,7 +89,7 @@ You can learn more about the Partial Payload Sanitization [here](Pro-Web-UI-Poli
 
 ### 4. Logging and Auditing
 
-Since Karafka Web UI is built as a Rack application, it can leverage Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
+Since Karafka Web UI is built as a Rack application, it can use Rack's middleware capabilities to log every action taken within the interface accurately. Additionally, using its Request Policies, Karafka Web UI can implement granular logging for each request, capturing detailed information about system interactions. These interactions include:
 
 - Access to specific pages and data views
 - Administrative changes, such as configuration updates or modifications to access controls
@@ -109,7 +109,7 @@ Although HIPAA, PHI, and PII regulations do not explicitly require the use of pr
 
 ## Summary
 
-Karafka and Karafka Web UI offer a secure and adaptable platform that can be configured to meet the stringent requirements of environments governed by HIPAA, PHI, and PII regulations. Key features such as at-rest and in-transit data encryption, role-based access control, granular data presentation, comprehensive logging, and configurable data access policies make Karafka a robust solution for managing sensitive data streams in compliance with privacy laws.
+Karafka and Karafka Web UI offer a secure and adaptable platform that can be configured to meet the stringent requirements of environments governed by HIPAA, PHI, and PII regulations. Key features such as at-rest and in-transit data encryption, role-based access control, granular data presentation, comprehensive logging, and configurable data access policies make Karafka a solution for managing sensitive data streams in compliance with privacy laws.
 
 For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 

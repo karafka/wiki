@@ -63,7 +63,7 @@ end
 
 ## Insights Runtime Availability
 
-Upon establishing a connection with Kafka, it is essential to understand that metrics related to Inline Insights might not be immediately accessible. This delay is attributed to the way Karafka fetches and computes these metrics. By default, the metrics are calculated at intervals of 5 seconds.
+Upon establishing a connection with Kafka, metrics related to Inline Insights might not be immediately accessible. This delay is attributed to the way Karafka fetches and computes these metrics. By default, the metrics are calculated at intervals of 5 seconds.
 
 Furthermore, depending on the version of Kafka you are using and other underlying factors, the availability of insights, especially during the first batch processing, may vary. This means that for a brief period after connecting, your consumers might not be insight-aware and insights will be empty.
 
@@ -83,11 +83,11 @@ end
 
 For scenarios where the presence of insights is vital for the functioning of your system, we recommend upgrading to [Karafka Pro](https://karafka.io/#become-pro). With its extended capabilities regarding Inline Insights, you can ensure that insights are always available when you need them.
 
-In Karafka Pro, there's an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Consumer-Groups-Enhanced-Inline-Insights).
+In Karafka Pro, there is an option to define in the routing that insights are mandatory for a specific topic. When this setting is activated, Karafka will hold back and not consume any data from the specified topic partition until the necessary metrics are present. This guarantees that your consumers are always operating with the insights they require, ensuring optimized data consumption and processing. You can read more about this capability [here](Pro-Consumer-Groups-Enhanced-Inline-Insights).
 
 ## Insights Freshness
 
-When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to leverage. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process until new metrics become available. This means that metrics may be updated while you are processing the data. Metrics, however, will never disappear, meaning you can rely on their presence if you have a metrics state. They may be updated, but they will not disappear.
+When metrics related to Inline Insights are requested for the first time during a given batch processing, they become "materialized". This means that the metrics become tangible and ready for the system to use. One significant aspect to note is that once these metrics are materialized, they remain consistent throughout the data consumption process until new metrics become available. This means that metrics may be updated while you are processing the data. Metrics, however, will never disappear, meaning you can rely on their presence if you have a metrics state. They may be updated, but they will not disappear.
 
 ```ruby
 # Simulate slow processing on a regular (non LRJ) consumer
@@ -114,11 +114,11 @@ Insights are only collected for partitions a given consumer owns. This means tha
 
 There can be scenarios where a partition might be involuntarily revoked from a consumer by Kafka. In such events, rather than leaving the consumer without any insights, Karafka takes a proactive approach. Karafka will provide the last known metrics before the partition was forcefully revoked. This is paramount as it ensures that metrics are consistently available to the consumer, even during unforeseen Kafka operations.
 
-Karafka ensures that consumers can continue processing with insights throughout their entire operation by ensuring the continuous availability of metrics, even post-revocation. This approach minimizes disruptions and ensures consumers won't be left operating without metrics even if Kafka alters assignments.
+Karafka ensures that consumers can continue processing with insights throughout their entire operation by ensuring the continuous availability of metrics, even post-revocation. This approach minimizes disruptions and ensures consumers will not be left operating without metrics even if Kafka alters assignments.
 
 ## Memory Footprint
 
-One of the primary considerations for any system is the memory footprint of its features, and Karafka's Inline Insights is no exception. The insights occupy 4KB of space for a single topic partition. Thus, even if you have a multitude of partitions, the memory footprint remains low, enabling you to leverage insights without significantly impacting your system's performance.
+One of the primary considerations for any system is the memory footprint of its features, and Karafka's Inline Insights is no exception. The insights occupy 4KB of space for a single topic partition. Thus, even if you have a multitude of partitions, the memory footprint remains low, enabling you to use insights without significantly impacting your system's performance.
 
 ### Insights Tracker Cache Management
 
@@ -130,7 +130,7 @@ The Karafka Inline Insights Tracker is designed with optimal memory usage in min
 
 2. Financial Transactions Processing: In a digital banking platform, processing financial transactions in real time is crucial for maintaining customer trust. By monitoring partitions related to transaction processing, insights-aware consumers can detect lags or errors. If a particular partition starts showing a significant lag, the system can prioritize it or reroute the traffic to ensure transactions are processed in real time.
 
-3. Real-time Health Monitoring Systems: In health tech, wearable devices send continuous data about a user's health metrics. Any delay in processing this data can be critical. If the consumer detects a lag in a partition related to a particular user or set of users, it can prioritize this data. For instance, the system can't afford a delay if a heart monitor shows irregular patterns with insights. Such critical data can be processed on priority.
+3. Real-time Health Monitoring Systems: In health tech, wearable devices send continuous data about a user's health metrics. Any delay in processing this data can be critical. If the consumer detects a lag in a partition related to a particular user or set of users, it can prioritize this data. For instance, the system cannot afford a delay if a heart monitor shows irregular patterns with insights. Such critical data can be processed on priority.
 
 4. Financial Trading Platforms: In stock trading applications where milliseconds matter, lag awareness can trigger rapid response mechanisms to adjust trading algorithms or halt specific activities when real-time data metrics indicate potential issues.
 
@@ -143,4 +143,4 @@ Karafka's Inline Insights is a powerful feature that enhances data processing ca
 ## See Also
 
 - [Pro Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights) - Advanced inline insights with enhanced metrics and performance tracking
-- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies for Karafka applications
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Monitoring and logging strategies for Karafka applications

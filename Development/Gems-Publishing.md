@@ -18,7 +18,7 @@ Before you can make releases, ensure you have:
 
 ### How Trusted Publishing Works
 
-Trusted publishing uses OpenID Connect (OIDC) to establish trust between GitHub Actions and RubyGems without storing long-lived credentials. Here's the flow:
+Trusted publishing uses OpenID Connect (OIDC) to establish trust between GitHub Actions and RubyGems without storing long-lived credentials. Here is the flow:
 
 1. GitHub Actions generates a short-lived OIDC token during workflow execution
 1. RubyGems validates the token against the configured trusted publisher settings
@@ -136,7 +136,7 @@ After publishing the GitHub release, the push workflow will be triggered and req
 
 ### Common Issues
 
-**Workflow doesn't trigger**:
+**Workflow does not trigger**:
 
 - Ensure tag starts with `v`
 - Check that the tag was created properly

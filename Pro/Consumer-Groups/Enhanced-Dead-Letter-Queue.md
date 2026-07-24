@@ -2,7 +2,7 @@ Enhanced Dead Letter Queue feature provides additional functionalities and warra
 
 This documentation only covers extra functionalities enhancing the Dead Letter Queue feature.
 
-Please refer to the [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) documentation for more details on its core principles.
+Refer to the [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) documentation for more details on its core principles.
 
 ## Using Enhanced Dead Letter Queue
 
@@ -89,7 +89,7 @@ Enhanced Dead Letter Queue ensures that messages moved to the DLQ topic will alw
   </small>
 </p>
 
-!!! note "Note"
+!!! note "DLQ Partition Count Need Not Match Source"
 
     The DLQ topic does not have to have the same number of partitions as the topics from which the broken messages come. Karafka will ensure that all the messages from the same origin partition will end up in the same DLQ topic partition.
 
@@ -151,7 +151,7 @@ It accepts two arguments:
 - `dlq_message` - a hash with all the details of the DLQ message that will be dispatched
 - `skippable_message` - Karafka message that we skip via the DLQ feature
 
-Let's say you want to add some headers and alter the payload. You can do it in the following way:
+Suppose you want to add some headers and alter the payload. You can do it in the following way:
 
 ```ruby
 class MyConsumer
@@ -177,7 +177,7 @@ class MyConsumer
 end
 ```
 
-!!! note "Note"
+!!! note "No Routing Changes Required"
 
     No routing changes are needed to make it work.
 
@@ -209,7 +209,7 @@ end
 
 Karafka, by default, uses transactions to atomically dispatch messages to a Dead-Letter Queue (DLQ) and mark them as consumed when a transactional producer is available. However, you might prefer to handle these actions independently, especially when minimizing transactional overhead is a priority.
 
-To turn off transactional behavior for DLQ dispatches, set the transactional option to false in the DLQ routing configuration. Here's how to apply this setting:
+To turn off transactional behavior for DLQ dispatches, set the transactional option to false in the DLQ routing configuration. Here is how to apply this setting:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -232,7 +232,7 @@ This adjustment ensures that messages dispatched to the DLQ and the marking of t
 
 ## Advanced Error Tracking
 
-Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to leverage historical error data to inform recovery strategies, ensuring a nuanced approach to handling errors based on past failures.
+Karafka Pro maintains a log of the last 100 errors during message processing, retaining this error history until a successful processing. This feature allows developers to use historical error data to inform recovery strategies, ensuring a nuanced approach to handling errors based on past failures.
 
 The errors_tracker API in Karafka's ErrorsTracker class is designed to accumulate and manage a history of errors during the `#consume` method execution. It tracks up to the last 100 errors to prevent memory leaks from endless error loops.
 
@@ -280,7 +280,7 @@ When customizing DLQ messages using the `#enhance_dlq_message` method, you may w
 
 You can access the error information through the `#errors_tracker` method within your `#enhance_dlq_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
 
-Here's an example of how to add error information to your DLQ messages:
+Here is an example of how to add error information to your DLQ messages:
 
 ```ruby
 class MyConsumer
@@ -327,7 +327,7 @@ This approach enables you to:
 
 ## Custom Context-Aware Recovery Strategies
 
-Karafka allows for implementing custom DLQ handling and recovery strategies, leveraging the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
+Karafka allows for implementing custom DLQ handling and recovery strategies, using the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
 
 This method offers significant benefits, including more efficient processing, reduced noise from non-recoverable errors, and enhanced opportunity for successful message recovery, leading to a more robust and error-tolerant system.
 

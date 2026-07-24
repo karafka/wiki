@@ -1,6 +1,6 @@
 # Multi-Cluster Setup
 
-Karafka is a robust framework that allows applications to interact with multiple Kafka clusters simultaneously. This provides enhanced scalability, redundancy, and flexibility, enabling developers to optimize data processing and manage message streams across various clusters with ease.
+Karafka is a framework that allows applications to interact with multiple Kafka clusters simultaneously. This provides enhanced scalability, redundancy, and flexibility, enabling developers to optimize data processing and manage message streams across various clusters with ease.
 
 ## Overview
 
@@ -12,7 +12,7 @@ Karafka is a robust framework that allows applications to interact with multiple
 
     - The `Karafka.producer` will always refer to the primary cluster defined unless overwritten.
 
-    - ActiveJob jobs, when scheduled with Karafka's ActiveJob backend, will also always go to the primary cluster.
+    - Active Job jobs, when scheduled with Karafka's Active Job backend, will also always go to the primary cluster.
 
 4. Admin Operations and Web UI:
 
@@ -54,7 +54,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Topics Are Grouped by Target Cluster"
 
     Karafka intelligently groups topics targeting different clusters into distinct subscription groups. This approach optimizes and conserves connections to Kafka, ensuring efficient resource utilization and streamlined data consumption across clusters.
 
@@ -64,9 +64,9 @@ While the consumption settings ensure Karafka knows where to pull messages from,
 
 Remember, a correct configuration is crucial for the efficient and error-free operation of Karafka when working with multiple Kafka clusters.
 
-If you want to configure the primary `Karafka.producer` to write messages to a cluster different than the default one, please refer to [this](WaterDrop-Reconfiguration) documentation section.
+If you want to configure the primary `Karafka.producer` to write messages to a cluster different than the default one, refer to [this](WaterDrop-Reconfiguration) documentation section.
 
-To produce data across multiple clusters, set up individual producers for each targeted cluster. However, it's essential to manually integrate instrumentation and error tracking, as these producers won't be monitored by the default Karafka Web UI.
+To produce data across multiple clusters, set up individual producers for each targeted cluster. However, it is essential to manually integrate instrumentation and error tracking, as these producers will not be monitored by the default Karafka Web UI.
 
 ```ruby
 # Just create producers targeting other clusters
@@ -97,13 +97,13 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 ## Common Mistakes
 
-- **Ignoring Primary Default**: Forgetting that `Karafka.producer` and ActiveJob jobs default to the primary cluster can lead to unexpected routing of messages.
+- **Ignoring Primary Default**: Forgetting that `Karafka.producer` and Active Job jobs default to the primary cluster can lead to unexpected routing of messages.
 
 - **Mismatched Cluster Configuration**: Ensure that all specified clusters in the configuration have the correct broker addresses.
 
 - **Web UI Assumption**: Assuming that the Web UI processes data on the cluster it shows. Remember, data processing is done on the primary cluster unless overridden.
 
-- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Ensure there's a clear need for this before diving in.
+- **Overcomplicating Setup**: Using multiple clusters can add complexity to your setup. Ensure there is a clear need for this before diving in.
 
 - **Monitoring Challenges**: Monitoring and alerting can become challenging with multiple clusters. Ensure you have a solid monitoring strategy.
 
@@ -121,7 +121,7 @@ SECONDARY_CLUSTER_PRODUCER.produce_sync(
 
 ## Conclusion
 
-While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it's essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you're leveraging the multi-cluster configuration for valid business reasons.
+While Karafka's ability to operate with multiple clusters offers flexibility and scalability, it is essential to understand the nuances and potential pitfalls of such a setup. Plan your configuration carefully, and ensure you are using the multi-cluster configuration for valid business reasons.
 
 ## See Also
 

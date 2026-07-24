@@ -4,7 +4,7 @@ Karafka uses RSA asymmetric encryption, so your producers do not have to have th
 
 !!! warning "Custom Headers Deserializer and Encryption"
 
-    When using Karafka's encryption features, it's important to note that encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
+    When using Karafka's encryption features, encryption may not work as expected if you use a custom headers deserializer. Custom deserialization of headers can alter how encryption headers are processed, potentially leading to issues in correctly encrypting or decrypting messages. In cases where custom headers deserialization is necessary, it is recommended to consult with Karafka Pro support for guidance to ensure that encryption functionalities are properly integrated and maintained within your application.
 
 ## Enabling Encryption
 
@@ -32,7 +32,7 @@ Once everything is configured, Karafka will automatically produce encrypted mess
 
 Karafka keeps messages encrypted until their deserialization.
 
-!!! note "Note"
+!!! note "Only Payloads Are Encrypted, Not Keys or Headers"
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
 
@@ -60,7 +60,7 @@ That way, the given application can produce messages but not decrypt them. This 
 
 ## Rotating Public and Private Keys
 
-When you upgrade your keys, please remember to update the `config. encryption.version`, so Karafka can recognize the correct key pair.
+When you upgrade your keys, remember to update the `config. encryption.version`, so Karafka can recognize the correct key pair.
 
 If you have yet to consume messages using an old public key, do **not** remove the old private key.
 
@@ -109,9 +109,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
-
-    Such a pattern should only be used when working with trusted entities.
+Such a pattern should only be used when working with trusted entities.
 
 ## Messages Fingerprinting
 
@@ -141,7 +139,7 @@ This feature is especially critical in industries subject to stringent regulatio
 
 !!! warning "Selection of Fingerprinting Algorithm"
 
-    The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It's essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
+    The choice of fingerprinting algorithm is critical and should be made with care. Each message processed by Karafka will have a fingerprint header attached based on the selected algorithm. This inclusion can significantly increase the size of each message, especially for smaller messages, potentially impacting overall throughput and storage efficiency. Additionally, the process of computing these fingerprints is CPU-intensive. This could lead to increased processing times and higher CPU usage, affecting the performance of your system. It is essential to weigh these considerations when selecting a fingerprinting algorithm to ensure it aligns with your application's performance and resource utilization requirements.
 
 ## Example Use Cases
 
@@ -155,7 +153,7 @@ This feature is especially critical in industries subject to stringent regulatio
 
 - Human Resources: Human resources departments may store sensitive employee data such as social security numbers, payroll information, and performance reviews in Kafka. At-rest encryption can help protect this data from unauthorized access or theft, ensuring regulatory compliance and maintaining employee trust.
 
-Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it doesn't require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
+Karafka Pro's at-rest encryption is worth using because it provides a layer of security to sensitive data stored in Kafka, ensuring that even if the data is compromised, it cannot be viewed by unauthorized users. The encryption is transparent, meaning that it does not require any changes to the application code or Kafka configuration, making it easy to implement. Moreover, it supports key rotation and management, enabling the organization to have complete control over the encryption keys and ensuring data is always secure. This makes it an essential feature for businesses that deal with sensitive data and want to protect their customers' privacy and maintain regulatory compliance.
 
 ## See Also
 

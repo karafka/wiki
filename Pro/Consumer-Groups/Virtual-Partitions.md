@@ -151,7 +151,7 @@ end
 
 !!! tip "Lazy Deserialization Advisory"
 
-    Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Consumer-Groups-Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
+    Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Consumer-Groups-Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
 ### Partitioning Randomly
 
@@ -272,7 +272,7 @@ This approach ensures that:
 - Larger message groups are processed first
 - Work is distributed more evenly across available workers
 - Message order within each key group is preserved within a single batch
-- All available worker threads are utilized effectively
+- All available worker threads are used effectively
 
 ##### Important Considerations for Balanced Distribution
 
@@ -299,7 +299,7 @@ Consider these factors when selecting a distribution strategy:
       <td>Processing is stateless or state is managed externally</td>
     </tr>
     <tr>
-      <td>You're implementing window-based aggregations spanning multiple polls</td>
+      <td>You are implementing window-based aggregations spanning multiple polls</td>
       <td>Maximizing worker thread utilization is a priority</td>
     </tr>
     <tr>
@@ -383,11 +383,11 @@ end
 
 !!! note "Virtual Partitions Lifespan"
 
-    Please remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
+    Remember that Virtual Partitions are long-lived and will stay in the memory for as long as the Karafka process owns the given partition.
 
 ## Virtual Offset Management
 
-When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling seamless and streamlined data flow within your system.
+When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling streamlined data flow within your system.
 
 This feature operates on a few layers to provide as good warranties as possible while ensuring that each virtual partition can work independently. Below you can find a detailed explanation of each component making Virtual Offset Management.
 
@@ -407,7 +407,7 @@ Below you can find a few examples of how Karafka transforms messages marked as c
 
 When a message is marked as consumed, Karafka recognizes that all previous messages in that virtual partition have been processed as well, even if they were not explicitly marked as consumed.
 
-This functionality seamlessly integrates with collective marking to materialize the highest possible Kafka offset. With collective marking, Karafka can efficiently track the progress of message consumption across different virtual consumers.
+This functionality integrates with collective marking to materialize the highest possible Kafka offset. With collective marking, Karafka can efficiently track the progress of message consumption across different virtual consumers.
 
 Below you can find an example illustrating which of the messages will be virtually marked as consumed when given message in a virtual partition is marked.
 
@@ -497,7 +497,7 @@ end
 
 When working with Virtual Partitions in Karafka, users can manually invoke a collapsing operation. This provides flexibility and control, especially when non-linear message processing is required.
 
-Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also initiate this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
+Just as an error in a Virtual Partition will trigger a collapse, ensuring adherence to Kafka's ordering warranties upon retries, users can also start this collapse process manually. By doing so, the Virtual Partitions temporarily collapse and restore the natural message processing order established by Kafka.
 
 To manually collapse your Virtual Partitions, you need to invoke the `#collapse_until!` method as follows:
 
@@ -564,7 +564,7 @@ end
 
 Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design ensures that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
 
-One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control.
+One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can pick up the work of a particular virtual partition between batches, giving users a sense of control.
 
 The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key ensures that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
 
@@ -584,7 +584,7 @@ By decoupling thread assignment from consumer instances and ensuring dedicated, 
 
 In Karafka, the default reducer for Virtual Partitions is a method designed to distribute messages across virtual partitions. It does this by using a simple mathematical operation on the sum of the stringified version of the virtual key. While this method is generally effective, it may not be fully optimal under certain configurations. For example, it could consistently use only 60% or less of the available threads, leading to inefficiencies and underutilization of resources.
 
-Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally utilized, leading to better performance and throughput for your application.
+Karafka allows you to replace the default reducer with a custom one to address this. This can be particularly useful when implementing a more sophisticated partitioning strategy to enhance parallelization and balance the load more effectively. By customizing the reducer, you can ensure that all available threads are optimally used, leading to better performance and throughput for your application.
 
 ### Implementing a Custom Reducer
 
@@ -628,7 +628,7 @@ This class defines a custom reducer with a `#call` method. The method uses an MD
 
 - **Enhanced Distribution**: Custom reducers allow for more complex and nuanced distribution strategies, which can better balance the load and reduce hotspots.
 
-- **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that's handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
+- **Adaptability**: Different applications have different needs. A custom reducer can be tailored to specific requirements, whether that is handling unique data distributions, optimizing for specific performance characteristics, or integrating with other systems.
 
 - **Scalability**: By refining how messages are distributed across virtual partitions, custom reducers can help ensure that processing scales efficiently as the volume of messages increases.
 
@@ -648,7 +648,7 @@ Karafka default [monitor](Infrastructure-Monitoring-and-Logging) and the Web UI 
 
 Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Basics-Consuming-Messages#shutdown-and-partition-revocation-handlers).
 
-For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
+For each virtual consumer instance, both are executed when shutdown or revocation occurs. Those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/virtual_partitions/shutdown.svg" />
@@ -656,7 +656,7 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Virtual Partitions vs. Increasing Number of Partitions vs. Parallel Segments
 
-When building a scalable Kafka consumer application with Karafka, you'll likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, leverage Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
+When building a scalable Kafka consumer application with Karafka, you will likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, use Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
 
 ### Conceptual Differences
 
@@ -668,7 +668,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 ### Work Distribution
 
-- **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you're constrained by the fact that only one consumer can read from a partition at a given time.
+- **Physical Partitions**: Increasing the number of partitions allows more consumer processes to read data concurrently. However, you are constrained by the fact that only one consumer can read from a partition at a given time.
 
 - **Virtual Partitions**: VPs enable multiple workers to process data from a single partition. This is useful when data within a partition can be divided into independent logical chunks. The result is better work distribution and utilization of worker threads, especially in heavy-load scenarios.
 
@@ -676,7 +676,7 @@ When building a scalable Kafka consumer application with Karafka, you'll likely 
 
 ### Polling Characteristics
 
-- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there's uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-utilized.
+- **Physical Partitions**: Efficient polling requires a consistent distribution of messages across all partitions. Challenges arise when there is uneven message distribution or when polled batches do not include data from multiple partitions, leading to some consumers being under-used.
 
 - **Virtual Partitions**: VPs compensate for uneven polling. Even if polling fetches data mainly from one partition, VPs ensure that multiple workers distribute and process the data. This mitigates the impact of uneven distribution.
 
@@ -708,9 +708,9 @@ When aiming for maximum throughput and efficient resource utilization, especiall
 
 ### Scalability Constraints
 
-- **Physical Partitions**: There's a limit to how many physical partitions you can have, and re-partitioning a topic can be a complex task. Also, there's overhead associated with managing more partitions.
+- **Physical Partitions**: There is a limit to how many physical partitions you can have, and re-partitioning a topic can be a complex task. Also, there is overhead associated with managing more partitions.
 
-- **Virtual Partitions**: VPs provide scalability within the confines of existing physical partitions. They don't add to the management overhead of Kafka and offer a more flexible way to scale processing power without altering the topic's physical partitioning.
+- **Virtual Partitions**: VPs provide scalability within the confines of existing physical partitions. They do not add to the management overhead of Kafka and offer a more flexible way to scale processing power without altering the topic's physical partitioning.
 
 ## Customizing the partitioning engine / Load aware partitioning
 

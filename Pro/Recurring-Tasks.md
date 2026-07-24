@@ -30,13 +30,13 @@ Karafka, with its unique approach, stores the state of each recurring task, incl
 
 One key advantage of Recurring Tasks is its independence from external databases for managing task schedules. All necessary information is stored in Kafka, simplifying deployment and maintenance.
 
-Karafka ensures that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes don't run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
+Karafka ensures that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes do not run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
 
-In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and seamless task execution continuity, even during unexpected failures.
+In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and task execution continuity, even during unexpected failures.
 
 ## Using Recurring Tasks
 
-To start using Recurring Tasks, follow a few essential setup steps. These tasks are not automatically enabled and require specific configurations in your application. Here's what you need to do:
+To start using Recurring Tasks, follow a few essential setup steps. These tasks are not automatically enabled and require specific configurations in your application. Here is what you need to do:
 
 1. **Add `fugit` To Your Gemfile**: First, add the `fugit` gem to your Gemfile. Fugit is a cron parsing library that is not included in Karafka's dependencies by default but is required for defining and managing recurring tasks.
 
@@ -83,7 +83,7 @@ This will automatically create a special consumer group dedicated to the consump
 
 !!! tip "Review Replication Factor Configuration"
 
-    Before deploying to production, it is crucial to read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
+    Before deploying to production, read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
 
 When `recurring_tasks(true)` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Infrastructure-Declarative-Topics). This means that all you need to do is to run the:
 
@@ -93,7 +93,7 @@ bundle exec karafka topics migrate
 
 Two appropriate topics with the needed configuration will be created.
 
-If you do not use Declarative Topics, please make sure to create those topics manually with below settings:
+If you do not use Declarative Topics, make sure to create those topics manually with below settings:
 
 <table>
   <thead>
@@ -150,7 +150,7 @@ Setting the replication factor for Kafka topics used by the recurring tasks feat
 
 For example, if you set a replication factor of 3, Kafka will store the data on three different brokers. If one broker goes down, the data is still accessible from the other two brokers, ensuring that your recurring tasks continue to operate without interruption.
 
-Here's an example of how to reconfigure the Recurring Tasks topics so they have replication factor of 3:
+Here is an example of how to reconfigure the Recurring Tasks topics so they have replication factor of 3:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -206,7 +206,7 @@ In this example:
 
 The configuration for Recurring Tasks in Karafka is designed to be straightforward yet flexible. It allows you to fine-tune the behavior of your scheduled tasks to meet your application's specific needs.
 
-The configuration for Recurring Tasks is done in the Karafka application's setup block. Here's how you might configure some basic settings:
+The configuration for Recurring Tasks is done in the Karafka application's setup block. Here is how you might configure some basic settings:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -288,7 +288,7 @@ When defining your recurring tasks schedule, you can specify a version number. T
 
 During a rolling deployment, there might be a brief period when some instances of your application are still running an older code version with a different schedule. If an older instance of your application receives recurring task assignments, it will recognize that the schedule is no longer compatible with its in-memory definition. The older instance will halt the execution of the task and will raise an error, preventing any outdated schedules from being run. This ensures that only the new schedule version is executed, maintaining consistency and avoiding potential issues caused by version mismatches.
 
-If you don't specify a version, Karafka will operate without this safeguard. Regardless of its deployment stage, Karafka will attempt to execute the schedule it has in memory if it receives the schedules topic assignment. Versioning is recommended if you want to ensure that only the most up-to-date schedule is used during deployments.
+If you do not specify a version, Karafka will operate without this safeguard. Regardless of its deployment stage, Karafka will attempt to execute the schedule it has in memory if it receives the schedules topic assignment. Versioning is recommended if you want to ensure that only the most up-to-date schedule is used during deployments.
 
 ## Tasks Execution Logging
 
@@ -364,7 +364,7 @@ end
 
 ## Execution Modes
 
-In larger setups, it's advisable to run a dedicated consumer process for executing recurring tasks and managing the Web UI (if used) to prevent potential saturation with other workloads.
+In larger setups, it is advisable to run a dedicated consumer process for executing recurring tasks and managing the Web UI (if used) to prevent potential saturation with other workloads.
 
 By isolating the recurring tasks execution in its own consumer process, you ensure that these tasks do not compete with other consumers for resources, which can be particularly important in high-throughput environments. This dedicated process will handle all scheduling and execution, leaving other consumers free to manage their specific workloads.
 
@@ -384,7 +384,7 @@ Each task within the schedule can be accessed using the `Karafka::Pro::Recurring
 
 For testing purposes, each task can be executed manually by invoking the `#execute` method on the task object. This method bypasses the cron schedule and any associated instrumentation, allowing you to directly test the task's functionality to ensure it works as expected without any side effects.
 
-Here's an example of how you might define a schedule and test it:
+Here is an example of how you might define a schedule and test it:
 
 ```ruby
 Karafka::Pro::RecurringTasks.define('1.0.0') do
@@ -414,7 +414,7 @@ expect { cleanup_task.execute }.not_to raise_error
 
 ## Warranties
 
-Recurring Tasks provides strong execution warranties by leveraging Kafka’s robust architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
+Recurring Tasks provides strong execution warranties by using Kafka’s architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
 
 - **Single Process Execution**: Karafka ensures that only one process can execute the scheduled tasks by assigning Kafka partitions to a single consumer. This prevents multiple processes from executing the same task simultaneously, offering a strong guarantee of task uniqueness and timing precision.
 
@@ -442,7 +442,7 @@ Recurring Tasks provides strong execution warranties by leveraging Kafka’s rob
 
 - **Regulatory Compliance and Auditing**: Schedule regular tasks to automatically generate and store compliance reports, ensuring your organization meets audit requirements without manual intervention.
 
-- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, ensuring that data flows seamlessly from one stage to the next.
+- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, ensuring that data flows from one stage to the next.
 
 - **SLA-Based Monitoring and Alerts**: Monitor service-level agreements (SLAs) by scheduling checks that ensure critical metrics are within acceptable thresholds. Automatically trigger alerts or remediation actions if SLAs are breached.
 

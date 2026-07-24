@@ -71,7 +71,7 @@ The below example illustrates the usage of the `migrate` command to align the nu
 
 <div class="asciinema" data-cols="100" data-rows="16" data-cast="topics-migrate">
   <span style="display: none;">
-    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Please use our
+    Note: Asciinema videos are not visible when viewing this wiki on GitHub. Use our
     <a href="https://karafka.io/docs">online</a>
     documentation instead.
   </span>
@@ -204,7 +204,7 @@ end
 
 This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
 
-!!! note "Note"
+!!! note "Declarative `active` Differs From the Routing `active` Method"
 
     Keep in mind that setting `active` to `false` in declarative topics is **not** equivalent to disabling the topic consumption using the routing `active` method.
 
@@ -238,7 +238,7 @@ This means you can gradually migrate from the routing-based `config()` approach 
 
 ## Legacy Routing-Based Configuration
 
-!!! warning "Deprecated"
+!!! warning "Routing `#config` Is Deprecated"
 
     Defining topic configuration via the routing `#config` method is deprecated. While still functional for backwards compatibility, all new topic declarations should use the standalone `declaratives.draw` DSL described above. The routing-based approach will be removed in a future major release.
 
@@ -302,7 +302,7 @@ end
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
-Please keep in mind that topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
+Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
 ## Strict Declarative Topics Validation
 

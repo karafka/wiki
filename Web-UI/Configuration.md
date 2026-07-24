@@ -17,13 +17,64 @@ end
 Karafka::Web.enable!
 ```
 
+## Using a Custom Web UI Producer
+
+Karafka Web UI produces data on its own: consumer state reports, error records, aggregated metrics, and messages republished from the Explorer. All of it goes through the producer available under `Karafka::Web.producer`.
+
+By default, the Web UI does not create a producer of its own. It uses `Karafka.producer`, that is, the very same producer instance and connection your application uses:
+
+- For an idempotent or transactional default producer, `Karafka.producer` is used as-is, because the acknowledgment settings of such producers cannot be altered.
+- For a regular (non-idempotent, non-transactional) default producer, the Web UI dispatches through a low-ack [variant](WaterDrop-Variants) of it (`acks: 0`). A variant is only a per-dispatch settings overlay on top of the same producer, not a separate one. Web UI reporting is analytical rather than mission-critical, so fire-and-forget semantics reduce its latency and overhead at the cost of occasional message loss.
+
+Either way, the Web UI reporting shares the producer, its connection, and its queue with your application.
+
+You may want to assign a fully separate producer instance when:
+
+- Your default producer is transactional and heavy transaction usage in your code can stall the Web UI reporting. See [Web UI Transactions Support](Web-UI-Transactions) for details.
+- The Web UI should report to a different cluster or use different credentials than your application data.
+- You want the Web UI reporting to have its own delivery settings, buffers, and connection, fully isolated from your application traffic.
+
+You can assign it during the Web UI configuration phase:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Create and assign producer that will be used by the Web UI components
+  config.producer = ::WaterDrop::Producer.new do |p_config|
+    # Use Karafka configuration.
+    # You can also of course define all settings independently
+    karafka_app_config = ::Karafka::App.config
+
+    # Copy the kafka configuration hash
+    kafka_config = karafka_app_config.kafka.dup
+
+    # Set the kafka configuration for the Web dedicated producer
+    p_config.kafka = ::Karafka::Setup::AttributesMap.producer(kafka_config)
+
+    # Use the same logger as Karafka
+    p_config.logger = karafka_app_config.logger
+  end
+end
+```
+
+Once the dedicated Web UI producer is set up, it becomes the default for all the Web UI components.
+
+!!! warning "Ensure Access to the Web UI Topics"
+
+    A custom Web UI producer must be able to deliver messages to all the Web UI internal topics. If it points to a different cluster or uses restricted credentials, the Web UI will not be able to report or materialize its states. You can find the list of the required topics in the [Getting Started](Web-UI-Getting-Started) guide.
+
+!!! note "The Web UI Producer Is Instrumented Automatically"
+
+    A producer assigned via `config.producer` is automatically subscribed with the producer tracking listeners, so its errors are reported like the ones from `Karafka.producer`. This is not the case for other custom producers you create in your application. Those need to be subscribed manually, as described below.
+
+Karafka Web UI also closes its producer when `karafka server` terminates, so you do not need to manage its lifecycle yourself.
+
 ## Monitoring Non-Default Producer Instances
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`
 
 By default, Karafka Web UI is set only to monitor and track the default producer, which is initialized automatically and made available under `Karafka.producer`.
 
-This means that if you manually create and initialize custom producers (using WaterDrop), these custom producers are not automatically tracked or monitored in the Web UI. They aren't connected to the monitoring instruments that the Web UI uses to track events and states of the producers.
+This means that if you manually create and initialize custom producers (using WaterDrop), these custom producers are not automatically tracked or monitored in the Web UI. They are not connected to the monitoring instruments that the Web UI uses to track events and states of the producers.
 
 To have these custom producers tracked in the Karafka Web UI, you need to subscribe the appropriate listeners to them manually. This is achieved by using the following code:
 
@@ -51,7 +102,7 @@ end
 
 In specific scenarios, you may not want the Karafka Web UI to monitor your Kafka producers. For instance:
 
-1. Performance considerations: Depending on the scale of your application, having numerous producers being tracked might add unnecessary overhead to your application, thereby reducing overall performance. This could be especially relevant in a production environment where efficiency and resource utilization are critical.
+1. Performance considerations: Depending on the scale of your application, having many producers being tracked might add unnecessary overhead to your application, thereby reducing overall performance. This could be especially relevant in a production environment where efficiency and resource utilization are critical.
 2. Privacy or Security concerns: You might have producers dealing with sensitive data that you prefer not to expose through monitoring, or your security guidelines might not allow such tracking.
 3. Simplicity: If you have many producers and only a subset of them are relevant for your current debugging or monitoring needs, tracking all producers could clutter the Web UI, making it harder to focus on the issues at hand.
 In such cases, you can opt out of monitoring producers with the Karafka Web UI by using the provided code:
@@ -134,7 +185,7 @@ In this setup, the `env_suffix` is created by converting the current Rails envir
 
 This naming convention ensures that each environment has its own unique set of topics, allowing you to monitor and manage each environment separately within the same Kafka cluster without fear of data overlap or collision.
 
-After setting up your environments, it's important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
+After setting up your environments, it is important to remember to run `bundle exec karafka-web install` for each environment. This command will create the appropriate topics per environment with the expected settings and populate these topics with initial data. Running this command ensures that all topics are set up correctly and ready for use within their respective environments.
 
 ## In-Memory Cluster Data Caching
 
@@ -161,15 +212,16 @@ One of the features to note is that whenever the Status view is accessed, the ca
 
 ### Consideration for Multiple Processes Deployment
 
-If you've deployed Karafka Web UI across multiple processes, simply refreshing the cache in one process (by visiting the Cluster view) might not be sufficient. This is because subsequent requests could be routed to different processes, each with its cache state. In such scenarios, the cache would need to be refreshed in each of these processes to ensure consistency.
+If you have deployed Karafka Web UI across multiple processes, simply refreshing the cache in one process (by visiting the Cluster view) might not be enough. This is because subsequent requests could be routed to different processes, each with its cache state. In such scenarios, the cache would need to be refreshed in each of these processes to ensure consistency.
 
 ### Summary
 
-In summary, while the in-memory cache in Karafka Web UI significantly enhances its efficiency, it's essential to understand its workings, especially in dynamic environments where cluster changes are frequent or when deploying across multiple processes, and to configure it according to your needs.
+In summary, while the in-memory cache in Karafka Web UI significantly enhances its efficiency, it is essential to understand its workings, especially in dynamic environments where cluster changes are frequent or when deploying across multiple processes, and to configure it according to your needs.
 
 ## See Also
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
 - [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI capabilities
+- [Web UI Transactions Support](Web-UI-Transactions) - Why a transactional default producer warrants a dedicated Web UI producer
 - [Pro Web UI Policies](Pro-Web-UI-Policies) - Configure access control and security policies
 - [Pro Web UI Branding](Pro-Web-UI-Branding) - Customize Web UI appearance and branding

@@ -12,7 +12,7 @@ Karafka Multiplexing is designed to enhance the efficiency and performance of me
 
 Multiplexing enables more effective data handling and improves performance by dividing the workload across several connections. This approach provides:
 
-- **Partition Isolation**: Each connection handles a subset of partitions, ensuring that lag in one doesn't halt polling of others
+- **Partition Isolation**: Each connection handles a subset of partitions, ensuring that lag in one does not halt polling of others
 - **Breaking Prefetch Patterns**: Under heavy load, librdkafka tends to prefetch large batches from single partitions; multiplexing breaks this pattern for more even distribution
 - **Better Work Distribution**: Processing becomes more balanced across partitions, even when data waits in internal queues
 
@@ -28,7 +28,7 @@ Multiplexing increases throughput and significantly enhances processing capabili
 
 ## Enabling Multiplexing
 
-To enable multiplexing in Karafka, a simple yet crucial step must be taken when defining your subscription groups. By providing the `multiplex` option within your subscription group definition, you instruct Karafka to initiate multiplexing for that particular group:
+To enable multiplexing in Karafka, a simple yet crucial step must be taken when defining your subscription groups. By providing the `multiplex` option within your subscription group definition, you instruct Karafka to start multiplexing for that particular group:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -96,7 +96,7 @@ end
       end
     ```
 
-Once you have configured multiplexing in your routing settings, no additional steps are required for it to function. Your application will start processing messages from multiple partitions simultaneously, leveraging the benefits of multiplexing immediately and seamlessly.
+Once you have configured multiplexing in your routing settings, no additional steps are required for it to function. Your application will start processing messages from multiple partitions simultaneously, using the benefits of multiplexing immediately.
 
 ### Configuration API
 
@@ -209,7 +209,7 @@ Karafka::Admin.seek_consumer_group(
 
 ## Multiplexing vs. Virtual Partitions
 
-Deciding between Multiplexing and Virtual Partitions isn't a strict either/or scenario; in fact, they can be complementary. While Virtual Partitions parallelize single-topic processing without extra Kafka connections, Multiplexing increases throughput by allowing a consumer to handle multiple partitions. Together, they can enhance capabilities, especially in IO-intensive workloads. For instance, with a concurrency of ten, you might use two Kafka connections and virtualize each into five virtual partitions. This approach leverages both strategies for optimal performance, adapting to your application's needs, data intricacies, and anticipated load.
+Deciding between Multiplexing and Virtual Partitions is not a strict either/or scenario; in fact, they can be complementary. While Virtual Partitions parallelize single-topic processing without extra Kafka connections, Multiplexing increases throughput by allowing a consumer to handle multiple partitions. Together, they can enhance capabilities, especially in IO-intensive workloads. For instance, with a concurrency of ten, you might use two Kafka connections and virtualize each into five virtual partitions. This approach uses both strategies for optimal performance, adapting to your application's needs, data intricacies, and anticipated load.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -238,7 +238,7 @@ end
 
 Aside from fixed connections multiplexing, Karafka provides a mode called "Dynamic". Dynamic multiplexing in Karafka is designed to optimize resource utilization and enhance system efficiency. Karafka's dynamic multiplexing adjusts the number of in-process connections based on partition assignments. This assignment-based scaling ensures a balanced and efficient distribution of resources.
 
-It is essential to know the following facts about this mode of operations:
+Know the following facts about this mode of operations:
 
 - **Assignment-Based Scaling**: The system dynamically adjusts connections based on the distribution of partition assignments. This ensures a more effective and targeted scaling strategy, directly aligning with Kafka's data structure and flow.
 
@@ -250,13 +250,13 @@ It is essential to know the following facts about this mode of operations:
 
 ### How Does It Work?
 
-Here's a breakdown of how it operates when the dynamic mode is enabled:
+Here is a breakdown of how it operates when the dynamic mode is enabled:
 
-- **Initial Connection Setup**: Upon startup, Karafka initiates `boot` connections to Kafka or if not defined, half of available connections. This initial number is based on the configuration set for the multiplexing feature, representing the starting point for the dynamic scaling process.
+- **Initial Connection Setup**: Upon startup, Karafka starts `boot` connections to Kafka or if not defined, half of available connections. This initial number is based on the configuration set for the multiplexing feature, representing the starting point for the dynamic scaling process.
 
 - **Stabilization Period**: After establishing the initial connections, Karafka enters a stabilization period. It waits for at least one minute following the last rebalance. This waiting period allows the system to stabilize and ensures that decisions to scale down are not made prematurely, which might otherwise lead to unnecessary fluctuations and inefficiencies.
 
-- **Selective Connection Shutdown**: Once the system has stabilized, Karafka begins monitoring the usage of each connection. If it identifies a connection that is not being used (i.e., no partitions are assigned), it will shut it down to conserve resources. However, it's crucial to note that Karafka is designed always to maintain at least `min` active connections, even if no partitions are currently assigned. This ensures that a line is always open to Kafka, ready to take on assignments if the need arises quickly.
+- **Selective Connection Shutdown**: Once the system has stabilized, Karafka begins monitoring the usage of each connection. If it identifies a connection that is not being used (i.e., no partitions are assigned), it will shut it down to conserve resources. However, Karafka is designed always to maintain at least `min` active connections, even if no partitions are currently assigned. This ensures that a line is always open to Kafka, ready to take on assignments if the need arises quickly.
 
 - **Adaptive Scaling Up**: If any subscription group receives multiple assignments and the system has yet to reach the `max` number of active connections, Karafka will adaptively scale up the connections, one at a time. This gradual increase helps efficiently handle the increased load while avoiding abrupt changes that could lead to instability.
 
@@ -357,7 +357,7 @@ end
 
 - **Cost-Effectiveness**: Reduces operational costs by using resources only when necessary and as dictated by the structure and distribution of Kafka partitions.
 
-- **Scalability**: Supports the dynamic and fluctuating nature of distributed data systems without manual intervention, ensuring that the system can seamlessly adapt to varying partition loads.
+- **Scalability**: Supports the dynamic and fluctuating nature of distributed data systems without manual intervention, ensuring that the system can adapt to varying partition loads.
 
 - **Improved Parallelism**: Enhances the system's ability to process data concurrently across multiple partitions and topics, resulting in faster processing times and higher throughput.
 
@@ -365,7 +365,7 @@ end
 
 **Use Multiplexing When:**
 
-- High-volume, multi-partition scenarios where alternatives don't provide sufficient performance
+- High-volume, multi-partition scenarios where alternatives do not provide enough performance
 - Connection count is not a primary constraint
 - You need isolation between partition processing streams
 
@@ -387,7 +387,7 @@ However, Multiplexing can be used without issues if Dynamic mode is not enabled.
 
 ### Conclusion
 
-The Dynamic Multiplexing feature in Karafka represents a refined approach to managing connections with Kafka clusters. By focusing on partition assignments, Karafka ensures that resources are utilized efficiently, balancing performance needs with cost and resource conservation. This feature is handy for large-scale, distributed applications where partition loads vary significantly.
+The Dynamic Multiplexing feature in Karafka represents a refined approach to managing connections with Kafka clusters. By focusing on partition assignments, Karafka ensures that resources are used efficiently, balancing performance needs with cost and resource conservation. This feature is handy for large-scale, distributed applications where partition loads vary significantly.
 
 ## Memory and Resource Considerations
 
@@ -405,13 +405,13 @@ The Dynamic Multiplexing feature in Karafka represents a refined approach to man
 
 When employing Multiplexing, each additional connection established by a process consumes more memory as it maintains its own set of buffers, offsets, and other metadata related to its subscribed topics. In scenarios where many connections are established to handle high volumes of data, the memory footprint can increase significantly.
 
-This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it's successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
+This increased memory usage is particularly notable when messages are large or when a high volume of messages is being processed. The system needs to keep track of each message until it is successfully processed and acknowledged. We highly recommend using Multiplexing together with the [Cleaner API](Pro-Cleaner-API) when possible.
 
 ## Example Use Cases
 
 - **High-Volume Data Streams**: For applications dealing with massive influxes of data, multiple connections can fetch data concurrently, reducing latency and preventing bottlenecks.
 
-- **Resource Optimization**: Distribute the load across multiple connections to utilize system resources more effectively, ensuring no single connection becomes a strain point.
+- **Resource Optimization**: Distribute the load across multiple connections to use system resources more effectively, ensuring no single connection becomes a strain point.
 
 - **Improved Fault Tolerance**: With multiple connections, if one fails, others continue processing, providing higher availability and reliability.
 
@@ -419,7 +419,7 @@ This increased memory usage is particularly notable when messages are large or w
 
 ## Summary
 
-Karafka Multiplexing is a powerful tool designed to enhance the performance of your Kafka-based applications, especially under heavy load. Allowing multiple connections to the same topic from a single process provides a robust solution for handling high-volume data streams, optimizing resources, and ensuring high availability. Whether you're dealing with fluctuating workloads, aiming for high throughput, or seeking to improve fault tolerance, Multiplexing can provide significant benefits.
+Karafka Multiplexing is a tool designed to enhance the performance of your Kafka-based applications, especially under heavy load. Allowing multiple connections to the same topic from a single process provides a solution for handling high-volume data streams, optimizing resources, and ensuring high availability. Whether you are dealing with fluctuating workloads, aiming for high throughput, or seeking to improve fault tolerance, Multiplexing can provide significant benefits.
 
 ## See Also
 

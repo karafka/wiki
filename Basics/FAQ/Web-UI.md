@@ -42,7 +42,7 @@ This is because the `karafka-web install` command ensures that the topics are cr
 
 Overall, while it is technically possible to create the necessary topics for the Karafka Web UI manually, it is generally recommended to use the `karafka-web install` command instead.
 
-If you need to create them manually, please include the settings listed [here](Web-UI-Getting-Started).
+If you need to create them manually, include the settings listed [here](Web-UI-Getting-Started).
 
 ## Why after moving from Racecar to Karafka, my Confluent Datadog integration stopped working?
 
@@ -94,19 +94,19 @@ it typically indicates that the Karafka Web UI is trying to execute the `ps` com
 
 - **Restricted Permissions**: It could be a permission issue. The process/user running the Web UI may not have the necessary permissions to execute the `ps` command.
 
-Please ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
+Ensure you have **all** the Karafka Web UI required OS commands installed and executable. A complete list of the OS dependencies can be found [here](Web-UI-Getting-Started#external-shellos-required-commands).
 
 ## Why do Karafka Web UI topics contain binary/Unicode data instead of text?
 
-If you've checked Karafka Web UI topics in an alternative Kafka UI, you may notice that topics seem to contain binary/unicode data rather than plain text. It's not an oversight or an error. This design choice is rooted in our data management and transmission efficiency approach.
+If you have checked Karafka Web UI topics in an alternative Kafka UI, you may notice that topics seem to contain binary/unicode data rather than plain text. It is not an oversight or an error. This design choice is rooted in our data management and transmission efficiency approach.
 
 - **Compression for Efficient Data Transfer**: Karafka Web UI compresses all data that it sends to Kafka. The primary objective behind this is to optimize data transmission by reducing the size of the messages. Smaller message sizes can lead to faster transmission rates and lower storage requirements. This is especially crucial when dealing with vast amounts of data, ensuring that Kafka remains efficient and responsive.
 
-- **Independent Compression without External Dependencies**: We understand the significance of maintaining a lightweight, hassle-free setup for our users. We chose Zlib for data compression - it comes bundled with every Ruby version. This means there's no need to rely on third-party libraries or go through configuration changes to your Kafka cluster to use Karafka Web UI.
+- **Independent Compression without External Dependencies**: We understand the significance of maintaining a lightweight, hassle-free setup for our users. We chose Zlib for data compression - it comes bundled with every Ruby version. This means there is no need to rely on third-party libraries or go through configuration changes to your Kafka cluster to use Karafka Web UI.
 
-By choosing Zlib, we've simplified it for the end user. You won't have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
+By choosing Zlib, we have simplified it for the end user. You will not have to grapple with additional compression settings or worry about compatibility issues. Zlib's ubiquity in Ruby ensures that Karafka remains user-friendly without compromising data transmission efficiency.
 
-While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it's a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
+While the binary/Unicode representation in the Karafka Web UI topics might seem unconventional at first glance, it is a strategic choice to streamline data transfers and keep the setup process straightforward. Karafka Web UI Explorer recognizes this format and will decompress it if you need to inspect this data.
 
 ## Can I use same Karafka Web UI topics for multiple environments like production and staging?
 
@@ -120,17 +120,17 @@ The reason for this approach is grounded in practicality and long-term maintaina
 
 To put it in perspective:
 
-- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works seamlessly with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
+- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works with every subsequent update or change to Karafka or Datadog. It is imperative to consider the long-term cost of this commitment.
 
-- **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in ensuring smooth integration. This introduces an external dependency that's out of Karafka's direct control.
+- **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in ensuring smooth integration. This introduces an external dependency that is out of Karafka's direct control.
 
 - **Ecosystem Benefits**: While such integrations can offer added value, assessing if their benefits are substantial enough to justify the effort and potential challenges is vital. In this case, the perceived benefit to the ecosystem seems insignificant.
 
-In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it's essential to strike a balance that ensures the software remains efficient, maintainable, and free from unnecessary complexities.
+In conclusion, while Karafka recognizes the value of integrations and continually seeks to enhance its capabilities, it is essential to strike a balance that ensures the software remains efficient, maintainable, and free from unnecessary complexities.
 
 ## The "Producer Network Latency" metric in DD seems too high. Is there something wrong with it?
 
-In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it's just 0.015 of a second. Always ensure you're reading the metrics with the correct scale in mind.
+In this case, the high number you see is in microseconds, not milliseconds. To put it into perspective, 1 millisecond is 1,000 microseconds. So, if you see a metric like 15k, it is just 0.015 of a second. Always ensure you are reading the metrics with the correct scale in mind.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/karafka_dd_producer_latency_metric.png" alt="producer network latency chart for waterdrop" />
@@ -138,7 +138,7 @@ In this case, the high number you see is in microseconds, not milliseconds. To p
 
 ## What is the purpose of the `karafka_consumers_reports` topic?
 
-The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to leverage Kafka as its primary source of information.
+The `karafka_consumers_reports` topic is an integral component of the Karafka [Web UI](Web-UI-About). Its primary purpose is to store information related to the processes and operations of the Karafka application. This, along with other Web UI topics, is designed to capture and provide data. By doing so, Karafka Web UI eliminates the need for an external third-party database, allowing it to use Kafka as its primary source of information.
 
 ## Why does the `karafka_consumers_commands` topic generate constant network traffic?
 
@@ -188,7 +188,7 @@ To view the actual payload of messages sent from producer to consumer, you can u
 
 ## What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?
 
-The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It's not critical, but it needs to be set.
+The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It is not critical, but it needs to be set.
 
 Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Ensure that the secret is consistent across all deployment instances, with one value per environment.
 
@@ -281,7 +281,7 @@ This approach allows you to maintain detailed logging for your application consu
 
 ## What is the serialization format for Karafka Web UI internal topics?
 
-Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach leverages Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
+Karafka Web UI internal topics use compressed JSON serialization for all messages. This approach uses Ruby's built-in compression capabilities without requiring additional third-party gems, ensuring compatibility and simplicity for all users.
 
 ## What is the expected message throughput for Karafka Web UI internal topics?
 

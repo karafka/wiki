@@ -6,7 +6,7 @@ To activate Karafka Pro, you need to do three things:
 
 1. Follow the standard Karafka [installation](Basics-Getting-Started) procedure.
 
-1. Obtain credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
+1. Get credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
 
 1. Add this to your Gemfile and `bundle install`:
 
@@ -163,7 +163,7 @@ In case the verification fails, script will exit with the exit code `1`.
 
 ## See Also
 
-- [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about obtaining a Karafka Pro license
+- [Purchase Karafka Pro](https://karafka.io/#become-pro) - Information about getting a Karafka Pro license
 - [Pro Features List](Pro-Features-List) - Complete list of available Pro features
 - [Pro Features Compatibility](Pro-Features-Compatibility) - Feature compatibility matrix
 - [Getting Started](Basics-Getting-Started) - Standard Karafka installation guide

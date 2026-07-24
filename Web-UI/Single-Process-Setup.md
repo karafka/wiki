@@ -2,13 +2,13 @@
 
 !!! info "Single Process Setup Limitation"
 
-    If you're embedding the Karafka Web UI directly into your Rails routes or Rackup, the Single Process Setup is not advisable. This approach is suited only for deploying the Web UI as a standalone dedicated process.
+    If you are embedding the Karafka Web UI directly into your Rails routes or Rackup, the Single Process Setup is not advisable. This approach is suited only for deploying the Web UI as a standalone dedicated process.
 
-[Karafka's Web UI](Web-UI-About) is a visual treat and a powerful tool that displays aggregated metrics, graphs, and other insightful information. To achieve this, a lot goes on behind the scenes. There's an intermediate entity at its core - the Karafka Web UI consumer. This consumer is responsible for collecting per-process data, churning it, and publishing the unified, comprehensive states you see on the Web UI.
+[Karafka's Web UI](Web-UI-About) is a visual treat and a powerful tool that displays aggregated metrics, graphs, and other insightful information. To achieve this, a lot goes on behind the scenes. There is an intermediate entity at its core - the Karafka Web UI consumer. This consumer is responsible for collecting per-process data, churning it, and publishing the unified, comprehensive states you see on the Web UI.
 
 For it to be possible, the Karafka framework adopts a dual-process method by default. How does this work? It cleverly injects a separate consumer group into your Karafka setup. So, when you start a `karafka server` one of the processes, apart from the topics you want it to consume, will also consume Web UI data topics.
 
-This approach is the default because the Web UI Rack application was designed to be [embeddable](Infrastructure-Embedding) within your Rails and Ruby projects, whether you run a single Puma process or multiple. There is, however, a second approach. There's a tailored solution, particularly for those who don't intend to integrate the Web UI directly into their application but want to serve it through an independent process - say, via a standalone rack application. The Karafka Web UI consumer doesn't necessarily have to run from `karafka server` process. It can operate within Puma itself in the "Embedded mode".
+This approach is the default because the Web UI Rack application was designed to be [embeddable](Infrastructure-Embedding) within your Rails and Ruby projects, whether you run a single Puma process or multiple. There is, however, a second approach. There is a tailored solution, particularly for those who do not intend to integrate the Web UI directly into their application but want to serve it through an independent process - say, via a standalone rack application. The Karafka Web UI consumer does not necessarily have to run from `karafka server` process. It can operate within Puma itself in the "Embedded mode".
 
 ## Benefits
 
@@ -18,9 +18,9 @@ Single Process Setup provides few benefits over the default one:
 
 1. **Ease of Upgrade**: With just one process to consider, upgrading becomes a breeze. The Web UI's Puma (or your chosen HTTP server) and the Embedded consumer can be updated simultaneously, ensuring all components evolve cohesively without leaving any part behind.
 
-1. **Ease of Deployment**: Deployment complexities are minimized when there's only one process to contend with. This unified approach ensures quicker deployment cycles and reduces the chances of deployment-related issues.
+1. **Ease of Deployment**: Deployment complexities are minimized when there is only one process to contend with. This unified approach ensures quicker deployment cycles and reduces the chances of deployment-related issues.
 
-1. **Consistent Setup**: The single-process setup eradicates potential inconsistencies, especially the dilemma of multi-process version collisions. With everything bundled into one, you're assured that all parts are on the same page, version-wise.
+1. **Consistent Setup**: The single-process setup eradicates potential inconsistencies, especially the dilemma of multi-process version collisions. With everything bundled into one, you are assured that all parts are on the same page, version-wise.
 
 1. **Resource Efficiency**: Operating in a single process mode can lead to better resource utilization, especially since, within this setup, your `karafka server` processes do not have to handle the Web UI consumer group.
 
@@ -112,7 +112,7 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
         end
         ```
 
-1. It's vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
+1. It is vital to also adjust the `karafka.rb` configuration file. This ensures that when the `karafka server` runs, none of the processes pick up the Web UI consumer group for processing, preserving the integrity and purpose of the single process mode:
 
     ```ruby
     # Other Karafka configuration here...

@@ -9,7 +9,7 @@ Karafka uses consumer groups to subscribe to topics. Each consumer group needs t
 - settings level - root settings that will be used everywhere
 - topic level - options that need to be set on a per topic level or overrides to options set on a root level
 
-!!! note "Note"
+!!! note "Most Settings Are Optional With Defaults"
 
     Most of the settings (apart from the ```consumer```) are optional and if not configured, will use defaults provided during the [configuration](https://github.com/karafka/karafka/wiki/Basics-Configuration) of the app itself.
 
@@ -115,7 +115,7 @@ You can read more about the concurrency implications of using subscription group
 
 ### Subscription Group Multiplexing
 
-For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, please check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
+For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -137,7 +137,7 @@ end
 
 ### Routing Patterns
 
-For users leveraging the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain comprehensive insights.
+For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain insights.
 
 ## Overriding Defaults
 
@@ -147,7 +147,7 @@ Almost all the default settings configured can be changed on either on the ```to
 
 This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also ensures consistency throughout your application.
 
-Here's how you can set up routing defaults and then define a topic that overrides one of those defaults:
+Here is how you can set up routing defaults and then define a topic that overrides one of those defaults:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -183,9 +183,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-When you decide to override any default option for a topic within the `#topic` block, it's crucial to understand that you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
+When you decide to override any default option for a topic within the `#topic` block, you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
 
-Karafka will not use the user-specified defaults you've defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
+Karafka will not use the user-specified defaults you have defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -272,7 +272,7 @@ end
 
 Karafka uses the `inherit` flag to support partial Kafka routing reconfiguration at the topic level. This allows you to maintain a consistent base configuration while applying specific alterations to individual topics. When the inherit flag is `true`, the topic's Kafka settings will merge with the root-level defaults, enabling more granular and flexible configurations without redefining all settings.
 
-This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By leveraging the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
+This feature is handy in scenarios where most settings remain consistent across topics, but a few need to be customized. By using the inherit option, you can streamline your configurations, reduce redundancy, and ensure that only the necessary changes are applied on a per-topic basis.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -328,7 +328,7 @@ One of Karafka's routing beauties is the ability to call the #draw method multip
 
 - **Scalability**: As modules grow, they can independently evolve their messaging strategies.
 
-- **Maintainability**: Changes to routing in one module won't impact others, making it easier to manage and refactor.
+- **Maintainability**: Changes to routing in one module will not impact others, making it easier to manage and refactor.
 
 Within each module, you can define a Karafka routing block using the #draw method:
 
@@ -354,7 +354,7 @@ Karafka.routing.draw do
 end
 ```
 
-By leveraging the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
+By using the ability to draw routes multiple times, Karafka fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
 
 ## See Also
 

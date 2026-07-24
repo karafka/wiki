@@ -1,14 +1,14 @@
 # WaterDrop Testing
 
-!!! note "Note"
+!!! note "Use `karafka-testing` When Testing With Karafka"
 
-    If you're using WaterDrop with Karafka, consider the `karafka-testing` gem for RSpec integration. Detailed documentation on its usage can be found [here](Basics-Testing).
+    If you are using WaterDrop with Karafka, consider the `karafka-testing` gem for RSpec integration. Detailed documentation on its usage can be found [here](Basics-Testing).
 
-Testing is a crucial component of any software development cycle. Ensuring that message production behaves as expected is essential when working with Kafka. Thankfully, WaterDrop provides a robust testing mechanism for its producers.
+Testing is a crucial component of any software development cycle. Ensuring that message production behaves as expected is essential when working with Kafka. Thankfully, WaterDrop provides a testing mechanism for its producers.
 
-When testing code that utilizes WaterDrop producers, you have two primary strategies:
+When testing code that uses WaterDrop producers, you have two primary strategies:
 
-1. **End-to-End Testing with Kafka**: This method involves setting up a Kafka environment and dispatching messages. By doing so, you're testing the full flow of your application, ensuring that messages are produced, dispatched, and received as expected in a real-world Kafka setup.
+1. **End-to-End Testing with Kafka**: This method involves setting up a Kafka environment and dispatching messages. By doing so, you are testing the full flow of your application, ensuring that messages are produced, dispatched, and received as expected in a real-world Kafka setup.
 
 1. **Using the Buffered Client**: Rather than interacting with a live Kafka instance, you can use WaterDrop's Buffered Client. This allows you to test the expected message dispatch from the code itself. Messages are stored in memory, letting you verify their content and structure without actually sending them to Kafka.
 
@@ -20,7 +20,7 @@ When developing applications that interact with Kafka, one common approach for t
 
 However, setting up and managing a Kafka cluster for testing can introduce several complexities:
 
-1. **Infrastructure Overhead**: A real Kafka setup requires sufficient infrastructure, including the Kafka brokers, ZooKeeper nodes, and potentially more components, depending on the testing scenario.
+1. **Infrastructure Overhead**: A real Kafka setup requires enough infrastructure, including the Kafka brokers, ZooKeeper nodes, and potentially more components, depending on the testing scenario.
 
 1. **Configuration Complexity**: Ensuring that Kafka is configured correctly for each testing environment can be cumbersome.
 
@@ -30,7 +30,7 @@ However, setting up and managing a Kafka cluster for testing can introduce sever
 
 1. **Topics Creation Overhead**: If you expect your tests to run in isolation, ensure each test operates on a separate topic or partition. This can create a significant overhead and drastically increase test-suite execution time.
 
-The process is refreshingly straightforward if you opt for end-to-end testing with WaterDrop and Kafka. You don't need any special configurations. Set up your Kafka environment, integrate WaterDrop, create a producer, and you're ready to use it in your specs and tests.
+The process is refreshingly straightforward if you opt for end-to-end testing with WaterDrop and Kafka. You do not need any special configurations. Set up your Kafka environment, integrate WaterDrop, create a producer, and you are ready to use it in your specs and tests.
 
 Explore the RSpec example below, demonstrating testing for expected messages dispatched to Kafka.
 
@@ -61,11 +61,11 @@ WaterDrop offers a client specifically designed for testing. This client can rep
 
 1. **Default Partition Handling**: If you do not specify a partition when sending a message, the testing client defaults to partition zero. This is consistent with general Kafka producer behavior, where if no partition is specified, it might be determined by a partitioner or default to a specific partition.
 
-1. **Transactions Support**: The buffered client of WaterDrop supports transactions, a crucial feature for ensuring message production consistency. If, for any reason, a transaction is aborted, the messages within that transaction aren't added to the buffer. This emulates the atomic nature of Kafka transactions, allowing you to test scenarios that involve transaction commits and aborts without inadvertently inflating your message buffer.
+1. **Transactions Support**: The buffered client of WaterDrop supports transactions, a crucial feature for ensuring message production consistency. If, for any reason, a transaction is aborted, the messages within that transaction are not added to the buffer. This emulates the atomic nature of Kafka transactions, allowing you to test scenarios that involve transaction commits and aborts without inadvertently inflating your message buffer.
 
 ### Configuration
 
-!!! note "Note"
+!!! note "`karafka-testing` Auto-Activates the Buffered Backend"
 
     With the `karafka-testing` gem integrated, the WaterDrop Buffered backend is automatically activated for `Karafka.producer`.
 
@@ -89,7 +89,7 @@ end
 
 ### Usage
 
-Whenever your code executes a dispatch operation, be it synchronous or asynchronous, the messages won't be sent to Kafka. Instead, they reach the `producer.client.messages` array, readily available for your examination.
+Whenever your code executes a dispatch operation, be it synchronous or asynchronous, the messages will not be sent to Kafka. Instead, they reach the `producer.client.messages` array, readily available for your examination.
 
 ```ruby
 handel = PRODUCER.produce_async(topic: 'test', payload: '123')
@@ -108,7 +108,7 @@ puts PRODUCER.client.messages
 raise unless PRODUCER.client.messages.count != 1
 ```
 
-In harmony with this, transactions too maintain consistency. Messages from aborted transactions are gracefully discarded, ensuring they don't find their way into storage.
+In harmony with this, transactions too maintain consistency. Messages from aborted transactions are gracefully discarded, ensuring they do not find their way into storage.
 
 ```ruby
 PRODUCER.transaction do
@@ -152,11 +152,11 @@ PRODUCER.client.messages_for('test2') #=> [{:topic=>"test2", :payload=>"456"}]
 PRODUCER.client.messages_for('test3') #=> []
 ```
 
-Both methods offer a clear lens to inspect the messages you've dispatched, be it an overview or a topic-specific deep dive.
+Both methods offer a clear lens to inspect the messages you have dispatched, be it an overview or a topic-specific deep dive.
 
 ### Isolation
 
-When using a per-process producer, it's essential to ensure test isolation. Without clearing the producer client buffers, messages from one test might unintentionally affect subsequent tests.
+When using a per-process producer, it is essential to ensure test isolation. Without clearing the producer client buffers, messages from one test might unintentionally affect subsequent tests.
 
 To prevent this, use the `client.reset` method as follows:
 

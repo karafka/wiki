@@ -18,7 +18,7 @@ Direct Assignments enable scenarios where automatic partition assignments could 
 
 ## Configuring Direct Assignments
 
-To utilize Direct Assignments, you specify which partitions a consumer should subscribe to directly in your Karafka routing configuration. Here is an example of how to configure a consumer to only process specific partitions:
+To use Direct Assignments, you specify which partitions a consumer should subscribe to directly in your Karafka routing configuration. Here is an example of how to configure a consumer to only process specific partitions:
 
 ```ruby
 class KarafkaApp < Karafka::App

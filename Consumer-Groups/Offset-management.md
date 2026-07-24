@@ -35,7 +35,7 @@ end
 
 ### Marking messages as consumed and committing offsets
 
-To mark a certain message as consumed (so in case of a crash or restart, it won't be consumed again), you can use one of two marking methods:
+To mark a certain message as consumed (so in case of a crash or restart, it will not be consumed again), you can use one of two marking methods:
 
 - ```#mark_as_consumed``` - for a non-blocking eventual offset commitment.
 - ```#mark_as_consumed!``` - for a blocking offset commitment that will stop the processing flow to ensure that the offset has been stored. This is not recommended for most scenarios, as Karafka will automatically commit the most recent offsets upon rebalance and shutdown.

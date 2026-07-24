@@ -1,6 +1,6 @@
 # Configuring Code Editors and LLMs
 
-Karafka provides LLM-optimized documentation following the [llms.txt standard](https://llmstxt.org). There are three ways to configure your development environment in order to get better code assistance and solve problems faster when working with Karafka. You can feed AI tools with Karafka documentation either by providing them with a URL, copying and pasting the docs, or setting up your code editor to do it automatically.
+Karafka provides LLM-optimized documentation following the [llms.txt standard](https://llmstxt.org). There are three ways to configure your development environment to get better code assistance and solve problems faster when working with Karafka. You can feed AI tools with Karafka documentation either by providing them with a URL, copying and pasting the docs, or setting up your code editor to do it automatically.
 
 ## Setup Methods
 
@@ -140,13 +140,13 @@ Are there any anti-patterns or optimization opportunities?"
 
  AI-optimized documentation of Karafka provides guidance about both Karafka OSS and Pro features. When you ask questions:
 
-- Mention which version you're using.
-- Ask about Pro features even if you're on OSS. AI will explain benefits and help you evaluate upgrades.
+- Mention which version you are using.
+- Ask about Pro features even if you are on OSS. AI will explain benefits and help you evaluate upgrades.
 - Specify production vs development context, as recommendations differ significantly.
 
 ## Tips for Better Results
 
-In this section, you'll find a general list of dos and don'ts for prompting your AI assistant about Karafka.
+In this section, you will find a general list of dos and don'ts for prompting your AI assistant about Karafka.
 
 ### ✅ **Do This**
 

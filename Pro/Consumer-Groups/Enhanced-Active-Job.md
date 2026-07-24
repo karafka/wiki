@@ -4,7 +4,7 @@ Enhanced Active Job adapter provides extra capabilities to regular Active Job to
 
 ## Enabling Enhanced Active Job
 
-No action needs to be taken. Please follow the [Active Job setup](Consumer-Groups-Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
+No action needs to be taken. Follow the [Active Job setup](Consumer-Groups-Active-Job#active-job-setup) instructions, and the moment you enable Karafka Pro, it will use the Enhanced Active Job components.
 
 ## Ordered Jobs
 
@@ -48,9 +48,9 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
 
 ## Scheduled Jobs
 
-Karafka supports job scheduling via the [Scheduled Messages](Pro-Scheduled-Messages) feature, providing a robust framework for setting future execution times for tasks, akin to capabilities seen in other Rails Active Job adapters. This feature integrates seamlessly with Karafka's infrastructure, allowing users to schedule and manage tasks directly within the Kafka ecosystem.
+Karafka supports job scheduling via the [Scheduled Messages](Pro-Scheduled-Messages) feature, providing a framework for setting future execution times for tasks, akin to capabilities seen in other Rails Active Job adapters. This feature integrates with Karafka's infrastructure, allowing users to schedule and manage tasks directly within the Kafka ecosystem.
 
-To utilize the Scheduled Jobs functionality in Karafka, you must:
+To use the Scheduled Jobs functionality in Karafka, you must:
 
 1. **Configure the Scheduled Messages Feature**: Ensure the Scheduled Messages feature is properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages) within your Karafka setup. This involves setting up the necessary Kafka topics and ensuring Karafka knows these configurations.
 
@@ -70,7 +70,7 @@ To utilize the Scheduled Jobs functionality in Karafka, you must:
     end
     ```
 
-1. **Schedule Jobs**: After these configurations are in place, jobs can be scheduled using the standard ActiveJob APIs by specifying the execution time:
+1. **Schedule Jobs**: After these configurations are in place, jobs can be scheduled using the standard Active Job APIs by specifying the execution time:
 
     ```ruby
     ExampleJob.set(wait_until: Date.tomorrow.noon).perform_later(user_id)
@@ -80,11 +80,11 @@ This integration not only simplifies the management of timed tasks but also enha
 
 ## Custom Producer/Variant Usage
 
-When using ActiveJob with Karafka, you can customize the dispatch of Active Jobs by leveraging custom producers or [producer variants](WaterDrop-Variants). This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
+When using Active Job with Karafka, you can customize the dispatch of Active Jobs by using custom producers or [producer variants](WaterDrop-Variants). This customization allows for more granular control over how jobs are produced and managed within Kafka, which can be crucial for applications with specific performance, scalability, or reliability requirements.
 
-To utilize a custom producer or variant with ActiveJob, specify a `:producer` option within the `#karafka_options`. This option should be set to a callable object (such as a lambda or a proc) that accepts the job as an argument. This callable is expected to return a producer or a variant that will be used to dispatch the job's message to Kafka.
+To use a custom producer or variant with Active Job, specify a `:producer` option within the `#karafka_options`. This option should be set to a callable object (such as a lambda or a proc) that accepts the job as an argument. This callable is expected to return a producer or a variant that will be used to dispatch the job's message to Kafka.
 
-Here is an example that demonstrates how to integrate a custom producer variant within an ActiveJob setup:
+Here is an example that demonstrates how to integrate a custom producer variant within an Active Job setup:
 
 ```ruby
 # Define a custom producer variant for high-priority jobs
@@ -107,15 +107,15 @@ end
 
 In the above example, `HighPriorityJob` is configured to use a specifically tailored producer variant for critical events. This producer variant is configured with a higher acknowledgment setting (`all`), ensuring that all replicas confirm each message before it is successfully delivered. This setup is particularly beneficial for jobs where data loss or delivery failure is unacceptable.
 
-Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it's adjusting the acknowledgment levels, managing timeouts, or utilizing specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within ActiveJob, opening up new possibilities for system optimization and performance improvement.
+Allowing each job class to specify its producer offers the flexibility to tailor message production characteristics according to the job's requirements. Whether it is adjusting the acknowledgment levels, managing timeouts, or using specific compression settings, custom producers and variants can significantly enhance the robustness and efficiency of your Karafka-based messaging system within Active Job, opening up new possibilities for system optimization and performance improvement.
 
 ## Routing Patterns
 
-Pro ActiveJob adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
+Pro Active Job adapter supports the Routing Patterns capabilities. You can read more about it [here](Pro-Routing-Patterns#activejob-routing-patterns).
 
 ## ActiveJob Continuation
 
-Karafka Pro provides enhanced support for Rails 8.1+ ActiveJob Continuation feature with additional capabilities beyond the OSS version. With Pro, you can leverage delayed resumption and partitioning within continuation jobs for advanced workflow management.
+Karafka Pro provides enhanced support for Rails 8.1+ Active Job Continuation feature with additional capabilities beyond the OSS version. With Pro, you can use delayed resumption and partitioning within continuation jobs for advanced workflow management.
 
 !!! note "Scheduled Messages Not Required for Immediate Resumption"
 
@@ -125,7 +125,7 @@ Karafka Pro provides enhanced support for Rails 8.1+ ActiveJob Continuation feat
 
 #### Immediate Resumption (No Scheduled Messages Required)
 
-For jobs that need to resume immediately without delays, you can use ActiveJob Continuation without setting up Scheduled Messages:
+For jobs that need to resume immediately without delays, you can use Active Job Continuation without setting up Scheduled Messages:
 
 ```ruby
 class ProcessImportJob < ActiveJob::Base
@@ -240,11 +240,11 @@ This configuration ensures that all continuation steps for a given user are proc
 
 ### Requirements
 
-To use ActiveJob Continuation in Pro with **immediate resumption** (`wait: 0`):
+To use Active Job Continuation in Pro with **immediate resumption** (`wait: 0`):
 
-- No additional setup required beyond the standard ActiveJob adapter configuration
+- No additional setup required beyond the standard Active Job adapter configuration
 
-To use ActiveJob Continuation in Pro with **delayed resumption**:
+To use Active Job Continuation in Pro with **delayed resumption**:
 
 1. **Scheduled Messages Feature**: Must be properly [configured](Pro-Scheduled-Messages#enabling-scheduled-messages)
 2. **Scheduled Messages Topic**: Each job class using delayed resumption must specify `scheduled_messages_topic` in `karafka_options`
@@ -252,7 +252,7 @@ To use ActiveJob Continuation in Pro with **delayed resumption**:
 
 ### OSS Compatibility
 
-For details on using ActiveJob Continuation in the OSS version with immediate resumption, see [ActiveJob Continuation](Consumer-Groups-Active-Job#activejob-continuation).
+For details on using Active Job Continuation in the OSS version with immediate resumption, see [Active Job Continuation](Consumer-Groups-Active-Job#activejob-continuation).
 
 ## Execution Warranties
 
@@ -260,13 +260,13 @@ Same execution warranties apply as for standard [Active Job adapter](Consumer-Gr
 
 ## Behaviour on Errors
 
-When using the ActiveJob adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
+When using the Active Job adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
 
 For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-errors).
 
-!!! note "Note"
+!!! note "Virtual Partitions Mark Jobs Only After All Finish"
 
-    Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
+    If you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
 ## Behaviour on Revocation
 
@@ -274,7 +274,7 @@ Enhanced Active Job adapter has revocation awareness. That means that Karafka wi
 
 ## Behaviour on Shutdown
 
-When using the ActiveJob adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
+When using the Active Job adapter with Virtual Partitions, Karafka will **not** early break processing and will continue until all the work is done. This is needed to ensure that all the work is done before committing the offsets.
 
 For a non-VP setup, the same shutdown behavior applies as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-shutdown).
 

@@ -55,12 +55,12 @@
     - **Impact:** Moderate
     - **Affected:** Karafka Pro users attempting to access the license server during the incident window
 
-    A hardware failure on a network switch at Hetzner's infrastructure caused a temporary outage of the Karafka Pro license server. The incident began at approximately 2:47 PM CET and was fully resolved by 3:12 PM CET, resulting in approximately 25 minutes of downtime.
+    A hardware failure on a network switch at Hetzner's infrastructure caused a temporary outage of the Karafka Pro license server. The incident began at about 2:47 PM CET and was fully resolved by 3:12 PM CET, resulting in about 25 minutes of downtime.
 
     **Incident Timeline (CET):**
 
     - 2:47 PM - Initial detection of Hetzner infrastructure issues
-    - 2:51 PM - Migration process initiated
+    - 2:51 PM - Migration process started
     - 3:09 PM - Backup server deployment started
     - 3:12 PM - Service fully restored
 
@@ -68,7 +68,7 @@
 
     **Improvements Implemented:**
 
-    - Reduced failover activation threshold from 15 minutes to approximately 60 seconds
+    - Reduced failover activation threshold from 15 minutes to about 60 seconds
     - Relocated the standby server to a fully independent provider and datacenter, ensuring infrastructure-level isolation from the primary
     - Upgraded health checks from periodic to continuous 60-second interval monitoring with automatic traffic rerouting
     - Improved data synchronization frequency between primary and standby servers

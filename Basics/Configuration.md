@@ -18,11 +18,11 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "Settings Can Be Redefined Per Topic"
 
     Karafka allows you to redefine some of the settings per each topic, which means that you can have a specific custom configuration that might differ from the default one configured at the app level. This allows you, for example, to connect to multiple Kafka clusters.
 
-!!! tip "Important"
+!!! tip "Use a Distinct `client_id` Per Instance"
 
     kafka `client.id` is a string passed to the server when making requests. It is used to track the source of requests beyond just IP/port by allowing a logical application name to be included in server-side request logging. Therefore, the `client_id` should **not** be shared across multiple instances in a cluster or a horizontally scaled application but distinct for each application instance.
 
@@ -40,7 +40,7 @@ The `app.initialized` event hook allows you to perform additional setup and conf
 
 **Prerequisites**
 
-1. Initiate the Karafka application setup
+1. Start the Karafka application setup
 1. Verify if the external components requiring configuration are available
 
 **Procedure**
@@ -68,7 +68,7 @@ end
 
 Your external components will be automatically configured once per process after Karafka completes its initialization sequence.
 
-!!! note "Note"
+!!! note "Config Has Access to Finalized Settings"
     The configuration will have access to all finalized Karafka settings and can reliably use framework components like loggers, metrics, and other initialized resources.
 
 ## Environment variables settings
@@ -79,7 +79,7 @@ There are several env settings you can use with Karafka. They are described unde
 
 Kafka lets you compress your messages as they travel over the wire. By default, producer messages are sent uncompressed.
 
-!!! note "Note"
+!!! note "Supported Producer Compression Types"
 
     Karafka producer ([WaterDrop](https://github.com/karafka/waterdrop)) supports the following compression types:
 
@@ -112,9 +112,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-!!! note "Note"
+!!! note "`zstd` Requires `libzstd-dev`"
 
-    In order to use `zstd`, you need to install `libzstd-dev`:
+    To use `zstd`, you need to install `libzstd-dev`:
 
     ```shell
     apt-get install -y libzstd-dev
@@ -122,7 +122,7 @@ end
 
 ## Types of Configuration in Karafka
 
-When you work with Karafka, it is crucial to understand the different configurations available, as these settings directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
+When you work with Karafka, the different configurations available directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
 
 ### Root Configuration in the Setup Block
 
@@ -184,6 +184,6 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 - [Getting Started](Basics-Getting-Started) - Initial setup and installation of Karafka for your application
 - [Routing](Consumer-Groups-Routing) - Define how messages from topics are received and consumed
-- [Librdkafka Configuration](Librdkafka-Configuration) - Complete reference of librdkafka configuration options
+- [librdkafka Configuration](Librdkafka-Configuration) - Complete reference of librdkafka configuration options
 - [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure Karafka to work with multiple Kafka clusters
 - [Declarative Topics](Infrastructure-Declarative-Topics) - Manage Kafka topic configurations as code

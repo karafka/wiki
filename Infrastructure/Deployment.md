@@ -8,11 +8,11 @@ Karafka is currently being used in production with the following deployment meth
 - [Confluent Cloud](#confluent-cloud)
 - [Custom OAuth Token Providers](#custom-oauth-token-providers)
 
-Since the only thing that is long-running is the Karafka server, it shouldn't be hard to make it work with other deployment and CD tools.
+Since the only thing that is long-running is the Karafka server, it should not be hard to make it work with other deployment and CD tools.
 
 ## systemd (+ Capistrano)
 
-You can easily manage Karafka applications with `systemd`. Here's an example `.service` file that you can use.
+You can easily manage Karafka applications with `systemd`. Here is an example `.service` file that you can use.
 
 ```shell
 # Move to /lib/systemd/system/karafka.service
@@ -45,7 +45,7 @@ SyslogIdentifier=karafka
 WantedBy=multi-user.target
 ```
 
-If you want to use `systemd` based solution together with Capistrano, you don't need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
+If you want to use `systemd` based solution together with Capistrano, you do not need the `capistrano-karafka` gem. Instead, you can use this simple Capistrano `.cap` file:
 
 ```ruby
 # frozen_string_literal: true
@@ -81,7 +81,7 @@ namespace :karafka do
 end
 ```
 
-If you need to run several processes of a given type, please refer to `template unit files`.
+If you need to run several processes of a given type, refer to `template unit files`.
 
 ## Docker
 
@@ -94,14 +94,14 @@ CMD bundle exec karafka server
 
 ## AWS + MSK (Fully Managed Apache Kafka)
 
-First of all, it is worth pointing out that Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
+First of all, Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
 
 Karafka **does**, however, support:
 
 - [Standard SASL + SSL mechanisms](#aws-msk-cluster-setup).
 - [Custom OAuth Token Providers](#custom-oauth-token-providers) flow.
 
-Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom Oauth Token Providers](#custom-oauth-token-providers) section.
+Follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom OAuth Token Providers](#custom-oauth-token-providers) section.
 
 !!! info "AWS Integration with Custom OAuth Token Providers"
 
@@ -109,7 +109,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 
 !!! info "AWS MSK Operational Issues Documentation"
 
-    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Infrastructure-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
+    For common issues and operational challenges specific to AWS MSK, refer to the [AWS MSK Operations Guide](Infrastructure-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
 
 ### AWS MSK cluster setup
 
@@ -131,7 +131,7 @@ Please follow the below instructions for both cluster initialization and Karafka
     </p>
 
 1. Setup your VPC and networking details.
-1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there won't be any authentication beyond those imposed by your security groups and VPC.
+1. Make sure that you **disable** the `Unauthenticated access` option. With it enabled, there will not be any authentication beyond those imposed by your security groups and VPC.
 1. **Disable** `IAM role-based authentication`.
 1. **Enable** `SASL/SCRAM authentication`
 
@@ -249,13 +249,13 @@ This means Kafka is unreachable. Check your brokers' addresses and ensure you us
 
 ### Connection failures and timeouts
 
-Please make sure that your instances can reach Kafka. Keep in mind that security group updates can have a certain lag in propagation.
+Make sure that your instances can reach Kafka. Security group updates can have a certain lag in propagation.
 
 If a previously healthy producer starts stalling on delivery (each stalled message blocking for as long as your configured `socket.timeout.ms`, with `Timed out N in-flight ... requests` warnings) after an EC2 instance type upgrade to a newer generation such as the Graviton `*9g` families, the likely cause is the Nitro v6 ENI idle-connection timeout (lowered from 5 days to 350 seconds), which silently drops idle producer sockets. Enable `socket.keepalive.enable: true`, tune the host TCP keepalive timers below 350 seconds (on Kubernetes, through pod `securityContext.sysctls`), and set WaterDrop's `idle_disconnect_timeout` to recycle idle producers proactively. See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#ec2-nitro-v6-idle-connection-reaping) for the full explanation, the keepalive sysctl values, and the timeout and retry settings recommended for MSK.
 
 ### Rdkafka::RdkafkaError (Broker: Invalid replication factor (invalid_replication_factor))
 
-Please make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
+Make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/instructions/msk/brokers_count.png" />
@@ -265,7 +265,7 @@ Please make sure your custom setting `default.replication.factor` value matches 
 
 This error occurs in case you enabled Kafka ACL but did not grant proper ACL permissions to your users. It often happens when you make your [AWS MSK public](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html).
 
-Please note that `allow.everyone.if.no.acl.found` `false` superseeds `auto.create.topics.enable`. This means that despite `auto.create.topics.enable` being set to `true`, you will not be able to auto-create topics as the ACL will block this.
+`allow.everyone.if.no.acl.found` `false` superseeds `auto.create.topics.enable`. This means that despite `auto.create.topics.enable` being set to `true`, you will not be able to auto-create topics as the ACL will block this.
 
 We recommend creating all the needed topics before making the cluster public and assigning proper permissions via Kafka ACL.
 
@@ -292,7 +292,7 @@ You can also use this ACL command to give all operations access for the brokers 
   --group=*
 ```
 
-!!! note "Note"
+!!! note "Run From a Client With Java and Kafka"
 
     The above command must be run from a client machine with Java + Kafka installation, and the machine should also be able to communicate with the zookeeper nodes.
 
@@ -312,9 +312,7 @@ Details about how Kafka for Heroku works can also be found here:
 
 ### Heroku Kafka Prefix Convention
 
-!!! note "Note"
-
-    This section **only** applies to the Multi-Tenant add-on mode.
+This section **only** applies to the Multi-Tenant add-on mode.
 
 All Kafka Basic topics and consumer groups begin with a unique prefix associated with your add-on. This prefix is accessible via the `KAFKA_PREFIX` environment variable.
 
@@ -369,7 +367,7 @@ To make it work you need to follow few steps:
     heroku kafka:consumer-groups:create CONSUMER_GROUP_NAME
     ```
 
-    !!! note "Note"
+    !!! note "Kafka Ignores `KAFKA_PREFIX` When Creating Groups"
 
         The value of `KAFKA_PREFIX` typically is like `smoothboulder-1234.` which would make the consumer group in Karafka `smoothboulder-1234.app`. Kafka itself does not need to know the prefix when creating the consumer group.
 
@@ -406,7 +404,7 @@ To make it work you need to follow few steps:
     )
     ```
 
-1. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well.
+1. When using `Karafka::Admin` and `Karafka::Web` make sure to create appropriate consumer groups as well.
 
     ```ruby
     class KarafkaApp < Karafka::App
@@ -438,7 +436,7 @@ To make it work you need to follow few steps:
     heroku kafka:consumer-groups:create karafka-web-ui
     ```
 
-    !!! note "Note"
+    !!! note "Create Topics Without the `KAFKA_PREFIX`"
 
         You will need to configure your topics in Kafka before they can be used. This can be done in the Heroku UI or via the [CLI](https://devcenter.heroku.com/articles/kafka-on-heroku#managing-kafka) provided by Heroku. Be sure to name your topics _without_ the KAFKA_PREFIX, e.g. `heroku kafka:topics:create users_events --partitions 3`.
 
@@ -509,15 +507,15 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 
 **Solution 1**: Basic multi-tenant Kafka plans require a prefix on topics and consumer groups. Make sure that both your topics and consumer groups are prefixed.
 
-**Solution 2**: Make sure you've created appropriate consumer groups **prior** to them being used via the Heroku CLI.
+**Solution 2**: Make sure you have created appropriate consumer groups **prior** to them being used via the Heroku CLI.
 
 #### Missing Information or "Initial Consumers State Missing" Notice After a While
 
-Please read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
+Read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
 
 ## Kubernetes
 
-Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it's vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it's easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
+Karafka can be easily deployed using Kubernetes. Since Karafka is often used for mission-critical applications that handle a high volume of messages, it is vital to ensure that the application stays healthy and responsive. Fortunately, Karafka supports liveness checks, which can be used to verify that the application is running correctly. With Kubernetes, it is easy to define liveness probes that periodically check the status of a Karafka application and restart the container if necessary. By using Kubernetes to deploy Karafka and configuring liveness probes, you can ensure that their mission-critical applications stay up and running, even in the face of unexpected failures.
 
 ### Basic deployment spec
 
@@ -551,11 +549,11 @@ spec:
               value: production
 ```
 
-When deploying Karafka consumers using Kubernetes, it's generally not recommended to use strategies other than `Recreate`. This is because other strategies, such as `RollingUpdate` may cause extensive rebalancing among the consumer processes. This can lead to slow deployments and double-processing of messages, which can be a significant problem.
+When deploying Karafka consumers using Kubernetes, it is generally not recommended to use strategies other than `Recreate`. This is because other strategies, such as `RollingUpdate` may cause extensive rebalancing among the consumer processes. This can lead to slow deployments and double-processing of messages, which can be a significant problem.
 
-For larger deployments with many consumer processes, it's especially important to be mindful of the rebalancing issue.
+For larger deployments with many consumer processes, it is especially important to be mindful of the rebalancing issue.
 
-Overall, when deploying Karafka consumers using Kubernetes, it's important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
+Overall, when deploying Karafka consumers using Kubernetes, it is important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
 
 ### Choosing the Right Rebalance Strategy
 
@@ -779,7 +777,7 @@ To integrate the `SwarmLivenessListener` into your Karafka application, follow t
       timeoutSeconds: 5
     ```
 
-By using the `SwarmLivenessListener`, you leverage a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
+By using the `SwarmLivenessListener`, you use a tool crafted explicitly for the complexities of Swarm Mode, ensuring that Kubernetes accurately reflects the health of your distributed Karafka application, thus safeguarding against premature process restarts and enhancing overall system reliability.
 
 #### Additional processes inside the same pod
 

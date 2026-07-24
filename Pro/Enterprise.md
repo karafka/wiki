@@ -1,6 +1,6 @@
 # Karafka Enterprise
 
-When deciding between Karafka Pro and Enterprise, it's vital to understand that the technical features of the Karafka ecosystem remain the same across both. The primary distinctions lie not in the technical functionality but in licensing, usage permissions, payment methods, and support for compliance documentation. For larger organizations that prioritize legal compliance and aim to minimize any legal impact of using third-party software, the Enterprise license agreement is tailored to meet such needs.
+When deciding between Karafka Pro and Enterprise, it is vital to understand that the technical features of the Karafka ecosystem remain the same across both. The primary distinctions lie not in the technical functionality but in licensing, usage permissions, payment methods, and support for compliance documentation. For larger organizations that prioritize legal compliance and aim to minimize any legal impact of using third-party software, the Enterprise license agreement is tailored to meet such needs.
 
 Additionally, the offline/embedded mode available in the Enterprise version is specifically designed to reduce the supply chain footprint. This can be especially crucial for organizations subject to rigorous security checks and compliance requirements.
 
@@ -24,7 +24,7 @@ With the Enterprise version, organizations have the privilege to continue using 
 
 ### Offline / Embedded Usage Rights
 
-Enterprise users are not tied to our gem server for license gem download and verification. This grants organizations the flexibility and independence to utilize Karafka without any external dependencies.
+Enterprise users are not tied to our gem server for license gem download and verification. This grants organizations the flexibility and independence to use Karafka without any external dependencies.
 
 ### Private Fork Usage
 

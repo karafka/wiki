@@ -1,4 +1,4 @@
-# Librdkafka Thread and Pipe Patterns
+# librdkafka Thread and Pipe Patterns
 
 Karafka and WaterDrop rely on librdkafka as the underlying C client for Apache Kafka. librdkafka manages its own native threads and uses pipe file descriptors for internal signaling. Understanding these patterns is essential for capacity planning, debugging resource usage, and diagnosing issues in production environments.
 
@@ -39,7 +39,7 @@ In practice, with a single bootstrap server and a 3-broker cluster:
 threads = 1 (main) + 1 (internal) + 1 (bootstrap) + 3 (learned) = 6
 ```
 
-After the bootstrap broker is decommissioned (it gets replaced by a learned broker for the same node), the steady-state count settles to approximately:
+After the bootstrap broker is decommissioned (it gets replaced by a learned broker for the same node), the steady-state count settles to about:
 
 ```text
 threads ≈ 1 (main) + 1 (internal) + N (learned brokers)
@@ -47,7 +47,7 @@ threads ≈ 1 (main) + 1 (internal) + N (learned brokers)
 
 !!! note "Thread Count Scaling"
 
-    With 132 subscription groups (consumers in a process) and a 16-broker cluster, the expected native thread count is approximately `132 × (2 + 16) = 2,376` threads. This is normal and expected behavior, not a leak.
+    With 132 subscription groups (consumers in a process) and a 16-broker cluster, the expected native thread count is about `132 × (2 + 16) = 2,376` threads. This is normal and expected behavior, not a leak.
 
 !!! tip "Upcoming: Event Loop Based Consumers"
 
@@ -154,7 +154,7 @@ native_threads = 51 × 12 = 612
 pipe_fds = 51 × 11 × 2 = 1,122
 ```
 
-Plus Ruby's own threads (main thread, GC thread, etc.), the total thread count would be approximately 615-620.
+Plus Ruby's own threads (main thread, GC thread, etc.), the total thread count would be about 615-620.
 
 ## Inspecting a Running Process
 

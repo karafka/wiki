@@ -2,7 +2,7 @@ Karafka Web UI Pro provides topic management capabilities, allowing you to creat
 
 !!! info "Changes Visibility in Web UI"
 
-    When administrative operations (creating/deleting topics, modifying configurations, adding partitions) are submitted through the Web UI, they are immediately accepted by Kafka. However, due to the refresh interval and cluster synchronization timing, the Web UI display may take several seconds to reflect these changes. Additionally, while changes become effective immediately in Kafka, they may take time to propagate across all brokers in the cluster fully. If changes don't appear immediately in the UI, wait at least 15-30 seconds, refresh the page, or navigate to another section and back to see the updated state.
+    When administrative operations (creating/deleting topics, modifying configurations, adding partitions) are submitted through the Web UI, they are immediately accepted by Kafka. However, due to the refresh interval and cluster synchronization timing, the Web UI display may take several seconds to reflect these changes. Additionally, while changes become effective immediately in Kafka, they may take time to propagate across all brokers in the cluster fully. If changes do not appear immediately in the UI, wait at least 15-30 seconds, refresh the page, or navigate to another section and back to see the updated state.
 
 ## Creating Topics
 
@@ -14,7 +14,7 @@ To create a new topic:
 
 1. Navigate to **Home** → **Topics**
 1. Click on **Create Topic**
-1. You'll see the "Topic Creation Settings" screen with important notices:
+1. You will see the "Topic Creation Settings" screen with important notices:
 
     !!! info "Topic Creation Information"
 
@@ -46,7 +46,7 @@ To delete a topic:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]**
 1. Click on **Delete Topic** at the page bottom
-1. You'll see a comprehensive warning screen:
+1. You will see a comprehensive warning screen:
 
     !!! warning "Topic Removal Warning"
 
@@ -78,7 +78,7 @@ The topic configuration management feature allows you to view and modify the con
 To view a topic's configuration:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Configuration**
-1. You'll see a tabular view with all configuration parameters:
+1. You will see a tabular view with all configuration parameters:
 
     - **Name**: The configuration parameter name
     - **Value**: Current setting value
@@ -109,7 +109,7 @@ To modify a specific configuration parameter:
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Configuration**
 1. Click on the specific parameter you want to modify
 1. Click **Edit**
-1. You'll see the "Configuration Update Warning":
+1. You will see the "Configuration Update Warning":
 
     !!! warning "Configuration Update Warning"
 
@@ -123,7 +123,7 @@ To modify a specific configuration parameter:
         - Consider testing the change in a non-production environment first
         - Monitor the topic after the change to ensure expected behavior
 
-1. You'll see:
+1. You will see:
 
     - The property name (e.g., `cleanup.policy`)
     - Current value (e.g., `delete`)
@@ -145,7 +145,7 @@ To increase the number of partitions:
 
 1. Navigate to **Home** → **Topics** → **[Your Topic Name]** → **Distribution**
 1. Click on **Increase Partitions**
-1. You'll see the "Partition Update Warning":
+1. You will see the "Partition Update Warning":
 
     !!! warning "Partition Update Warning"
 
@@ -163,7 +163,7 @@ To increase the number of partitions:
         - Monitor consumer lag during and after the operation
         - Consider increasing partitions during low-traffic periods
 
-1. You'll see:
+1. You will see:
 
     - Current partition count (e.g., `1`)
     - A field to enter the new partition count (must be greater than the current count)
@@ -199,7 +199,7 @@ When managing topics through the Karafka Web UI Pro, consider these best practic
 
 ## Summary
 
-The topic management features in Karafka Web UI Pro provide a comprehensive solution for administering your Kafka topics without leaving the web interface. With intuitive interfaces for creating topics, modifying configurations, and managing partitions, these tools streamline common administrative tasks and provide a user-friendly alternative to command-line tools.
+The topic management features in Karafka Web UI Pro provide a solution for administering your Kafka topics without leaving the web interface. With intuitive interfaces for creating topics, modifying configurations, and managing partitions, these tools streamline common administrative tasks and provide a user-friendly alternative to command-line tools.
 
 Combined with other Karafka Pro features like [Data Explorer](Pro-Web-UI-Explorer), [Topics Insights](Pro-Web-UI-Topics-Insights), and [Search](Pro-Web-UI-Search), topic management completes the toolset needed for efficient Kafka operations and maintenance.
 

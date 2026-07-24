@@ -1,6 +1,6 @@
-This document was created in response to recurring community questions and confusion around Karafka's double-processing or missed message behaviors. While it's understandable given the complexity of message-driven systems, it's important to clarify up front:
+This document was created in response to recurring community questions and confusion around Karafka's double-processing or missed message behaviors. While it is understandable given the complexity of message-driven systems, it is important to clarify up front:
 
-- **There are no confirmed bugs in the most recent version of Karafka** (at the time of writing) that cause unintended double-processing or skipped messages. If you observe such behavior and can reliably reproduce it, please open an issue with a minimal test case.
+- **There are no confirmed bugs in the most recent version of Karafka** (at the time of writing) that cause unintended double-processing or skipped messages. If you observe such behavior and can reliably reproduce it, open an issue with a minimal test case.
 
 - Karafka includes a **comprehensive integration test suite**, which features a dedicated assertion layer ensuring:
     - Messages are not fetched more than once.
@@ -32,7 +32,7 @@ When used correctly and under healthy conditions (no ungraceful termination), Ka
 
 !!! tip "Introductory Overview"
 
-    This section provides a high-level introduction to Karafka's architecture and lifecycle. For more comprehensive details on Karafka's internal mechanisms, configuration options, and operational best practices, please refer to other sections of this documentation where these concepts are explored in greater depth.
+    This section provides a high-level introduction to Karafka's architecture and lifecycle. For more comprehensive details on Karafka's internal mechanisms, configuration options, and operational best practices, refer to other sections of this documentation where these concepts are explored in greater depth.
 
 Karafka is a multi-threaded Kafka consumer framework for Ruby/Rails applications. Understanding its internals will help pinpoint where duplicates arise:
 
@@ -42,7 +42,7 @@ Karafka is a multi-threaded Kafka consumer framework for Ruby/Rails applications
 
 - **Message Fetching and Batching**: Karafka fetches messages from Kafka (often in batches) and hands them to your consumer class's `#consume` method. By default, Karafka may buffer a certain number of messages (controlled by settings like `max_messages`). Batch processing means your `#consume` method will receive an array of messages you typically iterate over. Karafka's default is to fetch as many as possible up to `max_messages` or within `max_wait_time` to maximize throughput.
 
-- **Offset Acknowledgement (Commit)**: After processing messages, the consumer must commit the offsets of those messages back to Kafka's broker to mark them as processed (so the group doesn't redeliver them on the next session). Karafka auto-commits offsets by default at regular intervals (every 5 seconds via Kafka's `auto.commit.interval.ms`) and at graceful shutdown or right before a rebalance occurs. Essentially, Karafka will periodically checkpoint how far it has read. If the process crashes or a rebalance happens before an offset is committed, those messages may be redelivered to this or another consumer - hence, duplicates. Karafka's design mitigates this by also committing to orderly rebalances and shutdowns, but unexpected crashes or forced terminations can still result in uncommitted messages being reprocessed.
+- **Offset Acknowledgement (Commit)**: After processing messages, the consumer must commit the offsets of those messages back to Kafka's broker to mark them as processed (so the group does not redeliver them on the next session). Karafka auto-commits offsets by default at regular intervals (every 5 seconds via Kafka's `auto.commit.interval.ms`) and at graceful shutdown or right before a rebalance occurs. Karafka will periodically checkpoint how far it has read. If the process crashes or a rebalance happens before an offset is committed, those messages may be redelivered to this or another consumer - hence, duplicates. Karafka's design mitigates this by also committing to orderly rebalances and shutdowns, but unexpected crashes or forced terminations can still result in uncommitted messages being reprocessed.
 
 - **Exactly-Once Option**: For critical workflows that absolutely cannot tolerate duplicates, Karafka supports Kafka transactions (Exactly-Once Semantics). This ties the offset commit to producing a result in one atomic operation. However, using transactions is more complex and beyond the scope of most consumer-only scenarios.
 
@@ -54,13 +54,13 @@ Several issues (usually user or configuration errors) can interrupt the normal f
 
 ### Improper Offset Committing or Acknowledgement
 
-If offsets aren’t committed at the correct time or in the proper way, Kafka may think messages haven’t been processed and resend them.
+If offsets are not committed at the correct time or in the proper way, Kafka may think messages have not been processed and resend them.
 
 #### Misusing Manual Offset Management
 
 Karafka allows turning off auto-offset commits (`manual_offset_management(true)` per topic) so you can call `mark_as_consumed` or `mark_as_consumed!` in your code at precise points. This is powerful but dangerous if forgotten.
 
-**Example**: You disable auto commits to implement a custom flow but forget to call `mark_as_consumed` after processing. The consumer will never commit those messages. All those messages will be delivered again on the next restart, causing duplicates. Always mark messages as consumed (or re-enable auto commits) when using manual mode. If you use `mark_as_consumed` (non-bang), remember it’s asynchronous (just flags for later commit); using `mark_as_consumed!` commits immediately but at a performance cost.
+**Example**: You disable auto commits to implement a custom flow but forget to call `mark_as_consumed` after processing. The consumer will never commit those messages. All those messages will be delivered again on the next restart, causing duplicates. Always mark messages as consumed (or re-enable auto commits) when using manual mode. If you use `mark_as_consumed` (non-bang), remember it is asynchronous (just flags for later commit); using `mark_as_consumed!` commits immediately but at a performance cost.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -86,7 +86,7 @@ end
 
 #### Committing Offsets Too Early or Out of Sync
 
-The offset should be committed after a message (or batch) is fully processed. If one mistakenly commits an offset before processing (or commits a higher offset while some messages are still in progress), and then the app crashes during processing, those in-flight messages won’t be reprocessed (resulting in lost messages, not duplicates). Conversely, committing too late (or not at all) leads to replays.
+The offset should be committed after a message (or batch) is fully processed. If one mistakenly commits an offset before processing (or commits a higher offset while some messages are still in progress), and then the app crashes during processing, those in-flight messages will not be reprocessed (resulting in lost messages, not duplicates). Conversely, committing too late (or not at all) leads to replays.
 
 **Example**: A developer manually calls `mark_as_consumed` before processing, causing some messages to be marked as consumed before processing potentially. This can confuse which messages are processed. The rule is to commit only after successful processing, never before. If unsure, rely on Karafka’s automatic commits, which are designed to happen after batch processing is complete.
 
@@ -116,13 +116,13 @@ end
 
 ### Unhandled Exceptions in Consumer Code
 
-Runtime errors in your consumer logic are a very common cause of double-processing. Karafka has built-in retry/backoff behavior: if your consume method raises an exception, Karafka will not commit the offsets for that batch (since it didn't complete successfully) and will retry the message(s) after a pause from the last committed offset. This is by design: it prevents data loss but means the failed message (and potentially others in the same batch) will be processed again.
+Runtime errors in your consumer logic are a very common cause of double-processing. Karafka has built-in retry/backoff behavior: if your consume method raises an exception, Karafka will not commit the offsets for that batch (since it did not complete successfully) and will retry the message(s) after a pause from the last committed offset. This is by design: it prevents data loss but means the failed message (and potentially others in the same batch) will be processed again.
 
 #### Exceptions on Individual Messages With Automatic Marking
 
 If you process messages in a loop without per-message marking and one message triggers an error, Karafka treats the whole batch as failed by default.
 
-Example: Your consumer does `messages.each { |m| handle(m) }` and `#handle` throws an error on the 3rd message. The first two messages were processed, but their offsets haven't been committed yet (since Karafka commits them after the batch). Karafka catches the error, logs it, and will retry from the 1st message's offset on the next attempt. Result: The first two messages will be delivered again along with the third, causing duplicates for those two. To mitigate this, make your processing robust per message. You can rescue exceptions around the single message to ensure the batch continues for others, or use `#mark_as_consumed` as you go to commit offsets for messages that succeeded before the error. Karafka Pro's Virtual Partitions feature even handles this scenario by skipping already consumed messages on retry to avoid duplicates.
+Example: Your consumer does `messages.each { |m| handle(m) }` and `#handle` throws an error on the 3rd message. The first two messages were processed, but their offsets have not been committed yet (since Karafka commits them after the batch). Karafka catches the error, logs it, and will retry from the 1st message's offset on the next attempt. Result: The first two messages will be delivered again along with the third, causing duplicates for those two. To mitigate this, make your processing robust per message. You can rescue exceptions around the single message to ensure the batch continues for others, or use `#mark_as_consumed` as you go to commit offsets for messages that succeeded before the error. Karafka Pro's Virtual Partitions feature even handles this scenario by skipping already consumed messages on retry to avoid duplicates.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -142,13 +142,13 @@ end
 
 ### Non-Thread-Safe Code or Shared Resource Issues
 
-Because Karafka runs concurrently, any code that isn’t safe under multi-threading can inadvertently lead to double-processing symptoms. While Karafka itself ensures a single message is handled by one thread at a time, user code might introduce duplication in a few ways.
+Because Karafka runs concurrently, any code that is not safe under multi-threading can inadvertently lead to double-processing symptoms. While Karafka itself ensures a single message is handled by one thread at a time, user code might introduce duplication in a few ways.
 
 #### Shared Global State
 
 Multiple threads can interfere if you use class variables, singletons, or another globally shared mutable state to track processing.
 
-Example: Suppose you have a global hash to ensure you don't process the same item twice or a global counter for deduplication. If two threads (processing different partitions) access it, they might see stale or conflicting data. One thread might reset or change a flag that causes the other thread to re-process something. Always protect shared state with mutexes or, better, avoid it. Use local variables or consumer instance local storage if needed, and remember each Karafka consumer instance is tied to a partition and persists for that partition's lifetime so you can store state in instance variables safely per partition.
+Example: Suppose you have a global hash to ensure you do not process the same item twice or a global counter for deduplication. If two threads (processing different partitions) access it, they might see stale or conflicting data. One thread might reset or change a flag that causes the other thread to re-process something. Always protect shared state with mutexes or, better, avoid it. Use local variables or consumer instance local storage if needed, and remember each Karafka consumer instance is tied to a partition and persists for that partition's lifetime so you can store state in instance variables safely per partition.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -171,11 +171,11 @@ end
 
 #### External Services not Thread-Safe
 
-Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails ActiveRecord is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
+Ensure libraries you call (HTTP clients, database drivers, etc.) are thread-safe or use separate connections per thread. For instance, Rails Active Record is thread-safe if you use its connection pooling properly. A gem that is not thread-safe might mishandle requests when called in parallel. This could manifest as duplicate actions. For example, a non-thread-safe cache library might erroneously replay a write operation from two threads.
 
 #### Manual Thread Management in Consumer
 
-Sometimes, users try to spawn their threads within consume to parallelize work. This is **not** recommended - Karafka already handles parallelism. If you do this, be very careful with offset commits. For example, if you spawn a background thread to process a message and immediately mark the message as consumed in the main thread, the background thread might still work when Karafka commits and moves on. If that thread raises an error, you've already acknowledged the message, so Karafka won't retry it - you just lost it (not a duplicate, but data loss). Conversely, suppose you delay offset commit until threads join. In that case, you might not commit in time, causing Kafka to redeliver messages processed successfully by threads (duplicate processing). In short, avoid inventing your threading on top of Karafka's.
+Sometimes, users try to spawn their threads within consume to parallelize work. This is **not** recommended - Karafka already handles parallelism. If you do this, be very careful with offset commits. For example, if you spawn a background thread to process a message and immediately mark the message as consumed in the main thread, the background thread might still work when Karafka commits and moves on. If that thread raises an error, you have already acknowledged the message, so Karafka will not retry it - you just lost it (not a duplicate, but data loss). Conversely, suppose you delay offset commit until threads join. In that case, you might not commit in time, causing Kafka to redeliver messages processed successfully by threads (duplicate processing). In short, avoid inventing your threading on top of Karafka's.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -202,7 +202,7 @@ This category is related to thread safety but involves how you configure and dep
 
 Karafka supports forking multiple worker processes (similar to Puma workers) to overcome MRI GIL limits​. If you use swarm mode, ensure each forked process still has a unique consumer group member identity. Karafka handles this under the hood, but if you manually run multiple Karafka processes (e.g. via a Procfile or multiple containers), make sure they share the same `group.id` in config. A mistake here is running two Karafka processes with the same topics but different group names, which means both processes will independently consume all messages (duplicating everything).
 
-The correct approach to scaling consumers is to run multiple processes all configured as one group (or use Karafka's built-in swarm mode). In Rails deployments, it's common to have an independent Karafka process for each app instance (all using the same group), which is fine.
+The correct approach to scaling consumers is to run multiple processes all configured as one group (or use Karafka's built-in swarm mode). In Rails deployments, it is common to have an independent Karafka process for each app instance (all using the same group), which is fine.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -224,7 +224,7 @@ end
 
 #### Multiple Karafka Apps on Same Topics
 
-Another scenario is that you might have two different Karafka apps (maybe two services) subscribing to the same Kafka topic. If they are meant to handle the same data (like two separate consumers for different purposes), that's not an error - it's expected duplicates (each group processes independently). But you might inadvertently double-consume if they were not supposed to overlap (e.g., a copy-paste of the app running by mistake). Double-check which services consume which topics, and use distinct group IDs only when you intend multiple independent consumptions.
+Another scenario is that you might have two different Karafka apps (maybe two services) subscribing to the same Kafka topic. If they are meant to handle the same data (like two separate consumers for different purposes), that is not an error - it is expected duplicates (each group processes independently). But you might inadvertently double-consume if they were not supposed to overlap (e.g., a copy-paste of the app running by mistake). Double-check which services consume which topics, and use distinct group IDs only when you intend multiple independent consumptions.
 
 Case Study - Competing Consumers: Imagine running Karafka in Kubernetes with an HPA (Horizontal Pod Autoscaler). You set it to scale up to 5 replicas on high load. However, you accidentally left the consumer group name as the default (which might include a random component or environment-specific name). When new pods start, they form their group instead of joining the existing one because the `group.id` was misconfigured per pod. Now, all pods consume the same topic independently - leading to each message being processed 5 times (once per pod). The fix: define a consistent `consumer_group` name in your Karafka routing config so all pods join the same group. After that, messages will properly partition among pods with no duplicates.
 
@@ -269,15 +269,15 @@ If a rebalance occurs while a consumer is still processing a batch (maybe a long
 
 #### Session Timeouts and Max Poll Interval
 
-The Kafka broker uses a `session.timeout.ms` (and `max.poll.interval.ms` for polling heartbeat) to decide if a consumer is dead or stuck. Suppose your consumer takes longer than this timeout to process a batch without polling Kafka. In that case, the broker assumes it's down and will trigger a rebalance, assigning its partitions to another consumer. Karafka uses an internal heartbeat thread (via librdkafka) to keep the session alive during long processing. However, if the processing exceeds `max.poll.interval.ms`, Kafka will still consider it failed. If your processing logic takes a lot of time, consider looking into Karafka's [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature.
+The Kafka broker uses a `session.timeout.ms` (and `max.poll.interval.ms` for polling heartbeat) to decide if a consumer is dead or stuck. Suppose your consumer takes longer than this timeout to process a batch without polling Kafka. In that case, the broker assumes it is down and will trigger a rebalance, assigning its partitions to another consumer. Karafka uses an internal heartbeat thread (via librdkafka) to keep the session alive during long processing. However, if the processing exceeds `max.poll.interval.ms`, Kafka will still consider it failed. If your processing logic takes a lot of time, consider looking into Karafka's [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) feature.
 
-For example, if `max.poll.interval.ms` is 300 seconds (default for Kafka clients) and your consumer takes 600 seconds to handle a huge batch or a slow operation, Kafka may kick it out. Then, another consumer (or a newly started instance) will take over that partition and re-read from the last committed offset (which was before the long batch). Now, those messages will be processed again on the new consumer. This looks like a mysterious duplicate: two processes handled the same messages. It's one message, two different consumers, due to a timeout.
+For example, if `max.poll.interval.ms` is 300 seconds (default for Kafka clients) and your consumer takes 600 seconds to handle a huge batch or a slow operation, Kafka may kick it out. Then, another consumer (or a newly started instance) will take over that partition and re-read from the last committed offset (which was before the long batch). Now, those messages will be processed again on the new consumer. This looks like a mysterious duplicate: two processes handled the same messages. It is one message, two different consumers, due to a timeout.
 
 #### Slow Consumer Scenario
 
 A real-world case was reported where two Karafka pods were each getting all messages. The logs showed `Kafka::UnknownMemberId` errors and frequent rebalances. The cause was a consumer that was too slow (processing took longer than the session timeout). Kafka kept ejecting it from the group and redistributing its partition to the other process. That process would also eventually get ejected as it hit the timeout, causing a ping-pong of partition ownership. Each time, some messages were reprocessed on the other side. The solution was to tune the consumer settings: either turn off large batch processing or increase the `max.poll.interval.ms` so that the consumer had enough time to finish without being considered dead.
 
-In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller batches (process messages more frequently in smaller chunks). Essentially, if you have long processing tasks:
+In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller batches (process messages more frequently in smaller chunks). If you have long processing tasks:
 
 - Make sure Kafka's timeouts are higher than the worst-case processing time.
 - Use strategies to break the work into smaller pieces.
@@ -285,7 +285,7 @@ In Karafka, you can adjust `max_wait_time` and `max_messages` to fetch smaller b
 
 ## Memory Usage / Memory Leaks
 
-As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, please follow these steps:
+As of now, Karafka components have no known memory leaks. We take each report extremely seriously. Before reporting a potential memory leak, follow these steps:
 
 1. **Upgrade to the Latest Version**: Ensure you use the most recent versions of all Karafka ecosystem gems. Issues might have already been fixed in newer releases.
 
@@ -355,7 +355,7 @@ Karafka is designed to be efficient with memory, but many factors can contribute
 
 6. **Code Review**: Regularly review your code for inefficient memory usage patterns, such as large data structures or extensive caching without expiration policies.
 
-If you have followed these steps and still believe there is a memory leak in Karafka, please report it through one of the following channels:
+If you have followed these steps and still believe there is a memory leak in Karafka, report it through one of the following channels:
 
 - [The Karafka official Slack channel](https://slack.karafka.io)
 - [Open a GitHub issue](https://github.com/karafka/karafka/issues/new)
@@ -396,7 +396,7 @@ First, verify that the same message (the same Kafka partition and offset or the 
 
 ### Ensure You're Using Current Versions
 
-Before diving into debugging **always** verify you're using the most recent versions of all Karafka ecosystem gems. The issue you're experiencing may have already been fixed in a newer version.
+Before diving into debugging **always** verify you are using the most recent versions of all Karafka ecosystem gems. The issue you are experiencing may have already been fixed in a newer version.
 
 ### Create a Minimal Reproduction Environment
 
@@ -513,7 +513,7 @@ rdkafka: [thrd:127.0.0.1:9092/bootstrap]: 127.0.0.1:9092/bootstrap: Broker API s
 
 While useful for observability, custom instrumentation, and monitors can inadvertently affect message processing when implemented incorrectly. Historically, some cases of message duplication have been traced to custom monitors (particularly those added for distributed tracing) that interfered with Karafka's internal operations.
 
-If you're experiencing duplicate processing, temporarily disabling all custom monitors can help isolate whether your instrumentation contributes to the issue. Once confirmed, carefully review your monitor implementations to ensure they operate as passive observers without side effects on Karafka's core processing logic.
+If you are experiencing duplicate processing, temporarily disabling all custom monitors can help isolate whether your instrumentation contributes to the issue. Once confirmed, carefully review your monitor implementations to ensure they operate as passive observers without side effects on Karafka's core processing logic.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -579,7 +579,7 @@ Look for:
 
 ### Consider Pro Support
 
-If after following all the steps above, you're still unable to isolate or resolve the issue, or if you're dealing with a production-critical incident and need deeper Kafka/Ruby insight, consider reaching out for [Pro](Pro-Support) assistance.
+If after following all the steps above, you are still unable to isolate or resolve the issue, or if you are dealing with a production-critical incident and need deeper Kafka/Ruby insight, consider reaching out for [Pro](Pro-Support) assistance.
 
 Karafka Pro offers:
 
@@ -587,9 +587,9 @@ Karafka Pro offers:
 - Direct help from the author
 - Assistance with debugging, architecture, rebalancing, upgrade strategies, and more
 
-You can contact us at `contact@karafka.io` or via the private Slack channel if you're a Pro customer.
+You can contact us at `contact@karafka.io` or via the private Slack channel if you are a Pro customer.
 
-Don't hesitate to get in touch if you still need clarification after following this guide. We're happy to help.
+Do not hesitate to get in touch if you still need clarification after following this guide. We are happy to help.
 
 ## See Also
 

@@ -1,8 +1,8 @@
-When working with Karafka and Kafka, it's essential to understand the nuances between development (`development` and `test` environments) and production. Awareness of these differences ensures a smoother work experience and optimal system performance. Here's a detailed breakdown of some of the crucial considerations to keep in mind:
+When working with Karafka and Kafka, it is essential to understand the nuances between development (`development` and `test` environments) and production. Awareness of these differences ensures a smoother work experience and optimal system performance. Here is a detailed breakdown of some of the crucial considerations to keep in mind:
 
 ## Avoid Using Karafka's Reload Mode in Production
 
-While Karafka offers a reload mode, which can be very helpful during development, it's crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always ensure that this mode is disabled before deploying to production.
+While Karafka offers a reload mode, which can be very helpful during development, it is crucial not to use this in a production environment. This mode can impact the performance and stability of your system. Always ensure that this mode is disabled before deploying to production.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -41,7 +41,7 @@ end
 
 ## Disable Automatic Topic Creation in Production
 
-When set to true, the `allow.auto.create.topics` setting enables Kafka to create topics automatically. However, it's recommended not to rely on this feature in a production environment. It's more controlled and predictable to manually set up your topics, ensuring they are configured correctly for your production needs.
+When set to true, the `allow.auto.create.topics` setting enables Kafka to create topics automatically. However, it is recommended not to rely on this feature in a production environment. It is more controlled and predictable to manually set up your topics, ensuring they are configured correctly for your production needs.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -56,7 +56,7 @@ end
 
 ## Lock Your Topics List in Development After Stabilization
 
-As you develop and test, you may often modify your list of Kafka topics and their settings. However, once you stabilize your topic list, it's a good idea to lock it. Typos and minor errors can easily be overlooked, leading to potential issues propagating to production.
+As you develop and test, you may often modify your list of Kafka topics and their settings. However, once you stabilize your topic list, it is a good idea to lock it. Typos and minor errors can easily be overlooked, leading to potential issues propagating to production.
 
 ## Be Cautious with the Default Single Partition for Auto-created Topics
 
@@ -95,7 +95,7 @@ end
 
 ## Manual Topic Creation and Consumer Starting Sequence
 
-Creating a topic manually or by sending the first message and then initiating a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
+Creating a topic manually or by sending the first message and then starting a consumer is recommended. While Karafka does refresh cluster metadata information to detect new topics, this process can sometimes take over five minutes. Ensuring that the topic exists before starting a consumer reduces potential delays.
 
 ## Adjust Topic Metadata Refresh Interval for Production
 
@@ -148,7 +148,7 @@ The `compression.codec` parameter in Kafka's configuration allows you to specify
 
 There are several reasons why you should configure compression for your production environments and why it needs to be set on both Kafka and Karafka levels:
 
-- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth utilized. Remember that compression **needs** to be set for both Kafka topics and Karafka to ensure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
+- **Network Traffic Volume Reduction**: One of the main benefits of compression is to reduce the amount of data transmitted over the network. When producers send compressed data to the broker, and consumers receive it, it reduces the bandwidth used. Remember that compression **needs** to be set for both Kafka topics and Karafka to ensure data is being compressed before it is sent over the wire. Otherwise, the compression will occur only on the broker, and no network traffic savings will occur.
 
 - **Consistency**: Keeping the compression setting consistent between producers, consumers, and brokers ensures the data is uniformly compressed throughout its lifecycle. This minimizes issues related to unsupported compression formats or mismatched compression expectations.
 
@@ -183,7 +183,7 @@ When you switch between classic protocol assignment strategies, be aware that:
 
 To ensure a smooth transition when adjusting the classic protocol assignment strategy, follow these steps:
 
-1. **Backup Configuration**: Initiate the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
+1. **Backup Configuration**: Start the process by backing up your existing Kafka and Karafka configurations. This creates a recovery point in case complications arise.
 
 1. **Test in a Non-Production Environment**: Before rolling out changes in a live setting, validate the new strategy in a controlled, non-production environment.
 
@@ -197,17 +197,17 @@ To ensure a smooth transition when adjusting the classic protocol assignment str
 
 In Kafka, every message (or record) produced to a topic carries metadata, including a timestamp. This timestamp is set by the producer or the broker when the message gets appended to the log. Consumers then use the timestamp to understand the chronological order of messages.
 
-Under regular operations, this system works seamlessly. However, problems arise when there's a time drift between the Kafka cluster nodes and the consumer. Essentially, if the Kafka broker believes it's 2:00 PM, while the consumer thinks it's 1:50 PM, the messages produced in that 10-minute interval by the broker will appear as if they're coming from the "future" when consumed.
+Under regular operations, this system works seamlessly. However, problems arise when there is a time drift between the Kafka cluster nodes and the consumer. If the Kafka broker believes it is 2:00 PM, while the consumer thinks it is 1:50 PM, the messages produced in that 10-minute interval by the broker will appear as if they are coming from the "future" when consumed.
 
 The time synchronization issue usually boils down to the Network Time Protocol (NTP). NTP is a protocol used to synchronize the clocks of computers to some time reference, which can be an atomic clock, GPS, or another reliable source.
 
-- **NTP Not Installed**: If NTP isn't installed on the machines running Kafka or the consumer application, they rely on their internal clocks. Over time, even minor discrepancies between internal clocks can add up, leading to significant drifts.
+- **NTP Not Installed**: If NTP is not installed on the machines running Kafka or the consumer application, they rely on their internal clocks. Over time, even minor discrepancies between internal clocks can add up, leading to significant drifts.
 
-- **NTP Malfunctions**: Even with NTP installed, there might be cases where it's not working correctly. This can happen for various reasons, like network issues, software bugs, or misconfigurations.
+- **NTP Malfunctions**: Even with NTP installed, there might be cases where it is not working correctly. This can happen for various reasons, like network issues, software bugs, or misconfigurations.
 
 ### Consequences of Time Drift
 
-When Kafka and the consumer drift apart in time, it doesn't just result in the odd phenomenon of messages from the future. It can:
+When Kafka and the consumer drift apart in time, it does not just result in the odd phenomenon of messages from the future. It can:
 
 - Impact consumer logic that relies on time-based processing.
 
@@ -221,51 +221,51 @@ When Kafka and the consumer drift apart in time, it doesn't just result in the o
 
 1. **Ensure NTP is Installed**: Always ensure that NTP is installed on all machines running Kafka brokers and consumer applications.
 
-2. **Monitor NTP Status**: Regularly monitor the NTP status to ensure it's running and is in sync with its time sources.
+2. **Monitor NTP Status**: Regularly monitor the NTP status to ensure it is running and is in sync with its time sources.
 
 3. **Configure Alerts**: Set alerts for any significant time drift between the servers. This can provide early warnings before time drift becomes a problem.
 
 4. **Synchronize Frequently**: Reduce the time between synchronization intervals to ensure that even minor drifts are corrected promptly.
 
-In conclusion, while Kafka is a powerful tool, it's essential to remember the importance of time synchronization to ensure the reliable delivery and consumption of messages. Regularly monitoring and ensuring the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
+In conclusion, while Kafka is a powerful tool, it is essential to remember the importance of time synchronization to ensure the reliable delivery and consumption of messages. Regularly monitoring and ensuring the correct functioning of NTP can prevent time drift issues, providing a smoother Kafka experience.
 
 ### Impact on Karafka
 
-Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, please note that time-sensitive metrics may not be accurate.
+Karafka and Karafka Web UI internal operations starting from `2.2.4` are resilient to this issue, as Karafka normalizes the time for internal computation. While this will not crash your operations, time-sensitive metrics may not be accurate.
 
 ## Configure your brokers' `offsets.retention.minutes` policy
 
-`offsets.retention.minutes` in Apache Kafka is a configuration setting that determines how long the Kafka broker will retain the offsets of consumer groups. The offset is a crucial piece of information that records the position of a consumer in a topic, essentially marking which messages have been processed.
+`offsets.retention.minutes` in Apache Kafka is a configuration setting that determines how long the Kafka broker will retain the offsets of consumer groups. The offset is a crucial piece of information that records the position of a consumer in a topic, marking which messages have been processed.
 
 When a consumer is not running longer than the `offsets.retention.minutes` value, the following impacts can occur:
 
-- **Loss of Offset Data**: Once the retention period is exceeded, the offsets for that consumer group are deleted. If the consumer starts again after this period, it won't have a record of where it left off in processing the messages.
+- **Loss of Offset Data**: Once the retention period is exceeded, the offsets for that consumer group are deleted. If the consumer starts again after this period, it will not have a record of where it left off in processing the messages.
 
 - **Reprocessing of Messages**: Without the offset information, the consumer might start reading messages from the beginning of the log or the latest offset, depending on its configuration. This can lead to reprocessing messages (if they start from the beginning) or missing out on messages (if they start from the latest).
 
 - **Data Duplication or Loss**: The impact on data processing depends on the consumer's configuration and the nature of the data. It could result in data duplication or data loss if not managed properly.
 
-It's essential to set the `offsets.retention.minutes` value considering your consumer applications' most extended expected downtime to avoid these issues. Setting a longer retention period for offsets can be crucial for systems where consumers might be down for extended periods.
+It is essential to set the `offsets.retention.minutes` value considering your consumer applications' most extended expected downtime to avoid these issues. Setting a longer retention period for offsets can be crucial for systems where consumers might be down for extended periods.
 
-It's important to note that while the `offsets.retention.minutes` setting in Kafka might not seem particularly relevant in a development environment, it becomes crucial in a production setting.
+While the `offsets.retention.minutes` setting in Kafka might not seem particularly relevant in a development environment, it becomes crucial in a production setting.
 
 In development, consumer downtimes are generally short, and losing offsets might not have significant consequences as the data is often test data, and reprocessing might not be a concern. However, in a production environment, consumer downtime can be more impactful if a consumer is down for a time exceeding the `offsets.retention.minutes` value. The loss of offset data can lead to significant issues like message reprocessing or missing out on unprocessed messages. This can affect data integrity and processing efficiency.
 
 ## Topics Metadata Propagation During their Creation and Removal
 
-Apache Kafka, a distributed streaming platform, handles topic creation asynchronously. This means that when a new topic is created, there's a delay before it's recognized across all brokers in the Kafka cluster. This delay can cause temporary issues where the topic appears non-existent, leading to `unknown_topic` errors. To mitigate this, clients delay flagging a topic as non-existent for a default period of 30 seconds (configurable through `topic.metadata.propagation.max.ms`). This wait allows time for the topic metadata to propagate across the cluster.
+Apache Kafka, a distributed streaming platform, handles topic creation asynchronously. This means that when a new topic is created, there is a delay before it is recognized across all brokers in the Kafka cluster. This delay can cause temporary issues where the topic appears non-existent, leading to `unknown_topic` errors. To mitigate this, clients delay flagging a topic as non-existent for a default period of 30 seconds (configurable through `topic.metadata.propagation.max.ms`). This wait allows time for the topic metadata to propagate across the cluster.
 
 In Karafka it has specific implications:
 
-- **Delayed Writing to Newly Created Topics**: In Karafka, it's advisable not to start producing messages for a topic immediately after its creation using the Karafka Admin API. Due to Kafka's asynchronous nature, the topic might not be fully recognized across the cluster, leading to message delivery issues. Messages sent to these "in-limbo" topics get queued and might fail if the topic becomes unavailable within the propagation time.
+- **Delayed Writing to Newly Created Topics**: In Karafka, it is advisable not to start producing messages for a topic immediately after its creation using the Karafka Admin API. Due to Kafka's asynchronous nature, the topic might not be fully recognized across the cluster, leading to message delivery issues. Messages sent to these "in-limbo" topics get queued and might fail if the topic becomes unavailable within the propagation time.
 
-- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing sufficient time for topics to stabilize within the Kafka ecosystem before initiating message production.
+- **Topic Replication and Usability Timeframe**: New topics must be fully replicated and usable across the cluster. This replication time varies depending on the cluster's size and configuration. In Karafka applications, developers should account for this delay and design their message-producing logic accordingly, allowing enough time for topics to stabilize within the Kafka ecosystem before starting message production.
 
 - **Handling Topic Resets**: Resetting topics in Karafka, especially in a production environment, should be approached with caution. Resetting a topic (deleting and recreating it) may lead to immediate marking of the topic as non-existent, as the propagation time does not apply in this scenario. This can cause significant disruptions in message flow and processing. We **do not** recommend removing and recreating topics on running systems. Always stop your producers and consumers before attempting to do so.
 
-- **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it's generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
+- **Topic Auto-Creation Considerations**: While Kafka and, by extension, Karafka support automatic topic creation, it is generally not recommended for consumer applications. Automatic topic creation can lead to issues where consumers attempt to consume from auto-created topics without producers, resulting in empty message sets.
 
-In summary, when working with Kafka through Karafka, it's crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a robust and reliable streaming application.
+In summary, when working with Kafka through Karafka, it is crucial to understand the asynchronous nature of Kafka's topic management. Developers should plan for propagation delays, be cautious with topic resets, and manage auto-creation settings judiciously to ensure a reliable streaming application.
 
 ## `zstd` Support Issues on macOS
 
@@ -301,7 +301,7 @@ You can find an extensive explanation of Karafka ecosystem components forking su
 
 ## Be Aware of WaterDrop Default Producer Middleware Modifications
 
-When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also utilizes this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
+When applying middleware in `Karafka.producer` that modifies payloads or topics (like adding prefixes), you must consider that the Web UI also uses this producer. Any topic name changes must be applied across all environments and tools, including the Karafka Web UI. This ensures alignment between produced messages and what the Web UI expects. Alternatively, you can configure an independent Web UI with only a dedicated producer and not apply the middleware.
 
 For example, when applying such a middleware:
 
@@ -334,7 +334,7 @@ When working with Karafka and Kafka, it is crucial to understand how rebalancing
 
 ### Rebalance Mechanism
 
-Consumers within the same consumer group will undergo the same rebalance cycle, even if they are subscribed to different topics. Here's a detailed explanation of how this process works:
+Consumers within the same consumer group will undergo the same rebalance cycle, even if they are subscribed to different topics. Here is a detailed explanation of how this process works:
 
 - **Rebalance Trigger**: Rebalances can be triggered by several events, such as a new consumer joining the group, an existing consumer leaving, changes in subscription patterns, or changes in the number of partitions in the topics.
 
@@ -421,7 +421,7 @@ When deploying Kafka with the `cooperative-sticky` rebalance strategy in environ
 
 The `shutdown_timeout` configuration defines the maximum time consumers can shut down gracefully. In larger deployments with many partitions, rebalances can take longer due to the complexity of ensuring minimal partition movement and maintaining a balanced load. A higher `shutdown_timeout` helps in:
 
-- **Ensuring Graceful Shutdowns**: Allows consumers sufficient time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
+- **Ensuring Graceful Shutdowns**: Allows consumers enough time to process in-flight messages and commit offsets, reducing the risk of data loss or reprocessing.
 
 - **Reducing Rebalance Interruptions**: Prevents premature shutdowns during rebalances, which can cause additional rebalances and increase system instability.
 

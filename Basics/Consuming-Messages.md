@@ -25,7 +25,7 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 1. Select one of two processing approaches based on your use case:
 
       - Process each message one by one
-      - Process all payloads together to leverage batch database operations provided by many ORMs
+      - Process all payloads together to use batch database operations provided by many ORMs
 
 1. Access message payloads.
 
@@ -55,7 +55,7 @@ Data fetched from Kafka is accessible using the `#messages` method. The returned
 
 ## Consuming Messages One At a Time
 
-While batch processing is recommended to leverage in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
+While batch processing is recommended to use in-memory computation and batch database operations provided by many ORMs, you may need to process messages individually for certain use cases.
 
 1. To start the Karafka server process, use the following CLI command:
 
@@ -182,7 +182,7 @@ To configure the initial offset for specific topics:
 
     **Result:** Each topic will use its configured offset position, overriding the global default.
 
-!!! note "Note"
+!!! note "Initial Offset Applies Only on First Run"
 
     This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
 
@@ -190,7 +190,7 @@ To configure the initial offset for specific topics:
 
 When working with a distributed system like Kafka, topic partitions can be distributed among different consumers in a consumer group for processing. However, there are cases where a partition needs to be removed from one consumer and reassigned to another. This process is known as a partition revocation.
 
-Partition revocation can be voluntary, where a consumer willingly gives up the partition after processsing the current batch, or it can be involuntary. Involuntary partition revocation usually happens due to events such as a rebalance triggered by changes in the consumer group or a failure of a consumer that makes it unresponsive.  It is important to remember that involuntary revocations can occur during data processing. if you are aware that a partition has been removed, you may not want to continue processing messages. This is where the `#revoked?` method is beneficial.
+Partition revocation can be voluntary, where a consumer willingly gives up the partition after processsing the current batch, or it can be involuntary. Involuntary partition revocation usually happens due to events such as a rebalance triggered by changes in the consumer group or a failure of a consumer that makes it unresponsive.  Involuntary revocations can occur during data processing. if you are aware that a partition has been removed, you may not want to continue processing messages. This is where the `#revoked?` method is beneficial.
 
 By monitoring the status of the `#revoked?` method, your application can detect that your process no longer owns a partition you are operating on. In such cases, you can choose to stop any ongoing, expensive processing. This can help you save resources and reduce the number of potential reprocessings.
 
@@ -208,15 +208,15 @@ def consume
 end
 ```
 
-It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
+However, under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
-!!! note "Note"
+!!! note "`#revoked?` Works Without Marking Messages"
 
-    The `#revoked?` method detects partition revocation immediately. You don't need to mark messages as consumed for it to detect revocation.
+    The `#revoked?` method detects partition revocation immediately. You do not need to mark messages as consumed for it to detect revocation.
 
-!!! note "Note"
+!!! note "`#revoked?` Changes Independently With Long-Running Jobs"
 
     With [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), `#revoked?` result also changes independently from marking messages.
 
@@ -231,9 +231,9 @@ Karafka consumer instances are persistent by default. A single consumer instance
 
 Karafka recreates the consumer instance only when a partition is lost and reassigned.
 
-!!! note "Note"
+!!! note "Use Manual Offsets When Buffering In Memory"
 
-    When buffering messages in memory, use manual offset management. Without it, you'll lose buffered data, if the process crashes before flushing.
+    When buffering messages in memory, use manual offset management. Without it, you will lose buffered data, if the process crashes before flushing.
 
 The following example contains a consumer that buffers messages until it reaches 1,000 of them before flushing:
 
@@ -347,9 +347,9 @@ The `enable.partition.eof` configuration option changes how Karafka responds whe
 
 - **Reduced Latency**: Immediate message yielding upon reaching the end of a partition can significantly reduce latency. This is particularly beneficial in environments where data must be processed and acted upon quickly.
 
-- **Increased Responsiveness**: Systems that require high responsiveness will benefit from not having to wait for the timeout conditions (`max_wait_time` or `max_messages`) to be met, allowing subsequent processing steps to commence without delay.
+- **Increased Responsiveness**: Systems that require high responsiveness will benefit from not having to wait for the timeout conditions (`max_wait_time` or `max_messages`) to be met, allowing subsequent processing steps to start without delay.
 
-- **Efficient Resource Utilization**: By avoiding unnecessary waiting times, system resources can be better utilized for processing rather than idling, potentially leading to cost optimizations and improved throughput.
+- **Efficient Resource Utilization**: By avoiding unnecessary waiting times, system resources can be better used for processing rather than idling, potentially leading to cost optimizations and improved throughput.
 
 ### Downsides of Early Yield
 
@@ -421,7 +421,7 @@ For more details on this feature, see [Iterator API](Pro-Iterator-API).
 
 ## Avoiding Accidental Overwriting of Consumer Instance Variables
 
-When working with Karafka consumers, it is essential to be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the Karafka Web UI. The following are the primary instance variables that you should be careful about:
+When working with Karafka consumers, be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the Karafka Web UI. The following are the primary instance variables that you should be careful about:
 
 - `@id`: Consumer instance identifier
 - `@messages`: Messages batch for the subscribed topic

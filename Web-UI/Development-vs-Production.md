@@ -1,6 +1,6 @@
 # Web UI Setup for Development vs Production
 
-Karafka Web UI can operate in production mode. It is, however, essential to understand how it works and its limitations.
+Karafka Web UI can operate in production mode. However, understand how it works and its limitations.
 
 ## Dedicated Web UI Processes
 
@@ -105,11 +105,9 @@ bundle exec karafka-web install --replication-factor 5
 
 ## Usage with Heroku Kafka Multi-Tenant add-on
 
-!!! note "Note"
+This section **only** applies to the Multi-Tenant add-on mode.
 
-    This section **only** applies to the Multi-Tenant add-on mode.
-
-Please keep in mind that in order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
+In order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
 
 ### Topics Automatic Prefix
 
@@ -136,7 +134,7 @@ end
 
 ### Heroku Multi-Tenant Retention Policy Impact
 
-When using Heroku Kafka in MultiTenant mode, it's important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Infrastructure-Deployment#heroku-retention-policy-impact-on-the-web-ui).
+When using Heroku Kafka in MultiTenant mode, it is important to know that the default message retention period is only one day. This limited retention time can pose challenges, especially for applications that rely heavily on Kafka for storage, such as Karafka Web UI. Karafka Web UI uses Kafka as its sole storage source, meaning longer retention is necessary for effective operation. It is highly recommended that you read more about this [here](Infrastructure-Deployment#heroku-retention-policy-impact-on-the-web-ui).
 
 You can read about working with Heroku Kafka Multi-Tenant add-on [here](Infrastructure-Deployment#heroku).
 
@@ -144,15 +142,15 @@ You can read about working with Heroku Kafka Multi-Tenant add-on [here](Infrastr
 
 Upgrading your Karafka Web UI to a newer version is a three-step operation. You must be diligent about the order of operations to avoid unexpected errors. The process is as follows:
 
-1. **Update Karafka and Its Dependencies**: First, ensure that you're running the latest version of Karafka, along with its key dependencies, which include `karafka-core`, `karafka-rdkafka`, and `waterdrop`.
+1. **Update Karafka and Its Dependencies**: First, ensure that you are running the latest version of Karafka, along with its key dependencies, which include `karafka-core`, `karafka-rdkafka`, and `waterdrop`.
 1. **Deploy All Karafka Consumer Processes**: Your first step should be to deploy all the Karafka consumer processes on all nodes where the `karafka server` command runs. Ensure that all your consumers are up-to-date and working with the most recent consumer version.
 1. **Deploy the Web UI Update to Your Web Server**: After all the consumer processes have been upgraded, you can safely deploy the updated Web UI to your web server. The updated web UI will have the necessary code and schema changes to work with the latest consumer version.
 
-Please take note of the following potential issue:
+Take note of the following potential issue:
 
 If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
-It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+Ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
 ## See Also
 

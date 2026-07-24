@@ -1,6 +1,6 @@
 !!! tip "Recommendation: Related Regulatory Documentation"
 
-    If you're working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
+    If you are working in healthcare or handling sensitive personal information, we recommend also reviewing our [HIPAA, PHI, PII Support](Pro-HIPAA-PHI-PII-Support) documentation. Many organizations need to comply with both FIPS and HIPAA requirements, and the referenced document provides complementary guidance on securing protected health information and personally identifiable information within Karafka deployments.
 
     For information about compliance certifications (SOC 2, ISO 27001) and why they do not apply to self-hosted software like Karafka, see our [Compliance Certifications documentation](Pro-Compliance-Certifications).
 
@@ -8,7 +8,7 @@ Karafka aligns with FIPS 140-2 cryptographic module expectations to ensure secur
 
 !!! info "No Warranty"
 
-    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, please contact us so we can enhance the codebase accordingly.
+    While Karafka strives to maintain compatibility with FIPS 140-2 requirements, this compatibility is not warranted or guaranteed. We do our best to ensure compliance with FIPS regulations but recommend thorough testing in your specific environment. If you encounter any issues or find areas where FIPS support could be improved, contact us so we can enhance the codebase accordingly.
 
 !!! warning "OSS Version Limitations"
 
@@ -31,7 +31,7 @@ Karafka supports FIPS 140-2 Level 3 requirements in specific configurations, as 
 
 Karafka achieves FIPS compatibility through:
 
-- Use of FIPS-validated cryptographic modules: Karafka leverages librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
+- Use of FIPS-validated cryptographic modules: Karafka uses librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
 - Secure communications: All network traffic can be encrypted using TLS/SSL with FIPS-approved algorithms
 - In-flight encryption: Data transmitted between Karafka clients and Kafka brokers uses FIPS-compatible encryption algorithms
 - At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, AES for encryption)
@@ -66,9 +66,9 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
+All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they do not use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
 
-For more comprehensive information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
+For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, consult our [Security Guidelines documentation](Pro-Security).
 
 ## librdkafka FIPS Support
 
@@ -97,7 +97,7 @@ When operating in FIPS mode, the following limitations apply:
 
 ## Summary
 
-Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2 requirements through their implementation of validated cryptographic modules, secure communication channels, and robust at-rest encryption.
+Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2 requirements through their implementation of validated cryptographic modules, secure communication channels, and at-rest encryption.
 
 While we strive to maintain FIPS compatibility, we encourage users to contact us with any issues or suggestions for improvement to help us continue enhancing Karafka's security features.
 

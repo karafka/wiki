@@ -2,7 +2,7 @@
 
 This document addresses the unique operational characteristics and recurring issues observed when running Karafka with AWS Managed Streaming for Apache Kafka (MSK) and MSK Express. While AWS MSK provides a fully managed Kafka service, it introduces several distinct behaviors compared to other Kafka vendors that affect how Karafka and librdkafka operate.
 
-Over time, users of the Karafka and rdkafka ecosystems have reported numerous recurring incidents specific to MSK deployments that rarely occur with other vendors. Issues such as `unknown_partition` errors during consumption, authentication failures after cluster maintenance, and complete consumer group stalls during broker patching prompted the creation of this guide.
+Over time, users of the Karafka and rdkafka ecosystems have reported many recurring incidents specific to MSK deployments that rarely occur with other vendors. Issues such as `unknown_partition` errors during consumption, authentication failures after cluster maintenance, and complete consumer group stalls during broker patching prompted the creation of this guide.
 
 While some documented issues may occur with other Kafka deployments, this guide is built on the collective experience of production MSK incidents, workarounds, and solutions discovered by the community. Each pattern and solution has been validated in real MSK environments where these problems consistently manifested.
 
@@ -12,13 +12,13 @@ While some documented issues may occur with other Kafka deployments, this guide 
 
 !!! note "Help Improve This Guide"
 
-    This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, please reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
+    This document aims to be a comprehensive, community-driven resource aggregating real-world MSK operational knowledge. If you encounter MSK-related issues not covered here or have alternative solutions to documented problems, reach out and share your experience. Your insights help build a more complete picture of MSK operational patterns and strengthen the collective knowledge base for the entire community.
 
 ## MSK vs. Other Kafka Vendors
 
 The most significant operational difference between MSK and other Kafka vendors lies in their maintenance and update strategies.
 
-MSK performs maintenance via rolling updates, rebooting brokers one at a time. During this process, brokers are taken offline sequentially, and Kafka automatically moves leadership to another online broker. The next broker isn't rebooted until the partitions on the current broker fully catch up (become in sync). A broker size update typically takes 10-15 minutes per broker, so maintenance for a 6-broker cluster can take up to 90 minutes.
+MSK performs maintenance via rolling updates, rebooting brokers one at a time. During this process, brokers are taken offline sequentially, and Kafka automatically moves leadership to another online broker. The next broker is not rebooted until the partitions on the current broker fully catch up (become in sync). A broker size update typically takes 10-15 minutes per broker, so maintenance for a 6-broker cluster can take up to 90 minutes.
 
 When updating cluster configurations, Amazon MSK performs rolling restarts when necessary. After restarting each broker, MSK lets the broker catch up on any data it might have missed during the configuration update before moving to the next broker. This sequential approach prioritizes cluster availability over update speed.
 
@@ -38,7 +38,7 @@ Standard brokers follow the traditional rolling update pattern described above. 
 
 !!! tip "Monitor MSK Express Despite No Maintenance Windows"
 
-    While MSK Express eliminates scheduled maintenance windows, proper instrumentation and monitoring remain essential. There have been rare but documented cases where MSK Express automatic updates caused librdkafka to enter non-recoverable states, requiring consumer or producer instance restarts. Always maintain robust monitoring and automated recovery mechanisms even with Express brokers.
+    While MSK Express eliminates scheduled maintenance windows, proper instrumentation and monitoring remain essential. There have been rare but documented cases where MSK Express automatic updates caused librdkafka to enter non-recoverable states, requiring consumer or producer instance restarts. Always maintain monitoring and automated recovery mechanisms even with Express brokers.
 
 !!! tip "Coordinator Failures During Rolling Upgrades"
 
@@ -177,7 +177,7 @@ When the message timeout expires, the producer reports a `msg_timed_out` error. 
 
 !!! warning "Increase Timeout Before Investigating Further"
 
-    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, increasing the budget alone is not sufficient - see [Idle Connection Reaping](#idle-connection-reaping).
+    If you encounter `msg_timed_out` errors in MSK, first increase `message.timeout.ms` to 300,000ms. Many MSK-related timeout issues resolve with this change alone. However, if the errors appear in pairs with a transport-level disconnect showing `(after ~600000ms in state UP)` and a healthy `average rtt`, increasing the budget alone is not enough - see [Idle Connection Reaping](#idle-connection-reaping).
 
 ### Idle Connection Reaping
 
@@ -207,7 +207,7 @@ Receive failed: Disconnected (after 600Xms in state UP)
 
 The broker sends a TCP FIN; librdkafka detects it promptly on the next read and reconnects. Because the broker only reaps after `connections.max.idle.ms` of genuine inactivity, there are no in-flight ProduceRequests at reap time - nothing to drop.
 
-!!! note "msg_timed_out Means Unconfirmed, Not Necessarily Lost"
+!!! note "`msg_timed_out` Means Unconfirmed, Not Necessarily Lost"
 
     When a ProduceRequest times out, the broker may have already written the message to the log before the client gave up waiting for the acknowledgment. The actual delivery status is **POSSIBLY_PERSISTED** - the message is unconfirmed, not guaranteed lost. For non-idempotent producers, this creates genuine ambiguity between data loss and duplication. Use idempotent or transactional producers when exactly-once delivery semantics are required.
 
@@ -397,7 +397,7 @@ The broker-side error `Broker: Unknown topic or partition (unknown_topic_or_part
 
 **Common causes with MSK:**
 
-**ACL misconfiguration on public MSK clusters** is the leading cause. When `allow.everyone.if.no.acl.found=false` is set on the broker (MSK's default for public access), it supersedes `auto.create.topics.enable=true`. This means even if auto-creation is enabled, topics won't be created without explicit ACL permissions.
+**ACL misconfiguration on public MSK clusters** is the leading cause. When `allow.everyone.if.no.acl.found=false` is set on the broker (MSK's default for public access), it supersedes `auto.create.topics.enable=true`. This means even if auto-creation is enabled, topics will not be created without explicit ACL permissions.
 
 Always pre-create all topics before making the MSK cluster publicly accessible, or configure Kafka ACLs to grant topic creation and access permissions.
 
@@ -432,7 +432,7 @@ For persistent authentication failures:
 
 !!! warning "Public MSK Clusters Require Explicit ACLs"
 
-    If you've made your MSK cluster publicly accessible and set `allow.everyone.if.no.acl.found=false`, you **must** configure explicit ACLs for all SASL/SCRAM users. Heal operations can sometimes reset or corrupt ACL state, requiring manual re-application of ACLs. Document your ACL configuration and maintain scripts to quickly re-apply permissions if needed.
+    If you have made your MSK cluster publicly accessible and set `allow.everyone.if.no.acl.found=false`, you **must** configure explicit ACLs for all SASL/SCRAM users. Heal operations can sometimes reset or corrupt ACL state, requiring manual re-application of ACLs. Document your ACL configuration and maintain scripts to quickly re-apply permissions if needed.
 
 ## Idempotent Producer Fatal Errors
 

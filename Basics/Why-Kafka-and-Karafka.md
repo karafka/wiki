@@ -18,7 +18,7 @@ Kafka breaks the request-response constraint without requiring you to rewrite yo
 
 The practical consequences are significant:
 
-- **New consumers cost nothing to add.** A new service that needs to react to `order.placed` events simply subscribes to the topic. The publishing side changes nothing. There is no tight coupling between producers and consumers.
+- **New consumers cost nothing to add.** A new service that needs to react to `order.placed` events subscribes to the topic. The publishing side changes nothing. There is no tight coupling between producers and consumers.
 - **Replay is possible.** If you ship a bug in a consumer, fix it, reset the consumer offset, and reprocess from the point of failure. With Sidekiq, those jobs are gone.
 - **Multiple independent consumers read the same data.** Your analytics pipeline, your notification service, and your data warehouse can all read the same `user.signup` topic simultaneously without any of them affecting the others.
 - **Cross-service communication becomes a data contract.** Publishing a well-defined event is a stable interface that other teams can depend on without coordinating deployments.
@@ -156,7 +156,7 @@ Kafka tends to be the right choice when:
 
 Kafka adds real operational complexity. It is **not** the right tool for every situation.
 
-Sidekiq is simpler, well-understood, and sufficient for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
+Sidekiq is simpler, well-understood, and enough for the vast majority of Rails background processing. If your use case is "send a welcome email when a user signs up" or "generate a PDF in the background," you do not need Kafka.
 
 Consider staying with simpler alternatives when:
 
@@ -184,7 +184,7 @@ This closes the gap between Kafka and classic message queues for workloads that 
 
 Karafka is a production-ready Ruby and Rails framework for building Kafka consumers. It handles the operational concerns that would otherwise fall on you: consumer lifecycle management, offset committing, partition rebalancing, multi-threaded processing, error handling, and observability.
 
-WaterDrop, part of the same ecosystem, handles the producer side - publishing messages to Kafka topics from any Ruby process, including Rails controllers, ActiveJob callbacks, and Rake tasks.
+WaterDrop, part of the same ecosystem, handles the producer side - publishing messages to Kafka topics from any Ruby process, including Rails controllers, Active Job callbacks, and Rake tasks.
 
 Karafka Web UI rounds out the picture on the operational side. It is a self-hosted monitoring interface that gives you real-time visibility into consumer group health, partition lag, message throughput, and individual consumer status - all without leaving your browser and without any external dependencies beyond what you already run. When something goes wrong at two in the morning, you will want it.
 
@@ -206,7 +206,7 @@ Kafka is operationally dense. Partitions need to be managed. Offsets need to be 
 
 Karafka exposes extensive administrative APIs that make these operations first-class Ruby citizens. You can query cluster state, manage consumer group offsets, inspect topic configurations, and coordinate consumer lifecycle from within your application or from a Rake task - without dropping into the Kafka CLI or writing bespoke JVM tooling.
 
-This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that leverage. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
+This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that use. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
 
 ![Karafka Web UI health dashboard](https://karafka.io/assets/misc/printscreens/web-ui/health.png)
 

@@ -12,7 +12,7 @@ Process-level commanding includes tracing consumers for detailed state informati
 
 ### Configuration
 
-Commanding is **turned on by default**. During each consumer process startup, it initiates a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and tracing consumers for backtraces.
+Commanding is **turned on by default**. During each consumer process startup, it starts a special "invisible" connection to Kafka. This connection is used exclusively for administrative commands that can be executed from the Web UI, such as stopping, quieting, and tracing consumers for backtraces.
 
 To turn off this feature, you can set the `config.commanding.active` configuration option to `false`. Disabling commanding removes the extra Kafka connection dedicated to these administrative tasks. Consequently, it also disables the ability to execute these commands from the Web UI.
 
@@ -38,7 +38,7 @@ Opting out of commanding is recommended for environments where direct consumer m
 
 The commanding functionality within the Web UI is organized into two distinct tabs: "Controls" and "Commands." These tabs provide a centralized interface for managing consumer processes, making it easier for administrators to perform and track administrative actions directly from the Web UI.
 
-!!! info "Info"
+!!! info "Commands Are Retained for 7 Days by Default"
 
     Commands issued through the Web UI are retained in Kafka for a default period of 7 days. After this duration, these commands are automatically removed from the system. This automatic cleanup helps manage the storage and maintain efficiency within Kafka without manual intervention.
 
@@ -94,7 +94,7 @@ A special command message is dispatched to the targeted consumer when the "Trace
 2. **Performance Bottlenecks**: Diagnosing performance issues by understanding which threads are consuming most resources or are stuck in long-running operations.
 3. **Unexpected Delays**: Investigating unexplained delays in message processing, potentially caused by external API calls or resource locking.
 4. **Error Reproduction**: Capturing the exact state of a consumer when an intermittent or hard-to-reproduce error occurs, aiding in debugging.
-5. **Optimization**: Analyzing thread states for potential optimizations in how resources are utilized, or operations are conducted.
+5. **Optimization**: Analyzing thread states for potential optimizations in how resources are used, or operations are conducted.
 6. **Training and Learning**: Educating new developers or operators about the internal workings of a consumer by showing real-time thread activities and states.
 
 ### Quieting
@@ -118,7 +118,7 @@ Quieting is a command designed to gracefully reduce the activity of a consumer p
 The stopping command is used to halt a consumer process entirely. This command should be used with caution as it stops all processing activities after `shutdown_timeout` is reached. Stopping is typically employed when a consumer needs to be taken offline for upgrades, troubleshooting, or when decommissioning is required. Once stopped, a consumer process will need to be manually restarted, and it will resume from the last committed offset in Kafka, ensuring no loss of data but requiring careful management to avoid processing delays or other operational impacts.
 
 !!! warning "Topics and Partitions Reassignment"
-    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues seamlessly without interruption.
+    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues without interruption.
 
 #### Use Cases
 
@@ -243,7 +243,7 @@ To adjust a partition offset:
 4. Configure offset adjustment:
 
    - **New Offset**: Enter the desired offset position (limited by the partition's low and high watermarks)
-   - **Prevent Overtaking**: Option to only adjust if consumer hasn't moved beyond requested offset
+   - **Prevent Overtaking**: Option to only adjust if consumer has not moved beyond requested offset
    - **Resume Immediately**: If partition is paused, resume processing immediately
 
 5. Click **Adjust Offset**
@@ -269,7 +269,7 @@ To adjust a partition offset:
 - **Replay Processing**: Move backward to reprocess messages after fixing a bug
 - **Debugging**: Examine specific messages by positioning the consumer at exact offsets
 - **Testing**: Validate message handling by processing specific message ranges
-- **Catch-up**: Skip ahead to reduce processing lag when historical data isn't required
+- **Catch-up**: Skip ahead to reduce processing lag when historical data is not required
 
 #### Pause/Resume Use Cases
 
@@ -291,11 +291,11 @@ To adjust a partition offset:
 
 ## Connection Management
 
-The commanding feature in Karafka Pro utilizes the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
+The commanding feature in Karafka Pro uses the Pro Iterator to establish a pub-sub-like connection for managing consumer processes. This connection is distinct from standard subscriptions and is not visible in the Web UI. This design choice helps prevent unnecessary noise in the UI and ensures that the connection remains responsive as long as the entire Ruby process is operational.
 
 Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
 
-This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
+This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures continuous operation, maintaining system stability and operational efficiency.
 
 ### Network Traffic Characteristics
 
@@ -315,9 +315,9 @@ Key points include:
 
 ## Summary
 
-Karafka Pro's consumer control capabilities are essential for any organization looking to leverage Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
+Karafka Pro's consumer control capabilities are essential for any organization looking to use Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
-The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
+The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
 
 ## See Also
 

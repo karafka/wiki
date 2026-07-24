@@ -18,7 +18,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Setting `non_blocking_job` to `true` within a route configuration indicates that the job should execute without blocking data polling from other topic partitions that utilize the same connection.
+Setting `non_blocking_job` to `true` within a route configuration indicates that the job should execute without blocking data polling from other topic partitions that use the same connection.
 
 ## Non-Blocking vs. Long-Running Jobs
 
@@ -28,7 +28,7 @@ Non-Blocking Jobs are Long-Running Jobs, and `#non_blocking_job` is just an alia
 - Make informed decisions about system architecture based on the job's nature.
 - Maintain a self-documenting codebase that is easier to understand and manage.
 
-Please refer to the [Long-Running Jobs documentation](Pro-Consumer-Groups-Long-Running-Jobs) to better understand this feature.
+Refer to the [Long-Running Jobs documentation](Pro-Consumer-Groups-Long-Running-Jobs) to better understand this feature.
 
 ## See Also
 
