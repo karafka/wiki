@@ -1,4 +1,4 @@
-Iterator API allows developers to subscribe to Kafka topics and perform data lookups from various Ruby processes, including Rake tasks, custom scripts, and the Rails console. This API provides a powerful and flexible way to access Kafka data without the need for complex setup, configuration, `karafka server` processes deployment or creating consumers.
+Iterator API allows developers to subscribe to Kafka topics and perform data lookups from various Ruby processes, including Rake tasks, custom scripts, and the Rails console. This API provides a flexible way to access Kafka data without the need for complex setup, configuration, `karafka server` processes deployment or creating consumers.
 
 The Iterator API is designed to be simple and easy to use. It allows developers to subscribe to specific Kafka topics and partitions and perform data lookups using a simple and intuitive Ruby interface.
 
@@ -8,7 +8,7 @@ One of the major benefits of the Iterator API is its flexibility. You can use it
 
 !!! info "Iterator API and Compacted Messages"
 
-    When using Karafka's Iterator API to access Kafka data, please keep in mind, that it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
+    When using Karafka's Iterator API to access Kafka data, it skips compacted messages and transactions-related messages during reading. However, these skipped messages are still included in the overall count. For instance, if you request the last 10 messages and all are transaction-related or compacted, the API will return no data, but they're counted in the total.
 
 ## Usage
 
@@ -194,7 +194,7 @@ end
 
 !!! tip "Recommended Approach for Long-Living Iterators"
 
-    If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for robust and long-running consumption.
+    If you find yourself working with long-living iterators that operate for a long time, we do recommend using the `karafka server` default consumption API as it provides all the needed features and components for long-running consumption.
 
 ### EOF and Termination Semantics
 
@@ -275,7 +275,7 @@ end
 
 The [Cleaner API](Pro-Cleaner-API) is designed to enhance batch processing efficiency by promptly freeing up memory once a message's payload is no longer needed. This functionality is especially beneficial when working with large payloads (10KB and above) and can help manage memory usage more effectively.
 
-The Cleaner API can be integrated with the Iterator API to ensure optimal memory management during long-running iterations. When processing large datasets or streaming data over extended periods, it is essential to keep memory usage under control to avoid performance degradation or crashes due to memory overload.
+The Cleaner API can be integrated with the Iterator API to ensure optimal memory management during long-running iterations. When processing large datasets or streaming data over extended periods, keep memory usage under control to avoid performance degradation or crashes due to memory overload.
 
 Here's how you can use the Cleaner API with the Iterator API to process messages and clean up memory efficiently:
 
@@ -299,13 +299,13 @@ In this example, the `#clean!` method is called on each message after processing
 
 The Karafka Pro Iterator API is designed to be simple and easy to use, and there is nothing special needed to get started with it. There are also no special recommendations when using it from any specific Ruby process type.
 
-However, it is important to remember that the Iterator API is designed for lightweight Kafka operations and should not be used to perform extensive Kafka operations during HTTP requests or similar. This is because performing extensive Kafka operations during requests can impact the application's performance and result in slower response times.
+However, the Iterator API is designed for lightweight Kafka operations and should not be used to perform extensive Kafka operations during HTTP requests or similar. This is because performing extensive Kafka operations during requests can impact the application's performance and result in slower response times.
 
-Additionally, it is important to note that the Iterator API does not manage the offsets. This means that when you subscribe to a Kafka topic and partition, you must provide the initial offsets yourself.
+Additionally, the Iterator API does not manage the offsets. This means that when you subscribe to a Kafka topic and partition, you must provide the initial offsets yourself.
 
 ### Scalability and Performance
 
-It's important to note that the Karafka Pro iterator API is designed to be a straightforward way to access Kafka data using Ruby. However, it is a single-threaded API, meaning it does not provide any form of parallelizing data. This means that any data processing or analysis will be performed sequentially, which may impact performance when dealing with large amounts of data or performing extensive IO operations. While this can be limiting in some cases, the Iterator API's simplicity and ease of use make it an attractive option for developers looking for a quick and easy way to access Kafka data without the need for complex configuration or deployment of additional processes. If parallelization is required, alternative approaches, such as using the Karafka consumers feature, may need to be explored.
+The Karafka Pro iterator API is designed to be a straightforward way to access Kafka data using Ruby. However, it is a single-threaded API, meaning it does not provide any form of parallelizing data. This means that any data processing or analysis will be performed sequentially, which may impact performance when dealing with large amounts of data or performing extensive IO operations. While this can be limiting in some cases, the Iterator API's simplicity and ease of use make it an attractive option for developers looking for a quick and easy way to access Kafka data without the need for complex configuration or deployment of additional processes. If parallelization is required, alternative approaches, such as using the Karafka consumers feature, may need to be explored.
 
 The iterator should handle up to 100 000 messages per second.
 
@@ -372,7 +372,7 @@ end
 
 ## Summary
 
-Overall, the Karafka Pro Iterator API provides a powerful and flexible way to access and process Kafka data from various Ruby processes. Its simplicity, flexibility, and scalability make it an essential tool for developers who need to work with Kafka data quickly and efficiently.
+Overall, the Karafka Pro Iterator API provides a flexible way to access and process Kafka data from various Ruby processes. Its simplicity, flexibility, and scalability make it an essential tool for developers who need to work with Kafka data quickly and efficiently.
 
 ## See Also
 

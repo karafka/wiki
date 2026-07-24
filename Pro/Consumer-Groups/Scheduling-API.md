@@ -26,7 +26,7 @@ The Listener thread serves two critical functions:
 
 The Listener thread, therefore, acts as the bridge between Kafka and Karafka's internal processing mechanisms, ensuring a steady flow of data into the system.
 
-It is important to note that the Listener thread in Karafka is designed to recognize when not to poll more data from Kafka. This mechanism ensures that it refrains from fetching additional messages if the system is currently processing a workload or if certain conditions necessitating a data ingestion pause are met. Essentially, the Listener thread only polls for more data when the system is ready, thereby maintaining a balanced and efficient processing environment.
+The Listener thread in Karafka is designed to recognize when not to poll more data from Kafka. This mechanism ensures that it refrains from fetching additional messages if the system is currently processing a workload or if certain conditions necessitating a data ingestion pause are met. Essentially, the Listener thread only polls for more data when the system is ready, thereby maintaining a balanced and efficient processing environment.
 
 ### Worker Threads
 
@@ -40,7 +40,7 @@ In environments with high volumes of data or complex processing requirements, mu
 
 ### Conclusion
 
-The Listener and Worker threads in Karafka are central to its architecture, working in tandem to ensure efficient data flow and processing. The Listener thread's role in fetching data and triggering scheduling, combined with the Worker thread's job execution responsibilities, creates a robust and scalable system capable of handling the demands of real-time data processing with Kafka.
+The Listener and Worker threads in Karafka are central to its architecture, working in tandem to ensure efficient data flow and processing. The Listener thread's role in fetching data and triggering scheduling, combined with the Worker thread's job execution responsibilities, creates a scalable system capable of handling the demands of real-time data processing with Kafka.
 
 Below, you can find a simplified illustration of the cooperation of Listener and Worker threads and their connection via the jobs queue.
 
@@ -94,7 +94,7 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 !!! note "Each Method Has a Non-Blocking `on_` Counterpart"
 
-    Please note that each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
+    Each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 
 The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedulers::Base` class and, depending on needs, should define following methods:
 

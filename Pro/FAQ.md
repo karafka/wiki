@@ -66,7 +66,7 @@ Karafka is widely deployed across various organizations worldwide, including ind
 
 ### **Sustainable Commercial Backing**
 
-Unlike typical open-source projects that rely on volunteer maintenance, Karafka has a robust commercial model:
+Unlike typical open-source projects that rely on volunteer maintenance, Karafka has a commercial model:
 
 - **Karafka Pro** provides commercial licenses, priority support, and architecture consultations
 - Pro subscriptions directly fund ongoing research and development
@@ -291,7 +291,7 @@ Karafka and Karafka Pro are served directly from [RubyGems](https://rubygems.org
 
 We understand that some companies have strict policies regarding their open-source supply chain, and we are happy to provide a solution that meets those needs.
 
-Karafka can be used with an embedded/offline license without relying on our gem server. It is important to note that this mode of operation requires an Enterprise agreement.
+Karafka can be used with an embedded/offline license without relying on our gem server. This mode of operation requires an Enterprise agreement.
 
 Upon agreement, we will provide the license gem sources with installation instructions, so you can start using Karafka Pro with ease without reliance on our third-party source.
 
@@ -374,7 +374,7 @@ You can read more about those differences [here](Pro-Enterprise).
 
 With Karafka Pro priority support, you'll receive an initial assessment and reply within a maximum of **4 business days**. Enterprise customers receive even faster support with a maximum response time of **2 business days**. While most issues are diagnosed, reproduced, and fixed within seven days of the report acknowledgment, complex cases might take up to a few months. Every case is unique and addressed individually.
 
-Please note that our software is provided "as is." We recommend using the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
+Our software is provided "as is." We recommend using the trial period to thoroughly test it, as we cannot guarantee it will be entirely bug-free or that all issues will be resolved. That said, we always strive to deliver the best, and historically, there have been no unresolved bugs. However, given Kafka's complexity, situations can vary.
 
 ## Where can I find a list of OSS components that the Karafka ecosystem uses?
 

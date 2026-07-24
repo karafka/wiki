@@ -32,7 +32,7 @@ One key advantage of Recurring Tasks is its independence from external databases
 
 Karafka ensures that only one process executes tasks by using Kafka's partition assignment. Only the process assigned to the relevant topic executes the tasks, guaranteeing that different processes don't run them multiple times. This provides strong execution warranties, ensuring each task runs only once at a scheduled time.
 
-In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and seamless task execution continuity, even during unexpected failures.
+In case of a process crash, Kafka automatically reassigns the partitions to another available consumer. The new process takes over task execution immediately, continuing from where the previous process left off. This automatic failover ensures high availability and task execution continuity, even during unexpected failures.
 
 ## Using Recurring Tasks
 
@@ -83,7 +83,7 @@ This will automatically create a special consumer group dedicated to the consump
 
 !!! tip "Review Replication Factor Configuration"
 
-    Before deploying to production, it is crucial to read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
+    Before deploying to production, read the [Replication Factor Configuration for the Production Environment](Pro-Recurring-Tasks#replication-factor-configuration-for-the-production-environment) section. Ensuring the correct replication factor is set is vital for maintaining your Kafka topics' high availability and fault tolerance.
 
 When `recurring_tasks(true)` is invoked, this command will automatically create appropriate entries for Karafka [Declarative Topics](Infrastructure-Declarative-Topics). This means that all you need to do is to run the:
 
@@ -414,7 +414,7 @@ expect { cleanup_task.execute }.not_to raise_error
 
 ## Warranties
 
-Recurring Tasks provides strong execution warranties by using Kafka’s robust architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
+Recurring Tasks provides strong execution warranties by using Kafka’s architecture. With Kafka as the backbone, tasks are guaranteed to execute only once at their scheduled time, managed by the process that holds the partition assignment for the relevant topic.
 
 - **Single Process Execution**: Karafka ensures that only one process can execute the scheduled tasks by assigning Kafka partitions to a single consumer. This prevents multiple processes from executing the same task simultaneously, offering a strong guarantee of task uniqueness and timing precision.
 
@@ -442,7 +442,7 @@ Recurring Tasks provides strong execution warranties by using Kafka’s robust a
 
 - **Regulatory Compliance and Auditing**: Schedule regular tasks to automatically generate and store compliance reports, ensuring your organization meets audit requirements without manual intervention.
 
-- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, ensuring that data flows seamlessly from one stage to the next.
+- **Data Pipeline Orchestration**: Coordinate complex data processing pipelines by triggering different stages of ETL (Extract, Transform, Load) processes at scheduled intervals, ensuring that data flows from one stage to the next.
 
 - **SLA-Based Monitoring and Alerts**: Monitor service-level agreements (SLAs) by scheduling checks that ensure critical metrics are within acceptable thresholds. Automatically trigger alerts or remediation actions if SLAs are breached.
 

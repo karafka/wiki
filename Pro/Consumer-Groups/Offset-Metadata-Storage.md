@@ -1,6 +1,6 @@
 # Offset Metadata Storage
 
-Offset Metadata Storage is a feature within the Karafka framework allowing the addition of metadata to offsets. At its core, Offset Metadata Storage enables developers to attach custom metadata to message offsets when they are committed to the Kafka broker. This metadata, essentially a form of annotation or additional data, can then be retrieved and used for many purposes, enhancing message processing systems' capability, traceability, and intelligence.
+Offset Metadata Storage is a feature within the Karafka framework allowing the addition of metadata to offsets. At its core, Offset Metadata Storage enables developers to attach custom metadata to message offsets when they are committed to the Kafka broker. This metadata, a form of annotation or additional data, can then be retrieved and used for many purposes, enhancing message processing systems' capability, traceability, and intelligence.
 
 In traditional Kafka consumption, a message's offset indicates its position within a partition. While this is crucial for ensuring messages are processed in order, and no message is missed or duplicated, the standard offset mechanism doesn't provide context or additional information about the processing state or the nature of the message. Offset Metadata Storage fills this gap by allowing developers to store custom, context-rich data alongside these offsets.
 
@@ -181,7 +181,7 @@ Offset Metadata Storage in Karafka enhances consumer instances' capability to ma
 
 In scenarios where you need to retrieve offset metadata outside of the consumer instance, for instance, within Filters, to use the Filtering API, Karafka provides a flexible solution. This is especially useful when your processing logic requires insight into the message offsets' metadata at different stages or components of your application, not just within the consumer itself.
 
-As long as the current process retains the assignment of the given topic partition, you can retrieve the offset metadata from places other than the consumer instance. This means that even in filters or other parts of your Karafka application, you can access the metadata associated with any offset, ensuring a seamless and cohesive processing flow.
+As long as the current process retains the assignment of the given topic partition, you can retrieve the offset metadata from places other than the consumer instance. This means that even in filters or other parts of your Karafka application, you can access the metadata associated with any offset, ensuring a cohesive processing flow.
 
 To do so, you need to use the `Karafka::Pro::Processing::OffsetMetadata::Fetcher` object as follows:
 

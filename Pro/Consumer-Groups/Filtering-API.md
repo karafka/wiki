@@ -24,7 +24,7 @@ If you plan to implement action-altering filters, you need to define two additio
 
     Always validate your filters to confirm that `#timeout` behaves as expected to avoid unexpected delays or conflicts.
 
-It is essential to remember that post-processing actions may also be applied when no data is left after filtering.
+Remember that post-processing actions may also be applied when no data is left after filtering.
 
 Below is an example implementation of a filter that continuously removes messages with odd offsets. This filter sets the `@applied` in case even one message has been removed.
 
@@ -50,7 +50,7 @@ If you are looking for more extensive examples, you can check out the implementa
 
 ### Filters Lifecycle
 
-Filter instance is created when Karafka encounters a given topic partition for the first time and is long-lived. While their primary responsibility is to filter the incoming data, they can also alter the flow behavior. Hence it is essential to remember that part of their operations happens **after** all the data is being processed at the moment of post-execution strategy application. This means that there may be a significant delay between the filtering and the invocation of `#action` that is equal to the collective processing time of all the data of a given topic partition.
+Filter instance is created when Karafka encounters a given topic partition for the first time and is long-lived. While their primary responsibility is to filter the incoming data, they can also alter the flow behavior. Hence, remember that part of their operations happens **after** all the data is being processed at the moment of post-execution strategy application. This means that there may be a significant delay between the filtering and the invocation of `#action` that is equal to the collective processing time of all the data of a given topic partition.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/filtering_api_action_application.svg" />

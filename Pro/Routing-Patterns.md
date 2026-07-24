@@ -1,4 +1,4 @@
-Karafka's Routing Patterns is a powerful feature that offers flexibility in routing messages from various topics, including topics created during the runtime of Karafka processes. This feature allows you to use regular expression (regexp) patterns in routes. When a matching Kafka topic is detected, Karafka will automatically expand the routing and start consumption without additional configuration. This feature greatly simplifies the management of dynamically created Kafka topics.
+Karafka's Routing Patterns is a feature that offers flexibility in routing messages from various topics, including topics created during the runtime of Karafka processes. This feature allows you to use regular expression (regexp) patterns in routes. When a matching Kafka topic is detected, Karafka will automatically expand the routing and start consumption without additional configuration. This feature greatly simplifies the management of dynamically created Kafka topics.
 
 ## How It Works
 
@@ -16,7 +16,7 @@ Below, you can find a conceptual diagram of how the discovery process works:
   </small>
 </p>
 
-Upon detecting a new topic, Karafka seamlessly integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
+Upon detecting a new topic, Karafka integrates its operations just as with pre-existing ones. Notably, regexp patterns identify topics even during application initialization, ensuring compatibility with topics established prior, provided they haven't been previously defined in the routes.
 
 !!! warning "Regexp Implementation Differences"
 
@@ -192,7 +192,7 @@ While this pattern looks complex, it works by explicitly matching any string tha
 
 ### Testing Exclusion Patterns
 
-Given the complexity of these patterns and the differences between Ruby and POSIX regex engines, it's crucial to test your exclusion patterns thoroughly:
+Given the complexity of these patterns and the differences between Ruby and POSIX regex engines, test your exclusion patterns thoroughly:
 
 ```ruby
 # The regex pattern that excludes "activities.data_results"
@@ -240,7 +240,7 @@ end
 
 ### When to Use Exclusion Patterns
 
-While exclusion patterns provide a powerful way to route messages, they should be used carefully:
+While exclusion patterns provide a way to route messages, they should be used carefully:
 
 - They're ideal when you need different Karafka-level configurations (like virtual partitions or specific error handling) for different topics
 - They simplify routing logic by keeping it at the configuration level instead of embedding it in consumer code
@@ -333,7 +333,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-To prevent such loops, it's essential to:
+To prevent such loops:
 
 - Craft regular expressions precisely, ensuring they match only the intended topics and not the DLQs unless explicitly desired.
 
@@ -341,11 +341,11 @@ To prevent such loops, it's essential to:
 
 - Test regular expressions thoroughly against various topic names as described [here](#testing-regular-expressions).
 
-While routing patterns offer a dynamic and powerful method to manage topic consumption in Karafka, they demand careful consideration and testing, especially when integrating DLQ mechanisms.
+While routing patterns offer a dynamic method to manage topic consumption in Karafka, they demand careful consideration and testing, especially when integrating DLQ mechanisms.
 
 ## Regexp Implementation Differences
 
-When dealing with regular expressions in Karafka, it's important to understand the underlying differences between the regex engines involved. The engine used depends on your rebalance protocol:
+When dealing with regular expressions in Karafka, understand the underlying differences between the regex engines involved. The engine used depends on your rebalance protocol:
 
 - **Classic protocol**: `librdkafka` evaluates regexes locally using the **POSIX regex engine** provided by `libc`.
 - **Consumer protocol (KIP-848)**: Regex evaluation is performed on the **broker side** using the **Google RE2/J** engine.
