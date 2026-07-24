@@ -12,7 +12,7 @@ Karafka Web UI is an intuitive tool that visually represents the metrics related
 
 ## Active Consumption vs. Storage Topics
 
-It's important to understand how Karafka Web UI interacts with different topics:
+Understand how Karafka Web UI interacts with different topics:
 
 - **Reports Topic (Active Consumption)**: Karafka Web UI actively consumes only the `karafka_consumers_reports` topic. You will see this consumer group subscription in your logs. This is the primary data source for tracking and processing consumer states.
 
@@ -28,4 +28,4 @@ Below you can find the diagram of the whole data flow:
 
 !!! note "Diagram Is an Abstract Flow"
 
-    Please note, that this is an **abstract** flow visualisation. Karafka Web works well even when there is one `karafka server` process running.
+    This is an **abstract** flow visualisation. Karafka Web works well even when there is one `karafka server` process running.

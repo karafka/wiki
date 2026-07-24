@@ -203,7 +203,7 @@ Lazy deserialization provides following benefits:
 
 - **Flexibility and Control**: Developers have more control over when and how data is processed, allowing for customized handling based on the content of the messages.
 
-Lazy deserialization in Karafka provides a robust mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
+Lazy deserialization in Karafka provides a mechanism for managing data processing in a Kafka-based messaging environment. It ensures that applications remain efficient and responsive even as data volume and complexity grow.
 
 ## Handling of Tombstone Messages
 
@@ -281,7 +281,7 @@ This approach simplifies the management of topics and makes the deserialization 
 
 ## Apache Avro
 
-[Apache Avro](https://avro.apache.org/) is a data serialization system developed by the Apache Foundation, used widely in the Big Data and cloud computing field. It provides a compact, fast, binary data format with rich data structures. Its schema evolution capability allows for flexibility in data reading and writing, with old software being able to read new data and vice versa. This language-agnostic system aids efficient data interchange between programs and supports a seamless and efficient way of data storage, encoding, and decoding.
+[Apache Avro](https://avro.apache.org/) is a data serialization system developed by the Apache Foundation, used widely in the Big Data and cloud computing field. It provides a compact, fast, binary data format with rich data structures. Its schema evolution capability allows for flexibility in data reading and writing, with old software being able to read new data and vice versa. This language-agnostic system aids efficient data interchange between programs and supports an efficient way of data storage, encoding, and decoding.
 
 From the perspective of the Karafka framework, Avro is a serialization and deserialization layer, and there are no special things that are required to use it aside from making sure that you both serialize and deserialize your data using it.
 

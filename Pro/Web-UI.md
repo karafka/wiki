@@ -62,7 +62,7 @@ This dashboard views show Karafka consumers' groups' health states with their la
 
 ## Topics Insights
 
-The "Topics Insights" feature in Karafka Pro Web UI is a comprehensive suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](Pro-Web-UI-Topics-Insights).
+The "Topics Insights" feature in Karafka Pro Web UI is a suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics. You can learn more about this feature [here](Pro-Web-UI-Topics-Insights).
 
 ## Explorer
 
@@ -137,7 +137,7 @@ This feature has its own dedicated documentation that you can access [here](Pro-
 
 ## Policies
 
-Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
+Karafka's Web UI includes a policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
 This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Policies).
 
@@ -200,7 +200,7 @@ body.controller-errors {
 - Custom assets are properly cached by the browser for optimal performance
 - Custom styling is applied to all pages, including error pages
 
-When used in combination with the Branding feature, custom styling provides a comprehensive way to tailor the Karafka Web UI to your organization's needs.
+When used in combination with the Branding feature, custom styling provides a way to tailor the Karafka Web UI to your organization's needs.
 
 ## Topics Management
 

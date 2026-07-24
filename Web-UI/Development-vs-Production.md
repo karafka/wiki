@@ -1,6 +1,6 @@
 # Web UI Setup for Development vs Production
 
-Karafka Web UI can operate in production mode. It is, however, essential to understand how it works and its limitations.
+Karafka Web UI can operate in production mode. However, understand how it works and its limitations.
 
 ## Dedicated Web UI Processes
 
@@ -107,7 +107,7 @@ bundle exec karafka-web install --replication-factor 5
 
 This section **only** applies to the Multi-Tenant add-on mode.
 
-Please keep in mind that in order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
+In order for Karafka Web UI to work with Heroku Kafka Multi-Tenant Addon, **all** Karafka Web UI, topics need to be prefixed with your `KAFKA_PREFIX`:
 
 ### Topics Automatic Prefix
 
@@ -150,7 +150,7 @@ Please take note of the following potential issue:
 
 If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
-It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+Ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
 ## See Also
 

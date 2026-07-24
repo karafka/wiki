@@ -118,7 +118,7 @@ Quieting is a command designed to gracefully reduce the activity of a consumer p
 The stopping command is used to halt a consumer process entirely. This command should be used with caution as it stops all processing activities after `shutdown_timeout` is reached. Stopping is typically employed when a consumer needs to be taken offline for upgrades, troubleshooting, or when decommissioning is required. Once stopped, a consumer process will need to be manually restarted, and it will resume from the last committed offset in Kafka, ensuring no loss of data but requiring careful management to avoid processing delays or other operational impacts.
 
 !!! warning "Topics and Partitions Reassignment"
-    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues seamlessly without interruption.
+    When a consumer is stopped, its assignments are redistributed among the remaining active consumers in the group, ensuring that message processing continues without interruption.
 
 #### Use Cases
 
@@ -295,7 +295,7 @@ The commanding feature in Karafka Pro uses the Pro Iterator to establish a pub-s
 
 Unlike standard data flows, this special connection is built to avoid saturation and flow any potential instabilities, where messages pass from listeners through queues to consumers. Standard flows could be overwhelmed during critical moments, significantly reducing responsiveness when needed most. By bypassing the typical data flow path, the commanding feature maintains a high level of responsiveness, even under heavy system load.
 
-This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures robust and continuous operation, maintaining system stability and operational efficiency.
+This dedicated subscription, while not "mission-critical", is designed to be reliable, incorporating recovery procedures and automatic reconnections. It does not publish statistics or other metrics, focusing on efficient management and swift responses to administrative commands. This approach, in turn, ensures continuous operation, maintaining system stability and operational efficiency.
 
 ### Network Traffic Characteristics
 
@@ -317,7 +317,7 @@ Key points include:
 
 Karafka Pro's consumer control capabilities are essential for any organization looking to use Kafka for real-time data processing and streaming. They provide the necessary controls to manage consumer behavior effectively at both process and partition levels, ensuring that Kafka clusters are performant and resilient under various operating conditions.
 
-The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a comprehensive toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
+The combination of process-level commands (trace, quiet, stop) and partition-level controls (pause, resume, offset adjustment) provides a toolkit for administrators to implement precise control strategies and resolve issues with minimal disruption to the overall message processing workflow.
 
 ## See Also
 

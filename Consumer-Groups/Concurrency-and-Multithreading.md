@@ -9,7 +9,7 @@ Additionally, Karafka supports [Swarm Mode](Infrastructure-Swarm-Multi-Process) 
 
 !!! tip "Separate Resources Management Documentation"
 
-    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Infrastructure-Resources-Management). This page provides comprehensive insights into the allocation and optimization of system resources by Karafka components.
+    Please be aware that detailed information on how Karafka manages resources such as threads and TCP connections can be found on a separate documentation page titled [Resources Management](Infrastructure-Resources-Management). This page provides insights into the allocation and optimization of system resources by Karafka components.
 
 ## Parallel Messages Processing
 

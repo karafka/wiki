@@ -40,7 +40,7 @@ end
 
 Karafka's Expiring Messages feature ensures that failed messages are reprocessed after a short period. However, if the failed messages become too old, Karafka will skip them. This is because the Expiring Messages feature in Karafka automatically filters out messages that are older than the defined period. Therefore, if a failed message becomes older than the expiry period, it will not be included in the batch of messages that Karafka processes again. This is a design decision made to optimize resource utilization and prevent the processing of stale or irrelevant data.
 
-It is important to note that this behavior can be adjusted by changing the expiry period for messages in the configuration settings. It is also essential to ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
+This behavior can be adjusted by changing the expiry period for messages in the configuration settings. Also ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
 
 ## Limitations
 

@@ -120,7 +120,7 @@ The reason for this approach is grounded in practicality and long-term maintaina
 
 To put it in perspective:
 
-- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works seamlessly with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
+- **Maintenance Cost & Commitment**: Introducing such a feature would mean an ongoing commitment to ensuring it works with every subsequent update or change to Karafka or Datadog. It's imperative to consider the long-term cost of this commitment.
 
 - **External Dependencies**: If Datadog's release cycle or features were to evolve unexpectedly, it could lead to complexities in ensuring smooth integration. This introduces an external dependency that's out of Karafka's direct control.
 

@@ -1,4 +1,4 @@
-This documentation page provides recommended strategies for upgrading Karafka and its dependencies to ensure a smooth and seamless upgrade process. Upgrading Karafka and its dependencies is essential to benefit from the latest features, bug fixes, and security enhancements. It is necessary to follow these strategies to minimize disruptions and avoid compatibility issues during the upgrade.
+This documentation page provides recommended strategies for upgrading Karafka and its dependencies to ensure a smooth upgrade process. Upgrading Karafka and its dependencies is essential to benefit from the latest features, bug fixes, and security enhancements. It is necessary to follow these strategies to minimize disruptions and avoid compatibility issues during the upgrade.
 
 !!! tip "Pro & Enterprise Upgrade Support"
 
@@ -46,7 +46,7 @@ The practical recommendation is: **apply patch releases as soon as they are avai
 
     If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 
-    It's critical to ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
+    Ensure the order of operations - Karafka consumers processes first, then the Web UI. This will provide a smoother transition to the new version of the Web UI.
 
 1. **Monitor**: During and after the upgrade, closely monitor the application's performance, logs, and error reports.
 

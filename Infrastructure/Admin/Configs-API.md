@@ -102,7 +102,7 @@ Operations types within this API are used to specify the configuration changes b
   </tbody>
 </table>
 
-These methods provide a robust interface for detailed management of configurations in a Kafka environment, offering both retrieval and update functionalities.
+These methods provide an interface for detailed management of configurations in a Kafka environment, offering both retrieval and update functionalities.
 
 ## Usage
 

@@ -48,7 +48,7 @@ We recommend using the `:key` as then it can be used for combining Enhanced Acti
 
 ## Scheduled Jobs
 
-Karafka supports job scheduling via the [Scheduled Messages](Pro-Scheduled-Messages) feature, providing a robust framework for setting future execution times for tasks, akin to capabilities seen in other Rails Active Job adapters. This feature integrates seamlessly with Karafka's infrastructure, allowing users to schedule and manage tasks directly within the Kafka ecosystem.
+Karafka supports job scheduling via the [Scheduled Messages](Pro-Scheduled-Messages) feature, providing a framework for setting future execution times for tasks, akin to capabilities seen in other Rails Active Job adapters. This feature integrates with Karafka's infrastructure, allowing users to schedule and manage tasks directly within the Kafka ecosystem.
 
 To use the Scheduled Jobs functionality in Karafka, you must:
 
@@ -266,7 +266,7 @@ For non-VP setup, same error behaviors apply as for standard [Active Job adapter
 
 !!! note "Virtual Partitions Mark Jobs Only After All Finish"
 
-    Please keep in mind that if you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
+    If you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
 
 ## Behaviour on Revocation
 

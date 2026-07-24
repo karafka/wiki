@@ -258,7 +258,7 @@ end
 
 ### Testing and Validating Distribution
 
-It's crucial to test your partitioning strategy because the combination of your partitioner and the reducer may not distribute data evenly.
+Test your partitioning strategy because the combination of your partitioner and the reducer may not distribute data evenly.
 
 #### Understanding the Default Reducer
 
@@ -517,7 +517,7 @@ This will:
 
 - Create consumer groups: `analytics-parallel-0`, `analytics-parallel-1`, `analytics-parallel-2`, `analytics-parallel-3`
 - Set their offsets to match the original `analytics` consumer group
-- Allow seamless continuation of processing from where the original group left off
+- Allow continuation of processing from where the original group left off
 
 ### Collapse Command
 
@@ -670,7 +670,7 @@ end
 
 ### Parallel Segments with Dead Letter Queue
 
-Parallel Segments work seamlessly with Dead Letter Queue:
+Parallel Segments work with Dead Letter Queue:
 
 ```ruby
 consumer_group :resilient_processing do
@@ -694,7 +694,7 @@ end
 
 Parallel Segments provide a way to scale CPU-intensive message processing in Karafka. By distributing work across multiple consumer groups, you can achieve horizontal scaling for computationally heavy workloads while maintaining message ordering guarantees within each segment.
 
-While the trade-off in network bandwidth usage is important to consider, the performance gains for certain workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and monitoring, Parallel Segments offer a robust solution for high-throughput, CPU-intensive message processing scenarios.
+While the trade-off in network bandwidth usage is important to consider, the performance gains for certain workloads often justify this cost. Combined with Karafka's other features like Virtual Partitions, Dead Letter Queue, and monitoring, Parallel Segments offer a solution for high-throughput, CPU-intensive message processing scenarios.
 
 Remember to use the CLI commands for smooth migrations and ongoing management of your parallel segments deployment. The safety mechanisms built into these commands help prevent common pitfalls and ensure reliable operation of your parallel processing infrastructure.
 

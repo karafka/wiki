@@ -112,7 +112,7 @@ Karafka [Web UI](Web-UI-Getting-Started) is a user interface for the Karafka fra
 
 WaterDrop comes equipped with a `LoggerListener`, a useful feature designed to facilitate the reporting of WaterDrop's operational details directly into the assigned logger. The `LoggerListener` provides a convenient way of tracking the events and operations that occur during the usage of WaterDrop, enhancing transparency and making debugging and issue tracking easier.
 
-However, it's important to note that this Logger Listener is not subscribed by default. This means that WaterDrop does not automatically send operation data to your logger out of the box. This design choice has been made to give users greater flexibility and control over their logging configuration.
+However, this Logger Listener is not subscribed by default. This means that WaterDrop does not automatically send operation data to your logger out of the box. This design choice has been made to give users greater flexibility and control over their logging configuration.
 
 To use this functionality, you need to manually subscribe the `LoggerListener` to WaterDrop instrumentation. Below, you will find an example demonstrating how to perform this subscription.
 

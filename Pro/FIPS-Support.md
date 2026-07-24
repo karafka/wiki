@@ -68,7 +68,7 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they don't use non-approved methods like MD5. For a complete listing of all dependencies and their security status, please refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
 
-For more comprehensive information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
+For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, please consult our [Security Guidelines documentation](Pro-Security).
 
 ## librdkafka FIPS Support
 
@@ -97,7 +97,7 @@ When operating in FIPS mode, the following limitations apply:
 
 ## Summary
 
-Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2 requirements through their implementation of validated cryptographic modules, secure communication channels, and robust at-rest encryption.
+Karafka Pro and Enterprise editions provide comprehensive support for FIPS 140-2 requirements through their implementation of validated cryptographic modules, secure communication channels, and at-rest encryption.
 
 While we strive to maintain FIPS compatibility, we encourage users to contact us with any issues or suggestions for improvement to help us continue enhancing Karafka's security features.
 

@@ -1,4 +1,4 @@
-Karafka is a robust, Ruby-based framework for building Kafka-driven applications. It provides a comprehensive suite of tools for message production, consumption, and monitoring within Apache Kafka environments. The ecosystem consists of several specialized components:
+Karafka is a Ruby-based framework for building Kafka-driven applications. It provides a suite of tools for message production, consumption, and monitoring within Apache Kafka environments. The ecosystem consists of several specialized components:
 
 - **[Karafka](https://github.com/karafka/karafka)** - core framework that handles message consumption from Kafka topics with advanced routing and processing capabilities
 - **[WaterDrop](https://github.com/karafka/waterdrop)** - dedicated message production library optimized for high-performance and reliable delivery to Kafka clusters

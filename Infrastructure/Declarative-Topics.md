@@ -137,7 +137,7 @@ This will effectively ignore this topic from being altered in any way by Karafka
 
 !!! note "Config `active` Differs From `#active` Method"
 
-    Keep in mind that setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
+    Setting `active` to false inside the `#config` is **not** equivalent to disabling the topic consumption using the `active` method.
 
 You can use Karafka to manage topics that you do not consume from as well by defining their config and making them inactive at the same time:
 
@@ -162,7 +162,7 @@ Setting such as above will allow Karafka to manage the topic while instructing K
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
-Please keep in mind that topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
+Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
 ## Strict Declarative Topics Validation
 
