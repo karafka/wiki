@@ -37,7 +37,7 @@ Active Record provides the `#verify!` method to handle dead connections dynamica
 
 ### Implementing Immediate Dead Connection Handling
 
-The process of managing dead database connections in Karafka is straightforward. You should subscribe to the `error.occurred` event. This event is triggered for many errors, including when an error indicating a dead connection is detected. To handle this, you can simply call 'ActiveRecord::Base.connection.verify! ', which checks the connection and re-establishes it if needed.
+The process of managing dead database connections in Karafka is straightforward. You should subscribe to the `error.occurred` event. This event is triggered for many errors, including when an error indicating a dead connection is detected. To handle this, you can call 'ActiveRecord::Base.connection.verify! ', which checks the connection and re-establishes it if needed.
 
 ```ruby
 Karafka::App.monitor.subscribe('error.occurred') do |event|
@@ -62,7 +62,7 @@ end
 
 ## Conclusion
 
-Karafka provides automatic database connection management for standard setups. However, when using database replicas, it's crucial to manage those connections to maintain system performance and stability manually. This process involves subscribing to Karafka's `worker.completed` event and explicitly releasing connections, ensuring they are available for subsequent use.
+Karafka provides automatic database connection management for standard setups. However, when using database replicas, manage those connections to maintain system performance and stability manually. This process involves subscribing to Karafka's `worker.completed` event and explicitly releasing connections, ensuring they are available for subsequent use.
 
 ## See Also
 

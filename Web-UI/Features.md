@@ -2,7 +2,7 @@
 
 Karafka Web UI contains several features allowing you to understand your system's karafka consumption process.
 
-Below you can find a comprehensive description of the most important features you can use.
+Below you can find a description of the most important features you can use.
 
 !!! info "Web UI Enhancements in Karafka Pro"
 
@@ -142,7 +142,7 @@ The Routing UI view allows users to inspect Karafka's routing configuration, inc
 
     The Data Explorer is part of [Karafka Pro](https://karafka.io/#become-pro).
 
-Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for seamless viewing. You can read more about it [here](Pro-Web-UI#explorer).
+Karafka Data Explorer is an essential tool for users seeking to navigate and comprehend the data produced to Kafka. Offering an intuitive interface and a deep understanding of the routing table, the explorer ensures that users can access deserialized data effortlessly for viewing. You can read more about it [here](Pro-Web-UI#explorer).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer3.png" alt="karafka web explorer view" />
@@ -247,5 +247,5 @@ Each check may display one of the following statuses:
 
 - [Web UI Getting Started](Web-UI-Getting-Started) - Quick start guide for setting up Karafka Web UI
 - [Pro Web UI](Pro-Web-UI) - Advanced Pro features for Web UI
-- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Monitoring and logging strategies
 - [Web UI About](Web-UI-About) - Introduction and overview of Karafka Web UI

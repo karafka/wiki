@@ -10,7 +10,7 @@ In Apache Kafka, a partitioner determines how records are placed among the parti
 
 1. **Performance Optimization**: In some instances, optimizing partitioning logic based on consumption patterns can lead to more efficient data processing.
 
-1. **Compatibility and Integration**: When integrating with other systems, you might need to align your partitioning strategy with the external systems for seamless data flow and processing.
+1. **Compatibility and Integration**: When integrating with other systems, you might need to align your partitioning strategy with the external systems for data flow and processing.
 
 ## Building a Custom Partitioner
 

@@ -8,7 +8,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
 !!! info "Version-Specific SBOM Details"
 
-    This SBOM reflects the components used in the most recent versions of all ecosystem components within Karafka. It is important to note that older versions may have different dependencies.
+    This SBOM reflects the components used in the most recent versions of all ecosystem components within Karafka. Older versions may have different dependencies.
 
 !!! tip "License Variability in OSS Dependencies"
 

@@ -63,7 +63,7 @@ end
 
 ## Insights Runtime Availability
 
-Upon establishing a connection with Kafka, it is essential to understand that metrics related to Inline Insights might not be immediately accessible. This delay is attributed to the way Karafka fetches and computes these metrics. By default, the metrics are calculated at intervals of 5 seconds.
+Upon establishing a connection with Kafka, metrics related to Inline Insights might not be immediately accessible. This delay is attributed to the way Karafka fetches and computes these metrics. By default, the metrics are calculated at intervals of 5 seconds.
 
 Furthermore, depending on the version of Kafka you are using and other underlying factors, the availability of insights, especially during the first batch processing, may vary. This means that for a brief period after connecting, your consumers might not be insight-aware and insights will be empty.
 
@@ -143,4 +143,4 @@ Karafka's Inline Insights is a powerful feature that enhances data processing ca
 ## See Also
 
 - [Pro Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights) - Advanced inline insights with enhanced metrics and performance tracking
-- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Comprehensive monitoring and logging strategies for Karafka applications
+- [Monitoring and Logging](Infrastructure-Monitoring-and-Logging) - Monitoring and logging strategies for Karafka applications

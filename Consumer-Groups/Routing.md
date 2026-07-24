@@ -137,7 +137,7 @@ end
 
 ### Routing Patterns
 
-For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain comprehensive insights.
+For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain insights.
 
 ## Overriding Defaults
 
@@ -183,7 +183,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-When you decide to override any default option for a topic within the `#topic` block, it's crucial to understand that you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
+When you decide to override any default option for a topic within the `#topic` block, you must set **all** the arguments for that particular option. Partial updating of arguments is not supported.
 
 Karafka will not use the user-specified defaults you've defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
 
@@ -354,7 +354,7 @@ Karafka.routing.draw do
 end
 ```
 
-By using the ability to draw routes multiple times, Karafka seamlessly fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
+By using the ability to draw routes multiple times, Karafka fits into a Modular Monolith architecture. This allows for improved code organization, easier maintenance, and the flexibility to evolve each module independently.
 
 ## See Also
 

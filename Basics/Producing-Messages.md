@@ -38,7 +38,7 @@ For more details on how to use the WaterDrop producer and its various message pr
 
 ## Messages Piping
 
-If you are looking for seamless message piping in Kafka-based systems, see [Piping](Pro-Consumer-Groups-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
+If you are looking for message piping in Kafka-based systems, see [Piping](Pro-Consumer-Groups-Piping) to get familiar with the message piping feature exclusive to Karafka Pro. This feature offers synchronous and asynchronous forwarding capabilities with enhanced traceability, which is perfect for streamlining data workflows.
 
 ## Producer Shutdown
 
@@ -56,7 +56,7 @@ In the following sections, you can find an example of how to `#close` the produc
 
 !!! warning "Do Not Manually Close the Producer When Embedding"
 
-    Note, that you should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
+    You should **not** close the producer manually if you are using the [Embedding API](Infrastructure-Embedding) in the same process.
 
 ### Closing Producer Used in Karafka
 
@@ -231,6 +231,6 @@ By using this flexibility in Karafka, you can effectively manage and direct mess
 
 - [Usage](WaterDrop-Usage) - Comprehensive guide to using WaterDrop for message production
 - [Transactions](WaterDrop-Transactions) - Implement exactly-once semantics with transactional producers
-- [Piping](Pro-Consumer-Groups-Piping) - Seamlessly forward messages between Kafka topics with enhanced traceability
+- [Piping](Pro-Consumer-Groups-Piping) - Forward messages between Kafka topics with enhanced traceability
 - [Multi Cluster Setup](Infrastructure-Multi-Cluster-Setup) - Configure and produce to multiple Kafka clusters simultaneously
 - [Consuming Messages](Basics-Consuming-Messages) - Learn how to consume the messages you produce

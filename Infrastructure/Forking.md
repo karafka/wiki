@@ -1,4 +1,4 @@
-Karafka under the hood relies on `librdkafka` to manage Kafka connections. It is crucial to understand that `librdkafka` is **not** fork-safe, which means special care must be taken when managing Ruby processes interacting with Kafka. This document provides guidelines for handling forking in Karafka, especially under macOS and in environments using Rails' Spring loader.
+Karafka under the hood relies on `librdkafka` to manage Kafka connections. `librdkafka` is **not** fork-safe, which means special care must be taken when managing Ruby processes interacting with Kafka. This document provides guidelines for handling forking in Karafka, especially under macOS and in environments using Rails' Spring loader.
 
 !!! tip "Ecosystem-Wide Recommendations"
 
@@ -38,7 +38,7 @@ These errors indicate processes in the middle of certain operations during a for
     - Establish a short-lived connection to a local development Kafka instance when Spring boots using `Karafka::Admin.cluster_info`
     - Disable Spring in development if you're encountering persistent issues
 
-Note that forking issues typically occur when the required dependencies aren't loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
+Forking issues typically occur when the required dependencies aren't loaded in the parent process before forking. The underlying cause is related to how Objective-C DLLs handle forking on macOS.
 
 ## Conclusion
 

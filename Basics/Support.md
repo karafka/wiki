@@ -12,7 +12,7 @@
 
 Karafka's Open Source Software (OSS) support primarily revolves around assisting users with issues related to the Karafka and librdkafka ecosystems. This involves troubleshooting and providing solutions for problems originating from Karafka or its related subcomponents.
 
-However, it is crucial to understand that the OSS support does **not** extend to application-specific issues that do not originate from Karafka or its related parts. This includes but is not limited to:
+However, the OSS support does **not** extend to application-specific issues that do not originate from Karafka or its related parts. This includes but is not limited to:
 
 1. Incorrect application configurations unrelated to Karafka.
 2. Conflicts with other libraries or frameworks within your application.

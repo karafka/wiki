@@ -63,7 +63,7 @@ KIP-848 in librdkafka 2.12.0+ supports all major consumer features:
 - **Static group membership**: Using `group.instance.id` for stable member identities
 - **Rebalance callbacks**: Incremental assignment and revocation callbacks
 - **Manual and automatic offset management**: Both commit modes work as expected
-- **Rolling upgrades**: Seamless migration from classic protocol without downtime
+- **Rolling upgrades**: Migration from classic protocol without downtime
 
 Regex subscriptions are supported but behave differently from the classic protocol - see [Regex Subscription Changes](#regex-subscription-changes) for important details.
 

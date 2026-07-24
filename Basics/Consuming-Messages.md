@@ -190,7 +190,7 @@ To configure the initial offset for specific topics:
 
 When working with a distributed system like Kafka, topic partitions can be distributed among different consumers in a consumer group for processing. However, there are cases where a partition needs to be removed from one consumer and reassigned to another. This process is known as a partition revocation.
 
-Partition revocation can be voluntary, where a consumer willingly gives up the partition after processsing the current batch, or it can be involuntary. Involuntary partition revocation usually happens due to events such as a rebalance triggered by changes in the consumer group or a failure of a consumer that makes it unresponsive.  It is important to remember that involuntary revocations can occur during data processing. if you are aware that a partition has been removed, you may not want to continue processing messages. This is where the `#revoked?` method is beneficial.
+Partition revocation can be voluntary, where a consumer willingly gives up the partition after processsing the current batch, or it can be involuntary. Involuntary partition revocation usually happens due to events such as a rebalance triggered by changes in the consumer group or a failure of a consumer that makes it unresponsive.  Involuntary revocations can occur during data processing. if you are aware that a partition has been removed, you may not want to continue processing messages. This is where the `#revoked?` method is beneficial.
 
 By monitoring the status of the `#revoked?` method, your application can detect that your process no longer owns a partition you are operating on. In such cases, you can choose to stop any ongoing, expensive processing. This can help you save resources and reduce the number of potential reprocessings.
 
@@ -208,7 +208,7 @@ def consume
 end
 ```
 
-It is worth noting, however, that under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
+However, under normal operating conditions, Karafka will complete all ongoing processing before a rebalance occurs. This includes finishing the processing of all messages already fetched. Karafka has built-in mechanisms to handle voluntary partition revocations and rebalances, ensuring that no messages are lost or unprocessed during such events. Hence, `#revoked?` is especially useful for involuntary revocations.
 
 In most cases, especially if you do not use [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs), the Karafka default [offset management](Consumer-Groups-Offset-management) strategy should be more than enough. It ensures that, after batch processing and upon rebalances, all offsets are committed before partition reassignment. In a healthy system with stable deployment procedures and without frequent short-lived consumer generations, the number of re-processings should be close to zero.
 
@@ -421,7 +421,7 @@ For more details on this feature, see [Iterator API](Pro-Iterator-API).
 
 ## Avoiding Accidental Overwriting of Consumer Instance Variables
 
-When working with Karafka consumers, it is essential to be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the Karafka Web UI. The following are the primary instance variables that you should be careful about:
+When working with Karafka consumers, be mindful of certain instance variables used by the consumer instances. Unintentionally overwriting these variables can lead to critical processing errors and result in issues, such as `worker.process.error`, which can be seen in the Karafka Web UI. The following are the primary instance variables that you should be careful about:
 
 - `@id`: Consumer instance identifier
 - `@messages`: Messages batch for the subscribed topic
