@@ -144,7 +144,7 @@ There are several reasons why a Kafka broker might reject some messages:
 - Authorization failure: If the client does not have the required permissions to write to the topic, the broker may reject the message.
 - Broker capacity limitations: If the broker has limited resources and cannot handle the incoming message traffic, it may reject some messages.
 
-To resolve this error, it is essential to identify the root cause of the issue. Checking the message format and schema, ensuring proper authorization and permission, checking broker capacity, and addressing network issues can help resolve the issue. Additionally, monitoring Karafka logs to identify and resolve problems as quickly as possible is crucial.
+To resolve this error, identify the root cause of the issue. Checking the message format and schema, ensuring proper authorization and permission, checking broker capacity, and addressing network issues can help resolve the issue. Additionally, monitoring Karafka logs to identify and resolve problems as quickly as possible is crucial.
 
 ## What does `Broker: Unknown topic or partition` error mean?
 
@@ -200,7 +200,7 @@ For consumers, this disconnection is handled automatically - librdkafka reconnec
 
 Suppose your data production patterns are not stable, and there are times when your client application is not producing any data to Kafka for over 10 minutes. In that case, you may want to consider setting the `log.connection.close` value to `false` in your configuration. This configuration parameter controls whether the client logs a message when a connection is closed by the broker. By default, the client will log a message indicating that the connection was closed, which can generate false alarms if the connection was closed due to inactivity by the connection reaper.
 
-Setting `log.connection.close` to false will suppress these log messages and prevent the error from being raised. It's important to note that even if you set `log.connection.close` to `false,` critical non-recoverable errors that occur in Karafka and WaterDrop will still be reported via the instrumentation pipeline.
+Setting `log.connection.close` to false will suppress these log messages and prevent the error from being raised. Even if you set `log.connection.close` to `false,` critical non-recoverable errors that occur in Karafka and WaterDrop will still be reported via the instrumentation pipeline.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -215,7 +215,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Please note that you can control the `connections.max.idle.ms` on both Kafka and Karafka consumer / WaterDrop producer basis.
+You can control the `connections.max.idle.ms` on both Kafka and Karafka consumer / WaterDrop producer basis.
 
 You can read more about this issue [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#why-am-i-seeing-receive-failed-disconnected).
 
@@ -318,7 +318,7 @@ Please review and update your Kafka ACLs or broker configurations to ensure thes
 
 ## Why am I getting an `ArgumentError: undefined class/module YAML::Syck` when trying to install `karafka-license`?
 
-The error `ArgumentError: undefined class/module YAML::Syck` you're seeing when trying to install `karafka-license` is not directly related to the `karafka-license` gem. It's important to note that `karafka-license` does not serialize data using `YAML::Syck`.
+The error `ArgumentError: undefined class/module YAML::Syck` you're seeing when trying to install `karafka-license` is not directly related to the `karafka-license` gem. `karafka-license` does not serialize data using `YAML::Syck`.
 
 Instead, this error is a manifestation of a known bug within the Bundler and the Ruby gems ecosystem. During the installation of `karafka-license`, other gems may also be installed or rebuilt, triggering this issue.
 
@@ -471,7 +471,7 @@ There are a few potential workarounds:
     end
     ```
 
-It is worth pointing out that this is not a Karafka-specific issue. While the issue manifests when using Karafka with Puma, it's more related to how macOS handles forking with Objective-C libraries and specific initializations post-fork.
+This is not a Karafka-specific issue. While the issue manifests when using Karafka with Puma, it's more related to how macOS handles forking with Objective-C libraries and specific initializations post-fork.
 
 ## What causes a "Broker: Policy violation (policy_violation)" error when using Karafka, and how can I resolve it?
 

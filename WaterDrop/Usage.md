@@ -49,7 +49,7 @@ Here are all the things you can provide in the message hash:
 | `headers`       | false    | Hash          | Headers for the message                                  |
 | `label`         | false    | Object        | Anything you want to use as a label                      |
 
-Keep in mind, that message you want to send should be either binary or stringified (to_s, to_json, etc).
+The message you want to send should be either binary or stringified (to_s, to_json, etc).
 
 ## Headers
 
@@ -354,7 +354,7 @@ Properly shutting down WaterDrop producers is crucial to ensure graceful handlin
 
 It is essential to close the WaterDrop producer before exiting the Ruby process. Closing the producer allows it to release resources, complete ongoing operations, and ensure that all messages are either successfully delivered to the Kafka cluster or purged due to exceeding the `message.timeout.ms` value.
 
-The `#close` method is used to shut down the producer. It is important to note that `#close` is a blocking operation, meaning it will block the execution of your program until all the necessary resources are cleaned up. Therefore, it is not recommended to start the `#close` operation in a separate thread and not wait for it to finish, as this may lead to unexpected behavior.
+The `#close` method is used to shut down the producer. `#close` is a blocking operation, meaning it will block the execution of your program until all the necessary resources are cleaned up. Therefore, it is not recommended to start the `#close` operation in a separate thread and not wait for it to finish, as this may lead to unexpected behavior.
 
 Here is an example of how to use #close to shut down a producer:
 

@@ -30,7 +30,7 @@
 
 ## Why is Karafka not doing work in parallel when I started two processes?
 
-Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. Keep in mind, that all the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
+Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. All the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
 
 ## What is the optimal number of threads to use?
 
@@ -49,7 +49,7 @@ Karafka can parallelize work in a couple of scenarios, but unless you are a [Kar
 
 You can read more about Karafka and Karafka Pro concurrency model [here](Consumer-Groups-Concurrency-and-Multithreading).
 
-It's also essential to monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
+Also monitor the performance of the application and the system as a whole while experimenting with different thread counts. This can help you identify bottlenecks and determine the optimal number of threads for the specific use case.
 
 Remember that the optimal number of threads may change as the workload and system resources change over time.
 
@@ -91,7 +91,7 @@ Now, if we look at Karafka, it follows a similar mechanism. In Karafka, by defau
 
 This lag will grow with incoming messages, which is why it's not uncommon to see a lag of the size of one or two batches, especially in topics with high data traffic.
 
-To mitigate this situation, you can configure Karafka to prioritize latency over throughput. That means making Karafka commit offsets more frequently, even after each message, to decrease the lag and to fetch data more frequently in smaller batches. But keep in mind that committing offsets more frequently comes with the cost of reduced throughput, as each offset commit is a network call and can slow down the rate at which messages are consumed.
+To mitigate this situation, you can configure Karafka to prioritize latency over throughput. That means making Karafka commit offsets more frequently, even after each message, to decrease the lag and to fetch data more frequently in smaller batches. But committing offsets more frequently comes with the cost of reduced throughput, as each offset commit is a network call and can slow down the rate at which messages are consumed.
 
 You can adjust this balance between latency and throughput according to your specific use case and the performance characteristics of your Kafka cluster. You could increase the frequency of committing offsets during peak load times and decrease it during off-peak times if it suits your workload pattern.
 
@@ -115,7 +115,7 @@ If your problems originate from batch and message sizes, we recommend looking in
 
 - **Modify the `max_messages` Value**: By adjusting the `max_messages` setting to a lower value, you can control the number of messages deserialized in a batch. Smaller batches mean less memory consumption at a given time, although it might mean more frequent fetch operations. Ensure that you balance memory usage with processing efficiency while adjusting this value.
 
-While tuning these settings can help optimize memory usage, it's essential to remember that it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
+While tuning these settings can help optimize memory usage, it may also influence performance, latency, and other operational aspects of your Karafka applications. Balancing the memory and performance trade-offs based on specific application needs is crucial. Always monitor the impacts of changes and adjust accordingly.
 
 ## Are Virtual Partitions effective in case of not having IO or not having a lot of data?
 

@@ -122,7 +122,7 @@ end
 
 ## Types of Configuration in Karafka
 
-When you work with Karafka, it is crucial to understand the different configurations available, as these settings directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
+When you work with Karafka, the different configurations available directly influence how Karafka interacts with your application code and the underlying Kafka infrastructure.
 
 ### Root Configuration in the Setup Block
 

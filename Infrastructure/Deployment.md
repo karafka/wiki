@@ -94,7 +94,7 @@ CMD bundle exec karafka server
 
 ## AWS + MSK (Fully Managed Apache Kafka)
 
-First of all, it is worth pointing out that Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
+First of all, Karafka, similar to librdkafka does **not** support SASL mechanism for AWS MSK IAM that allows Kafka clients to handle authentication and authorization with MSK clusters through [AWS IAM](https://aws.amazon.com/iam/). This mechanism is a proprietary idea that is not part of Kafka.
 
 Karafka **does**, however, support:
 
@@ -249,7 +249,7 @@ This means Kafka is unreachable. Check your brokers' addresses and ensure you us
 
 ### Connection failures and timeouts
 
-Please make sure that your instances can reach Kafka. Keep in mind that security group updates can have a certain lag in propagation.
+Please make sure that your instances can reach Kafka. Security group updates can have a certain lag in propagation.
 
 If a previously healthy producer starts stalling on delivery (each stalled message blocking for as long as your configured `socket.timeout.ms`, with `Timed out N in-flight ... requests` warnings) after an EC2 instance type upgrade to a newer generation such as the Graviton `*9g` families, the likely cause is the Nitro v6 ENI idle-connection timeout (lowered from 5 days to 350 seconds), which silently drops idle producer sockets. Enable `socket.keepalive.enable: true`, tune the host TCP keepalive timers below 350 seconds (on Kubernetes, through pod `securityContext.sysctls`), and set WaterDrop's `idle_disconnect_timeout` to recycle idle producers proactively. See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#ec2-nitro-v6-idle-connection-reaping) for the full explanation, the keepalive sysctl values, and the timeout and retry settings recommended for MSK.
 
@@ -265,7 +265,7 @@ Please make sure your custom setting `default.replication.factor` value matches 
 
 This error occurs in case you enabled Kafka ACL but did not grant proper ACL permissions to your users. It often happens when you make your [AWS MSK public](https://docs.aws.amazon.com/msk/latest/developerguide/public-access.html).
 
-Please note that `allow.everyone.if.no.acl.found` `false` superseeds `auto.create.topics.enable`. This means that despite `auto.create.topics.enable` being set to `true`, you will not be able to auto-create topics as the ACL will block this.
+`allow.everyone.if.no.acl.found` `false` superseeds `auto.create.topics.enable`. This means that despite `auto.create.topics.enable` being set to `true`, you will not be able to auto-create topics as the ACL will block this.
 
 We recommend creating all the needed topics before making the cluster public and assigning proper permissions via Kafka ACL.
 

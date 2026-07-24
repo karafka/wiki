@@ -209,7 +209,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Please note that if your cluster configuration is complex, you may want to use set it up in the root scope and then alter it on a per-topic basis:
+If your cluster configuration is complex, you may want to use set it up in the root scope and then alter it on a per-topic basis:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -281,7 +281,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-It is essential to keep in mind that increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
+Increasing the maximum payload size may impact the performance of your Kafka cluster, so you should carefully consider the trade-offs before making any changes.
 
 !!! note "Errors From Exceeding `max_payload_size`"
 
@@ -359,9 +359,9 @@ By supporting multiple strategies in the codebase, Karafka can cater to a wide r
 
 **Yes**, you can use Karafka's Admin API to retrieve cluster information and check the reachability of the Kafka cluster. The `Karafka::Admin.cluster_info` method can be used to retrieve metadata about the Kafka cluster, including details about brokers, topics, and partitions.
 
-If the method call is successful, it indicates that the Karafka application was able to connect to the Kafka cluster and retrieve metadata about the brokers and topics. However, it's important to note that this does not necessarily mean everything with the cluster is okay.
+If the method call is successful, it indicates that the Karafka application was able to connect to the Kafka cluster and retrieve metadata about the brokers and topics. However, this does not necessarily mean everything with the cluster is okay.
 
-"Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, it's essential to use additional monitoring and alerting mechanisms to ensure the reliability and availability of your Kafka cluster.
+"Kafka being up" is a rather complex matter. Many factors can affect the overall health and performance of a Kafka cluster, including network issues, broker failures, and misconfigured settings. Therefore, use additional monitoring and alerting mechanisms to ensure the reliability and availability of your Kafka cluster.
 
 You can read more about this topic [here](https://github.com/confluentinc/librdkafka/wiki/FAQ#is-kafka-up).
 
@@ -406,7 +406,7 @@ Karafka and Karafka Pro do not follow a fixed official release schedule. Instead
 
 - Bug fixes that don't involve API changes are released immediately.
 
-We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. It's worth noting that most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
+We prioritize bugs and critical performance improvements to ensure optimal user experience and software performance. Most bugs are identified, reproduced, and fixed within seven days from the initial report acknowledgment.
 
 ## How can I control or limit the number of PostgreSQL database connections when using Karafka?
 
@@ -520,7 +520,7 @@ This approach follows established software architecture principles and provides 
 **Current Status:**
 
 - **Active Support**: The `avro` gem is currently well-maintained and actively supported
-- **Full Integration**: Karafka works seamlessly with Avro serialization for both producers and consumers
+- **Full Integration**: Karafka works with Avro serialization for both producers and consumers
 - **Production Ready**: Many Karafka users successfully use Avro in production environments
 
 **Contingency Planning:**
