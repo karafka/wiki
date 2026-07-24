@@ -135,7 +135,7 @@ Both delivery handles and delivery reports are supported when working within tra
 
 In a transactional context with WaterDrop, a delivery report signals the message's successful reservation in Kafka, not its eventual consumability. The entire transaction must be successfully committed for a message to be available for consumption.
 
-Below you can find an example of an aborted transaction with reports that indicate the offsets reserved for dispatched messages. Note, that while those offsets were reserved, they will never be passed to consumers.
+Below you can find an example of an aborted transaction with reports that indicate the offsets reserved for dispatched messages. While those offsets were reserved, they will never be passed to consumers.
 
 ```ruby
 reports = []
@@ -312,7 +312,7 @@ This behavior may impact you in the following ways:
 
 - **Determines Batch Size**: If you're sending a batch of messages as a part of a single transaction in WaterDrop, you need to ensure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
 
-- **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, it's crucial to handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
+- **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
 
 - **A Balancing Act**: Setting the correct value for `transaction.timeout.ms` requires a balance. If it's too short, legitimate transactions requiring more time might get prematurely aborted, leading to increased retries and system overhead. If it's too long, it might delay the detection and resolution of genuine issues.
 
@@ -388,7 +388,7 @@ This intelligent behavior ensures:
 
 1. **Performance**: Since WaterDrop recognizes and avoids starting multiple transactions, there's no additional overhead or latency from nested transaction initiations.
 
-While it's generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they're handled seamlessly without any adverse effects.
+While it's generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they're handled without any adverse effects.
 
 ```ruby
 producer.transaction do
@@ -421,7 +421,7 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.marked_as_consumed`
 - `transaction.finished`
 
-Listeners can subscribe to these events, which integrate seamlessly with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
+Listeners can subscribe to these events, which integrate with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
 !!! warning "Event Subscription with Multiple Producers"
 
@@ -524,7 +524,7 @@ Karafka producer transactions provide atomicity over streams, but users should b
 
     - **Exclusive Transactional Usage**: Should you configure a producer as transactional, be aware that it cannot then be used for non-transactional messaging, and all producer operations will be wrapped with a transaction.
 
-- **Kafka System Records and Offset Allocation**: Kafka transactions, by design, create an additional record in the topic partition. This record is a system record and doesn't contain any user data. However, this, along with the messages from aborted transactions, does occupy offsets. These offsets are not merely placeholders; they represent an actual record in the Kafka log. It's crucial to understand that aborted transactions, despite not delivering messages, take up space in the log and modify the offset count. In the Karafka Web UI, these are visible as system records. This behavior can sometimes lead to confusion, as users might observe a disparity between the number of user messages and the total count of records (including system records). Recognizing and understanding these system records can help users better manage and diagnose issues with their Kafka topics and transactions.
+- **Kafka System Records and Offset Allocation**: Kafka transactions, by design, create an additional record in the topic partition. This record is a system record and doesn't contain any user data. However, this, along with the messages from aborted transactions, does occupy offsets. These offsets are not merely placeholders; they represent an actual record in the Kafka log. Aborted transactions, despite not delivering messages, take up space in the log and modify the offset count. In the Karafka Web UI, these are visible as system records. This behavior can sometimes lead to confusion, as users might observe a disparity between the number of user messages and the total count of records (including system records). Recognizing and understanding these system records can help users better manage and diagnose issues with their Kafka topics and transactions.
 
     Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
 

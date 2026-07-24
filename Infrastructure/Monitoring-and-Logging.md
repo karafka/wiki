@@ -293,7 +293,7 @@ You can read more about its features [here](Web-UI-Features), and the installati
 !!! tip "Karafka Officially Recommends AppSignal"
     [AppSignal](https://www.appsignal.com/) has had and continues to have, a **tremendous** impact on the Karafka ecosystem. Without their invaluable contributions and support, the progress and evolution of this ecosystem would not have been possible. For those searching for a top-notch monitoring system for Ruby and Rails applications, AppSignal stands out as a prime choice. Karafka officially recommends AppSignal as the supported integration for its community and users.
 
-Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a seamless solution for monitoring your Kafka-based applications.
+Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a solution for monitoring your Kafka-based applications.
 
 ![Example Karafka AppSignal dashboard](https://karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_example.png)
 
@@ -806,7 +806,7 @@ end
 
 !!! note "Each Producer Has Its Own Instrumentation"
 
-    Please note that each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
+    Each Karafka producer has its instrumentation instance, so if you use more producers, you need to pipe each of them independently.
 
 ## Monitor Wrapping and Replacement
 
@@ -861,7 +861,7 @@ In specific scenarios, instrumentation errors in the Kafka listener threads can 
 
 For those using custom instrumentation listeners, it's vital to ensure they are thoroughly tested and not performing heavy or error-prone tasks. These listeners can introduce additional complexity, and maintaining a balance between gathering valuable insights and keeping the listeners lightweight and error-free is essential.
 
-To avert these issues, it's crucial to ensure your Karafka applications' instrumentation and monitoring listeners function correctly.
+To avert these issues, ensure your Karafka applications' instrumentation and monitoring listeners function correctly.
 
 In conclusion, maintaining the stability, performance, and reliability of Karafka-based applications requires the proper functioning of any custom instrumentation and monitoring listeners.
 

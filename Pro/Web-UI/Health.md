@@ -25,11 +25,11 @@ The Last Stable Offset (LSO) is a checkpoint marking the last point at which rec
 
 ### The Risk of LSO Freezes
 
-If the LSO hangs or is stuck, it signifies that new records have yet to be committed beyond this point. When such a scenario happens, all consumers with a `read_committed` isolation level will be unable to proceed. Essentially, they will have to wait until the LSO issue is resolved, which can be a significant challenge for real-time data processing systems.
+If the LSO hangs or is stuck, it signifies that new records have yet to be committed beyond this point. When such a scenario happens, all consumers with a `read_committed` isolation level will be unable to proceed. They will have to wait until the LSO issue is resolved, which can be a significant challenge for real-time data processing systems.
 
 ### A Beacon in LSO Freezes
 
-The Karafka Web UI is equipped with robust health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
+The Karafka Web UI is equipped with health views that swiftly identify cases where consumers cannot progress due to a stuck LSO.
 
 Karafka's Web UI has visual cues to indicate potential problems concerning the LSO:
 
@@ -53,7 +53,7 @@ These visual indicators allow immediate awareness of potential problems, ensurin
 
 ### Conclusion
 
-Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, ensuring administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the seamless functioning of your Kafka-based data processing system.
+Awareness of LSO freezes, and its implications is vital for any Kafka-based system. The Karafka Web UI provides a proactive approach to detect and visually indicate such issues, ensuring administrators and users can take quick corrective actions. Regularly monitoring the health view and being aware of the LSO states can be crucial for the functioning of your Kafka-based data processing system.
 
 ## Cluster Lags
 
