@@ -36,7 +36,7 @@ end
 
 !!! note "Delay Time Is Specified in Milliseconds"
 
-    Please keep in mind, that the delay time needs to be provided in milliseconds
+    The delay time needs to be provided in milliseconds
 
 ## Delayed Topics vs. inline `#sleep` invocation
 
@@ -80,7 +80,7 @@ Below is an example distribution of the extra lag beyond the tested and expected
 
 ## Revocation and Shutdown
 
-When using the Delayed Topics feature in Karafka, it is essential to note that both the `#shutdown` and `#revocation` methods may be executed without the prior `#consume` running. This is because Delayed Topics may delay the processing of the first set of messages, which means that the messages batch may be empty, and the first and last offsets taken from metadata will be equal to `-1001`.
+When using the Delayed Topics feature in Karafka, both the `#shutdown` and `#revocation` methods may be executed without the prior `#consume` running. This is because Delayed Topics may delay the processing of the first set of messages, which means that the messages batch may be empty, and the first and last offsets taken from metadata will be equal to `-1001`.
 
 In such scenarios, using the `#used?` method when relying on them in `#revocation` and `#shutdown` is always recommended. This can be done using a conditional statement that checks if there was even a single batch consumed or scheduled for consumption.
 
@@ -119,7 +119,7 @@ class OrdersConsumer < ApplicationConsumer
 end
 ```
 
-It is important to note that Delayed Topics can be a powerful tool for managing message processing, as it allows for messages to be processed in a controlled manner. However, it is essential to understand the potential side effects and implement appropriate error-handling mechanisms to ensure the system remains stable and reliable.
+Delayed Topics can be a powerful tool for managing message processing, as it allows for messages to be processed in a controlled manner. However, understand the potential side effects and implement appropriate error-handling mechanisms to ensure the system remains stable and reliable.
 
 ## Example Use Cases
 

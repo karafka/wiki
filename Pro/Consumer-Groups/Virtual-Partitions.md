@@ -151,7 +151,7 @@ end
 
 !!! tip "Lazy Deserialization Advisory"
 
-    Keep in mind that Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Consumer-Groups-Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
+    Karafka provides [lazy deserialization](https://github.com/karafka/karafka/wiki/Consumer-Groups-Deserialization#lazy-deserialization). If you decide to use payload data, deserialization will happen in the main thread before the processing. That is why, unless needed, it is not recommended.
 
 ### Partitioning Randomly
 
@@ -387,7 +387,7 @@ end
 
 ## Virtual Offset Management
 
-When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling seamless and streamlined data flow within your system.
+When Karafka consumes messages with Virtual Partitions, it uses Virtual Offset Management, which is built on top of the regular offset management mechanism. This innovative approach enables a significant reduction in potentially double-processed messages. By employing Virtual Offset Management, Karafka intelligently tracks the offsets of messages consumed in all the virtual partitions, ensuring that each message is consumed only once, regardless of errors. This powerful feature enhances the reliability and efficiency of message processing, eliminating the risk of duplicate processing and minimizing any associated complications, thereby enabling streamlined data flow within your system.
 
 This feature operates on a few layers to provide as good warranties as possible while ensuring that each virtual partition can work independently. Below you can find a detailed explanation of each component making Virtual Offset Management.
 
@@ -407,7 +407,7 @@ Below you can find a few examples of how Karafka transforms messages marked as c
 
 When a message is marked as consumed, Karafka recognizes that all previous messages in that virtual partition have been processed as well, even if they were not explicitly marked as consumed.
 
-This functionality seamlessly integrates with collective marking to materialize the highest possible Kafka offset. With collective marking, Karafka can efficiently track the progress of message consumption across different virtual consumers.
+This functionality integrates with collective marking to materialize the highest possible Kafka offset. With collective marking, Karafka can efficiently track the progress of message consumption across different virtual consumers.
 
 Below you can find an example illustrating which of the messages will be virtually marked as consumed when given message in a virtual partition is marked.
 
@@ -564,7 +564,7 @@ end
 
 Karafka assigns each virtual partition a dedicated, long-lived consumer instance. This design ensures that messages within a virtual partition are processed consistently and independently from other partitions and that those consumers can implement things like accumulators and buffers. However, there is no fixed relationship between threads and consumer instances, allowing for flexible and efficient use of resources.
 
-One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can seamlessly pick up the work of a particular virtual partition between batches, giving users a sense of control.
+One of Karafka's key strengths is the adaptability of its worker threads. Any available thread can run any consumer instance, a dynamic allocation that ensures efficient utilization of all available resources. This flexibility prevents idle threads, maximizing throughput. The dynamic nature of thread assignment also means that different threads can pick up the work of a particular virtual partition between batches, giving users a sense of control.
 
 The assignment of messages to virtual partitions is consistent and based on a partitioner key. This key ensures that messages with the same key are consistently routed to the same virtual partition. Consequently, the same consumer instance processes these messages, maintaining the order and integrity required for reliable multi-batch message handling.
 
@@ -648,7 +648,7 @@ Karafka default [monitor](Infrastructure-Monitoring-and-Logging) and the Web UI 
 
 Both `#shutdown` and `#revoked` handlers work the same as within [regular consumers](Basics-Consuming-Messages#shutdown-and-partition-revocation-handlers).
 
-For each virtual consumer instance, both are executed when shutdown or revocation occurs. Please keep in mind that those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
+For each virtual consumer instance, both are executed when shutdown or revocation occurs. Those are executed for **each** instance. That is, upon shutdown, if you used ten threads and they were all used with virtual partitions, the `#shutdown` method will be called ten times. Once per each virtual consumer instance that was in use.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/virtual_partitions/shutdown.svg" />

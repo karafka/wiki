@@ -232,7 +232,7 @@ To maintain accurate and independent ticking, irrespective of polling intervals 
 
 - **Connection Multiplexing**: Implement multiple connections to Kafka within the same application. This ensures that lengthy processing in one part of your application doesn't delay the execution of periodic jobs in another.
 
-- **Long-Running and Non-Blocking Jobs (LRJ/NBJ) Usage**: For scenarios where you are dealing with long-running or non-blocking jobs, it's beneficial to design your tasks so they do not block the main thread. In these cases, the work being processed is non-blocking, meaning that polling and ticking can continue at their configured intervals without being delayed by the processing times of given messages. For topics associated with such jobs, periodic jobs will also become non-blocking and will execute at a consistent and steady frequency. This approach ensures that message processing and periodic tasks can occur seamlessly and independently, maintaining system responsiveness and reliability.
+- **Long-Running and Non-Blocking Jobs (LRJ/NBJ) Usage**: For scenarios where you are dealing with long-running or non-blocking jobs, it's beneficial to design your tasks so they do not block the main thread. In these cases, the work being processed is non-blocking, meaning that polling and ticking can continue at their configured intervals without being delayed by the processing times of given messages. For topics associated with such jobs, periodic jobs will also become non-blocking and will execute at a consistent and steady frequency. This approach ensures that message processing and periodic tasks can occur independently, maintaining system responsiveness and reliability.
 
 ### Persistence of Periodic Jobs During Pauses
 
@@ -242,7 +242,7 @@ Message consumption halts temporarily when a topic partition is paused, typicall
 
 This behavior is particularly beneficial for maintaining consistent operations like monitoring, reporting, or routine maintenance that need to continue irrespective of the consumer's state. It provides a layer of reliability and consistency, ensuring that vital tasks are not missed and that the system remains up-to-date and responsive.
 
-However, it's crucial to be aware of this persistence to manage system resources effectively and avoid unexpected behavior. Knowing that periodic jobs run continuously allows for better planning and utilization of system capabilities, ensuring that the tasks performed during pauses are necessary and optimized for efficiency.
+However, be aware of this persistence to manage system resources effectively and avoid unexpected behavior. Knowing that periodic jobs run continuously allows for better planning and utilization of system capabilities, ensuring that the tasks performed during pauses are necessary and optimized for efficiency.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -291,7 +291,7 @@ In Karafka, handling errors occurring in periodic jobs within the `#tick` method
 
 When an error occurs within the `#tick` method, it doesn't trigger the conventional DLQ or retry mechanisms. This is because periodic jobs are inherently different from standard message consumption; they are not associated with a batch of messages that can be retried. Instead, they are period-triggered actions meant to occur regularly. If an error happens during the execution of a `#tick` method, it doesn't prevent the method from being invoked again at the next scheduled interval. The system is designed to continue with the subsequent ticks, ensuring that periodic tasks maintain their rhythm.
 
-Despite not being subject to DLQ or retries, it's crucial to monitor and manage errors effectively. In Karafka, errors within the `#tick` method are published to the `error.occurred` notification channel. This allows for centralized monitoring and handling of errors. Each error notification event carries a `:type` set to `consumer.tick.error`, distinguishing it clearly as an error from the periodic job's tick operation. This explicit categorization aids in pinpointing the source of errors and facilitates more efficient debugging and error-handling strategies.
+Despite not being subject to DLQ or retries, monitor and manage errors effectively. In Karafka, errors within the `#tick` method are published to the `error.occurred` notification channel. This allows for centralized monitoring and handling of errors. Each error notification event carries a `:type` set to `consumer.tick.error`, distinguishing it clearly as an error from the periodic job's tick operation. This explicit categorization aids in pinpointing the source of errors and facilitates more efficient debugging and error-handling strategies.
 
 By understanding and using this behavior, developers can ensure that their periodic jobs in Karafka are robust and operate smoothly, even in the face of intermittent errors. It also underscores the importance of monitoring and responding to the error.occurred notifications to maintain the health and reliability of the system.
 

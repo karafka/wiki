@@ -6,9 +6,9 @@ Conceptually, it works in a similar way to the [ETF1 Kafka Message Scheduler](ht
 
 Karafka's Scheduled Messages feature provides a straightforward approach to scheduling Kafka messages for future delivery, allowing users to set precise timings for when messages should reach the desired topics. Using a specialized API, Karafka allows users to easily specify the delivery time for messages without having to handle the complex scheduling details directly. This is achieved by wrapping the messages in an envelope that includes all necessary scheduling information and dispatching them to a special "in-the-middle" topic, which is then managed automatically by Karafka.
 
-Each day at midnight, Karafka's scheduler, a dedicated consumer, reloads and scans a specific Kafka topic designated for storing scheduled messages. This routine includes loading new messages meant for the day, ensuring they are ready for dispatch at specified times. To maintain a seamless and continuous operation, the scheduler dispatches messages at regular intervals, typically every 15 seconds, which is configurable. This ensures that all scheduled messages are delivered when needed.
+Each day at midnight, Karafka's scheduler, a dedicated consumer, reloads and scans a specific Kafka topic designated for storing scheduled messages. This routine includes loading new messages meant for the day, ensuring they are ready for dispatch at specified times. To maintain a continuous operation, the scheduler dispatches messages at regular intervals, typically every 15 seconds, which is configurable. This ensures that all scheduled messages are delivered when needed.
 
-One key aspect of Karafka's handling of scheduled messages is its treatment of message payloads. It ensures the payload and user headers remain untouched by simply proxy-passing them with added trace headers.
+One key aspect of Karafka's handling of scheduled messages is its treatment of message payloads. It ensures the payload and user headers remain untouched by proxy-passing them with added trace headers.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/scheduled_messages/flow.svg" />
@@ -293,7 +293,7 @@ This call places the wrapped message into the designated scheduling topic, which
 
 ### Message Key Uniqueness and Ordering Management
 
-When using this feature, it is crucial to understand dispatched messages keys and their uniqueness operations. Each message sent to the scheduler must have a distinct key within its partition to ensure accurate scheduling and prevent any potential overlaps or errors during the dispatch process.
+When using this feature, understand dispatched messages keys and their uniqueness operations. Each message sent to the scheduler must have a distinct key within its partition to ensure accurate scheduling and prevent any potential overlaps or errors during the dispatch process.
 
 By default, Karafka generates a unique key for each scheduled message envelope. This key is a combination of the topic to which the message will eventually be dispatched and a UUID. The formula used is something akin to: "{target_topic}-{UUID}". This key is then assigned to the `:key` field in the envelope, ensuring that each message is uniquely identified within the scheduling system.
 
@@ -367,7 +367,7 @@ The unique key is critical in the cancellation process for several reasons:
 
 !!! tip "Custom Keys and Automatic Key Generation"
 
-    When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, it's important to use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and ensures that the correct message is targeted for cancellation.
+    When scheduling a message, if you choose to use a custom key or rely on the automatically generated key by Karafka, use the same key consistently for both scheduling and canceling the message. This consistency helps prevent errors and ensures that the correct message is targeted for cancellation.
 
 !!! tip "Handling Cancellations with `partition_key`"
 
@@ -409,7 +409,7 @@ To update the scheduled message:
 
 ## Monitoring and Metrics
 
-Karafka's Scheduled Messages feature integrates with standard monitoring tools provided by Karafka and its Web UI, allowing for visibility into the system's performance and behavior. It is, however, important to understand how this feature consumer may deviate from the standard consumer behaviors.
+Karafka's Scheduled Messages feature integrates with standard monitoring tools provided by Karafka and its Web UI, allowing for visibility into the system's performance and behavior. However, understand how this feature consumer may deviate from the standard consumer behaviors.
 
 Karafka treats scheduled messages like any other messages within its ecosystem:
 
@@ -467,7 +467,7 @@ Additionally, the Web UI offers a detailed exploration of scheduled messages, sh
 
 ## Error Handling and Retries
 
-This feature is designed to ensure robust error handling and efficient retry mechanisms, minimizing the potential impact of errors on scheduled message dispatches. Here's an overview of how error handling and retries are managed:
+This feature is designed to ensure error handling and efficient retry mechanisms, minimizing the potential impact of errors on scheduled message dispatches. Here's an overview of how error handling and retries are managed:
 
 **Key Points on Error Handling:**
 
@@ -495,7 +495,7 @@ This feature's error handling and retry strategies ensure that the system remain
 
 ## Warranties
 
-Karafka's Scheduled Messages feature offers a set of warranties designed to ensure robust functionality and reliability within production environments. Here's a summary of the key guarantees and limitations:
+Karafka's Scheduled Messages feature offers a set of warranties designed to ensure functionality and reliability within production environments. Here's a summary of the key guarantees and limitations:
 
 - **Message Delivery Guarantee**: Karafka ensures that all scheduled messages will be delivered at least once, minimizing the risk of message loss. However, messages might be delivered multiple times under certain circumstances like network or Kafka cluster disruptions.
 
@@ -517,7 +517,7 @@ When using a transactional WaterDrop producer, the Scheduled Messages feature ca
 
 ## Limitations
 
-While Scheduled Messages offer powerful message scheduling and dispatch capabilities, users should be aware of inherent limitations when integrating this feature into their systems. Understanding these limitations can help you plan and optimize scheduled messages usage within your applications.
+While Scheduled Messages offer message scheduling and dispatch capabilities, users should be aware of inherent limitations when integrating this feature into their systems. Understanding these limitations can help you plan and optimize scheduled messages usage within your applications.
 
 1. **Single Delivery Point**: Scheduled messages are designed to be delivered to a specific topic at a predetermined time. Once a message is scheduled, redirecting it to a different topic at runtime is not supported. Message dispatch can be canceled, though.
 
@@ -561,7 +561,7 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 - **Dedicated Instances**: Consider deploying the scheduled messages feature on dedicated instances or containers. This approach allows for tailored resource allocation, such as CPU, memory, and network bandwidth, which can be adjusted based on the specific demands of the scheduling tasks without affecting other services.
 
-- **Monitoring and Scaling**: Implement robust monitoring to track the performance and resource utilization of the scheduled messages feature. This monitoring should focus on memory usage, CPU load, and network traffic metrics. Based on these metrics, apply auto-scaling policies where feasible to handle variations in load, especially those that are predictable based on the scheduling patterns.
+- **Monitoring and Scaling**: Implement monitoring to track the performance and resource utilization of the scheduled messages feature. This monitoring should focus on memory usage, CPU load, and network traffic metrics. Based on these metrics, apply auto-scaling policies where feasible to handle variations in load, especially those that are predictable based on the scheduling patterns.
 
 - **Avoid Frequent Redeploys**: Minimize the frequency of redeployments for the components handling scheduled messages. Frequent restarts can disrupt the scheduling process, especially if they occur during daily data reloads.
 
@@ -573,7 +573,7 @@ Given this feature's unique operational characteristics, particularly its data-l
 
 Karafka's Scheduled Messages feature is designed with flexibility, allowing integration with external producers beyond Karafka and WaterDrop. This enables scheduled messages to be dispatched from various technologies, including Go, JavaScript, or any other language and framework that supports Kafka producers.
 
-When using external producers to schedule messages, it's crucial to follow a specific header format to ensure Karafka's scheduled message consumer can recognize and correctly process these messages. The required headers are as follows:
+When using external producers to schedule messages, follow a specific header format to ensure Karafka's scheduled message consumer can recognize and correctly process these messages. The required headers are as follows:
 
 - `schedule_schema_version`: Indicates the version of the scheduling schema used, which helps manage compatibility. For current implementations, this should be set to 1.0.0.
 
@@ -632,7 +632,7 @@ Use Cases:
 
 - Flexibility to create multiple time delays for different types of messages.
 - Allows you to group delayed messages into "buckets" based on their time requirements.
-- Seamless integration of delayed processing with piping ensures that messages are forwarded to their final destination once their delay expires.
+- Integration of delayed processing with piping ensures that messages are forwarded to their final destination once their delay expires.
 - Simplifies complex workflows that require messages to be processed after various time intervals.
 
 **Cons**:
