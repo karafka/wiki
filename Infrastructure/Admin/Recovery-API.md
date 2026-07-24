@@ -79,7 +79,7 @@ For other failure modes such as OOM or unclean restarts, look for heap exhaustio
 
 A single broker can lead multiple `__consumer_offsets` partitions, meaning a single coordinator failure can affect many consumer groups at once. Before attempting recovery, use `Karafka::Admin::Recovery` to map the full blast radius.
 
-It is important to understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic - **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is:
+Understand what each step returns here. `affected_partitions` returns partition numbers of the internal `__consumer_offsets` topic - **not** your application topics. These are the coordinator shards hosted on the failing broker. From those partition numbers you can derive the affected consumer group names, and from the group names you can identify which of your application topics are impacted by cross-referencing against your Karafka routing configuration. The full chain is:
 
 **failing broker → `__consumer_offsets` partition numbers → consumer group names → your application topics**.
 

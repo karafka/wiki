@@ -144,7 +144,7 @@ If you make Karafka not retry, the system will not attempt retries on errors but
     end
     ```
 
-However, it's essential to be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
+However, be aware of the potential risks associated with these approaches. In the first method, there's a possibility of overloading temporarily unavailable resources, such as databases or external APIs. Since there is no backoff between a failure and the processing of the subsequent messages, this can exacerbate the problem, further straining the unavailable resource. To mitigate this, using the [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) API is advisable, which allows you to pause the processing manually. This will give strained resources some breathing room, potentially preventing more significant system failures.
 
 ## What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?
 
@@ -180,7 +180,7 @@ end
 
 ## What should I consider when manually dispatching messages to the DLQ in Karafka?
 
-When manually dispatching a message to the DLQ in Karafka, it's essential to understand that the dispatch action itself only moves the message to the DLQ and does not mark it as consumed. If your intention is to prevent further processing of the original message and to avoid halting the offset commitment, you need to explicitly mark the message as consumed. This can be crucial in maintaining the flow of message processing and ensuring that message consumption offsets are correctly committed.
+When manually dispatching a message to the DLQ in Karafka, understand that the dispatch action itself only moves the message to the DLQ and does not mark it as consumed. If your intention is to prevent further processing of the original message and to avoid halting the offset commitment, you need to explicitly mark the message as consumed. This can be crucial in maintaining the flow of message processing and ensuring that message consumption offsets are correctly committed.
 
 ## How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
 

@@ -58,7 +58,7 @@ This command signals Karafka to start in Swarm Mode, creating a supervisor proce
 
 ### CLI Configuration Options
 
-When starting your application in Swarm Mode using bundle exec karafka swarm, it's important to note that this command accepts the same CLI configuration options as the standard bundle exec karafka server command. This compatibility ensures that you can apply the same level of control and customization to your Swarm Mode deployment as you would to a single-process setup.
+When starting your application in Swarm Mode using bundle exec karafka swarm, this command accepts the same CLI configuration options as the standard bundle exec karafka server command. This compatibility ensures that you can apply the same level of control and customization to your Swarm Mode deployment as you would to a single-process setup.
 
 The CLI options allow for the efficient limitation of topics, subscription groups, and consumer groups that should operate within the Swarm. You can start a Swarm Mode instance that focuses on processing specific parts of your Kafka infrastructure. For example, you might want to isolate certain consumer groups or topics to dedicated swarms for performance reasons or to manage resource allocation more effectively.
 
@@ -111,7 +111,7 @@ By carefully configuring and tuning the number of worker processes with your sys
 
 Static Group Membership is an advanced feature that enhances the efficiency and reliability of consumer group management. This feature allows Kafka consumers to retain a stable membership within their consumer groups across sessions. By specifying a unique `group.instance.id` for each consumer, Kafka brokers can recognize individual consumers across disconnections and rebalances, reducing the overhead associated with consumer group rebalances and improving the overall consumption throughput.
 
-Swarm Mode supports Static Group Membership, seamlessly integrating this capability into its distributed architecture. This integration means that the `group.instance.id` configuration is preserved across multiple subscription groups and intelligently mapped onto the nodes within the swarm. This mapping ensures that each node maintains a unique identity, preventing conflicts that could arise from multiple nodes inadvertently sharing the same `group.instance.id`.
+Swarm Mode supports Static Group Membership, integrating this capability into its distributed architecture. This integration means that the `group.instance.id` configuration is preserved across multiple subscription groups and intelligently mapped onto the nodes within the swarm. This mapping ensures that each node maintains a unique identity, preventing conflicts that could arise from multiple nodes inadvertently sharing the same `group.instance.id`.
 
 When deploying your application in Swarm Mode, Karafka takes care of the underlying complexity associated with static group memberships.
 
@@ -151,7 +151,7 @@ In Swarm Mode, Karafka introduces a supervisor process responsible for forking c
 
 In Karafka's Swarm Mode, the supervision of child nodes is a critical component in ensuring the reliability and resilience of the message processing. By design, the supervisor process employs a proactive strategy to monitor the health of each child node. A vital aspect of this strategy involves each child node periodically reporting its health status to the supervisor, independent of its current processing activities.
 
-Child nodes are configured to send health signals to the supervisor every 10 seconds. This regular check-in is designed to occur seamlessly alongside ongoing message processing and data polling activities, ensuring that the supervision mechanism does not interrupt or degrade the performance of the message handling workflow. The health signal may include vital statistics and status indicators that allow the supervisor to assess whether a child node is functioning optimally or if intervention is required.
+Child nodes are configured to send health signals to the supervisor every 10 seconds. This regular check-in is designed to occur alongside ongoing message processing and data polling activities, ensuring that the supervision mechanism does not interrupt or degrade the performance of the message handling workflow. The health signal may include vital statistics and status indicators that allow the supervisor to assess whether a child node is functioning optimally or if intervention is required.
 
 The effectiveness of the health reporting mechanism is subject to a critical configuration parameter: `config.max_wait_time`. This setting determines the maximum time Karafka will wait for new data. If this value is set close to or more than `config.internal.swarm.node_report_timeout` (60 seconds by default), nodes may not have a chance to report their health frequently enough.
 
@@ -191,7 +191,7 @@ Following a node's shutdown - graceful or forceful - Karafka imposes a mandatory
 
 - **System Health Preservation**: This pause also provides a buffer for the overall system to manage resource reallocation, clear potential bottlenecks, and ensure that restarting the node is conducive to maintaining system health and processing efficiency.
 
-Karafka's Swarm Mode ensures robust process management through these meticulous supervision strategies, promoting system stability and resilience.
+Karafka's Swarm Mode ensures process management through these meticulous supervision strategies, promoting system stability and resilience.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/swarm/supervisor-flow.svg" />
@@ -227,7 +227,7 @@ While forking enables Ruby applications like Karafka to parallelize work efficie
 
 !!! danger "Avoid Using Karafka APIs in the Supervisor Process"
 
-    It is essential to refrain from using the Karafka producer or any other Karafka APIs, including administrative APIs, within the supervisor process, both before and after forking. `librdkafka`, the underlying library used by Karafka, is fundamentally not fork-safe. Using these APIs from the supervisor process can lead to unexpected behaviors and potentially destabilize your application. Always ensure that interactions with Karafka's APIs occur within the forked worker nodes, where it is safe and designed to operate.
+    Refrain from using the Karafka producer or any other Karafka APIs, including administrative APIs, within the supervisor process, both before and after forking. `librdkafka`, the underlying library used by Karafka, is fundamentally not fork-safe. Using these APIs from the supervisor process can lead to unexpected behaviors and potentially destabilize your application. Always ensure that interactions with Karafka's APIs occur within the forked worker nodes, where it is safe and designed to operate.
 
 ### Warmup and Preloading for Efficiency
 
@@ -408,7 +408,7 @@ Karafka introduces several event hooks specific to Swarm Mode, enhancing the obs
   </tr>
 </table>
 
-It is worth highlighting that the `swarm.manager.stopping` event includes a status value, providing insight into the reason behind a node's shutdown:
+The `swarm.manager.stopping` event includes a status value, providing insight into the reason behind a node's shutdown:
 
 <table>
   <tr>
@@ -443,7 +443,7 @@ Please refer to our Kubernetes [documentation](Infrastructure-Deployment#kuberne
 
 ## Signal Handling
 
-Signal handling is designed to ensure seamless communication and control over both the supervisor's and their child's processes. This design allows for a centralized approach to managing process behavior in response to external signals.
+Signal handling is designed to ensure communication and control over both the supervisor's and their child's processes. This design allows for a centralized approach to managing process behavior in response to external signals.
 
 When a signal is sent to the supervisor process, Karafka ensures that this signal is propagated to all child processes. This mechanism is crucial for maintaining synchronized state changes across the entire application. For instance, if a SIGTERM (signal to terminate) is issued to the supervisor, it will pass this signal through to all children, will wait, and gracefully shut down.
 
@@ -525,7 +525,7 @@ This approach ensures that:
 1. Node-specific settings can be customized as needed
 1. The producer is properly initialized within the forked process context
 
-Note that complete reconfiguration is significant when:
+Complete reconfiguration is significant when:
 
 1. You need to set node-specific client IDs
 1. You're using transactional producers (which require unique transactional IDs)

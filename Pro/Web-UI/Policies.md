@@ -1,4 +1,4 @@
-Karafka's Web UI includes a comprehensive policies engine that provides granular control over user actions across all UI components.
+Karafka's Web UI includes a policies engine that provides granular control over user actions across all UI components.
 
 This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
@@ -110,7 +110,7 @@ To filter or sanitize part of the data to be presented in the Karafka Web-UI, it
 
 3. **Routing Wrapper Injection**: The final step for sanitizing data displayed in the Karafka Web UI is Wrapper Routing Injection, where the sanitizing wrapper is incorporated into the Karafka routing. This ensures the data is filtered for sensitive content after deserialization but before being displayed on the UI.
 
-It is crucial to ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
+Ensure that the deserializer wrappers are only used in the context of a Web server displaying the Web UI. The reason for this is that Karafka may otherwise accidentally use sanitized data when it is performing business logic operations. This could lead to unintended side effects, such as inaccurate data processing or potentially even data loss. The sanitization process is specifically intended to prevent sensitive data from being displayed on the Web UI. It is not meant to impact the data used by the backend system for processing or decision-making tasks.
 
 Remember that the sanitization process should be implemented carefully to ensure that it doesn't interfere with the regular operation of your Karafka application. Always test your sanitization process thoroughly to ensure it behaves as expected and does not inadvertently impact your application's functionality.
 

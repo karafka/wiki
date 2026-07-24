@@ -43,7 +43,7 @@ Your exception will propagate to the framework if not caught and handled within 
 
 ### Retryable Methods
 
-It's crucial to understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
+Understand how Karafka handles retries for different methods in the context of error handling and retries. This understanding is essential for effectively managing error scenarios in your Karafka applications. The framework's behavior varies depending on the method invoked:
 
 <table border="1">
   <thead>
@@ -87,7 +87,7 @@ It's crucial to understand how Karafka handles retries for different methods in 
   </tbody>
 </table>
 
-It's important to note that crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable.
+Crashes or exceptions in all these methods, including `#consume`, `#revoked`, `#shutdown`, `#tick` and `#eofed`, are reported through Karafka's error notifications system. However, only errors occurring in the `#consume` method are considered retryable.
 
 Errors in the other methods (`#revoked`, `#shutdown`, `#tick` and `#eofed`) are not subject to retries. They are reported for logging and monitoring purposes, but aside from this notification, they do not disrupt or halt the ongoing processing of messages. This distinction is crucial for understanding how Karafka manages its resilience and stability in the face of errors.
 
@@ -112,7 +112,7 @@ end
 
 !!! note "Retried Batches May Contain Different Messages"
 
-    Please note that `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
+    `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
 In addition to detecting retry scenarios with `#retrying?`, Karafka provides the `#attempt` method for more nuanced control. This method indicates the current attempt, offering opportunities for specific actions or alerts based on the number of retries. This advanced functionality allows tailored behavior adjustments during message processing retries, enhancing error-handling strategies.
 
@@ -249,11 +249,11 @@ Setting this value high enough is highly recommended so that Karafka won't stop 
 
 ## Internal Framework Errors
 
-Karafka handles framework and Kafka-related errors on several layers, ensuring robust and reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
+Karafka handles framework and Kafka-related errors on several layers, ensuring reliable message processing. Most errors are either recovered automatically or retried based on predefined strategies.
 
 ### Error Recovery and Retry Mechanisms
 
-Karafka employs multiple layers of error handling to manage issues seamlessly:
+Karafka employs multiple layers of error handling to manage issues:
 
 - **Framework-Level Recovery**: Errors related to Karafka's internal operations are handled within the framework. This includes automatic retries and recovery procedures to maintain the stability of the message processing flow.
 - **Kafka-Related Errors**: Issues originating from Kafka, such as connectivity problems or message fetching errors, are managed through retries and connection resets. Karafka ensures that these errors do not disrupt the overall processing pipeline.

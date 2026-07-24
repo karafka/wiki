@@ -32,13 +32,13 @@ Here are the steps necessary to configure Karafka Web-UI to work in a multi-app 
 
 !!! warning "Critical Setup Requirement"
 
-    It is critical to ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
+    Ensure that no Karafka servers are reporting to the Web UI before executing the `bundle exec karafka-web migrate` command. This avoids conflicts and ensures the setup is accurate and functional.
 
     Having any Karafka server process report to the Web UI before it is correctly bootstrapped via `bundle exec karafka-web migrate` may lead to critical state inconsistencies and other hard-to-debug issues. These inconsistencies can disrupt the accurate materialization of metrics and state data, causing unreliable or incorrect information to be displayed in the Web UI. To maintain a stable and reliable setup, ensure the Web UI is fully initialized and migrated before starting any Karafka server processes.
 
 ## Limitations
 
-While Karafka Web UI can handle multiple applications effectively, it's essential to understand that it perceives all these applications as a part of one cohesive system. In Karafka's eyes, the distinction between these applications is different from between different environments of the same application.
+While Karafka Web UI can handle multiple applications effectively, it perceives all these applications as a part of one cohesive system. In Karafka's eyes, the distinction between these applications is different from between different environments of the same application.
 
 **Never** use the same setup with the same topics to handle reports from multiple environments like staging and production.
 
@@ -52,7 +52,7 @@ There are several reasons why you should never use the same Karafka Web UI setup
 
 - **Ambiguity for Karafka**: Karafka is designed to handle and interpret data from topics based on specific expected patterns. When data from different environments with peculiarities stream into the same topic, Karafka will get confused. It will misinterpret the data or, worse, miss out on processing some critical data due to these discrepancies.
 
-- **Unpredictable Web UI Behavior**: The Web UI is essentially a visual interface to the data. When it starts receiving mixed data, its behavior can become unpredictable. You might see overlapping information, duplicated records, or even data that does not belong to either environment but is an outcome of materializing them into aggregated representations.
+- **Unpredictable Web UI Behavior**: The Web UI is a visual interface to the data. When it starts receiving mixed data, its behavior can become unpredictable. You might see overlapping information, duplicated records, or even data that does not belong to either environment but is an outcome of materializing them into aggregated representations.
 
 - **Troubleshooting Difficulties**: In case of any issues or anomalies, troubleshooting will become a nightmare. Since you won't be able to identify which environment the problematic data is coming from immediately, the resolution will be delayed.
 
@@ -62,7 +62,7 @@ The Karafka Web UI uses the routing awareness feature. Viewing messages in the W
 
 !!! note "Deserialization Requirement"
 
-    Keep in mind that you need to specify deserializes for all of the topics consumed by all of your applications to be able to view the relevant topics' data.
+    You need to specify deserializes for all of the topics consumed by all of your applications to be able to view the relevant topics' data.
 
 ```ruby
 # Web UI karafka.rb
@@ -101,7 +101,7 @@ end
 
 ## DLQ Routing Awareness
 
-To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, it's crucial to integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
+To ensure the Karafka Web UI is fully functional, particularly in identifying Dead Letter Queue (DLQ) topics, integrate DLQ topic references in **all** the applications directly within the `karafka.rb` configuration file of the application hosting the Web UI. This setup is essential because, without explicit routing references to DLQ topics, the Web UI lacks the context to distinguish these from regular topics, rendering it unable to accurately manage or display DLQ data.
 
 Karafka applications use the routing configuration to define how messages from various topics should be understood, including deserialization and the Web UI presentation logic.
 

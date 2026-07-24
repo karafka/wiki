@@ -8,7 +8,7 @@ The producer and consumer sides of a Kafka system have distinct roles and,  cons
 
 !!! info "Understanding the Complexity of Latency and Throughput Management"
 
-    Latency management in Karafka is a complex and multifaceted topic. While this document provides a comprehensive overview of latency management techniques and best practices, it only covers some possible aspects. Many factors influence latency, including framework configuration, message types, scale, and the nature of your processing workload. These factors often extend beyond the scope of framework documentation.
+    Latency management in Karafka is a complex and multifaceted topic. While this document provides an overview of latency management techniques and best practices, it only covers some possible aspects. Many factors influence latency, including framework configuration, message types, scale, and the nature of your processing workload. These factors often extend beyond the scope of framework documentation.
 
     If you are seeking in-depth assistance or facing persistent latency issues, we recommend exploring our [commercial offerings](https://karafka.io/#become-pro), which include, among other things, high-performance features, support, and consultancy services.
 
@@ -204,11 +204,11 @@ The strategy and methods selected for consumer management can vary significantly
 
 !!! info "Scope of this Guide"
 
-    This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, it's important to note that system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
+    This document focuses on aspects related to the operational flow of a single subscription group within Karafka. It provides guidance on tuning configurations and managing latency and throughput for individual subscription groups. However, system dynamics can differ significantly when dealing with multi-subscription group operations. The interplay between multiple groups, their configurations, and the shared resources can introduce additional complexities and considerations not covered in this document.
 
 ### Prerequisites and Initial References
 
-To effectively understand Karafka consumer processes latency and the topics discussed in this document, it is essential to be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
+To effectively understand Karafka consumer processes latency and the topics discussed in this document, be familiar with several key concepts and operations within the framework. Here is a list of topics you should be accustomed to:
 
 - [Routing DSL](Consumer-Groups-Routing) including multi-consumer group and multi-subscription group operations.
 - [Concurrency and Multithreading](Consumer-Groups-Concurrency-and-Multithreading) design of the framework.
@@ -373,7 +373,7 @@ The presented example illustrates how big of an impact latency configuration can
 
 #### Per Topic Configuration
 
-In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, it's important to understand the implications of such configurations.
+In Karafka, you can configure settings per topic. This allows you to tailor the configuration to the specific needs of different topics, optimizing for various use cases and workloads. However, understand the implications of such configurations.
 
 When reconfiguring settings per topic, Karafka will create a distinct subscription group and an independent connection to Kafka for each topic with altered non-default settings. This isolation ensures that the specific configurations are applied correctly but also means that these topics will be managed independently, which can impact resource usage and system behavior.
 

@@ -2,7 +2,7 @@
 
 [Karafka Pro](Pro-Getting-Started) provides an excellent filtering and [rate-limiting](Pro-Consumer-Groups-Rate-Limiting) APIs, making it a highly recommended option over manually managing message processing flow. By using Karafka Pro, developers can easily configure filtering and rate limiting on a per-topic basis, which allows them to fine-tune the message processing flow according to the requirements of their application.
 
-Using Karafka Pro for filtering and rate limiting also eliminates the need for developers to manually manage message processing, which can be time-consuming and error-prone. With Karafka Pro, you can rely on a robust and efficient system that automatically takes care of these tasks.
+Using Karafka Pro for filtering and rate limiting also eliminates the need for developers to manually manage message processing, which can be time-consuming and error-prone. With Karafka Pro, you can rely on an efficient system that automatically takes care of these tasks.
 
 Overall, using Karafka Pro for filtering and rate limiting not only simplifies the development process but also ensures that message processing is handled in a reliable and scalable manner.
 
@@ -30,7 +30,7 @@ end
 
 !!! note "`#pause` Does Not Stop Processing Flow"
 
-    It is important to remember that the `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
+    The `#pause` invocation does **not** stop the processing flow. You need to do it yourself.
 
 **BAD**:
 
@@ -154,7 +154,7 @@ end
 
 The `:latest` symbol is more nuanced than it might initially appear. It **does not** seek to the last (most recent) available message in the partition. Instead, it seeks to the **high water mark offset**, which represents the position where the **next new message** will be written.
 
-This means that after seeking to `:latest`, the consumer will wait for new messages to arrive rather than processing existing ones. The high water mark is essentially the "end" of the current log, pointing to a message that doesn't exist yet but will be the first to arrive after seeking.
+This means that after seeking to `:latest`, the consumer will wait for new messages to arrive rather than processing existing ones. The high water mark is the "end" of the current log, pointing to a message that doesn't exist yet but will be the first to arrive after seeking.
 
 ```ruby
 def consume
@@ -174,7 +174,7 @@ end
 
 ### Seeking vs. Offset Position
 
-When using the `#seek` API in Karafka, it's crucial to understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
+When using the `#seek` API in Karafka, understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
 
 By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is not reset. This means that the position to which you're seeking won't automatically update the current offset in memory.
 
@@ -233,9 +233,9 @@ Benefits of Smart Seek:
 
 ## `#pause` and `#seek` Usage Potential Networking Impact
 
-When using the `#pause` or `#seek` method in Karafka, you're essentially instructing the system to halt the fetching of messages for a specific topic partition. However, this is not just a simple "pause" in the regular sense of the word.
+When using the `#pause` or `#seek` method in Karafka, you're instructing the system to halt the fetching of messages for a specific topic partition. However, this is not just a simple "pause" in the regular sense of the word.
 
-When one of those methods is invoked, Karafka stops fetching new messages and purges its internal buffer that holds messages from that specific partition. It's essential to recognize that Karafka, by default, pre-buffers 1MB of data per topic partition for efficiency reasons. This buffer ensures that there is always a consistent supply of messages ready for processing without constantly waiting for new fetches.
+When one of those methods is invoked, Karafka stops fetching new messages and purges its internal buffer that holds messages from that specific partition. Karafka, by default, pre-buffers 1MB of data per topic partition for efficiency reasons. This buffer ensures that there is always a consistent supply of messages ready for processing without constantly waiting for new fetches.
 
 The challenge arises here: If you use the `#pause` or `#seek` method frequently and for short durations, you might inadvertently create substantial network traffic. Every time you resume from a pause or seek to a location, Karafka will attempt to re-buffer the 1MB of data, which can result in frequently re-fetching the same data, thereby causing redundant network activity.
 
@@ -259,7 +259,7 @@ The challenge arises here: If you use the `#pause` or `#seek` method frequently 
 
 ### Cost Implications with Third-party Providers
 
-It's crucial to be aware, especially if you're using a third-party Kafka provider that charges based on the number of messages sent, that frequent pausing and resuming can inflate costs. This is due to the aforementioned frequent prefetching of the same data, which can result in the same messages being counted multiple times for billing purposes. Always ensure alignment and configuration are optimized to prevent unnecessary financial implications.
+Be aware, especially if you're using a third-party Kafka provider that charges based on the number of messages sent, that frequent pausing and resuming can inflate costs. This is due to the aforementioned frequent prefetching of the same data, which can result in the same messages being counted multiple times for billing purposes. Always ensure alignment and configuration are optimized to prevent unnecessary financial implications.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/seek-impact.png" alt="karafka seek misuse impact" />
