@@ -6,6 +6,7 @@
 // rules leave untouched - so verbatim code and quoted examples keep their text.
 
 const terms = require('./ste-terms.json');
+const findCodeLines = require('./code-lines');
 
 function maskProtected(line) {
   const blank = (match) => ' '.repeat(match.length);
@@ -33,17 +34,13 @@ module.exports = {
   parser: 'markdownit',
   function: function rule(params, onError) {
     const lines = params.lines;
-    let inCodeBlock = false;
+    const codeLines = findCodeLines(params);
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmed = line.trim();
 
-      if (/^(`{3,}|~{3,})/.test(trimmed)) {
-        inCodeBlock = !inCodeBlock;
-        continue;
-      }
-      if (inCodeBlock) {
+      if (codeLines.has(i + 1)) {
         continue;
       }
       if (/^#{1,6}\s/.test(trimmed)) {

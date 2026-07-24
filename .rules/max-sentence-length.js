@@ -32,16 +32,12 @@ module.exports = {
     const maximum = config.maximum || 25;
     const maximumStep = config.maximum_step || 20;
     const lines = params.lines;
-    let inCodeBlock = false;
+    const codeLines = require('./code-lines')(params);
 
     for (let i = 0; i < lines.length; i++) {
       const trimmed = lines[i].trim();
 
-      if (/^(`{3,}|~{3,})/.test(trimmed)) {
-        inCodeBlock = !inCodeBlock;
-        continue;
-      }
-      if (inCodeBlock || trimmed === '') {
+      if (codeLines.has(i + 1) || trimmed === '') {
         continue;
       }
       // Skip non-prose lines: headers, table rows, HTML lines, admonition markers.

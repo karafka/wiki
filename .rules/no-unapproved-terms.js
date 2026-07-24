@@ -67,18 +67,14 @@ module.exports = {
   parser: 'markdownit',
   function: function rule(params, onError) {
     const lines = params.lines;
-    let inCodeBlock = false;
+    const codeLines = require('./code-lines')(params);
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmed = line.trim();
 
       // Toggle fenced code state and never inspect code content.
-      if (/^(`{3,}|~{3,})/.test(trimmed)) {
-        inCodeBlock = !inCodeBlock;
-        continue;
-      }
-      if (inCodeBlock) {
+      if (codeLines.has(i + 1)) {
         continue;
       }
 
