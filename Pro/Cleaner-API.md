@@ -20,7 +20,7 @@ The below example illustrates how the Cleaner API releases both `payload` and `r
 
 When using the Cleaner API, it is paramount to understand the implications on the message's data.
 
-Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Please ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
+Once `#clean!` is invoked on a message, the message's `payload` and `raw_payload` are permanently removed from memory. As a result, these data become irretrievable and inaccessible. Ensure that, under any circumstances, you do not try to use this data after it has been cleaned.
 
 ### Cleaning One Message at a Time
 
@@ -182,7 +182,7 @@ The Cleaner API offers several advantages, especially when it comes to efficient
 
 - **Cleaned Messages and DLQ**: Messages that have been cleaned using the Cleaner API can't be dispatched to the Dead Letter Queue (DLQ). This underscores the importance of ensuring that any `#mark_as_consumed` operations happen strictly after complete processing.
 
-- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Please do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
+- **Marking as Consumed When Cleaning and DLQ**: When using the Cleaner API in conjunction with a topic with a Dead Letter Queue configured, it's required to ensure each message is `#marked_as_consumed` before invoking the `#clean!` method. Do so to avoid inconsistencies and potential errors, as cleaned messages cannot be dispatched to the DLQ.
 
 - **Payload Availability for Metrics and Reporting**: Once a message has been cleaned, its payload and raw payload are no longer accessible. If you depend on these payloads for metrics, logging, or reporting purposes, you must gather and store this information before invoking the cleaning operation.
 

@@ -173,7 +173,7 @@ The standard license is only appropriate for SaaS usage as it does **not** allow
 
 By default, **neither** the Karafka Pro license nor the Appliance license allows for usage in publicly accessible source code, whether it's an open-source project or a commercial project with public repositories. This restriction applies to **both** open-source initiatives and commercial projects that maintain public codebases. This is because both licenses are designed for commercial use within defined organizational boundaries and include restrictions on redistribution and public sharing of the codebase.
 
-However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, please contact us at `contact@karafka.io` to discuss your use case. We can explore potential custom agreements that could include:
+However, there are various scenarios where organizations might want to maintain public repositories while using Karafka Pro features, whether for open-source contributions or transparency in commercial projects. If you want to use Karafka Pro in your public source project, contact us at `contact@karafka.io` to discuss your use case. We can explore potential custom agreements that could include:
 
 - Limited usage rights for specific Pro features
 - Special licensing terms for public source code integration
@@ -231,7 +231,7 @@ Karafka license gem contains **only** the organization name.
 
 ## How do you ensure the security of your gem server?
 
-Please read our [Security statement](Pro-Security) for details on this manner.
+Read our [Security statement](Pro-Security) for details on this manner.
 
 ## What is Karafka Data Collection and GDPR Policy?
 
@@ -316,7 +316,7 @@ This temporary link will be sent directly from Stripe to the billing email assoc
 
 You will receive a confirmation email once you've successfully updated your payment method.
 
-Please check your spam or junk folders if you don't see the email in your inbox. If you encounter any issues, feel free to contact us for further assistance.
+Check your spam or junk folders if you don't see the email in your inbox. If you encounter any issues, feel free to contact us for further assistance.
 
 ## Does the Pro license require me to use the "Source URL" in my Gemfile to fetch the license?
 
@@ -516,7 +516,7 @@ Payment issues can occur due to various reasons such as expired cards, insuffici
 
 Only if we cannot successfully reach you or resolve the payment issue within the full month will the license be terminated. This approach ensures that temporary payment problems don't immediately disrupt your production systems.
 
-If you experience any billing issues, please contact us immediately to avoid any service interruption.
+If you experience any billing issues, contact us immediately to avoid any service interruption.
 
 ## Will Karafka Pro prices increase in the future?
 
@@ -571,7 +571,7 @@ This depends on your payment method:
 
 - **Karafka Enterprise (invoice/purchase order)**: Invoices are sent directly by me (Maciej Mensfeld) from `contact@karafka.io`.
 
-In short: whenever your payment goes through Stripe, all billing-related emails (invoices, payment receipts, card update links) come from Stripe. If any of these did not arrive, please check your spam folder first. Upon request, I can resend or manually provide any missing billing document.
+In short: whenever your payment goes through Stripe, all billing-related emails (invoices, payment receipts, card update links) come from Stripe. If any of these did not arrive, check your spam folder first. Upon request, I can resend or manually provide any missing billing document.
 
 ## Ethics, Privacy, and Information Usage
 

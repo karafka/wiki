@@ -146,7 +146,7 @@ Upgrading your Karafka Web UI to a newer version is a three-step operation. You 
 1. **Deploy All Karafka Consumer Processes**: Your first step should be to deploy all the Karafka consumer processes on all nodes where the `karafka server` command runs. Ensure that all your consumers are up-to-date and working with the most recent consumer version.
 1. **Deploy the Web UI Update to Your Web Server**: After all the consumer processes have been upgraded, you can safely deploy the updated Web UI to your web server. The updated web UI will have the necessary code and schema changes to work with the latest consumer version.
 
-Please take note of the following potential issue:
+Take note of the following potential issue:
 
 If you attempt to deploy the updated Web UI before the Karafka consumer processes, you may encounter errors. This could range from 500 Internal Server errors to incorrect or missing offset-related data displays.
 

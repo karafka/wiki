@@ -306,7 +306,7 @@ There are key aspects to consider to ensure efficient and consistent behavior:
 
 1. **Too Broad Regular Expressions**: Broad regular expressions may unintentionally match a wide range of topics, leading to the over-consumption of topics that were not intended to be included. This can result in excessive resource utilization, unexpected data processing, and potential bottlenecks in the system.
 
-Please ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
+Ensure you're familiar with these considerations to harness the full power of Routing Patterns without encountering unexpected issues.
 
 ## DLQ Accidental Auto-Consumption
 

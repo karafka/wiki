@@ -227,15 +227,15 @@ producer.tombstone_sync(
 
 ## Labeling
 
-Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and using labeling, please visit [this](WaterDrop-Labeling) dedicated wiki page.
+Labeling refers to categorizing and tagging messages before sending them to Kafka. This can help instrument and debug messages more quickly. For a comprehensive guide on implementing and using labeling, visit [this](WaterDrop-Labeling) dedicated wiki page.
 
 ## Error Handling
 
-WaterDrop's error handling is a complex feature with its dedicated documentation. Please visit the [Error Handling](WaterDrop-Error-Handling) documentation page for detailed information and guidance.
+WaterDrop's error handling is a complex feature with its dedicated documentation. Visit the [Error Handling](WaterDrop-Error-Handling) documentation page for detailed information and guidance.
 
 ## Transactions
 
-Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Please refer to [this](WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
+Transactions in WaterDrop have a dedicated documentation page to provide in-depth information and guidelines. Refer to [this](WaterDrop-Transactions) documentation page for a comprehensive understanding of transactions and related nuances.
 
 ## Usage Across the Application and with Ruby on Rails
 
@@ -498,7 +498,7 @@ end
 
 !!! tip "Custom Producers Only"
 
-    Please note that this should be used only for custom producers and not for `Karafka.producer` that is closed automatically.
+    Note that this should be used only for custom producers and not for `Karafka.producer` that is closed automatically.
 
 When using custom WaterDrop producers within a Karafka application, it's important to properly close them before the application shuts down. It's recommended to use the `app.stopped` event as it signifies that Karafka has completed all processing, flushed all buffers, and is ready for final cleanup operations. At this point, no more messages will be processed, making it the ideal time to safely close your custom producers. Here's how you can do this:
 

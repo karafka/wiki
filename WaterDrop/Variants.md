@@ -112,7 +112,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 !!! info "Additional Configuration Attributes Details"
 
-    For a more comprehensive list of configuration settings supported by librdkafka, please visit the [librdkafka Configuration](Librdkafka-Configuration) page.
+    For a more comprehensive list of configuration settings supported by librdkafka, visit the [librdkafka Configuration](Librdkafka-Configuration) page.
 
 ## Inspecting the Active Variant
 

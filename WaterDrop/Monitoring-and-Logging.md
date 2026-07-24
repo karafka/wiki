@@ -280,7 +280,7 @@ end
 
 !!! note "`error.occurred` Excludes Transaction Purge Errors"
 
-    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, please consult the [transactions](WaterDrop-Transactions) documentation.
+    The `error.occurred` will **not** publish purge errors originating from transactions. Such occurrences are standard behavior during an aborted transaction and should not be classified as errors. For a deeper understanding, consult the [transactions](WaterDrop-Transactions) documentation.
 
 ## Acknowledgment Notifications
 

@@ -60,7 +60,7 @@ That way, the given application can produce messages but not decrypt them. This 
 
 ## Rotating Public and Private Keys
 
-When you upgrade your keys, please remember to update the `config. encryption.version`, so Karafka can recognize the correct key pair.
+When you upgrade your keys, remember to update the `config. encryption.version`, so Karafka can recognize the correct key pair.
 
 If you have yet to consume messages using an old public key, do **not** remove the old private key.
 

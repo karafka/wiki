@@ -30,7 +30,7 @@
 
 ## Why is Karafka not doing work in parallel when I started two processes?
 
-Please make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. All the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
+Make sure your topic contains more than one partition. Only then Karafka can distribute the work to more processes. All the topics create automatically with the first message sent will always contain only one partition. Use the Admin API to create topics with more partitions.
 
 ## What is the optimal number of threads to use?
 

@@ -36,7 +36,7 @@ Despite adding these threads, the overall impact on system resources is minimal.
 
 ## Kafka TCP Connections
 
-Karafka's efficient management of TCP connections is substantially powered by librdkafka. This native library implements a smart connection strategy to optimize network interactions with Kafka brokers, ensuring robustness and efficiency. Below, you can find a general description of how librdkafka deals with both consumer and producer connections. Please refer to the appropriate sub-section for context-specific details.
+Karafka's efficient management of TCP connections is substantially powered by librdkafka. This native library implements a smart connection strategy to optimize network interactions with Kafka brokers, ensuring robustness and efficiency. Below, you can find a general description of how librdkafka deals with both consumer and producer connections. Refer to the appropriate sub-section for context-specific details.
 
 - **Selective Connections**: librdkafka only attempts to establish TCP connections with brokers necessary for its operation. This includes one of the brokers listed in `bootstrap.servers`, partition leaders, and specific coordinators (group and transaction). This targeted approach helps minimize unnecessary network traffic and optimizes connection management.
 

@@ -93,7 +93,7 @@ bundle exec karafka topics migrate
 
 Two appropriate topics with the needed configuration will be created.
 
-If you do not use Declarative Topics, please make sure to create those topics manually with below settings:
+If you do not use Declarative Topics, make sure to create those topics manually with below settings:
 
 <table>
   <thead>

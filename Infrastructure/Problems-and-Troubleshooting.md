@@ -8,9 +8,9 @@ Read below for tips.  If you still need help, you can:
 
 You **should not** email any Karafka committer privately.
 
-Please respect our time and efforts by sticking to one of the options above.
+Respect our time and efforts by sticking to one of the options above.
 
-Please consider buying the Pro subscription for additional priority Pro support and extra features.
+Consider buying the Pro subscription for additional priority Pro support and extra features.
 
 ## OSS Support Policy
 

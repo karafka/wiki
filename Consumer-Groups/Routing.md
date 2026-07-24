@@ -115,7 +115,7 @@ You can read more about the concurrency implications of using subscription group
 
 ### Subscription Group Multiplexing
 
-For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, please check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
+For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -137,7 +137,7 @@ end
 
 ### Routing Patterns
 
-For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Please refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain insights.
+For users using the advanced capabilities of Karafka Pro, the Routing Patterns feature has its dedicated documentation page. This page delves deep into the behavior, configuration, and best practices surrounding Routing Patterns. Refer to the [Routing Patterns documentation](Pro-Routing-Patterns) to explore this feature in detail and gain insights.
 
 ## Overriding Defaults
 

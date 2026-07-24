@@ -4,7 +4,7 @@ Karafka's Enhanced Swarm / Multi-Process mode introduces Pro enhancements that e
 
 This documentation only covers extra functionalities enhancing the Swarm feature.
 
-Please refer to the [Swarm](Infrastructure-Swarm-Multi-Process) documentation for more details on its core principles.
+Refer to the [Swarm](Infrastructure-Swarm-Multi-Process) documentation for more details on its core principles.
 
 ## Enhanced Liveness Listener
 

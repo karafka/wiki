@@ -164,7 +164,7 @@ Karafka marks each job as consumed using `#mark_as_consumed` after successfully 
 
 Active Job Karafka adapter will follow the Karafka general [runtime errors handling](Consumer-Groups-Error-Handling-and-Back-Off-Policy#runtime) strategy. Upon error, the partition will be paused, a backoff will happen, and Karafka will attempt to retry the job after a specific time.
 
-Please keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
+Keep in mind that **as long as** the error persists, **no** other jobs from a given partition will be processed.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/charts/aj_error_handling.svg" />

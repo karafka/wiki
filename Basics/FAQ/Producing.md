@@ -52,7 +52,7 @@ It may mean one of four things:
 1. Low probability: Slow network connection.
 1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
-WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Please consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
+WaterDrop dispatches messages to `librdkafka` and `librdkafka` constructs message sets out of it. By default, it does it every five milliseconds. If you are producing messages fast, it may become inefficient for Kafka because it has to deal with separate incoming message sets and needs to keep up. Consider increasing the `queue.buffering.max.ms`, so the batches are constructed less often and are bigger.
 
 Additionally, you may also:
 

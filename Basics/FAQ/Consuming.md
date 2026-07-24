@@ -203,7 +203,7 @@ The committed offset is the position of the last record that Kafka will not read
 
 So, you can think of the position set by `#seek` as a volatile, in-memory value, while the committed offset is a more durable, stored value.
 
-If you would like to `#seek` back and be able to commit offsets from the seek location, please use the `reset_offset` flag when seeking:
+If you would like to `#seek` back and be able to commit offsets from the seek location, use the `reset_offset` flag when seeking:
 
 ```ruby
 def consume

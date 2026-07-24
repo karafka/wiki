@@ -4,7 +4,7 @@ Karafka Web UI can support data collection, aggregation, and presentation from m
 
 Here are the steps necessary to configure Karafka Web-UI to work in a multi-app mode:
 
-1. Please follow the [Getting Started](Web-UI-Getting-Started) guidelines and configure **each** of the applications independently. You don't have to mount the routing in every application, but each app needs to be able to report to Kafka.
+1. Follow the [Getting Started](Web-UI-Getting-Started) guidelines and configure **each** of the applications independently. You don't have to mount the routing in every application, but each app needs to be able to report to Kafka.
 
 1. Mount the Web UI into one of your applications.
 

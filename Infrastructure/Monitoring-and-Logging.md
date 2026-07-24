@@ -386,7 +386,7 @@ end
 
 !!! note "Enable WaterDrop Instrumentation Separately"
 
-    WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Please go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
+    WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. Go [here](https://github.com/karafka/waterdrop#datadog-and-statsd-integration) for more details.
 
 !!! info "Default Instrumentation Reporting Can Be Extensive"
 

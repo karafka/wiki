@@ -81,7 +81,7 @@ namespace :karafka do
 end
 ```
 
-If you need to run several processes of a given type, please refer to `template unit files`.
+If you need to run several processes of a given type, refer to `template unit files`.
 
 ## Docker
 
@@ -101,7 +101,7 @@ Karafka **does**, however, support:
 - [Standard SASL + SSL mechanisms](#aws-msk-cluster-setup).
 - [Custom OAuth Token Providers](#custom-oauth-token-providers) flow.
 
-Please follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom OAuth Token Providers](#custom-oauth-token-providers) section.
+Follow the below instructions for both cluster initialization and Karafka configuration or go to the [Custom OAuth Token Providers](#custom-oauth-token-providers) section.
 
 !!! info "AWS Integration with Custom OAuth Token Providers"
 
@@ -109,7 +109,7 @@ Please follow the below instructions for both cluster initialization and Karafka
 
 !!! info "AWS MSK Operational Issues Documentation"
 
-    For common issues and operational challenges specific to AWS MSK, please refer to the [AWS MSK Operations Guide](Infrastructure-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
+    For common issues and operational challenges specific to AWS MSK, refer to the [AWS MSK Operations Guide](Infrastructure-AWS-MSK-Guide). This guide covers MSK-specific problems and their solutions.
 
 ### AWS MSK cluster setup
 
@@ -249,13 +249,13 @@ This means Kafka is unreachable. Check your brokers' addresses and ensure you us
 
 ### Connection failures and timeouts
 
-Please make sure that your instances can reach Kafka. Security group updates can have a certain lag in propagation.
+Make sure that your instances can reach Kafka. Security group updates can have a certain lag in propagation.
 
 If a previously healthy producer starts stalling on delivery (each stalled message blocking for as long as your configured `socket.timeout.ms`, with `Timed out N in-flight ... requests` warnings) after an EC2 instance type upgrade to a newer generation such as the Graviton `*9g` families, the likely cause is the Nitro v6 ENI idle-connection timeout (lowered from 5 days to 350 seconds), which silently drops idle producer sockets. Enable `socket.keepalive.enable: true`, tune the host TCP keepalive timers below 350 seconds (on Kubernetes, through pod `securityContext.sysctls`), and set WaterDrop's `idle_disconnect_timeout` to recycle idle producers proactively. See the [AWS MSK Guide](Infrastructure-AWS-MSK-Guide#ec2-nitro-v6-idle-connection-reaping) for the full explanation, the keepalive sysctl values, and the timeout and retry settings recommended for MSK.
 
 ### Rdkafka::RdkafkaError (Broker: Invalid replication factor (invalid_replication_factor))
 
-Please make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
+Make sure your custom setting `default.replication.factor` value matches what you have declared as `Number of zones` in the `Brokers` section:
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/instructions/msk/brokers_count.png" />
@@ -404,7 +404,7 @@ To make it work you need to follow few steps:
     )
     ```
 
-1. When using `Karafka::Admin` and `Karafka::Web` please make sure to create appropriate consumer groups as well.
+1. When using `Karafka::Admin` and `Karafka::Web` make sure to create appropriate consumer groups as well.
 
     ```ruby
     class KarafkaApp < Karafka::App
@@ -511,7 +511,7 @@ DEBUG -- : [3732873c8a74] Polled 0 messages in 1000ms
 
 #### Missing Information or "Initial Consumers State Missing" Notice After a While
 
-Please read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
+Read the [Heroku Retention Policy Impact on the Web UI](#heroku-retention-policy-impact-on-the-web-ui) section and apply correct Web UI topics configuration.
 
 ## Kubernetes
 

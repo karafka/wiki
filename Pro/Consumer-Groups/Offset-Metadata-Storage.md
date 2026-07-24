@@ -138,7 +138,7 @@ end
 
 !!! warning "Automatic Application of Stored Offset Metadata"
 
-    Please be aware that the Karafka system will apply the stored offset metadata to the next message offset marked as consumed, regardless of whether the marking is manual or automatic, including automatic dispatches to the Dead Letter Queue (DLQ). This behavior might lead to unexpected metadata associations with messages, particularly in high-throughput or automated processing scenarios. It is highly recommended to thoroughly test and fully understand the implications of storing offset metadata in your specific use case, ensuring its application aligns with your message processing logic and does not disrupt the intended flow.
+    Be aware that the Karafka system will apply the stored offset metadata to the next message offset marked as consumed, regardless of whether the marking is manual or automatic, including automatic dispatches to the Dead Letter Queue (DLQ). This behavior might lead to unexpected metadata associations with messages, particularly in high-throughput or automated processing scenarios. It is highly recommended to thoroughly test and fully understand the implications of storing offset metadata in your specific use case, ensuring its application aligns with your message processing logic and does not disrupt the intended flow.
 
 ### Reading Offset Metadata
 
