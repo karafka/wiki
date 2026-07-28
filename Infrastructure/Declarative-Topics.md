@@ -1,3 +1,7 @@
+!!! warning "New Format Available in 2.6.0.rc1 Only"
+
+    The new standalone declarative topics format described in this document is currently available only in `karafka 2.6.0.rc1`. It is not yet part of a stable Karafka release. Details may change before the final `2.6` release.
+
 Karafka allows you to manage your topics in three ways:
 
 - Using the built-in [Declarative Topics](Infrastructure-Declarative-Topics) standalone DSL + CLI functionality (recommended)
