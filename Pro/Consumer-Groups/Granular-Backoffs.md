@@ -8,11 +8,11 @@ The Granular Backoffs feature enables you to customize backoff settings for each
 
 Karafka, by default, includes three configuration-level settings for computing pause time:
 
-1. `pause_timeout`: This setting determines the waiting period after a processing error. The wait time is expressed in milliseconds, and the default is set to 1000 milliseconds (or 1 second).
+1. `config.pause.timeout`: This setting determines the waiting period after a processing error. The wait time is expressed in milliseconds, and the default is set to 1000 milliseconds (or 1 second).
 
-2. `pause_max_timeout`: This is the maximum time to wait in an exponential backoff scenario. The wait time is in milliseconds; by default, it is set to 30,000 milliseconds (or 30 seconds).
+2. `config.pause.max_timeout`: This is the maximum time to wait in an exponential backoff scenario. The wait time is in milliseconds; by default, it is set to 30,000 milliseconds (or 30 seconds).
 
-3. `pause_with_exponential_backoff`: This Boolean setting determines whether or not the system should use exponential backoff. The default setting is true, meaning that the system will use an exponential backoff approach by default.
+3. `config.pause.with_exponential_backoff`: This Boolean setting determines whether or not the system should use exponential backoff. The default setting is true, meaning that the system will use an exponential backoff approach by default.
 
 However, these default settings are not set in stone. You can override them on a per-topic basis using the routing `#pause` method. This method accepts the following keyword arguments:
 

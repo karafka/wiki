@@ -5,7 +5,7 @@
 1. [What will happen when a message is dispatched to a dead letter queue topic that does not exist?](#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist)
 1. [How can I make Karafka not retry processing, and what are the implications?](#how-can-i-make-karafka-not-retry-processing-and-what-are-the-implications)
 1. [What happens if an error occurs while consuming a message in Karafka? Will the message be marked as not consumed and automatically retried?](#what-happens-if-an-error-occurs-while-consuming-a-message-in-karafka-will-the-message-be-marked-as-not-consumed-and-automatically-retried)
-1. [Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-pause_with_exponential_backoff-enabled)
+1. [Why do I see hundreds of repeat exceptions with exponential backoff enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-exponential-backoff-enabled)
 1. [Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?](#why-does-the-dead-letter-queue-dlq-use-the-default-deserializer-instead-of-the-one-specified-for-the-original-topic-in-karafka)
 1. [What should I consider when manually dispatching messages to the DLQ in Karafka?](#what-should-i-consider-when-manually-dispatching-messages-to-the-dlq-in-karafka)
 1. [How can I handle `dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
@@ -150,9 +150,9 @@ However, be aware of the potential risks associated with these approaches. In th
 
 In Karafka's default flow, if an error occurs during message consumption, the processing will pause at the problematic message, and attempts to consume it will automatically retry with an exponential backoff strategy. This is typically effective for resolving transient issues (e.g., database disconnections). However, it may not be suitable for persistent message-specific problems, such as corrupted JSON. In such cases, Karafka's Dead Letter Queue feature can be used. This feature allows a message to be retried several times before it is moved to a Dead Letter Queue (DLQ), enabling the process to continue with subsequent messages. More information on this can be found in the [Dead Letter Queue Documentation](Consumer-Groups-Dead-Letter-Queue).
 
-## Why do I see hundreds of repeat exceptions with `pause_with_exponential_backoff` enabled?
+## Why do I see hundreds of repeat exceptions with exponential backoff enabled?
 
-When `pause_with_exponential_backoff` is enabled, the timeout period for retries doubles after each attempt, but this does not prevent repeated exceptions from occurring. With `pause_max_timeout` set to the default 30 seconds, an unaddressed exception can recur up to 120 times per hour. This frequent repetition happens because the system continues to retry processing until the underlying issue is resolved.
+When `config.pause.with_exponential_backoff` is enabled, the timeout period for retries doubles after each attempt, but this does not prevent repeated exceptions from occurring. With `config.pause.max_timeout` set to the default 30 seconds, an unaddressed exception can recur up to 120 times per hour. This frequent repetition happens because the system continues to retry processing until the underlying issue is resolved.
 
 ## Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?
 

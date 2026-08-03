@@ -39,7 +39,7 @@ When processing messages from a Kafka topic, your code may raise any exception i
 - The message being processed is somehow malformed or is in an invalid format.
 - You are using external resources such as a database or a network API that are temporarily unavailable.
 
-Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `pause_timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
+Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `config.pause.timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
 
 ### Retryable Methods
 
@@ -187,7 +187,7 @@ end
 
 ### Exponential Backoff
 
-Karafka is configured with `pause_with_exponential_backoff` enabled (`true`) by default. This configuration doubles the timeout period after each pause until a message from the partition is processed successfully. To prevent the timeout from extending indefinitely, `pause_max_timeout` can be set to your preferred maximum duration. By default, this maximum timeout is set to 30 seconds.
+Karafka is configured with `config.pause.with_exponential_backoff` enabled (`true`) by default. This configuration doubles the timeout period after each pause until a message from the partition is processed successfully. To prevent the timeout from extending indefinitely, `config.pause.max_timeout` can be set to your preferred maximum duration. By default, this maximum timeout is set to 30 seconds.
 
 Regardless of the error's nature, the Monitoring and Logging feature can track any issues encountered during operation.
 
