@@ -25,8 +25,8 @@ Karafka and its components versions or release series are categorized below into
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.6     | Preview     | N/A        |
-| 2.5     | Active      | 2026-12-31 |
+| 2.6     | Active      | N/A        |
+| 2.5     | Maintenance | 2026-12-31 |
 | 2.4     | EOL         | 2025-10-31 |
 | 2.3     | EOL         | 2025-03-01 |
 | 2.2     | EOL         | 2024-09-30 |
@@ -38,7 +38,8 @@ Karafka and its components versions or release series are categorized below into
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 0.11    | Active      | N/A        |
+| 1.0     | Active      | N/A        |
+| 0.11    | Maintenance | 2026-12-31 |
 | 0.10    | EOL         | 2025-10-31 |
 | 0.9     | EOL         | 2024-12-31 |
 | 0.8     | EOL         | 2024-08-31 |
@@ -54,7 +55,9 @@ Karafka and its components versions or release series are categorized below into
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 2.8     | Active      | N/A        |
+| 2.10    | Active      | N/A        |
+| 2.9     | Maintenance | 2026-10-01 |
+| 2.8     | EOL         | 2026-04-01 |
 | 2.7     | EOL         | 2025-02-01 |
 | 2.6     | EOL         | 2024-09-30 |
 | 2.x     | EOL         | 2024-05-01 |
