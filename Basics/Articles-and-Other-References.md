@@ -16,6 +16,7 @@
 
     Some of those might be outdated and may refer to previous Karafka versions. Keep that in mind.
 
+- [Karafka 2.6 and Web UI 1.0: Laying the Groundwork for Kafka Queues](https://mensfeld.pl/2026/08/karafka-2-6-and-web-ui-1-0-laying-the-groundwork-for-kafka-queues/)
 - [One Thread to Poll Them All: How a Single Pipe Made WaterDrop 50% Faster](https://mensfeld.pl/2026/02/waterdrop-fd-polling-50-percent-faster/)
 - [WaterDrop Meets Ruby’s Async Ecosystem: Lightweight Concurrency Done Right](https://mensfeld.pl/2025/09/ruby-async-waterdrop-concurrency/)
 - [The 60-Second Wait: How I Spent Months Solving the Ruby’s Most Annoying Gem Installation Problem](https://mensfeld.pl/2025/07/solving-ruby-rdkafka-installation-problem/)
