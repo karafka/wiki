@@ -72,7 +72,7 @@ Karafka Web UI also closes its producer when `karafka server` terminates, so you
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`.
 
-The Web UI tracks producer errors from every WaterDrop producer, not just `Karafka.producer`. It hooks into WaterDrop's class-level (global) monitor and subscribes its tracking listeners to each producer as it is configured. Any custom producer you create, whether a secondary producer, a transactional one, or a per-cluster one, is therefore picked up automatically, as long as it is **created after `Karafka::Web.enable!` has run**.
+The Web UI tracks producer errors from every WaterDrop producer, not just `Karafka.producer`. It hooks into WaterDrop's class-level (global) monitor and subscribes its tracking listeners to each producer as it is configured. Any custom producer you create, whether a secondary producer, a transactional one, or a per-cluster one, is therefore picked up automatically, as long as it is **created after `Karafka::Web.enable!` has run**. This holds in swarm (forked) processes as well: a producer created inside a forked node is tracked within that node.
 
 The only producers not picked up automatically are those created **before** the Web UI is enabled (other than `Karafka.producer` and the Web UI producer), because they already exist by the time the Web UI starts listening for newly configured producers. In the vast majority of setups the Web UI is enabled from `karafka.rb`, before any of your own producers are built, so this is a non-issue.
 
