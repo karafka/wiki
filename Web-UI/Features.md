@@ -164,6 +164,18 @@ The Search feature is a tool that enables users to search and filter messages ef
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`. It includes the following information:
 
+!!! note "Tracking Errors From Your Own Producers"
+
+    Production errors are tracked automatically for `Karafka.producer`, the Web UI producer, and **any additional producer you create after `Karafka::Web.enable!` has run**. The Web UI hooks into WaterDrop's global monitor and instruments each new producer as it is built, so secondary, transactional, or per-topic producers are covered without any extra wiring.
+
+    A producer you build **before** the Web UI is enabled (and that is neither `Karafka.producer` nor the Web UI producer) is not picked up automatically, because it already exists by the time the Web UI starts listening. The simplest fix is to enable the Web UI before creating such producers. If you cannot, subscribe the Web UI producer listeners to it by hand after enabling:
+
+    ```ruby
+    Karafka::Web.config.tracking.producers.listeners.each do |listener|
+      my_producer.monitor.subscribe(listener)
+    end
+    ```
+
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
 - `Process name` - Name of the process on which the error occurred.
 - `Error` - Error type.
