@@ -62,21 +62,21 @@ Once the dedicated Web UI producer is set up, it becomes the default for all the
 
     A custom Web UI producer must be able to deliver messages to all the Web UI internal topics. If it points to a different cluster or uses restricted credentials, the Web UI will not be able to report or materialize its states. You can find the list of the required topics in the [Getting Started](Web-UI-Getting-Started) guide.
 
-!!! note "The Web UI Producer Is Instrumented Automatically"
+!!! note "Producers Are Instrumented Automatically"
 
-    A producer assigned via `config.producer` is automatically subscribed with the producer tracking listeners, so its errors are reported like the ones from `Karafka.producer`. This is not the case for other custom producers you create in your application. Those need to be subscribed manually, as described below.
+    A producer assigned via `config.producer`, `Karafka.producer`, and any producer you create **after** `Karafka::Web.enable!` has run are all automatically subscribed with the producer tracking listeners, so their errors are reported in the Web UI. Only producers created **before** the Web UI is enabled need to be subscribed manually, as described below.
 
 Karafka Web UI also closes its producer when `karafka server` terminates, so you do not need to manage its lifecycle yourself.
 
 ## Monitoring Non-Default Producer Instances
 
-A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`
+A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`.
 
-By default, Karafka Web UI is set only to monitor and track the default producer, which is initialized automatically and made available under `Karafka.producer`.
+The Web UI tracks producer errors from every WaterDrop producer, not just `Karafka.producer`. It hooks into WaterDrop's class-level (global) monitor and subscribes its tracking listeners to each producer as it is configured. Any custom producer you create, whether a secondary producer, a transactional one, or a per-cluster one, is therefore picked up automatically, as long as it is **created after `Karafka::Web.enable!` has run**.
 
-This means that if you manually create and initialize custom producers (using WaterDrop), these custom producers are not automatically tracked or monitored in the Web UI. They are not connected to the monitoring instruments that the Web UI uses to track events and states of the producers.
+The only producers not picked up automatically are those created **before** the Web UI is enabled (other than `Karafka.producer` and the Web UI producer), because they already exist by the time the Web UI starts listening for newly configured producers. In the vast majority of setups the Web UI is enabled from `karafka.rb`, before any of your own producers are built, so this is a non-issue.
 
-To have these custom producers tracked in the Karafka Web UI, you need to subscribe the appropriate listeners to them manually. This is achieved by using the following code:
+If you do create a producer before enabling the Web UI, subscribe the tracking listeners to it manually after enabling. Only do this for such pre-enable producers; producers created after enabling are already subscribed, and subscribing them again would report their errors twice:
 
 ```ruby
 MY_CUSTOM_PRODUCER = WaterDrop::Producer.new

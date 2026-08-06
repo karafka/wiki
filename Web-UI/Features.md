@@ -166,15 +166,7 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 !!! note "Tracking Errors From Your Own Producers"
 
-    Production errors are tracked automatically for `Karafka.producer`, the Web UI producer, and **any additional producer you create after `Karafka::Web.enable!` has run**. The Web UI hooks into WaterDrop's global monitor and instruments each new producer as it is built, so secondary, transactional, or per-topic producers are covered without any extra wiring.
-
-    A producer you build **before** the Web UI is enabled (and that is neither `Karafka.producer` nor the Web UI producer) is not picked up automatically, because it already exists by the time the Web UI starts listening. The simplest fix is to enable the Web UI before creating such producers. If you cannot, subscribe the Web UI producer listeners to it by hand after enabling:
-
-    ```ruby
-    Karafka::Web.config.tracking.producers.listeners.each do |listener|
-      my_producer.monitor.subscribe(listener)
-    end
-    ```
+    Production errors are tracked automatically for `Karafka.producer`, the Web UI producer, and any additional producer you create after `Karafka::Web.enable!` has run. Only producers created **before** the Web UI is enabled need to be subscribed manually. See [Monitoring Non-Default Producer Instances](Web-UI-Configuration#monitoring-non-default-producer-instances) for details.
 
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
 - `Process name` - Name of the process on which the error occurred.
