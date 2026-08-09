@@ -200,6 +200,79 @@ karafka.produce_to(
 
     Use `#produce_to` when you have multiple consumer groups subscribing to the same topic. For single-consumer scenarios, the standard `#produce` method works as expected.
 
+### Testing Abstract and Base Consumer Classes
+
+The `karafka-testing` helpers build consumer instances by resolving them **through your routing**. The `#consumer_for` method looks up a topic by name in `Karafka::App.routes` and then instantiates the consumer assigned to that topic. Because of this, you cannot instantiate a topic-less abstract base consumer (for example, an `ApplicationConsumer` that centralizes error handling, metrics, or validation for all your consumers) directly through the helpers. A consumer becomes testable only once it is attached to a topic.
+
+There are two recommended ways to cover the shared logic that lives in an abstract base consumer.
+
+#### Approach 1: Test Shared Behavior Through a Concrete Consumer (Recommended)
+
+Since every real consumer inherits from your base class, the shared logic runs whenever any concrete consumer processes messages. Pick a representative concrete consumer and assert the shared behavior there. When the same behavior is inherited by many consumers, extract it into an RSpec shared example so you can re-use it across their specs:
+
+```ruby
+# spec/support/shared_examples/an_application_consumer.rb
+RSpec.shared_examples 'an application consumer' do
+  it 'wraps consumption with the shared error handling' do
+    karafka.produce({ 'malformed' => true }.to_json)
+
+    expect { consumer.consume }.not_to raise_error
+    expect(ErrorTracker).to have_received(:track)
+  end
+end
+
+RSpec.describe OrdersConsumer do
+  subject(:consumer) { karafka.consumer_for(:orders) }
+
+  it_behaves_like 'an application consumer'
+end
+```
+
+This keeps your assertions close to how the code actually runs in production, where the base class is never used in isolation.
+
+#### Approach 2: Route a Dedicated Test-Only Topic
+
+When you want to exercise the base class in isolation, define a small concrete subclass that only satisfies the abstract contract (typically just an empty `#consume`) and attach it to a test-only topic in your routing. You can then build it with `#consumer_for` like any other consumer:
+
+```ruby
+# spec/support/consumers/spec_application_consumer.rb
+class SpecApplicationConsumer < ApplicationConsumer
+  # We only need the inherited behavior; the concrete implementation is a no-op.
+  def consume; end
+end
+```
+
+```ruby
+class KarafkaApp < Karafka::App
+  routes.draw do
+    # ... your real topics
+
+    # Test-only topic used solely to exercise ApplicationConsumer's shared logic
+    topic :spec_application_consumer do
+      consumer SpecApplicationConsumer
+    end
+  end
+end
+```
+
+```ruby
+RSpec.describe SpecApplicationConsumer do
+  subject(:consumer) { karafka.consumer_for(:spec_application_consumer) }
+
+  before { karafka.produce({ 'malformed' => true }.to_json) }
+
+  it 'tracks errors coming from the shared logic' do
+    consumer.consume
+
+    expect(ErrorTracker).to have_received(:track)
+  end
+end
+```
+
+!!! note "Why a Topic Is Required"
+
+    `#consumer_for` resolves consumers via `Karafka::App.routes` rather than instantiating an arbitrary class. Attaching a minimal subclass to a dedicated topic is the intended way to test base-class behavior in isolation while keeping the setup consistent with how Karafka builds consumers at runtime.
+
 ### Testing Messages Production (Producer)
 
 When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer`, but will buffer them internally.
