@@ -518,6 +518,10 @@ The `#produce_to` method accepts the same parameters as `#produce` for message m
 )
 ```
 
+!!! note "Testing Abstract Consumers With Minitest"
+
+    The same approach described in the [Testing Abstract and Base Consumer Classes](#testing-abstract-and-base-consumer-classes) section applies to Minitest. Because `#consumer_for` resolves consumers through your routing, cover the shared logic through a concrete consumer or route a dedicated test-only topic to a minimal subclass of your base consumer.
+
 ### Testing Messages Production (Producer)
 
 When running Minitest, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
