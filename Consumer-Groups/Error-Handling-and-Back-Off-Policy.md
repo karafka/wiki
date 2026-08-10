@@ -70,9 +70,9 @@ Understand how Karafka handles retries for different methods in the context of e
       <td>Retries are not applicable, as this method indicates the stopping of the process. Retrying during shutdown does not align with its purpose.</td>
     </tr>
     <tr>
-      <td><code>#tick</code></td>
+      <td><code>#tick</code> (Pro)</td>
       <td>No</td>
-      <td>Since this method is invoked frequently, retries are unnecessary and could lead to inefficiencies and redundancy.</td>
+      <td>Available via Karafka Pro's Periodic Jobs; not invoked on OSS consumers. Since this method is invoked frequently, retries are unnecessary and could lead to inefficiencies and redundancy.</td>
     </tr>
     <tr>
       <td><code>#eofed</code></td>
