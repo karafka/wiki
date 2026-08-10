@@ -172,7 +172,7 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 - `Process name` - Name of the process on which the error occurred.
 - `Error` - Error type.
 - `Occurred at` - Moment in time when the error occurred.
-- `Backtrace` (Pro only) - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error).
+- `Backtrace` - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
