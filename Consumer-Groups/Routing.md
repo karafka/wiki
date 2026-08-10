@@ -334,7 +334,7 @@ Within each module, you can define a Karafka routing block using the #draw metho
 
 ```ruby
 # app/modules/orders/karafka_routes.rb
-Karafka.routing.draw do
+Karafka::App.routes.draw do
   topic :order_created do
     consumer Orders::OrderCreatedConsumer
   end
@@ -347,7 +347,7 @@ end
 
 ```ruby
 # app/modules/users/karafka_routes.rb
-Karafka.routing.draw do
+Karafka::App.routes.draw do
   topic :user_registered do
     consumer Users::UserRegisteredConsumer
   end
