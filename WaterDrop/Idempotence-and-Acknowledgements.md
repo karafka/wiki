@@ -14,7 +14,7 @@ It explores the roles of idempotence, acknowledgments, and relevant configuratio
 Producer idempotence ensures **exactly-once semantics (EOS)** by tracking a unique message ID for each message and preventing duplicate writes even if the producer retries. To enable idempotence in WaterDrop, configure the producer with `enable.idempotence` set to `true`:
 
 ```ruby
-WaterDrop.setup do |config|
+producer = WaterDrop::Producer.new do |config|
   config.kafka = {
     # Other settings...
     'enable.idempotence': true,
