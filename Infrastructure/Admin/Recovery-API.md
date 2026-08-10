@@ -1,6 +1,9 @@
-# Admin Recovery API
+# Admin Recovery API (Pro)
 
 When a Kafka group coordinator enters a `FAILED` state, all operations for the affected consumer groups return `not_coordinator`, leaving consumers stuck in `initializing` indefinitely - even after pod restarts. This page describes how to diagnose coordinator failures, assess their blast radius, and either mitigate the impact immediately or recover committed offsets and restore normal operation using `Karafka::Admin::Recovery`.
+
+!!! warning "Requires a Karafka Pro License"
+    `Karafka::Admin::Recovery` is a Karafka Pro feature. Without a valid Pro license, the `Karafka::Admin::Recovery` constant is not defined, and every example on this page raises `NameError`. See [Getting Started with Karafka Pro](Pro-Getting-Started) for licensing details.
 
 ## Background: Coordinator Failures
 
