@@ -76,6 +76,7 @@ The Karafka process can be in a few states during its lifecycle, and each has a 
 
 - `initializing` - The initial state of the application before configuration or routes are loaded.
 - `initialized` - The process is configured in this state but has yet to start listeners and workers.
+- `supervising` - The [Swarm](Infrastructure-Swarm-Multi-Process) supervisor process's own state. The supervisor never enters `running` since it does not open any Kafka connections itself; it stays `supervising` while it forks and monitors its child processes, until final shutdown.
 - `running` - The process started Kafka clients and is polling data.
 - `quieting` - The process received the `TSTP` signal and is finishing the current work.
 - `quiet` - The process no longer processes work and will keep running in quiet mode.
