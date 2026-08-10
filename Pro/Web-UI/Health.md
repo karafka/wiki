@@ -37,7 +37,7 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
 
     - **Scenario**: Consumption is at risk but is still moving forward. This happens when there is still data before reaching the LSO, so the consumer is progressing.
     - **Web UI Indication**: The partition will be highlighted in yellow.
-    - **LSO State**: "At risk"
+    - **LSO State**: "at_risk"
 
     ![karafka web ui LSO warning](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso1.png)
 
@@ -45,7 +45,7 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
 
     - **Scenario**: Consumption is halted and cannot move forward. This situation arises when more data is available on the topic, but it lies beyond the LSO, and the consumer has already reached it.
     - **Web UI Indication**: The partition will be highlighted in red, emphasizing that it is stopped.
-    - **LSO State**: "Stopped".
+    - **LSO State**: "stopped".
 
     ![karafka web ui LSO error](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png)
 
