@@ -160,11 +160,12 @@ end
 
 The following options are available under the `config.polling` namespace:
 
-| Option                | Description                                                                                        | Default   |
-|-----------------------|----------------------------------------------------------------------------------------------------|-----------|
-| `polling.mode`        | Polling mode to use: `:fd` (`IO.select` multiplexing) or `:thread` (dedicated thread per producer) | `:fd`     |
-| `polling.fd.max_time` | Maximum time in milliseconds spent polling a single producer per cycle in FD mode                  | `100`     |
-| `polling.poller`      | Custom `WaterDrop::Polling::Poller` instance for callback isolation                                | `nil`     |
+| Option                              | Description                                                                                                                                                  | Default |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| `polling.mode`                      | Polling mode to use: `:fd` (`IO.select` multiplexing) or `:thread` (dedicated thread per producer)                                                           | `:fd`   |
+| `polling.fd.max_time`               | Maximum time in milliseconds spent polling a single producer per cycle in FD mode                                                                            | `100`   |
+| `polling.fd.periodic_poll_interval` | Maximum time in milliseconds an idle producer can go without being polled in FD mode, so its OAuth token refresh and statistics callbacks still fire on time | `1000`  |
+| `polling.poller`                    | Custom `WaterDrop::Polling::Poller` instance for callback isolation                                                                                          | `nil`   |
 
 ### Priority Differentiation
 
