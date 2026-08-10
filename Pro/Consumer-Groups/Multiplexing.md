@@ -146,6 +146,12 @@ The following configuration options are available:
       <td><code>nil</code> (defaults to half of <code>max</code> or <code>min</code> if <code>min</code> is set)</td>
       <td>Specifies how many listeners should be started during the boot process by default in the dynamic mode. If not set, it picks half of <code>max</code> as long as possible. Otherwise, it goes with <code>min</code>.</td>
     </tr>
+    <tr>
+      <td><code>scale_delay</code></td>
+      <td>Integer</td>
+      <td>60000</td>
+      <td>Number of milliseconds to delay before applying a scale operation to a consumer group. This is the configurable delay behind the "at least one minute" pacing described below.</td>
+    </tr>
   </tbody>
 </table>
 
