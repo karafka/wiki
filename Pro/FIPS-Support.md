@@ -25,7 +25,7 @@ FIPS 140-2 specifies four security levels:
 - **Level 3**: Adds requirements for physical tamper-resistance and identity-based authentication
 - **Level 4**: Adds stringent physical security and environmental protection
 
-Karafka supports FIPS 140-2 Level 3 requirements in specific configurations, as librdkafka supports identity-based authentication through certificates, and Karafka Web UI can be configured with identity-based authentication. Additionally, Karafka's integrity verification mechanisms provide a form of tamper resistance.
+Karafka's cryptographic operations and identity-based authentication (through certificates via librdkafka, and through Karafka Web UI's customizable authentication) can support Level 1 and Level 2 requirements. Level 3's physical tamper-resistance requirement is outside Karafka's scope: it applies to the cryptographic module's hardware, not to application-level message integrity checks such as Karafka's fingerprinting, and is instead the responsibility of your Kafka infrastructure and its host environment.
 
 ## Karafka's FIPS Implementation
 

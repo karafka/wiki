@@ -37,10 +37,12 @@ WaterDrop.monitor.subscribe('producer.configured') do |event|
   puts "Producer configured: #{producer.id}"
 
   # Example: Add middleware after producer is fully configured
-  producer.middleware.append do |message|
-    # Custom message processing logic
-    message
-  end
+  producer.middleware.append(
+    lambda do |message|
+      # Custom message processing logic
+      message
+    end
+  )
 
   # Example: Set up monitoring or other integrations
   setup_monitoring_for_producer(producer)
@@ -74,10 +76,12 @@ WaterDrop.monitor.subscribe('producer.configured') do |event|
   producer = event[:producer]
 
   # Add logging middleware to every producer
-  producer.middleware.append do |message|
-    puts "Producing message to topic: #{message[:topic]}"
-    message
-  end
+  producer.middleware.append(
+    lambda do |message|
+      puts "Producing message to topic: #{message[:topic]}"
+      message
+    end
+  )
 
   # Add message transformation middleware
   producer.middleware.append(MessageEnricherMiddleware.new)

@@ -2,7 +2,7 @@ The Karafka Web UI branding feature allows you to customize the UI to reflect it
 
 The branding configuration is done through the `config.ui.branding`. You can adjust the following settings:
 
-- `type`: Defines the styling for the branding notice. It aligns with our UI styling options and can be set to one of the following: `:info`, `:error`, `:warning`, `:success`, `:primary`. The default value is `:info`.
+- `type`: Defines the styling for the branding notice. It aligns with our UI styling options and can be set to one of the following: `:info`, `:error`, `:warning`, `:success`, `:primary`, `:secondary`. The default value is `:info`.
 
 - `label`: A string that serves as the environment label (e.g., "Production" or "Staging"). This label is displayed below the logo in the Web UI. To disable the label, set this to `false`. The default value is `false`.
 
