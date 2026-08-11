@@ -865,9 +865,9 @@ Karafka's monitor can be replaced or wrapped to add custom instrumentation while
 class CustomMonitor < ::Karafka::Instrumentation::Monitor
   # Events where we want custom handling
   INTERCEPTED_EVENTS = %w[
+    consumer.consume
     consumer.consumed
-    consumer.heartbeat
-    consumer.polling.started
+    connection.listener.fetch_loop
   ].freeze
 
   def instrument(event_id, payload = EMPTY_HASH, &block)
