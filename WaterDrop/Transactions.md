@@ -425,7 +425,7 @@ Listeners can subscribe to these events, which integrate with Karafka and WaterD
 
 !!! warning "Event Subscription with Multiple Producers"
 
-    In setups using WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. WaterDrop provides global instrumentation events that allow you to subscribe to all producers automatically. This eliminates the need to manually subscribe to each producer instance. Failure to subscribe to each individual producer (when not using global events) can result in missing critical transaction-related events.
+    In setups using WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. Transaction events (`transaction.*`) are only ever emitted per-producer-instance -- they are not available on `WaterDrop.monitor`, which only supports class-level producer and connection pool lifecycle events. To avoid subscribing to every producer by hand, attach your transaction listeners from inside a global `producer.created` subscription instead, as shown in Option 2 below. Failure to subscribe to each individual producer can result in missing critical transaction-related events.
 
 ```ruby
 # Option 1: Subscribe to individual producer instances (traditional approach)
@@ -447,17 +447,22 @@ producer.monitor.subscribe('transaction.aborted') do |_event|
   puts "Wow, transaction just got aborted!"
 end
 
-# Option 2: Use global instrumentation to automatically capture events from all producers
-WaterDrop.monitor.subscribe('transaction.started') do |_event|
-  puts "Global: Transaction started on any producer"
-end
+# Option 2: Automatically attach transaction listeners to every producer as it's created,
+# instead of subscribing to each instance manually
+WaterDrop.monitor.subscribe('producer.created') do |event|
+  producer = event[:producer]
 
-WaterDrop.monitor.subscribe('transaction.committed') do |_event|
-  puts "Global: Transaction committed on any producer"
-end
+  producer.monitor.subscribe('transaction.started') do |_event|
+    puts "Global: Transaction started on any producer"
+  end
 
-WaterDrop.monitor.subscribe('transaction.aborted') do |_event|
-  puts "Global: Transaction aborted on any producer"
+  producer.monitor.subscribe('transaction.committed') do |_event|
+    puts "Global: Transaction committed on any producer"
+  end
+
+  producer.monitor.subscribe('transaction.aborted') do |_event|
+    puts "Global: Transaction aborted on any producer"
+  end
 end
 ```
 
