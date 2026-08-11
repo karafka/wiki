@@ -91,7 +91,7 @@ Upon a group rebalance, there are three scenarios affecting the paused partition
 
 Using advanced rebalance strategies is recommended when using Long-Running Jobs. This increases overall stability by not triggering revocation of partitions upon rebalances when partitions would be re-assigned back.
 
-**Recommended (Kafka 4.0+ with KRaft):** Use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol):
+**Recommended (Kafka 4.0+ with KRaft):** Use the next-generation consumer group protocol (KIP-848):
 
 ```ruby
 class KarafkaApp < Karafka::App

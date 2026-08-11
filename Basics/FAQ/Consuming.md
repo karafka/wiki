@@ -67,7 +67,7 @@ This behavior can occur if you are using blocking `mark_as_consumed!` method and
 
 !!! tip "Consider KIP-848 for Improved Rebalancing"
 
-    If you are using Kafka 4.0+ with KRaft mode, consider migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
+    If you are using Kafka 4.0+ with KRaft mode, consider migrating to the next-generation consumer group protocol (KIP-848), which offers up to 20x faster rebalances and eliminates many classic protocol limitations.
 
 ## What will happen with uncommitted offsets during a rebalance?
 
@@ -261,7 +261,7 @@ The assignment strategy is not a one-size-fits-all solution and can be changed b
 
 It is important to consider your Kafka broker version, particular use case, the number of consumers, and the nature of your data when choosing your assignment strategy.
 
-For Kafka 4.0+ with KRaft mode, you can also use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
+For Kafka 4.0+ with KRaft mode, you can also use the next-generation consumer group protocol (KIP-848) with `group.protocol: 'consumer'`, which offers significantly improved rebalance performance.
 
 ## Why can't I see the assignment strategy/protocol for some Karafka consumer groups?
 

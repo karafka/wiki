@@ -328,7 +328,7 @@ end
 
 !!! warning "Always Use Advanced Rebalance Strategy with Dynamic Mode"
 
-    An advanced rebalance strategy ([KIP-848](Kafka-New-Rebalance-Protocol) or `cooperative-sticky`) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
+    An advanced rebalance strategy (KIP-848 or `cooperative-sticky`) is strongly recommended for optimal performance in dynamic mode. Without it, every change in connection count (upscaling or downscaling) will trigger a consumer group-wide rebalance, potentially causing processing delays.
 
     These strategies minimize disruptions by allowing more gradual and efficient rebalancing, ensuring smoother operation and more consistent throughput.
 

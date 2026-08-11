@@ -321,5 +321,5 @@ Before upgrading, review the [upgrade guides](Upgrades-Upgrading) for any breaki
 - [Debugging](Infrastructure-Debugging) - Systematic approach to debugging consumer processing issues
 - [Upgrading Karafka](Upgrades-Upgrading) - Upgrade strategies, best practices, and recommendations for staying current
 - [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) - Current support status of each Karafka release series
-- [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol) - The next-generation rebalance protocol; requires a Kafka 4.0+ broker and librdkafka 2.12.0+ (GA as of librdkafka 2.12)
-- [librdkafka Configuration](Librdkafka-Configuration) - Reference for all librdkafka configuration properties including `partition.assignment.strategy`, `group.instance.id`, and `auto.offset.reset`
+- New Rebalance Protocol (KIP-848) - The next-generation rebalance protocol; requires a Kafka 4.0+ broker and librdkafka 2.12.0+ (GA as of librdkafka 2.12)
+- librdkafka Configuration - Reference for all librdkafka configuration properties including `partition.assignment.strategy`, `group.instance.id`, and `auto.offset.reset`

@@ -20,7 +20,7 @@ KRaft provides substantial operational improvements: support for up to 2 million
 
 When upgrading to Kafka 4.0, ensure all brokers and clients are at version 2.1+ first, and migrate from MirrorMaker 1 to MirrorMaker 2 beforehand. Older message formats (v0/v1) were removed in 4.0.
 
-The [new consumer group protocol](Kafka-New-Rebalance-Protocol) (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available - worth enabling once your cluster supports it.
+The new consumer group protocol (`group.protocol=consumer`) delivers up to 20x faster rebalancing when available - worth enabling once your cluster supports it.
 
 !!! warning "Share Groups Are Preview Only"
 
@@ -345,7 +345,7 @@ Different providers have distinct trade-offs that affect operational flexibility
 
 - [Kafka Topic Configuration](Kafka-Topic-Configuration) - Per-topic settings including retention, replication, and compaction
 - [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - Cluster-level broker settings and defaults
-- [New Consumer Group Protocol](Kafka-New-Rebalance-Protocol) - Faster rebalancing with the new consumer protocol
+- New Consumer Group Protocol - Faster rebalancing with the new consumer protocol
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Implementing DLQ patterns in Karafka
 - [Idempotence and Acknowledgements](WaterDrop-Idempotence-and-Acknowledgements) - Producer durability settings and acks configuration

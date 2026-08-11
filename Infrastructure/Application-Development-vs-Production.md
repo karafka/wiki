@@ -66,7 +66,7 @@ Topics that are automatically created because of `allow.auto.create.topics` are 
 
 Whenever you do a rolling deployment of `N` processes, expect `N` rebalances to occur. Rebalances can impact the performance and stability of your Kafka cluster. However, using the `cooperative-sticky` rebalance strategy or the next-generation consumer protocol (KIP-848) can significantly mitigate these issues.
 
-For Kafka 4.0+ with KRaft mode, the [next-generation consumer group protocol](Kafka-New-Rebalance-Protocol) is recommended:
+For Kafka 4.0+ with KRaft mode, the next-generation consumer group protocol is recommended:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -116,7 +116,7 @@ end
 
 For production environments, using advanced rebalance strategies significantly improves performance and stability during consumer group changes.
 
-**Recommended (Kafka 4.0+ with KRaft):** Use the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) for rebalances with minimal disruption:
+**Recommended (Kafka 4.0+ with KRaft):** Use the next-generation consumer group protocol (KIP-848) for rebalances with minimal disruption:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -169,7 +169,7 @@ end
 
 Whether changing the `partition.assignment.strategy` (classic protocol) or migrating to/from the `group.protocol` (KIP-848), rebalance protocol changes require careful coordination.
 
-**Note:** Migrating to the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol) **does** support rolling upgrades. See the migration guide for details.
+**Note:** Migrating to the next-generation consumer group protocol (KIP-848) **does** support rolling upgrades. See the migration guide for details.
 
 When you switch between classic protocol assignment strategies, be aware that:
 
@@ -388,7 +388,7 @@ This directly interacts with the [forceful shutdown](Infrastructure-Signals-and-
 
 There is no way to make the classic/cooperative protocols skip the group-wide rebalance on member changes - so mitigating rebalance storms during deployments comes down to the following approaches, in rough order of effectiveness:
 
-1. **Migrate to the KIP-848 consumer protocol.** The [new rebalance protocol](Kafka-New-Rebalance-Protocol) moves coordination to the broker and rebalances incrementally in the background, which is the only option that structurally removes the storm. This is the recommended long-term fix on Kafka 4.0+.
+1. **Migrate to the KIP-848 consumer protocol.** The new rebalance protocol moves coordination to the broker and rebalances incrementally in the background, which is the only option that structurally removes the storm. This is the recommended long-term fix on Kafka 4.0+.
 
 1. **Use static group membership.** Assigning a stable `group.instance.id` per process lets a restarting consumer rejoin with its previous identity, so a quick restart within the broker's `session.timeout.ms` does **not** trigger a rebalance at all. See [Static Group Membership Usage](#static-group-membership-usage) below. On Kubernetes this usually means running consumers as a `StatefulSet` (or otherwise deriving a stable, unique per-pod identity) rather than a `Deployment`.
 
@@ -398,7 +398,7 @@ There is no way to make the classic/cooperative protocols skip the group-wide re
 
 !!! warning "KIP-848 Version Requirements"
 
-    If you adopt KIP-848 to solve this, make sure your Kafka brokers are on a version beyond the critical bug [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862), which could leave a group stuck in `CompletingRebalance`. See the [New Rebalance Protocol](Kafka-New-Rebalance-Protocol#requirements) documentation for the full requirements.
+    If you adopt KIP-848 to solve this, make sure your Kafka brokers are on a version beyond the critical bug [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862), which could leave a group stuck in `CompletingRebalance`. See the New Rebalance Protocol documentation for the full requirements.
 
 ### Monitoring Forceful Shutdowns
 

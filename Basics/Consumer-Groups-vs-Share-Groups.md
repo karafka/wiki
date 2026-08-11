@@ -88,7 +88,7 @@ For more details, see the [Offset Management](https://karafka.io/docs/Offset-man
 
 When a consumer joins or leaves a consumer group, Kafka triggers a **rebalance** to redistribute partitions among the remaining members. During a rebalance, consumption pauses across all members of the group while partitions are reassigned.
 
-Karafka supports the cooperative-sticky assignment strategy and the [next-generation consumer group protocol (KIP-848)](https://karafka.io/docs/Kafka-New-Rebalance-Protocol/), which reduces rebalance disruption by allowing incremental partition migration instead of a full stop-the-world pause. However, rebalancing remains an inherent characteristic of consumer groups that can temporarily impact throughput.
+Karafka supports the cooperative-sticky assignment strategy and the next-generation consumer group protocol (KIP-848), which reduces rebalance disruption by allowing incremental partition migration instead of a full stop-the-world pause. However, rebalancing remains an inherent characteristic of consumer groups that can temporarily impact throughput.
 
 ### Scaling Beyond Partition Count
 
