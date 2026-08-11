@@ -211,7 +211,7 @@ Karafka uses multiple threads to consume and process data, allowing operations a
 
 - **Subscription Groups**: You can set up multiple subscription groups within a single consumer group. Each subscription group can subscribe to different topics, enabling parallel data fetching within the same consumer group.
 
-- **Configuration**: Ensure your settings like `max.partition.fetch.bytes` and `max.poll.records are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
+- **Configuration**: Ensure your settings like `max.partition.fetch.bytes` and `max_messages` are optimized based on your message size and throughput requirements. This helps in fetching data efficiently from multiple partitions.
 
 By properly configuring consumer and subscription groups and optimizing Kafka connection settings, you can achieve effective parallel data processing in Karafka.
 
