@@ -70,10 +70,6 @@ The `join_state` field reflects the internal state of the librdkafka consumer gr
       <td>SyncGroup request sent to the broker (follower path); awaiting the group leader's partition assignment.</td>
     </tr>
     <tr>
-      <td><code>wait-assn</code></td>
-      <td>Waiting for the partition assignment to be delivered. Appears in older librdkafka versions.</td>
-    </tr>
-    <tr>
       <td><code>wait-assign-call</code></td>
       <td>Assignment received from the broker; waiting for the application's assign callback to complete before consumption can begin.</td>
     </tr>
