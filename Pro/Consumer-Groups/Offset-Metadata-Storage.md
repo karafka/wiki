@@ -183,10 +183,10 @@ In scenarios where you need to retrieve offset metadata outside of the consumer 
 
 As long as the current process retains the assignment of the given topic partition, you can retrieve the offset metadata from places other than the consumer instance. This means that even in filters or other parts of your Karafka application, you can access the metadata associated with any offset, ensuring a cohesive processing flow.
 
-To do so, you need to use the `Karafka::Pro::Processing::OffsetMetadata::Fetcher` object as follows:
+To do so, you need to use the `Karafka::Pro::Processing::ConsumerGroups::OffsetMetadata::Fetcher` object as follows:
 
 ```ruby
-offset_metadata = Karafka::Pro::Processing::OffsetMetadata::Fetcher.find(
+offset_metadata = Karafka::Pro::Processing::ConsumerGroups::OffsetMetadata::Fetcher.find(
   # Karafka::Routing::Topic expected and NOT a string
   topic,
   # Partition id integer: 0, 1, 2, etc
