@@ -208,14 +208,12 @@ The correct approach to scaling consumers is to run multiple processes all confi
 # This example illustrates incorrect setup
 class KarafkaApp < Karafka::App
   routes.draw do
-    topic :orders do
-      # different group name for each process
-      # this will start processing from beginning each time new
-      # karafka process starts
-      consumer_group "app_group_#{Process.pid}" do
-        topic :orders do
-          consumer OrdersConsumer
-        end
+    # different group name for each process
+    # this will start processing from beginning each time new
+    # karafka process starts
+    consumer_group "app_group_#{Process.pid}" do
+      topic :orders do
+        consumer OrdersConsumer
       end
     end
   end
