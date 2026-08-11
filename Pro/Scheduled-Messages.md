@@ -587,9 +587,9 @@ When using external producers to schedule messages, follow a specific header for
 
 - `schedule_target_topic`: Defines the Kafka topic to which the message should be dispatched when its scheduled time arrives.
 
-- `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
+Karafka recognizes a message as a valid schedule only if it carries at least 4 of these required headers. Additional optional headers can include:
 
-Additional optional headers can include:
+- `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
 
 - `schedule_target_partition`: If specified, directs the message to a particular partition within the target topic. This can be crucial for maintaining order or handling specific partitioning strategies.
 
