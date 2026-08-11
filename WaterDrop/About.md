@@ -15,7 +15,7 @@ It:
 - Supports buffering
 - Supports producing messages to multiple clusters
 - Supports multiple delivery policies
-- Works with Kafka `1.0+` and Ruby `2.7+`
+- Works with Kafka `1.0+` and Ruby `3.2+`
 - Works with and without Karafka
 
 Visit the [Getting Started](WaterDrop-Getting-Started) page for instructions on installing, configuring, and using WaterDrop.
