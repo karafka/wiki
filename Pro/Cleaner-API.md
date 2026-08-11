@@ -106,7 +106,7 @@ The examples provided here illustrate the memory management across three styles 
 
 2. **Immediate**: This method first invokes the `#payloads` function, deserializing all messages before any further processing occurs. This pre-deserialization can influence the overall memory consumption as all messages get loaded into memory up front.
 
-3. **Cleaned**: This processing style uses the `#each` loop but with an added parameter `cleaned: true`. This ensures that after each message is processed, its payload is promptly cleaned from memory, thus potentially reducing memory spikes and promoting efficient memory use.
+3. **Cleaned**: This processing style uses the `#each` loop but with an added parameter `clean: true`. This ensures that after each message is processed, its payload is promptly cleaned from memory, thus potentially reducing memory spikes and promoting efficient memory use.
 
 For these examples, the primary metric used to measure memory consumption is RSS or Resident Set Size. RSS represents the portion of a process's memory that is held in RAM. This measurement clearly indicates the actual memory footprint of the process during its execution. In the context of these examples, the RSS value is displayed in megabytes (MBs).
 
