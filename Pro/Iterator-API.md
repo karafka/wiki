@@ -110,14 +110,16 @@ To do so, you need to provide the list of the partitions with the initial offset
 # Get 100 most recent messages for partition 0
 # Get 10 000 most recent messages for partition 5
 # Get messages from last 60 seconds from partition 7
-# Get messages from partition 9, resuming from this consumer group's committed offset
+# Get messages from partition 9, resuming from Karafka's admin group committed offset
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => {
       0 => -100,
       5 => -10_000,
       7 => Time.now - 60,
-      # `true` resolves to the committed offset for this consumer group, not the beginning
+      # `true` resolves to the committed offset for Karafka's shared admin group (`karafka_admin`
+      # by default, configurable via `config.admin.group_id`), not the beginning. The iterator
+      # does not join or use any of your application's own consumer groups.
       9 => true
     }
   }
