@@ -176,11 +176,11 @@ end
 
 When using the `#seek` API in Karafka, understand the behavior of offsets and how this method interacts with them. The `#seek` method lets you move the consumer's offset to a specific position within a topic's partition. This capability is essential for controlling exactly where the consumer begins or resumes reading messages in the partition.
 
-By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is not reset. This means that the position to which you are seeking will not automatically update the current offset in memory.
+By default, when you invoke the `#seek` method, the in-memory offset position (also known as the seek offset) is reset. This means that the position to which you are seeking will automatically update the current offset in memory.
 
 Additionally, Karafka implements a safeguard to ensure data consistency and integrity. By default, it prevents committing offsets earlier than the highest offset committed on a consumer instance. This mechanism helps avoid scenarios where a consumer might read and process messages out of order, potentially leading to data duplication or loss.
 
-To address scenarios where you need to explicitly move the consumer's offset and update the in-memory position, the `#seek` method accepts an additional flag: `reset_offset`. When this flag is set to true, Karafka will move the consumer to the specified location and update the in-memory offset to match this new position.
+The `#seek` method accepts an additional flag, `reset_offset`, which is `true` by default. To move the consumer to a new location **without** updating the in-memory offset (for example, to respect the earlier-offset commit safeguard described above), set `reset_offset: false`.
 
 This is particularly useful in cases where you need to process messages from a specific point, regardless of previous commits, or when managing complex consumer behaviors that require precise control over message processing orders.
 
