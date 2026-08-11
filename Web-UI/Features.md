@@ -43,6 +43,10 @@ The following metrics are available for each consumer:
 
 ### Consumer Group Join States
 
+!!! info "Join State Is a Karafka Pro Feature"
+
+    The `join_state` field is only rendered in [Karafka Pro](https://karafka.io/#become-pro).
+
 The `join_state` field reflects the internal state of the librdkafka consumer group handler. It indicates where in the Kafka group coordination protocol the consumer currently sits. Understanding these states is useful when diagnosing rebalance delays, stalled consumers, or unexpected group membership behavior.
 
 <table>
