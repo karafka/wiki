@@ -68,7 +68,7 @@ Filter instance is created when Karafka encounters a given topic partition for t
 
     For full details and best practices, refer to the [pausing and seeking](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) documentation. Ensure you are informed before integrating these operations.
 
-By default, filters applied to messages do not alter the execution or polling behavior of Karafka. This means that even if a message is filtered out, Karafka will continue to poll for messages at the same rate. However, it is possible to alter this behavior by overwriting the `#action` method in a custom consumer. This method is responsible for executing the logic of a given message. By overwriting it, developers can modify the behavior of their Karafka application based on the result of the filtering. For example, they might choose to pause processing or resume from a particular message.
+By default, filters applied to messages do not alter the execution or polling behavior of Karafka. This means that even if a message is filtered out, Karafka will continue to poll for messages at the same rate. However, it is possible to alter this behavior by overwriting the `#action` method in your custom filter class (a subclass of the filtering API's base filter, not the consumer). By overwriting it, developers can modify the behavior of their Karafka application based on the result of the filtering. For example, they might choose to pause processing or resume from a particular message.
 
 Each action consists of three elements that need to be present in case there is expectation on non-default post-execution action:
 
