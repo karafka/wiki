@@ -185,7 +185,7 @@ If you have the `auto.create.topics.enable` set to `false` or problems running t
           <code>'cleanup.policy': 'compact'</code>
         </li>
         <li>
-          <code>'retention.ms': 60 * 60 * 1_000 # 1h</code>
+          <code>'retention.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
         </li>
         <li>
           <code>'segment.ms': 24 * 60 * 60 * 1_000 # 1 day</code>
