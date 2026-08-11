@@ -275,13 +275,13 @@ end
 
 WaterDrop provides events for monitoring connection pool lifecycle:
 
-| Event                          | Description                                     |
-|--------------------------------|-------------------------------------------------|
-| `connection_pool.created`      | Emitted when a new connection pool is created   |
-| `connection_pool.setup`        | Emitted when a connection pool is configured    |
-| `connection_pool.shutdown`     | Emitted when a connection pool shuts down       |
-| `connection_pool.reload`       | Emitted when a connection pool begins reload    |
-| `connection_pool.reloaded`     | Emitted when a connection pool reload completes |
+| Event                      | Description                                                                                                                                                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `connection_pool.created`  | Emitted when a new connection pool is created                                                                                                                                                      |
+| `connection_pool.setup`    | Emitted when a connection pool is configured                                                                                                                                                       |
+| `connection_pool.shutdown` | Emitted when a connection pool shuts down                                                                                                                                                          |
+| `connection_pool.reload`   | Emitted after the global connection pool (`WaterDrop::ConnectionPool.reload`) finishes reloading. Never fires for instance-scoped pools (`pool.reload`); use `connection_pool.reloaded` for those. |
+| `connection_pool.reloaded` | Emitted after a connection pool finishes reloading. Fires for both the global pool's underlying reload and for any instance-scoped pool's `#reload`.                                               |
 
 Subscribe to these events for monitoring:
 
