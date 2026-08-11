@@ -44,10 +44,10 @@
 
     # example outcome
     [7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 1000ms
-    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example started
+    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 started
     {"ping"=>"pong"}
     {"ping"=>"pong"}
-    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
+    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 finished in 0 ms
     ```
 
     Below is the demo of the installation process:
@@ -102,10 +102,10 @@
 
     # example outcome
     [7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 1000ms
-    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example started
+    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 started
     {"ping"=>"pong"}
     {"ping"=>"pong"}
-    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example finished in 0ms
+    [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 finished in 0 ms
     ```
 
 1. (Optional) To install and configure the Web UI, see [Getting Started with the Web UI](Web-UI-Getting-Started).
