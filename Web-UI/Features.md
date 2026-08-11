@@ -103,7 +103,7 @@ This page provides a real-time view of the jobs that are currently being process
 - `Process` - Process name where the job is running.
 - `Topic` - Topic and partition which the job is processing.
 - `Consumer` - Class of the consumer that is running.
-- `Type` - Type of work: `#consume`, `#revoke` or `#shutdown`
+- `Type` - Type of work: `#consume`, `#revoked`, `#shutdown`, `#tick`, or `#eofed`
 - `Started at` - Since when the job is running.
 
 <p align="center">
