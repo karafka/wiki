@@ -215,7 +215,7 @@ You can also assign a specific subset of partitions if you need finer control:
 routes.draw do
   topic 'my_topic' do
     consumer MyConsumer
-    assign [0, 1, 2, 3]
+    assign 0, 1, 2, 3
   end
 end
 ```
