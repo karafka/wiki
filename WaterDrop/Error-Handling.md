@@ -121,7 +121,7 @@ producer.monitor.subscribe('error.occurred') do |event|
   when 'librdkafka.dispatch_error'
     puts "Message with label: #{event[:delivery_report].label} failed to be delivered"
     ErrorsTracker.track(event[:error])
-  when
+  else
     # Track all the others
     ErrorsTracker.track(event[:error])
   end
@@ -158,7 +158,7 @@ producer.monitor.subscribe('error.occurred') do |event|
   when 'librdkafka.dispatch_error'
     puts "Message with label: #{event[:delivery_report].label} failed to be delivered"
     ErrorsTracker.track(event[:error])
-  when
+  else
     # Track all the others
     ErrorsTracker.track(event[:error])
   end
