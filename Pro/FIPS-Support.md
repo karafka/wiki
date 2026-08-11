@@ -42,7 +42,7 @@ Karafka achieves FIPS compatibility through:
 
 Karafka exclusively employs FIPS-approved cryptographic algorithms:
 
-- Hash Functions: SHA-256 only (MD5 is explicitly disabled)
+- Hash Functions: SHA-256 is the FIPS-approved choice for fingerprinting. MD5 is not blocked at the code level, but it is not FIPS-approved; use SHA-256 in FIPS-compliant deployments.
 - Symmetric Encryption: AES-128, AES-192, and AES-256
 - Asymmetric Encryption: RSA with key sizes ≥ 2048 bits
 - Random Number Generation: Uses Ruby's OpenSSL FIPS-compatible random number generators when Ruby is running in FIPS mode
