@@ -347,7 +347,7 @@ RSpec.describe UsersBuilder do
   before { created_users }
 
   it { expect(karafka.produced_messages.size).to eq(2) }
-  it { expect(karafka.produced_messages.first[:topic]).to eq('user.created') }
+  it { expect(karafka.produced_messages.first[:topic]).to eq('users_changes') }
   it { expect(karafka.produced_messages.first[:key]).to eq(created_users.first.id.to_s) }
 end
 ```
