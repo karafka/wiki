@@ -30,7 +30,7 @@ class KarafkaApp < Karafka::App
         replication_factor: 3,
         'retention.ms': 86_400_000 # 1 day in ms,
         'cleanup.policy': 'delete',
-        'compression.codec': 'gzip'
+        'compression.type': 'gzip'
       )
 
       consumer EventsConsumer
