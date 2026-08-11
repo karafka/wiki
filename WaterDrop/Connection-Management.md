@@ -88,7 +88,7 @@ For applications that send messages sporadically such as background job notifica
 # Configure for background job producer
 job_producer = WaterDrop::Producer.new do |config|
   config.id = 'background_jobs'
-  config.idle_disconnect_timeout = 300 # 5 minutes
+  config.idle_disconnect_timeout = 300_000 # 5 minutes
   config.kafka = {
     'bootstrap.servers': 'localhost:9092'
   }
