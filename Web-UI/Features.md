@@ -237,8 +237,8 @@ Each check may display one of the following statuses:
           <td>Check was not executed due to a previous check failing. This status does not necessarily mean that a specific process was halted but rather that the check could not be performed because a prior check failed.</td>
       </tr>
       <tr>
-          <td>Info</td>
-          <td>Informative message that does not perform any checks but provides relevant details.</td>
+          <td>Warning</td>
+          <td>Check passed but flagged a potential issue worth reviewing (e.g. low replication factor, incompatible schema, missing Pro subscription). Does not halt subsequent checks.</td>
       </tr>
     </tbody>
 </table>
