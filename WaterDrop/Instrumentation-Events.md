@@ -112,9 +112,11 @@ WaterDrop.monitor.subscribe('producer.configured') do |event|
   puts "Producer configured: #{producer.id}"
 
   # Example: Add middleware after producer is fully configured
-  producer.middleware.append do |message|
-    message
-  end
+  producer.middleware.append(
+    lambda do |message|
+      message
+    end
+  )
 end
 
 # All producers will now trigger the above callback
