@@ -57,7 +57,7 @@ If desired, you can even self-reference the entire message:
 message = { topic: 'my-topic', payload: 'some-data' }
 # Self reference
 message[:label] = message
-handle = produce.produce_async(message)
+handle = producer.produce_async(message)
 handle.label == message #=> true
 report = handle.wait
 report.label == message #=> true
