@@ -102,12 +102,12 @@ To operate the Karafka Web UI in the single process mode, a couple of essential 
         ```ruby
         preload_app!
 
-        @config.options[:events].after_booted do
+        @config.events.after_booted do
           ::Karafka::Embedded.start
         end
 
         # There is no `before_worker_shutdown` equivalent for single mode
-        @config.options[:events].after_stopped do
+        @config.events.after_stopped do
           ::Karafka::Embedded.stop
         end
         ```
