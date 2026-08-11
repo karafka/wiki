@@ -94,7 +94,7 @@ The Karafka Web UI has CLI (Command-Line Interface) commands to facilitate its s
         </tr>
         <tr>
             <td>reset</td>
-            <td>Removes all the Karafka topics and recreates them with the given (or default) replication factor -- it does not preserve the previous factor. Useful for fixing a wrong replication factor by passing the correct one.</td>
+            <td>Removes all the Karafka topics and recreates them with the given (or default) replication factor. It does not preserve the previous factor. Use it to fix a wrong replication factor by passing the correct value.</td>
             <td><code>karafka-web reset [--replication-factor=<value>]</code></td>
             <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
         </tr>
