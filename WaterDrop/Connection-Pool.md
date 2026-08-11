@@ -36,10 +36,10 @@ To use connection pools with WaterDrop:
 
     ```ruby
     # Basic connection pool setup
-    WaterDrop::ConnectionPool.setup(
-      size: 10,
-      timeout: 5_000
-    )
+    WaterDrop::ConnectionPool.setup(size: 10, timeout: 5_000) do |config|
+      config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+      config.deliver = true
+    end
     ```
 
 1. **Use the connection pool** to get producers and send messages:
