@@ -78,15 +78,6 @@ Karafka relies on librdkafka for Kafka communication. For FIPS compatibility, li
 - No MD5 hash functions in the build process
 - Proper verification of FIPS-compatible algorithms during runtime
 
-## Limitations and Unsupported Features
-
-When operating in FIPS mode, the following limitations apply:
-
-- Legacy Authentication Methods: Only SASL/SCRAM and SSL certificate authentication are supported
-- Custom Compression Codecs: Some compression algorithms may not be FIPS-compatible
-- Third-party Extensions: Plugins not specifically designed for FIPS environments may not function correctly
-- Custom Headers Deserializer: When using encryption features, custom headers deserializers may interfere with proper encryption/decryption
-
 ## Example Use Cases
 
 - **Government Agencies**: Agencies handling sensitive but unclassified information need to ensure all data processing systems meet FIPS requirements.
