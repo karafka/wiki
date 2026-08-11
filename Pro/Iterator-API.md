@@ -110,14 +110,14 @@ To do so, you need to provide the list of the partitions with the initial offset
 # Get 100 most recent messages for partition 0
 # Get 10 000 most recent messages for partition 5
 # Get messages from last 60 seconds from partition 7
-# Get messages from partition 9 starting from the beginning
+# Get messages from partition 9, resuming from this consumer group's committed offset
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => {
       0 => -100,
       5 => -10_000,
       7 => Time.now - 60,
-      # Below requires setting 'auto.offset.reset': 'beginning'
+      # `true` resolves to the committed offset for this consumer group, not the beginning
       9 => true
     }
   }
