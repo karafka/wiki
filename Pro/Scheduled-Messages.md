@@ -431,9 +431,13 @@ Karafka enhances monitoring capabilities by publishing regular messages to a sta
 
 The states can be:
 
+- `fresh`: The consumer received a partition assignment but has not started loading the daily schedule yet.
+
 - `loading`: Indicates that the consumer is currently refreshing the data during the daily reload or after a rebalance.
 
 - `loaded`: Signifies that all scheduled data is in memory and that dispatches proceed uninterrupted.
+
+- `stopped`: The consumer has shut down, so the reported state is no longer available.
 
 These state updates are vital for understanding the message scheduling system's real-time status, providing insights into both routine operations and any issues that may arise.
 
