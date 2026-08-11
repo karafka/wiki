@@ -30,7 +30,7 @@ class KarafkaApp < Karafka::App
     topic 'my_topic' do
       consumer MyConsumer
       # Directly assign partitions 0 and 1 to this consumer
-      assign [0, 1]
+      assign(0, 1)
     end
   end
 end
