@@ -36,6 +36,7 @@
 1. [How can I distinguish between sync and async producer errors in the `error.occurred` notification?](#how-can-i-distinguish-between-sync-and-async-producer-errors-in-the-erroroccurred-notification)
 1. [How do I produce messages to a secondary Kafka cluster?](#how-do-i-produce-messages-to-a-secondary-kafka-cluster)
 1. [Why am I seeing paired `disconnect (after ~600000ms in state UP)` and `msg_timed_out` errors on MSK or other managed Kafka?](#why-am-i-seeing-paired-disconnect-after-600000ms-in-state-up-and-msg_timed_out-errors-on-msk-or-other-managed-kafka)
+1. [Why did my producer start timing out right after upgrading EC2 instance types?](#why-did-my-producer-start-timing-out-right-after-upgrading-ec2-instance-types)
 
 ## Why am I seeing `Rdkafka::RdkafkaError (Local: Timed out (timed_out)` error when producing larger quantities of messages?
 
