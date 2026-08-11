@@ -304,7 +304,7 @@ Karafka.producer.produce_async(
 )
 ```
 
-Karafka's [Active Job](Consumer-Groups-Active-Job) adapter lets you keep the standard `UpdateProfileJob.perform_later(user_id, changes)` pattern while gaining Kafka's ordering guarantees underneath.
+Karafka's [Active Job](Consumer-Groups-Active-Job) adapter lets you keep the standard `UpdateProfileJob.perform_later(user_id, changes)` pattern, but ordering is not automatic: by default, no message key is set, so jobs are distributed without per-entity ordering. To get the ordering guarantees shown above, configure a `partitioner` via `karafka_options` so jobs for the same entity share a key.
 
 ### E-Commerce Fraud Detection With a Cancellation Window
 
