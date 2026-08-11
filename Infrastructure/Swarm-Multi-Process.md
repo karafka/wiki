@@ -261,7 +261,7 @@ Given the potential complexities and dangers associated with preloading the enti
 
 In addition to preloading for substantial memory savings, Karafka introduces a crucial phase known as "Process Warmup" right before the process starts. It occurs only in the supervisor. This phase is designed to optimize the application's readiness for forking and operation, using Ruby 3.3's `Process.warmup` feature and similar techniques in previous Ruby versions. This method signals Ruby that the application has completed booting and is now ready for forking, triggering actions such as garbage collection and memory compaction to enhance the efficiency of Copy-On-Write (CoW) mechanics in child forks.
 
-Before the warmup phase, Karafka emits a `process.before_warmup` notification, providing an ideal opportunity to eager load the application code and perform other preparatory tasks. This hook is pivotal for loading any code that benefits from being loaded once and shared across forks, thereby reducing memory usage and startup time for each child process.
+Before the warmup phase, Karafka emits an `app.before_warmup` notification, providing an ideal opportunity to eager load the application code and perform other preparatory tasks. This hook is pivotal for loading any code that benefits from being loaded once and shared across forks, thereby reducing memory usage and startup time for each child process.
 
 ```ruby
 # At the end of karafka.rb
@@ -273,7 +273,7 @@ Karafka.monitor.subscribe('app.before_warmup') do
 end
 ```
 
-The `Process.warmup` method and `process.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By using these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
+The `Process.warmup` method and `app.before_warmup` hook collectively ensure that your Karafka application is optimized for multi-process environments. By using these features, you can significantly reduce the memory footprint of your applications and streamline process management, especially in environments where memory efficiency and quick scaling are paramount.
 
 By carefully preparing for and executing the warmup phase, you ensure your Karafka applications operates optimally, benefiting from reduced memory usage and enhanced process initialization performance.
 
