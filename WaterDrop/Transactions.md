@@ -425,7 +425,7 @@ Listeners can subscribe to these events, which integrate with Karafka and WaterD
 
 !!! warning "Event Subscription with Multiple Producers"
 
-    In setups using WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. Transaction events (`transaction.*`) are only ever emitted per-producer-instance -- they are not available on `WaterDrop.monitor`, which only supports class-level producer and connection pool lifecycle events. To avoid subscribing to every producer by hand, attach your transaction listeners from inside a global `producer.created` subscription instead, as shown in Option 2 below. Failure to subscribe to each individual producer can result in missing critical transaction-related events.
+    In setups using WaterDrop's built-in [connection pool](WaterDrop-Connection-Pool) or multiple dedicated producers, remember to subscribe your event listeners to each producer instance. Each producer operates independently, so subscriptions are not automatically shared across instances. To avoid subscribing to every producer by hand, attach your transaction listeners from inside a global `producer.created` subscription instead, as shown in Option 2 below. Failure to subscribe to each individual producer can result in missing critical transaction-related events.
 
 ```ruby
 # Option 1: Subscribe to individual producer instances (traditional approach)
