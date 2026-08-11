@@ -55,8 +55,8 @@ The Enhanced Liveness Listener accepts several parameters to customize its behav
     <tr>
       <td><code>memory_limit</code></td>
       <td>Integer</td>
-      <td>nil</td>
-      <td>Max memory in MB for a process to be considered healthy. Set to <code>nil</code> to disable monitoring.</td>
+      <td><code>Float::INFINITY</code></td>
+      <td>Max memory in MB for a process to be considered healthy. Cannot be set to <code>nil</code> to disable monitoring: doing so raises an error during the health comparison. Leave at the default (effectively unlimited) to disable memory-based monitoring.</td>
     </tr>
     <tr>
       <td><code>consuming_ttl</code></td>
