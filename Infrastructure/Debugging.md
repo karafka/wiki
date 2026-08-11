@@ -552,8 +552,10 @@ Review logs and monitor hooks to spot retry loops or failures:
 
 ```ruby
 def consume
+  logger.info("retry attempt: #{attempt}") if retrying?
+
   messages.each do |message|
-    logger.info("retry attempt: #{message.attempt}") if message.retrying?
+    # process message
   end
 end
 ```
