@@ -452,6 +452,7 @@ Karafka Web UI uses `Karafka.producer` to produce state reports out of processes
 - `karafka_consumers_states`
 - `karafka_consumers_reports`
 - `karafka_consumers_metrics`
+- `karafka_consumers_commands` (only if using the [Commanding](Pro-Web-UI-Commanding) feature, Pro)
 - `karafka_errors`
 
 Without that, Karafka will **not** be able to report anything.
