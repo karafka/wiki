@@ -258,7 +258,7 @@ A poison pill message is a message that causes your consumer to fail repeatedly,
     end
     ```
 
-2. **Skip without dispatch (Pro)** - Karafka Pro's [Enhanced DLQ](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) allows skipping messages without sending them anywhere by setting `topic: false`:
+2. **Skip without dispatch** - setting `topic: false` skips messages without sending them anywhere. This is available in OSS, not just Karafka Pro:
 
     ```ruby
     dead_letter_queue(
