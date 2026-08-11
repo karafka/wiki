@@ -247,11 +247,11 @@ When a cluster-level repair is necessary, or as a fallback if the above approach
 
 This requires Kafka CLI tools (`kafka-reassign-partitions`, `kafka-leader-election`, `kafka-consumer-groups`), available in any standard Kafka distribution image such as `confluentinc/cp-kafka:8.0.2`.
 
-1. Identify the coordinator partition. Find which `__consumer_offsets` partition your group maps to. The mapping uses Java's `String#hashCode` semantics:
+1. Identify the coordinator partition. Find which `__consumer_offsets` partition your group maps to using `offsets_partition_for`, which reproduces Kafka's `Utils.abs(String#hashCode) % numPartitions` mapping:
 
     ```ruby
-    group_name = 'my-broken-group'
-    group_name.chars.reduce(0) { |h, c| (31 * h + c.ord) & 0xFFFFFFFF } % 50
+    Karafka::Admin::Recovery.offsets_partition_for('my-broken-group')
+    # => 5
     ```
 
     Then confirm the current leader and replica set:
