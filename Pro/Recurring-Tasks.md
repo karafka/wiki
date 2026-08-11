@@ -354,10 +354,10 @@ An important aspect of the Recurring Tasks feature is how it handles errors duri
 It is recommended that tasks that require retry logic, error handling, or dead-letter queue (DLQ) management be queued into a background job.
 
 ```ruby
-# example using  Karafka ActiveJob adapter
+# example using the Karafka ActiveJob adapter for retry-capable execution
 Karafka::Pro::RecurringTasks.define('1.0.0') do
   schedule(id: 'critical_operation', cron: '0 12 * * *') do
-    CriticalOperationJob.perform_async
+    CriticalOperationJob.perform_later
   end
 end
 ```
