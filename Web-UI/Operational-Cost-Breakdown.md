@@ -23,8 +23,8 @@ Understanding the specific characteristics of Web UI topics is crucial for accur
 The Web UI uses several internal topics with specific message patterns:
 
 - **`karafka_consumers_reports`**: 1 message every 5 seconds per consumer process
-- **`karafka_consumers_states`**: 1 message every 5 seconds (not per process, single aggregate message)
-- **`karafka_consumers_metrics`**: 1 message every 5 seconds (similar to states, single aggregate message)
+- **`karafka_consumers_states`**: 1 message every 2.5 seconds (not per process, single aggregate message)
+- **`karafka_consumers_metrics`**: 1 message every 2.5 seconds (similar to states, single aggregate message)
 - **`karafka_consumers_commands`**: 0 messages unless commands are sent via Web UI (1 message per command)
 - **`karafka_errors`**: 0 messages if no errors occur, 1 message per error occurrence when errors happen
 
@@ -35,7 +35,7 @@ The number of messages consumed by your regular Karafka consumers **does not dir
 - Number of consumer processes (affects reports volume)
 - Error frequency (affects error topic volume)
 - Command usage frequency (affects commands topic volume)
-- Fixed 5-second intervals for state and metrics reporting
+- Fixed 5-second intervals for reports and 2.5-second intervals for state and metrics reporting
 
 <table border="1">
     <thead>
@@ -51,7 +51,7 @@ The number of messages consumed by your regular Karafka consumers **does not dir
         </tr>
         <tr>
             <td>State Materialization</td>
-            <td>States and metrics are materialized every 5 seconds as single aggregate messages (not per process).</td>
+            <td>States and metrics are materialized every 2.5 seconds as single aggregate messages (not per process). This is twice as often as report data is produced, so the aggregated state stays close to real time.</td>
         </tr>
         <tr>
             <td>Message Size</td>
