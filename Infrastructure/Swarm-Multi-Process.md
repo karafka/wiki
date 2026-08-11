@@ -431,9 +431,13 @@ The `swarm.manager.stopping` event includes a status value, providing insight in
     <td>3</td>
     <td>Node exceeded the allocated memory limit (Pro only).</td>
   </tr>
+  <tr>
+    <td>4</td>
+    <td>Node's consumer group stayed frozen in a non-steady join state longer than <code>stability_ttl</code> (Pro only).</td>
+  </tr>
 </table>
 
-These statuses offer valuable diagnostics, enabling targeted interventions to maintain system health and performance.
+These statuses offer valuable diagnostics, enabling targeted interventions to maintain system health and performance. See [Enhanced Swarm / Multi-Process Mode](Pro-Enhanced-Swarm-Multi-Process) for the Pro-only status details and their configuration options.
 
 ### Swarm Mode in Kubernetes Clusters
 
