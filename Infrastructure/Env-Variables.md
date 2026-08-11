@@ -14,7 +14,7 @@ Karafka's behavior can be altered with the following environment variables:
     </tr>
     <tr>
       <td>KARAFKA_ENV</td>
-      <td>Karafka app expected environment. If not defined, autodetected based on <code>RAILS_ENV</code>, <code>RACK_ENV</code> with a fallback to <code>development</code>.</td>
+      <td>Karafka app expected environment. If not defined, autodetected based on <code>RACK_ENV</code>, <code>RAILS_ENV</code> (in that priority order) with a fallback to <code>development</code>.</td>
     </tr>
     <tr>
       <td>KARAFKA_BOOT_FILE</td>
