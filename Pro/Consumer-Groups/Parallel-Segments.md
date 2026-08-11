@@ -360,8 +360,8 @@ You can access segment information within your consumer:
 ```ruby
 class MyConsumer < ApplicationConsumer
   def consume
-    segment_id = consumer_group.segment_id
-    original_group = consumer_group.segment_origin
+    segment_id = topic.consumer_group.segment_id
+    original_group = topic.consumer_group.segment_origin
 
     Karafka.logger.info(
       "Processing #{messages.count} messages in segment #{segment_id} " \
@@ -616,7 +616,7 @@ class MyConsumer < ApplicationConsumer
   def consume
     # Log segment information for monitoring
     Karafka.logger.info(
-      "Segment #{consumer_group.segment_id} processing #{messages.count} messages"
+      "Segment #{topic.consumer_group.segment_id} processing #{messages.count} messages"
     )
 
     messages.each do |message|
