@@ -162,7 +162,7 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 !!! note "Tracking Errors From Your Own Producers"
 
-    Production errors are tracked automatically for `Karafka.producer`, the Web UI producer, and any additional producer you create after `Karafka::Web.enable!` has run. Only producers created **before** the Web UI is enabled need to be subscribed manually. See [Monitoring Non-Default Producer Instances](Web-UI-Configuration#monitoring-non-default-producer-instances) for details.
+    Production errors are tracked automatically for `Karafka.producer` and the Web UI's own producer. Any other producer you create needs to be subscribed manually. See [Monitoring Non-Default Producer Instances](Web-UI-Configuration#monitoring-non-default-producer-instances) for details.
 
 - `Origin` - Topic and partition from which the error comes or code location for non-consumption related errors.
 - `Process name` - Name of the process on which the error occurred.
