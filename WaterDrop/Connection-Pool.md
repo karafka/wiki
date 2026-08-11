@@ -60,6 +60,13 @@ To use connection pools with WaterDrop:
     WaterDrop::ConnectionPool.close
     ```
 
+    By default, `#close` (an alias for `#shutdown`) closes each pooled producer **gracefully**: buffered messages are flushed instead of being silently dropped, even if the broker is slow or unreachable. Pass `force: true` to force-close each producer instead, purging any messages that do not flush within the producer's max wait timeout:
+
+    ```ruby
+    # Force-close, purging any messages that don't flush in time
+    WaterDrop::ConnectionPool.close(force: true)
+    ```
+
     !!! note "Auto-Closing in Karafka Applications"
 
         When using the default connection pool within Karafka framework processes, the connection pool is automatically closed during framework shutdown, similar to how the default producer is handled. You do not need to close it manually in Karafka processes.
