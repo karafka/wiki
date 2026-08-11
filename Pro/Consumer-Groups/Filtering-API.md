@@ -44,9 +44,9 @@ end
 
 If you are looking for more extensive examples, you can check out the implementations of:
 
-- `Karafka::Pro::Processing::Filters::Delayer` - used as a part of the [Delayed Jobs](Pro-Consumer-Groups-Delayed-Topics) feature.
-- `Karafka::Pro::Processing::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) feature
-- `Karafka::Pro::Processing::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) feature.
+- `Karafka::Pro::Processing::ConsumerGroups::Filters::Delayer` - used as a part of the [Delayed Jobs](Pro-Consumer-Groups-Delayed-Topics) feature.
+- `Karafka::Pro::Processing::ConsumerGroups::Filters::Expirer` - used as a part of the [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages) feature
+- `Karafka::Pro::Processing::ConsumerGroups::Filters::Throttler` - used as a part of the [Rate Limiting](Pro-Consumer-Groups-Rate-Limiting) feature.
 
 ### Filters Lifecycle
 
