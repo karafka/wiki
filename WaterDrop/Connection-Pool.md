@@ -277,9 +277,9 @@ WaterDrop provides events for monitoring connection pool lifecycle:
 
 | Event                      | Description                                                                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `connection_pool.created`  | Emitted when a new connection pool is created                                                                                                                                                      |
-| `connection_pool.setup`    | Emitted when a connection pool is configured                                                                                                                                                       |
-| `connection_pool.shutdown` | Emitted when a connection pool shuts down                                                                                                                                                          |
+| `connection_pool.created`  | Emitted when a new connection pool instance is created (`ConnectionPool.new`), including instance-scoped pools.                                                                                    |
+| `connection_pool.setup`    | Emitted only when the global connection pool is configured via `WaterDrop::ConnectionPool.setup`; instance-scoped pools do not emit this, they emit `connection_pool.created` instead.             |
+| `connection_pool.shutdown` | Emitted when a connection pool shuts down. For the global pool, `.shutdown` fires this event twice per call: once from the underlying instance `#shutdown` it delegates to, and once from itself.  |
 | `connection_pool.reload`   | Emitted after the global connection pool (`WaterDrop::ConnectionPool.reload`) finishes reloading. Never fires for instance-scoped pools (`pool.reload`); use `connection_pool.reloaded` for those. |
 | `connection_pool.reloaded` | Emitted after a connection pool finishes reloading. Fires for both the global pool's underlying reload and for any instance-scoped pool's `#reload`.                                               |
 
