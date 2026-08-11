@@ -1,4 +1,4 @@
-Dive deep into the world of event-driven applications and supercharge your development skills with our exclusive Kafka and Karafka workshop. As part of our Enterprise offering, this live, remote, five to six hour-long event delivers a hands-on and immersive learning experience for up to 6 participants per session.
+Dive deep into the world of event-driven applications and supercharge your development skills with our exclusive Kafka and Karafka workshop. As part of our Enterprise offering, this live, remote, 4-to-5-hour event delivers a hands-on and immersive learning experience for up to 6 participants per session. Actual duration depends on team dynamics; see the [Schedule](#schedule) below for the base agenda.
 
 ## Why Invest in This Workshop?
 
