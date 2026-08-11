@@ -158,7 +158,7 @@ To test each consumer independently, use the `#produce_to` method which sends me
 
 ```ruby
 RSpec.describe AnalyticsEventsConsumer do
-  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :analytics) }
+  subject(:consumer) { karafka.consumer_for(:events, :analytics) }
 
   before do
     # Use produce_to to send messages directly to this specific consumer
@@ -171,7 +171,7 @@ RSpec.describe AnalyticsEventsConsumer do
 end
 
 RSpec.describe NotificationsEventsConsumer do
-  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :notifications) }
+  subject(:consumer) { karafka.consumer_for(:events, :notifications) }
 
   before do
     # Use produce_to to target this specific consumer
@@ -477,7 +477,7 @@ class AnalyticsEventsConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
   def setup
-    @consumer = @karafka.consumer_for(:events, consumer_group: :analytics)
+    @consumer = @karafka.consumer_for(:events, :analytics)
   end
 
   test 'processes analytics events' do
@@ -493,7 +493,7 @@ class NotificationsEventsConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
   def setup
-    @consumer = @karafka.consumer_for(:events, consumer_group: :notifications)
+    @consumer = @karafka.consumer_for(:events, :notifications)
   end
 
   test 'sends notification for signup events' do
