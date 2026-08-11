@@ -11,7 +11,7 @@ WaterDrop uses a notification system that allows you to monitor and hook into va
 
 ## Available Events
 
-Below is the complete list of instrumentation events available in WaterDrop:
+Below is a list of the instrumentation events available in WaterDrop. Depending on which WaterDrop extensions and additional engines you use, this might not be the complete list of all the events: some events are registered dynamically at runtime. Use `#available_events` on a fully loaded WaterDrop system to determine all the events you can use.
 
 
 ### Buffer Events
