@@ -195,7 +195,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic.
+Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic, with one exception: process-critical errors (`SystemExit`, `SignalException`, `NoMemoryError` by default, configurable via `config.internal.processing.critical_errors`) are never dispatched to the DLQ regardless of the `max_retries` setting. The partition is paused and the failed batch is redelivered after a restart instead.
 
 ## Disabling Dispatch
 
