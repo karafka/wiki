@@ -168,7 +168,7 @@ Here is an example of how you can use `produce_async` and handle the exception:
 ```ruby
 begin
   Karafka.producer.produce_async(topic: topic, payload: payload)
-rescue Rdkafka::RdkafkaError do |e|
+rescue Rdkafka::RdkafkaError => e
   raise unless e.code == :queue_full
 end
 ```
