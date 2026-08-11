@@ -34,7 +34,7 @@ Karafka achieves FIPS compatibility through:
 - Use of FIPS-validated cryptographic modules: Karafka uses librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
 - Secure communications: All network traffic can be encrypted using TLS/SSL with FIPS-approved algorithms
 - In-flight encryption: Data transmitted between Karafka clients and Kafka brokers uses FIPS-compatible encryption algorithms
-- At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, AES for encryption)
+- At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, RSA for encryption)
 - Identity-based authentication: Through certificate-based authentication and Karafka Web UI's customizable authentication systems
 - Integrity verification: Provides tamper resistance by validating message integrity through fingerprinting
 
@@ -43,8 +43,7 @@ Karafka achieves FIPS compatibility through:
 Karafka exclusively employs FIPS-approved cryptographic algorithms:
 
 - Hash Functions: SHA-256 only (MD5 is explicitly disabled)
-- Symmetric Encryption: AES-128, AES-192, and AES-256
-- Asymmetric Encryption: RSA with key sizes ≥ 2048 bits
+- Asymmetric Encryption: RSA with key sizes ≥ 2048 bits. This is the only encryption method Karafka's built-in at-rest encryption implements; there is no symmetric (AES) encryption in the codebase.
 - Random Number Generation: Uses Ruby's OpenSSL FIPS-compatible random number generators when Ruby is running in FIPS mode
 
 These algorithms are implemented through FIPS-validated cryptographic modules, ensuring all cryptographic operations meet federal standards.
