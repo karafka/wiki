@@ -130,7 +130,7 @@ class ComprehensiveUptimeListener
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polling messages..."
   end
 
-  def on_connection_listener_fetched(event)
+  def on_connection_listener_fetch_loop_received(event)
     listener_id = event[:caller].id
     messages_count = event[:messages_buffer].size
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polled #{messages_count} messages"
