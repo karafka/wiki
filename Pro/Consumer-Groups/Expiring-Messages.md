@@ -18,7 +18,7 @@ By filtering messages before they are partitioned and dispatched, Karafka reduce
 
 ## Enabling Expiring Messages
 
-To enable the Expiring Messages feature in Karafka, you need to add the `expire_on` option to your Karafka routing configuration. Here is an example of how to do that:
+To enable the Expiring Messages feature in Karafka, you need to add the `expire_in` option to your Karafka routing configuration. Here is an example of how to do that:
 
 ```ruby
 class KarafkaApp < Karafka::App
