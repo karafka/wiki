@@ -25,7 +25,7 @@ Karafka Web UI emphasizes strict schema management:
 - **Schema Versioning**: All topic messages in Karafka are versioned. This versioning allows for backward compatibility and clear evolution of data structures.
 
 - **Handling of Schema Changes**: In the event of schema modifications, Karafka Web UI employs a rigorous approach:
-    - **Older Schemas**: Reports with outdated schemas are ignored, prioritizing consistency over backward compatibility.
+    - **Older Schemas**: Reports with outdated schemas are migrated in-place to the current schema and their state is tracked (so the status page can still show basic upgrade reporting details), prioritizing backward compatibility over consistency. Detailed statistics aggregation is skipped for these reports, since their old structure cannot be reasoned about reliably.
 
     - **Newer Schemas**: Messages with newer schemas trigger an error in the Karafka consumer, halting data processing. This persists until the system is upgraded to handle the new schema, facilitating zero-downtime rolling upgrades.
 
