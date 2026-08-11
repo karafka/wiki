@@ -127,7 +127,7 @@ end
 The configuration block receives:
 
 - `config` - Standard WaterDrop producer configuration
-- `index` - Zero-based index of the producer in the pool (useful for unique IDs)
+- `index` - One-based index of the producer in the pool (useful for unique IDs)
 
 ## Multiple Connection Pool Instances
 
