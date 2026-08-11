@@ -117,7 +117,9 @@ iterator = Karafka::Pro::Iterator.new(
       0 => -100,
       5 => -10_000,
       7 => Time.now - 60,
-      # `true` always starts from the beginning. This group never commits offsets.
+      # `true` always starts from the beginning. This relies on
+      # 'auto.offset.reset' => 'beginning', which is the default here -- if you override
+      # settings, keep this value set.
       9 => true
     }
   }
