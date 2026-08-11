@@ -4,11 +4,11 @@ The Karafka FAQ is organized into the following categories for easier navigation
 | --- | --- | --- |
 | [Configuration](Basics-FAQ-Configuration) | Setup, environment, routing, client config, multi-cluster, SCRAM | 38 |
 | [Consuming](Basics-FAQ-Consuming) | Consumer lifecycle, offsets, rebalancing, seek, idle, revocation | 46 |
-| [Producing](Basics-FAQ-Producing) | WaterDrop, producer lifecycle, batching, async/sync, transactions | 37 |
+| [Producing](Basics-FAQ-Producing) | WaterDrop, producer lifecycle, batching, async/sync, transactions | 39 |
 | [Errors and Troubleshooting](Basics-FAQ-Errors-and-Troubleshooting) | Specific error messages, SSL/SASL, connectivity, debugging | 36 |
-| [Performance and Scaling](Basics-FAQ-Performance-and-Scaling) | Concurrency, Virtual Partitions, multiplexing, memory, latency | 28 |
+| [Performance and Scaling](Basics-FAQ-Performance-and-Scaling) | Concurrency, Virtual Partitions, multiplexing, memory, latency | 29 |
 | [Error Handling and DLQ](Basics-FAQ-Error-Handling-and-DLQ) | DLQ strategies, poison pills, retries, backoff, validation | 17 |
-| [Web UI](Basics-FAQ-Web-UI) | Web UI setup, topics, ACLs, monitoring, Datadog | 23 |
+| [Web UI](Basics-FAQ-Web-UI) | Web UI setup, topics, ACLs, monitoring, Datadog | 24 |
 
 !!! note "See Pro Docs for Pro Questions"
 
