@@ -61,14 +61,14 @@ The Enhanced Liveness Listener accepts several parameters to customize its behav
     <tr>
       <td><code>consuming_ttl</code></td>
       <td>Integer</td>
-      <td>Matches <code>max.poll.interval.ms</code></td>
-      <td>Time in ms to consider consumption hanging. Defines the max consumption time after which the supervisor should consider a process as hanging.</td>
+      <td>5 minutes (fixed)</td>
+      <td>Time in ms to consider consumption hanging. Defines the max consumption time after which the supervisor should consider a process as hanging. This is a fixed 5-minute default, not derived from <code>max.poll.interval.ms</code>. If you configure a non-default <code>max.poll.interval.ms</code>, set this explicitly too.</td>
     </tr>
     <tr>
       <td><code>polling_ttl</code></td>
       <td>Integer</td>
-      <td>Matches <code>max.poll.interval.ms</code></td>
-      <td>Max time in ms for polling. If polling does not happen often enough, the process will be considered dead.</td>
+      <td>5 minutes (fixed)</td>
+      <td>Max time in ms for polling. If polling does not happen often enough, the process will be considered dead. This is a fixed 5-minute default, not derived from <code>max.poll.interval.ms</code>. If you configure a non-default <code>max.poll.interval.ms</code>, set this explicitly too.</td>
     </tr>
     <tr>
       <td><code>stability_ttl</code></td>
