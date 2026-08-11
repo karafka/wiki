@@ -150,18 +150,18 @@ Custom styling can be configured using two settings in the Web UI configuration:
 ```ruby
 Karafka::Web.setup do |config|
   # Custom CSS configuration
-  config.ui.custom_css = '/path/to/your/custom.css'
+  config.ui.custom.css = '/path/to/your/custom.css'
   # or inline CSS
-  config.ui.custom_css = '.dashboard { background-color: #f5f5f5; }'
+  config.ui.custom.css = '.dashboard { background-color: #f5f5f5; }'
 
   # Custom JavaScript configuration
-  config.ui.custom_js = '/path/to/your/custom.js'
+  config.ui.custom.js = '/path/to/your/custom.js'
   # or inline JavaScript
-  config.ui.custom_js = 'document.addEventListener("DOMContentLoaded", () => { console.log("JS loaded"); });'
+  config.ui.custom.js = 'document.addEventListener("DOMContentLoaded", () => { console.log("JS loaded"); });'
 end
 ```
 
-Both `custom_css` and `custom_js` settings accept either:
+Both `custom.css` and `custom.js` settings accept either:
 
 - A file path to a CSS or JavaScript file
 - A string containing inline CSS or JavaScript code
