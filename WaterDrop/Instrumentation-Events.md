@@ -74,7 +74,7 @@ Below is the complete list of instrumentation events available in WaterDrop:
 To subscribe to any of these events, you can use the instrumentation monitor:
 
 ```ruby
-WaterDrop::App.monitor.subscribe('event.name') do |event|
+WaterDrop.monitor.subscribe('event.name') do |event|
   # Your custom logic here
   puts "Event: #{event.id}"
   puts "Payload: #{event.payload}"
