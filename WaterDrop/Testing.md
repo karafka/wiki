@@ -95,7 +95,7 @@ Whenever your code executes a dispatch operation, be it synchronous or asynchron
 handel = PRODUCER.produce_async(topic: 'test', payload: '123')
 
 puts handel
-#=> <WaterDrop::Clients::Dummy::Handle:... @offset=0, @partition=0, @topic="test">
+#=> <WaterDrop::Clients::Dummy::Handle:... @topic="test", @partition=0, @offset=0>
 
 report = handel.wait
 
