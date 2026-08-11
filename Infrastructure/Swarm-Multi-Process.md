@@ -399,7 +399,7 @@ Karafka introduces several event hooks specific to Swarm Mode, enhancing the obs
   <tr>
     <td><code>swarm.manager.stopping</code></td>
     <td>Supervisor</td>
-    <td>Indicates the supervisor is shutting down for reasons other than a full application shutdown.</td>
+    <td>Emitted by the supervisor when it stops a specific unresponsive child node (invalid status report or missed reporting deadline), not when the supervisor itself is shutting down.</td>
   </tr>
   <tr>
     <td><code>swarm.manager.terminating</code></td>
