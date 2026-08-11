@@ -337,7 +337,7 @@ To integrate a custom DLQ strategy, define your strategy class with the necessar
 
 ```ruby
 class OrdersDlqStrategy
-  # @param errors_tracker [Karafka::Pro::Processing::Coordinators::ErrorsTracker] errors tracker
+  # @param errors_tracker [Karafka::Pro::Processing::ConsumerGroups::Coordinators::ErrorsTracker] errors tracker
   #   that collects errors that occurred during processing until another successful processing run
   # @param attempt [Integer] attempt of processing of given messages
   def call(errors_tracker, attempt)
@@ -373,7 +373,7 @@ After an error occurs and Karafka decides on what to do with the error, it will 
   <tbody>
     <tr>
       <td><code>errors_tracker</code></td>
-      <td><code>Karafka::Pro::Processing::Coordinators::ErrorsTracker</code></td>
+      <td><code>Karafka::Pro::Processing::ConsumerGroups::Coordinators::ErrorsTracker</code></td>
       <td>Tracks the history of errors for the current messages until another successful run.</td>
     </tr>
     <tr>
