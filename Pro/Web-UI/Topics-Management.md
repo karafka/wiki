@@ -188,6 +188,23 @@ When managing topics through the Karafka Web UI Pro, consider these best practic
 1. **Testing**: Test configuration changes in non-production environments when possible
 1. **Monitoring**: Monitor topic metrics after making changes to ensure desired behavior
 
+## Configuration
+
+Topics management is **turned on by default**. To turn it off, set the `config.ui.topics.management.active` configuration option to `false`:
+
+```ruby
+Karafka::Web.setup do |config|
+  # Other config options...
+
+  # Set this to false to disable topics management from the Web UI
+  config.ui.topics.management.active = false
+end
+
+Karafka::Web.enable!
+```
+
+With topics management disabled, the topic creation, configuration, distribution, and deletion controllers reject requests, and the corresponding Web UI actions are unavailable. This mirrors the `config.commanding.active` switch documented in [Consumers Control](Pro-Web-UI-Commanding#configuration), and is useful in tightly controlled environments where topic administration should go through more rigorous operational workflows instead of the Web UI.
+
 ## Limitations and Considerations
 
 - Some operations may be restricted by your Kafka cluster configuration
