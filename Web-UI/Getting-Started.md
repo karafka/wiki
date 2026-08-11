@@ -84,19 +84,19 @@ The Karafka Web UI has CLI (Command-Line Interface) commands to facilitate its s
             <td>install</td>
             <td>Installs the Karafka Web UI, creates necessary topics, populates initial zero state, and updates the <code>karafka.rb</code> file. Ensures the empty UI is displayed even if no <code>karafka server</code> processes are running.</td>
             <td><code>karafka-web install [--replication-factor=<value>]</code></td>
-            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 if the cluster has a single broker, otherwise 2.</td>
         </tr>
         <tr>
             <td>migrate</td>
             <td>Creates missing topics and missing zero states. Necessary for each environment where you want to use the Web UI.</td>
             <td><code>karafka-web migrate [--replication-factor=<value>]</code></td>
-            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 if the cluster has a single broker, otherwise 2.</td>
         </tr>
         <tr>
             <td>reset</td>
             <td>Removes all the Karafka topics and recreates them with the given (or default) replication factor. It does not preserve the previous factor. Use it to fix a wrong replication factor by passing the correct value.</td>
             <td><code>karafka-web reset [--replication-factor=<value>]</code></td>
-            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 for dev and 2 for prod.</td>
+            <td><code>replication_factor</code>: Optional. Replication factor to use. Defaults to 1 if the cluster has a single broker, otherwise 2.</td>
         </tr>
         <tr>
             <td>uninstall</td>
