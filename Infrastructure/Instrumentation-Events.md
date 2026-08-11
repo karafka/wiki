@@ -135,7 +135,7 @@ Below is the complete list of instrumentation events available in Karafka:
 To subscribe to any of these events, you can use the instrumentation monitor:
 
 ```ruby
-Karafka::App.monitor.subscribe('event.name') do |event|
+Karafka.monitor.subscribe('event.name') do |event|
   # Your custom logic here
   puts "Event: #{event.id}"
   puts "Payload: #{event.payload}"
