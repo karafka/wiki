@@ -107,10 +107,10 @@ end
 
 When setting up your connection pool, you can configure:
 
-| Option    | Required | Value type | Description                                    |
-|-----------|----------|------------|------------------------------------------------|
-| `size`    | true     | Integer    | Maximum number of producer connections in pool |
-| `timeout` | true     | Integer    | Connection timeout in milliseconds             |
+| Option    | Required | Value type | Description                                                      |
+| --------- | -------- | ---------- | ---------------------------------------------------------------- |
+| `size`    | false    | Integer    | Maximum number of producer connections in pool. Defaults to `5`. |
+| `timeout` | false    | Integer    | Connection timeout in milliseconds. Defaults to `5000`.          |
 
 Additional configuration can be provided through a block:
 
