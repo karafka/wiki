@@ -824,10 +824,10 @@ To do so, subscribe to all Karafka and WaterDrop events and publish those events
 ::Karafka::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.monitor.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'karafka').join('.')
+    as_event_name = (event_name.split('.').reverse << 'karafka').join('.')
 
     # Instrument via ActiveSupport
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
@@ -837,9 +837,9 @@ end
 ::WaterDrop::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.producer.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'waterdrop').join('.')
+    as_event_name = (event_name.split('.').reverse << 'waterdrop').join('.')
 
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
