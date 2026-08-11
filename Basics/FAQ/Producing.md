@@ -125,7 +125,7 @@ You can read more about producer shutdown [here](Basics-Producing-Messages#produ
 
 ```ruby
 require 'karafka/testing/errors'
-require 'karafka/testing/spec_consumer_client'
+require 'karafka/testing/spec_producer_client'
 
 RSpec.describe MyTestedLib do
   subject(:my_lib) { described_class.new }
