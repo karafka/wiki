@@ -1,15 +1,15 @@
 Karafka has a simple CLI built in. It provides the following commands:
 
-| Command        | Description                                                                       |
-|----------------|-----------------------------------------------------------------------------------|
-| help [COMMAND] | Describe available commands or one specific command                               |
-| console        | Start the Karafka irb console similar to the Rails console (short-cut alias: "c") |
-| info           | Print configuration details and other options of your application                 |
-| install        | Installs all required things for Karafka application in current directory         |
-| server         | Start the Karafka server (short-cut aliases: "s", "consumer")                     |
-| swarm          | Start the Karafka server in the swarm mode (multiple forked processes)            |
-| topics         | Allows for topics management (create, delete, repartition, reset, migrate)        |
-| topics health  | Check Kafka topics for replication and durability issues (Pro)                    |
+| Command        | Description                                                                             |
+|----------------|-----------------------------------------------------------------------------------------|
+| help [COMMAND] | Describe available commands or one specific command                                     |
+| console        | Start the Karafka irb console similar to the Rails console (short-cut alias: "c")       |
+| info           | Print configuration details and other options of your application                       |
+| install        | Installs all required things for Karafka application in current directory               |
+| server         | Start the Karafka server (short-cut aliases: "s", "consumer")                           |
+| swarm          | Start the Karafka server in the swarm mode (multiple forked processes)                  |
+| topics         | Allows for topics management (create, delete, repartition, reset, migrate, align, plan) |
+| topics health  | Check Kafka topics for replication and durability issues (Pro)                          |
 
 All the commands are executed the same way:
 
