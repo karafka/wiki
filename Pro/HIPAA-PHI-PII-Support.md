@@ -53,9 +53,9 @@ Data in transit must be protected as it moves between components in a distribute
 
 Karafka Web UI does not include a built-in access control or authentication system. Instead, it provides abstract code APIs that allow developers to implement custom access control mechanisms tailored to their specific requirements.
 
-#### Role-Based Access Control (RBAC)
+#### Policy-Based Request Control
 
-Karafka Web UI features a policies engine that enables administrators to enforce granular control over user actions, supporting a robust Role-Based Access Control (RBAC) system. This RBAC implementation allows for precise management of what specific users can view and interact with within the Web UI, thereby adhering to the principle of least privilege.
+Karafka Web UI features a policies engine that lets you plug in your own access control logic. By default, the policy allows every request; you implement a custom policy class to enforce whatever rules your access control model requires, such as an RBAC system built in your own application.
 
 ```ruby
 class MyCustomRequestsPolicy
