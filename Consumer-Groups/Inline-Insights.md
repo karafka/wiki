@@ -102,7 +102,7 @@ class LogEventsConsumer < ApplicationConsumer
 
     after = insights
 
-    # This will never raise - metrics will always be the same during processing
+    # This can raise - metrics may be refreshed with newer data while you are processing
     raise if before != after
   end
 end
