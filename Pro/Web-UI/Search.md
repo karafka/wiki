@@ -154,13 +154,13 @@ Creating custom matchers allows you to tailor the search functionality to meet y
 
 ### How to Build Custom Matchers
 
-To create a custom matcher, you need to define a class that inherits from the `Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base` class provided by Karafka. Your custom matcher must implement the call method, which takes a phrase and a message as arguments and returns a boolean indicating whether the phrase is found in the message.
+To create a custom matcher, you need to define a class that inherits from the `Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base` class provided by Karafka. Your custom matcher must implement the call method, which takes a message and a phrase as arguments and returns a boolean indicating whether the phrase is found in the message.
 
 Here is an example of a custom matcher that searches within a specific JSON field:
 
 ```ruby
 class JsonFieldIncludes < Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base
-  def call(phrase, message)
+  def call(message, phrase)
     # Referencing `#payload` will deserialize it using the routing deserializer
     json_payload = message.payload
     json_payload['specific_field'].to_s.include?(phrase)
@@ -202,7 +202,7 @@ Here is an example of how to implement the `.active?` method to activate a match
 
 ```ruby
 class ConditionalMatcher < Karafka::Web::Pro::Ui::Lib::Search::Matchers::Base
-  def call(phrase, message)
+  def call(message, phrase)
     # Custom search logic
     message.raw_payload.include?(phrase)
   rescue Encoding::CompatibilityError
