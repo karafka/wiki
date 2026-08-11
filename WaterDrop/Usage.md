@@ -633,8 +633,8 @@ end
 # Create variants for specific requirements
 critical_variant = producer.with(topic_config: { acks: 'all' })
 bulk_variant = producer.with(topic_config: {
-  compression.type: 'snappy',
-  message.timeout.ms: 300_000
+  'compression.type': 'snappy',
+  'message.timeout.ms': 300_000
 })
 
 # Use variants based on message characteristics
