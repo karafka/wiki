@@ -310,7 +310,7 @@ end
 
 Getting the exact number of messages in a Kafka topic is more complicated due to the nature of Kafka's distributed log system and features such as log compaction. However, there are a few methods you can use:
 
-1. Using the `Karafa::Admin#read_watermark_offsets` to get offsets for each partition and summing them:
+1. Using the `Karafka::Admin#read_watermark_offsets` to get offsets for each partition and summing them:
 
     ```ruby
     Karafka::Admin
