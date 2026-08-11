@@ -31,7 +31,7 @@ Many developers expect that when a consumer subscribes to a non-existent topic w
 
 ## Technical Details
 
-When only consumers are present (no WaterDrop producers), topics will **not** be created automatically. Topic creation requires a WaterDrop producer to send the first message to the non-existent topic. Consumers detect newly created topics during metadata refresh cycles (default: 5 minutes).
+When only consumers are present (no WaterDrop producers), topics will **not** be created automatically. Topic creation requires a WaterDrop producer to send the first message to the non-existent topic. Consumers detect newly created topics during metadata refresh cycles. In development and test environments, Karafka sets `topic.metadata.refresh.interval.ms` to 5 seconds by default so newly created topics are detected quickly; in production, where this is not injected, the underlying librdkafka default of 5 minutes applies unless you configure it explicitly.
 
 **WaterDrop producer behavior:**
 
