@@ -83,6 +83,11 @@ The table below contains options the `#dead_letter_queue` routing method accepts
       <td>Treats each message independently with its own error counter.</td>
     </tr>
     <tr>
+      <td><code>transactional</code></td>
+      <td>Boolean</td>
+      <td>Defaults to <code>true</code>. Controls whether a transaction is used to dispatch the message to the DLQ and mark it as consumed atomically when a transactional producer is available (Pro). See <a href="/docs/Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue/#disabling-transactions-during-dlq-dispatches">Disabling Transactions During DLQ Dispatches</a> for details.</td>
+    </tr>
+    <tr>
       <td><code>dispatch_method</code></td>
       <td>Symbol (<code>:produce_async</code> or <code>:produce_sync</code>)</td>
       <td>Describes whether dispatch on dlq should be sync or async (async by default).</td>
