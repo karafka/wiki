@@ -126,7 +126,9 @@ class KarafkaApp < Karafka::App
   routes.draw do
     # Always establish two independent connections to this topic from every
     # single process. They will be able to poll and process data independently
-    subscription_group 'a', multiplex: 2 do
+    subscription_group 'a' do
+      multiplexing(max: 2)
+
       topic :A do
         consumer ConsumerA
       end
