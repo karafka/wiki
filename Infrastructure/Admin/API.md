@@ -310,6 +310,15 @@ puts "High watermark offset: #{high}"
 
 The `#read_partition_offsets` method is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
 
+### Isolation Levels
+
+`Karafka::Admin::IsolationLevels` is a public module holding the two isolation level constants accepted by the `isolation_level:` keyword used throughout this page:
+
+- `Karafka::Admin::IsolationLevels::READ_UNCOMMITTED` - the default; may include messages written by producers that have not yet committed (or have aborted) their transaction
+- `Karafka::Admin::IsolationLevels::READ_COMMITTED` - excludes those uncommitted/aborted messages
+
+For non-transactional topics, both values give the same result.
+
 <table>
   <thead>
     <tr>
