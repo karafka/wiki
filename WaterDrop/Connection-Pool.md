@@ -60,7 +60,7 @@ To use connection pools with WaterDrop:
     WaterDrop::ConnectionPool.close
     ```
 
-    By default, `#close` (an alias for `#shutdown`) closes each pooled producer **gracefully**: buffered messages are flushed instead of being silently dropped, even if the broker is slow or unreachable. Pass `force: true` to force-close each producer instead, purging any messages that do not flush within the producer's max wait timeout:
+    By default, `#close` (an alias for `#shutdown`) closes each pooled producer gracefully: buffered messages are flushed instead of being silently dropped, even if the broker is slow or unreachable. Pass `force: true` to force-close each producer instead, purging any messages that do not flush within the producer's max wait timeout:
 
     ```ruby
     # Force-close, purging any messages that don't flush in time
