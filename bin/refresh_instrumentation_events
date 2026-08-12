@@ -119,7 +119,7 @@ This page lists all available instrumentation events for #{component}.
 
 ## Available Events
 
-Below is the complete list of instrumentation events available in #{component}:
+Below is a list of the instrumentation events available in #{component}. Depending on which #{component} extensions and additional engines you use, this might not be the complete list of all the events: some events are registered dynamically at runtime. Use `#available_events` on a fully loaded #{component} system to determine all the events you can use.
 
 MARKDOWN
 
