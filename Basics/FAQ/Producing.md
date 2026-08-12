@@ -125,7 +125,7 @@ You can read more about producer shutdown [here](Basics-Producing-Messages#produ
 
 ```ruby
 require 'karafka/testing/errors'
-require 'karafka/testing/spec_consumer_client'
+require 'karafka/testing/spec_producer_client'
 
 RSpec.describe MyTestedLib do
   subject(:my_lib) { described_class.new }
@@ -168,7 +168,7 @@ Here is an example of how you can use `produce_async` and handle the exception:
 ```ruby
 begin
   Karafka.producer.produce_async(topic: topic, payload: payload)
-rescue Rdkafka::RdkafkaError do |e|
+rescue Rdkafka::RdkafkaError => e
   raise unless e.code == :queue_full
 end
 ```

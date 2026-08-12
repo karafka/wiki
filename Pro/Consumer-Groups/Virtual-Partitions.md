@@ -749,7 +749,7 @@ Once you create your custom partitioner, you need to overwrite the default one i
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
-    config.internal.processing.partitioner_class = CustomPartitioner
+    config.internal.processing.consumer_groups.partitioner_class = CustomPartitioner
   end
 end
 ```

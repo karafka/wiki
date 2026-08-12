@@ -215,7 +215,7 @@ class LongRunningConsumer < ApplicationConsumer
     end
   end
 
-  def tick do
+  def tick
     synchronize do
       compute_current_state
       flush_to_db

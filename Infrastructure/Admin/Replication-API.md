@@ -87,22 +87,24 @@ The `plan_topic_replication` and `rebalance` methods return a `Replication` obje
 
 ### Plan Attributes
 
-| Attribute                    | Description                                                     |
-|------------------------------|-----------------------------------------------------------------|
-| `topic`                      | The target topic name                                           |
-| `current_replication_factor` | The topic's current replication factor                          |
-| `target_replication_factor`  | The desired replication factor                                  |
-| `partitions_assignment`      | Hash mapping partition IDs to arrays of broker IDs              |
-| `reassignment_json`          | Kafka-compatible JSON string (version 1 format)                 |
-| `execution_commands`         | Hash with `:generate`, `:execute`, and `:verify` CLI commands   |
-| `steps`                      | Array of human-readable step-by-step instructions               |
+| Attribute                    | Description                                                       |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `topic`                      | The target topic name                                             |
+| `current_replication_factor` | The topic's current replication factor                            |
+| `target_replication_factor`  | The desired replication factor                                    |
+| `partitions_assignment`      | Hash mapping partition IDs to arrays of broker IDs                |
+| `reassignment_json`          | Kafka-compatible JSON string (version 1 format)                   |
+| `topics_to_move_json`        | Kafka-compatible topics-to-move JSON, for `--generate` comparison |
+| `execution_commands`         | Hash with `:generate`, `:execute`, and `:verify` CLI commands     |
+| `steps`                      | Array of human-readable step-by-step instructions                 |
 
 ### Plan Methods
 
-| Method                 | Description                                              |
-|------------------------|----------------------------------------------------------|
-| `export_to_file(path)` | Writes the reassignment JSON to the specified file path  |
-| `summary`              | Returns a human-readable description of the plan         |
+| Method                             | Description                                               |
+| ---------------------------------- | --------------------------------------------------------- |
+| `export_to_file(path)`             | Writes the reassignment JSON to the specified file path   |
+| `export_topics_to_move_file(path)` | Writes the topics-to-move JSON to the specified file path |
+| `summary`                          | Returns a human-readable description of the plan          |
 
 ### Example: Inspecting a Plan
 

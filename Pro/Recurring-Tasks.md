@@ -221,8 +221,8 @@ class KarafkaApp < Karafka::App
     config.recurring_tasks.logging = false
 
     # You can also reconfigure used topics names
-    config.recurring_tasks.topics.schedules = 'recurring_schedules'
-    config.recurring_tasks.topics.logs = 'recurring_logs'
+    config.recurring_tasks.topics.schedules.name = 'recurring_schedules'
+    config.recurring_tasks.topics.logs.name = 'recurring_logs'
   end
 end
 ```
@@ -237,9 +237,9 @@ end
 
 - `logging`: Enables or disables the logging of task execution details. If set to true (the default), Karafka will log each task's execution, including both successful and failed attempts.
 
-- `topics.schedules`: Specifies the Kafka topic used for storing and managing the task schedules. By default, this is set to `karafka_recurring_tasks_schedules`, but you can customize it to any topic name that suits your application's needs.
+- `topics.schedules.name`: Specifies the Kafka topic used for storing and managing the task schedules. By default, this is set to `karafka_recurring_tasks_schedules`, but you can customize it to any topic name that suits your application's needs.
 
-- `topics.logs`: Specifies the Kafka topic used for logging the execution of tasks. By default, this is set to `karafka_recurring_tasks_logs`. This topic stores logs of both successful and failed task executions, allowing you to monitor task performance and troubleshoot issues.
+- `topics.logs.name`: Specifies the Kafka topic used for logging the execution of tasks. By default, this is set to `karafka_recurring_tasks_logs`. This topic stores logs of both successful and failed task executions, allowing you to monitor task performance and troubleshoot issues.
 
 ## Recurring Tasks Management
 

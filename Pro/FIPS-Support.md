@@ -34,7 +34,7 @@ Karafka achieves FIPS compatibility through:
 - Use of FIPS-validated cryptographic modules: Karafka uses librdkafka, which can be configured to use OpenSSL in FIPS mode for all - cryptographic operations
 - Secure communications: All network traffic can be encrypted using TLS/SSL with FIPS-approved algorithms
 - In-flight encryption: Data transmitted between Karafka clients and Kafka brokers uses FIPS-compatible encryption algorithms
-- At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing, AES for encryption)
+- At-rest encryption: Data stored by Karafka can be encrypted using FIPS-approved algorithms (SHA-256 for hashing; RSA by default, or AES-256-GCM via the opt-in envelope mode)
 - Identity-based authentication: Through certificate-based authentication and Karafka Web UI's customizable authentication systems
 - Integrity verification: Provides tamper resistance by validating message integrity through fingerprinting
 
@@ -43,8 +43,8 @@ Karafka achieves FIPS compatibility through:
 Karafka exclusively employs FIPS-approved cryptographic algorithms:
 
 - Hash Functions: SHA-256 is the FIPS-approved choice for fingerprinting. Karafka's own code does not use MD5 anywhere, so disabling MD5 at the OpenSSL/FIPS level does not affect Karafka's functionality; MD5 is simply not FIPS-approved, so use SHA-256 in FIPS-compliant deployments.
-- Symmetric Encryption: AES-128, AES-192, and AES-256
-- Asymmetric Encryption: RSA with key sizes ≥ 2048 bits
+- Symmetric Encryption: AES-256-GCM, available through the opt-in envelope encryption mode (`config.encryption.mode = :envelope`, requires the openssl gem `>= 3.0`). The default `:direct` mode does not use symmetric encryption at all; it RSA-encrypts the payload directly.
+- Asymmetric Encryption: RSA with key sizes ≥ 2048 bits (the default `:direct` mode, and used to wrap the one-time AES key in `:envelope` mode)
 - Random Number Generation: Uses Ruby's OpenSSL FIPS-compatible random number generators when Ruby is running in FIPS mode
 
 These algorithms are implemented through FIPS-validated cryptographic modules, ensuring all cryptographic operations meet federal standards.

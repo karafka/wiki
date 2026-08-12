@@ -100,9 +100,11 @@ Karafka Pro, upon transferring the message to the DLQ topic, aside from preservi
 - `source_topic` - topic from which the message came
 - `source_partition` - partition from which the message came
 - `source_offset` - offset of the transferred message
-- `source_key` - key of the transferred message
 - `source_consumer_group` - id of the consumer group that was consuming this message
+- `source_attempts` - number of processing attempts made before the message was dispatched to the DLQ
 - `source_trace_id` - distributed tracing identifier from the original message processing. Can be used to correlate dispatches with errors visible in the Web UI
+
+The original message key is preserved as-is on the DLQ message's Kafka key; it is not duplicated into a `source_key` header.
 
 !!! note "Headers Values"
 

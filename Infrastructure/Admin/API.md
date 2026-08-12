@@ -345,10 +345,12 @@ Pass a hash where keys are topic names and values are arrays of partition specs.
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [
-    { partition: 0, offset: :earliest },
-    { partition: 1, offset: :latest }
-  ]
+  {
+    'events' => [
+      { partition: 0, offset: :earliest },
+      { partition: 1, offset: :latest }
+    ]
+  }
 )
 
 results.each do |r|
@@ -408,7 +410,7 @@ Each result hash contains:
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: :latest }],
+  { 'events' => [{ partition: 0, offset: :latest }] },
   isolation_level: Karafka::Admin::IsolationLevels::READ_COMMITTED
 )
 
@@ -424,7 +426,7 @@ Pass a Unix timestamp **in milliseconds** as the `:offset` value to find the fir
 one_hour_ago_ms = (Time.now.to_f * 1000 - 3_600_000).to_i
 
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: one_hour_ago_ms }]
+  { 'events' => [{ partition: 0, offset: one_hour_ago_ms }] }
 )
 
 puts "First offset from one hour ago: #{results.first[:offset]}"
@@ -436,7 +438,7 @@ Use `:max_timestamp` to retrieve the offset of the message with the highest time
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: :max_timestamp }]
+  { 'events' => [{ partition: 0, offset: :max_timestamp }] }
 )
 
 puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:timestamp]}"
@@ -624,7 +626,7 @@ When using `#copy_consumer_group`, the method ensures that offsets from the sour
 
     If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
-The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group does not exist or has no committed offsets for the specified topics).
+The method returns `false` only if the source consumer group does not exist at all (no lag data for any of the specified topics). If the topics exist but the source group has no committed offsets for them, `copy_consumer_group` still returns `true`, even though there is nothing to actually copy.
 
 This functionality is particularly useful for:
 

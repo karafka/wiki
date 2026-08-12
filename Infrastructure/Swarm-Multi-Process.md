@@ -463,7 +463,7 @@ When the supervisor receives a request to shut down-typically through a SIGTERM 
 
 After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
 
-If, after the `shutdown_timeout` period, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
+If, after the `shutdown_timeout` period plus an additional 15-second grace buffer, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
 This forceful termination step is crucial for preventing resource leaks and ensuring the system remains clean and ready for a potential restart or to end operation without impacting the underlying environment.
 
 <p align="center">

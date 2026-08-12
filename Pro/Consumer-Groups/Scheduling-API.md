@@ -141,8 +141,8 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
         <tr>
             <td><code>#schedule_eofed</code></td>
             <td>Array with eofed jobs</td>
-            <td>No</td>
-            <td>Executed when new eofed jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
+            <td>Yes, unless subclassing <code>Schedulers::Default</code></td>
+            <td>Executed when new eofed jobs are available that should be handled. Unlike the other job types above, <code>Schedulers::Base</code> does not provide a default FIFO fallback for this method - skipping it in a <code>Base</code> subclass raises a <code>NoMethodError</code> the first time eofed jobs arrive. Only <code>Schedulers::Default</code> (the concrete, ready-to-use scheduler) implements the FIFO fallback for it.</td>
         </tr>
         <tr>
             <td><code>#manage</code></td>

@@ -130,7 +130,7 @@ class ComprehensiveUptimeListener
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polling messages..."
   end
 
-  def on_connection_listener_fetched(event)
+  def on_connection_listener_fetch_loop_received(event)
     listener_id = event[:caller].id
     messages_count = event[:messages_buffer].size
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polled #{messages_count} messages"
@@ -824,10 +824,10 @@ To do so, subscribe to all Karafka and WaterDrop events and publish those events
 ::Karafka::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.monitor.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'karafka').join('.')
+    as_event_name = (event_name.split('.').reverse << 'karafka').join('.')
 
     # Instrument via ActiveSupport
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
@@ -837,9 +837,9 @@ end
 ::WaterDrop::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.producer.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'waterdrop').join('.')
+    as_event_name = (event_name.split('.').reverse << 'waterdrop').join('.')
 
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
@@ -865,9 +865,9 @@ Karafka's monitor can be replaced or wrapped to add custom instrumentation while
 class CustomMonitor < ::Karafka::Instrumentation::Monitor
   # Events where we want custom handling
   INTERCEPTED_EVENTS = %w[
+    consumer.consume
     consumer.consumed
-    consumer.heartbeat
-    consumer.polling.started
+    connection.listener.fetch_loop
   ].freeze
 
   def instrument(event_id, payload = EMPTY_HASH, &block)
