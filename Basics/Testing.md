@@ -95,7 +95,7 @@ RSpec.describe InlineBatchConsumer do
   it 'expects to dispatch async message to messages topic with value bigger by 1' do
     consumer.consume
 
-    expect(karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
+    expect(karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
   end
 end
 ```
@@ -464,7 +464,7 @@ it 'expects to dispatch async message to messages topic with value bigger by 1' 
   @karafka.produce({ 'number' => 1 }.to_json)
   @consumer.consume
 
-  expect(@karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
+  expect(@karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
 end
 ```
 
