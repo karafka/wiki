@@ -82,7 +82,15 @@ messages = secondary_admin.read_topic('events', 0, 10)
 
 !!! note "Configuration Scope"
 
-    Only the `kafka` configuration is customizable per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
+    The `kafka` configuration and, since 2.6.0, an `external_client` are the two customizable arguments per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
+
+`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
+
+```ruby
+# Read lags of a running consumer via its own client connection
+admin = Karafka::Admin.new(external_client: client)
+admin.read_lags_with_offsets({ 'my-group' => ['events'] })
+```
 
 #### Environment Variable Approach
 
