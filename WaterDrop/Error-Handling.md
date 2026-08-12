@@ -84,7 +84,7 @@ Each error type plays a crucial role in understanding and managing the complexit
 
 Due to WaterDrop's asynchronous nature, we recommend either using a transactional producer with its inline collective error handling and delivery warranties or using the async API and using the `error.occurred` notifications to detect and recognize messages that were not successfully delivered with inline error tracking for issues that would arise before the message had a chance to be enqueued for delivery.
 
-Every event published to `error.occurred` contains a type, and if the type is not `librdkafka.dispatch_error`, the error is intermediate or partial. It is worth logging but does not indicate that the dispatched message was not delivered. Events with the type set to `librdkafka.dispatch_error` will always contain a full delivery report for each enqueued message with exact details on why a message was not delivered.
+Every event published to `error.occurred` contains a type. Not every non-`librdkafka.dispatch_error` type is merely intermediate or partial: pre-handle inline failures (`message.produce_async`, `message.produce_sync`, `messages.produce_many_async`, `messages.produce_many_sync`) are definitive. The message was never enqueued for delivery. Errors with the `librdkafka.error` type are usually intermediate and worth logging, but not always: check `error.fatal?` on the wrapped error, since some `librdkafka.error` events do carry a fatal condition. Events with the type set to `librdkafka.dispatch_error` will always contain a full delivery report for each enqueued message with exact details on why a message was not delivered.
 
 In general, we recommend following a similar flow to the one below:
 

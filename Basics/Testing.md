@@ -95,7 +95,7 @@ RSpec.describe InlineBatchConsumer do
   it 'expects to dispatch async message to messages topic with value bigger by 1' do
     consumer.consume
 
-    expect(karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
+    expect(karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
   end
 end
 ```
@@ -158,7 +158,7 @@ To test each consumer independently, use the `#produce_to` method which sends me
 
 ```ruby
 RSpec.describe AnalyticsEventsConsumer do
-  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :analytics) }
+  subject(:consumer) { karafka.consumer_for(:events, :analytics) }
 
   before do
     # Use produce_to to send messages directly to this specific consumer
@@ -171,7 +171,7 @@ RSpec.describe AnalyticsEventsConsumer do
 end
 
 RSpec.describe NotificationsEventsConsumer do
-  subject(:consumer) { karafka.consumer_for(:events, consumer_group: :notifications) }
+  subject(:consumer) { karafka.consumer_for(:events, :notifications) }
 
   before do
     # Use produce_to to target this specific consumer
@@ -347,7 +347,7 @@ RSpec.describe UsersBuilder do
   before { created_users }
 
   it { expect(karafka.produced_messages.size).to eq(2) }
-  it { expect(karafka.produced_messages.first[:topic]).to eq('user.created') }
+  it { expect(karafka.produced_messages.first[:topic]).to eq('users_changes') }
   it { expect(karafka.produced_messages.first[:key]).to eq(created_users.first.id.to_s) }
 end
 ```
@@ -464,7 +464,7 @@ it 'expects to dispatch async message to messages topic with value bigger by 1' 
   @karafka.produce({ 'number' => 1 }.to_json)
   @consumer.consume
 
-  expect(@karafka.produced_messages.last.payload).to eq({ number: 2 }.to_json)
+  expect(@karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
 end
 ```
 
@@ -477,7 +477,7 @@ class AnalyticsEventsConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
   def setup
-    @consumer = @karafka.consumer_for(:events, consumer_group: :analytics)
+    @consumer = @karafka.consumer_for(:events, :analytics)
   end
 
   test 'processes analytics events' do
@@ -493,7 +493,7 @@ class NotificationsEventsConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
   def setup
-    @consumer = @karafka.consumer_for(:events, consumer_group: :notifications)
+    @consumer = @karafka.consumer_for(:events, :notifications)
   end
 
   test 'sends notification for signup events' do

@@ -179,9 +179,8 @@ Sometimes, users try to spawn their threads within consume to parallelize work. 
 
 ```ruby
 # This example illustrates incorrect setup
+# Assumes manual_offset_management(true) is set for this topic in the routing
 class OrdersConsumer < ApplicationConsumer
-  self.manual_offset_management = true
-
   def consume
     messages.each do |message|
       Thread.new do

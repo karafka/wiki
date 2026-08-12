@@ -169,8 +169,8 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
         <tr>
             <td>Total States Data per Month</td>
-            <td>16 GB</td>
-            <td>30 KB * 535,680 States</td>
+            <td>32 GB</td>
+            <td>30 KB * 1,071,360 States (materialized every 2.5 seconds, not 5)</td>
         </tr>
         <tr>
             <td>Metrics Size</td>
@@ -179,8 +179,8 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
         <tr>
             <td>Total Metrics Data per Month</td>
-            <td>32 GB</td>
-            <td>60 KB * 535,680 States</td>
+            <td>64 GB</td>
+            <td>60 KB * 1,071,360 States (materialized every 2.5 seconds, not 5)</td>
         </tr>
         <tr>
             <td>Reports Consumption Egress</td>
@@ -195,8 +195,8 @@ Below, you can find an example calculation that you can use to understand what f
         <tr>
             <td rowspan="3">States and Metrics Cost</td>
             <td>Networking</td>
-            <td>$5.03</td>
-            <td>$0.05 x (52.7 GB + 32 GB + 16 GB)</td>
+            <td>$7.44</td>
+            <td>$0.05 x (52.7 GB + 64 GB + 32 GB)</td>
         </tr>
         <tr>
             <td>Storage</td>
@@ -205,8 +205,8 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
         <tr>
             <td><strong>Subtotal</strong></td>
-            <td><strong>$5.11</strong></td>
-            <td>$5.03 + $0.08</td>
+            <td><strong>$7.52</strong></td>
+            <td>$7.44 + $0.08</td>
         </tr>
         <tr>
             <td rowspan="4">Total Monthly Cost</td>
@@ -216,7 +216,7 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
         <tr>
             <td>States and Metrics</td>
-            <td>$5.11</td>
+            <td>$7.52</td>
             <td></td>
         </tr>
         <tr>
@@ -226,8 +226,8 @@ Below, you can find an example calculation that you can use to understand what f
         </tr>
         <tr>
             <td><strong>Total</strong></td>
-            <td><strong>$39.1</strong></td>
-            <td>($2.71 + $5.11) x 5</td>
+            <td><strong>$51.2</strong></td>
+            <td>($2.71 + $7.52) x 5</td>
         </tr>
     </tbody>
 </table>
@@ -238,6 +238,6 @@ Below, you can find an example calculation that you can use to understand what f
 
 ## Simplified Formula
 
-For a quick estimation, a single Karafka consumer will cost between **$0.07** and **$0.40** per month. This range accounts for the variability in factors such as message frequency, state materialization, data size, and the efficiency of your Kafka configuration.
+For a quick estimation, a single Karafka consumer will cost between **$0.07** and **$0.51** per month. This range accounts for the variability in factors such as message frequency, state materialization, data size, and the efficiency of your Kafka configuration.
 
 This simplified formula provides a ballpark figure to help you plan and budget the operational costs of running Karafka with its Web UI. Remember that actual costs can vary based on your specific setup and usage patterns.

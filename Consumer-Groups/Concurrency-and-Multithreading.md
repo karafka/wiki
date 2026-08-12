@@ -27,6 +27,8 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+`config.concurrency` only controls the boot-time pool size. The worker pool can also be resized at runtime, without restarting the process, via `Karafka::Server.workers.scale(target)`. See [Dynamic Worker Pool Scaling](Upgrades-Karafka-2.6#dynamic-worker-pool-scaling) for details.
+
 ### Parallel Processing of Multiple Topics/Partitions
 
 Karafka uses multiple threads to process messages coming from different topics and partitions.

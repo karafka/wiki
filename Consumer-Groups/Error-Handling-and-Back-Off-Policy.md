@@ -33,13 +33,25 @@ Karafka has a couple of isolation layers that prevent it from being affected by 
 
 In any case, as long as system resources (like memory) are available, the Karafka process will **never** crash upon application errors. Also, threads for particular consumer groups and workers are isolated, so as long as you do not do any cross-consumer group work, they will not impact each other in any way.
 
-When processing messages from a Kafka topic, your code may raise any exception inherited from `StandardError`. The cause is typically because of one of the following reasons:
+When processing messages from a Kafka topic, your code may raise any exception. Karafka's rescue containment is broader than `StandardError` - it catches `Exception`, so `ScriptError` and `SystemStackError` subclasses go through the same retry flow described below rather than escaping unhandled. The cause is typically because of one of the following reasons:
 
 - Your business logic does not behave as you think it should.
 - The message being processed is somehow malformed or is in an invalid format.
 - You are using external resources such as a database or a network API that are temporarily unavailable.
 
 Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `config.pause.timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
+
+### Critical Errors
+
+A distinct category of errors, **critical errors**, is treated differently from the retry flow above. By default this list is `[SystemExit, SignalException, NoMemoryError]`, configurable via `config.internal.processing.critical_errors`.
+
+Critical errors indicate that the process integrity itself may be compromised, so instead of retrying and eventually dispatching to a DLQ like other errors, Karafka:
+
+- Records the failure and keeps the partition paused (the retry pause protects the partition during the shutdown window)
+- Never dispatches the message to a DLQ, even after `max_retries` is reached
+- Triggers a graceful shutdown via the auto-subscribed `Instrumentation::CriticalErrorsListener`
+
+The failed batch is redelivered after the process restarts, once the shutdown completes.
 
 ### Retryable Methods
 

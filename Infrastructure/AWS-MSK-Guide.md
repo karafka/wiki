@@ -483,11 +483,7 @@ This configuration allows the cluster to tolerate one broker failure while maint
 
 ### Changing Topic Replication Factor
 
-Karafka does **not** provide direct support for changing topic replication factors or partition counts. These are cluster-level administrative operations that must be performed using native Kafka tools.
-
-!!! info "Karafka Admin API Under Development"
-
-    A Karafka Admin API feature is currently under development that will provide a more user-friendly interface for replication factor management.
+`Karafka::Admin.create_partitions` directly increases a topic's partition count. Increasing the replication factor works differently: due to a librdkafka limitation (the `AlterPartitionReassignments` Kafka API is not supported by librdkafka), Karafka cannot execute the change directly. Instead, `Karafka::Admin.plan_topic_replication` generates a reassignment plan that you execute using Kafka's native `kafka-reassign-partitions.sh` tool. See the [Admin Replication API](Infrastructure-Admin-Replication-API) page for details.
 
 ## See Also
 

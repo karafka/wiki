@@ -195,7 +195,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic.
+Messages will never be re-processed with the following settings and will be moved without retries to the DLQ topic, with one exception: process-critical errors (`SystemExit`, `SignalException`, `NoMemoryError` by default, configurable via `config.internal.processing.critical_errors`) are never dispatched to the DLQ regardless of the `max_retries` setting. The partition is paused and the failed batch is redelivered after a restart instead.
 
 ## Disabling Dispatch
 
@@ -205,7 +205,7 @@ This functionality is available in Karafka Pro, and you can read about it [here]
 
 ## Dispatch Warranties
 
-Messages dispatched to the DLQ topic preserve both `payload` and `headers`. They do **not** follow any partitioning strategy and will be distributed randomly.
+In the OSS DLQ, dispatched messages preserve only the `payload`; `headers` are not included (only `topic:` and `payload:` are sent). Preserving `headers` on dispatch is a [Karafka Pro](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) capability. Messages do **not** follow any partitioning strategy and will be distributed randomly.
 
 !!! note "Original Offset and Partition Not Preserved"
 

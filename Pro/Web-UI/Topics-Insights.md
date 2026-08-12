@@ -22,8 +22,8 @@ The Replication tab provides insights into the replication dynamics of each topi
 
 - **Partition**: The specific partition of a topic.
 - **Leader**: The leader's broker ID for each partition.
-- **Replica count**: The total number of replicas per partition.
-- **In sync brokers**: The count of brokers currently in sync with the leader.
+- **Replicas**: The broker ID of each replica for the partition, shown as badges. The leader's badge is emphasized, and any out-of-sync replica is highlighted as a warning. Each badge links to its broker details page.
+- **In sync brokers**: The broker ID of each replica currently in sync with the leader, shown as badges (with the leader's badge emphasized), each linking to its broker details page.
 
 This tab is essential for monitoring the health and integrity of topic replication. It helps users identify potential issues like under-replicated partitions or uneven distribution of leader roles.
 

@@ -56,13 +56,13 @@ Karafka can also be embedded within another process so you do not need to run a 
 Yes. Karafka allows you to listen with a single consumer group on multiple topics, which means that you can tune up the number of threads that Karafka server runs, accordingly to your needs. You can also run multiple Karafka instances, specifying consumer groups that should be running per each process using the ```--include-consumer-groups``` server flag as follows:
 
 ```shell
-bundle exec karafka server --include-consumer-groups group_name1 group_name3
+bundle exec karafka server --include-consumer-groups group_name1,group_name3
 ```
 
 You can also exclude particular groups the same way:
 
 ```shell
-bundle exec karafka server --exclude-consumer-groups group_name1 group_name3
+bundle exec karafka server --exclude-consumer-groups group_name1,group_name3
 ```
 
 Visit the [CLI](Infrastructure-CLI) section of our docs to learn more about how to limit the scope of things to which the server subscribes.

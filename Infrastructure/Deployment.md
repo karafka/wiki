@@ -423,9 +423,10 @@ To make it work you need to follow few steps:
     ```
 
     ```shell
-    # Since both are set to karafka_admin by default, if you did not change those values,
-    # you can just run:
+    # If you did not change those values, the defaults are karafka_admin for Karafka::Admin
+    # and karafka_web for Karafka::Web, so you can just run:
     heroku kafka:consumer-groups:create karafka_admin
+    heroku kafka:consumer-groups:create karafka_web
 
     # If you did change them according to the above example, create all the groups needed:
 

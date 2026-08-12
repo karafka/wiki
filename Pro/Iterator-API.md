@@ -117,7 +117,9 @@ iterator = Karafka::Pro::Iterator.new(
       0 => -100,
       5 => -10_000,
       7 => Time.now - 60,
-      # Below requires setting 'auto.offset.reset': 'beginning'
+      # `true` always starts from the beginning. This relies on
+      # 'auto.offset.reset' => 'beginning', which is the default here. If you override
+      # settings, keep this value set.
       9 => true
     }
   }
