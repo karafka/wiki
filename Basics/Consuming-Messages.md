@@ -264,7 +264,7 @@ class EventsConsumer < ApplicationConsumer
 
     mark_as_consumed @buffer.last
 
-    @buffer.clear!
+    @buffer.clear
   end
 end
 ```
