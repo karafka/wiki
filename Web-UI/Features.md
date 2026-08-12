@@ -126,7 +126,7 @@ This dashboard view shows Karafka consumers' groups' health state with their lag
 
 ## Routing
 
-The Routing UI view allows users to inspect Karafka's routing configuration, including details about particular topics. It recognizes the routing patterns, though it is worth remembering that it can take Karafka Web UI up to 5 minutes to identify and map newly detected topics due to the internal caching layer (this delay is at most 5 seconds outside a `production`-named environment).
+The Routing UI view allows users to inspect Karafka's routing configuration, including details about particular topics. It recognizes the routing patterns, though it is worth remembering that it can take Karafka Web UI up to 5 minutes to identify and map newly detected topics due to the internal caching layer (this delay is at most 5 seconds outside `production`).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/routing1.png" alt="karafka web routing view" />
