@@ -478,7 +478,7 @@ This forceful termination step is crucial for preventing resource leaks and ensu
 
 Karafka's Web UI fully supports Swarm Mode, showcasing each forked node as an independent entity for detailed monitoring.
 
-In Swarm Mode, the Web UI distinguishes each node as a separate process. However, each swarm node is marked with a "paid" label, indicating the parent process's PID (the supervisor). This feature aids in identifying the relationship between nodes and their supervisor.
+In Swarm Mode, the Web UI distinguishes each node as a separate process. However, each swarm node is marked with a "ppid" label, indicating the parent process's PID (the supervisor). This feature aids in identifying the relationship between nodes and their supervisor.
 
 Due to librdkafka's fork-safety limitations, the supervisor process does not appear directly in the Web UI because it cannot hold open connections to Kafka. However, The supervisor's presence is inferred through the PPID label of swarm nodes. Since all nodes share the same supervisor PID as their PPID, you can indirectly identify the supervisor process that way.
 
