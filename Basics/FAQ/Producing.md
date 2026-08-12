@@ -173,7 +173,7 @@ rescue Rdkafka::RdkafkaError do |e|
 end
 ```
 
-If you aim for maximum performance in your Karafka application, you can disable metrics collection by setting the `statistics.interval.ms` configuration to `0`. Doing so effectively disables the collection and emission of statistics data. This can be beneficial in scenarios where every bit of performance matters and you want to minimize any overhead caused by metric aggregation. Producer error visibility in the Karafka Web UI is unaffected: the error callback is registered independently of the statistics callback, so disabling statistics does not disable producer-error reporting, including errors from background threads.
+If you aim for maximum performance in your Karafka application, you can disable metrics collection by setting the `statistics.interval.ms` configuration to `0`. Doing so effectively disables the collection and emission of statistics data. This can be beneficial in scenarios where every bit of performance matters and you want to minimize any overhead caused by metric aggregation. Producer error visibility in the Karafka Web UI is unaffected: the error callback is registered independently of the statistics callback, so disabling statistics does not disable producer-error reporting, including errors from background threads. Other Web UI data that is derived from statistics, such as throughput and topic-level metrics, will be missing or incomplete when statistics are disabled.
 
 ## Can `at_exit` be used to close the WaterDrop producer?
 
