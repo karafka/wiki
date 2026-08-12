@@ -142,7 +142,7 @@ The `karafka_consumers_reports` topic is an integral component of the Karafka [W
 
 ## Why does the `karafka_consumers_commands` topic generate constant network traffic?
 
-Commanding is a [Karafka Pro](https://karafka.io/#become-pro) feature; it does not exist in the OSS version.
+Commanding is a [Karafka Pro](Pro-Web-UI-Commanding) feature; it does not exist in the OSS version.
 
 The `karafka_consumers_commands` topic generates consistent network traffic because it operates as a pub-sub mechanism for the commanding feature. When commanding is enabled (which is the default for Pro users), each consumer process maintains an active subscription to this single-partition topic to receive administrative commands from the Web UI, such as pause, trace, quiet, and stop operations.
 
