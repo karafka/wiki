@@ -241,7 +241,7 @@ The challenge arises here: If you use the `#pause` or `#seek` method frequently 
 
 ### The Impact of Purging Prefetched Messages
 
-- **Network Traffic Increase**: Whenever `#seek` or `#pause` is called, all prefetched messages for the partition are discarded. If a consumer then needs to read messages that were in the now-purged prefetch cache, it has to request them from the broker again, resulting in additional network traffic.
+- **Network Traffic Increase**: Whenever `#seek` or `#pause` is called with an explicit offset, all prefetched messages for the partition are discarded. If a consumer then needs to read messages that were in the now-purged prefetch cache, it has to request them from the broker again, resulting in additional network traffic. Calling `#pause(:consecutive)` is the documented exception - it pauses without changing the consecutive offset (cursor position), which avoids purging the librdkafka buffer.
 
 - **Increased Latency**: As previously mentioned, prefetched messages reduce consumer latency. Purging them means the consumer might need to wait for the broker to deliver messages that it once had in its prefetch cache.
 
@@ -253,7 +253,7 @@ The challenge arises here: If you use the `#pause` or `#seek` method frequently 
 
 - **Adjust Buffer Size**: If you are pausing and resuming often, consider adjusting the `fetch.message.max.bytes` setting for affected topics. This will lower the buffer size to reduce the volume of redundant data fetched, but do note that this might affect performance during regular operations.
 
-- **Optimize Pause Usage**: Reevaluate your use cases for the `#pause` method. Perhaps there are ways to minimize its usage or extend the duration of pauses to reduce the frequency of data re-fetches.
+- **Optimize Pause Usage**: Reevaluate your use cases for the `#pause` method. Perhaps there are ways to minimize its usage or extend the duration of pauses to reduce the frequency of data re-fetches. When you do not need to change the offset the consumer resumes from, call `pause(:consecutive)` instead of passing an explicit offset - it avoids the buffer purge entirely. Note that with filters, retries, or other advanced options, the consecutive offset may not be the one you want to pause on, so test this behavior carefully before relying on it.
 
 - **Monitor and Alert**: Set up alerts to notify you of a spike in network traffic or frequent use of the `#pause` method. This way, you can quickly address any issues or misconfigurations.
 

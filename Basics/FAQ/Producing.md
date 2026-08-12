@@ -168,12 +168,12 @@ Here is an example of how you can use `produce_async` and handle the exception:
 ```ruby
 begin
   Karafka.producer.produce_async(topic: topic, payload: payload)
-rescue Rdkafka::RdkafkaError do |e|
+rescue Rdkafka::RdkafkaError => e
   raise unless e.code == :queue_full
 end
 ```
 
-If you aim for maximum performance in your Karafka application, you can disable metrics collection by setting the `statistics.interval.ms` configuration to `0`. Doing so effectively disables the collection and emission of statistics data. This can be beneficial in scenarios where every bit of performance matters and you want to minimize any overhead caused by metric aggregation. However, disabling metrics collection will also prevent the Karafka Web UI from collecting important information, such as producer errors, including those in background threads. Therefore, consider the trade-off between performance optimization and the loss of detailed error tracking when deciding whether to disable metrics collection.
+If you aim for maximum performance in your Karafka application, you can disable metrics collection by setting the `statistics.interval.ms` configuration to `0`. Doing so effectively disables the collection and emission of statistics data. This can be beneficial in scenarios where every bit of performance matters and you want to minimize any overhead caused by metric aggregation. Producer error visibility in the Karafka Web UI is unaffected: the error callback is registered independently of the statistics callback, so disabling statistics does not disable producer-error reporting, including errors from background threads. Other Web UI data that is derived from statistics, such as throughput and topic-level metrics, will be missing or incomplete when statistics are disabled.
 
 ## Can `at_exit` be used to close the WaterDrop producer?
 
@@ -279,7 +279,7 @@ sleep(30)
 
 WaterDrop works so that when the producer is requested to be closed, it triggers a process to flush out all the remaining messages in its buffers. The process is synchronous, meaning that it will hold the termination of the application until all the messages in the buffer are either delivered successfully or evicted from the queue.
 
-If Kafka is down, WaterDrop will still attempt to wait before closing for as long as there is even a single message in the queue. This waiting time is governed by the `message.timeout.ms` setting in the Kafka configuration. This setting determines how long the `librdkafka` library should keep the message in the queue and how long it should retry to deliver it. By default, this is set to 5 minutes.
+If Kafka is down, WaterDrop will still attempt to wait before closing for as long as there is even a single message in the queue. This waiting time is governed by the `message.timeout.ms` setting in the Kafka configuration. This setting determines how long the `librdkafka` library should keep the message in the queue and how long it should retry to deliver it. By default, WaterDrop sets this to 150,000ms (150 seconds).
 
 Effectively, this means that if the Kafka cluster is down, WaterDrop will not terminate or give up on delivering the messages until after this default timeout period of 5 minutes. This ensures maximum efforts are made to deliver the messages even under difficult circumstances.
 

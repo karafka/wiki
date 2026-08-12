@@ -97,7 +97,7 @@ With consumer groups, the maximum number of active consumers equals the number o
 - **[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)** (Pro): Enable parallel processing of messages from a single Kafka partition by distributing them across multiple worker threads. This is particularly effective for IO-bound workloads.
 - **[Parallel Segments](https://karafka.io/docs/Pro-Parallel-Segments/)** (Pro): Split a single subscription group into independent parallel segments, each maintaining its own polling loop and worker pool. This allows multiple OS-level threads to consume and process data from the same topics simultaneously within a single process.
 - **[Multiplexing](https://karafka.io/docs/Pro-Multiplexing/)** (Pro): Establishes multiple independent connections to the same topic from a single process.
-- **[Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/)** (Pro): Forks multiple independent OS processes for enhanced CPU utilization.
+- **[Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/)**: Forks multiple independent OS processes for enhanced CPU utilization. The core forking and supervision mechanism is free; [enhanced swarm capabilities](https://karafka.io/docs/Pro-Enhanced-Swarm-Multi-Process/) are Pro.
 
 These features allow Karafka applications using consumer groups to achieve high parallelism even when the partition count is limited.
 

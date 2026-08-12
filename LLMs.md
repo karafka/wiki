@@ -51,7 +51,7 @@
 - **EOF Handling**: Requires `enable.partition.eof: true` in kafka config
 - **Error Recovery**: Only `#consume` method retries on errors; `#revoked`, `#shutdown`, `#tick`, `#eofed` methods do not retry; use `#retrying?` and `#attempt` to detect retry scenarios
 - **Rebalance Detection**: Use `#revoked?` method to detect partition loss during processing; especially important for Long-Running Jobs; Karafka completes processing before voluntary rebalances
-- **Performance Scaling**: Use Virtual Partitions for IO-bound single partition work; use subscription groups or multiplexing for multi-partition/topic parallelism; monitor worker saturation via Web UI "Enqueued" value
+- **Performance Scaling**: Use Virtual Partitions for IO-bound single partition work; use subscription groups or multiplexing for multi-partition/topic parallelism; monitor worker saturation via Web UI "Pending" value
 - **Configuration Per Topic**: Per-topic settings create separate subscription groups and Kafka connections; only override when necessary to avoid resource multiplication
 - **Memory Management**: Set `MALLOC_ARENA_MAX=2` on Linux; consider `jemalloc` for Ruby 3.0+; use Pro Cleaner API for large payloads; monitor memory growth patterns
 - **WaterDrop Producer Lifecycle**: Create long-lived producers; always call `producer.close` before process shutdown; avoid short-lived producers per operation

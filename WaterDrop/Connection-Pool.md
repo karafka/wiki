@@ -36,10 +36,10 @@ To use connection pools with WaterDrop:
 
     ```ruby
     # Basic connection pool setup
-    WaterDrop::ConnectionPool.setup(
-      size: 10,
-      timeout: 5_000
-    )
+    WaterDrop::ConnectionPool.setup(size: 10, timeout: 5_000) do |config|
+      config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+      config.deliver = true
+    end
     ```
 
 1. **Use the connection pool** to get producers and send messages:
@@ -58,6 +58,13 @@ To use connection pools with WaterDrop:
     ```ruby
     # Close the connection pool when done
     WaterDrop::ConnectionPool.close
+    ```
+
+    By default, `#close` (an alias for `#shutdown`) closes each pooled producer gracefully: buffered messages are flushed instead of being silently dropped, even if the broker is slow or unreachable. Pass `force: true` to force-close each producer instead, purging any messages that do not flush within the producer's max wait timeout:
+
+    ```ruby
+    # Force-close, purging any messages that don't flush in time
+    WaterDrop::ConnectionPool.close(force: true)
     ```
 
     !!! note "Auto-Closing in Karafka Applications"

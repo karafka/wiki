@@ -1,6 +1,6 @@
 Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
 
-The only thing hooked up to this monitoring is the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```). It is based on a standard [Ruby logger](https://ruby-doc.org/stdlib-3.1.2/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails. You can find it in your `karafka.rb` file:
+The framework itself always subscribes a couple of internal listeners (for example `Instrumentation::CriticalErrorsListener` and `Instrumentation::AssignmentsTracker`). On top of those, the generated `karafka.rb` template wires up the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```) for you by convention - it is not subscribed automatically by the framework itself. It is based on a standard [Ruby logger](https://ruby-doc.org/stdlib-3.1.2/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails. You can find it in your `karafka.rb` file:
 
 ```ruby
 Karafka.monitor.subscribe(Karafka::Instrumentation::LoggerListener.new)
@@ -130,7 +130,7 @@ class ComprehensiveUptimeListener
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polling messages..."
   end
 
-  def on_connection_listener_fetched(event)
+  def on_connection_listener_fetch_loop_received(event)
     listener_id = event[:caller].id
     messages_count = event[:messages_buffer].size
     Rails.logger.info "[UptimeMonitor] #{listener_id} - Polled #{messages_count} messages"
@@ -824,10 +824,10 @@ To do so, subscribe to all Karafka and WaterDrop events and publish those events
 ::Karafka::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.monitor.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'karafka').join('.')
+    as_event_name = (event_name.split('.').reverse << 'karafka').join('.')
 
     # Instrument via ActiveSupport
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
@@ -837,9 +837,9 @@ end
 ::WaterDrop::Instrumentation::Notifications::EVENTS.each do |event_name|
   ::Karafka.producer.subscribe(event_name) do |event|
     # Align with ActiveSupport::Notifications default naming convention
-    event = (event_name.split('.').reverse << 'waterdrop').join('.')
+    as_event_name = (event_name.split('.').reverse << 'waterdrop').join('.')
 
-    ::ActiveSupport::Notifications.instrument(event_name, **event.payload)
+    ::ActiveSupport::Notifications.instrument(as_event_name, **event.payload)
   end
 end
 ```
@@ -865,9 +865,9 @@ Karafka's monitor can be replaced or wrapped to add custom instrumentation while
 class CustomMonitor < ::Karafka::Instrumentation::Monitor
   # Events where we want custom handling
   INTERCEPTED_EVENTS = %w[
+    consumer.consume
     consumer.consumed
-    consumer.heartbeat
-    consumer.polling.started
+    connection.listener.fetch_loop
   ].freeze
 
   def instrument(event_id, payload = EMPTY_HASH, &block)

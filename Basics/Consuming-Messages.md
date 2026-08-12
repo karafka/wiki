@@ -182,9 +182,9 @@ To configure the initial offset for specific topics:
 
     **Result:** Each topic will use its configured offset position, overriding the global default.
 
-!!! note "Initial Offset Applies Only on First Run"
+!!! note "Initial Offset Applies Only When There Is No Committed Offset"
 
-    This setting applies only to the first execution of a Karafka process. All following executions will pick up from the last offset where the process ended previously.
+    `initial_offset` is applied via Kafka's `auto.offset.reset`, a consumer-group/broker-state property, not a per-process one. It takes effect only when the consumer group has no committed offset yet for a given partition (a brand new consumer group, or one whose offsets were reset). Once an offset has been committed, all following executions, on any process, will pick up from that committed offset regardless of `initial_offset`.
 
 ## Detecting Revocation Midway
 
@@ -264,7 +264,7 @@ class EventsConsumer < ApplicationConsumer
 
     mark_as_consumed @buffer.last
 
-    @buffer.clear!
+    @buffer.clear
   end
 end
 ```
@@ -398,7 +398,7 @@ The following example demonstrates searching for messages with a specific header
 ```ruby
 # Note: you still need to configure your settings using `karafka.rb`
 
-# Select all the events of user with id 5 from last 10 000 messages of
+# Select all the events of user with id 5 from last 1 000 messages of
 # each partition of the topic `users_events`
 
 user_5_events = []

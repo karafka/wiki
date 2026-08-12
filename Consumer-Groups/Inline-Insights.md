@@ -48,7 +48,7 @@ class LogEventsConsumer < ApplicationConsumer
     current_lag = insights? ? insights.fetch('consumer_lag') : 0
 
     # Buffering decisions are made based on current lag and buffer size.
-    return if current_lag > LAG_THRESHOLD && @buffer.size < FLUSH_SIZE
+    return if current_lag > LAG_THRESHOLD && @buffer.size < FLUSH_THRESHOLD
 
     @buffer.flush
     mark_as_consumed(messages.last)

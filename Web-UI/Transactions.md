@@ -6,7 +6,7 @@ There are a few things worth keeping in mind if you work with transactional data
 
 - **Dynamic Producer Types**: Karafka Web UI allows flexibility with its producer configuration. It is feasible to toggle your Karafka producer from transactional to non-transactional mode and vice versa, depending on the specific needs of a given process.
 
-- **Offset-Based Explorer**: The Karafka Explorer operates on an offset-based system. This means that it does more than just showcase the user messages. Instead, it fully views the Kafka topic, including compacted offsets, system entries, and aborted messages represented as system records. This comprehensive view gives users a granular understanding of the topic's state and helps diagnose potential issues or anomalies.
+- **Offset-Based Explorer (Pro)**: The Karafka Explorer is a Pro-only feature. It operates on an offset-based system. This means that it does more than just showcase the user messages. Instead, it fully views the Kafka topic, including compacted offsets, system entries, and aborted messages represented as system records. This comprehensive view gives users a granular understanding of the topic's state and helps diagnose potential issues or anomalies.
 
     Below, you can find an example of how the Karafka Web UI reports topic looks when all the records are created using the transactional producer:
 

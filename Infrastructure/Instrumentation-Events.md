@@ -11,7 +11,7 @@ Karafka uses a notification system that allows you to monitor and hook into vari
 
 ## Available Events
 
-Below is the complete list of instrumentation events available in Karafka:
+Below is a list of the instrumentation events available in Karafka. Depending on which Karafka extensions and additional engines you use, this might not be the complete list of all the events: some events are registered dynamically at runtime. Use `#available_events` on a fully loaded Karafka system to determine all the events you can use.
 
 
 ### Active_job Events

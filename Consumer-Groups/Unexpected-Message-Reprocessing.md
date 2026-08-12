@@ -12,7 +12,7 @@ The `#attempt` counter and the DLQ retry counter both track how many times Karaf
 
 With `max_messages 100`, a full batch of up to 100 messages is pulled for each processing cycle. If messages 0-98 succeed but message 99 fails, and you have not called `mark_as_consumed` for each message individually, Karafka retries the entire batch from the last committed offset (the offset of message 0). Messages 0-98 are therefore reprocessed on every retry of message 99.
 
-This is not a bug. It is the expected consequence of not tracking per-message consumption progress. Each of those earlier messages is processed `max_retries + 1` additional times despite never failing.
+This is not a bug. It is the expected consequence of not tracking per-message consumption progress. Each of those earlier messages is processed `max_retries` additional times despite never failing.
 
 The following shows the problematic pattern. If message 99 raises an error, messages 0-98 will be reprocessed from scratch on every retry:
 

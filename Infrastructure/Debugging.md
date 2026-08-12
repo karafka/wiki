@@ -179,9 +179,8 @@ Sometimes, users try to spawn their threads within consume to parallelize work. 
 
 ```ruby
 # This example illustrates incorrect setup
+# Assumes manual_offset_management(true) is set for this topic in the routing
 class OrdersConsumer < ApplicationConsumer
-  self.manual_offset_management = true
-
   def consume
     messages.each do |message|
       Thread.new do
@@ -546,14 +545,16 @@ Useful to detect:
 
 Review logs and monitor hooks to spot retry loops or failures:
 
-- Check for `consumer.consume.error` events - these will show unhandled exceptions during consume.
+- Check for `error.occurred` events with a `type` of `consumer.consume.error` - these will show unhandled exceptions during consume.
 - Look for repeated processing of the same offset - this is often a sign of crash or retry behavior.
 - The presence of `retrying?` in logs or monitor events
 
 ```ruby
 def consume
+  logger.info("retry attempt: #{attempt}") if retrying?
+
   messages.each do |message|
-    logger.info("retry attempt: #{message.attempt}") if message.retrying?
+    # process message
   end
 end
 ```

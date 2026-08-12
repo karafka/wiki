@@ -78,21 +78,21 @@ class KarafkaApp < Karafka::App
     topic :incoming_requests do
       active false
       deserializers(
-        payload: XmlDataDeserializer
+        payload: XmlDataDeserializer.new
       )
     end
 
     topic :events do
       active false
       deserializers(
-        payload: AvroDeserializer
+        payload: AvroDeserializer.new
       )
     end
 
     topic :webhooks do
       active false
       deserializers(
-        payload: JsonDeserializer
+        payload: JsonDeserializer.new
       )
     end
   end

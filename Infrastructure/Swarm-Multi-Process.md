@@ -399,7 +399,7 @@ Karafka introduces several event hooks specific to Swarm Mode, enhancing the obs
   <tr>
     <td><code>swarm.manager.stopping</code></td>
     <td>Supervisor</td>
-    <td>Indicates the supervisor is shutting down for reasons other than a full application shutdown.</td>
+    <td>Emitted by the supervisor when it stops a specific unresponsive child node (invalid status report or missed reporting deadline), not when the supervisor itself is shutting down.</td>
   </tr>
   <tr>
     <td><code>swarm.manager.terminating</code></td>
@@ -463,7 +463,7 @@ When the supervisor receives a request to shut down-typically through a SIGTERM 
 
 After issuing the shutdown command to its child nodes, the supervisor enters a waiting state, allowing a specified period for all nodes to shut down gracefully. The `shutdown_timeout` configuration parameter defines this period. Each node is expected to complete any ongoing tasks, release resources, and terminate voluntarily during this time.
 
-If, after the `shutdown_timeout` period, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
+If, after the `shutdown_timeout` period plus an additional 15-second grace buffer, any nodes have not shut down (indicating they are hanging or unable to complete their shutdown procedures), the supervisor takes a more forceful approach. It issues a KILL signal to all non-responsive child processes. This ensures that even in cases where some nodes are stuck or unable to terminate on their own, the system can still release all resources and fully shut down.
 This forceful termination step is crucial for preventing resource leaks and ensuring the system remains clean and ready for a potential restart or to end operation without impacting the underlying environment.
 
 <p align="center">
@@ -478,7 +478,7 @@ This forceful termination step is crucial for preventing resource leaks and ensu
 
 Karafka's Web UI fully supports Swarm Mode, showcasing each forked node as an independent entity for detailed monitoring.
 
-In Swarm Mode, the Web UI distinguishes each node as a separate process. However, each swarm node is marked with a "paid" label, indicating the parent process's PID (the supervisor). This feature aids in identifying the relationship between nodes and their supervisor.
+In Swarm Mode, the Web UI distinguishes each node as a separate process. However, each swarm node is marked with a "ppid" label, indicating the parent process's PID (the supervisor). This feature aids in identifying the relationship between nodes and their supervisor.
 
 Due to librdkafka's fork-safety limitations, the supervisor process does not appear directly in the Web UI because it cannot hold open connections to Kafka. However, The supervisor's presence is inferred through the PPID label of swarm nodes. Since all nodes share the same supervisor PID as their PPID, you can indirectly identify the supervisor process that way.
 

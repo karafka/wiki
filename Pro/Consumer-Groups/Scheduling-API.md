@@ -141,14 +141,14 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
         <tr>
             <td><code>#schedule_eofed</code></td>
             <td>Array with eofed jobs</td>
-            <td>No</td>
-            <td>Executed when new eofed jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
+            <td>Yes, unless subclassing <code>Schedulers::Default</code></td>
+            <td>Executed when new eofed jobs are available that should be handled. Unlike the other job types above, <code>Schedulers::Base</code> does not provide a default FIFO fallback for this method - skipping it in a <code>Base</code> subclass raises a <code>NoMethodError</code> the first time eofed jobs arrive. Only <code>Schedulers::Default</code> (the concrete, ready-to-use scheduler) implements the FIFO fallback for it.</td>
         </tr>
         <tr>
             <td><code>#manage</code></td>
             <td>None</td>
             <td>No</td>
-            <td>Executed each time any job is finished and on each tick, which by default is every 5 seconds. This method allows for dynamic, state change-based scheduling. The default implementation of this method assumes a stateless scheduler and does nothing.</td>
+            <td>Executed on a periodic tick, throttled to run at most once per <code>internal.tick_interval</code> (5 seconds by default), regardless of how often jobs finish. This method allows for dynamic, state change-based scheduling. The default implementation of this method assumes a stateless scheduler and does nothing.</td>
         </tr>
         <tr>
             <td><code>#clear</code></td>
@@ -259,9 +259,10 @@ class OneThreadScheduler < ::Karafka::Pro::Processing::Schedulers::Base
     internal_manage
   end
 
-  # This method runs each time any job is finished and every 5 seconds if no
-  # jobs are being finished. This allows to create schedulers that can operate
-  # based on changing external conditions
+  # This method runs on a periodic tick, throttled to at most once per
+  # internal.tick_interval (5 seconds by default) regardless of how often jobs
+  # finish. This allows to create schedulers that can operate based on
+  # changing external conditions
   def manage
     internal_manage
   end

@@ -328,7 +328,7 @@ Parallel Segments include error handling for partitioning and reduction operatio
 
 If your partitioner or reducer throws an exception, Karafka will:
 
-1. Emit an error event via `error.occurred` with type `parallel_segments.partitioner.error`
+1. Emit an error event via `error.occurred` with type `parallel_segments.partitioner.error` for partitioner failures, or `parallel_segments.reducer.error` for reducer failures - these are distinct event types, so filter for both if you want to catch either
 2. Assign the problematic message to a fallback segment (typically segment 0)
 3. Continue processing other messages
 
@@ -360,8 +360,8 @@ You can access segment information within your consumer:
 ```ruby
 class MyConsumer < ApplicationConsumer
   def consume
-    segment_id = consumer_group.segment_id
-    original_group = consumer_group.segment_origin
+    segment_id = topic.group.segment_id
+    original_group = topic.group.segment_origin
 
     Karafka.logger.info(
       "Processing #{messages.count} messages in segment #{segment_id} " \
@@ -616,7 +616,7 @@ class MyConsumer < ApplicationConsumer
   def consume
     # Log segment information for monitoring
     Karafka.logger.info(
-      "Segment #{consumer_group.segment_id} processing #{messages.count} messages"
+      "Segment #{topic.group.segment_id} processing #{messages.count} messages"
     )
 
     messages.each do |message|

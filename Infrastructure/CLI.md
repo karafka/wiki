@@ -2,7 +2,7 @@ Karafka has a simple CLI built in. It provides the following commands:
 
 | Command        | Description                                                                       |
 |----------------|-----------------------------------------------------------------------------------|
-| help [COMMAND] | Describe available commands or one specific command                               |
+| help           | Describe available commands                                                       |
 | console        | Start the Karafka irb console similar to the Rails console (short-cut alias: "c") |
 | info           | Print configuration details and other options of your application                 |
 | install        | Installs all required things for Karafka application in current directory         |
@@ -17,10 +17,10 @@ All the commands are executed the same way:
 bundle exec karafka [COMMAND]
 ```
 
-If you need more details about each of the CLI commands, you can execute the following command:
+To list all available commands with a short description of each, run:
 
 ```shell
-bundle exec karafka help [COMMAND]
+bundle exec karafka help
 ```
 
 ## Karafka server
@@ -83,7 +83,7 @@ bundle exec karafka server --exclude-topics topic_name2,topic_name5
 
     The `topics health` command is part of [Karafka Pro](https://karafka.io/#become-pro).
 
-The `topics health` command analyzes your Kafka topics for replication and durability issues. It inspects each topic's replication factor and `min.insync.replicas` setting to detect potential risks, grouping findings by color-coded severity with actionable recommendations.
+The `topics health` command analyzes your Kafka topics for replication and durability issues. It inspects each topic's replication factor and `min.insync.replicas` setting to detect potential risks.
 
 ```shell
 bundle exec karafka topics health
@@ -95,7 +95,7 @@ The command checks for the following conditions:
 - **Zero Fault Tolerance** - Topics where the replication factor is less than or equal to `min.insync.replicas`, meaning no broker can fail without causing the topic to become unavailable for writes when producers use `acks=all`.
 - **Low Durability** - Topics where `min.insync.replicas` is set to 1, meaning acknowledged writes using `acks=all` only require a single broker, increasing the risk of data loss if that broker fails before replication completes.
 
-Results are grouped by severity using color-coded output. Each finding includes a recommendation to help you address the detected risk, such as increasing the replication factor or adjusting the `min.insync.replicas` setting.
+Each finding is printed as it is found (in cluster order, not grouped by severity), shown in red for critical issues or yellow for warnings. After all topics are checked, a single generic recommendations summary is printed at the end, covering increasing the replication factor, raising `min.insync.replicas`, and keeping the replication factor above `min.insync.replicas` for fault tolerance.
 
 ## Karafka Swarm
 

@@ -120,14 +120,12 @@ class Distributor
   # @return [Integer] number of partitions
   #
   # @note `#partition_count` fetched from rdkafka is cached. No need to cache it again
-  # @note Will return 1 partition for topics that do not exist
+  # @note `#partition_count` returns -1, not a raised error, when the count could not be
+  #   retrieved (for example, when the topic does not exist yet)
   def fetch_partition_count(topic)
-    @producer.partition_count(topic)
-  rescue Rdkafka::RdkafkaError => e
-    # This error means topic does not exist, we then assume auto-create and will use 0 for now
-    return 1 if e.code == :unknown_topic_or_part
+    count = @producer.partition_count(topic)
 
-    raise(e)
+    count.positive? ? count : 1
   end
 end
 

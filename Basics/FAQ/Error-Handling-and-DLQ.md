@@ -380,7 +380,7 @@ class ValidatingJsonDeserializer
     validate!(payload)
     payload
   rescue JSON::ParserError => e
-    raise Karafka::Errors::DeserializationError, "Invalid JSON: #{e.message}"
+    raise StandardError, "Invalid JSON: #{e.message}"
   end
 
   private
@@ -390,7 +390,7 @@ class ValidatingJsonDeserializer
     missing = required_fields - payload.keys
 
     if missing.any?
-      raise Karafka::Errors::DeserializationError, "Missing required fields: #{missing.join(', ')}"
+      raise StandardError, "Missing required fields: #{missing.join(', ')}"
     end
   end
 end

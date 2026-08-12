@@ -82,7 +82,15 @@ messages = secondary_admin.read_topic('events', 0, 10)
 
 !!! note "Configuration Scope"
 
-    Only the `kafka` configuration is customizable per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
+    The `kafka` configuration and, since 2.6.0, an `external_client` are the two customizable arguments per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
+
+`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
+
+```ruby
+# Read lags of a running consumer via its own client connection
+admin = Karafka::Admin.new(external_client: client)
+admin.read_lags_with_offsets({ 'my-group' => ['events'] })
+```
 
 #### Environment Variable Approach
 
@@ -302,6 +310,15 @@ puts "High watermark offset: #{high}"
 
 The `#read_partition_offsets` method is a lower-level, more flexible alternative to `#read_watermark_offsets` that gives you precise control over which offset spec to query for each partition, and optionally applies transactional isolation semantics.
 
+### Isolation Levels
+
+`Karafka::Admin::IsolationLevels` is a public module holding the two isolation level constants accepted by the `isolation_level:` keyword used throughout this page:
+
+- `Karafka::Admin::IsolationLevels::READ_UNCOMMITTED` - the default; may include messages written by producers that have not yet committed (or have aborted) their transaction
+- `Karafka::Admin::IsolationLevels::READ_COMMITTED` - excludes those uncommitted/aborted messages
+
+For non-transactional topics, both values give the same result.
+
 <table>
   <thead>
     <tr>
@@ -345,10 +362,12 @@ Pass a hash where keys are topic names and values are arrays of partition specs.
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [
-    { partition: 0, offset: :earliest },
-    { partition: 1, offset: :latest }
-  ]
+  {
+    'events' => [
+      { partition: 0, offset: :earliest },
+      { partition: 1, offset: :latest }
+    ]
+  }
 )
 
 results.each do |r|
@@ -408,7 +427,7 @@ Each result hash contains:
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: :latest }],
+  { 'events' => [{ partition: 0, offset: :latest }] },
   isolation_level: Karafka::Admin::IsolationLevels::READ_COMMITTED
 )
 
@@ -424,7 +443,7 @@ Pass a Unix timestamp **in milliseconds** as the `:offset` value to find the fir
 one_hour_ago_ms = (Time.now.to_f * 1000 - 3_600_000).to_i
 
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: one_hour_ago_ms }]
+  { 'events' => [{ partition: 0, offset: one_hour_ago_ms }] }
 )
 
 puts "First offset from one hour ago: #{results.first[:offset]}"
@@ -436,11 +455,17 @@ Use `:max_timestamp` to retrieve the offset of the message with the highest time
 
 ```ruby
 results = Karafka::Admin.read_partition_offsets(
-  'events' => [{ partition: 0, offset: :max_timestamp }]
+  { 'events' => [{ partition: 0, offset: :max_timestamp }] }
 )
 
 puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:timestamp]}"
 ```
+
+### Consumer-Side Counterpart
+
+`Karafka::Admin.read_partition_offsets` (above) runs against a dedicated admin connection. A separate, lower-level `read_partition_offsets` also exists on `Connection::Client`/`Connection::Proxy` (`connection/client.rb`, `connection/proxy.rb`), letting a running consumer query offsets on its own connection instead of opening a new one. It accepts the same `topic_partition_offsets` spec, forwards the consumer's own `isolation.level`, and is used internally by the Pro Iterator and lag-compensation features.
+
+Its own docstring notes a caveat: the underlying batched `ListOffsets` call resolves `:latest` to the high watermark regardless of the isolation level (unlike the consumer's `#query_watermark_offsets`, which returns the last stable offset for a read_committed consumer). On a topic with an in-flight transaction, `:latest` therefore includes uncommitted messages a read_committed consumer would not otherwise see. Non-transactional topics are unaffected (LSO == HWM).
 
 ## Reading Lags and Offsets of a Consumer Group
 
@@ -624,7 +649,7 @@ When using `#copy_consumer_group`, the method ensures that offsets from the sour
 
     If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
-The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group does not exist or has no committed offsets for the specified topics).
+The method returns `false` only if the source consumer group does not exist at all (no lag data for any of the specified topics). If the topics exist but the source group has no committed offsets for them, `copy_consumer_group` still returns `true`, even though there is nothing to actually copy.
 
 This functionality is particularly useful for:
 
