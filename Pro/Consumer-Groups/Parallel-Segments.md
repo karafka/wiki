@@ -328,7 +328,7 @@ Parallel Segments include error handling for partitioning and reduction operatio
 
 If your partitioner or reducer throws an exception, Karafka will:
 
-1. Emit an error event via `error.occurred` with type `parallel_segments.partitioner.error`
+1. Emit an error event via `error.occurred` with type `parallel_segments.partitioner.error` for partitioner failures, or `parallel_segments.reducer.error` for reducer failures - these are distinct event types, so filter for both if you want to catch either
 2. Assign the problematic message to a fallback segment (typically segment 0)
 3. Continue processing other messages
 
