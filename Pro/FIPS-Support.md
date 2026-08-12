@@ -80,12 +80,12 @@ Karafka relies on librdkafka for Kafka communication. For FIPS compatibility, li
 
 ## Limitations and Unsupported Features
 
-When operating in FIPS mode, the following limitations apply:
+These limitations come from the underlying OpenSSL FIPS module that librdkafka links against, not from restrictions in Karafka's own code:
 
-- Legacy Authentication Methods: Only SASL/SCRAM and SSL certificate authentication are supported
-- Custom Compression Codecs: Some compression algorithms may not be FIPS-compatible
-- Third-party Extensions: Plugins not specifically designed for FIPS environments may not function correctly
-- Custom Headers Deserializer: When using encryption features, custom headers deserializers may interfere with proper encryption/decryption
+- Legacy Authentication Methods: When linked against a FIPS-mode OpenSSL build, only SASL mechanisms backed by FIPS-approved cryptography are available. Karafka itself does not restrict which SASL mechanism you configure.
+- Custom Compression Codecs: Some compression algorithms may not be validated for FIPS-mode deployments, depending on your OpenSSL build.
+- Third-party Extensions: Plugins not specifically designed for FIPS environments may not function correctly.
+- Custom Headers Deserializer: When using encryption features, custom headers deserializers may interfere with proper encryption/decryption (see [Custom Headers Deserializer and Encryption](#custom-headers-deserializer-and-encryption) above).
 
 ## Example Use Cases
 
