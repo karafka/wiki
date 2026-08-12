@@ -19,6 +19,10 @@ This document explains topic auto-creation behavior and addresses common misconc
 </tr>
 </table>
 
+!!! info "Already Enabled by Default Outside Production"
+
+    Karafka automatically sets `allow.auto.create.topics` to `true` for both consumers and the default producer in non-production environments, so you do not need to configure this setting yourself in development or test. This default does not apply in production.
+
 ## Expected vs. Actual Behavior
 
 Many developers expect that when a consumer subscribes to a non-existent topic with `allow.auto.create.topics` set to `true`, the topic will be automatically created.
