@@ -444,6 +444,12 @@ results = Karafka::Admin.read_partition_offsets(
 puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:timestamp]}"
 ```
 
+### Consumer-Side Counterpart
+
+`Karafka::Admin.read_partition_offsets` (above) runs against a dedicated admin connection. A separate, lower-level `read_partition_offsets` also exists on `Connection::Client`/`Connection::Proxy` (`connection/client.rb`, `connection/proxy.rb`), letting a running consumer query offsets on its own connection instead of opening a new one. It accepts the same `topic_partition_offsets` spec, forwards the consumer's own `isolation.level`, and is used internally by the Pro Iterator and lag-compensation features.
+
+Its own docstring notes a caveat: the underlying batched `ListOffsets` call resolves `:latest` to the high watermark regardless of the isolation level (unlike the consumer's `#query_watermark_offsets`, which returns the last stable offset for a read_committed consumer). On a topic with an in-flight transaction, `:latest` therefore includes uncommitted messages a read_committed consumer would not otherwise see. Non-transactional topics are unaffected (LSO == HWM).
+
 ## Reading Lags and Offsets of a Consumer Group
 
 This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
