@@ -312,7 +312,7 @@ Ruby's thread priority is calculated as bit shifts of the default 100ms quantum:
 - priority 0 = 100ms
 - priority -1 = 50ms
 - priority -2 = 25ms
-- priority -3 = 12.5ms
+- priority -3 = 20ms (the theoretical bit-shift value is 12.5ms, but Ruby's internal tick system rounds this up in practice - see below)
 
 This mechanism determines how frequently a thread releases the GVL, which is critical when mixing CPU-bound background processing with IO-bound request handling.
 
