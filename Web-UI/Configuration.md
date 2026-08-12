@@ -193,7 +193,7 @@ Karafka Web UI implements an in-memory cache mechanism to optimize its performan
 
 ### Cache Duration
 
-The default duration for which this cache remains valid is 5 minutes. This means that after performing actions such as topic creation, removal, or repartitioning in the cluster, the changes might not be immediately visible on the Karafka Web UI. There might be a delay of up to 5 minutes before the UI reflects these changes.
+The default duration for which this cache remains valid is 5 minutes in `production`, and 5 seconds in every other environment (development, test, staging, etc.). This means that after performing actions such as topic creation, removal, or repartitioning in the cluster, the changes might not be immediately visible on the Karafka Web UI. In production, there might be a delay of up to 5 minutes before the UI reflects these changes; elsewhere, the delay is at most 5 seconds.
 
 ### Configurability
 
