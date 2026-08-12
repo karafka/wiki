@@ -626,7 +626,7 @@ When using `#copy_consumer_group`, the method ensures that offsets from the sour
 
     If the target consumer group already exists, the offsets from the source group will be merged into it. This may result in the continuation of message processing from the combined offsets, so plan accordingly.
 
-The method returns `true` if offsets were successfully copied or `false` if there was nothing to copy (for example, if the source consumer group does not exist or has no committed offsets for the specified topics).
+The method returns `false` only if the source consumer group does not exist at all (no lag data for any of the specified topics). If the topics exist but the source group has no committed offsets for them, `copy_consumer_group` still returns `true`, even though there is nothing to actually copy.
 
 This functionality is particularly useful for:
 
