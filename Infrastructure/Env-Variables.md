@@ -10,7 +10,7 @@ Karafka's behavior can be altered with the following environment variables:
   <tbody>
     <tr>
       <td>KARAFKA_ROOT_DIR</td>
-      <td>Root dir of the Karafka application. Defaults to the directory in which Bundler was executed (<code>BUNDLE_GEMFILE</code>)</td>
+      <td>Root dir of the Karafka application. Defaults to the directory of the outermost <code>Gemfile</code> as resolved by Bundler (<code>Bundler.default_gemfile</code>), not the <code>BUNDLE_GEMFILE</code> env variable directly, since that can be altered by tools like ruby-lsp</td>
     </tr>
     <tr>
       <td>KARAFKA_ENV</td>
