@@ -30,7 +30,7 @@
 
 <tr>
 <td class="nowrap"><code>advertised.listeners</code></td>
-<td class="nowrap"><code>PLAINTEXT://127.0.0.1:9092</code></td>
+<td class="nowrap"><code>null</code></td>
 <td class="middle">&#x274C;</td>
 <td class="middle">&#x274C;</td>
 <td>Listeners to publish to ZooKeeper for clients to use, if different than the listeners config property.</td>
@@ -107,7 +107,7 @@
 </tr>
 <tr>
 <td class="nowrap"><code>broker.id</code></td>
-<td class="nowrap"><code>1</code></td>
+<td class="nowrap"><code>-1</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
 <td>Unique ID of the broker.</td>
@@ -975,7 +975,7 @@
 </tr>
 <tr>
 <td class="nowrap"><code>offsets.topic.replication.factor</code></td>
-<td class="nowrap"><code>1</code></td>
+<td class="nowrap"><code>3</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
 <td>Replication factor for offsets topic.</td>
@@ -1745,7 +1745,7 @@
 </tr>
 <tr>
 <td class="nowrap"><code>transaction.state.log.min.isr</code></td>
-<td class="nowrap"><code>1</code></td>
+<td class="nowrap"><code>2</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
 <td>Minimum in-sync replicas for transaction state logs.</td>
@@ -1759,7 +1759,7 @@
 </tr>
 <tr>
 <td class="nowrap"><code>transaction.state.log.replication.factor</code></td>
-<td class="nowrap"><code>1</code></td>
+<td class="nowrap"><code>3</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
 <td>Replication factor for transaction state logs.</td>
