@@ -2,7 +2,7 @@ The Search feature is a tool that enables users to search and filter messages ef
 
 ## Usage
 
-To access the search functionality in Web UI, you need to navigate to the Explorer and look for the loop icon. This icon is available when browsing through the data of a particular topic or partition. Clicking on the loop icon opens the search modal, allowing you to configure your search parameters and perform a detailed search.
+To access the search functionality in Web UI, you need to navigate to the Explorer and look for the magnifying glass icon. This icon is available when browsing through the data of a particular topic or partition. Clicking on the magnifying glass icon opens the search modal, allowing you to configure your search parameters and perform a detailed search.
 
 The search modal includes several fields and options to refine your search:
 
