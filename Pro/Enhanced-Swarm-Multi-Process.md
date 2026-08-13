@@ -179,7 +179,7 @@ class KarafkaApp < Karafka::App
 
     topic 'user_activity' do
       consumer UserActivityConsumer
-      assign [0, 1]  # Directly assign partitions 0 and 1
+      assign(0, 1)  # Directly assign partitions 0 and 1
       swarm(nodes: [2])  # Assign these partitions to node 2
     end
   end
