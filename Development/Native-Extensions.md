@@ -1,6 +1,6 @@
-# Native Extensions: Precompiled rdkafka-ruby
+# Native Extensions: Precompiled karafka-rdkafka
 
-Karafka uses the `rdkafka-ruby` gem, which includes a native C extension that wraps the librdkafka library. To provide faster and more reliable installation, we distribute **native extensions** as precompiled gems (also called "native gems") for major platforms.
+Karafka uses the `karafka-rdkafka` gem, which includes a native C extension that wraps the librdkafka library. To provide faster and more reliable installation, we distribute **native extensions** as precompiled gems (also called "native gems") for major platforms.
 
 This eliminates the need to compile C extensions during installation, resulting in significantly faster gem installation and removing build dependency requirements.
 
@@ -15,7 +15,7 @@ Native extensions are platform-specific compiled binaries that contain:
 
 ## Supported Platforms
 
-`rdkafka-ruby` ships native extensions for the following platforms:
+`karafka-rdkafka` ships native extensions for the following platforms:
 
 <table>
 <tr>
@@ -38,6 +38,20 @@ Native extensions are platform-specific compiled binaries that contain:
 <td>Alpine 3.18+</td>
 <td>musl 1.2.4+</td>
 <td>Alpine 3.18+, and other musl-based distributions</td>
+</tr>
+<tr>
+<td><strong>Linux (glibc)</strong></td>
+<td>aarch64</td>
+<td>Ubuntu 22.04 LTS</td>
+<td>glibc 2.35+</td>
+<td>Ubuntu 22.04+, CentOS 9+, RHEL 9+, Debian 12+, Fedora 36+ (ARM64)</td>
+</tr>
+<tr>
+<td><strong>Linux (musl)</strong></td>
+<td>aarch64</td>
+<td>Alpine 3.18+</td>
+<td>musl 1.2.4+</td>
+<td>Alpine 3.18+, and other musl-based distributions (ARM64)</td>
 </tr>
 <tr>
 <td><strong>macOS</strong></td>
@@ -79,7 +93,7 @@ ldd --version
 ldd 2>&1 | head -1
 ```
 
-If your platform is not supported or does not meet the minimum requirements, `rdkafka-ruby` will automatically fall back to source compilation.
+If your platform is not supported or does not meet the minimum requirements, `karafka-rdkafka` will automatically fall back to source compilation.
 
 ## Installation Benefits
 
@@ -94,7 +108,7 @@ If your platform is not supported or does not meet the minimum requirements, `rd
 ### Without Native Extensions (Fallback)
 
 ```shell
-$ gem install rdkafka --platform=ruby
+$ gem install karafka-rdkafka --platform=ruby
 # Downloads source gem and compiles during installation
 # Requires: build tools, librdkafka, OpenSSL, SASL, Kerberos, etc.
 ```
@@ -179,10 +193,10 @@ RUN gem install karafka  # 3-10 seconds
 
 ```shell
 # Explicitly request native extension
-gem install rdkafka --platform=x86_64-linux-gnu
+gem install karafka-rdkafka --platform=x86_64-linux-gnu
 
 # Or in Gemfile
-gem 'rdkafka', platforms: [:x86_64_linux_gnu]
+gem 'karafka-rdkafka', platforms: [:x86_64_linux_gnu]
 ```
 
 ### Fallback to Source Compilation
@@ -191,10 +205,10 @@ If native extensions do not work for your platform:
 
 ```shell
 # Force source compilation
-gem install rdkafka --platform=ruby
+gem install karafka-rdkafka --platform=ruby
 
 # Or in Gemfile
-gem 'rdkafka', force_ruby_platform: true
+gem 'karafka-rdkafka', force_ruby_platform: true
 ```
 
 ## Source Compilation (Fallback)
@@ -205,10 +219,10 @@ If you need to use source compilation instead of native extensions (e.g., for cu
 
 ```shell
 # Force source compilation
-gem install rdkafka --platform=ruby
+gem install karafka-rdkafka --platform=ruby
 
 # Or in Gemfile
-gem 'rdkafka', force_ruby_platform: true
+gem 'karafka-rdkafka', force_ruby_platform: true
 ```
 
 ## Migration from Source Compilation
@@ -220,7 +234,7 @@ If you are currently using source compilation:
 
    ```ruby
    # Remove platform restrictions
-   gem 'rdkafka'  # Will automatically use native extensions
+   gem 'karafka-rdkafka'  # Will automatically use native extensions
    ```
 
 3. **Rebuild** your containers - they will be much faster!
