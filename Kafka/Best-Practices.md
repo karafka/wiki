@@ -343,8 +343,8 @@ Different providers have distinct trade-offs that affect operational flexibility
 
 ## See Also
 
-- [Kafka Topic Configuration](Kafka-Topic-Configuration) - Per-topic settings including retention, replication, and compaction
-- [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - Cluster-level broker settings and defaults
+- Kafka Topic Configuration - Per-topic settings including retention, replication, and compaction
+- Kafka Cluster Configuration - Cluster-level broker settings and defaults
 - [New Consumer Group Protocol](Kafka-New-Rebalance-Protocol) - Faster rebalancing with the new consumer protocol
 - [AWS MSK Guide](Infrastructure-AWS-MSK-Guide) - MSK-specific considerations and configuration
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Implementing DLQ patterns in Karafka

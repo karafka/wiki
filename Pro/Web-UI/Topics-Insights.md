@@ -83,5 +83,5 @@ In summary, the Distribution Insights feature of the Karafka Pro Web UI is a too
 
 ## See Also
 
-- [librdkafka Statistics](Librdkafka-Statistics) - For understanding the underlying statistics that power insights
+- librdkafka Statistics - For understanding the underlying statistics that power insights
 - [Pro Topics Management](Pro-Web-UI-Topics-Management) - For managing topic configuration and partitions

@@ -211,17 +211,17 @@
 ## librdkafka
 
 - [Configuration](Librdkafka-Configuration)
-- [Statistics](Librdkafka-Statistics)
-- [Errors](Librdkafka-Errors)
-- [Threads and Pipe Patterns](Librdkafka-Threads-and-Pipe-Patterns)
-- [Changelog](Librdkafka-Changelog)
+- Statistics
+- Errors
+- Threads and Pipe Patterns
+- Changelog
 
 ## Kafka
 
-- [Kafka Setup](Kafka-Setup)
-- [Best Practices](Kafka-Best-Practices)
-- [Topic Configuration](Kafka-Topic-Configuration)
-- [Cluster Configuration](Kafka-Cluster-Configuration)
+- Kafka Setup
+- Best Practices
+- Topic Configuration
+- Cluster Configuration
 - [New Rebalance Protocol (KIP-848)](Kafka-New-Rebalance-Protocol)
 
 ## Upgrade Notes
@@ -262,14 +262,14 @@ It is recommended to do one major upgrade at a time.
 
 ## Changelogs
 
-- [Karafka](Changelog-Karafka)
-- [WaterDrop](Changelog-WaterDrop)
-- [Karafka-Web](Changelog-Karafka-Web-UI)
-- [Karafka-Testing](Changelog-Karafka-Testing)
-- [Karafka-Core](Changelog-Karafka-Core)
-- [Karafka-Rdkafka](Changelog-Karafka-Rdkafka)
-- [Rdkafka](Changelog-Rdkafka)
-- [Librdkafka](Librdkafka-Changelog)
+- [Karafka](https://github.com/karafka/karafka/blob/master/CHANGELOG.md)
+- [WaterDrop](https://github.com/karafka/waterdrop/blob/master/CHANGELOG.md)
+- [Karafka-Web](https://github.com/karafka/karafka-web/blob/master/CHANGELOG.md)
+- [Karafka-Testing](https://github.com/karafka/karafka-testing/blob/master/CHANGELOG.md)
+- [Karafka-Core](https://github.com/karafka/karafka-core/blob/master/CHANGELOG.md)
+- [Karafka-Rdkafka](https://github.com/karafka/karafka-rdkafka/blob/master/CHANGELOG.md)
+- [Rdkafka](https://github.com/karafka/rdkafka-ruby/blob/master/CHANGELOG.md)
+- [Librdkafka](https://github.com/confluentinc/librdkafka/blob/master/CHANGELOG.md)
 
 ## Code Docs
 
@@ -283,16 +283,16 @@ It is recommended to do one major upgrade at a time.
 
 ## Development
 
-- [Gems Publishing](Development-Gems-Publishing)
-- [Precompilation](Development-Precompilation)
-- [Native Extensions](Development-Native-Extensions)
-- [Naming Conventions](Development-Naming-Conventions)
-- [LLM Documentation Guidelines](Development-LLM-Documentation-Guidelines)
-- [Librdkafka Update Release Policy](Development-Librdkafka-Update-Release-Policy)
-- [Karafka Integration Tests Catalog](Development-Karafka-Integration-Tests-Catalog)
-- [Software Bill of Materials (SBOM)](Development-SBOM)
-- [Code Quality and Linting Setup](Development-Code-Quality-Linting-Setup)
-- [Technical Writing](Development-Technical-Writing)
-- [KIP-932 Karafka](Development-KIP-932-Karafka)
-- [KIP-932 Web UI](Development-KIP-932-Web-UI)
-- [KIP-932 Rdkafka](Development-KIP-932-Rdkafka)
+- Gems Publishing
+- Precompilation
+- Native Extensions
+- Naming Conventions
+- LLM Documentation Guidelines
+- Librdkafka Update Release Policy
+- Karafka Integration Tests Catalog
+- Software Bill of Materials (SBOM)
+- Code Quality and Linting Setup
+- Technical Writing
+- KIP-932 Karafka
+- KIP-932 Web UI
+- KIP-932 Rdkafka

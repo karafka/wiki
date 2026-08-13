@@ -393,4 +393,4 @@ The search team, recommendations team, browse team, and analytics team each depl
 - [Consumer Groups and Topics](https://karafka.io/docs/Basics-Consuming-Messages) - How Karafka maps consumer groups to Kafka topics
 - [Pro Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions) - Multi-threaded processing within a single partition
 - [Dead Letter Queue](https://karafka.io/docs/Consumer-Groups-Dead-Letter-Queue) - Handle unprocessable messages without blocking consumption
-- [Kafka Best Practices](https://karafka.io/docs/Kafka-Best-Practices) - Topic design, partition sizing, and operational guidance
+- Kafka Best Practices - Topic design, partition sizing, and operational guidance

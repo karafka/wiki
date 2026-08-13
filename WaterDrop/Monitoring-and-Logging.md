@@ -174,7 +174,7 @@ WaterDrop is configured to emit internal `librdkafka` metrics every five seconds
     producer.produce_sync(topic: 'events', payload: 'hello')
     ```
 
-The statistics include all of the metrics from `librdkafka` (complete list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
+The statistics include all of the metrics from `librdkafka` as well as the diff of those against the previously emitted values.
 
 !!! note "Metrics Mix Milliseconds and Microseconds"
 
@@ -395,7 +395,7 @@ The WaterDrop Datadog listener provides a default set of metrics for reporting, 
     producer.monitor.subscribe(listener)
     ```
 
-    The structure and details about the librdkafka statistical metrics can be found [here](Librdkafka-Statistics).
+    The structure and details about the librdkafka statistical metrics are documented in [librdkafka's own STATISTICS.md](https://github.com/confluentinc/librdkafka/blob/master/STATISTICS.md).
 
 !!! tip "Mixing Approaches"
 

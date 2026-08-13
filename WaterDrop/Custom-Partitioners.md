@@ -120,5 +120,5 @@ In summary, the choice between an external custom partitioner and a middleware-b
 
 ## See Also
 
-- [Kafka Topic Configuration](Kafka-Topic-Configuration) - For understanding topic partitioning configuration
+- Kafka Topic Configuration - For understanding topic partitioning configuration
 - [Pro Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - For parallel processing within single partitions

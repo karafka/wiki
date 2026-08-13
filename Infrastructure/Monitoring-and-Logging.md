@@ -218,7 +218,7 @@ Karafka.monitor.notifications_bus.register_event('app.external_api_call')
 
 Karafka may be configured to emit internal metrics at a fixed interval by setting the `kafka` `statistics.interval.ms` configuration property to a value > `0`. Once that is done, emitted statistics are available after subscribing to the `statistics.emitted` publisher event. By default this setting is set to 5 seconds.
 
-The statistics include all of the metrics from `librdkafka` (full list [here](Librdkafka-Statistics)) as well as the diff of those against the previously emitted values.
+The statistics include all of the metrics from `librdkafka` (see [librdkafka's own STATISTICS.md](https://github.com/confluentinc/librdkafka/blob/master/STATISTICS.md) for the full list) as well as the diff of those against the previously emitted values.
 
 For several attributes like `rxmsgs`, `librdkafka` publishes only the totals. To make it easier to track the progress (for example number of messages received between statistics emitted events) and state changes, Karafka compares all the numeric values against previously available numbers enriching the original payload with following values:
 

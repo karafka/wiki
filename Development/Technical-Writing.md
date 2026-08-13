@@ -22,7 +22,7 @@ Treat this as a clarity floor, not a straitjacket. Apply the rules hardest to pr
 
 - Use one approved word per meaning, and prefer the short, common word.
 - Use the same term for the same thing every time. Do **not** swap between synonyms for one concept.
-- Karafka domain terms and technical names are always allowed (`topic`, `partition`, `offset`, `consumer group`, `rebalance`, `DLQ`, and similar). Follow the [Naming Conventions](https://karafka.io/docs/Development-Naming-Conventions).
+- Karafka domain terms and technical names are always allowed (`topic`, `partition`, `offset`, `consumer group`, `rebalance`, `DLQ`, and similar). Follow the Naming Conventions.
 - Do **not** use contractions. Write `do not`, not the shortened form.
 - Remove `please`. Documentation gives direct instructions.
 - Avoid marketing and hedge words such as `robust`, `powerful`, `seamless`, `simply`, and `easily`.

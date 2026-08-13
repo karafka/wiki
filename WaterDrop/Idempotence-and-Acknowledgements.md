@@ -170,5 +170,5 @@ In this scenario:
 ## See Also
 
 - [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Detailed scenarios for replication configuration impact on availability
-- [Kafka Best Practices](Kafka-Best-Practices) - General Kafka configuration recommendations
+- Kafka Best Practices - General Kafka configuration recommendations
 - [Declarative Topics](Infrastructure-Declarative-Topics) - Managing topic configuration in code

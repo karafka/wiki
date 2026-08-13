@@ -66,7 +66,7 @@ Karafka includes a fingerprinting feature that provides tamper resistance for me
 
 ## Supply Chain Security
 
-All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they do not use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our [Software Bill of Materials (SBOM) document](Development-SBOM).
+All dependencies have been reviewed for FIPS compatibility regarding cryptographic hashing algorithms to ensure they do not use non-approved methods like MD5. For a complete listing of all dependencies and their security status, refer to our Software Bill of Materials (SBOM) document.
 
 For more information about Karafka's security posture, including our approach to dependency management, vulnerability handling, and secure coding practices, consult our [Security Guidelines documentation](Pro-Security).
 

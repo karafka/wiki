@@ -46,5 +46,5 @@ Escape character is '^]'.
 ## See Also
 
 - [Getting Started](Basics-Getting-Started) - For setting up Karafka with your Kafka cluster
-- [Kafka Topic Configuration](Kafka-Topic-Configuration) - For configuring Kafka topics
-- [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - For cluster-level configuration options
+- Kafka Topic Configuration - For configuring Kafka topics
+- Kafka Cluster Configuration - For cluster-level configuration options

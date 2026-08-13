@@ -283,6 +283,6 @@
 ## See Also
 
 - [Declarative Topics](Infrastructure-Declarative-Topics) - For declarative topic management in application code
-- [Kafka Cluster Configuration](Kafka-Cluster-Configuration) - For cluster-level configuration options
+- Kafka Cluster Configuration - For cluster-level configuration options
 - [Admin API](Infrastructure-Admin-API) - For programmatic topic management operations
 - [Broker Failures and Fault Tolerance](Infrastructure-Broker-Failures-and-Fault-Tolerance) - Impact of replication settings on availability during broker failures
