@@ -56,7 +56,7 @@ To use it:
 
         The `config.ui.sessions.secret` setting is used exclusively within the context of the Web UI server, such as Puma or Unicorn, and is not used outside of the Web UI HTTP application. While this configuration is always required, it does not affect the `karafka server` or any other components except the Web UI.
 
-        This secret is critical for cookie management and CSRF protection, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment.
+        This secret is critical for cookie management, ensuring secure sessions. It must be consistent across all web server processes in a given environment, meaning there should be one unique secret per environment. CSRF protection is handled separately via the `Sec-Fetch-Site` header and does not depend on this secret.
 
 1. Enjoy Karafka Web UI.
 

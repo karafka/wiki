@@ -1,6 +1,6 @@
 Specific industries have strong regulations around the storage of personal data. Private medical data, financial data, social security numbers, and credit card numbers are all sensitive. Karafka Pro supports transparent encryption of the message's payload, so sensitive data at rest in Kafka cannot be seen.
 
-Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data.
+Karafka uses RSA asymmetric encryption, so your producers do not have to have the capability to decrypt data. Two encryption modes are available - see [Envelope Encryption Mode](#envelope-encryption-mode) below for details and when to use each.
 
 !!! warning "Custom Headers Deserializer and Encryption"
 
@@ -35,6 +35,41 @@ Karafka keeps messages encrypted until their deserialization.
 !!! note "Only Payloads Are Encrypted, Not Keys or Headers"
 
     Karafka encrypts **only** the message payload. All other things are cleartext to aid with debugging. Do not store any sensitive information in message keys or headers.
+
+## Envelope Encryption Mode
+
+Karafka supports two encryption modes, controlled via `config.encryption.mode`:
+
+- `:direct` (default) - the payload is RSA-encrypted directly. Because RSA can only encrypt data smaller than the key size minus padding overhead (~245 bytes for a 2048-bit key, ~501 bytes for a 4096-bit key), this mode is unsuitable for payloads larger than that. This is the default for backwards compatibility with already running deployments; decryption of the `:direct` format is never planned for removal, since data at rest never expires.
+- `:envelope` - each payload is encrypted with a one-time AES-256-GCM key, and only that key is RSA-wrapped (using OAEP padding). This removes the RSA payload-size ceiling, so payloads of any size are supported, and the AES-GCM authentication tag detects corruption or truncation of the envelope.
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other config options...
+
+    config.encryption.active = true
+    config.encryption.mode = :envelope
+    config.encryption.version = '1'
+    config.encryption.public_key = ENV['PUBLIC_PEM_KEY']
+    config.encryption.private_keys = { '1' => ENV['PRIVATE_PEM_KEY'] }
+  end
+end
+```
+
+### Requirements
+
+Using `:envelope` mode requires the `openssl` gem `>= 3.0`. This is verified automatically at boot when encryption is active - if the requirement is not met, Karafka raises a `Karafka::Errors::DependencyConstraintsError` with a clear message rather than failing later at encryption time. The `:direct` mode has no such requirement.
+
+### Decryption Is Automatic and Mode-Independent
+
+You do not need to track which mode was used to produce a given message. Decryption inspects each message individually: a `:direct` ciphertext is always exactly the RSA key's modulus size in length, while an `:envelope` payload is always longer. Karafka uses this to automatically pick the correct decryption path per message, regardless of the current `encryption.mode` setting.
+
+This makes it safe to switch modes over time without a data migration - old `:direct` messages remain fully decryptable after you switch producers to `:envelope`.
+
+### Rollout Order
+
+Processes running a Karafka version older than the one that introduced `:envelope` mode cannot decrypt envelope payloads. When enabling `:envelope`, **upgrade all consuming processes first**, and only then switch your producers to `config.encryption.mode = :envelope`.
 
 ## Handling of Unencrypted Messages with Encryption Enabled
 
