@@ -72,7 +72,7 @@ pipe_fds = 4 × 2 = 8
 For 132 handles connected to a 16-broker cluster:
 
 ```text
-pipe_fds ≈ 132 × 18 × 2 = 4,752
+pipe_fds ≈ 132 × 17 × 2 = 4,488
 ```
 
 ### Identifying Pipe FDs
