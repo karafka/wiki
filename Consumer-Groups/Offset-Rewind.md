@@ -32,8 +32,8 @@ If none of these apply and the pattern recurs without any operator action, the b
 Three related librdkafka issues interact with the `cooperative-sticky` partition assignment strategy. They have different fix versions:
 
 - [#4686](https://github.com/confluentinc/librdkafka/issues/4686) - The direct cause of the lag-to-retention-ceiling pattern. During a cooperative rebalance, partitions a consumer is keeping (not losing) are implicitly resumed. This can cause the consumer to resume fetching from a previous stale position rather than from the correct committed offset. If that stale position has since been trimmed by retention, the next fetch gets an `offset_out_of_range` response and the client resets to earliest - pinning lag at the full retention age. The librdkafka issue text describes the result as the consumer resuming "from a previous position"; the offset_out_of_range path is the most common consequence when the stale position has aged out of the retention window. Fixed in librdkafka 2.4.0 (PR #4636).
-- [#4059](https://github.com/confluentinc/librdkafka/issues/4059) - The timed auto-committer could attempt commits during a cooperative rebalance, causing `illegal_generation` errors that trigger follow-up rebalances, which can cascade into an extended rebalance loop. This increases the frequency of rebalances and therefore the number of opportunities to hit #4686. Fixed in librdkafka 2.8.0 (PR #4908).
-- [#3891](https://github.com/confluentinc/librdkafka/issues/3891) - When a consumer shuts down, the remaining consumers may experience several rapid successive rebalance cycles, each a further opportunity to trip #4686. Closed as a duplicate of #4059; addressed when #4059 is fixed.
+- [#4059](https://github.com/confluentinc/librdkafka/issues/4059) - The timed auto-committer could attempt commits during a cooperative rebalance, causing `illegal_generation` errors that trigger follow-up rebalances, which can cascade into an extended rebalance loop. This increases the frequency of rebalances and therefore the number of opportunities to hit #4686. Fixed in librdkafka 2.10.0 (PR #4908).
+- [#3891](https://github.com/confluentinc/librdkafka/issues/3891) - When a consumer shuts down, the remaining consumers may experience several rapid successive rebalance cycles, each a further opportunity to trip #4686. A maintainer indicated in 2024 this is likely the same root cause as #4059, though the issue itself remains open on GitHub as of this writing.
 
 <table border="1">
   <thead>
@@ -59,7 +59,7 @@ Three related librdkafka issues interact with the `cooperative-sticky` partition
     </tr>
     <tr>
       <td>2.5.x and above</td>
-      <td>&gt;= 2.8.0 (depending on pinned version)</td>
+      <td>&gt;= 2.10.0 (depending on pinned version)</td>
       <td>Fixed</td>
       <td>Fixed</td>
     </tr>
