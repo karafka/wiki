@@ -203,7 +203,7 @@ end
 When using FD mode, keep in mind:
 
 - **Callbacks execute on the poller thread.** Avoid performing blocking or expensive operations inside delivery callbacks, as they will delay polling of other producers sharing the same poller.
-- **Do not close a producer from within its own callbacks.** This can cause deadlocks or undefined behavior.
+- **Closing a producer from within its own callbacks is safe.** If you call `#close` from inside a delivery callback (e.g. `message.acknowledged` or `error.occurred`), WaterDrop detects it is running on the poller thread and delegates the close to a background thread instead, avoiding a deadlock.
 - **Slow callbacks can starve other producers.** If one producer's callbacks take a long time, other producers on the same poller will not be polled until those callbacks complete.
 
 ### Queue Size

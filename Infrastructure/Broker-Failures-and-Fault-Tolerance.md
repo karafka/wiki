@@ -31,7 +31,7 @@ During broker failures, there can be brief periods where:
 **Impact**: Producers may receive `not_leader_for_partition` errors even after metadata refresh. librdkafka handles this by:
 
 - Triggering additional metadata refreshes with exponential backoff
-- Using `topic.metadata.refresh.fast.interval.ms` (default: 250ms) for rapid updates
+- Using `topic.metadata.refresh.fast.interval.ms` (default: 100ms) for rapid updates
 - Falling back to `topic.metadata.refresh.interval.ms` after several attempts
 
 #### Edge Case 2: Partial Metadata Updates
@@ -326,7 +326,7 @@ Broker: Not enough in-sync replicas (not_enough_replicas)
 #### `not_enough_replicas_after_append` (Error Code 20)
 
 ```text
-Broker: Messages are rejected since there are fewer in-sync replicas than required
+Broker: Messages are written to the log, but to fewer in-sync replicas than required
 ```
 
 - **Cause**: Message was written to leader but could not be replicated to enough followers
