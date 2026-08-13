@@ -673,6 +673,24 @@ To use it, all you need to do is to provide your consumer group name:
 Karafka::Admin.delete_consumer_group('your_consumer_group_name')
 ```
 
+## Triggering a Consumer Group Rebalance
+
+!!! note "Development and Operational Use Only"
+
+    This API should be used only for development or operational purposes, not as part of regular application logic.
+
+The `Karafka::Admin.trigger_rebalance` method forces a rebalance for a given consumer group by briefly joining and leaving it with a temporary "fake" consumer: joining triggers the first rebalance, and leaving (after a short wait) triggers a second one. The group does not need to be running for this to work, but if it is, its consumers will experience both rebalances.
+
+```ruby
+Karafka::Admin.trigger_rebalance('my-group')
+```
+
+Topics are always detected from the routing configuration, and consumer settings are taken from the first topic in the group to stay consistent with the actual consumer configuration. `Karafka::Errors::InvalidConfigurationError` is raised if the group is not found in the routing or has no topics.
+
+!!! note "Behavior Depends on the Rebalance Protocol"
+
+    For cooperative-sticky or KIP-848-based rebalancing, there may be no immediate visible reaction to the trigger, as these protocols allow incremental partition reassignments without stopping all consumers.
+
 ## Changing an Offset of a Consumer Group
 
 !!! warning "Never Alter Active Consumer Groups"
