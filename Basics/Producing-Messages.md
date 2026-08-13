@@ -130,13 +130,13 @@ end
 # config/initializers/solid_queue.rb
 
 # This code will close the producer in each worker process
-SolidQueue.on_worker_exit do
+SolidQueue.on_worker_stop do
   ::Karafka.producer.close
 end
 
 # Below is optional - useful only when publishing events to Kafka
 # from the supervisor process
-SolidQueue.on_exit do
+SolidQueue.on_stop do
   ::Karafka.producer.close
 end
 ```

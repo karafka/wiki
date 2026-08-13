@@ -133,12 +133,14 @@ end
 When you use idle disconnection, track the producer connection lifecycle with the following event subscriptions to the WaterDrop instrumentation system:
 
 ```ruby
-# Subscribe to connection events
-WaterDrop.monitor.subscribe('producer.disconnected') do |event|
+# Subscribe to connection events on the producer's own instance monitor
+# (producer.connected / producer.disconnected are instance-level events,
+# not available on the class-level WaterDrop.monitor)
+producer.monitor.subscribe('producer.disconnected') do |event|
   puts "Producer #{event[:producer_id]} disconnected due to inactivity"
 end
 
-WaterDrop.monitor.subscribe('producer.connected') do |event|
+producer.monitor.subscribe('producer.connected') do |event|
   puts "Producer #{event[:producer_id]} connected"
 end
 ```

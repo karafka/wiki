@@ -174,6 +174,8 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 - `Occurred at` - Moment in time when the error occurred.
 - `Backtrace` - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error).
 
+For `ForcefulShutdownError` entries specifically, the details table also includes `active_listeners`, `alive_workers`, and `in_processing` (per-job blocking/non-blocking status), giving you visibility into what was still running when the forceful shutdown happened.
+
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
 </p>

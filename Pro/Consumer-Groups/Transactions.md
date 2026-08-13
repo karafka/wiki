@@ -197,7 +197,7 @@ def consume
 
     produce_async(topic: :aggregations_stream, payload: result.to_json)
 
-    mark_as_consumed(batch.last)
+    mark_as_consumed(messages.last)
   end
 end
 
@@ -225,7 +225,7 @@ def consume
 
     produce_async(topic: :aggregations_stream, payload: result.to_json)
 
-    mark_as_consumed(batch.last)
+    mark_as_consumed(messages.last)
   end
 end
 
@@ -360,7 +360,7 @@ class LrjOperableConsumer
 
       produce_async(topic: :aggregations_stream, payload: result.to_json)
 
-      mark_as_consumed(batch.last)
+      mark_as_consumed(messages.last)
     end
   end
 
@@ -410,7 +410,7 @@ def consume
 
     # Providing offset metadata will fully work from inside of transactions
     mark_as_consumed(
-      batch.last,
+      messages.last,
       # Make sure that this argument is a string and in case of a JSON, do not
       # forget to define a custom deserializer
       {

@@ -156,7 +156,7 @@ def consume
 
     ExternalSystemDispatcher.new.call(message)
 
-    mark_message_as_consumed(message)
+    mark_as_consumed(message)
   end
 end
 ```
