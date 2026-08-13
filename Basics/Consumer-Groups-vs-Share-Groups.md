@@ -94,10 +94,10 @@ Karafka supports the cooperative-sticky assignment strategy and the [next-genera
 
 With consumer groups, the maximum number of active consumers equals the number of partitions. Karafka provides several features that work within or beyond this constraint:
 
-- **[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)** (Pro): Enable parallel processing of messages from a single Kafka partition by distributing them across multiple worker threads. This is particularly effective for IO-bound workloads.
-- **[Parallel Segments](https://karafka.io/docs/Pro-Parallel-Segments/)** (Pro): Split a single subscription group into independent parallel segments, each maintaining its own polling loop and worker pool. This allows multiple OS-level threads to consume and process data from the same topics simultaneously within a single process.
-- **[Multiplexing](https://karafka.io/docs/Pro-Multiplexing/)** (Pro): Establishes multiple independent connections to the same topic from a single process.
-- **[Swarm Mode](https://karafka.io/docs/Swarm-Multi-Process/)**: Forks multiple independent OS processes for enhanced CPU utilization. The core forking and supervision mechanism is free; [enhanced swarm capabilities](https://karafka.io/docs/Pro-Enhanced-Swarm-Multi-Process/) are Pro.
+- **[Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions/)** (Pro): Enable parallel processing of messages from a single Kafka partition by distributing them across multiple worker threads. This is particularly effective for IO-bound workloads.
+- **[Parallel Segments](https://karafka.io/docs/Pro-Consumer-Groups-Parallel-Segments/)** (Pro): Split a single subscription group into independent parallel segments, each maintaining its own polling loop and worker pool. This allows multiple OS-level threads to consume and process data from the same topics simultaneously within a single process.
+- **[Multiplexing](https://karafka.io/docs/Pro-Consumer-Groups-Multiplexing/)** (Pro): Establishes multiple independent connections to the same topic from a single process.
+- **[Swarm Mode](https://karafka.io/docs/Infrastructure-Swarm-Multi-Process/)**: Forks multiple independent OS processes for enhanced CPU utilization. The core forking and supervision mechanism is free; [enhanced swarm capabilities](https://karafka.io/docs/Pro-Enhanced-Swarm-Multi-Process/) are Pro.
 
 These features allow Karafka applications using consumer groups to achieve high parallelism even when the partition count is limited.
 
@@ -239,7 +239,7 @@ The following table summarizes the key differences between consumer groups and s
     </tr>
     <tr>
       <td><strong>Poison message handling</strong></td>
-      <td>Requires application-level DLQ (Karafka provides built-in <a href="https://karafka.io/docs/Dead-Letter-Queue/">DLQ</a>)</td>
+      <td>Requires application-level DLQ (Karafka provides built-in <a href="https://karafka.io/docs/Consumer-Groups-Dead-Letter-Queue/">DLQ</a>)</td>
       <td>Broker-level delivery count limit with automatic archival</td>
     </tr>
     <tr>
@@ -281,7 +281,7 @@ Consumer groups remain the right choice for the majority of Kafka workloads, esp
 - **Exactly-once processing**: Workloads requiring transactional guarantees, which are only available with consumer groups.
 - **Log compaction consumers**: Processing compacted topics where the latest value per key must be read in order.
 
-If your workload benefits from ordering and you need to scale beyond the partition count, consider Karafka's [Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/) feature, which provides parallelism within a single partition while maintaining grouping semantics.
+If your workload benefits from ordering and you need to scale beyond the partition count, consider Karafka's [Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions/) feature, which provides parallelism within a single partition while maintaining grouping semantics.
 
 ### Use Share Groups When
 
@@ -300,9 +300,9 @@ Share groups are designed for workloads that resemble **traditional message queu
 
 Until share group support arrives in Karafka, you can achieve many of the benefits that share groups provide by using existing Karafka features:
 
-- **[Virtual Partitions](https://karafka.io/docs/Pro-Virtual-Partitions/)** (Pro): Parallelize processing within a single partition, enabling concurrency beyond the one-consumer-per-partition limit. This is the closest existing analog to share group parallelism for IO-bound workloads.
-- **[Dead Letter Queue](https://karafka.io/docs/Dead-Letter-Queue/)**: Handle poison messages by dispatching them to a DLQ topic after a configurable number of retries, similar to share group delivery count limits.
-- **[Long-Running Jobs](https://karafka.io/docs/Pro-Long-Running-Jobs/)** (Pro): Process messages that take longer than `max.poll.interval.ms` without being removed from the consumer group.
+- **[Virtual Partitions](https://karafka.io/docs/Pro-Consumer-Groups-Virtual-Partitions/)** (Pro): Parallelize processing within a single partition, enabling concurrency beyond the one-consumer-per-partition limit. This is the closest existing analog to share group parallelism for IO-bound workloads.
+- **[Dead Letter Queue](https://karafka.io/docs/Consumer-Groups-Dead-Letter-Queue/)**: Handle poison messages by dispatching them to a DLQ topic after a configurable number of retries, similar to share group delivery count limits.
+- **[Long-Running Jobs](https://karafka.io/docs/Pro-Consumer-Groups-Long-Running-Jobs/)** (Pro): Process messages that take longer than `max.poll.interval.ms` without being removed from the consumer group.
 - **Increasing partition count**: If you need more consumer parallelism and ordering within each partition is enough, adding partitions remains a straightforward scaling approach.
 
 ## Summary
