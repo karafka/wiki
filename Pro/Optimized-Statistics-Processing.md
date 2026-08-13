@@ -1,12 +1,18 @@
 # Optimized Statistics Processing
 
-In environments with high partition counts, librdkafka's statistics payloads (emitted via `statistics.interval.ms`) include per-partition data for **every partition known to the client**, not just the ones a given consumer process is actively assigned. On topics with hundreds or thousands of partitions, this means the statistics payload - and the cost of generating and parsing it - grows with the size of the topic rather than with the size of the actual assignment.
+In environments with high partition counts, librdkafka's statistics payloads (emitted via `statistics.interval.ms`) include per-partition data for every partition known to the client, not just the ones a given consumer process is actively assigned. On topics with hundreds or thousands of partitions, this means the statistics payload - and the cost of generating and parsing it - grows with the size of the topic rather than with the size of the actual assignment.
+
+At scale, this results in:
+
+- **Oversized statistics payloads** that grow with topic partition count, not assignment size
+- **Excessive memory allocations** on every statistics interval
+- **Unnecessary CPU overhead** processing data irrelevant to the current process
 
 ## How Karafka Pro Helps
 
-For consumers, Karafka Pro automatically sets the librdkafka `statistics.unassigned.include` configuration option to `false`. This excludes statistics for partitions the client is not currently assigned to from the emitted statistics payload, so payload size and processing cost scale with your assignment rather than with the total partition count of the topic.
+Karafka Pro automatically applies internal optimizations to statistics processing, so payload size, memory allocations, and CPU cost scale with your actual assignment rather than with the total partition count of the topic.
 
-This is applied automatically as a Pro default and requires no configuration changes.
+This is applied automatically and requires no configuration changes.
 
 ## Who Benefits
 
