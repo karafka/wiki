@@ -54,7 +54,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, ensuring that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
 
-- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
+- [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
 
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job) - Enhanced Active Job adapter provides extra capabilities to regular Active Job to elevate the combination of Active Job and Kafka.
 

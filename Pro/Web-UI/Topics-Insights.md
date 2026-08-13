@@ -1,8 +1,8 @@
 The "Topics Insights" feature in Karafka Pro Web UI is a suite designed to provide users with detailed information and analytics about their Kafka topics. This feature is crucial for developers who must ensure optimal configuration and performance of their Kafka topics.
 
-## Configuration Explorer
+## Configuration
 
-The first tab under Topics Insights is the Configuration Explorer, where users can delve into the specific settings of each topic. This view helps users verify that the topic configurations are aligned with their operational requirements and best practices. The configuration attributes visible here are as follows:
+The first tab under Topics Insights is the Configuration tab, where users can delve into the specific settings of each topic. This view helps users verify that the topic configurations are aligned with their operational requirements and best practices. The configuration attributes visible here are as follows:
 
 - **Name**: Displays the name of the Kafka configuration parameter.
 - **Value**: Shows the current parameter setting.

@@ -160,7 +160,7 @@ To pause all partitions of a topic:
 
 1. Navigate to **Health → Overview**
 2. Locate the topic you want to pause
-3. Click the **Pause Topic** button
+3. Click the **Pause All** button (submits as "Pause All Active Partitions")
 4. Configure pause settings (duration and safety options)
 5. Confirm the operation
 
@@ -170,7 +170,7 @@ The command is broadcast to all consumer processes, with each process applying t
 - **Emergency response**: Quickly halting all consumption when issues are detected
 - **Resource management**: Freeing up resources across all consumers processing a topic
 
-To resume all paused partitions of a topic, use the corresponding **Resume Topic** button from the same Health Overview interface.
+To resume all paused partitions of a topic, use the corresponding **Resume All** button from the same Health Overview interface.
 
 !!! info "Cross-Process Coordination"
 
