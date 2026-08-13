@@ -212,6 +212,10 @@ When a fatal error occurs:
 - If auto-reload is enabled, WaterDrop will reload the producer; otherwise, the application should close and recreate it.
 - In-flight messages that cannot be delivered will be dropped and reported as failures.
 
+!!! note "Racing a Sibling's Reload"
+
+    When several threads share an idempotent producer with `reload_on_idempotent_fatal_error` enabled, a thread whose `#produce` call races a sibling thread's reload no longer gets dropped or reported as a failure. WaterDrop rescues `Rdkafka::ClosedProducerError`/`Rdkafka::ClosedInnerError` raised by this race and automatically retries the produce against the freshly reloaded client instead. This is distinct from calling `#produce` on a genuinely closed producer, which still raises via `#ensure_active!` as described above.
+
 #### Configuration
 
 ```ruby
