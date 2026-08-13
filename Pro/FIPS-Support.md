@@ -44,7 +44,7 @@ Karafka exclusively employs FIPS-approved cryptographic algorithms:
 
 - Hash Functions: SHA-256 is the FIPS-approved choice for fingerprinting. Karafka's own code does not use MD5 anywhere, so disabling MD5 at the OpenSSL/FIPS level does not affect Karafka's functionality; MD5 is simply not FIPS-approved, so use SHA-256 in FIPS-compliant deployments.
 - Symmetric Encryption: AES-256-GCM, available through the opt-in envelope encryption mode (`config.encryption.mode = :envelope`, requires the openssl gem `>= 3.0`). The default `:direct` mode does not use symmetric encryption at all; it RSA-encrypts the payload directly.
-- Asymmetric Encryption: RSA with key sizes ≥ 2048 bits (the default `:direct` mode, and used to wrap the one-time AES key in `:envelope` mode)
+- Asymmetric Encryption: RSA (the default `:direct` mode, and used to wrap the one-time AES key in `:envelope` mode). Karafka does not enforce a minimum RSA key size - it is your responsibility to generate and configure a key that meets your FIPS compliance requirements (typically ≥ 2048 bits).
 - Random Number Generation: Uses Ruby's OpenSSL FIPS-compatible random number generators when Ruby is running in FIPS mode
 
 These algorithms are implemented through FIPS-validated cryptographic modules, ensuring all cryptographic operations meet federal standards.

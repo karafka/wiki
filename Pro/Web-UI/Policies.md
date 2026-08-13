@@ -2,7 +2,7 @@ Karafka's Web UI includes a policies engine that provides granular control over 
 
 This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
 
-Data sanitization and filtering are integral to this engine, enabling the sanitization or exclusion of sensitive portions of payloads to prevent accidental exposure of sensitive information. When encryption is enabled, no data is displayed by default as a safeguard. However, partial sanitization can be applied to display non-sensitive parts of the payload, ensuring that only secure information is presented while sensitive elements remain protected.
+Data sanitization and filtering are integral to this engine, enabling the sanitization or exclusion of sensitive portions of payloads to prevent accidental exposure of sensitive information. When encryption is enabled, the payload (and payload-derived download/export) is hidden by default as a safeguard - the message key and headers remain visible by default, since encryption only applies to the payload. However, partial sanitization can be applied to display non-sensitive parts of the payload, ensuring that only secure information is presented while sensitive elements remain protected.
 
 ## Usage
 

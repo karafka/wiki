@@ -190,9 +190,11 @@ To view the actual payload of messages sent from producer to consumer, you can u
 
 ## What does `config.ui.sessions.secret` do for the Karafka Web UI? Do we need it if we are using our authentication layer?
 
-The `config.ui.sessions.secret` configuration is used for CSRF (Cross-Site Request Forgery) protection in the Karafka Web UI. Even if you use your own authentication layer, you must set this configuration. It is not critical, but it needs to be set.
+The `config.ui.sessions.secret` configuration is used to sign the Web UI session cookie. Even if you use your own authentication layer, you must set this configuration. It is not critical, but it needs to be set.
 
-Since you have your own authentication, this configuration becomes secondary, though it still provides an additional layer of protection. Ensure that the secret is consistent across all deployment instances, with one value per environment.
+CSRF (Cross-Site Request Forgery) protection is handled separately and does not depend on this secret - it is enforced via the `Sec-Fetch-Site` header, which is validated automatically and requires no configuration.
+
+Since you have your own authentication, `sessions.secret` becomes secondary, though it is still required for session cookie signing to work correctly. Ensure that the secret is consistent across all deployment instances, with one value per environment.
 
 ## Can we change the name of Karafka's internal topic for the Web UI?
 
