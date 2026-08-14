@@ -8,7 +8,7 @@ The first tab under Topics Insights is the Configuration tab, where users can de
 - **Value**: Shows the current parameter setting.
 - **Default**: Informs if the setting is the cluster default or if it was changed.
 - **Sensitive**: Indicates whether the parameter holds sensitive information (e.g., passwords).
-- **Read only**: Shows whether the parameter is modifiable or read-only.
+- **Read Only**: Shows whether the parameter is modifiable or read-only.
 
 This detailed breakdown helps quickly understand how each topic is configured, making it easier to manage Kafka's behavior and ensure compliance with security and operational standards.
 
@@ -23,7 +23,7 @@ The Replication tab provides insights into the replication dynamics of each topi
 - **Partition**: The specific partition of a topic.
 - **Leader**: The leader's broker ID for each partition.
 - **Replicas**: The broker ID of each replica for the partition, shown as badges. The leader's badge is emphasized, and any out-of-sync replica is highlighted as a warning. Each badge links to its broker details page.
-- **In sync brokers**: The broker ID of each replica currently in sync with the leader, shown as badges (with the leader's badge emphasized), each linking to its broker details page.
+- **In-Sync (ISR)**: The broker ID of each replica currently in sync with the leader, shown as badges (with the leader's badge emphasized), each linking to its broker details page.
 
 This tab is essential for monitoring the health and integrity of topic replication. It helps users identify potential issues like under-replicated partitions or uneven distribution of leader roles.
 
