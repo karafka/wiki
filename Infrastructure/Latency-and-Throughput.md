@@ -355,7 +355,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Adjust this setting in conjunction with <code>fetch.min.bytes</code> and <code>fetch.message.max.bytes</code> to balance throughput and memory usage.</li>
       </ul>
     </td>
-    <td>65536 KB (65 MB) (librdkafka)</td>
+    <td>65536 KB (64 MB) (librdkafka)</td>
   </tr>
 </table>
 
@@ -534,7 +534,7 @@ Under normal operations, when there are no significant lags, Karafka prefetches 
 
 ##### Data Spikes and Lags
 
-The situation changes when Karafka experiences data spikes or when a significant amount of data is ahead. In such cases, Karafka will prefetch data in larger batches, especially with default settings. This can reduce Karafka's ability to parallelize work, except when using virtual partitions. Karafka may prefetch large chunks of data from a single topic partition during these periods. For instance, it may prefetch 500 messages from one partition, resulting in a single job with 200 messages from that partition, thus limiting parallel processing.
+The situation changes when Karafka experiences data spikes or when a significant amount of data is ahead. In such cases, Karafka will prefetch data in larger batches, especially with default settings. This can reduce Karafka's ability to parallelize work, except when using virtual partitions. Karafka may prefetch large chunks of data from a single topic partition during these periods. For instance, it may prefetch 500 messages from one partition, resulting in a single job with up to 100 messages (the default `max_messages`) from that partition, with the remaining messages queued for subsequent jobs, thus limiting parallel processing.
 
 This behavior is driven by the need to process data quickly. Still, it can lead to reduced parallelism when large batches from a single partition dominate the internal buffer.
 
