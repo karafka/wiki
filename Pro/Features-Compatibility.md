@@ -69,7 +69,7 @@ The transactional behavior aligns with standard expectations in a collapsed virt
 class VirtualPartitionedEventsConsumer < ApplicationConsumer
   def consume
     transaction do
-      produce_async(topic: totals, payload: messages.payloads.sum(&:count).to_s)
+      produce_async(topic: 'totals', payload: messages.payloads.sum(&:count).to_s)
 
       # if this topic uses virtual partitions this will NOT be part of the transaction and will be
       # executed right after the transaction has ended.
