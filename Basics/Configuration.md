@@ -182,12 +182,7 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 ## Environment Constraints Validation
 
-Karafka runs a set of named constraints (`Karafka::Constraints`) to check environment requirements that cannot be easily expressed as a Bundler dependency. Constraints are verified centrally, in one of two phases:
-
-- `load` - checked when Karafka itself is required, for requirements independent of your configuration (for example, ecosystem gem version compatibility).
-- `config` - checked during `Karafka::App.setup`, right after the configuration contract passes, for requirements that depend on which features you actually enabled.
-
-If a constraint is not met, Karafka raises `Karafka::Errors::DependencyConstraintsError` with a message describing what is missing. Individual features register their own constraints instead of hardcoding environment checks elsewhere. For example, the Pro envelope encryption mode registers a `config` constraint that requires the `openssl` gem to be `>= 3.0` and raises `Karafka::Errors::DependencyConstraintsError` at setup time if an older version is detected.
+Karafka validates environment requirements that cannot be easily expressed as a Bundler dependency, and raises `Karafka::Errors::DependencyConstraintsError` with a message describing what is missing when one is not met. For example, the Pro envelope encryption mode requires the `openssl` gem to be `>= 3.0` and raises this error at setup time if an older version is detected.
 
 ## See Also
 
