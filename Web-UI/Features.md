@@ -116,6 +116,10 @@ This page provides a real-time view of the jobs that are currently being process
 
 ## Health
 
+!!! info "Health Is a Karafka Pro Feature"
+
+    The Health dashboard is part of [Karafka Pro](https://karafka.io/#become-pro).
+
 This dashboard view shows Karafka consumers' groups' health state with their lag aggregated information and basic trends.
 
 [Here](Pro-Web-UI-Health) you can learn more about the information available in this dashboard view.
