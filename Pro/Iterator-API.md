@@ -378,7 +378,7 @@ Overall, the Karafka Pro Iterator API provides a flexible way to access and proc
 
 ## See Also
 
-- [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) - Enhanced iterator with automatic partition discovery and management
+- [Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) - Monitors processing time to avoid exceeding `max.poll.interval.ms`
 - [Direct Assignments](Pro-Direct-Assignments) - Manual partition assignment for advanced consumption patterns
 - [Cleaner API](Pro-Cleaner-API) - Memory management for large message payloads
 - [Offset Management](Consumer-Groups-Offset-management) - Understanding offset control with iterators
