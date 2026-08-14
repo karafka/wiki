@@ -361,9 +361,46 @@ The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. M
 
     Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no declaration.
 
-To manage the configuration of the DLQ topic, you need to define a separate route for it, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
+To manage the configuration of the DLQ topic, you need to declare it separately, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
-Here is an example of how to set up a DLQ topic with specific configurations:
+### Recommended: Declaring the DLQ Topic via Declarative Topics
+
+Use the standalone `declaratives.draw` DSL to declare the DLQ topic. Because declarative topics are independent of routing, you do not need a matching `routes.draw` entry for a topic you only produce to, such as a DLQ topic:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    topic :dead_messages do
+      partitions 3
+      replication_factor 2
+      config(
+        'retention.ms': 604_800_000, # 7 days in milliseconds
+        'cleanup.policy': 'compact'
+      )
+    end
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+
+      dead_letter_queue(
+        topic: 'dead_messages',
+        max_retries: 2
+      )
+    end
+
+    # No routing entry needed for :dead_messages. Its configuration
+    # already lives in the declaratives.draw block above.
+  end
+end
+```
+
+With this in place, `karafka topics create` (or `migrate`) creates and manages `dead_messages` the same way it does any other declared topic.
+
+### Legacy: Declaring the DLQ Topic via Routing
+
+Previously, this was done with a separate route using the routing `#config` method. This still works, but is deprecated in favor of `declaratives.draw` shown above:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -392,9 +429,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This approach ensures that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
-
-The routing `#config` method used above is deprecated. Prefer the standalone `declaratives.draw` DSL described in [Declarative Topics](Infrastructure-Declarative-Topics) for new DLQ topic declarations.
+Either approach ensures that you can manage the DLQ topic configuration independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
 
 ## Pro Enhanced Dead Letter Queue
 
