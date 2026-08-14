@@ -6,7 +6,7 @@
 
 This document captures the design decisions, architectural choices, naming conventions, and the implementation plan for adding Kafka share group (KIP-932) support to Karafka. Share groups are a cooperative consumption model for queue-like workloads, shipping as GA in Apache Kafka 4.2.
 
-**Key constraint:** librdkafka share consumer APIs were not yet available at the time of planning. librdkafka has since shipped a Preview share-consumer implementation in [v2.15.0](https://github.com/confluentinc/librdkafka/releases/tag/v2.15.0) (2026-06-30), but `karafka-rdkafka` (Karafka's dependency) is still pinned to librdkafka 2.14.2 and has not yet adopted it, since it remains Preview-only. The design targets a fake-broker-first approach so that Karafka-layer work can proceed independently of librdkafka timelines.
+**Key constraint:** librdkafka share consumer APIs were not yet available at the time of planning. librdkafka has since shipped a Preview share-consumer implementation in [v2.15.0](https://github.com/confluentinc/librdkafka/releases/tag/v2.15.0) (2026-06-30). Adopting it in `karafka-rdkafka` (currently still pinned to librdkafka 2.14.2) is work in progress but not yet done. The design targets a fake-broker-first approach so that Karafka-layer work can proceed independently of librdkafka timelines.
 
 ## Fundamental Differences Between Consumer Groups and Share Groups
 
