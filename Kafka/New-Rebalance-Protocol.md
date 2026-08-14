@@ -39,7 +39,7 @@ Traditional consumer rebalancing requires **all** consumers to stop processing d
 
 !!! warning "Avoid Known Broker Bugs"
 
-    Some early Kafka releases that shipped the `consumer` protocol contained critical rebalance bugs. In particular, [KAFKA-19862](https://issues.apache.org/jira/browse/KAFKA-19862) could leave a consumer group stuck in the `CompletingRebalance` state, causing consumers to hang rather than rebalance. Before enabling KIP-848 in production, confirm your broker version is **beyond** the release that fixes the known issues for your platform, and validate on a staging cluster first. If you rely on the Karafka [liveness listener](Infrastructure-Deployment#liveness), its `stability_ttl` check can detect a group frozen in a non-steady join state caused by such bugs.
+    Some early Kafka releases that shipped the `consumer` protocol contained critical rebalance bugs that could leave a consumer group stuck rebalancing rather than reaching a steady state. Before enabling KIP-848 in production, confirm your broker version is **beyond** the release that fixes the known issues for your platform, and validate on a staging cluster first. If you rely on the Karafka [liveness listener](Infrastructure-Deployment#liveness), its `stability_ttl` check can detect a group frozen in a non-steady join state caused by such bugs.
 
 !!! warning "Alternative Kafka Protocol Implementations"
 
