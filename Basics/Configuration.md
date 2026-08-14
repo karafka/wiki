@@ -106,7 +106,7 @@ class KarafkaApp < Karafka::App
     config.kafka = {
       # Other kafka settings...
       'compression.codec': 'gzip',
-      'compression.level': '12'
+      'compression.level': '9'
     }
   end
 end
@@ -179,6 +179,10 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 !!! tip "Managing Topics Configuration with Declarative Topics API"
 
     If you want to manage topic configurations more effectively, we recommend using Karafka's higher-level API, Declarative Topics. This API simplifies defining and managing your Kafka topics, allowing for clear and concise topic configurations within your application code. For detailed usage and examples, refer to our comprehensive guide on [Declarative Topics](Infrastructure-Declarative-Topics).
+
+## Environment Constraints Validation
+
+Karafka validates environment requirements that cannot be easily expressed as a Bundler dependency, and raises `Karafka::Errors::DependencyConstraintsError` with a message describing what is missing when one is not met. For example, the Pro envelope encryption mode requires the `openssl` gem to be `>= 3.0` and raises this error at setup time if an older version is detected.
 
 ## See Also
 
