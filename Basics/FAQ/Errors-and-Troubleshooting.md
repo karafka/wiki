@@ -33,6 +33,7 @@
 1. [Why does `librdkafka` lose SSL and SASL support in my multi-stage Docker build?](#why-does-librdkafka-lose-ssl-and-sasl-support-in-my-multi-stage-docker-build)
 1. [Why am I getting "could not obtain a connection from the pool" errors?](#why-am-i-getting-could-not-obtain-a-connection-from-the-pool-errors)
 1. [I received a Confluent KIP-896 deprecation notice. Is Karafka using deprecated Kafka protocol APIs?](#i-received-a-confluent-kip-896-deprecation-notice-is-karafka-using-deprecated-kafka-protocol-apis)
+1. [Why am I getting an `Unable to reconstruct MessageSet` inconsistent state error when producing?](#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing)
 
 ## Why can't I connect to Kafka from another Docker container?
 
