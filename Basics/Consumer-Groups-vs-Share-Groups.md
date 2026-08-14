@@ -82,7 +82,7 @@ end
 
 When an offset is committed, Kafka knows that all records up to and including that offset have been processed. On restart or rebalance, consumption resumes from the last committed offset. This is an efficient mechanism for sequential processing but means that individual message acknowledgment is not natively supported. If a consumer crashes mid-batch, the entire batch is redelivered.
 
-For more details, see the [Offset Management](https://karafka.io/docs/Offset-management/) documentation.
+For more details, see the [Offset Management](https://karafka.io/docs/Consumer-Groups-Offset-management/) documentation.
 
 ### Rebalancing
 
