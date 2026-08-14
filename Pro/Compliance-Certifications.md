@@ -78,7 +78,7 @@ While compliance certifications do **not** apply to Karafka, the project offers 
 
 ### Transparency and Auditability
 
-- **Open Source Code**: All Karafka components are publicly available on GitHub for security review
+- **Publicly Viewable Code**: All Karafka components are publicly available on GitHub for security review. Core Karafka is open source (LGPL); Pro and Enterprise components are source-available under a commercial license, not open source
 - **Security Documentation**: Comprehensive guidance on securing your deployment
 - **Supply Chain Verification**: License gem integrity verification and checksum support
 - **Vulnerability Reporting**: Private vulnerability reporting program through GitHub
