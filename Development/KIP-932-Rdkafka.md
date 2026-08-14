@@ -14,8 +14,8 @@ rdkafka-ruby is an FFI wrapper around librdkafka. **All KIP-932 functionality de
 
 | Component | Status | Notes |
 | --------- | ------ | ----- |
-| librdkafka KIP-932 | Not started | No public issues or PRs as of research date |
-| rdkafka-ruby bindings | Blocked | Waiting for librdkafka implementation |
+| librdkafka KIP-932 | Preview | librdkafka [v2.15.0](https://github.com/confluentinc/librdkafka/releases/tag/v2.15.0) (2026-06-30) shipped a preview share consumer implementation with a new `rd_kafka_share_*` public API. See also [confluentinc/librdkafka#5441](https://github.com/confluentinc/librdkafka/issues/5441). |
+| rdkafka-ruby bindings | Blocked | `karafka-rdkafka` is still pinned to librdkafka 2.14.2 (per `ext/build_common.sh`), predating the Preview implementation |
 
 Once librdkafka implements KIP-932, rdkafka-ruby will need to expose the new APIs through FFI bindings.
 
