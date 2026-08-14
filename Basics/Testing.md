@@ -435,24 +435,26 @@ class InlineBatchConsumerTest < ActiveSupport::TestCase
   include Karafka::Testing::Minitest::Helpers
 
   def setup
-    # ..
-    nr1_value = rand
-    nr2_value = rand
-    sum = nr1_value + nr2_value
+    @nr1_value = rand
+    @nr2_value = rand
+    @sum = @nr1_value + @nr2_value
 
     @consumer = @karafka.consumer_for('inline_batch_data')
   end
 
-  it 'expects to log a proper message' do
+  test 'it logs a proper message' do
     # Sends first message to Karafka consumer
-    @karafka.produce({ 'number' => nr1_value }.to_json)
+    @karafka.produce({ 'number' => @nr1_value }.to_json)
 
     # Sends second message to Karafka consumer
-    @karafka.produce({ 'number' => nr2_value }.to_json, partition: 2)
+    @karafka.produce({ 'number' => @nr2_value }.to_json, partition: 2)
 
-    expect(Karafka.logger).to receive(:info).with("Sum of 2 elements equals to: #{sum}")
+    logged_message = nil
+    Karafka.logger.stub(:info, ->(msg) { logged_message = msg }) do
+      @consumer.consume
+    end
 
-    consumer.consume
+    assert_equal "Sum of 2 elements equals to: #{@sum}", logged_message
   end
 end
 ```
@@ -460,11 +462,11 @@ end
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
 ```ruby
-it 'expects to dispatch async message to messages topic with value bigger by 1' do
+test 'it dispatches async message to messages topic with value bigger by 1' do
   @karafka.produce({ 'number' => 1 }.to_json)
   @consumer.consume
 
-  expect(@karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
+  assert_equal({ number: 2 }.to_json, @karafka.produced_messages.last[:payload])
 end
 ```
 
