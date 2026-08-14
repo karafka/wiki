@@ -353,6 +353,14 @@ end
 
 The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. Managing their configuration requires separate route definitions with specific configuration settings. Paying attention to these details is crucial as they allow you to fully control and customize the DLQ topics to suit your needs.
 
+!!! warning "Undeclared DLQ Topics Are Not Created or Managed by Karafka"
+
+    Setting `topic:` in `dead_letter_queue` only tells Karafka where to dispatch failed messages. It does not register that topic with [Declarative Topics](Infrastructure-Declarative-Topics). Unless you also declare the DLQ topic, as shown below, `karafka topics create` and `karafka topics migrate` will skip it.
+
+    If the DLQ topic does not exist and auto-creation is disabled on the broker, dispatch fails with an error instead of creating the topic. Production clusters often disable it. See [this FAQ entry](Basics-FAQ-Error-Handling-and-DLQ#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist) for the exact failure behavior.
+
+    Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no declaration.
+
 To manage the configuration of the DLQ topic, you need to define a separate route for it, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
 Here is an example of how to set up a DLQ topic with specific configurations:
@@ -385,6 +393,8 @@ end
 ```
 
 This approach ensures that you can manage the DLQ topic configurations independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
+
+The routing `#config` method used above is deprecated. Prefer the standalone `declaratives.draw` DSL described in [Declarative Topics](Infrastructure-Declarative-Topics) for new DLQ topic declarations.
 
 ## Pro Enhanced Dead Letter Queue
 
@@ -420,3 +430,5 @@ The Karafka Dead Letter Queue is worth using because it provides a way to handle
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
 - [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - How DLQ behaves with parallel processing
+- [Declarative Topics](Infrastructure-Declarative-Topics) - Declare and manage the DLQ topic as code
+- [Topic Auto Creation](Infrastructure-Topic-Auto-Creation) - Why the DLQ topic may not exist when you need it
