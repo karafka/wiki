@@ -1,10 +1,10 @@
-# Precompilation of karafka-rdkafka - Mission Accomplished
+# Precompilation of Rdkafka - Mission Accomplished
 
-As of 2025, **native extensions (precompiled binaries) are now available** for the karafka-rdkafka gem! This page documents the successful completion of one of the most challenging tasks in the Karafka ecosystem.
+As of 2025, **native extensions (precompiled binaries) are now available** for the rdkafka gem! This page documents the successful completion of one of the most challenging tasks in the Karafka ecosystem.
 
 ## The Challenge (Solved)
 
-The `karafka-rdkafka` gem previously required 60-90 seconds of compilation during installation. Here is the before and after:
+The `rdkafka` gem previously required 60-90 seconds of compilation during installation. Here is the before and after:
 
 | Area | Before | After |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ The `karafka-rdkafka` gem previously required 60-90 seconds of compilation durin
 
 ### ABI Compatibility Hell
 
-Unlike simpler gems, karafka-rdkafka has a complex dependency web that created ABI (Application Binary Interface) compatibility challenges:
+Unlike simpler gems, rdkafka has a complex dependency web that created ABI (Application Binary Interface) compatibility challenges:
 
 **System Library Dependencies:**
 
