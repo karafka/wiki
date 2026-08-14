@@ -265,10 +265,9 @@ WaterDrop provides a built-in [`ConnectionPool`](WaterDrop-Connection-Pool) for 
 
 ```ruby
 # Configure the connection pool
-WaterDrop::ConnectionPool.setup(
-  size: 10,
-  timeout: 5000
-)
+WaterDrop::ConnectionPool.setup(size: 10, timeout: 5000) do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+end
 
 # Use the connection pool to get producers
 WaterDrop::ConnectionPool.with do |producer|
