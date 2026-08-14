@@ -40,6 +40,20 @@ Native extensions are platform-specific compiled binaries that contain:
 <td>Alpine 3.18+, and other musl-based distributions</td>
 </tr>
 <tr>
+<td><strong>Linux (glibc)</strong></td>
+<td>aarch64</td>
+<td>Ubuntu 22.04 LTS</td>
+<td>glibc 2.35+</td>
+<td>Ubuntu 22.04+, CentOS 9+, RHEL 9+, Debian 12+, Fedora 36+ (ARM64)</td>
+</tr>
+<tr>
+<td><strong>Linux (musl)</strong></td>
+<td>aarch64</td>
+<td>Alpine 3.18+</td>
+<td>musl 1.2.4+</td>
+<td>Alpine 3.18+, and other musl-based distributions (ARM64)</td>
+</tr>
+<tr>
 <td><strong>macOS</strong></td>
 <td>arm64</td>
 <td>macOS 14+</td>
