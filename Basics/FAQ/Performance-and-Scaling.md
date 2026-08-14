@@ -229,8 +229,6 @@ Migrating to different consumer groups to facilitate parallel processing involve
 
 Best practices for setting up consumer groups in Karafka to optimize parallel processing include:
 
-Best practices for setting up consumer groups in Karafka to optimize parallel processing include:
-
 - **Dedicated Consumer Groups**: Allocate a consumer group for each logically separate function within your application. This isolation helps in managing the processing load and minimizes the impact of rebalances.
 
 - **Subscription Group Utilization**: Within a consumer group, use subscription groups to handle different topics or partitions. This setup provides flexibility in managing which part of your application handles specific data streams.
