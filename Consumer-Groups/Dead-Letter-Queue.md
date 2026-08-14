@@ -363,7 +363,7 @@ The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. M
 
 To manage the configuration of the DLQ topic, you need to declare it separately, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
-### Recommended: Declaring the DLQ Topic via Declarative Topics
+### Declaring the DLQ Topic via Declarative Topics
 
 Use the standalone `declaratives.draw` DSL to declare the DLQ topic. Because declarative topics are independent of routing, you do not need a matching `routes.draw` entry for a topic you only produce to, such as a DLQ topic:
 
@@ -378,6 +378,9 @@ class KarafkaApp < Karafka::App
         'cleanup.policy': 'compact'
       )
     end
+
+    # Declare your other topics here too, including consumed ones like
+    # :orders_states. Only the DLQ topic is shown here for brevity.
   end
 
   routes.draw do
@@ -397,39 +400,6 @@ end
 ```
 
 With this in place, `karafka topics create` (or `migrate`) creates and manages `dead_messages` the same way it does any other declared topic.
-
-### Legacy: Declaring the DLQ Topic via Routing
-
-Previously, this was done with a separate route using the routing `#config` method. This still works, but is deprecated in favor of `declaratives.draw` shown above:
-
-```ruby
-class KarafkaApp < Karafka::App
-  routes.draw do
-    topic :orders_states do
-      consumer OrdersStatesConsumer
-
-      dead_letter_queue(
-        topic: 'dead_messages',
-        max_retries: 2
-      )
-    end
-
-    # Separate route definition for the DLQ topic with specific configurations
-    topic :dead_messages do
-      # Indicate that we do not consume from this topic
-      active(false)
-      config(
-        partitions: 3,
-        replication_factor: 2,
-        'retention.ms': 604_800_000, # 7 days in milliseconds
-        'cleanup.policy': 'compact'
-      )
-    end
-  end
-end
-```
-
-Either approach ensures that you can manage the DLQ topic configuration independently of the main topic, providing greater flexibility and control over how problematic messages are handled and stored.
 
 ## Pro Enhanced Dead Letter Queue
 
