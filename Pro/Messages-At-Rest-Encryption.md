@@ -43,6 +43,10 @@ Karafka supports two encryption modes, controlled via `config.encryption.mode`:
 - `:direct` (default) - the payload is RSA-encrypted directly. Because RSA can only encrypt data smaller than the key size minus padding overhead (~245 bytes for a 2048-bit key, ~501 bytes for a 4096-bit key), this mode is unsuitable for payloads larger than that. This is the default for backwards compatibility with already running deployments; decryption of the `:direct` format is never planned for removal, since data at rest never expires.
 - `:envelope` - each payload is encrypted with a one-time AES-256-GCM key, and only that key is RSA-wrapped (using OAEP padding). This removes the RSA payload-size ceiling, so payloads of any size are supported, and the AES-GCM authentication tag detects corruption or truncation of the envelope.
 
+!!! info "The Default Will Switch to `:envelope` in a Future Release"
+
+    `:envelope` is opt-in for now, but it is planned to become the default in a future breaking release, with prior notice. If you want to keep using `:direct`, set `config.encryption.mode = :direct` explicitly so your configuration does not depend on the current default.
+
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
