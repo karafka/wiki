@@ -6,7 +6,7 @@ To activate Karafka Pro, you need to do three things:
 
 1. Follow the standard Karafka [installation](Basics-Getting-Started) procedure.
 
-1. Get credentials to a registry hosting a custom `karafka-license` gem. This gem contains all the code for Karafka to detect the Pro components. You can get them [here](https://gems.karafka.io/pro).
+1. Get credentials to a registry hosting a custom `karafka-license` gem. This gem contains only your license credentials and version file; the code that detects Pro components lives in the main `karafka` gem itself. You can get them [here](https://gems.karafka.io/pro).
 
 1. Add this to your Gemfile and `bundle install`:
 
