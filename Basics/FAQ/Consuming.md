@@ -493,7 +493,7 @@ You can get watermark offsets and other metrics directly from within a consumer 
 
 ## Is there middleware for consuming messages similar to the middleware for producing messages?
 
-Due to the complexity of the data flow, there are only a few middleware layers for consuming messages in Karafka, but several layers can function similarly. These are referred to as "strategies" in Karafka, and there are around 80 different combinations available.
+Due to the complexity of the data flow, there are only a few middleware layers for consuming messages in Karafka, but several layers can function similarly. These are referred to as "strategies" in Karafka, and there are over 50 different combinations available.
 
 Karafka provides official APIs to alter the consumption and processing flow at various key points. The most notable among these is the [Filtering API](Pro-Consumer-Groups-Filtering-API), which, despite its name, offers both flow control and filtering capabilities. This API spans from post-polling to post-batch execution stages.
 
