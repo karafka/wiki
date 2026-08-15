@@ -70,7 +70,7 @@ The table below contains options the `#dead_letter_queue` routing method accepts
     <tr>
       <td><code>max_retries</code></td>
       <td>Integer</td>
-      <td>Defines the number of retries before moving a message to the DLQ.</td>
+      <td>Defines the number of retries before moving a message to the DLQ. Defaults to <code>3</code>.</td>
     </tr>
     <tr>
       <td><code>topic</code></td>
@@ -218,7 +218,7 @@ If you need messages dispatched to the DLQ topic to preserve order, you either n
 When the Dead Letter Queue is enabled, Karafka will provide you with an additional method called `#dispatch_to_dlq` that you can use to transfer messages to the DLQ topic. You can use it if you encounter messages you do not want to deal with but do not want to raise an exception:
 
 ```ruby
-class OrdersStatesConsumer
+class OrdersStatesConsumer < Karafka::BaseConsumer
   def consume
     messages.each do |message|
       if EventContract.valid?(message.payload)
