@@ -95,7 +95,7 @@ The command checks for the following conditions:
 - **Zero Fault Tolerance** - Topics where the replication factor is less than or equal to `min.insync.replicas`, meaning no broker can fail without causing the topic to become unavailable for writes when producers use `acks=all`.
 - **Low Durability** - Topics where `min.insync.replicas` is set to 1, meaning acknowledged writes using `acks=all` only require a single broker, increasing the risk of data loss if that broker fails before replication completes.
 
-Each finding is printed as it is found (in cluster order, not grouped by severity), shown in red for critical issues or yellow for warnings. After all topics are checked, a single generic recommendations summary is printed at the end, covering increasing the replication factor, raising `min.insync.replicas`, and keeping the replication factor above `min.insync.replicas` for fault tolerance.
+Each finding is printed as it is found (in cluster order, not grouped by severity), shown in red for critical issues or yellow for warnings. After all topics are checked, if any issues were found, a generic recommendations summary is printed, covering increasing the replication factor, raising `min.insync.replicas`, and keeping the replication factor above `min.insync.replicas` for fault tolerance. If no issues were found, a single "All topics are healthy" confirmation is printed instead.
 
 ## Karafka Swarm
 
