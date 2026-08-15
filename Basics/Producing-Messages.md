@@ -83,7 +83,7 @@ end
 # config/puma.rb
 
 # There is no `before_worker_shutdown` equivalent for single mode
-@config.options[:events].after_stopped do
+@config.events.after_stopped do
   Karafka.producer.close
 end
 ```
