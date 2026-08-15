@@ -103,7 +103,7 @@
 <td class="nowrap"><code>2000</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
-<td>The interval at which the broker sends heartbeats to ZooKeeper.</td>
+<td>The interval at which the broker sends heartbeats to the KRaft controller quorum. Used only in KRaft mode.</td>
 </tr>
 <tr>
 <td class="nowrap"><code>broker.id</code></td>
@@ -131,7 +131,7 @@
 <td class="nowrap"><code>9000</code></td>
 <td class="middle">&#x2705;</td>
 <td class="middle">&#x274C;</td>
-<td>The timeout used to detect broker failures when using ZooKeeper.</td>
+<td>The length of time a broker's lease lasts if no heartbeats are made to the KRaft controller quorum. Used only in KRaft mode.</td>
 </tr>
 <tr>
 <td class="nowrap"><code>client.quota.callback.class</code></td>
