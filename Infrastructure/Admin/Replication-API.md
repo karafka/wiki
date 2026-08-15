@@ -188,6 +188,8 @@ The Replication API validates your request before generating a plan. Common vali
 | Missing partition assignments   | Manual assignment does not cover all partitions | Include all partition IDs in the brokers hash      |
 | Duplicate brokers in assignment | Same broker listed twice for a partition        | Each broker ID must appear only once per partition |
 | Invalid broker ID               | Referenced broker does not exist                | Use only broker IDs present in the cluster         |
+| Invalid partition               | Partition not in the manual brokers hash        | Only reference partitions that exist in the topic  |
+| Wrong broker count              | Broker array size does not match target RF      | Match broker array size to the target RF           |
 
 ### Example: Handling Validation Errors
 
