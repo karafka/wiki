@@ -45,6 +45,15 @@ The following table describes the public methods available for message piping:
 
 You can define a `#enhance_pipe_message` method in your consumer to alter the message before it is piped. This method allows you to add or modify headers, change the payload, or apply any other transformations before forwarding the message.
 
+It is called as `enhance_pipe_message(pipe_message, message)` - a mutable `pipe_message` hash first, the source `message` second - and its **return value is discarded**. Only in-place mutation of `pipe_message` takes effect:
+
+```ruby
+def enhance_pipe_message(pipe_message, message)
+  pipe_message[:headers] ||= {}
+  pipe_message[:headers]['forwarded-by'] = 'my-consumer'
+end
+```
+
 ### Automatic Partition Key Selection
 
 In Karafka, the message key selection for message piping is designed to maintain a high degree of ordering and integrity, especially when messages are forwarded to topics with differing partition counts. This ensures that correlated messages preserve their strong ordering, which is critical for processing sequences of interdependent events.
