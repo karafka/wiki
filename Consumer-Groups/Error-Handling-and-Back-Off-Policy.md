@@ -255,7 +255,7 @@ This setting is particularly useful for:
 
 ## Shutdown
 
-Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. If this value is not set, Karafka will wait indefinitely for consumers to finish processing given messages.
+Karafka will wait for `shutdown_timeout` milliseconds before forcefully stopping in case of errors or problems during the shutdown process. `shutdown_timeout` defaults to 60 seconds and must be a positive Integer - it cannot be unset or made to wait indefinitely.
 
 Setting this value high enough is highly recommended so that Karafka will not stop itself in the middle of some non-transactional partially finished operations.
 
