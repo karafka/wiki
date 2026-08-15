@@ -5,7 +5,7 @@ Karafka is a Ruby-based framework for building Kafka-driven applications. It pro
 - **[Karafka-Web](https://github.com/karafka/karafka-web)** -  User Interface providing real-time visibility into application operations
 - **[Karafka-Rdkafka](https://github.com/karafka/karafka-rdkafka)** - custom fork of rdkafka-ruby that enhances functionality and stability for production environments
 - **[Karafka-Testing](https://github.com/karafka/karafka-testing)** - testing library providing RSpec and Minitest helpers for testing Karafka consumers and producers without a live Kafka cluster
-- **[Rdkafka-Ruby](https://github.com/appsignal/rdkafka-ruby/)** - base driver providing low-level Ruby bindings for the librdkafka C/C++ library, maintained by our team
+- **[Rdkafka-Ruby](https://github.com/karafka/rdkafka-ruby)** - base driver providing low-level Ruby bindings for the librdkafka C/C++ library, maintained by our team
 
 ## Producer
 
@@ -59,4 +59,4 @@ Karafka uses its fork of the `rdkafka-ruby`. It is done to ensure that each rele
 
 ## Rdkafka-ruby
 
-A modern and high-performance Kafka client library for Ruby, built on top of librdkafka. It acts as a base for the `karafka-rdkafka` gem and is also maintained by usour team. It was created and developed by [AppSignal](https://www.appsignal.com/) until the handover at the end of 2023.
+A modern and high-performance Kafka client library for Ruby, built on top of librdkafka. It acts as a base for the `karafka-rdkafka` gem and is also maintained by our team. It was created and developed by [AppSignal](https://www.appsignal.com/) until the handover at the end of 2023.
