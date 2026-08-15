@@ -64,7 +64,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-In this example, the Adaptive Iterator is activated with specific parameters. The `a`daptive_iterator` method takes several configuration options:
+In this example, the Adaptive Iterator is activated with specific parameters. The `adaptive_iterator` method takes several configuration options:
 
 - `active`: Set this to true to enable the Adaptive Iterator for the topic.
 - `safety_margin`: Defines the percentage of the total poll interval to reserve as a buffer. For instance, setting this to 15 leaves 15% of the time for post-processing, stopping further processing when 85% of the poll interval is used. The default is 10.
@@ -94,7 +94,7 @@ class MyConsumer < ApplicationConsumer
 end
 ```
 
-In this example, the iterator is configured with a safety margin of 20%, allowing a buffer to handle post-processing without exceeding the poll interval. It automatically marks messages as consumed and cleans up after each message, depending on the configuration.
+This uses the `safety_margin` configured in your routing (15% in the earlier example) as the buffer to handle post-processing without exceeding the poll interval. It automatically marks messages as consumed and cleans up after each message, depending on the configuration.
 
 !!! warning "Correct Iteration Method for Adaptive Iterator"
 
