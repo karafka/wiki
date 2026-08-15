@@ -254,6 +254,7 @@ The `statistics.emitted` event provides more than just the statistics data. The 
 | `:statistics`            | Hash   | The librdkafka statistics object with Karafka delta enrichments  |
 | `:consumer_group_id`     | String | The consumer group ID that emitted the statistics                |
 | `:subscription_group_id` | String | The subscription group ID that emitted the statistics            |
+| `:group_id`              | String | Duplicates consumer_group_id, added for future share groups work |
 
 ### Understanding Statistics Scope
 
