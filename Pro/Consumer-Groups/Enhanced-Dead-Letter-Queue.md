@@ -255,7 +255,7 @@ def consume
       skip_first = false
     end
 
-    messages.each_with do |message, index|
+    messages.each_with_index do |message, index|
       if index.zero? && skip_first
         mark_as_consumed(message)
         next
@@ -332,6 +332,10 @@ This approach enables you to:
 Karafka allows for implementing custom DLQ handling and recovery strategies, using the flexibility to respond to errors based on specific conditions like the number of attempts or the nature of the errors encountered. This approach enables tailored error handling, improving the resilience and reliability of your application. Custom strategies can differentiate between errors, deciding to retry, skip, or dispatch messages to a DLQ based on predefined logic, such as retrying database-related errors indefinitely, skipping non-recoverable errors immediately, or applying a limited number of retries for recoverable errors.
 
 This method offers significant benefits, including more efficient processing, reduced noise from non-recoverable errors, and enhanced opportunity for successful message recovery, leading to a more robust and error-tolerant system.
+
+!!! warning "Critical Errors Bypass Your Custom Strategy"
+
+    Critical (non-`StandardError`) errors never reach your custom strategy's `#call` method. They are always handled by the default critical-error path (pause and retry) before your strategy gets a chance to run.
 
 For a practical implementation, consider a scenario where you define custom error classes for different error types and a strategy class that decides the action based on the last error and attempt number. This setup enables nuanced control over how your application responds to specific errors, optimizing your processing logic for efficiency and effectiveness.
 
