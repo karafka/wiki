@@ -447,7 +447,7 @@ Karafka::App.logger.level = Logger::DEBUG
 class KarafkaApp < Karafka::App
   setup do |config|
     config.kafka = {
-      'bootstrap. servers': '127.0.0.1:9092',
+      'bootstrap.servers': '127.0.0.1:9092',
       # other settings...
       debug: 'all'
     }
