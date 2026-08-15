@@ -72,6 +72,10 @@ The "Web UI Explorer" in Karafka Pro Web UI provides detailed insights and analy
 
 The Search feature is part of the Karafka Web UI Explorer, but due to its complexity, it has its dedicated section that can be found [here](Pro-Web-UI-Search).
 
+## Filtering
+
+A keyword filter box is added to nearly every data-heavy listing (consumers, jobs, cluster, recurring tasks, health views, and more), letting you narrow down a listing without opening the Explorer. It is distinct from Search above. See [Filtering](Pro-Web-UI-Filtering) for details.
+
 ## Recurring Tasks
 
 In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](Pro-Recurring-Tasks) with ease:
