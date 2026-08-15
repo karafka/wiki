@@ -86,8 +86,8 @@ The `parallel_segments` method accepts the following options:
     <tr>
         <td><code>partitioner</code></td>
         <td><code>#call</code></td>
-        <td>nil</td>
-        <td>A callable that determines which segment a message should be assigned to. Must respond to <code>#call</code> and accept a message as argument.</td>
+        <td>nil (<strong>required</strong> once active)</td>
+        <td>A callable that determines which segment a message should be assigned to. Must respond to <code>#call</code> and accept a message as argument. Boot fails with a routing-contract error if <code>active: true</code> is set without a valid <code>partitioner</code>.</td>
     </tr>
     <tr>
         <td><code>reducer</code></td>
