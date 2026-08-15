@@ -136,9 +136,9 @@ Parallel consumption and processing of the same topic partitions in Karafka can 
 
 ## Consumer Group Multi-Threading
 
-Since each consumer group requires a separate connection and a thread, we do this concurrently.
+Since each subscription group requires a separate connection and a thread, we do this concurrently.
 
-It means that for each consumer group, you will have one additional thread running. For high-load topics, there is always an IO overhead on transferring data from and to Kafka. This approach allows you to consume data concurrently.
+It means that for each subscription group, you will have one additional thread running - a single consumer group split into multiple subscription groups gets multiple threads, not just one. For high-load topics, there is always an IO overhead on transferring data from and to Kafka. This approach allows you to consume data concurrently.
 
 ## Work Saturation
 
@@ -150,7 +150,7 @@ Recognizing the potential challenge of job saturation, Karafka provides monitori
 
 There are a few ways to measure the saturation in Karafka:
 
-- You can look at the `Enqueued` value in the [Web-UI](Web-UI-Getting-Started). This value indicates the total number of jobs waiting in the internal queues of all the Karafka processes. The high value there indicates increased saturation.
+- You can look at the `Pending` value in the [Web-UI](Web-UI-Getting-Started). This value indicates the total number of jobs waiting in the internal queues of all the Karafka processes. The high value there indicates increased saturation.
 - You can log the `messages.metadata.processing_lag` value, which describes how long a batch had to wait before it was picked up by one of the workers.
 - If you are using our [Datadog](Infrastructure-Monitoring-and-Logging#datadog-and-statsd-integration) integration, it contains the `processing_lag` metrics.
 
