@@ -39,12 +39,13 @@ RSpec.configure do |config|
 end
 ```
 
-Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains four methods which you can use within your specs:
+Once included in your RSpec setup, this library will provide you with a special `#karafka` object that contains five methods which you can use within your specs:
 
 - `#consumer_for` - the method creates a consumer instance for the desired topic.
 - `#produce` - the method sends message to the consumer instance.
 - `#produce_to` - the method sends a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - the method contains all the messages "sent" to Kafka during spec execution.
+- `#consumer_messages` - the method returns the array of messages used to build the consumer's batch.
 
 !!! warning "Message Buffering"
 
@@ -214,6 +215,8 @@ Since every real consumer inherits from your base class, the shared logic runs w
 # spec/support/shared_examples/an_application_consumer.rb
 RSpec.shared_examples 'an application consumer' do
   it 'wraps consumption with the shared error handling' do
+    allow(ErrorTracker).to receive(:track)
+
     karafka.produce({ 'malformed' => true }.to_json)
 
     expect { consumer.consume }.not_to raise_error
@@ -262,6 +265,8 @@ RSpec.describe SpecApplicationConsumer do
   before { karafka.produce({ 'malformed' => true }.to_json) }
 
   it 'tracks errors coming from the shared logic' do
+    allow(ErrorTracker).to receive(:track)
+
     consumer.consume
 
     expect(ErrorTracker).to have_received(:track)
@@ -411,12 +416,13 @@ To integrate Karafka testing with Minitest, perform the following steps:
 
 **Result:**
 
-Your Minitest environment is configured with Karafka testing capabilities. You have access to a `@karafka` object that provides four essential methods:
+Your Minitest environment is configured with Karafka testing capabilities. You have access to a `@karafka` object that provides five essential methods:
 
 - `#consumer_for` - Creates a consumer instance for the desired topic.
 - `#produce` - "Sends" messages to the consumer instance.
 - `#produce_to` - "Sends" a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - Contains all messages "sent" to Kafka during test execution.
+- `#consumer_messages` - Returns the array of messages used to build the consumer's batch.
 
 !!! warning "Message Buffering"
 
