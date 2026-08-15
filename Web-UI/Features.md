@@ -206,7 +206,7 @@ The Dead Letter Queue (DLQ) dashboard allows users to view messages that have fa
 
 ## Cluster
 
-The Cluster dashboard view displays information about the status of the Kafka cluster and the topics list.
+The Cluster dashboard view displays information about the status of the Kafka cluster and the topics list. For each partition, the replication view shows the actual leader, replica, and in-sync (ISR) broker ids as badges, with the leader emphasized and out-of-sync replicas highlighted, rather than just replica/ISR counts.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
