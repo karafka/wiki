@@ -30,7 +30,7 @@ Karafka and Karafka Web UI come equipped with a set of features designed to faci
 
 #### At-Rest Data Encryption
 
-Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. When data is written to storage by Karafka, it is encrypted using strong encryption algorithms (e.g., AES-256), providing a vital layer of security in environments where data privacy is paramount.
+Karafka supports [data encryption at rest](Pro-Messages-At-Rest-Encryption), ensuring that any stored information, including sensitive data, is protected against unauthorized access. This aligns with HIPAA's requirement for securing PHI, as encryption is one of the key safeguards for preventing data breaches. By default, data is encrypted directly with RSA; the opt-in `:envelope` mode additionally wraps each payload with a one-time AES-256-GCM key for payloads larger than RSA can encrypt directly. Either way, this provides a vital layer of security in environments where data privacy is paramount.
 
 ```ruby
 class KarafkaApp < Karafka::App
