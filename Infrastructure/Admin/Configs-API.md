@@ -96,7 +96,7 @@ Operations types within this API are used to specify the configuration changes b
       <td><code>alter(*resources)</code></td>
       <td>Applies configuration changes to specified Kafka resources using incremental updates.</td>
       <td><code>resources</code> - A single resource or an array of resources.</td>
-      <td>Applies the changes and provides a confirmation of the update.</td>
+      <td>An array of <code>Resource</code> objects with the resulting configuration details (the same shape <code>describe</code> returns, not a separate confirmation object).</td>
       <td>This method is non-transactional and may succeed partially; validate configurations before applying.</td>
     </tr>
   </tbody>
