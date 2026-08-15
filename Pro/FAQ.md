@@ -111,7 +111,7 @@ See [LICENSE-COMM](Pro-License-Comm) on our documentation website.
 
 ## How does Pro licensing work?
 
-Every organization running Karafka Pro on its servers must purchase a subscription. There is no limit to the number of servers or environments used by that organization. Your subscription will automatically renew every year.
+Every organization running Karafka Pro on its servers must purchase a subscription. There is no limit to the number of servers or environments used by that organization. Both annual and monthly subscription options are available, and your subscription automatically renews at the end of the billing period you chose.
 
 ## Why does the Pro license support Ruby versions beyond their End-of-Life (EOL)?
 
@@ -366,7 +366,7 @@ Karafka Pro is sold as is, no change to terms. Karafka Enterprise customers can 
 
 7. I am available to assist with any security or compliance documentation required for your organization's needs.
 
-8. You can request a 4-hour-long live workshop specifically tailored for those embarking on your journey with Kafka and Karafka.
+8. You can request a 4-to-5-hour live workshop specifically tailored for those embarking on your journey with Kafka and Karafka.
 
 You can read more about those differences [here](Pro-Enterprise).
 
