@@ -21,7 +21,7 @@ end
     However, per-partition **generation tracking** is available via `Karafka::Instrumentation::AssignmentsTracker`. Each time a partition is assigned, its generation counter is incremented (starting at 1 for the first assignment). Revocations, client resets, and assignment losses do **not** reset or change generation counters - only new assignments increment them.
 
     - `AssignmentsTracker.generation(topic, partition)` - returns the generation count for a specific topic-partition (0 if never assigned, 1+ otherwise).
-    - `AssignmentsTracker.generations` - returns a frozen hash of all topic-partitions and their generation counts, including partitions that have been revoked.
+    - `AssignmentsTracker.generations` - returns a frozen hash of topic-partitions and their generation counts, including partitions that have been revoked. The map is bounded at 100,000 entries with LRU eviction of the oldest entries, so under large dynamic topologies (for example pattern/regex subscriptions) it may not contain every topic-partition ever seen.
 
     This is useful for idempotency logic, cache invalidation, and state recovery decisions where you need to distinguish first-time assignments from reassignments.
 
