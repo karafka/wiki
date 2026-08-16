@@ -45,7 +45,7 @@ The following table describes the public methods available for message piping:
 
 You can define a `#enhance_pipe_message` method in your consumer to alter the message before it is piped. This method allows you to add or modify headers, change the payload, or apply any other transformations before forwarding the message.
 
-It is called as `enhance_pipe_message(pipe_message, message)` - a mutable `pipe_message` hash first, the source `message` second - and its **return value is discarded**. Only in-place mutation of `pipe_message` takes effect:
+It is called as `enhance_pipe_message(pipe_message, message)` - a mutable `pipe_message` hash first, the source `message` second - and its return value is discarded. Only in-place mutation of `pipe_message` takes effect:
 
 ```ruby
 def enhance_pipe_message(pipe_message, message)
