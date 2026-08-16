@@ -185,7 +185,7 @@ If a record reaches the delivery count limit without being accepted, it transiti
 
 !!! note "Dead Letter Queues for Share Groups"
 
-    [KIP-1191](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1191:+Dead-letter+queues+for+share+groups) proposes automatic dead-letter queue (DLQ) support for share groups, where rejected or max-retry records are automatically written to a configured DLQ topic. This is expected to become available in Kafka 4.2 or later. Until then, archived records are simply no longer delivered.
+    [KIP-1191](https://cwiki.apache.org/confluence/display/KAFKA/KIP-1191:+Dead-letter+queues+for+share+groups) proposes automatic dead-letter queue (DLQ) support for share groups, where rejected or max-retry records are automatically written to a configured DLQ topic. Kafka 4.2 shipped without this support. Until it lands in a future release, archived records are simply no longer delivered.
 
 ### No Ordering Guarantees
 
