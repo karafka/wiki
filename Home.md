@@ -178,6 +178,7 @@
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue)
 - [Enhanced Active Job](Pro-Consumer-Groups-Enhanced-Active-Job)
 - [Enhanced Reliability](Pro-Consumer-Groups-Enhanced-Reliability)
+- [Lag Compensation](Pro-Consumer-Groups-Lag-Compensation)
 - [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights)
 - [Periodic Jobs](Pro-Consumer-Groups-Periodic-Jobs)
 - [Expiring Messages](Pro-Consumer-Groups-Expiring-Messages)

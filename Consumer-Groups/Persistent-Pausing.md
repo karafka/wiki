@@ -105,7 +105,7 @@ end
 
 !!! tip "Pro: Lag Compensation for Long-Paused Partitions"
 
-    Karafka Pro can actively refresh watermark and lag data for long-paused partitions instead of leaving it frozen, resolving the tension above without requiring a short check interval. See [Lag Compensation for Long-Paused Partitions](Upgrades-Karafka-2.6#lag-compensation-for-long-paused-partitions-pro).
+    Karafka Pro can actively refresh watermark and lag data for long-paused partitions instead of leaving it frozen, resolving the tension above without requiring a short check interval. See [Lag Compensation](Pro-Consumer-Groups-Lag-Compensation).
 
 !!! info "Web UI Visibility and Expected Flickering"
 
