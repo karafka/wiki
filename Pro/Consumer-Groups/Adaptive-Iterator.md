@@ -94,7 +94,7 @@ class MyConsumer < ApplicationConsumer
 end
 ```
 
-This uses the `safety_margin` configured in your routing (15% in the earlier example) as the buffer to handle post-processing without exceeding the poll interval. It automatically marks messages as consumed and cleans up after each message, depending on the configuration.
+Since this example does not configure `adaptive_iterator` itself, it uses the default safety margin of 10% as the buffer to handle post-processing without exceeding the poll interval (see `safety_margin` above). It automatically marks messages as consumed and cleans up after each message, depending on the configuration.
 
 !!! warning "Correct Iteration Method for Adaptive Iterator"
 
