@@ -62,7 +62,7 @@
 ## Acronyms are Commonly Used Shortcuts
 
 - **CG** = Consumer Group - A group of consumers that work together to consume messages from Kafka topics
-- **SG** = Subscription Group - A Karafka-specific concept that groups topic subscriptions with similar configurations
+- **SuG** = Subscription Group - A Karafka-specific concept that groups topic subscriptions with similar configurations. (Historically abbreviated "SG"; renamed to avoid colliding with Share Groups' "SG" as KIP-932 support lands. Some auto-generated changelog mirrors and the integration tests catalog may still say "SG" for this, since they are sourced verbatim from the real repos and cannot be hand-edited here.)
 - **VP** or **VPs** = Virtual Partitions - A Pro feature that allows parallel processing of messages within a single Kafka partition
 - **LRJ** = Long Running Job - A Pro feature for handling jobs that exceed standard processing timeframes
 - **DLQ** = Dead Letter Queue - A mechanism for handling messages that fail processing after retries
