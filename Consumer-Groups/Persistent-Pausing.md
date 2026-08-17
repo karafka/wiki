@@ -103,6 +103,10 @@ end
 
     A 60-second check interval provides a good balance between reducing Flipper query overhead and maintaining reasonable visibility into consumer state. For more details on lag reporting limitations during pauses, see [Web UI Health documentation](Pro-Web-UI-Health).
 
+!!! tip "Pro: Lag Compensation for Long-Paused Partitions"
+
+    Karafka Pro can actively refresh watermark and lag data for long-paused partitions instead of leaving it frozen, resolving the tension above without requiring a short check interval. See [Lag Compensation](Pro-Consumer-Groups-Lag-Compensation).
+
 !!! info "Web UI Visibility and Expected Flickering"
 
     You can monitor the pause status of partitions in the [Web UI Health section](Pro-Web-UI-Health). However, because this implementation uses time-based pausing (e.g., 60-second intervals), you may observe brief flickering in the UI where a partition appears to unpause momentarily and then pause again.
