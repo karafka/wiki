@@ -164,6 +164,10 @@ The Search feature is a tool that enables users to search and filter messages ef
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-search1.png" alt="karafka web search view" />
 </p>
 
+!!! info "Filtering Listings Is a Separate Pro Feature"
+
+    A keyword filter box that narrows down listings (consumers, jobs, cluster, and more) is a separate Pro feature from Explorer Search above. See [Filtering](Pro-Web-UI-Filtering).
+
 ## Errors
 
 A Karafka errors page UI view allows users to inspect errors occurring during messages consumption and production, including all the asynchronous errors coming from `librdkafka`. It includes the following information:
