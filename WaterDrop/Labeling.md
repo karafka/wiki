@@ -171,7 +171,8 @@ producer.monitor.subscribe('message.acknowledged') do |event|
   produced_at = event[:label][:produced_at]
   roundtrip_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - produced_at
 
-  StatsD.histogram('waterdrop.roundtrip_time', roundtrip_time)
+  # Report roundtrip_time to your metrics system of choice
+  Karafka.logger.info("Message delivered in #{roundtrip_time}s")
 end
 
 producer.monitor.subscribe('error.occurred') do |event|
@@ -181,7 +182,8 @@ producer.monitor.subscribe('error.occurred') do |event|
   produced_at = report.label[:produced_at]
   roundtrip_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - produced_at
 
-  StatsD.histogram('waterdrop.roundtrip_time.failed', roundtrip_time)
+  # Report roundtrip_time to your metrics system of choice
+  Karafka.logger.error("Message failed after #{roundtrip_time}s")
 end
 ```
 
