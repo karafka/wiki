@@ -154,6 +154,41 @@ Using labels to distinguish between sync and async errors provides several advan
 - **Better Monitoring**: Track async-specific failure rates and patterns
 - **Simplified Debugging**: Quickly identify whether an error originated from sync or async production
 
+## Tracking Message Round-Trip Time
+
+WaterDrop's own instrumentation (`message.produced_sync`, `message.produced_async`, and their batch equivalents) reports how long the `produce` call itself took to return - for `produce_async`, that is just enqueueing time, not delivery time. It does not tell you how long a message actually took to reach Kafka and get acknowledged by the broker, which includes librdkafka's internal batching and the network round trip.
+
+Labels let you measure that full round trip: stash a timestamp in the label when you produce, then diff it against the current time in the `message.acknowledged` (and, for failures, `error.occurred`) subscriber:
+
+```ruby
+producer.produce_async(
+  topic: 'my-topic',
+  payload: 'some data',
+  label: { produced_at: Process.clock_gettime(Process::CLOCK_MONOTONIC) }
+)
+
+producer.monitor.subscribe('message.acknowledged') do |event|
+  produced_at = event[:label][:produced_at]
+  roundtrip_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - produced_at
+
+  StatsD.histogram('waterdrop.roundtrip_time', roundtrip_time)
+end
+
+producer.monitor.subscribe('error.occurred') do |event|
+  next unless event[:type] == 'librdkafka.dispatch_error'
+
+  report = event[:delivery_report]
+  produced_at = report.label[:produced_at]
+  roundtrip_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - produced_at
+
+  StatsD.histogram('waterdrop.roundtrip_time.failed', roundtrip_time)
+end
+```
+
+`Process::CLOCK_MONOTONIC` is used instead of `Time.now` because it is unaffected by system clock adjustments (NTP sync, manual changes), which matters for measuring a duration rather than a wall-clock timestamp.
+
+If you also need other label data (for example, to distinguish sync from async as shown above), keep `produced_at` alongside it in the same label hash rather than choosing one or the other.
+
 ## Conclusion
 
 Labeling in WaterDrop is a powerful feature that enhances message tracking, debugging, and monitoring. By effectively using labels, you can better understand your message flow, quickly address issues, and gather valuable insights into your messaging system's performance.
