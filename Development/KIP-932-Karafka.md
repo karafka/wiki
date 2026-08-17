@@ -8,7 +8,7 @@ This document captures the design decisions, architectural choices, naming conve
 
 !!! info "SG Means Share Group in This Document"
 
-    Throughout this document, `SG` is shorthand for **Share Group**. Subscription Group is abbreviated `SuG` (see [`LLMs.md`](LLMs), the wiki's canonical acronym reference) specifically to avoid colliding with this term. Older wiki content (auto-generated changelog mirrors, the integration tests catalog) may still use `SG` for Subscription Group, since it is sourced verbatim from the real repos.
+    Throughout this document, `SG` is shorthand for **Share Group**. Subscription Group is abbreviated `SuG` specifically to avoid colliding with this term. Older wiki content (auto-generated changelog mirrors, the integration tests catalog) may still use `SG` for Subscription Group, since it is sourced verbatim from the real repos.
 
 **Key constraint:** librdkafka share consumer APIs were not yet available at the time of planning. librdkafka has since shipped a Preview share-consumer implementation in [v2.15.0](https://github.com/confluentinc/librdkafka/releases/tag/v2.15.0) (2026-06-30). Adopting it in `karafka-rdkafka` (currently still pinned to librdkafka 2.14.2) is work in progress but not yet done. The design targets a fake-broker-first approach so that Karafka-layer work can proceed independently of librdkafka timelines.
 
