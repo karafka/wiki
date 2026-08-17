@@ -67,7 +67,7 @@ end
 In this example, the Adaptive Iterator is activated with specific parameters. The `adaptive_iterator` method takes several configuration options:
 
 - `active`: Set this to true to enable the Adaptive Iterator for the topic.
-- `safety_margin`: Defines the percentage of the total poll interval to reserve as a buffer. For instance, setting this to 15 leaves 15% of the time for post-processing, stopping further processing when 85% of the poll interval is used. The default is 10.
+- `safety_margin`: Defines the percentage of the total poll interval to reserve as a buffer. Defaults to 10 (stopping further processing once 90% of the poll interval is used). The example above overrides it to 15, leaving 15% of the time for post-processing and stopping at 85%.
 - `marking_method`: Specifies how messages are marked as consumed. The default method is `:mark_as_consumed`, but you can set it to `:mark_as_consumed!`.
 - `clean_after_yielding`: Indicates whether to clean up after processing each message using the [Cleaner API](Pro-Cleaner-API). Defaults to `true`; set it to `false` to disable automatic cleanup after yielding.
 
