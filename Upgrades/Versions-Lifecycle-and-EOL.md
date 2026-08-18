@@ -73,14 +73,14 @@ We officially provide support for all the versions of Ruby that are not EOL, and
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
-| 4.0     | Active      | 2029-09-30 |
-| 3.4     | Active      | 2028-09-30 |
-| 3.3     | Active      | 2027-09-30 |
-| 3.2     | Maintenance | 2026-09-30 |
-| 3.1     | EOL         | 2025-09-30 |
-| 3.0     | EOL         | 2024-09-30 |
-| 2.7     | EOL         | 2024-05-30 |
-| 2.6     | EOL         | 2022-04-12 |
+| 4.0     | Active      | 2029-03-31 |
+| 3.4     | Active      | 2028-03-31 |
+| 3.3     | Active      | 2027-03-31 |
+| 3.2     | EOL         | 2026-03-31 |
+| 3.1     | EOL         | 2025-03-26 |
+| 3.0     | EOL         | 2024-04-23 |
+| 2.7     | EOL         | 2023-03-31 |
+| 2.6     | EOL         | 2022-03-31 |
 
 ## Ruby on Rails Versions Support
 
