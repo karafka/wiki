@@ -100,6 +100,22 @@ Since this example does not configure `adaptive_iterator` itself, it uses the de
 
     When using the Adaptive Iterator, always use the consumer's `#each` method directly, as shown in the example, instead of iterating over `messages#each`. The Adaptive Iterator wraps both the messages and the consumer context, allowing it to accurately monitor processing time and handle tasks like stopping, seeking, and offset marking. Using `messages#each` bypasses this wrapping, preventing the Adaptive Iterator from functioning.
 
+## Limitations
+
+The stop decision made by the Adaptive Iterator is a heuristic, not a hard guarantee, and it can still be exceeded in one specific case: a single message that runs far slower than every message processed so far in the same batch.
+
+Before yielding each message, the Adaptive Iterator estimates whether there is enough time left in the poll interval by comparing the remaining time against the slowest single message it has processed so far in the current batch, plus the safety margin. This estimate is based entirely on past messages: it has no way to know in advance how long the next message will take, and once a message is yielded to your consumer, the Adaptive Iterator cannot interrupt it mid-processing. There is no cheap, general way to preempt arbitrary running Ruby code, so this is an inherent constraint of the approach rather than an oversight that can be patched away.
+
+In practice, this means an outlier message, one that takes dramatically longer than anything seen before it in that batch, can still push processing past `max.poll.interval.ms` if its runtime exceeds the safety margin. This is most likely for the first message of a batch (no prior timing data exists yet to base the estimate on) or for workloads with rare, extreme spikes in per-message processing time.
+
+If this happens, Kafka treats it like any other missed poll interval: the broker may trigger a rebalance, and the partition resumes from the last marked offset on rejoin. No messages are lost, thanks to Karafka's at-least-once semantics, but some messages may be reprocessed and the consumer group experiences a temporary disruption.
+
+To reduce the risk:
+
+- Use a larger `safety_margin` if your workload has known but rare heavy outliers, so more headroom is reserved for an unpredicted spike.
+- Consider adding your own per-message timeout or cost cap in the consumer logic if a message could run away unpredictably, since the Adaptive Iterator cannot preempt it once started.
+- If a single message's processing time can regularly exceed `max.poll.interval.ms` on its own, do not use the Adaptive Iterator for that topic, as noted above.
+
 ## Stopping and Seeking Back Implications
 
 The Adaptive Iterator is designed to monitor message processing times and stop processing when it approaches the Kafka poll interval limit, seeking back to the last unprocessed message. While this mechanism helps prevent exceeding the poll interval, it may impact performance and networking.
