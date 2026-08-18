@@ -65,7 +65,7 @@ Karafka and its components versions or release series are categorized below into
 
 ## Ruby Versions Support
 
-We officially provide support for all the versions of Ruby that are not EOL, and we align with their EOL schedule.
+We officially provide support for all the versions of Ruby that are not EOL. Our EOL dates are set around six months after each version's official Ruby EOL date, so users have extra time to migrate at their own pace.
 
 !!! note "Older Ruby May Work but Is Unsupported"
 
