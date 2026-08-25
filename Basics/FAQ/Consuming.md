@@ -37,6 +37,7 @@
 1. [What does setting the `initial_offset` to `earliest` mean in Karafka? Does it mean the consumer starts consuming from the earliest message that has not been consumed yet?](#what-does-setting-the-initial_offset-to-earliest-mean-in-karafka-does-it-mean-the-consumer-starts-consuming-from-the-earliest-message-that-has-not-been-consumed-yet)
 1. [How can I set up custom, per-message tracing in Karafka?](#how-can-i-set-up-custom-per-message-tracing-in-karafka)
 1. [When Karafka reaches `max.poll.interval.ms` time and the consumer is removed from the group, does this mean my code stops executing?](#when-karafka-reaches-maxpollintervalms-time-and-the-consumer-is-removed-from-the-group-does-this-mean-my-code-stops-executing)
+1. [Why do I get a `max.poll.interval.ms` exceeded error even though no single topic or message is slow and my metrics look fine?](#why-do-i-get-a-maxpollintervalms-exceeded-error-even-though-no-single-topic-or-message-is-slow-and-my-metrics-look-fine)
 1. [Which component is responsible for committing the offset after consuming? Is it the listener or the worker?](#which-component-is-responsible-for-committing-the-offset-after-consuming-is-it-the-listener-or-the-worker)
 1. [Can the `on_idle` and `handle_idle` methods be changed for a specific consumer?](#can-the-on_idle-and-handle_idle-methods-be-changed-for-a-specific-consumer)
 1. [Is it possible to get watermark offsets from inside a consumer class without using Admin?](#is-it-possible-to-get-watermark-offsets-from-inside-a-consumer-class-without-using-admin)
@@ -478,6 +479,26 @@ Data polling error occurred: Application maximum poll interval (300000ms) exceed
 ```
 
 Your code will continue to execute until it is complete. However, marking messages as consumed after this error will not be allowed.
+
+## Why do I get a `max.poll.interval.ms` exceeded error even though no single topic or message is slow and my metrics look fine?
+
+This error is frequently misread as an application resource problem ("I need a bigger machine"), but it usually is not. The `max.poll.interval.ms` limit applies to the entire batch polled by a subscription group collectively, not to any single topic, partition, or message.
+
+If a subscription group subscribes to many topics, Karafka polls messages from all of them together and processes that combined batch before polling again. No single topic needs to be slow to breach the limit - the *sum* is what counts.
+
+For example, imagine a subscription group with 100 topics, a `max.poll.interval.ms` of 100 seconds, and roughly 1 second to process one message per topic. Polling one message per topic gives 100 messages, which is about 100 seconds - right at the edge. The moment one message takes 2 seconds instead of 1, you cross the limit, and you get:
+
+```text
+Application maximum poll interval (300000ms) exceeded by 128ms
+```
+
+This is also why the error reports only a **consumer group** and not a specific topic: Karafka knows what it polled for the subscription group, but the timeout is a property of the collective batch, not of any one topic. Hunting for "the slow topic" in per-topic metrics will not reveal the cause.
+
+To resolve it:
+
+- Lower `max_messages` so each poll fetches a smaller batch that completes well within the interval. See [Latency and Throughput](Infrastructure-Latency-and-Throughput).
+- Split the work across multiple subscription groups so heavy topics are isolated from lighter ones and each polls independently. See [Routing](Consumer-Groups-Routing) and [Latency and Throughput](Infrastructure-Latency-and-Throughput).
+- For genuinely long single-message work, consider [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs).
 
 ## Which component is responsible for committing the offset after consuming? Is it the listener or the worker?
 
