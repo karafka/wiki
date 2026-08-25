@@ -218,6 +218,10 @@ end
 
     When `auto.offset.reset` is `error`, a partition that would otherwise silently reset will instead stop consuming and surface an error. You **must** have alerting on offset-reset errors and a runbook to seek the affected partitions to the correct position before enabling this. Do **not** use `auto.offset.reset: 'latest'` to resolve these errors - doing so skips all messages between the valid committed position and the live edge, causing data loss.
 
+!!! note "This Only Protects a Known Position"
+
+    `auto.offset.reset` is consulted only when a consumer has **no** valid position to fall back to - that is, when it picks up with an unknown position (`-1`), such as a brand-new consumer group or a partition whose committed offset is no longer within retention. In that situation `error` simply raises instead of silently jumping to `earliest`/`latest`; it does not preserve a position, because there is none to preserve. This flag prevents an *unnecessary* rewind when a valid committed offset exists - it is a diagnostic and a guard, not a mitigation for the underlying bug.
+
 ### Reading the `OffsetOutOfRange` Context
 
 When an `offset_out_of_range` error appears in logs, the broker includes the partition's low and high watermarks alongside the requested offset. The watermark values identify which sub-case you are in:
