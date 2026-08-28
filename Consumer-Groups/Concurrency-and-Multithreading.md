@@ -102,9 +102,9 @@ end
   </small>
 </p>
 
-!!! note "Karafka May Create More Subscription Groups"
+!!! note "What Determines the Actual Grouping"
 
-    This example is a simplification. Depending on other factors, Karafka may create more subscription groups to manage the resources better. It will, however, never group topics together that are within different subscription groups.
+    This example is a simplification. Karafka only merges topics into the same subscription group when their `kafka` scope configuration, `max_messages`, `max_wait_time`, and `initial_offset` all match, in addition to sharing the same subscription group name. See [Subscription Group Membership Rules](Consumer-Groups-Routing#subscription-group-membership-rules) for the full breakdown. Karafka will, however, never group topics together that are within different subscription groups.
 
 !!! note "Subscription Groups Differ From Consumer Groups"
 

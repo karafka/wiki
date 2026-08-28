@@ -113,6 +113,44 @@ end
 
 You can read more about the concurrency implications of using subscription groups [here](Consumer-Groups-Concurrency-and-Multithreading#parallel-kafka-connections-within-a-single-consumer-group-subscription-groups).
 
+### Subscription Group Membership Rules
+
+Topics land in the same subscription group only when a specific set of settings match exactly:
+
+- the `kafka` scope configuration
+- `max_messages`
+- `max_wait_time`
+- `initial_offset`
+- the subscription group name, explicit or the shared default assigned when none is given
+
+If any of these differ between two topics in the same consumer group, Karafka places them in separate subscription groups, even when you did not ask for the split.
+
+This matters most for the `kafka` scope. A per-topic override, for example a custom `bootstrap.servers` value applied to a single topic, silently moves that topic into its own subscription group and its own connection, even when every topic is wrapped in a single `subscription_group` block.
+
+Topics that do not declare a `subscription_group` explicitly all share the same default subscription group name within their consumer group, so as long as their other settings match, they stay together in one subscription group.
+
+!!! tip "Verify the Actual Grouping at Boot"
+
+    Instead of predicting how topics were grouped, ask Karafka directly once your routing is loaded:
+
+    ```ruby
+    Karafka::App.subscription_groups.each do |consumer_group, subscription_groups|
+      subscription_groups.each do |subscription_group|
+        puts "#{subscription_group.name}: #{subscription_group.topics.map(&:name)}"
+      end
+    end
+    ```
+
+### Partition Colocation Across Topics
+
+All topics within the same subscription group share one connection to Kafka and, in the Open Source version, one consumer group member id. When you configure `partition.assignment.strategy` as `range`, the broker assigns partitions per topic in partition-number order to consumer group members. Because every topic in a subscription group is fetched through the same member id, the same partition number from each of those topics lands on the same member, colocating related partitions across topics on a single process.
+
+This colocation depends on conditions outside subscription groups themselves:
+
+- the topics need the same partition count, otherwise the numbering does not line up across all partitions
+- every member of the consumer group needs to subscribe to all the colocated topics, a partial subscription breaks the alignment
+- [Multiplexing](Pro-Consumer-Groups-Multiplexing) deliberately opens multiple independent connections, each with its own member id, within a single subscription group. This is a Pro feature and breaks colocation by design, since a subscription group no longer maps to a single member
+
 ### Subscription Group Multiplexing
 
 For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
