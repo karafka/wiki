@@ -151,6 +151,37 @@ This colocation depends on conditions outside subscription groups themselves:
 - every member of the consumer group needs to subscribe to all the colocated topics, a partial subscription breaks the alignment
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) deliberately opens multiple independent connections, each with its own member id, within a single subscription group. This is a Pro feature and breaks colocation by design, since a subscription group no longer maps to a single member
 
+For example, take two topics, `orders` and `orders_dlq`, each with 3 partitions, placed in the same subscription group:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # ...
+  end
+
+  routes.draw do
+    subscription_group 'orders' do
+      topic :orders do
+        consumer OrdersConsumer
+      end
+
+      topic :orders_dlq do
+        consumer OrdersDlqConsumer
+      end
+    end
+  end
+end
+```
+
+With two processes consuming this consumer group and `partition.assignment.strategy` set to `range`, the broker assigns matching partition numbers from both topics to the same member, because both topics are fetched through that member's single subscription group connection:
+
+| Member | `orders` partitions | `orders_dlq` partitions |
+| --- | --- | --- |
+| Process 1 | 0, 1 | 0, 1 |
+| Process 2 | 2 | 2 |
+
+Partition 0 of `orders` and partition 0 of `orders_dlq` always end up on the same process, and the same holds for every other partition number. If `orders_dlq` had a different partition count, or a process subscribed to only one of the two topics, this alignment would no longer hold.
+
 ### Subscription Group Multiplexing
 
 For those using the advanced options in Karafka Pro, we have a special page dedicated to the Multiplexing feature. Multiplexing allows you to establish multiple independent connections to Kafka to subscribe to one topic from a single process. This detailed resource covers everything you need to know about how Multiplexing works, how to set it up, and tips for using it effectively. To learn all about this feature and make the most of it, check out the [Multiplexing](Pro-Consumer-Groups-Multiplexing) documentation.
