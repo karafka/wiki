@@ -123,7 +123,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>
-      e-ruby
+      erubi
     </td>
     <td>
       All
@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      5.7.16
+      5.7.22
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
