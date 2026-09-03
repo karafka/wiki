@@ -123,6 +123,28 @@ puts "This sent message has an offset #{report.offset} on partition #{report.par
 puts "This sent message was sent to #{report.topic_name} topic"
 ```
 
+#### Offsets on a Newly Created Topic
+
+`produce_sync` returns the real offset of the produced message. On the very first produce to a brand new topic, the delivery report can carry an offset of `-1001` instead.
+
+`-1001` is the invalid offset marker used by librdkafka (`RD_KAFKA_OFFSET_INVALID`). It means the offset is not available, **not** that the produce failed. The message reaches Kafka and is stored. Only that first delivery report is missing the offset, because librdkafka does not get it back in the first delivery report for a topic it has just started producing to. Every later produce to the same topic reports a real offset.
+
+You are most likely to see this when the topic is created on demand, for example by auto topic creation or by a declarative topics run that happens just before the first produce.
+
+Treat a negative offset as unknown rather than as a position in the partition. Check it before you display it, store it, or build a link from it:
+
+```ruby
+report = producer.produce_sync(topic: 'my_topic', payload: 'my_payload')
+
+if report.offset.negative?
+  puts "Message produced to #{report.topic_name}, offset not available yet"
+else
+  puts "Message produced to #{report.topic_name} at offset #{report.offset}"
+end
+```
+
+The partition and the topic name are correct in both cases, so you can rely on them even when the offset is not available.
+
 ### Delivery Handles
 
 In contrast, WaterDrop returns a delivery handle for asynchronous dispatches. When you dispatch messages asynchronously, WaterDrop will send the message without blocking your program's execution, allowing you to continue processing other tasks while the message is being sent. The key feature of the delivery handle is its `#wait` method. The `#wait` method allows you to pause your program's execution until the message is either successfully dispatched or an error occurs during delivery.
