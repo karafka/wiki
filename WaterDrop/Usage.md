@@ -123,6 +123,8 @@ puts "This sent message has an offset #{report.offset} on partition #{report.par
 puts "This sent message was sent to #{report.topic_name} topic"
 ```
 
+On a topic that already exists, the report always carries the real offset of the message. When the topic does not exist yet and the broker auto-creates it, the report for that first message can carry `-1001` instead, which means the offset is not available rather than that the produce failed. See [Topic Auto-Creation](Infrastructure-Topic-Auto-Creation).
+
 ### Delivery Handles
 
 In contrast, WaterDrop returns a delivery handle for asynchronous dispatches. When you dispatch messages asynchronously, WaterDrop will send the message without blocking your program's execution, allowing you to continue processing other tasks while the message is being sent. The key feature of the delivery handle is its `#wait` method. The `#wait` method allows you to pause your program's execution until the message is either successfully dispatched or an error occurs during delivery.
