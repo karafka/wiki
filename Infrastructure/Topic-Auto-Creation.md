@@ -43,32 +43,6 @@ When only consumers are present (no WaterDrop producers), topics will **not** be
 - **Configuration dependency**: Requires both `allow.auto.create.topics` set to `true` (consumer config) and `auto.create.topics.enable` set to `true` (broker config)
 - **Partition key limitation**: If using partition keys, topic creation may fail due to metadata caching limitations, resulting in an error rather than a silent failure
 
-## Delivery Report Offsets on Auto-Created Topics
-
-When you produce to a topic that already exists, the delivery report always carries the real offset of the message. When the topic does not exist yet and the broker auto-creates it, the delivery report for that first message can carry `-1001` instead.
-
-`-1001` is the invalid offset marker used by librdkafka (`RD_KAFKA_OFFSET_INVALID`). It means the offset is not available in that report, **not** that the produce failed. The message is stored and is consumable at its real offset. Only the report is missing the value, because librdkafka does not always get the offset back for the message that triggered the topic creation.
-
-That first report is ambiguous by nature: it carries either `-1001` or a real offset, depending on timing. Every later produce to that topic reports a real offset that matches the broker offset of the message.
-
-!!! warning "Treat a Negative Offset as Unknown"
-
-    A negative offset is not a position in the partition. Check it before you display it, store it, or build a link from it.
-
-```ruby
-report = producer.produce_sync(topic: 'my_topic', payload: 'my_payload')
-
-if report.offset.negative?
-  puts "Message produced to #{report.topic_name}, offset not available"
-else
-  puts "Message produced to #{report.topic_name} at offset #{report.offset}"
-end
-```
-
-The partition and the topic name are correct in both cases, so you can rely on them even when the offset is not available.
-
-Pre-creating your topics avoids this altogether, which is one more reason to use declarative topics in production.
-
 ## CLI Tool Behavior
 
 The Kafka CLI consumer (`kafka-console-consumer.sh`) behaves differently and may create topics:
