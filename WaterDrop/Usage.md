@@ -123,7 +123,34 @@ puts "This sent message has an offset #{report.offset} on partition #{report.par
 puts "This sent message was sent to #{report.topic_name} topic"
 ```
 
-On a topic that already exists, the report always carries the real offset of the message. When the topic does not exist yet and the broker auto-creates it, the report for that first message can carry `-1001` instead, which means the offset is not available rather than that the produce failed. See [Topic Auto-Creation](Infrastructure-Topic-Auto-Creation).
+#### When the Offset Is Not Available
+
+A delivery report can carry `-1001` in place of a real offset. That value is the invalid offset marker used by librdkafka (`RD_KAFKA_OFFSET_INVALID`), and it means the offset is not available, **not** that the report carries an error.
+
+Two configurations produce it:
+
+- `acks` set to `0`. The produce is fire-and-forget, so the broker never acknowledges the write and librdkafka never learns an offset. Every delivery report carries `-1001`, not only the first one. `acks` is topic level configuration, so once you produce to a topic through a variant with `acks` set to `0`, later produces to that same topic on that same producer report `-1001` as well.
+- Idempotence enabled, for a message that was retried after being delivered but not properly acknowledged. For those, librdkafka reports an invalid offset and an invalid timestamp.
+
+The default producer is not affected. WaterDrop sets neither `acks` nor `enable.idempotence`, so the librdkafka defaults apply (`acks` of `all`, idempotence disabled) and a successful `produce_sync` always carries the real offset.
+
+!!! warning "Treat a Negative Offset as Unknown"
+
+    A negative offset is not a position in the partition. Check it before you display it, store it, or build a link from it.
+
+```ruby
+report = producer.produce_sync(topic: 'my_topic', payload: 'my_payload')
+
+if report.offset.negative?
+  puts "Message produced to #{report.topic_name}, offset not available"
+else
+  puts "Message produced to #{report.topic_name} at offset #{report.offset}"
+end
+```
+
+The partition and the topic name are correct in both cases, so you can rely on them even when the offset is not available.
+
+A missing offset is not a statement about delivery either way. With `acks` set to `0` you have no delivery guarantee at all, so do not read a real offset as proof of storage or `-1001` as proof of loss.
 
 ### Delivery Handles
 
