@@ -6,6 +6,75 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.15.1 (2026-09-09)
+
+librdkafka v2.15.1 is a maintenance release:
+
+* Update bundled OpenSSL and libcurl dependencies, and refresh the Windows
+  build toolchain (msys2, vcpkg) (#5579).
+* Fix `int_latency` metric calculation, that was reporting bogus values when
+  `message.timeout.ms` is set to 0 (infinite) (#5335).
+* IPv6 addresses are wrapped in square brackets following RFC 3986, allowing to connect to those compressed IPv6 addresses (#5544).
+* IPv6 addresses are correctly passed to OpenSSL as IPs not as hostnames with brackets and the certificate is validated against its `iPAddress` entries instead of against `dNSName` entries (#5544).
+
+
+### Upgrade considerations
+
+* If you're parsing the nodename as received by `connect_cb`, `stats_cb`, `ssl_cert_verify_cb` or `throttle_cb`, make sure you're correctly parsing it following RFC 3986. Metadata API calls are unaffected: they return the host and port as separate fields.
+* Make sure the brokers' certificates carry the IP in an iPAddress entry, not a dNSName entry. Previously the certificate was validated against dNSName (falling back to the subject CN) whenever the address could not be parsed as an IP literal: with OpenSSL < 3.0 or BoringSSL for any IP address, and on all OpenSSL versions for an IPv6 address configured in brackets in bootstrap.servers ([::1]:9092), which never verified. A scoped address (fe80::1%eth0) was likewise dNSName-matched on every version and now has the zone stripped before matching. IPv6 addresses ending in :: could not be connected to at all, as the nodename became host:::port and failed name resolution. In the remaining cases, a bare IPv4 or IPv6 literal on OpenSSL >= 3.0, the iPAddress entry was already used, and behaviour is unchanged.
+
+
+### Security considerations
+
+Bundled dependencies were further upgraded as follows:
+OpenSSL 3.5.6 → 3.5.7 for source/autoconf builds, and 3.6.2 → 3.6.3 for
+vcpkg-based packages; libcurl 8.20.0 → 8.21.0, now used by both
+source/autoconf builds and vcpkg (previously pinned to 8.19.0 in vcpkg,
+so vcpkg-based packages also pick up the fixes below that source/autoconf
+builds already got from 8.20.0).
+
+ * OpenSSL upgrade (3.5.6 → 3.5.7 for source/autoconf, 3.6.2 → 3.6.3 for
+   vcpkg) addresses:
+   * Both branches: CVE-2026-34180, CVE-2026-34181, CVE-2026-34182,
+     CVE-2026-34183, CVE-2026-42764, CVE-2026-42766, CVE-2026-42767,
+     CVE-2026-42768, CVE-2026-42769, CVE-2026-42770, CVE-2026-45445,
+     CVE-2026-45446, CVE-2026-45447, CVE-2026-7383, CVE-2026-9076.
+   * Only the vcpkg 3.6.2 → 3.6.3 branch (3.5.6/3.5.7 were not affected):
+     CVE-2026-35188, CVE-2026-42765.
+
+ * libcurl upgrade (8.20.0 → 8.21.0) addresses: CVE-2026-8286,
+   CVE-2026-8458, CVE-2026-8924, CVE-2026-8925, CVE-2026-8926,
+   CVE-2026-8927, CVE-2026-8932, CVE-2026-9079, CVE-2026-9080,
+   CVE-2026-9545, CVE-2026-9546, CVE-2026-9547, CVE-2026-10536,
+   CVE-2026-11352, CVE-2026-11564, CVE-2026-11586, CVE-2026-11856,
+   CVE-2026-12064.
+   Since libcurl is now at the same version (8.21.0) for both
+   source/autoconf and vcpkg builds, this also closes the gap noted in
+   the previous release, where vcpkg-pinned 8.19.0 still contained
+   CVE-2026-4873, CVE-2026-5545, CVE-2026-5773, CVE-2026-6253,
+   CVE-2026-6276, CVE-2026-6429, CVE-2026-7168.
+
+ * zlib vcpkg port revision bump (1.3.2#0 → 1.3.2#1): no upstream version
+   change and no associated CVE; packaging-only update.
+
+
+### Fixes
+
+#### Producer fixes
+
+* Issues: #5555.
+  Fix `int_latency` metric calculation. It was derived from the message
+  timeout timestamp (`now + message.timeout.ms - rkm_ts_timeout`), which
+  yields a large negative value when `message.timeout.ms` is 0 (infinite)
+  and `rkm_ts_timeout` is `INT64_MAX`. It's now computed directly as
+  `now - rkm_ts_enq`, the actual time the message spent in the queue,
+  regardless of the timeout setting.
+  Happening since 0.11.0 (#5335).
+
+### Checksums
+Release asset checksums:
+ * v2.15.1.zip SHA256 `1ca308c10c4234962695fbf9c7f1ab0649ab43c7ad03d384f1645db7b74c92ce`
+ * v2.15.1.tar.gz SHA256 `23c8575c7d1ced07246cb9cf200c11325b72201fd4134a02414ca869fbdd8ed3`
 ## 2.15.0 (2026-06-30)
 
 ### [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka) Queues for Kafka – Now in **Preview**
@@ -1779,40 +1848,4 @@ librdkafka v1.9.0 is a feature release:
 Release asset checksums:
  * v1.9.0.zip SHA256 `a2d124cfb2937ec5efc8f85123dbcfeba177fb778762da506bfc5a9665ed9e57`
  * v1.9.0.tar.gz SHA256 `59b6088b69ca6cf278c3f9de5cd6b7f3fd604212cd1c59870bc531c54147e889`
-
-## 1.6.2 (2021-11-25)
-
-# librdkafka v1.6.2
-
-librdkafka v1.6.2 is a maintenance release with the following backported fixes:
-
- * Upon quick repeated leader changes the transactional producer could receive
-   an `OUT_OF_ORDER_SEQUENCE` error from the broker, which triggered an
-   Epoch bump on the producer resulting in an InitProducerIdRequest being sent
-   to the transaction coordinator in the middle of a transaction.
-   This request would start a new transaction on the coordinator, but the
-   producer would still think (erroneously) it was in the current transaction.
-   Any messages produced in the current transaction prior to this event would
-   be silently lost when the application committed the transaction, leading
-   to message loss.
-   To avoid message loss a fatal error is now raised.
-   This fix is specific to v1.6.x. librdkafka v1.8.x implements a recoverable
-   error state instead. #3575.
- * The transactional producer could stall during a transaction if the transaction
-   coordinator changed while adding offsets to the transaction (send_offsets_to_transaction()).
-   This stall lasted until the coordinator connection went down, the
-   transaction timed out, transaction was aborted, or messages were produced
-   to a new partition, whichever came first. #3571.
- * librdkafka's internal timers would not start if the timeout was set to 0,
-   which would result in some timeout operations not being enforced correctly,
-   e.g., the transactional producer API timeouts.
-   These timers are now started with a timeout of 1 microsecond.
- * Force address resolution if the broker epoch changes (#3238).
-
-
-### Checksums
-Release asset checksums:
- * v1.6.2.zip SHA256 `1d389a98bda374483a7b08ff5ff39708f5a923e5add88b80b71b078cb2d0c92e`
- * v1.6.2.tar.gz SHA256 `b9be26c632265a7db2fdd5ab439f2583d14be08ab44dc2e33138323af60c39db`
-
 
