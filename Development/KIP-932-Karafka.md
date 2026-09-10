@@ -12,6 +12,10 @@ This document captures the design decisions, architectural choices, naming conve
 
 **Key constraint:** librdkafka share consumer APIs were not yet available at the time of planning. librdkafka has since shipped a Preview share-consumer implementation in [v2.15.0](https://github.com/confluentinc/librdkafka/releases/tag/v2.15.0) (2026-06-30). Adopting it in `karafka-rdkafka` (currently still pinned to librdkafka 2.14.2) is work in progress but not yet done. The design targets a fake-broker-first approach so that Karafka-layer work can proceed independently of librdkafka timelines.
 
+!!! success "Status Update (2026-09): Routing Layer Merged"
+
+    The share-group **routing layer** has been merged ([karafka#3345](https://github.com/karafka/karafka/pull/3345), targeting Karafka 2.6.2). Shipped: the `share_group` routing block, mode-first `Routing::{ConsumerGroups,ShareGroups}` namespaces with co-located contracts, `#group_type`/`#consumer_group?`/`#share_group?` introspection, `App.share_groups` plus chainable `App.routes.consumer_groups`/`App.routes.share_groups` views, `--include_share_groups`/`--exclude_share_groups` CLI filters (validated, also in swarm), cross-mode group-name uniqueness validation, share-group listing in `karafka info`, and the startup guard (`Karafka::Errors::ShareGroupsNotImplementedError`, raised at listeners assembly and pre-fork in the swarm supervisor). Namespace details in this document have been updated to match what shipped; the runtime (polling loop, `ShareGroupConsumer`, ack API, processing strategies) remains as planned below.
+
 ## Fundamental Differences Between Consumer Groups and Share Groups
 
 ### Consumer Groups (Current Karafka Model)
@@ -333,8 +337,8 @@ Document the "not supported" list clearly so users do not try to port partition-
 
 | Feature | Consumer Group | Share Group | Notes |
 | --- | --- | --- | --- |
-| `consumer` | Yes | Yes | shared |
-| `deserializers` | Yes | Yes | shared |
+| `consumer` | Yes | Yes | shared (Topics::Base) |
+| `deserializers` | Yes | Yes | per-mode mirrored copies (shipped) |
 | `kafka` (librdkafka opts) | Yes | Yes | some keys are mode-specific |
 | `manual_offset_management` | Yes | No | CG concept |
 | `explicit_acknowledgment` | No | Yes | SG concept |
@@ -344,8 +348,8 @@ Document the "not supported" list clearly so users do not try to port partition-
 | `delayed_release` | No | Yes | SG only |
 | `lock_extension` / auto-renew | No | Yes | SG only |
 | `throttling` | Yes (per-partition) | Yes (consumer-wide) | Different scope |
-| `filtering` | Yes | Yes | Shared |
-| `pause` (API) | Yes | No | No per-partition pause in SG |
+| `filtering` | Yes | Yes | Per-mode implementations (CG one shipped under `ConsumerGroups::`) |
+| `pause` (API) | Yes | No | No per-partition pause in SG. Routing-level `#pause` backoff config exists on both topic classes in the same format (shipped); the runtime pause API stays CG-only |
 | `max_messages` | Yes | Yes | Shared concept |
 | `max_wait_time` | Yes | Yes | Shared |
 | `jobs_builder` | No | Yes | SG only |
@@ -358,11 +362,13 @@ Document the "not supported" list clearly so users do not try to port partition-
 
 1. **Namespaces are always plural** (with rare pragmatic exceptions for readability)
 2. **Classes/modules inside are named for what they are** (singular)
-3. **Full mode names in class names:** `ConsumerGroup`, `ShareGroup` - not abbreviations
+3. **Mode-first namespaces with kind-only class names** (shipped): the mode lives in the namespace and the class says what it is - `Routing::ConsumerGroups::Group`, `Routing::ShareGroups::Topic` - rather than kind-first with full mode names (`Groups::ConsumerGroup`). Full mode names remain in user-facing consumer class names (`ShareGroupConsumer`).
 4. **Kafka's own terminology preferred** over domain-framed names (no `JobConsumer`, `QueueConsumer`)
 5. **Symmetric names across the stack** where possible
-6. **Back-compat aliases at flat top level** for user-facing references
-7. **`group_type` / `share_group?` / `consumer_group?`** as canonical mode-check API
+6. **Back-compat aliases at flat top level** for user-facing references (shipped: `Routing::ConsumerGroup` / `Routing::Topic` alias the mode-namespaced classes, retired in 3.0)
+7. **`group_type` / `share_group?` / `consumer_group?`** as canonical mode-check API (shipped)
+8. **No shared features - duplicate per mode** (shipped): every routing feature lives under exactly one mode namespace (`Features::ConsumerGroups::X` / `Features::ShareGroups::X`) and declares kind-only `Group`/`Topic`/`Contracts` hooks; its mode is inferred from its namespace. Features both modes need (e.g. `deserializers`, `pausing`) are mirrored as per-mode copies rather than shared, keeping the mode distinction absolute.
+9. **Legacy flat custom-feature layout stays supported** (shipped): a feature defined outside a mode namespace with flat `Topic`/`ConsumerGroup` modules and flat `Contracts::Topic`/`Contracts::ConsumerGroup` is consumer-group scoped by definition and keeps activating - this is the public extension point exercised by the `topic_custom_attributes` integration specs. Such features may alternatively nest `ConsumerGroups`/`ShareGroups` sub-modules to target either or both modes.
 
 ### Handling Asymmetry
 
@@ -389,34 +395,54 @@ Karafka::
       ConsumerGroup                              # Struct with partition, first_offset, last_offset
       ShareGroup                                 # Struct without partition/offset aggregates
 
-  Routing::
-    Groups::                                     # Kafka-level group types (plural)
-      Base
-      ConsumerGroup
-      ShareGroup
-    SubscriptionGroup                            # peer to Groups, single mode-agnostic class
-    Topics::                                     # plural
-      Base
-      ConsumerGroup
-      ShareGroup
+  Routing::                                      # SHIPPED as described (karafka#3345)
+    Groups::
+      Base                                       # shared group base (mode-agnostic machinery)
+    Topics::
+      Base                                       # shared topic base; `Topics` is also the
+                                                 # topics collection class
+    ConsumerGroups::                             # mode namespace
+      Group                                      # < Groups::Base
+      Topic                                      # < Topics::Base (CG features prepend here;
+                                                 # carries #pause)
+      Contracts::                                # co-located mode contracts
+        Group
+        Topic
+    ShareGroups::                                # mode namespace
+      Group                                      # < Groups::Base
+      Topic                                      # < Topics::Base (SG features prepend here;
+                                                 # carries mirrored #pause)
+      Contracts::
+        Group
+        Topic
+    ConsumerGroup                                # = ConsumerGroups::Group (legacy alias, 3.0)
+    Topic                                        # = ConsumerGroups::Topic (legacy alias, 3.0)
+    SubscriptionGroup                            # peer to the mode namespaces, mode-agnostic
+    Contracts::
+      Routing                                    # cross-group rules (group-name uniqueness,
+                                                 # strict declarative topics)
     Features::                                   # plural
-      Filtering                                  # shared feature directly under Features
-      ConsumerGroups::                           # CG-only features
-        VirtualPartitions
+      Base                                       # feature framework (mode from namespace)
+      Expander                                   # builder contracts expander
+      ConsumerGroups::                           # CG features (each mode-owned; no shared ones)
+        Deserializers                            # SHIPPED (mirrored per mode)
+        Pausing                                  # SHIPPED (per-topic backoff config)
+        Declaratives                             # SHIPPED
+        DeadLetterQueue                          # SHIPPED
+        ManualOffsetManagement                   # SHIPPED
+        VirtualPartitions                        # (Pro, under Pro::Routing::Features::...)
         LongRunningJob
-        DeadLetterQueue
-        ManualOffsetManagement
-        Pause
-        Seek
         Throttling
-      ShareGroups::                              # SG-only features
-        Acknowledgment
-        DelayedRelease
-        LockExtension
-        DeadLetterQueue
-        Throttling
-        JobsBuilder
-        PollInterval
+      ShareGroups::                              # SG features
+        Deserializers                            # SHIPPED (mirror of the CG copy)
+        Pausing                                  # SHIPPED (mirror of the CG copy)
+        Acknowledgment                           # future
+        DelayedRelease                           # future
+        LockExtension                            # future
+        DeadLetterQueue                          # future
+        Throttling                               # future
+        JobsBuilder                              # future
+        PollInterval                             # future
 
   Processing::
     ConsumerGroups::                             # CG processing internals
@@ -448,10 +474,13 @@ Karafka::
 
 ### Key Nesting Decisions
 
-- `Groups::` holds Kafka-level group types (CG and SG are kinds of Kafka groups)
-- `SubscriptionGroup` is a peer to `Groups::`, not inside it - it is a Karafka runtime construct, not a Kafka concept
-- `Topics::` is its own namespace (topics belong to groups via composition, not nesting)
-- `Features::` contains shared features directly, plus mode-specific sub-namespaces
+As shipped in the routing layer (some differ from the original draft of this document):
+
+- **Mode-first namespaces** won over kind-first: concrete classes live under `Routing::ConsumerGroups::` / `Routing::ShareGroups::` with kind-only names (`Group`, `Topic`, `Contracts::*`), so everything belonging to a mode is co-located. `Groups::`/`Topics::` hold only the shared `Base` classes (and `Topics` doubles as the topics collection class, matching `Contracts::Base`/`Features::Base` precedent).
+- **Contracts are co-located per mode** (`ConsumerGroups::Contracts::Group`), with only the cross-group rules (group-name uniqueness across modes, strict declarative topics) in `Routing::Contracts::Routing`.
+- **`SubscriptionGroup` is a peer** to the mode namespaces, not inside them - it is a Karafka runtime construct, not a Kafka concept.
+- **`Features::` has no shared features** - every feature is owned by exactly one mode and the framework infers a feature's mode from its namespace. Features both modes need are mirrored per mode (deliberate duplication for an absolutely clean mode distinction). Custom features defined outside a mode namespace remain supported (legacy flat layout = consumer-group scoped; nested `ConsumerGroups`/`ShareGroups` sub-modules target modes explicitly).
+- **`ShareGroups::Topic` does not inherit `ConsumerGroups::Topic`** - both inherit `Topics::Base`, so CG feature DSL cannot leak onto share topics.
 - `BatchMetadata` relaxes the plural rule because "BatchMetadatas" reads worse than the inconsistency costs
 
 ## Component Inventory
@@ -489,8 +518,8 @@ Karafka::
 ### Components Needing Structural Split
 
 - **`BatchMetadata`** - `BatchMetadata::ConsumerGroup` (with partition/offsets) and `BatchMetadata::ShareGroup` (without), sharing `LagMetrics` module
-- **Topic class** - three-layer hierarchy (`Topics::Base` / `ConsumerGroup` / `ShareGroup`)
-- **Consumer base class** - three-layer hierarchy with historical `BaseConsumer` preserved
+- **Topic class** - SHIPPED as `Topics::Base` + `ConsumerGroups::Topic` / `ShareGroups::Topic` (mode-first; the group class split shipped identically as `Groups::Base` + `{ConsumerGroups,ShareGroups}::Group`)
+- **Consumer base class** - three-layer hierarchy with historical `BaseConsumer` preserved (not yet done)
 - **Listener** - mode-specific subclasses under `Connection::Listeners::`
 
 ### Components Needing Refactor (Not Full Split)
@@ -525,6 +554,18 @@ Thanks to the tight-loop model:
 ## User-Facing API
 
 ### Routing DSL
+
+The `share_group` block itself is SHIPPED (declaration only; running raises
+`Karafka::Errors::ShareGroupsNotImplementedError` until the runtime lands). Also shipped:
+group names must be unique across modes (single Kafka group-id namespace), and the
+introspection surface - `#group_type`, `#consumer_group?`/`#share_group?`,
+`Karafka::App.share_groups`, chainable `Karafka::App.routes.consumer_groups` /
+`Karafka::App.routes.share_groups`, `--include_share_groups`/`--exclude_share_groups`
+server/swarm CLI filters (validated against the routing, wildcards supported), and
+share-group sections in `karafka info`.
+
+The SG-specific per-topic options below (`concurrency`, `poll_interval`,
+`max_messages_per_job`, `jobs_builder`, SG `dead_letter_queue`) are future work:
 
 ```ruby
 Karafka::App.routes.draw do
@@ -656,9 +697,10 @@ end
 ### What Must Not Break
 
 - `class MyConsumer < Karafka::BaseConsumer` continues to work identically
-- `topic :foo do ... end` without explicit mode continues to be a CG topic
-- Existing feature DSL (`dead_letter_queue`, `manual_offset_management`, `virtual_partitions`, etc.) continues to work as-is for CG topics
-- `is_a?(Karafka::Routing::Topic)` checks continue to resolve correctly (old class becomes base or is aliased)
+- `topic :foo do ... end` without explicit mode continues to be a CG topic (shipped, unchanged)
+- Existing feature DSL (`dead_letter_queue`, `manual_offset_management`, `virtual_partitions`, etc.) continues to work as-is for CG topics (shipped, unchanged)
+- `is_a?(Karafka::Routing::Topic)` checks continue to resolve correctly (shipped: `Routing::Topic` and `Routing::ConsumerGroup` are aliases of the mode-namespaced classes, scheduled for retirement in 3.0)
+- Custom features written in the legacy flat layout (`module Topic`, `Contracts::Topic`/`Contracts::ConsumerGroup`) continue to activate and validate (shipped, integration-covered)
 
 ### Approach
 
@@ -679,12 +721,12 @@ end
 
 ### Phase 0: Structural Preparation (No librdkafka Dependency)
 
-1. **Namespace refactor of CG code** under `ConsumerGroups::` with aliases at old paths. Purely mechanical.
-2. **Hidden-assumptions audit** in code that did not move - find places secretly depending on offsets, partitions, or exclusive assignment.
+1. **Namespace refactor of CG code** under `ConsumerGroups::` with aliases at old paths. Purely mechanical. **DONE** (routing, processing and features namespaces reorganized across 2.6.x).
+2. **Hidden-assumptions audit** in code that did not move - find places secretly depending on offsets, partitions, or exclusive assignment. **PARTIALLY DONE** - the routing-layer audit shipped with karafka#3345 (Pro swarm validation, CLI contracts, parallel segments, admin lag queries and `karafka info` now correctly scope by group type); runtime code audit remains.
 3. **Subscription tracker extraction** - split responsibilities between shared `SubscriptionTracker` and CG-only partition-assignment.
 4. **Per-mode JobsQueue wiring** - introduce the runtime coordinator pattern even though only CG exists for now.
-5. **Topic and Consumer class hierarchies** - three-layer each (Base / ConsumerGroup / ShareGroup), feature registry per mode, expose `group_type` introspection.
-6. **`share_group` routing block** - added as peer to `consumer_group`, raises `NotImplementedError` at startup with roadmap reference.
+5. **Topic and Consumer class hierarchies** - three-layer each, feature registry per mode, expose `group_type` introspection. **Topic/Group half DONE** (karafka#3345: `Topics::Base` + `{ConsumerGroups,ShareGroups}::Topic`, `Groups::Base` + `{ConsumerGroups,ShareGroups}::Group`, per-mode feature activation with mode inferred from the feature namespace, `group_type` introspection). Consumer class hierarchy remains.
+6. **`share_group` routing block** - added as peer to `consumer_group`, raises at startup with roadmap reference. **DONE** (karafka#3345: raises `Karafka::Errors::ShareGroupsNotImplementedError` from the listeners assembly and pre-fork in the swarm supervisor; co-located per-mode contracts; cross-mode group-name uniqueness; `--include/exclude_share_groups` CLI filters; `App.share_groups` and `App.routes.{consumer_groups,share_groups}` views; `karafka info` support).
 
 ### Phase 1: Fake-Broker Foundation
 

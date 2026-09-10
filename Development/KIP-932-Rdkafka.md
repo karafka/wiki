@@ -19,6 +19,10 @@ rdkafka-ruby is an FFI wrapper around librdkafka. **All KIP-932 functionality de
 
 Once librdkafka implements KIP-932, rdkafka-ruby will need to expose the new APIs through FFI bindings.
 
+!!! info "No Known librdkafka Stability Blocker (2026-09)"
+
+    During early `karafka-rdkafka` share-consumer experimentation, interpreter segfaults were observed with both the plain consumer and the share consumer. These were traced to a corrupted/vanished mise-managed Ruby installation in an ephemeral development container - an environment artifact, **not** a librdkafka or karafka-rdkafka defect. No library-level stability blocker for the Preview share consumer is currently known; the remaining work is the version bump off 2.14.2 and the FFI bindings themselves.
+
 ## KIP-932 Overview
 
 ### What Are Share Groups?
