@@ -557,12 +557,14 @@ Thanks to the tight-loop model:
 
 The `share_group` block itself is SHIPPED (declaration only; running raises
 `Karafka::Errors::ShareGroupsNotImplementedError` until the runtime lands). Also shipped:
-group names must be unique across modes (single Kafka group-id namespace), and the
-introspection surface - `#group_type`, `#consumer_group?`/`#share_group?`,
-`Karafka::App.share_groups`, chainable `Karafka::App.routes.consumer_groups` /
-`Karafka::App.routes.share_groups`, `--include_share_groups`/`--exclude_share_groups`
-server/swarm CLI filters (validated against the routing, wildcards supported), and
-share-group sections in `karafka info`.
+group names must be unique across modes (single Kafka group-id namespace), regexp-style topic
+definitions (a `Regexp` or a librdkafka `"^"` pattern string) are rejected by the share topic
+contract with a dedicated error since share consumers do not support pattern subscriptions
+(Pro routing patterns remain consumer-group only), and the introspection surface -
+`#group_type`, `#consumer_group?`/`#share_group?`, `Karafka::App.share_groups`, chainable
+`Karafka::App.routes.consumer_groups` / `Karafka::App.routes.share_groups`,
+`--include_share_groups`/`--exclude_share_groups` server/swarm CLI filters (validated against
+the routing, wildcards supported), and share-group sections in `karafka info`.
 
 The SG-specific per-topic options below (`concurrency`, `poll_interval`,
 `max_messages_per_job`, `jobs_builder`, SG `dead_letter_queue`) are future work:
