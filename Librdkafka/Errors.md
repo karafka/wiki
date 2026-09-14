@@ -222,11 +222,29 @@ These errors are prefixed with a single underscore (`_`) in their error code nam
 <tr><td><code>96</code></td><td><code>:feature_update_failed</code></td><td><code>RD_KAFKA_RESP_ERR_FEATURE_UPDATE_FAILED</code></td><td>Broker: Unable to update finalized features due to server error</td></tr>
 <tr><td><code>97</code></td><td><code>:principal_deserialization_failure</code></td><td><code>RD_KAFKA_RESP_ERR_PRINCIPAL_DESERIALIZATION_FAILURE</code></td><td>Broker: Request principal deserialization failed during forwarding</td></tr>
 <tr><td><code>100</code></td><td><code>:unknown_topic_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_TOPIC_ID</code></td><td>Broker: Unknown topic id</td></tr>
+<tr><td><code>103</code></td><td><code>:inconsistent_topic_id</code></td><td><code>RD_KAFKA_RESP_ERR_INCONSISTENT_TOPIC_ID</code></td><td>Broker: The log's topic ID did not match the topic ID in the request</td></tr>
 <tr><td><code>110</code></td><td><code>:fenced_member_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_FENCED_MEMBER_EPOCH</code></td><td>Broker: The member epoch is fenced by the group coordinator</td></tr>
 <tr><td><code>111</code></td><td><code>:unreleased_instance_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNRELEASED_INSTANCE_ID</code></td><td>Broker: The instance ID is still used by another member in the consumer group</td></tr>
 <tr><td><code>112</code></td><td><code>:unsupported_assignor</code></td><td><code>RD_KAFKA_RESP_ERR_UNSUPPORTED_ASSIGNOR</code></td><td>Broker: The assignor or its version range is not supported by the consumer group</td></tr>
 <tr><td><code>113</code></td><td><code>:stale_member_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_STALE_MEMBER_EPOCH</code></td><td>Broker: The member epoch is stale</td></tr>
+<tr><td><code>114</code></td><td><code>:mismatched_endpoint_type</code></td><td><code>RD_KAFKA_RESP_ERR_MISMATCHED_ENDPOINT_TYPE</code></td><td>Broker: The request was sent to an endpoint of the wrong type</td></tr>
+<tr><td><code>115</code></td><td><code>:unsupported_endpoint_type</code></td><td><code>RD_KAFKA_RESP_ERR_UNSUPPORTED_ENDPOINT_TYPE</code></td><td>Broker: This endpoint type is not supported yet</td></tr>
+<tr><td><code>116</code></td><td><code>:unknown_controller_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_CONTROLLER_ID</code></td><td>Broker: This controller ID is not known</td></tr>
 <tr><td><code>117</code></td><td><code>:unknown_subscription_id</code></td><td><code>RD_KAFKA_RESP_ERR_UNKNOWN_SUBSCRIPTION_ID</code></td><td>Broker: Client sent a push telemetry request with an invalid or outdated subscription ID</td></tr>
 <tr><td><code>118</code></td><td><code>:telemetry_too_large</code></td><td><code>RD_KAFKA_RESP_ERR_TELEMETRY_TOO_LARGE</code></td><td>Broker: Client sent a push telemetry request larger than the maximum size the broker will accept</td></tr>
+<tr><td><code>119</code></td><td><code>:invalid_registration</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_REGISTRATION</code></td><td>Broker: The controller has considered the broker registration to be invalid</td></tr>
+<tr><td><code>120</code></td><td><code>:transaction_abortable</code></td><td><code>RD_KAFKA_RESP_ERR_TRANSACTION_ABORTABLE</code></td><td>Broker: The server encountered an error with the transaction</td></tr>
+<tr><td><code>121</code></td><td><code>:invalid_record_state</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_RECORD_STATE</code></td><td>Broker: The record state is invalid</td></tr>
+<tr><td><code>122</code></td><td><code>:share_session_not_found</code></td><td><code>RD_KAFKA_RESP_ERR_SHARE_SESSION_NOT_FOUND</code></td><td>Broker: The share session was not found</td></tr>
+<tr><td><code>123</code></td><td><code>:invalid_share_session_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_SHARE_SESSION_EPOCH</code></td><td>Broker: The share session epoch is invalid</td></tr>
+<tr><td><code>124</code></td><td><code>:fenced_state_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_FENCED_STATE_EPOCH</code></td><td>Broker: The share-group state epoch did not match</td></tr>
+<tr><td><code>125</code></td><td><code>:invalid_voter_key</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_VOTER_KEY</code></td><td>Broker: The voter key doesn't match the receiving replica's key</td></tr>
+<tr><td><code>126</code></td><td><code>:duplicate_voter</code></td><td><code>RD_KAFKA_RESP_ERR_DUPLICATE_VOTER</code></td><td>Broker: The voter is already part of the set of voters</td></tr>
+<tr><td><code>127</code></td><td><code>:voter_not_found</code></td><td><code>RD_KAFKA_RESP_ERR_VOTER_NOT_FOUND</code></td><td>Broker: The voter is not part of the set of voters</td></tr>
+<tr><td><code>128</code></td><td><code>:invalid_regular_expression</code></td><td><code>RD_KAFKA_RESP_ERR_INVALID_REGULAR_EXPRESSION</code></td><td>Broker: The regular expression is not valid</td></tr>
 <tr><td><code>129</code></td><td><code>:rebootstrap_required</code></td><td><code>RD_KAFKA_RESP_ERR_REBOOTSTRAP_REQUIRED</code></td><td>Broker: Client metadata is stale, client should rebootstrap to obtain new metadata</td></tr>
+<tr><td><code>130</code></td><td><code>:streams_invalid_topology</code></td><td><code>RD_KAFKA_RESP_ERR_STREAMS_INVALID_TOPOLOGY</code></td><td>Broker: The supplied topology is invalid</td></tr>
+<tr><td><code>131</code></td><td><code>:streams_invalid_topology_epoch</code></td><td><code>RD_KAFKA_RESP_ERR_STREAMS_INVALID_TOPOLOGY_EPOCH</code></td><td>Broker: The supplied topology epoch is invalid</td></tr>
+<tr><td><code>132</code></td><td><code>:streams_topology_fenced</code></td><td><code>RD_KAFKA_RESP_ERR_STREAMS_TOPOLOGY_FENCED</code></td><td>Broker: The supplied topology epoch is outdated</td></tr>
+<tr><td><code>133</code></td><td><code>:share_session_limit_reached</code></td><td><code>RD_KAFKA_RESP_ERR_SHARE_SESSION_LIMIT_REACHED</code></td><td>Broker: The limit of share sessions has been reached</td></tr>
 </table>
