@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      5.7.22
+      5.7.28
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
@@ -400,7 +400,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.14.2</td>
+    <td>2.15.0</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
@@ -570,7 +570,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>OpenSSL</td>
-    <td>3.0.16</td>
+    <td>3.5.8</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/openssl/openssl/blob/master/LICENSE.txt">Apache-2.0</a></td>
     <td>The OpenSSL Project</td>
   </tr>
