@@ -253,10 +253,23 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>
-      air datepicker
+      air datepicker (JS)
     </td>
     <td>
       3.6.0
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/t1m0n/air-datepicker/blob/v3/LICENSE.md">MIT</a>
+    </td>
+    <td>Timofey Marochkin</td>
+  </tr>
+
+  <tr>
+    <td>
+      air datepicker (CSS)
+    </td>
+    <td>
+      3.4.0
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/t1m0n/air-datepicker/blob/v3/LICENSE.md">MIT</a>
@@ -298,7 +311,7 @@ This page exists because of our commitment to security, compliance, and transpar
       0.3.0
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/kurkle/color/blob/main/LICENSE.md">MIT</a>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/kurkle/color/blob/main/LICENSE">MIT</a>
     </td>
     <td>Jukka Kurkela</td>
   </tr>
