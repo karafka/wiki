@@ -6,7 +6,7 @@ Treat this as a clarity floor, not a straitjacket. Apply the rules hardest to pr
 
 !!! info "Applies to Hand-Authored Prose Only"
 
-    This style applies to hand-authored prose only. Do **not** edit the auto-generated files - component changelogs, the generated `Librdkafka` references (`Changelog`, `Errors`, `Statistics`, `Configuration`), instrumentation events, and the integration tests catalog - they regenerate from upstream. Everything else, including the hand-authored `Librdkafka/Threads-and-Pipe-Patterns.md`, is in scope.
+    This style applies to hand-authored prose only. Do **not** edit the auto-generated files - component changelogs, the generated `Librdkafka` references (`Changelog`, `Errors`, `Statistics`, `Configuration`), and instrumentation events - they regenerate from upstream. Everything else, including the hand-authored `Librdkafka/Threads-and-Pipe-Patterns.md`, is in scope.
 
 ## Documents Structure and Sources
 
