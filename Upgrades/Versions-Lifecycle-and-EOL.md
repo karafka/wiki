@@ -21,6 +21,8 @@ Karafka and its components versions or release series are categorized below into
 - **EOL** (end-of-life): Branch is no longer supported and receives no fixes. No further patch release will be released.
 - **Preview**: Only previews or release candidates have been released for this branch so far.
 
+The same EOL policy applies to all Karafka ecosystem components. Components that are not listed individually below, such as `karafka-core`, `karafka-rdkafka` and `karafka-testing`, follow it as well.
+
 ### Karafka Framework
 
 | Version | Status      | EOL date   |
@@ -67,9 +69,11 @@ Karafka and its components versions or release series are categorized below into
 
 We officially provide support for all the versions of Ruby that are not EOL. Our EOL dates are set around six months after each version's official Ruby EOL date, so users have extra time to migrate at their own pace.
 
+A Ruby version marked **Maintenance** keeps its support constraint: the minimum required Ruby version does not move while that version is listed. Around a month before its EOL date, the version is gradually rolled out of the CI matrices, so a Maintenance version can already be absent from CI before its EOL date arrives.
+
 !!! note "Older Ruby May Work but Is Unsupported"
 
-    If you are using an older Ruby version, Karafka may still work. The EOL table indicates versions we officially test and support.
+    If you are using an older Ruby version, Karafka may still work. The EOL table lists the versions Karafka officially supports. It is not a statement of which versions are in the CI matrices at any given moment.
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
