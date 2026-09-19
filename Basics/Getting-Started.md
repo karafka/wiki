@@ -13,8 +13,8 @@
 1. Add Karafka to your Gemfile:
 
     ```shell
-    # Make sure to install Karafka 2.5 as Karafka 1.4 is no longer maintained
-    bundle add karafka --version ">= 2.5.0"
+    # Make sure to install Karafka 2.6, as older lines are no longer actively maintained
+    bundle add karafka --version ">= 2.6.0"
     ```
 
 1. To install Karafka for both Rails and standalone applications, run the following command:
@@ -70,7 +70,7 @@
     # Gemfile
     source "https://rubygems.org"
 
-    gem "karafka", ">= 2.5.0"
+    gem "karafka", ">= 2.6.0"
     ```
 
 1. Run: `bundle install`
