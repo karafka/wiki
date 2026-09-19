@@ -40,7 +40,6 @@ Located in the `bin/` directory:
 | `refresh_librdkafka_releases` | Generates librdkafka releases documentation from GitHub |
 | `refresh_librdkafka_statistics` | Generates librdkafka statistics documentation |
 | `refresh_librdkafka_configuration` | Generates librdkafka configuration documentation |
-| `refresh_karafka_integrations_catalog` | Generates integration tests catalog |
 | `refresh_instrumentation_events` | Generates instrumentation events documentation |
 | `align_structure` | Flattens nested documentation structure for MkDocs compatibility |
 | `mklint` | Validates documentation structure, references, and builds with MkDocs |
@@ -73,7 +72,6 @@ Several files in this repository are automatically generated and should not be e
 - `Librdkafka/Errors.md` - librdkafka error reference
 - `Librdkafka/Statistics.md` - librdkafka statistics documentation
 - `Librdkafka/Configuration.md` - librdkafka configuration documentation
-- `Development/Karafka-Integration-Tests-Catalog.md` - Integration tests catalog
 - `Operations/Instrumentation-Events.md` - Instrumentation events
 - `WaterDrop/Instrumentation-Events.md` - WaterDrop instrumentation events
 

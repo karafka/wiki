@@ -5,7 +5,6 @@
     "!Librdkafka/Errors.md",
     "!Librdkafka/Statistics.md",
     "!Librdkafka/Configuration.md",
-    "!Development/Karafka-Integration-Tests-Catalog.md",
     "!Infrastructure/Instrumentation-Events.md",
     "!WaterDrop/Instrumentation-Events.md",
     "!Changelog/*.md",
