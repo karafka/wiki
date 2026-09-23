@@ -61,6 +61,7 @@ The rule of thumb: auto-substitute a word only when it is a plain synonym that k
 - `message` is the house term for a Kafka record. Use it consistently; do not switch to "record" or "event" for the same thing.
 - Expand `Dead Letter Queue (DLQ)` on first use in a page, then use `DLQ`.
 - Keep compound terms in their canonical (mostly closed) form, and hyphenate only when the compound modifies a noun: `backoff`, `multithreading` and `multithreaded`, `real-time`, `long-running`, `use case` (noun), `topic partition` (noun).
+- Refer to methods in prose with the Ruby documentation convention: `#name` for instance methods (`#mark_as_consumed!`, `#publish?`), `.name` or the fully qualified `Class.name` for class and module methods (`Karafka::Admin.read_topic`), and `Class#name` when the owner needs to be explicit. Code blocks keep plain Ruby syntax.
 
 ## Sentences
 

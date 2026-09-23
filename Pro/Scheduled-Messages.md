@@ -344,7 +344,7 @@ To cancel a scheduled message:
 
 1. **Specify the Topic**: Provide the topic where the scheduled message resides. This is essential because Karafka can handle multiple scheduling topics, and specifying the correct topic ensures the message is accurately identified and targeted for cancellation.
 
-1. **Invoke the `cancel` Method**: Use the `cancel` method to create a cancellation request for the scheduled message. This method requires the unique key and the topic to formulate the cancellation command properly.
+1. **Invoke the `.cancel` Method**: Use the `.cancel` method to create a cancellation request for the scheduled message. This method requires the unique key and the topic to formulate the cancellation command properly.
 
     ```ruby
     cancellation_message = Karafka::Pro::ScheduledMessages.cancel(
@@ -387,7 +387,7 @@ To update the scheduled message:
 
 1. **Set the New Dispatch Time**: If the timing needs to be changed, determine the new dispatch time. This time should be specified as a Unix epoch timestamp.
 
-1. **Use the `schedule` Method**: Employ the `schedule` method to wrap your updated message with the scheduling details, using the same key and specifying the new or unchanged dispatch time:
+1. **Use the `.schedule` Method**: Employ the `.schedule` method to wrap your updated message with the scheduling details, using the same key and specifying the new or unchanged dispatch time:
 
     ```ruby
     updated_message = Karafka::Pro::ScheduledMessages.schedule(

@@ -366,7 +366,7 @@ Document the "not supported" list clearly so users do not try to port partition-
 4. **Kafka's own terminology preferred** over domain-framed names (no `JobConsumer`, `QueueConsumer`)
 5. **Symmetric names across the stack** where possible
 6. **Back-compat aliases at flat top level** for user-facing references (shipped: `Routing::ConsumerGroup` / `Routing::Topic` alias the mode-namespaced classes, retired in 3.0)
-7. **`group_type` / `share_group?` / `consumer_group?`** as canonical mode-check API (shipped)
+7. **`#group_type` / `#share_group?` / `#consumer_group?`** as canonical mode-check API (shipped)
 8. **No shared features - duplicate per mode** (shipped): every routing feature lives under exactly one mode namespace (`Features::ConsumerGroups::X` / `Features::ShareGroups::X`) and declares kind-only `Group`/`Topic`/`Contracts` hooks; its mode is inferred from its namespace. Features both modes need (e.g. `deserializers`, `pausing`) are mirrored as per-mode copies rather than shared, keeping the mode distinction absolute.
 9. **Legacy flat custom-feature layout stays supported** (shipped): a feature defined outside a mode namespace with flat `Topic`/`ConsumerGroup` modules and flat `Contracts::Topic`/`Contracts::ConsumerGroup` is consumer-group scoped by definition and keeps activating - this is the public extension point exercised by the `topic_custom_attributes` integration specs. Such features may alternatively nest `ConsumerGroups`/`ShareGroups` sub-modules to target either or both modes.
 
@@ -736,7 +736,7 @@ end
 2. **In-memory fake share-consumer** - pure-Ruby stub of poll/acquire/ack/release/renew/lock-expiry behavior.
 3. **LeaseTracker implementation** - record-indexed state, populated by poll/ack/renew.
 4. **Minimal listener loop** - capacity-gated (via worker pool), happy path, explicit ack only, one topic per consumer.
-5. **Consumer base class extensions** - `mark_accepted`, `mark_released`, `mark_rejected`, `extend_lock!`.
+5. **Consumer base class extensions** - `#mark_accepted`, `#mark_released`, `#mark_rejected`, `#extend_lock!`.
 6. **Shutdown path** - graceful drain, flush acks, close.
 7. **Instrumentation** - SG events alongside CG, separate names where semantics differ.
 
@@ -745,7 +745,7 @@ end
 1. **First preview release** - labeled experimental, opt-in, loud "API will change" labeling.
 2. **Per-record error handling with RELEASE** - foundation for retry features.
 3. **Delayed-release structure** - `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
-4. **Long-running jobs equivalent** - `extend_lock!` exposed, auto-renew heuristics where appropriate.
+4. **Long-running jobs equivalent** - `#extend_lock!` exposed, auto-renew heuristics where appropriate.
 5. **Share-group DLQ** - client-side REJECT + produce implementation.
 6. **Share-group strategies matrix** - analog of CG 5-flag matrix.
 7. **Admin API extensions** - describe SG, list SGs, reset SPSO, alter SG config.

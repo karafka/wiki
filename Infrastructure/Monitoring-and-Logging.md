@@ -897,7 +897,7 @@ Such a custom monitor will intercept specific events while delegating to the par
 
 !!! warning "Avoid Calling `super` Multiple Times in Custom Monitors"
 
-    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it is crucial **not** to invoke `super` more than once within the `instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
+    When overriding Karafka’s instrumentation monitor (`Karafka::Instrumentation::Monitor`), it is crucial **not** to invoke `super` more than once within the `#instrument` method. Calling `super` multiple times will cause the original wrapped block of code to execute repeatedly. This can lead to severe and unintended side-effects, such as duplicated message processing, incorrect consumption behaviors, and unexpected logic execution. Always ensure your custom monitor calls `super` exactly once per event, guarding against unintended duplicate invocations.
 
 ## Implications of Broken Instrumentation listeners/listeners Causing Errors
 

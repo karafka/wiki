@@ -118,7 +118,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 When you dispatch through a variant, the variant in effect is tracked per dispatch and is fiber-local. The `#current_variant` method lets you read the variant that is active for the dispatch currently running on the present fiber. When called outside of a variant-wrapped dispatch, it returns the producer's default variant.
 
-This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a dispatch and need to read the effective per-dispatch settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `default?`:
+This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a dispatch and need to read the effective per-dispatch settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `#default?`:
 
 ```ruby
 high_importance = producer.with(topic_config: { acks: 'all' })
