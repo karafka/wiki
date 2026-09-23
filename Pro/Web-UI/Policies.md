@@ -20,7 +20,7 @@ In essence, Karafka offers both a broad-stroke and a fine-tuned approach to data
 
 The Requests Policies feature in Karafka's Web UI provides a mechanism for controlling access to specific pages and functionalities within the Web UI on a per-request basis. Configured via `ui.policies.requests`, this policy engine allows the definition and enforcement of rules that determine which users can access particular URLs, ensuring a foundational layer of security and access management.
 
-To use the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
+To use the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `#allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
 
 Below is an example of how to define and configure a custom Requests Policy:
 
