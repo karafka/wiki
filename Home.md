@@ -242,6 +242,7 @@ It is recommended to do one major upgrade at a time.
     - [2.0](Upgrades-Karafka-2.0)
 
 - [Web UI](Upgrades-Web-UI)
+    - [1.1](Upgrades-Web-UI-1.1)
     - [1.0](Upgrades-Web-UI-1.0)
     - [0.11](Upgrades-Web-UI-0.11)
     - [0.10](Upgrades-Web-UI-0.10)

@@ -20,7 +20,7 @@ In essence, Karafka offers both a broad-stroke and a fine-tuned approach to data
 
 The Requests Policies feature in Karafka's Web UI provides a mechanism for controlling access to specific pages and functionalities within the Web UI on a per-request basis. Configured via `ui.policies.requests`, this policy engine allows the definition and enforcement of rules that determine which users can access particular URLs, ensuring a foundational layer of security and access management.
 
-To use the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
+To use the Requests Policies, you must create a custom policy class that defines the logic for allowing or denying access to specific requests. This custom policy must implement the `#allow?` method, which evaluates the request details and returns a boolean indicating whether the request should be permitted.
 
 Below is an example of how to define and configure a custom Requests Policy:
 
@@ -51,7 +51,7 @@ Two steps are needed to use your custom messages policies:
 1. A custom messages policy needs to be created
 2. The defined messages policy must replace the default one via the reconfiguration.
 
-Each messages policy requires six methods to be present:
+Each messages policy requires seven methods to be present:
 
 1. `#key?` - should the message key be presented
 1. `#headers?` - should the headers be visible
@@ -59,8 +59,11 @@ Each messages policy requires six methods to be present:
 1. `#download?` - should it be allowed to download this message raw payload
 1. `#export?` - should it be allowed to download the deserialized and sanitized payload as JSON
 1. `#republish?` - should it be allowed to republish the message back to Kafka
+1. `#publish?` - should it be allowed to produce a brand new message to a given topic
 
-Each method receives a message (of type `::Karafka::Messages::Message`) as a parameter and returns a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible.
+The first six methods receive a message (of type `::Karafka::Messages::Message`) as a parameter and return a boolean indicating whether the corresponding part of the message (key, headers, or payload) should be visible or the action allowed.
+
+`#publish?` is the exception: it guards the Explorer "Publish message" capability, which produces a brand new message rather than acting on an existing one. It receives the target topic name as a `String`, so there is no message to pass, and it allows publishing by default.
 
 Below, you can see an example of a custom messages policy that hides all the information:
 
@@ -87,6 +90,10 @@ class MyCustomMessagesPolicy
   end
 
   def republish?(message)
+    false
+  end
+
+  def publish?(_topic)
     false
   end
 end
