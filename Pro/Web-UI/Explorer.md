@@ -54,6 +54,24 @@ Every message is more than just its content. With the Karafka Data Explorer, you
 
 Occasionally, there might be a need to republish a message for various reasons. This feature empowers users to republish any message to a topic and partition of their choice, including a different topic or partition than the original one. It retains the original payload and all the headers, ensuring data consistency and integrity during republishing.
 
+### Message Publishing
+
+The Explorer can produce a brand new message to any topic, which is useful for testing consumers, replaying a hand-crafted edge case, or deleting a key from a compacted topic. Open a topic in the Explorer and use the Publish message action.
+
+The publish form lets you set:
+
+- the target partition, or leave it empty to let the partitioner decide
+- an optional message key
+- headers, one `key: value` pair per line
+- the payload, typed into the form or uploaded as a file (an uploaded file takes precedence over the typed payload)
+- a tombstone instead of a payload, producing a message with a `nil` payload
+
+When the topic is in your routing, the payload is checked against the topic's deserializer before it is produced, so a message your consumers cannot read is rejected with a form error instead of landing in Kafka. You can skip this check for a single message. Topics outside the routing and tombstones are not checked.
+
+After a successful publish, the Web UI returns to the topic view and shows the partition and offset assigned to the new message.
+
+Publishing is controlled by the `#publish?` method of the messages policy and is enabled by default. See [Policies](Pro-Web-UI-Policies) to restrict or disable it.
+
 ### Surroundings Lookup
 
 "Surroundings Lookup" enhances Karafka Web UI's debugging capabilities by allowing users to navigate directly to a specific message and instantly view its preceding and subsequent messages. This is essential for understanding the context, especially during batch processing.
