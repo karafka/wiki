@@ -287,8 +287,6 @@ To adjust a partition offset:
 - **Offset Boundaries**: Offset adjustments must be within the partition's low and high watermarks
 - **Consumer Group Coordination**: Changes to one consumer may trigger rebalancing across the consumer group
 - **Command Persistence**: Commands are sent through Kafka and will persist even through consumer restarts
-- **Command Delivery**: Commands are produced with `acks: 1`, so the broker confirms receipt of each command instead of it being silently dropped
-- **Input Validation**: Seek offsets and pause durations are validated by the Web UI server, so an out-of-range value re-renders the form with an error instead of reaching the running consumer
 - **Process vs. Partition**: These features control individual partitions, not entire consumer processes
 
 ## Connection Management
