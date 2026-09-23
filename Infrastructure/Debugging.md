@@ -58,9 +58,9 @@ If offsets are not committed at the correct time or in the proper way, Kafka may
 
 #### Misusing Manual Offset Management
 
-Karafka allows turning off auto-offset commits (`manual_offset_management(true)` per topic) so you can call `mark_as_consumed` or `mark_as_consumed!` in your code at precise points. This is powerful but dangerous if forgotten.
+Karafka allows turning off auto-offset commits (`manual_offset_management(true)` per topic) so you can call `#mark_as_consumed` or `#mark_as_consumed!` in your code at precise points. This is powerful but dangerous if forgotten.
 
-**Example**: You disable auto commits to implement a custom flow but forget to call `mark_as_consumed` after processing. The consumer will never commit those messages. All those messages will be delivered again on the next restart, causing duplicates. Always mark messages as consumed (or re-enable auto commits) when using manual mode. If you use `mark_as_consumed` (non-bang), remember it is asynchronous (just flags for later commit); using `mark_as_consumed!` commits immediately but at a performance cost.
+**Example**: You disable auto commits to implement a custom flow but forget to call `mark_as_consumed` after processing. The consumer will never commit those messages. All those messages will be delivered again on the next restart, causing duplicates. Always mark messages as consumed (or re-enable auto commits) when using manual mode. If you use `mark_as_consumed` (non-bang), remember it is asynchronous (just flags for later commit); using `#mark_as_consumed!` commits immediately but at a performance cost.
 
 ```ruby
 # This example illustrates incorrect setup
@@ -549,7 +549,7 @@ Review logs and monitor hooks to spot retry loops or failures:
 
 - Check for `error.occurred` events with a `type` of `consumer.consume.error` - these will show unhandled exceptions during consume.
 - Look for repeated processing of the same offset - this is often a sign of crash or retry behavior.
-- The presence of `retrying?` in logs or monitor events
+- The presence of `#retrying?` in logs or monitor events
 
 ```ruby
 def consume

@@ -21,7 +21,7 @@ Before using the Replication API, ensure you have:
 
 ## Planning a Replication Factor Increase
 
-The `plan_topic_replication` method generates a detailed plan for increasing a topic's replication factor. The plan includes everything needed to execute the change using Kafka's native tools.
+The `.plan_topic_replication` method generates a detailed plan for increasing a topic's replication factor. The plan includes everything needed to execute the change using Kafka's native tools.
 
 ### Basic Usage with Automatic Broker Distribution
 

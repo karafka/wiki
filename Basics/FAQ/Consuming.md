@@ -64,7 +64,7 @@ Because Karafka does not have knowledge about the whole topology of a given Kafk
 
 ## Why, when using `cooperative-sticky` rebalance strategy, all topics get revoked on rebalance?
 
-This behavior can occur if you are using blocking `mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
+This behavior can occur if you are using blocking `#mark_as_consumed!` method and the offsets commit happens during rebalance. When using `cooperative-sticky` we recommend using `mark_as_consumed` instead.
 
 !!! tip "Consider KIP-848 for Improved Rebalancing"
 
@@ -78,7 +78,7 @@ Upon rebalance, all uncommitted offsets will be committed before a given partiti
 
 ## Why, in the Long-Running Jobs case, `#revoked` is executed even if `#consume` did not run because of revocation?
 
-The `#revoked` will be executed even though the `#consume` did not run upon revocation because `#revoked` can be used to teardown resources initialized prop to `#consume`. For example, for things initialized in a custom `initialize` method.
+The `#revoked` will be executed even though the `#consume` did not run upon revocation because `#revoked` can be used to teardown resources initialized prop to `#consume`. For example, for things initialized in a custom `#initialize` method.
 
 ## Do I need to use `#revoked?` when not using Long-Running jobs?
 
