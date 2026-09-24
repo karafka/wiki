@@ -14,7 +14,11 @@ This document captures the design decisions, architectural choices, naming conve
 
 !!! success "Status Update (2026-09): Routing Layer Merged"
 
-    The share-group **routing layer** has been merged ([karafka#3345](https://github.com/karafka/karafka/pull/3345), targeting Karafka 2.6.2). Shipped: the `share_group` routing block, mode-first `Routing::{ConsumerGroups,ShareGroups}` namespaces with co-located contracts, `#group_type`/`#consumer_group?`/`#share_group?` introspection, `App.share_groups` plus chainable `App.routes.consumer_groups`/`App.routes.share_groups` views, `--include_share_groups`/`--exclude_share_groups` CLI filters (validated, also in swarm), cross-mode group-name uniqueness validation, share-group listing in `karafka info`, and the startup guard (`Karafka::Errors::ShareGroupsNotImplementedError`, raised at listeners assembly and pre-fork in the swarm supervisor). Namespace details in this document have been updated to match what shipped; the runtime (polling loop, `ShareGroupConsumer`, ack API, processing strategies) remains as planned below.
+    The share-group **routing layer** has been merged ([karafka#3345](https://github.com/karafka/karafka/pull/3345), targeting Karafka 2.6.2). Shipped: the `share_group` routing block, mode-first `Routing::{ConsumerGroups,ShareGroups}` namespaces with co-located contracts, `#group_type`/`#consumer_group?`/`#share_group?` introspection, `App.share_groups` plus chainable `App.routes.consumer_groups`/`App.routes.share_groups` views, `--include_share_groups`/`--exclude_share_groups` CLI filters (validated, also in swarm), cross-mode group-name uniqueness validation, share-group listing in `karafka info`, and the startup guard (`Karafka::Errors::ShareGroupsNotImplementedError`, raised at listeners assembly and pre-fork in the swarm supervisor). Namespace details in this document have been updated to match what shipped; the runtime (polling loop, share consumer runtime, ack API, processing strategies) remains as planned below.
+
+!!! success "Status Update (2026-09): Consumer Class Hierarchy Merged"
+
+    The mode-aware **consumer class hierarchy** has been merged ([karafka#3358](https://github.com/karafka/karafka/pull/3358), targeting Karafka 2.6.2), completing the second half of Phase 0 step 5. Shipped: `Karafka::Consumers::Base` (mode-agnostic machinery) with `Consumers::ConsumerGroup` (all current offset/pause/seek behavior) and `Consumers::ShareGroup` (share consumer shell). `Karafka::BaseConsumer` is now a backwards-compatible alias of `Consumers::ConsumerGroup`, and `Karafka::ShareConsumer` is the flat, user-facing base for share-group consumers (aliasing `Consumers::ShareGroup`). The share consumer exposes the ack API (`#mark_accepted`, `#mark_released`, `#mark_rejected`, `#extend_lock!`) as stubs that currently raise `NotImplementedError` until the runtime lands. The routing contracts now also validate consumer mode: a consumer-group topic must use a consumer-group consumer (inheriting `Karafka::BaseConsumer`) and a share-group topic must use a share consumer (inheriting `Karafka::ShareConsumer`), so a consumer can never be wired onto the wrong mode. **No flat `ShareGroupConsumer`/`ConsumerGroupConsumer` aliases were introduced** - the canonical classes are namespace-first, mirroring the routing layer, with `ShareConsumer` the only flat share primitive. Naming and namespace details in this document have been updated to match what shipped.
 
 ## Fundamental Differences Between Consumer Groups and Share Groups
 
@@ -362,7 +366,7 @@ Document the "not supported" list clearly so users do not try to port partition-
 
 1. **Namespaces are always plural** (with rare pragmatic exceptions for readability)
 2. **Classes/modules inside are named for what they are** (singular)
-3. **Mode-first namespaces with kind-only class names** (shipped): the mode lives in the namespace and the class says what it is - `Routing::ConsumerGroups::Group`, `Routing::ShareGroups::Topic` - rather than kind-first with full mode names (`Groups::ConsumerGroup`). Full mode names remain in user-facing consumer class names (`ShareGroupConsumer`).
+3. **Mode-first namespaces with kind-only class names** (shipped): the mode lives in the namespace and the class says what it is - `Routing::ConsumerGroups::Group`, `Routing::ShareGroups::Topic`, `Consumers::ConsumerGroup`, `Consumers::ShareGroup` - rather than kind-first with full mode names (`Groups::ConsumerGroup`). The consumer hierarchy follows the same rule; the only flat, user-facing names are `Karafka::BaseConsumer` (legacy CG alias) and `Karafka::ShareConsumer` (SG base) - there is no flat `ShareGroupConsumer`.
 4. **Kafka's own terminology preferred** over domain-framed names (no `JobConsumer`, `QueueConsumer`)
 5. **Symmetric names across the stack** where possible
 6. **Back-compat aliases at flat top level** for user-facing references (shipped: `Routing::ConsumerGroup` / `Routing::Topic` alias the mode-namespaced classes, retired in 3.0)
@@ -378,14 +382,13 @@ Kafka's own naming is asymmetric: `KafkaConsumer` vs `KafkaShareConsumer`, `cons
 
 ```text
 Karafka::
-  BaseConsumer                                   # historical alias (CG-capable)
-  ConsumerGroupConsumer                          # canonical CG consumer (alias of BaseConsumer)
-  ShareGroupConsumer                             # canonical SG consumer
+  BaseConsumer                                   # SHIPPED: legacy flat alias of Consumers::ConsumerGroup (retire in 3.0)
+  ShareConsumer                                  # SHIPPED: flat user-facing SG base, alias of Consumers::ShareGroup
 
-  Consumers::                                    # plural namespace
-    Base
-    ConsumerGroup                                # aliased to ConsumerGroupConsumer
-    ShareGroup                                   # aliased to ShareGroupConsumer
+  Consumers::                                    # plural namespace (SHIPPED, karafka#3358)
+    Base                                         # mode-agnostic machinery
+    ConsumerGroup                                # canonical CG consumer (BaseConsumer aliases this)
+    ShareGroup                                   # canonical SG consumer (ShareConsumer aliases this)
 
   Messages::
     Message                                      # unchanged
@@ -519,7 +522,7 @@ As shipped in the routing layer (some differ from the original draft of this doc
 
 - **`BatchMetadata`** - `BatchMetadata::ConsumerGroup` (with partition/offsets) and `BatchMetadata::ShareGroup` (without), sharing `LagMetrics` module
 - **Topic class** - SHIPPED as `Topics::Base` + `ConsumerGroups::Topic` / `ShareGroups::Topic` (mode-first; the group class split shipped identically as `Groups::Base` + `{ConsumerGroups,ShareGroups}::Group`)
-- **Consumer base class** - three-layer hierarchy with historical `BaseConsumer` preserved (not yet done)
+- **Consumer base class** - SHIPPED as `Consumers::Base` + `Consumers::ConsumerGroup` / `Consumers::ShareGroup` (mode-first, karafka#3358); `BaseConsumer` preserved as the legacy alias of `Consumers::ConsumerGroup`, and `ShareConsumer` added as the flat user-facing SG base. Contracts validate that a topic's consumer matches its group mode.
 - **Listener** - mode-specific subclasses under `Connection::Listeners::`
 
 ### Components Needing Refactor (Not Full Split)
@@ -614,9 +617,18 @@ end
 
 ### Consumer Classes
 
+Application consumers inherit through an application-level base per mode (the same convention as today's `ApplicationConsumer`), not directly from the framework class:
+
 ```ruby
+# Application-level bases (generated / recommended), one per mode
+class ApplicationConsumer < Karafka::BaseConsumer
+end
+
+class ApplicationShareConsumer < Karafka::ShareConsumer
+end
+
 # Consumer group consumer (unchanged from today)
-class OrdersConsumer < Karafka::BaseConsumer
+class OrdersConsumer < ApplicationConsumer
   def consume
     messages.each do |m|
       process(m)
@@ -626,7 +638,7 @@ class OrdersConsumer < Karafka::BaseConsumer
 end
 
 # Share group consumer (new)
-class WebhookConsumer < Karafka::ShareGroupConsumer
+class WebhookConsumer < ApplicationShareConsumer
   def consume
     messages.each do |m|
       begin
@@ -644,11 +656,13 @@ end
 
 ### Ack API Methods (SG Consumers)
 
+Defined on `Consumers::ShareGroup` (and therefore `Karafka::ShareConsumer`). As of karafka#3358 these are stubs that raise `NotImplementedError` - the surface exists so the shape is settled, but the behavior lands with the runtime (Phase 1+).
+
 - `mark_accepted(message)` - ACCEPT
 - `mark_released(message)` - RELEASE (broker-decided redelivery timing)
 - `mark_released(message, delay: N)` - RELEASE after N milliseconds (framework handles RENEW)
 - `mark_rejected(message)` - REJECT (poison, archives immediately)
-- `extend_lock!(message)` - RENEW (for long-running processing)
+- `extend_lock!(message)` - RENEW (for long-running processing); the lock-extension behavior is expected to live in Pro
 
 ### Implicit Ack Mode
 
@@ -665,7 +679,7 @@ class ApplicationConsumer < Karafka::BaseConsumer
   # shared CG helpers
 end
 
-class ApplicationShareConsumer < Karafka::ShareGroupConsumer
+class ApplicationShareConsumer < Karafka::ShareConsumer
   # shared SG helpers
 end
 ```
@@ -683,7 +697,7 @@ class ApplicationConsumer < Karafka::BaseConsumer
   include ApplicationConsumerShared
 end
 
-class ApplicationShareConsumer < Karafka::ShareGroupConsumer
+class ApplicationShareConsumer < Karafka::ShareConsumer
   include ApplicationConsumerShared
 end
 ```
@@ -707,7 +721,7 @@ end
 ### Approach
 
 - **Additive changes only in minor releases.** Breaking changes batched for a major version if needed.
-- **Alias preservation.** `Karafka::BaseConsumer` stays as the CG-capable class; `ConsumerGroupConsumer` is added as a canonical alias.
+- **Alias preservation.** `Karafka::BaseConsumer` stays as the CG-capable class, now a legacy alias of `Consumers::ConsumerGroup` (shipped, karafka#3358). No flat `ConsumerGroupConsumer`/`ShareGroupConsumer` aliases were added; the canonical classes are namespace-first (`Consumers::*`), with `Karafka::ShareConsumer` exposed flat as the user-facing SG base.
 - **Namespace moves with aliases.** When CG code moves under `ConsumerGroups::`, old constant paths alias to new ones for at least one release cycle.
 - **Deprecation warnings before removal.** Any removed method gets a deprecation shim for a release or two.
 
@@ -727,7 +741,7 @@ end
 2. **Hidden-assumptions audit** in code that did not move - find places secretly depending on offsets, partitions, or exclusive assignment. **PARTIALLY DONE** - the routing-layer audit shipped with karafka#3345 (Pro swarm validation, CLI contracts, parallel segments, admin lag queries and `karafka info` now correctly scope by group type); runtime code audit remains.
 3. **Subscription tracker extraction** - split responsibilities between shared `SubscriptionTracker` and CG-only partition-assignment.
 4. **Per-mode JobsQueue wiring** - introduce the runtime coordinator pattern even though only CG exists for now.
-5. **Topic and Consumer class hierarchies** - three-layer each, feature registry per mode, expose `group_type` introspection. **Topic/Group half DONE** (karafka#3345: `Topics::Base` + `{ConsumerGroups,ShareGroups}::Topic`, `Groups::Base` + `{ConsumerGroups,ShareGroups}::Group`, per-mode feature activation with mode inferred from the feature namespace, `group_type` introspection). Consumer class hierarchy remains.
+5. **Topic and Consumer class hierarchies** - three-layer each, feature registry per mode, expose `group_type` introspection. **DONE.** Topic/Group half via karafka#3345 (`Topics::Base` + `{ConsumerGroups,ShareGroups}::Topic`, `Groups::Base` + `{ConsumerGroups,ShareGroups}::Group`, per-mode feature activation with mode inferred from the feature namespace, `group_type` introspection). Consumer half via karafka#3358 (`Consumers::Base` + `Consumers::ConsumerGroup` / `Consumers::ShareGroup`; `BaseConsumer` legacy alias; `ShareConsumer` flat SG base; ack-API stubs raising `NotImplementedError`; contracts validating that each topic's consumer matches its group mode).
 6. **`share_group` routing block** - added as peer to `consumer_group`, raises at startup with roadmap reference. **DONE** (karafka#3345: raises `Karafka::Errors::ShareGroupsNotImplementedError` from the listeners assembly and pre-fork in the swarm supervisor; co-located per-mode contracts; cross-mode group-name uniqueness; `--include/exclude_share_groups` CLI filters; `App.share_groups` and `App.routes.{consumer_groups,share_groups}` views; `karafka info` support).
 
 ### Phase 1: Fake-Broker Foundation
