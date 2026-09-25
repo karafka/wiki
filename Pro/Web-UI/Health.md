@@ -24,11 +24,11 @@ The thresholds are configurable under `config.ui.health.lags`:
     <tr>
       <td><code>skew_threshold</code></td>
       <td><code>3</code></td>
-      <td>How many times bigger than the average a single partition lag has to be for the topic to be flagged as skewed. Must be greater than <code>1</code>.</td>
+      <td>How many times bigger than the average of the topic's other partitions a single partition lag has to be for the topic to be flagged as skewed. Must be greater than <code>1</code>.</td>
     </tr>
     <tr>
       <td><code>skew_minimum</code></td>
-      <td><code>100</code></td>
+      <td><code>1_000</code></td>
       <td>Biggest partition lag below which a topic is never flagged as skewed, so small imbalances do not create noise.</td>
     </tr>
     <tr>
