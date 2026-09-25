@@ -32,6 +32,8 @@ producer.produce_async(topic: 'users', payload: user)
 
     It is up to the end user to decide whether to modify the provided message or deep copy it and update the newly created one.
 
+    A middleware chain run is not atomic on failure. If an in-place step is followed by a step that raises during a buffered `#flush`, the message is re-buffered partially transformed and the next flush applies the in-place step again. Make such steps idempotent or have them return a copy.
+
 ## Round-Robin Distribution Example Middleware
 
 Below, you can find an example of a middleware that implements a round-robin message distribution across available partitions of the selected topic:
