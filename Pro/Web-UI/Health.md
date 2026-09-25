@@ -2,6 +2,55 @@ The health views of the Web UI display the current status of all the running Kar
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png)
 
+## Per-Topic Aggregation
+
+The health views show one summary row per topic instead of one row per partition, so they stay readable on topics with many partitions. Each topic row shows the total lag, the maximum and average partition lag, a skew flag, LSO risk and the number of paused partitions. Open a topic to drill down into its per-partition overview, lags, offsets, changes and cluster lags.
+
+A topic is flagged as skewed when its lag is concentrated on one or a few partitions instead of being spread evenly. This usually points to a hot or stuck partition, which needs a different response than a topic that lags evenly, even when the totals are the same.
+
+Rows are highlighted by lag: a warning at half of the high-lag threshold, and an error at the threshold itself. For a topic row the average partition lag is compared against the thresholds; for a partition row, its own lag.
+
+The thresholds are configurable under `config.ui.health.lags`:
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>skew_threshold</code></td>
+      <td><code>3</code></td>
+      <td>How many times bigger than the average of the topic's other partitions a single partition lag has to be for the topic to be flagged as skewed. Must be greater than <code>1</code>.</td>
+    </tr>
+    <tr>
+      <td><code>skew_minimum</code></td>
+      <td><code>1_000</code></td>
+      <td>Biggest partition lag below which a topic is never flagged as skewed, so small imbalances do not create noise.</td>
+    </tr>
+    <tr>
+      <td><code>high_threshold</code></td>
+      <td><code>10_000</code></td>
+      <td>Lag at which a row is highlighted as an error.</td>
+    </tr>
+    <tr>
+      <td><code>warning_ratio</code></td>
+      <td><code>0.5</code></td>
+      <td>Fraction of <code>high_threshold</code> at which a row is highlighted as a warning.</td>
+    </tr>
+  </tbody>
+</table>
+
+```ruby
+Karafka::Web.setup do |config|
+  config.ui.health.lags.high_threshold = 50_000
+  config.ui.health.lags.skew_threshold = 5
+end
+```
+
 ## Static Membership Identification
 
 When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in both the subscription views and the Health Overview, making it easier to identify specific consumer instances.
