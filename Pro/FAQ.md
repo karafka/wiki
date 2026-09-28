@@ -219,7 +219,7 @@ Please double-check your credentials and correct them.
 
 ## Where can I find my license credentials page URL?
 
-You can find it in the email you received from us when you requested the Pro license via our gems UI.
+You can find it in the license setup email you received when you requested the Pro license via our gems UI. This email comes from `no-reply@gems.karafka.io`.
 
 To access your license credentials page, you will need to provide your `karafka-license` gem version. This is the version string from your `Gemfile` (e.g., `1.xxxxxxxxxxx`). You can find it next to the `karafka-license` gem definition in your `Gemfile`.
 
