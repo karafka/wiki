@@ -58,7 +58,7 @@ The same EOL policy applies to all Karafka ecosystem components. Components that
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 2.10    | Active      | N/A        |
-| 2.9     | Maintenance | 2026-10-01 |
+| 2.9     | EOL         | 2026-10-01 |
 | 2.8     | EOL         | 2026-04-01 |
 | 2.7     | EOL         | 2025-02-01 |
 | 2.6     | EOL         | 2024-09-30 |
@@ -80,7 +80,7 @@ A Ruby version marked **Maintenance** keeps its support constraint: the minimum 
 | 4.0     | Active      | 2029-09-30 |
 | 3.4     | Active      | 2028-09-30 |
 | 3.3     | Active      | 2027-09-30 |
-| 3.2     | Maintenance | 2026-09-30 |
+| 3.2     | EOL         | 2026-09-30 |
 | 3.1     | EOL         | 2025-09-30 |
 | 3.0     | EOL         | 2024-09-30 |
 | 2.7     | EOL         | 2024-05-30 |
@@ -94,7 +94,7 @@ Karafka will support two major versions of Ruby on Rails. Any previous versions 
 |---------|-------------|------------|
 | 8.1     | Active      | N/A        |
 | 8.0     | Active      | 2026-12-30 |
-| 7.2     | Maintenance | 2026-09-30 |
+| 7.2     | EOL         | 2026-09-30 |
 | 7.1     | EOL         | 2025-10-31 |
 | 7.0     | EOL         | 2025-05-31 |
 | 6.1     | EOL         | 2024-12-31 |
