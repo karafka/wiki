@@ -77,8 +77,9 @@ Release asset checksums:
  * v2.15.1.tar.gz SHA256 `23c8575c7d1ced07246cb9cf200c11325b72201fd4134a02414ca869fbdd8ed3`
 ## 2.15.0 (2026-06-30)
 
-### [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka) Queues for Kafka – Now in **Preview**
+### [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka) Queues for Kafka
 
+- Queues for Kafka support is in preview.
 - Added a preview implementation of the **share consumer** (Queues for Kafka,
   [KIP-932](https://cwiki.apache.org/confluence/display/KAFKA/KIP-932%3A+Queues+for+Kafka)).
   Members of a share group cooperatively consume from the same partitions with
