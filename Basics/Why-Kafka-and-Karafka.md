@@ -194,7 +194,7 @@ Together, these three components give you the full Kafka integration surface wit
 
 ## The Ecosystem Advantage
 
-Karafka is used by thousands of companies in production - from early-stage startups processing their first event streams to enterprises moving billions of messages a day. That scale of adoption is not just a vanity metric. It is a direct, practical benefit to every user.
+Karafka is used by thousands of organizations in production - from early-stage startups processing their first event streams to enterprises moving billions of messages a day. That scale of adoption is not just a vanity metric. It is a direct, practical benefit to every user.
 
 Every bug that surfaces in one environment gets fixed for all of them. Every edge case that bites a company running Kafka on degraded infrastructure becomes a hardened code path. Every disaster - lag spikes, rebalance storms, broker failures, poison-pill messages - that has been encountered and survived by someone in the community has shaped how Karafka handles the same scenario for you. You inherit years of battle-tested recovery protocols without having to experience the disasters yourself.
 
