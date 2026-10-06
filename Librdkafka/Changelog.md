@@ -6,6 +6,93 @@
 !!! note ""
     This page is a copy of the [releases](https://github.com/confluentinc/librdkafka/releases) of `librdkafka`.
 
+## 2.16.0 (2026-10-06)
+
+librdkafka v2.16.0 is a feature release:
+
+* Fix re-bootstrap cases that never reached a bootstrap broker while the learned brokers were still connected, or kept an already connected bootstrap broker without re-resolving its address (#5560).
+* The `ALL_BROKERS_DOWN` error is now reported only once every `reconnect.backoff.max.ms` or when the outage restarts (#5600).
+* Avoid duplicate `FETCH_STOP` for the same toppar during assignment removal (#5574).
+* Fix `rd_kafka_clusterid()`, `rd_kafka_query_watermark_offsets()` and `rd_kafka_offsets_for_times()` waiting until their timeout and accessing the freed client instance when it's destroyed during the call (#5616).
+* Upgraded bundled OpenSSL to 3.5.8 and libcurl to 8.22.0 (#5598).
+
+
+### Security considerations
+
+Bundled dependencies were further upgraded, beyond what v2.15.1 already
+covers, for source/autoconf builds:
+OpenSSL 3.5.7 → 3.5.8 (LTS); libcurl 8.21.0 → 8.22.0.
+
+ * OpenSSL upgrade (3.5.7 → 3.5.8) addresses CVE-2026-75803.
+
+ * libcurl upgrade (8.21.0 → 8.22.0) addresses CVE-2026-13608,
+   CVE-2026-18924, CVE-2026-19931, CVE-2026-80229, CVE-2026-80230,
+   CVE-2026-80231, CVE-2026-80255, CVE-2026-82208, and CVE-2026-82209.
+
+
+### Upgrade considerations
+
+* Admin requests in flight on a decommissioned broker now fail with
+`RD_KAFKA_RESP_ERR__TRANSPORT` instead of `RD_KAFKA_RESP_ERR__DESTROY_BROKER`, so
+callers retry them instead of treating them as a hard failure.
+* The `ALL_BROKERS_DOWN` error is now reported only once every `reconnect.backoff.max.ms`. In case there are multiple re-bootstrap attempts, caused
+  by no available broker connection, this reduces the amount of events while still signalling that the outage is ongoing.
+
+
+### Fixes
+
+#### General fixes
+
+* Issues: #5600.
+  Fix re-bootstrap cases that never reached a bootstrap broker while the learned brokers were still connected, or kept an already connected bootstrap broker.
+  The client kept asking the very brokers that reported its metadata as stale. Learned and bootstrap brokers are now decommissioned when a re-bootstrap sequence starts, so the bootstrap servers are re-created and connected again, re-resolving their addresses, and only they are used until a Metadata response rebuilds the broker list. The transaction coordinator is reset too when its broker is decommissioned, so the coordinator connection is re-established and its address re-resolved, as already done for the group coordinator. Queued messages are handed back to their partitions and re-sent once new leaders are known. Admin requests in flight on a decommissioned broker now fail with `RD_KAFKA_RESP_ERR__TRANSPORT` (previously
+  `RD_KAFKA_RESP_ERR__DESTROY_BROKER`) and should be retried.
+  Happening since 2.11.0 (#5600).
+* Issues: #5546.
+  `ALL_BROKERS_DOWN` was reported on every re-bootstrap cycle during a sustained
+  outage. It is now reported once per outage, re-armed when a broker connection
+  comes up, and at most once every `reconnect.backoff.max.ms` while it lasts.
+  Happening since 2.11.1 (#5600).
+* `rd_kafka_clusterid()`, `rd_kafka_query_watermark_offsets()` and
+  `rd_kafka_offsets_for_times()` now return immediately, with `NULL` or
+  `RD_KAFKA_RESP_ERR__DESTROY`, when the client is destroyed during the call.
+  Previously they kept waiting for metadata until their timeout and then
+  accessed the client instance after it was freed. `rd_kafka_destroy()` now
+  waits for these calls to return before freeing it.
+  Happening since 0.11.3 (#5616).
+
+#### Consumer fixes
+
+* Issues: #5585.
+  A consumer with `enable.auto.commit=true` no longer sends an `OffsetCommit`
+  for an assignment it has already lost. On a client-side session timeout, or
+  when `max.poll.interval.ms` is exceeded, the member id is reset, the
+  assignment is marked lost, and its partitions are revoked. The revoke-time
+  auto-commit of those partitions was still being sent, because the
+  assignment-lost flag was cleared inside `rd_kafka_cgrp_unassign()` and
+  `rd_kafka_cgrp_incremental_unassign()` before the removed partitions were
+  served, defeating the guard that skips commits for a lost assignment. The
+  commit went out with an empty member id and the previous generation, which a
+  broker rejects with `UNKNOWN_MEMBER_ID`, or, for a static member
+  (`group.instance.id` set), with the fatal `FENCED_INSTANCE_ID` that stops the
+  consumer. The flag is now kept set until the removal has been served and the
+  unassign completes (`rd_kafka_cgrp_unassign_done()`,
+  `rd_kafka_cgrp_incr_unassign_done()` and, for the KIP-848 consumer protocol,
+  `rd_kafka_cgrp_consumer_incr_unassign_done()`), so the offsets of a lost
+  assignment are never committed while the flag is still cleared as soon as
+  the revoke is done, keeping commits, `close()` and `unsubscribe()` working
+  for a member that retains other partitions, and `rd_kafka_assignment_lost()`
+  reporting false again by the time the next assignment is delivered.
+  Happening since 1.6.0 (#5585).
+* Issues: #5573. 
+  Prevents duplicate `FETCH_STOP` requests during assignment removal
+  by introducing an assignment-owned `rktp_wait_stop` flag (#5574).
+
+### Checksums
+Release asset checksums:
+ * v2.16.0.zip SHA256 `df41723517183306a004502d2ecbc05888e0f26d1dd75d5cb9f0cb750de9ce58`
+ * v2.16.0.tar.gz SHA256 `e6b61de61d3282879a88e4ee3d9f634a8b05bf78a9198dfc25c4820c0c9ed231`
+
 ## 2.15.1 (2026-09-09)
 
 librdkafka v2.15.1 is a maintenance release:
@@ -1640,213 +1727,3 @@ librdkafka v1.9.1 is a maintenance release:
 Release asset checksums:
  * v1.9.1.zip SHA256 `d3fc2e0bc00c3df2c37c5389c206912842cca3f97dd91a7a97bc0f4fc69f94ce`
  * v1.9.1.tar.gz SHA256 `3a54cf375218977b7af4716ed9738378e37fe400a6c5ddb9d622354ca31fdc79`
-## 1.9.0 (2022-06-16)
-
-# librdkafka v1.9.0
-
-librdkafka v1.9.0 is a feature release:
-
- * Added KIP-768 OUATHBEARER OIDC support (by @jliunyu, #3560)
- * Added KIP-140 Admin API ACL support (by @emasab, #2676)
-
-
-### Upgrade considerations
-
- * Consumer:
-   `rd_kafka_offsets_store()` (et.al) will now return an error for any
-   partition that is not currently assigned (through `rd_kafka_*assign()`).
-   This prevents a race condition where an application would store offsets
-   after the assigned partitions had been revoked (which resets the stored
-   offset), that could cause these old stored offsets to be committed later
-   when the same partitions were assigned to this consumer again - effectively
-   overwriting any committed offsets by any consumers that were assigned the
-   same partitions previously. This would typically result in the offsets
-   rewinding and messages to be reprocessed.
-   As an extra effort to avoid this situation the stored offset is now
-   also reset when partitions are assigned (through `rd_kafka_*assign()`).
-   Applications that explicitly call `..offset*_store()` will now need
-   to handle the case where `RD_KAFKA_RESP_ERR__STATE` is returned
-   in the per-partition `.err` field - meaning the partition is no longer
-   assigned to this consumer and the offset could not be stored for commit.
-
-
-### Enhancements
-
- * Improved producer queue scheduling. Fixes the performance regression
-   introduced in v1.7.0 for some produce patterns. (#3538, #2912)
- * Windows: Added native Win32 IO/Queue scheduling. This removes the
-   internal TCP loopback connections that were previously used for timely
-   queue wakeups.
- * Added `socket.connection.setup.timeout.ms` (default 30s).
-   The maximum time allowed for broker connection setups (TCP connection as
-   well as SSL and SASL handshakes) is now limited to this value.
-   This fixes the issue with stalled broker connections in the case of network
-   or load balancer problems.
-   The Java clients has an exponential backoff to this timeout which is
-   limited by `socket.connection.setup.timeout.max.ms` - this was not
-   implemented in librdkafka due to differences in connection handling and
-   `ERR__ALL_BROKERS_DOWN` error reporting. Having a lower initial connection
-   setup timeout and then increase the timeout for the next attempt would
-   yield possibly false-positive `ERR__ALL_BROKERS_DOWN` too early.
- * SASL OAUTHBEARER refresh callbacks can now be scheduled for execution
-   on librdkafka's background thread. This solves the problem where an
-   application has a custom SASL OAUTHBEARER refresh callback and thus needs to
-   call `rd_kafka_poll()` (et.al.) at least once to trigger the
-   refresh callback before being able to connect to brokers.
-   With the new `rd_kafka_conf_enable_sasl_queue()` configuration API and
-   `rd_kafka_sasl_background_callbacks_enable()` the refresh callbacks
-   can now be triggered automatically on the librdkafka background thread.
- * `rd_kafka_queue_get_background()` now creates the background thread
-   if not already created.
- * Added `rd_kafka_consumer_close_queue()` and `rd_kafka_consumer_closed()`.
-   This allow applications and language bindings to implement asynchronous
-   consumer close.
- * Bundled zlib upgraded to version 1.2.12.
- * Bundled OpenSSL upgraded to 1.1.1n.
- * Added `test.mock.broker.rtt` to simulate RTT/latency for mock brokers.
-
-
-### Fixes
-
-#### General fixes
-
- * Fix various 1 second delays due to internal broker threads blocking on IO
-   even though there are events to handle.
-   These delays could be seen randomly in any of the non produce/consume
-   request APIs, such as `commit_transaction()`, `list_groups()`, etc.
- * Windows: some applications would crash with an error message like
-   `no OPENSSL_Applink()` written to the console if `ssl.keystore.location`
-   was configured.
-   This regression was introduced in v1.8.0 due to use of vcpkgs and how
-   keystore file was read. #3554.
- * Windows 32-bit only: 64-bit atomic reads were in fact not atomic and could
-   in rare circumstances yield incorrect values.
-   One manifestation of this issue was the `max.poll.interval.ms` consumer
-   timer expiring even though the application was polling according to profile.
-   Fixed by @WhiteWind (#3815).
- * `rd_kafka_clusterid()` would previously fail with timeout if
-   called on cluster with no visible topics (#3620).
-   The clusterid is now returned as soon as metadata has been retrieved.
- * Fix hang in `rd_kafka_list_groups()` if there are no available brokers
-   to connect to (#3705).
- * Millisecond timeouts (`timeout_ms`) in various APIs, such as `rd_kafka_poll()`,
-   was limited to roughly 36 hours before wrapping. (#3034)
- * If a metadata request triggered by `rd_kafka_metadata()` or consumer group rebalancing
-   encountered a non-retriable error it would not be propagated to the caller and thus
-   cause a stall or timeout, this has now been fixed. (@aiquestion, #3625)
- * AdminAPI `DeleteGroups()` and `DeleteConsumerGroupOffsets()`:
-   if the given coordinator connection was not up by the time these calls were
-   initiated and the first connection attempt failed then no further connection
-   attempts were performed, ulimately leading to the calls timing out.
-   This is now fixed by keep retrying to connect to the group coordinator
-   until the connection is successful or the call times out.
-   Additionally, the coordinator will be now re-queried once per second until
-   the coordinator comes up or the call times out, to detect change in
-   coordinators.
- * Mock cluster `rd_kafka_mock_broker_set_down()` would previously
-   accept and then disconnect new connections, it now refuses new connections.
-
-
-#### Consumer fixes
-
- * `rd_kafka_offsets_store()` (et.al) will now return an error for any
-   partition that is not currently assigned (through `rd_kafka_*assign()`).
-   See **Upgrade considerations** above for more information.
- * `rd_kafka_*assign()` will now reset/clear the stored offset.
-   See **Upgrade considerations** above for more information.
- * `seek()` followed by `pause()` would overwrite the seeked offset when
-   later calling `resume()`. This is now fixed. (#3471).
-   **Note**: Avoid storing offsets (`offsets_store()`) after calling
-   `seek()` as this may later interfere with resuming a paused partition,
-   instead store offsets prior to calling seek.
- * A `ERR_MSG_SIZE_TOO_LARGE` consumer error would previously be raised
-   if the consumer received a maximum sized FetchResponse only containing
-   (transaction) aborted messages with no control messages. The fetching did
-   not stop, but some applications would terminate upon receiving this error.
-   No error is now raised in this case. (#2993)
-   Thanks to @jacobmikesell for providing an application to reproduce the
-   issue.
- * The consumer no longer backs off the next fetch request (default 500ms) when
-   the parsed fetch response is truncated (which is a valid case).
-   This should speed up the message fetch rate in case of maximum sized
-   fetch responses.
- * Fix consumer crash (`assert: rkbuf->rkbuf_rkb`) when parsing
-   malformed JoinGroupResponse consumer group metadata state.
- * Fix crash (`cant handle op type`) when using `consume_batch_queue()` (et.al)
-   and an OAUTHBEARER refresh callback was set.
-   The callback is now triggered by the consume call. (#3263)
- * Fix `partition.assignment.strategy` ordering when multiple strategies are configured.
-   If there is more than one eligible strategy, preference is determined by the
-   configured order of strategies. The partitions are assigned to group members according
-   to the strategy order preference now. (#3818)
- * Any form of unassign*() (absolute or incremental) is now allowed during
-   consumer close rebalancing and they're all treated as absolute unassigns.
-   (@kevinconaway)
-
-
-#### Transactional producer fixes
-
- * Fix message loss in idempotent/transactional producer.
-   A corner case has been identified that may cause idempotent/transactional
-   messages to be lost despite being reported as successfully delivered:
-   During cluster instability a restarting broker may report existing topics
-   as non-existent for some time before it is able to acquire up to date
-   cluster and topic metadata.
-   If an idempotent/transactional producer updates its topic metadata cache
-   from such a broker the producer will consider the topic to be removed from
-   the cluster and thus remove its local partition objects for the given topic.
-   This also removes the internal message sequence number counter for the given
-   partitions.
-   If the producer later receives proper topic metadata for the cluster the
-   previously "removed" topics will be rediscovered and new partition objects
-   will be created in the producer. These new partition objects, with no
-   knowledge of previous incarnations, would start counting partition messages
-   at zero again.
-   If new messages were produced for these partitions by the same producer
-   instance, the same message sequence numbers would be sent to the broker.
-   If the broker still maintains state for the producer's PID and Epoch it could
-   deem that these messages with reused sequence numbers had already been
-   written to the log and treat them as legit duplicates.
-   This would seem to the producer that these new messages were successfully
-   written to the partition log by the broker when they were in fact discarded
-   as duplicates, leading to silent message loss.
-   The fix included in this release is to save the per-partition idempotency
-   state when a partition is removed, and then recover and use that saved
-   state if the partition comes back at a later time.
- * The transactional producer would retry (re)initializing its PID if a
-   `PRODUCER_FENCED` error was returned from the
-   broker (added in Apache Kafka 2.8), which could cause the producer to
-   seemingly hang.
-   This error code is now correctly handled by raising a fatal error.
- * If the given group coordinator connection was not up by the time
-   `send_offsets_to_transactions()` was called, and the first connection
-   attempt failed then no further connection attempts were performed, ulimately
-   leading to `send_offsets_to_transactions()` timing out, and possibly
-   also the transaction timing out on the transaction coordinator.
-   This is now fixed by keep retrying to connect to the group coordinator
-   until the connection is successful or the call times out.
-   Additionally, the coordinator will be now re-queried once per second until
-   the coordinator comes up or the call times out, to detect change in
-   coordinators.
-
-
-#### Producer fixes
-
- * Improved producer queue wakeup scheduling. This should significantly
-   decrease the number of wakeups and thus syscalls for high message rate
-   producers. (#3538, #2912)
- * The logic for enforcing that `message.timeout.ms` is greather than
-   an explicitly configured `linger.ms` was incorrect and instead of
-   erroring out early the lingering time was automatically adjusted to the
-   message timeout, ignoring the configured `linger.ms`.
-   This has now been fixed so that an error is returned when instantiating the
-   producer. Thanks to @larry-cdn77 for analysis and test-cases. (#3709)
-
-
-
-
-### Checksums
-Release asset checksums:
- * v1.9.0.zip SHA256 `a2d124cfb2937ec5efc8f85123dbcfeba177fb778762da506bfc5a9665ed9e57`
- * v1.9.0.tar.gz SHA256 `59b6088b69ca6cf278c3f9de5cd6b7f3fd604212cd1c59870bc531c54147e889`
-
