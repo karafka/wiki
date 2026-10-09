@@ -71,6 +71,8 @@ We officially provide support for all the versions of Ruby that are not EOL. Our
 
 A Ruby version marked **Maintenance** keeps its support constraint: the minimum required Ruby version does not move while that version is listed. Around a month before its EOL date, the version is gradually rolled out of the CI matrices, so a Maintenance version can already be absent from CI before its EOL date arrives.
 
+Dropping support for an EOL Ruby version does not require a major release. It may coincide with a major release (for example `2.x` to `3.0`) or a minor release with breaking changes (for example `2.5` to `2.6`), but it does not have to. Our EOL dates are already generous, and dropping an EOL Ruby is a normal part of the release lifecycle. The `2.x` gems and the Web UI drop it in a patch or minor release. `rdkafka-ruby` and `karafka-rdkafka`, still on `0.x`, drop it in a `0.x` minor release. Bundler does not resolve a release whose `required_ruby_version` excludes the running Ruby, so apps on a dropped Ruby stay on the previous release.
+
 !!! note "Older Ruby May Work but Is Unsupported"
 
     If you are using an older Ruby version, Karafka may still work. The EOL table lists the versions Karafka officially supports. It is not a statement of which versions are in the CI matrices at any given moment.
@@ -89,6 +91,8 @@ A Ruby version marked **Maintenance** keeps its support constraint: the minimum 
 ## Ruby on Rails Versions Support
 
 Karafka will support two major versions of Ruby on Rails. Any previous versions may or may not be supported depending on the effort and ability to provide features.
+
+The same applies to Rails: dropping support for a Rails version does not require a major release.
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
