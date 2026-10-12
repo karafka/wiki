@@ -137,11 +137,11 @@ Each delivery report also tells you if the broker stored the message, how long t
   <tbody>
     <tr>
       <td><code>#status</code></td>
-      <td>Persistence status of the message, one of the <code>Rdkafka::Bindings::RD_KAFKA_MSG_STATUS_*</code> constants. <code>nil</code> when the report does not come from a librdkafka delivery callback.</td>
+      <td>Persistence status of the message, one of the <code>Rdkafka::Bindings::RD_KAFKA_MSG_STATUS_*</code> constants. Every report of a producer that delivers messages has a status. It is <code>nil</code> only when <code>deliver</code> is <code>false</code> or with the <a href="WaterDrop-Testing"><code>WaterDrop::Clients::Buffered</code></a> test client. These clients do not send messages to Kafka.</td>
     </tr>
     <tr>
       <td><code>#latency</code></td>
-      <td>Time from the <code>#produce</code> call until the delivery report, in microseconds. <code>nil</code> when not available.</td>
+      <td>Time from producing the message until the delivery report, in microseconds. <code>nil</code> when not available.</td>
     </tr>
     <tr>
       <td><code>#broker_id</code></td>
@@ -192,10 +192,6 @@ puts "Broker ID: #{report.broker_id}"
 ```
 
 The same fields are available on the report from a delivery handle and on the `delivery_report` in the payload of the `message.acknowledged` and `error.occurred` (type `librdkafka.dispatch_error`) events. The [Delivery Handles](#delivery-handles) section shows how to use the status of a failed delivery.
-
-!!! note "Persistence Status Requires `karafka-rdkafka` 0.31.0 or Newer"
-
-    The `#status`, `#latency`, and `#broker_id` methods and the status predicates come from `karafka-rdkafka` `0.31.0`. WaterDrop versions newer than `2.10.6` require it.
 
 #### When the Offset Is Not Available
 
