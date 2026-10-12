@@ -137,7 +137,7 @@ Each delivery report also tells you if the broker stored the message, how long t
   <tbody>
     <tr>
       <td><code>#status</code></td>
-      <td>Persistence status of the message, one of the <code>Rdkafka::Bindings::RD_KAFKA_MSG_STATUS_*</code> constants. Every report of a producer that delivers messages has a status. It is <code>nil</code> only when <code>deliver</code> is <code>false</code> or with the <a href="WaterDrop-Testing"><code>WaterDrop::Clients::Buffered</code></a> test client. These clients do not send messages to Kafka.</td>
+      <td>Persistence status of the message, one of the <code>Rdkafka::Bindings::RD_KAFKA_MSG_STATUS_*</code> constants. Every report of a producer that delivers messages has a status. It is <code>nil</code> only when <code>deliver</code> is <code>false</code> or with the <a href="/docs/WaterDrop-Testing/"><code>WaterDrop::Clients::Buffered</code></a> test client. These clients do not send messages to Kafka.</td>
     </tr>
     <tr>
       <td><code>#latency</code></td>
