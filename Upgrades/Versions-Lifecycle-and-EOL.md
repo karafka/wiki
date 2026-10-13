@@ -105,6 +105,29 @@ The same applies to Rails: dropping support for a Rails version does not require
 | 5.2     | EOL         | 2023-12-31 |
 | 4.2     | EOL         | 2021-05-01 |
 
+## glibc Versions Support
+
+The precompiled `x86_64-linux-gnu` and `aarch64-linux-gnu` gems of `rdkafka` and `karafka-rdkafka` require glibc `2.34` or newer. This floor matches RHEL 9, and it stays in place until RHEL 9 reaches its EOL on 2032-05-31.
+
+- **Planned raise**: The floor can move to glibc `2.39`, but not before 2032-05-31. Such a raise would come in a minor release with an **[EOL]** entry in the CHANGELOG.
+- **Earlier raise**: The floor can move earlier only in one of these cases:
+    - The built binary needs a newer glibc, and build settings cannot bring it back to `2.34`.
+    - librdkafka raises its own glibc floor above `2.34`.
+    - A bundled library needs a newer glibc API.
+
+If your system has an older glibc, install the source platform of the gem. It compiles librdkafka during installation, so it needs build tools. See [Native Extensions](Development-Native-Extensions#fallback-to-source-compilation) for details.
+
+```shell
+gem install rdkafka --platform=ruby
+gem install karafka-rdkafka --platform=ruby
+```
+
+```ruby
+# Gemfile
+gem 'rdkafka', force_ruby_platform: true
+gem 'karafka-rdkafka', force_ruby_platform: true
+```
+
 ## Kafka Versions Support
 
 Karafka and its components are designed to maintain compatibility with all Kafka versions that meet the following conditions:
