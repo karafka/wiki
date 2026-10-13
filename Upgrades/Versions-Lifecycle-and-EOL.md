@@ -109,8 +109,8 @@ The same applies to Rails: dropping support for a Rails version does not require
 
 The precompiled `x86_64-linux-gnu` and `aarch64-linux-gnu` gems of `rdkafka` and `karafka-rdkafka` require glibc `2.34` or newer. This floor matches RHEL 9, and it stays in place until RHEL 9 reaches its EOL on 2032-05-31.
 
-- **Planned raise**: The floor moves to glibc `2.39`, but not before 2032-05-31. The raise comes in a minor release with an **[EOL]** entry in the CHANGELOG.
-- **Earlier raise**: The floor moves earlier only in one of these cases:
+- **Planned raise**: The floor can move to glibc `2.39`, but not before 2032-05-31. Such a raise would come in a minor release with an **[EOL]** entry in the CHANGELOG.
+- **Earlier raise**: The floor can move earlier only in one of these cases:
     - The built binary needs a newer glibc, and build settings cannot bring it back to `2.34`.
     - librdkafka raises its own glibc floor above `2.34`.
     - A bundled library needs a newer glibc API.
