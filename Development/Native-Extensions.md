@@ -29,7 +29,7 @@ Native extensions are platform-specific compiled binaries that contain:
 <td><strong>Linux (glibc)</strong></td>
 <td>x86_64</td>
 <td>Ubuntu 22.04 LTS</td>
-<td>glibc 2.35+</td>
+<td>glibc 2.34+</td>
 <td>Ubuntu 22.04+, CentOS 9+, RHEL 9+, Debian 12+, Fedora 36+</td>
 </tr>
 <tr>
@@ -43,7 +43,7 @@ Native extensions are platform-specific compiled binaries that contain:
 <td><strong>Linux (glibc)</strong></td>
 <td>aarch64</td>
 <td>Ubuntu 22.04 LTS</td>
-<td>glibc 2.35+</td>
+<td>glibc 2.34+</td>
 <td>Ubuntu 22.04+, CentOS 9+, RHEL 9+, Debian 12+, Fedora 36+ (ARM64)</td>
 </tr>
 <tr>
