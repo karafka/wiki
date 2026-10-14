@@ -37,7 +37,7 @@
 - **Thread Safety**: All code used with Karafka must be thread-safe as it uses multiple threads for processing, similar to Puma or Sidekiq
 - **Separate Process Required**: While Karafka can be embedded, it is recommended to run as a separate process using `karafka server` when operating in scale
 - **Consumer Lifecycle**: Consumers are created dynamically when needed and are not pre-initialized; consumer instances are reused but never called from multiple threads simultaneously
-- **Offset Management**: Use `mark_as_consumed` (async) over `mark_as_consumed!` (sync) for better performance; offsets are committed every 5 seconds and during rebalances by default
+- **Offset Management**: Use `#mark_as_consumed` (async) over `#mark_as_consumed!` (sync) for better performance; offsets are committed every 5 seconds and during rebalances by default
 - **Error Handling**: Even with `max_retries: 0`, Karafka applies back-off to prevent system overload
 - **Producer Lifecycle**: Producers should be long-lived; always call `Karafka.producer.close` before process shutdown; avoid creating short-lived producers
 - **Memory Management**: For large payloads (10KB+), consider using Pro Cleaner API; adjust `max_messages` for smaller batches to control memory usage

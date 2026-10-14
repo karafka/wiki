@@ -151,7 +151,7 @@ The recommended approach is to break your processing into chunks and check `Kara
 
 !!! note "Download and Parse Phase"
 
-    The `stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well - for example, reading the file in batches rather than loading it entirely into memory before dispatching.
+    The `.stopping?` check shown below makes the **dispatch phase** interruptible. If the download/parse phase itself is the bottleneck (e.g., fetching and parsing a very large file takes minutes), consider streaming or chunking that phase as well - for example, reading the file in batches rather than loading it entirely into memory before dispatching.
 
 This pattern requires `manual_offset_management` enabled on the topic so that offsets are only committed when you explicitly call `mark_as_consumed`, not automatically when `#consume` returns:
 

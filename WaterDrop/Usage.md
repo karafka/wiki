@@ -123,6 +123,76 @@ puts "This sent message has an offset #{report.offset} on partition #{report.par
 puts "This sent message was sent to #{report.topic_name} topic"
 ```
 
+#### Persistence Status, Latency, and Broker ID
+
+Each delivery report also tells you if the broker stored the message, how long the delivery took, and which broker took the write:
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>#status</code></td>
+      <td>Persistence status of the message, one of the <code>Rdkafka::Bindings::RD_KAFKA_MSG_STATUS_*</code> constants. Every report of a producer that delivers messages has a status. It is <code>nil</code> only when <code>deliver</code> is <code>false</code> or with the <a href="/docs/WaterDrop-Testing/"><code>WaterDrop::Clients::Buffered</code></a> test client. These clients do not send messages to Kafka.</td>
+    </tr>
+    <tr>
+      <td><code>#latency</code></td>
+      <td>Time from producing the message until the delivery report, in microseconds. <code>nil</code> when not available.</td>
+    </tr>
+    <tr>
+      <td><code>#broker_id</code></td>
+      <td>ID of the broker the message was produced to. <code>nil</code> when not known, for example when no broker took the write.</td>
+    </tr>
+  </tbody>
+</table>
+
+The status tells you if a retry of a failed message is safe. Each status has a predicate:
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Predicate</th>
+      <th>Meaning</th>
+      <th>Retry Risk</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>RD_KAFKA_MSG_STATUS_NOT_PERSISTED</code></td>
+      <td><code>#not_persisted?</code></td>
+      <td>The message was not written to the broker.</td>
+      <td>A retry does not duplicate the message, but it can change the message order.</td>
+    </tr>
+    <tr>
+      <td><code>RD_KAFKA_MSG_STATUS_POSSIBLY_PERSISTED</code></td>
+      <td><code>#possibly_persisted?</code></td>
+      <td>The message may have been written, for example when the request timed out before the broker acknowledged it.</td>
+      <td>A retry can duplicate the message and change the message order.</td>
+    </tr>
+    <tr>
+      <td><code>RD_KAFKA_MSG_STATUS_PERSISTED</code></td>
+      <td><code>#persisted?</code></td>
+      <td>The broker acknowledged the message.</td>
+      <td>No retry is needed. Trust this status only when <code>acks</code> is <code>all</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+```ruby
+report = producer.produce_sync(topic: 'my_topic', payload: 'my_payload')
+
+puts "Persisted: #{report.persisted?}"
+puts "Latency: #{report.latency} microseconds"
+puts "Broker ID: #{report.broker_id}"
+```
+
+The same fields are available on the report from a delivery handle and on the `delivery_report` in the payload of the `message.acknowledged` and `error.occurred` (type `librdkafka.dispatch_error`) events. The [Delivery Handles](#delivery-handles) section shows how to use the status of a failed delivery.
+
 #### When the Offset Is Not Available
 
 A delivery report can carry `-1001` in place of a real offset. That value is the invalid offset marker used by librdkafka (`RD_KAFKA_OFFSET_INVALID`), and it means the offset is not available, **not** that the report carries an error.
@@ -189,6 +259,23 @@ end
 - If `raise_response_error` is set to `true` (the default behavior), the `#wait` method will raise an exception if there is a delivery error.
 
 - If `raise_response_error` is set to false, the `#wait` method will still wait for the delivery but will not raise an exception upon failure. Instead, it will return the appropriate error along with failure details, allowing you to handle the error as needed without interrupting the program's flow or will return the delivery report upon successful delivery.
+
+A failed delivery report carries the persistence status too. Read its `#error` and its status to decide whether to retry the message:
+
+```ruby
+handle = producer.produce_async(topic: 'my_topic', payload: 'my_payload')
+report = handle.wait(max_wait_timeout_ms: 15_000, raise_response_error: false)
+
+if report.error.nil?
+  puts "Message produced at offset #{report.offset}"
+elsif report.not_persisted?
+  # The broker did not write the message, so a retry does not duplicate it
+  producer.produce_async(topic: 'my_topic', payload: 'my_payload')
+elsif report.possibly_persisted?
+  # The broker may have written the message, so a retry can duplicate it
+  puts "Delivery failed with #{report.error.code}, the message may be in the topic"
+end
+```
 
 This flexibility in handling delivery reports and delivery handles in both synchronous and asynchronous scenarios makes WaterDrop a powerful choice for managing Kafka message production while accommodating different use cases and error-handling strategies.
 

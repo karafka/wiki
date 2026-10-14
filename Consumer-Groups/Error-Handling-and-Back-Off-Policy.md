@@ -124,7 +124,7 @@ end
 
 !!! note "Retried Batches May Contain Different Messages"
 
-    `retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
+    `#retrying?` indicates that an error occurred previously, but you may receive fewer or more messages and previously.
 
 In addition to detecting retry scenarios with `#retrying?`, Karafka provides the `#attempt` method for more nuanced control. This method indicates the current attempt, offering opportunities for specific actions or alerts based on the number of retries. This advanced functionality allows tailored behavior adjustments during message processing retries, enhancing error-handling strategies.
 

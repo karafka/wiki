@@ -418,7 +418,7 @@ To estimate message sizes post-client compression, you can use the `txmsgs` and 
 
 ## What are some good default settings for sending large "trace" batches of messages for load testing?
 
-You can use the `produce_many_sync` method to send large batches of messages, as it tends to avoid buffer overflows and performs well even with default settings. You might also want to increase the `queue.buffering.max.ms` setting. Consider dispatching multi-partition messages to delegate faster if you have a larger cluster.
+You can use the `#produce_many_sync` method to send large batches of messages, as it tends to avoid buffer overflows and performs well even with default settings. You might also want to increase the `queue.buffering.max.ms` setting. Consider dispatching multi-partition messages to delegate faster if you have a larger cluster.
 
 ## Is it worth pursuing transactions for a low throughput but high-importance topic?
 

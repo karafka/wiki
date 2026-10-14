@@ -193,20 +193,20 @@
 ### Enhanced Web UI
 
 - [About](Pro-Web-UI)
-- [Getting Started](Pro-Web-UI#getting-started)
-- [Consumers](Pro-Web-UI#consumers)
+    - [Getting Started](Pro-Web-UI#getting-started)
+    - [Consumers](Pro-Web-UI#consumers)
+    - [Recurring Tasks](Pro-Web-UI#recurring-tasks)
+    - [Scheduled Messages](Pro-Web-UI#scheduled-messages)
+    - [Errors](Pro-Web-UI#errors)
+    - [DLQ / Dead](Pro-Web-UI#dlq-dead)
+    - [Custom Styling](Pro-Web-UI#custom-styling)
 - [Commanding](Pro-Web-UI-Commanding)
 - [Health](Pro-Web-UI-Health)
-- [Explorer](Pro-Web-UI#explorer)
+- [Explorer](Pro-Web-UI-Explorer)
 - [Policies](Pro-Web-UI-Policies)
 - [Search](Pro-Web-UI-Search)
-- [Recurring Tasks](Pro-Web-UI#recurring-tasks)
-- [Scheduled Messages](Pro-Web-UI#scheduled-messages)
 - [Topics Insights](Pro-Web-UI-Topics-Insights)
-- [Errors](Pro-Web-UI#errors)
-- [DLQ / Dead](Pro-Web-UI#dlq-dead)
-- [Branding](Pro-Web-UI#branding)
-- [Custom Styling](Pro-Web-UI#custom-styling)
+- [Branding](Pro-Web-UI-Branding)
 - [Topics Management](Pro-Web-UI-Topics-Management)
 
 ## librdkafka
@@ -242,6 +242,7 @@ It is recommended to do one major upgrade at a time.
     - [2.0](Upgrades-Karafka-2.0)
 
 - [Web UI](Upgrades-Web-UI)
+    - [1.1](Upgrades-Web-UI-1.1)
     - [1.0](Upgrades-Web-UI-1.0)
     - [0.11](Upgrades-Web-UI-0.11)
     - [0.10](Upgrades-Web-UI-0.10)

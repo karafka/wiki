@@ -41,7 +41,7 @@ class OrdersConsumer < ApplicationConsumer
 end
 ```
 
-**How to avoid it:** Call `mark_as_consumed` (or `mark_as_consumed!`) for each message individually as it is successfully processed:
+**How to avoid it:** Call `#mark_as_consumed` (or `#mark_as_consumed!`) for each message individually as it is successfully processed:
 
 ```ruby
 class OrdersConsumer < ApplicationConsumer

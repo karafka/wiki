@@ -214,7 +214,7 @@ puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 
 ## Reading Topic Messages
 
-By using the `read_topic` method, you can read data from a given topic partition without subscribing to it.
+By using the `.read_topic` method, you can read data from a given topic partition without subscribing to it.
 
 !!! note "Topic Details Require Defined Routes"
 
@@ -611,7 +611,7 @@ end
 
     This method should **not** be used on actively running consumer groups, as it involves creating a temporary consumer to handle offset migration. Running this operation on active groups may cause unexpected behavior.
 
-The `rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
+The `.rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
 
 ```ruby
 Karafka::Admin.rename_consumer_group(
@@ -741,7 +741,7 @@ Karafka::Admin.seek_consumer_group(
 
 ### Changing an Offset to a Time-Based Location
 
-`seek_consumer_group` method also accepts time references as offsets, allowing for precise time-based location seeking. Karafka automatically locates the matching offsets for the specified times and moves the consumer group position to this location.
+`.seek_consumer_group` method also accepts time references as offsets, allowing for precise time-based location seeking. Karafka automatically locates the matching offsets for the specified times and moves the consumer group position to this location.
 
 ```ruby
 now = Time.now

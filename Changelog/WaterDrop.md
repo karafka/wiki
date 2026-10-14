@@ -4,8 +4,17 @@
 # WaterDrop changelog
 
 ## Unreleased
-- [Fix] Stop `#flush` from running middleware twice on messages re-buffered after a failed flush (regression of #474 reintroduced by the failure/requeue path), which double-encrypted/compressed/serialized payloads and duplicated headers on retry.
-- [Fix] Re-check the producer liveness under `@buffer_mutex` in `#buffer`/`#buffer_many`, so a producer closed between the liveness check and the append raises `ProducerClosedError` instead of accepting the message into a closed producer's buffer and losing it silently.
+- [Change] Require `karafka-rdkafka` `>=` `0.31.0` so delivery reports carry the message persistence status, latency and broker id.
+
+## 2.10.6 (2026-10-12)
+- **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
+- [Maintenance] Document that a middleware chain run is not atomic, so an in-place step followed by a raising step is applied again on the next `#flush`.
+- [Maintenance] Stop the sync delivery error spec from flaking when librdkafka rejects the produce to the invalid topic inline instead of through the delivery report.
+
+## 2.10.5 (2026-09-23)
+- [Fix] Stop `#flush` from running middleware twice on messages re-buffered after a failed flush, which double-processed payloads and duplicated headers on retry (regression of #474).
+- [Fix] Raise `ProducerClosedError` instead of silently losing a message buffered while the producer is closing.
+- [Fix] Restore both buffers when `#flush` fails before anything is dispatched, instead of discarding the whole batch.
 
 ## 2.10.4 (2026-08-26)
 - [Fix] Avoid a `FrozenError` on `Producer#close` when the producer is configured with a frozen string id (for example a frozen string literal, `config.id = "rspec"`).
@@ -14,10 +23,10 @@
 - [Maintenance] Stop the `#partition_count when topic does not exist` spec from flaking on slow CI runners by waiting for authoritative broker metadata before asserting the count.
 
 ## 2.10.3 (2026-07-15)
-- [Feature] Add `wait_timeout_on_transaction_abort` (default `0`, disabled) - an opt-in mitigation for [librdkafka#4849](https://github.com/confluentinc/librdkafka/issues/4849) that waits (up to the given ms) for the first delivery to be acknowledged before aborting, avoiding a fatal `INVALID_TXN_STATE`. Off by default because it changes abort semantics: the awaited message is written to the log (aborted) instead of being purged.
+- [Feature] Add `wait_timeout_on_transaction_abort` (disabled by default) to avoid a fatal `INVALID_TXN_STATE` on abort ([librdkafka#4849](https://github.com/confluentinc/librdkafka/issues/4849)). When enabled, the awaited message is delivered as aborted instead of purged.
 
 ## 2.10.2 (2026-06-15)
-- [Feature] Expose `Producer#current_variant` as a public method returning the variant active for the current dispatch on the current fiber, so middleware and instrumentation listeners can read the effective per-dispatch settings (`topic_config`, `max_wait_timeout`, `default?`).
+- [Feature] Expose `Producer#current_variant`, returning the variant active for the current dispatch, for use in middleware and instrumentation listeners.
 - [Enhancement] Stop allocating one interpolated string per message in `LoggerListener` batch produce handlers.
 - [Enhancement] Use `Array#concat` in `Producer#buffer_many` instead of appending messages one by one.
 - [Enhancement] Skip building the `message.acknowledged` instrumentation payload in the delivery callback when nothing is subscribed to that event.
@@ -26,22 +35,22 @@
 - [Enhancement] Cache the variant validation contract in a constant instead of instantiating a new `Contracts::Variant` on every `Producer#with` / `Producer#variant` call.
 - [Enhancement] Cache the tombstone validation contract in a constant instead of instantiating a new `Contracts::Tombstone` per tombstone message.
 - [Enhancement] Replace explicit `Warning[:performance]` opt-in with a dynamic approach using `Warning.categories` to enable all stable opt-in warning categories in the test suite.
-- [Fix] Prevent a deadlock between a transactional single-message dispatch and `#close` caused by an inverted lock order; transactional dispatches now take `@transaction_mutex` before the operation is counted.
-- [Fix] Prevent a deadlock (`ThreadError: deadlock; recursive locking`) when closing an idempotent producer (with `reload_on_idempotent_fatal_error` enabled) whose final buffer flush surfaces a fatal librdkafka error; the idempotent reload is now skipped on the closing path.
+- [Fix] Prevent a deadlock between a transactional single-message dispatch and `#close`.
+- [Fix] Prevent a deadlock when closing an idempotent producer with `reload_on_idempotent_fatal_error` enabled whose final flush hits a fatal error.
 - [Fix] Make concurrent idempotent fatal-error reload thread-safe so a second thread's reload can no longer raise `NoMethodError` after the first reset `@client`.
 - [Fix] Stop `#flush_async` / `#flush_sync` from silently dropping valid buffered messages when the dispatch fails; unsent messages are now re-buffered so they can be retried instead of being lost.
 - [Fix] Make `Producer#close` fork-safe so the GC finalizer inherited by a forked child can no longer flush and close the parent's client.
-- [Fix] Guard the internal buffer appends in `Producer#buffer` and `Producer#buffer_many` with `@buffer_mutex` so a concurrent flush/purge/close swap can no longer drop a message into an orphaned array.
-- [Fix] Stop a nested same-producer variant call from clobbering the outer variant inside a variant `transaction` block; the wrapper now saves and restores the previous fiber-local entry instead of deleting it.
-- [Fix] Stop `ConnectionPool#shutdown` and `#reload` from silently dropping in-flight messages. They now close producers gracefully by default (`#reload` always; `#shutdown` unless called with the new `force: true`); pass `pool.shutdown(force: true)` to keep the old force-and-purge behavior.
-- [Fix] Close a race in the FD poller where a producer registered while the last one was being torn down could be left permanently unpolled; the poller now decides to stop and clears its thread reference in a single mutex section.
+- [Fix] Prevent a concurrent flush, purge or close from dropping a message buffered with `#buffer` or `#buffer_many`.
+- [Fix] Stop a nested variant call on the same producer from overriding the outer variant inside a variant `transaction` block.
+- [Fix] Stop `ConnectionPool#shutdown` and `#reload` from dropping in-flight messages by closing producers gracefully. Use `pool.shutdown(force: true)` for the previous force-and-purge behavior.
+- [Fix] Fix a race that could leave a newly registered producer permanently unpolled by the FD poller.
 
 ## 2.10.1 (2026-05-25)
-- [Fix] Prevent `Producer#close` from raising `ThreadError: can't be called from trap context` when invoked from a Ruby signal trap context (e.g. Puma's `after_stopped` DSL hook in single mode). `close` now detects this case and delegates to a background thread, joining it so the caller blocks until the producer is fully closed (#866).
+- [Fix] Prevent `Producer#close` from raising `ThreadError: can't be called from trap context` when called from a signal trap (e.g. Puma's `after_stopped` hook in single mode). It now closes from a background thread and waits for it (#866).
 
 ## 2.10.0 (2026-05-07)
-- [Fix] Clean up native rdkafka client, global instrumentation callbacks, and poller registration when `init_transactions` fails during producer client construction, so failed attempts no longer leak native threads, file descriptors, and callback registry entries.
-- **[Breaking]** Skip emitting librdkafka statistics when nothing is subscribed to `statistics.emitted` at the time the underlying rdkafka client is constructed (`statistics.interval.ms` is forced to `0`), saving substantial allocations in the hot path. To use statistics, subscribe a listener to `statistics.emitted` BEFORE the first producer use.
+- [Fix] Clean up the native client, instrumentation callbacks and poller registration when `init_transactions` fails during producer construction, so failed attempts no longer leak threads and file descriptors.
+- **[Breaking]** Skip librdkafka statistics when nothing subscribes to `statistics.emitted` before the rdkafka client is built, to save allocations. To use statistics, subscribe a listener BEFORE the first producer use.
 - **[Breaking]** Raise `WaterDrop::Errors::StatisticsNotEnabledError` when attempting to subscribe to `statistics.emitted` on a monitor where librdkafka statistics have been disabled at client build time, replacing the previous "silent nothing" failure mode.
 - [Feature] Add tombstone API (`#tombstone_sync`, `#tombstone_async`, `#tombstone_many_sync`, `#tombstone_many_async`) for producing tombstone records (nil-payload messages) with required key and partition validation. Works with variants.
 - [Fix] Add `ensure_same_process!` to `Poller#unregister` for fork safety, so a child that inherited a pre-fork producer no longer deadlocks on `producer.close`.
@@ -50,14 +59,14 @@
 - [Fix] Use `delete` in the variant ensure block to avoid leaving stale nil entries in `Fiber.current.waterdrop_clients` and prevent memory leaks in long-running processes (#836).
 - [Fix] Exclude test files, `.github/`, and `log/` directories from gem releases to reduce package size.
 - **[Breaking]** Switch default polling mode from `:thread` to `:fd`. If you experience any issues, you can revert to the previous behavior by setting `config.polling.mode = :thread`. The `:thread` mode will be deprecated in 2.10 and removed in 2.11.
-- **[Breaking]** Statistics decorator now only decorates keys used by the built-in Datadog metrics listener (`tx`, `txretries`, `txerrs`, `rxerrs`) and skips unused subtrees, greatly reducing decoration cost on large clusters. Users who rely on other `_d` or `_fd` keys in custom instrumentation should provide a custom decorator via `config.statistics_decorator`.
+- **[Breaking]** Decorate only the statistics keys used by the built-in Datadog listener (`tx`, `txretries`, `txerrs`, `rxerrs`). If you use other `_d` or `_fd` keys, set a custom `config.statistics_decorator`.
 - [Feature] Add `config.statistics_decorator` setting to allow full control over the `StatisticsDecorator` instance used for statistics decoration. Users can provide a custom decorator with different `only_keys` and `excluded_keys` to match their instrumentation needs.
 - [Change] Upscale default timeout values 3x closer to librdkafka defaults to prevent intermediate timeouts during node recovery (`message.timeout.ms`: 50s → 150s, `transaction.timeout.ms`: 55s → 165s, `max_wait_timeout`: 60s → 180s).
 
 **Upgrade Notes**: https://karafka.io/docs/Upgrades-WaterDrop-2.9/
 
 ## 2.8.16 (2026-02-25)
-- [Feature] Add FD-based polling mode (`config.polling.mode = :fd`) as an alternative to the default thread-based polling. FD mode uses a single Ruby thread with IO.select for efficient multiplexing, providing 39-54% higher throughput, lower memory usage, and fewer threads compared to the default thread mode.
+- [Feature] Add FD-based polling (`config.polling.mode = :fd`): a single Ruby thread with `IO.select` instead of the default thread mode, with 39-54% higher throughput, lower memory usage and fewer threads.
 - [Feature] Add `config.polling.fd.max_time` setting (default: 100ms) to control maximum polling time per producer per cycle. This enables per-producer priority differentiation.
 - [Feature] Add `Producer#queue_size` (alias: `#queue_length`) to return the count of messages pending in the librdkafka queue. This counts messages that have been dispatched to librdkafka but not yet transmitted to the Kafka broker.
 - [Enhancement] Add `poll_nb` and `poll_drain` methods to rdkafka Producer for efficient non-blocking polling without GVL release overhead.
@@ -84,11 +93,7 @@
 
 ## 2.8.12 (2025-10-10)
 - [Enhancement] Introduce `reload_on_idempotent_fatal_error` to automatically reload librdkafka producer after fatal errors on idempotent (non-transactional) producers.
-- [Enhancement] Add configurable backoff and retry limits for fatal error recovery to prevent infinite reload loops:
-  - `wait_backoff_on_idempotent_fatal_error` (default: 5000ms) - backoff before retrying after idempotent fatal error reload
-  - `max_attempts_on_idempotent_fatal_error` (default: 5) - max reload attempts for idempotent fatal errors
-  - `wait_backoff_on_transaction_fatal_error` (default: 1000ms) - backoff after transactional fatal error reload
-  - `max_attempts_on_transaction_fatal_error` (default: 10) - max reload attempts for transactional fatal errors
+- [Enhancement] Add backoff and retry limits for fatal error reloads to prevent infinite reload loops (defaults in brackets): `wait_backoff_on_idempotent_fatal_error` (5000ms), `max_attempts_on_idempotent_fatal_error` (5), `wait_backoff_on_transaction_fatal_error` (1000ms) and `max_attempts_on_transaction_fatal_error` (10).
 - [Enhancement] Ensure `error.occurred` is instrumented before idempotent fatal error reload for visibility.
 - [Enhancement] Automatically reset fatal error reload attempts counter on successful produce/transaction to allow recovery.
 - [Refactor] Extract idempotence-related logic into separate `WaterDrop::Producer::Idempotence` module.
@@ -114,7 +119,7 @@
 
 ## 2.8.8 (2025-09-23)
 - [Feature] Add `WaterDrop::ConnectionPool` for efficient connection pooling using the proven `connection_pool` gem.
-- [Feature] Add `WaterDrop.instrumentation` class-level instrumentation for producer lifecycle events. This allows external libraries to subscribe to `producer.created` and `producer.configured` events without needing producer instance references, enabling middleware injection and configuration by libraries like Datadog tracing.
+- [Feature] Add class-level `WaterDrop.instrumentation` with `producer.created` and `producer.configured` events, so libraries (e.g. Datadog tracing) can configure producers without instance references.
 - **[EOL]** Remove Ruby `3.1` specs according to the EOL schedule.
 
 ## 2.8.7 (2025-09-02)
@@ -203,7 +208,7 @@ This release contains **BREAKING** changes. Make sure to read and apply upgrade 
 - **[Breaking]** Remove no longer needed `wait_timeout` configuration option.
 - **[Breaking]** Do **not** validate or morph (via middleware) messages added to the buffer prior to `flush_sync` or `flush_async`.
 - [Enhancement] Provide `WaterDrop::Producer#transaction?` that returns only when producer has an active transaction running.
-- [Enhancement] Introduce `instrument_on_wait_queue_full` flag (defaults to `true`) to be able to configure whether non critical (retryable) queue full errors should be instrumented in the error pipeline. Useful when building high-performance pipes with WaterDrop queue retry backoff as a throttler.
+- [Enhancement] Introduce `instrument_on_wait_queue_full` (defaults to `true`) to control whether retryable queue full errors are instrumented in the error pipeline.
 - [Enhancement] Protect critical `rdkafka` thread executable code sections.
 - [Enhancement] Treat the queue size as a gauge rather than a cumulative stat (isturdy).
 - [Fix] Fix a case where purge on non-initialized client would crash.
@@ -227,7 +232,7 @@ This release contains **BREAKING** changes. Make sure to read and apply upgrade 
 - [Fix] Fix a case where buffered test client would not accumulate messages on failed transactions
 
 ## 2.6.10 (2023-10-24)
-- [Improvement] Introduce `message.purged` event to indicate that a message that was not delivered to Kafka was purged. This most of the time refers to messages that were part of a transaction and were not yet dispatched to Kafka. It always means, that given message was not delivered but in case of transactions it is expected. In case of non-transactional it usually means `#purge` usage or exceeding `message.timeout.ms` so `librdkafka` removes this message from its internal queue. Non-transactional producers do **not** use this and pipe purges to `error.occurred`.
+- [Improvement] Introduce the `message.purged` event for a transactional message purged before delivery to Kafka. Non-transactional producers report purges via `error.occurred` instead.
 - [Fix] Fix a case where `message.acknowledged` would not have `caller` key.
 - [Fix] Fix a bug where critical errors (like `IRB::Abort`) would not abort the ongoing transaction.
 
@@ -281,7 +286,7 @@ This release contains **BREAKING** changes. Make sure to read and apply upgrade 
 - [Improvement] Make `#produce` method private to avoid confusion and make sure it is not used directly (it is not part of the official API).
 - [Change] Change `wait_on_queue_full` from `false` to `true` as a default.
 - [Change] Rename `wait_on_queue_full_timeout` to `wait_backoff_on_queue_full` to match what it actually does.
-- [Enhancement] Introduce `wait_timeout_on_queue_full` with proper meaning. That is, this represents time after which despite backoff the error will be raised. This should allow to raise an error in case the backoff attempts were insufficient. This prevents from a case, where upon never deliverable messages we would end up with an infinite loop.
+- [Enhancement] Introduce `wait_timeout_on_queue_full`: the time after which the error is raised despite backoff, so never-deliverable messages no longer cause an infinite loop.
 - [Fix] Provide `type` for queue full errors that references the appropriate public API method correctly.
 
 ## 2.5.3 (2023-05-26)

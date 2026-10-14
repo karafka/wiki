@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      5.7.28
+      5.7.44
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
@@ -269,7 +269,7 @@ This page exists because of our commitment to security, compliance, and transpar
       air datepicker (CSS)
     </td>
     <td>
-      3.4.0
+      3.6.0
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/t1m0n/air-datepicker/blob/v3/LICENSE.md">MIT</a>
@@ -413,7 +413,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.15.0</td>
+    <td>2.15.1</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
@@ -597,7 +597,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>MIT Kerberos (krb5)</td>
-    <td>1.21.3</td>
+    <td>1.22.2</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/krb5/krb5/blob/master/NOTICE">MIT</a></td>
     <td>
       Massachusetts Institute of Technology
@@ -606,7 +606,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>zlib</td>
-    <td>1.3.1</td>
+    <td>1.3.2</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/madler/zlib/blob/master/LICENSE">Zlib</a></td>
     <td>Jean-loup Gailly and Mark Adler</td>
   </tr>

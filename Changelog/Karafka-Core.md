@@ -3,46 +3,49 @@
 
 # Karafka Core Changelog
 
+## 2.6.5 (Unreleased)
+- **[EOL]** Drop Ruby 3.2 support due to EOL; require Ruby 3.3+.
+
 ## 2.6.4 (2026-09-11)
-- [Enhancement] Add `Configurable::Importer`, a subclassable base for injecting memoized config readers into a class. A subclass names the config root once by overriding `.root`, and each use site then names only the attributes it wants. Supports both `include` and `extend`.
+- [Enhancement] Add `Configurable::Importer`, a subclassable base for injecting memoized config readers into a class via `include` or `extend`.
 
 ## 2.6.3 (2026-08-31)
-- [Enhancement] Add `Configurable::Injector`, a reusable base for injecting default values into a config hash without overwriting user-provided settings, with support for layering extra defaults on top.
+- [Enhancement] Add `Configurable::Injector`, a reusable base for injecting default values into a config hash without overwriting user settings.
 
 ## 2.6.2 (2026-06-29)
-- [Enhancement] Document that a leaf's `default` value is shared by reference across all config instances, so a mutable default (e.g. `default: []`) mutated in place is visible everywhere. Assign it inside a `configure` block if you need a per-instance copy.
-- [Fix] `require "pathname"` explicitly in `lib/karafka-core.rb`. `Karafka::Core.gem_root` returns a `Pathname` but the gem never required it, so `gem_root` raised `NameError` wherever nothing else happened to load it first.
+- [Enhancement] Document that a setting default is shared across all config instances, so a mutable default such as `[]` must not be changed in place.
+- [Fix] Require `pathname` explicitly, so `Karafka::Core.gem_root` no longer raises `NameError` when nothing else loaded it.
 - [Enhancement] Document that a `virtual` rule must return a freshly built `Array` of `[path, message]` error pairs on each call; a memoized, shared or frozen array is unsupported.
 - [Fix] `Configurable::Node#register` now raises the documented "already registered" `ArgumentError` for a name used by an unread lazy-with-constructor setting, which it previously overwrote silently.
-- [Fix] `Contractable::Contract.nested` now pops its path in an `ensure`. If the block raised while the contract was being defined and the caller rescued it, the path stayed on the nesting stack and was prefixed onto every rule defined afterwards.
-- [Fix] `Contract#call` no longer raises `NoMethodError` when validating a non-Hash root with a 1-key or 2-key rule path; it reports the path as missing, consistent with the 3+-key path (and the non-Hash intermediate handling added in 2.6.1).
+- [Fix] Stop a rescued error inside `Contractable::Contract.nested` from prefixing its path onto every rule defined afterwards.
+- [Fix] Report a missing path instead of raising `NoMethodError` when validating a non-Hash root with a 1-key or 2-key rule.
 - [Fix] Honor `excluded_keys` containing `"cgrp"` in `StatisticsDecorator` `only_keys` mode; the `cgrp` branch lacked the exclusion guard its `brokers` and `topics` siblings have.
 - [Fix] Guard the patched rdkafka error callback against a null client pointer, which librdkafka can pass early in client construction and which could segfault the process.
 - [Fix] Resolve fatal errors in the patched rdkafka error callback via `RdkafkaError.build_fatal`, so the real underlying error is reported instead of the generic `ERR__FATAL` marker.
 - [Fix] A lazy setting declared without a constructor (`setting(:x, lazy: true)`) no longer raises when read; it now behaves like a regular setting backed by its default.
-- [Fix] `Contract#call` no longer raises `NoMethodError` when a virtual rule returns `false`. A virtual rule now signals "no errors" with any non-Array result; only an `Array` of error pairs is collected.
+- [Fix] Stop `Contract#call` from raising `NoMethodError` when a virtual rule returns `false`.
 - [Fix] Make `CallbacksManager` thread-safe under concurrent `add`/`delete` during dispatch, so a callback registered or removed while callbacks were firing is no longer lost.
-- [Fix] Make `Notifications` subscriptions thread-safe: a listener that unsubscribes itself (or another) from within its own handler no longer causes the next listener to be skipped, and concurrent subscribe/unsubscribe during dispatch is now safe.
-- [Fix] Report a freeze duration (`_fd`) of `0` for statistics keys that first appear mid-stream (e.g. a new broker or partition) instead of the time since the previous emission, which was incorrect and made the related spec flaky.
-- [Fix] Make assigning a setting on a frozen `Configurable::Node` atomic; it previously mutated the canonical store before raising `FrozenError`, leaving the store and the reader permanently out of sync.
-- [Fix] `Configurable::Node#to_h` no longer raises for a setting using the `->(default) { ... }` constructor form when its value has not been set yet (e.g. `#to_h` on an unconfigured instance or an unread lazy setting).
-- [Fix] Honor `excluded_keys` inside `StatisticsDecorator` `only_keys` decoration. A key listed in both `only_keys` and `excluded_keys` was still decorated because the direct-access decoration loop never consulted `excluded_keys`; exclusion now wins, matching the full-decoration path.
-- [Fix] Strip the tests/specs root directory as an anchored prefix instead of a global `gsub` in `MinitestLocator` and `RSpecLocator`, which corrupted the derived subject path when the root string recurred later in it.
+- [Fix] Make `Notifications` subscriptions thread-safe, so a listener unsubscribing during dispatch no longer causes the next listener to be skipped.
+- [Fix] Report a freeze duration (`_fd`) of `0` for statistics keys that first appear mid-stream.
+- [Fix] Stop an assignment on a frozen `Configurable::Node` from leaving the setting in an inconsistent state.
+- [Fix] Stop `Configurable::Node#to_h` from raising for an unset setting that uses the `->(default) { ... }` constructor form.
+- [Fix] Honor `excluded_keys` when combined with `only_keys` in `StatisticsDecorator`.
+- [Fix] Fix subject path detection in `MinitestLocator` and `RSpecLocator` when the tests root name repeats later in the path.
 
 ## 2.6.1 (2026-06-15)
 - [Enhancement] Speed up `Contract#call` by ~1.25–1.4x, the per-message validation path in WaterDrop producers.
-- [Fix] `Contract#call` with rule paths of 3+ keys no longer raises `NoMethodError` when an intermediate value is not a `Hash` and reports the path as missing instead, consistent with the 2-key path behavior.
-- [Change] Reject reserved setting names with an `ArgumentError` in `Configurable::Node#setting` and `#register` (internal state names and the node public API names). Such names previously shadowed the node's own accessors and could corrupt its internal state.
+- [Fix] Report a missing path instead of raising `NoMethodError` when a 3+ key rule path meets a non-Hash intermediate value.
+- [Change] Reject reserved setting names in `Configurable::Node#setting` and `#register` with an `ArgumentError`, since they could corrupt the node state.
 - [Enhancement] Speed up `Monitor#instrument` dispatch (~1.2x) on the common no-subscribers path.
 - [Enhancement] Speed up `Configurable::Node` settings reads (~1.4x flat, ~1.6x nested) on hot paths.
-- [Enhancement] Instantiate each `Configurable::Node` through a per-layout anonymous subclass so ivar-backed settings do not grow object shape variations on the shared `Node` class. `deep_dup` reuses the template's subclass.
+- [Enhancement] Reduce object shape variations of config nodes by giving each settings layout its own anonymous `Node` subclass.
 - [Fix] Symbolize setting names at definition time and on config store writes, so `String` setting names work end to end and cannot corrupt node internal state when they match reserved internal names.
-- [Change] Config nodes are now instances of anonymous `Node` subclasses: `is_a?(Karafka::Core::Configurable::Node)` still holds, but `instance_of?(Node)` is now `false` and `node.class.name` is `nil`.
+- [Change] Config nodes are instances of anonymous `Node` subclasses: `is_a?(Karafka::Core::Configurable::Node)` still holds, but `instance_of?(Node)` is `false` and `node.class.name` is `nil`.
 - [Change] Assigning a setting on a frozen config node now raises `FrozenError` (previously the write silently mutated internal storage despite the freeze).
 
 ## 2.6.0 (2026-06-10)
 - [Enhancement] Add `Node#register` to allow runtime key-value registration on compiled nodes without going through the static `setting` DSL. Useful for dynamic registries (e.g. named clusters) where setting names are not known at class-load time.
-- [Enhancement] Replace version-gated `Warning[:performance]` with a `Warning.categories`-based loop that enables all opt-in Ruby warning categories automatically, picking up new categories (e.g. `strict_unused_block` in Ruby 3.4+) without future patches.
+- [Enhancement] Enable all opt-in Ruby warning categories via `Warning.categories`, so new ones (e.g. `strict_unused_block` in Ruby 3.4+) are picked up automatically.
 
 ## 2.5.13 (2026-04-08)
 - [Enhancement] Extract `decorate_partitions` method from `StatisticsDecorator` to allow subclasses to filter which partitions are decorated (e.g. skip unassigned partitions in a consumer context).
@@ -58,10 +61,10 @@
 - [Enhancement] Cache a frozen success `Result` singleton via `Result.success` to eliminate 1 object allocation per successful `Contract#call` on the happy path.
 - [Enhancement] Skip nestings block re-evaluation in `Node#deep_dup` to avoid recreating children that are immediately overwritten, yielding ~14x faster deep_dup and reducing allocations from ~620 to ~66 objects for large configs.
 - [Enhancement] Cache `CallbacksManager#call` values snapshot and invalidate on `add`/`delete` to avoid allocating a new Array on every invocation while preserving thread-safety snapshot semantics, saving 1 Array allocation per call.
-- [Enhancement] Store execution time separately in `Event` and build the merged payload hash lazily on `#payload` access, eliminating 1 Hash allocation per `Notifications#instrument` call when listeners use `#[]` access (the common pattern), yielding ~1.7x faster event dispatch.
+- [Enhancement] Build the `Event` payload hash lazily on `#payload` access, saving one Hash allocation per `Notifications#instrument` call with `#[]` access, for ~1.7x faster event dispatch.
 - [Enhancement] Replace `StatisticsDecorator#diff` pending-writes buffer with `keys.each` direct-write iteration, eliminating the buffer and write-back loop for ~13% faster decoration at scale (10 brokers, 20 topics, 2000 partitions).
 - [Enhancement] Reorder `StatisticsDecorator#diff` type checks to test `Numeric` before `Hash`, matching the ~80% numeric value distribution in librdkafka statistics.
-- [Enhancement] Support an `only_keys` option in `StatisticsDecorator` to decorate only specified numeric keys. Combined with `excluded_keys`, this cuts decoration cost from ~80ms to ~8.5ms per call on large clusters (10 brokers, 20 topics, 2000 partitions).
+- [Enhancement] Support an `only_keys` option in `StatisticsDecorator` to decorate only the listed numeric keys. With `excluded_keys`, this cuts decoration cost from ~80ms to ~8.5ms per call on large clusters.
 - [Enhancement] Cache `Tags#to_a` values array and invalidate on `add`/`delete`/`clear` to avoid allocating a new Array and running `uniq` on every call, yielding ~7x faster reads at 5 tags and ~28x faster at 20 tags.
 
 ## 2.5.10 (2026-03-02)
@@ -183,7 +186,7 @@
 
 ## 2.2.1 (2023-09-10)
 - Optimize statistics decorator by minimizing number of new objects created.
-- Expand the decoration to include new value `_fd` providing freeze duration in milliseconds. This value informs us for how many consecutive ms the given value did not change. It can be useful for detecting values that should change once in a while but are stale.
+- Expand the decoration with the `_fd` value: the freeze duration in milliseconds, showing how long a value has not changed. Useful to detect stale values.
 
 ## 2.2.0 (2023-09-01)
 - [Maintenance] Update the signing cert (old expired)

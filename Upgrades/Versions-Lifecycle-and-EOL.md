@@ -58,7 +58,7 @@ The same EOL policy applies to all Karafka ecosystem components. Components that
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 2.10    | Active      | N/A        |
-| 2.9     | Maintenance | 2026-10-01 |
+| 2.9     | EOL         | 2026-10-01 |
 | 2.8     | EOL         | 2026-04-01 |
 | 2.7     | EOL         | 2025-02-01 |
 | 2.6     | EOL         | 2024-09-30 |
@@ -71,6 +71,8 @@ We officially provide support for all the versions of Ruby that are not EOL. Our
 
 A Ruby version marked **Maintenance** keeps its support constraint: the minimum required Ruby version does not move while that version is listed. Around a month before its EOL date, the version is gradually rolled out of the CI matrices, so a Maintenance version can already be absent from CI before its EOL date arrives.
 
+Dropping support for an EOL Ruby version does not require a major release. It may coincide with a major release (for example `2.x` to `3.0`) or a minor release with breaking changes (for example `2.5` to `2.6`), but it does not have to. Our EOL dates are already generous, and dropping an EOL Ruby is a normal part of the release lifecycle. The `2.x` gems and the Web UI drop it in a patch or minor release. `rdkafka-ruby` and `karafka-rdkafka`, still on `0.x`, drop it in a `0.x` minor release. Bundler does not resolve a release whose `required_ruby_version` excludes the running Ruby, so apps on a dropped Ruby stay on the previous release.
+
 !!! note "Older Ruby May Work but Is Unsupported"
 
     If you are using an older Ruby version, Karafka may still work. The EOL table lists the versions Karafka officially supports. It is not a statement of which versions are in the CI matrices at any given moment.
@@ -80,7 +82,7 @@ A Ruby version marked **Maintenance** keeps its support constraint: the minimum 
 | 4.0     | Active      | 2029-09-30 |
 | 3.4     | Active      | 2028-09-30 |
 | 3.3     | Active      | 2027-09-30 |
-| 3.2     | Maintenance | 2026-09-30 |
+| 3.2     | EOL         | 2026-09-30 |
 | 3.1     | EOL         | 2025-09-30 |
 | 3.0     | EOL         | 2024-09-30 |
 | 2.7     | EOL         | 2024-05-30 |
@@ -90,16 +92,41 @@ A Ruby version marked **Maintenance** keeps its support constraint: the minimum 
 
 Karafka will support two major versions of Ruby on Rails. Any previous versions may or may not be supported depending on the effort and ability to provide features.
 
+The same applies to Rails: dropping support for a Rails version does not require a major release.
+
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 8.1     | Active      | N/A        |
 | 8.0     | Active      | 2026-12-30 |
-| 7.2     | Maintenance | 2026-09-30 |
+| 7.2     | EOL         | 2026-09-30 |
 | 7.1     | EOL         | 2025-10-31 |
 | 7.0     | EOL         | 2025-05-31 |
 | 6.1     | EOL         | 2024-12-31 |
 | 5.2     | EOL         | 2023-12-31 |
 | 4.2     | EOL         | 2021-05-01 |
+
+## glibc Versions Support
+
+The precompiled `x86_64-linux-gnu` and `aarch64-linux-gnu` gems of `rdkafka` and `karafka-rdkafka` require glibc `2.34` or newer. This floor matches RHEL 9, and it stays in place until RHEL 9 reaches its EOL on 2032-05-31.
+
+- **Planned raise**: The floor can move to glibc `2.39`, but not before 2032-05-31. Such a raise would come in a minor release with an **[EOL]** entry in the CHANGELOG.
+- **Earlier raise**: The floor can move earlier only in one of these cases:
+    - The built binary needs a newer glibc, and build settings cannot bring it back to `2.34`.
+    - librdkafka raises its own glibc floor above `2.34`.
+    - A bundled library needs a newer glibc API.
+
+If your system has an older glibc, install the source platform of the gem. It compiles librdkafka during installation, so it needs build tools. See [Native Extensions](Development-Native-Extensions#fallback-to-source-compilation) for details.
+
+```shell
+gem install rdkafka --platform=ruby
+gem install karafka-rdkafka --platform=ruby
+```
+
+```ruby
+# Gemfile
+gem 'rdkafka', force_ruby_platform: true
+gem 'karafka-rdkafka', force_ruby_platform: true
+```
 
 ## Kafka Versions Support
 

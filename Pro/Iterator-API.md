@@ -154,8 +154,8 @@ In scenarios where precise tracking of message consumption is crucial, the Karaf
 
 The Iterator can mark messages as consumed using two methods:
 
-- `mark_as_consumed`
-- `mark_as_consumed!` (blocking)
+- `#mark_as_consumed`
+- `#mark_as_consumed!` (blocking)
 
 Example usage:
 
