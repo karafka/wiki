@@ -605,12 +605,12 @@ end
 
 - **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
 
-## Describing a Consumer Group
+## Describing Consumer Groups
 
-`Karafka::Admin.describe_consumer_group` returns the state of a consumer group, its partition assignor, its coordinator broker, and its members with the partitions assigned to each of them.
+`Karafka::Admin.describe_consumer_groups` returns the state of each requested consumer group, its partition assignor, its coordinator broker, and its members with the partitions assigned to each of them. It describes all the consumer groups in one request and returns an array in the order of the group ids you provide. To describe one consumer group, take the first element:
 
 ```ruby
-Karafka::Admin.describe_consumer_group('billing')
+Karafka::Admin.describe_consumer_groups(['billing']).first
 
 # {
 #   group_id: 'billing',
@@ -630,7 +630,7 @@ Karafka::Admin.describe_consumer_group('billing')
 # }
 ```
 
-To describe many consumer groups in one request, use `Karafka::Admin.describe_consumer_groups`. It returns an array in the order of the group ids you provide:
+To describe many consumer groups, provide all their ids:
 
 ```ruby
 Karafka::Admin.describe_consumer_groups(%w[billing orders-processor]).each do |group|
@@ -638,7 +638,7 @@ Karafka::Admin.describe_consumer_groups(%w[billing orders-processor]).each do |g
 end
 ```
 
-`Karafka::Admin::ConsumerGroups.describe` accepts one or more group ids and always returns an array, also when you describe one consumer group. On an Admin instance for a custom cluster, use `#describe_consumer_group` and `#describe_consumer_groups`.
+`Karafka::Admin::ConsumerGroups.describe` accepts one or more group ids as arguments and always returns an array, also when you describe one consumer group, for example `Karafka::Admin::ConsumerGroups.describe('billing').first`. On an Admin instance for a custom cluster, use `#describe_consumer_groups`.
 
 Each consumer group description contains the following keys:
 
@@ -673,7 +673,7 @@ Each consumer group description contains the following keys:
   </tbody>
 </table>
 
-The `:assignment` of a member maps each topic name to an array of partitions. The `:target_assignment` has the same format and lists the partitions the member moves to during a rebalance. Only KIP-848 consumer groups have it. For other consumer groups, it is `nil`.
+The `:assignment` of a member maps each topic name to an array of partitions. The `:target_assignment` has the same format and lists the partitions the member moves to during a rebalance. Only [KIP-848](Kafka-New-Rebalance-Protocol) consumer groups have it. For other consumer groups, it is `nil`.
 
 - **Unknown Consumer Groups**: A consumer group id that the cluster does not know is not an error. Kafka reports it in the `:dead` state with no members.
 
