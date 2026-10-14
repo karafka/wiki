@@ -1,6 +1,6 @@
 # About WaterDrop
 
-[![Build Status](https://github.com/karafka/waterdrop/workflows/ci/badge.svg)](https://github.com/karafka/waterdrop/actions?query=workflow%3Aci)
+[![Build Status](https://github.com/karafka/waterdrop/actions/workflows/ci.yml/badge.svg)](https://github.com/karafka/waterdrop/actions/workflows/ci.yml)
 [![Gem Version](https://badge.fury.io/rb/waterdrop.svg)](http://badge.fury.io/rb/waterdrop)
 [![Join the chat at https://slack.karafka.io](https://karafka.io/assets/misc/slack.svg)](https://slack.karafka.io)
 
