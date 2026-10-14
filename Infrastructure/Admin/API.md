@@ -605,6 +605,82 @@ end
 
 - **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
 
+## Describing a Consumer Group
+
+`Karafka::Admin.describe_consumer_group` returns the state of a consumer group, its partition assignor, its coordinator broker, and its members with the partitions assigned to each of them.
+
+```ruby
+Karafka::Admin.describe_consumer_group('billing')
+
+# {
+#   group_id: 'billing',
+#   state: :stable,
+#   partition_assignor: 'range',
+#   coordinator: { id: 1, host: '127.0.0.1', port: 9092, rack: nil },
+#   members: [
+#     {
+#       member_id: 'rdkafka-959acf9d-9706-46f8-b127-c63861b351dd',
+#       client_id: 'rdkafka',
+#       group_instance_id: nil,
+#       host: '/172.31.0.1',
+#       assignment: { 'payments' => [0, 1, 2] },
+#       target_assignment: nil
+#     }
+#   ]
+# }
+```
+
+To describe many consumer groups in one request, use `Karafka::Admin.describe_consumer_groups`. It returns an array in the order of the group ids you provide:
+
+```ruby
+Karafka::Admin.describe_consumer_groups(%w[billing orders-processor]).each do |group|
+  puts "#{group[:group_id]}: #{group[:state]} (#{group[:members].size} members)"
+end
+```
+
+`Karafka::Admin::ConsumerGroups.describe` accepts one or more group ids and always returns an array, also when you describe one consumer group. On an Admin instance for a custom cluster, use `#describe_consumer_group` and `#describe_consumer_groups`.
+
+Each consumer group description contains the following keys:
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:group_id</code></td>
+      <td>The consumer group id.</td>
+    </tr>
+    <tr>
+      <td><code>:state</code></td>
+      <td>The consumer group state as a symbol: <code>:unknown</code>, <code>:preparing_rebalance</code>, <code>:completing_rebalance</code>, <code>:stable</code>, <code>:dead</code>, or <code>:empty</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:partition_assignor</code></td>
+      <td>The partition assignor in use, for example <code>"range"</code>, or <code>nil</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:coordinator</code></td>
+      <td>The coordinator broker of the consumer group as <code>{ id:, host:, port:, rack: }</code>, or <code>nil</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:members</code></td>
+      <td>The current members of the consumer group. Each member has <code>:member_id</code>, <code>:client_id</code>, <code>:group_instance_id</code>, <code>:host</code>, <code>:assignment</code>, and <code>:target_assignment</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+The `:assignment` of a member maps each topic name to an array of partitions. The `:target_assignment` has the same format and lists the partitions the member moves to during a rebalance. Only KIP-848 consumer groups have it. For other consumer groups, it is `nil`.
+
+- **Unknown Consumer Groups**: A consumer group id that the cluster does not know is not an error. Kafka reports it in the `:dead` state with no members.
+
+- **Stopped Consumer Groups**: After a clean shutdown, a consumer group keeps its offsets but has no live members. It is reported in the `:empty` state with no members.
+
+- **Coordinator Not Ready**: On a fresh cluster, the consumer group coordinator may not be available yet. librdkafka does not retry this, so Karafka retries the `not_coordinator`, `coordinator_load_in_progress`, and `coordinator_not_available` errors for up to `admin.max_retries_duration`. When this time runs out, and on any other error, `Rdkafka::RdkafkaError` is raised.
+
 ## Renaming a Consumer Group
 
 !!! warning "Never Rename Active Consumer Groups"
