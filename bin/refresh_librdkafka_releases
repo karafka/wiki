@@ -9,6 +9,17 @@ require 'json'
 # Default output directory - can be overridden via command line
 DEFAULT_OUTPUT_DIR = '.'
 
+# Base for relative links in release notes, which otherwise resolve against karafka.io
+UPSTREAM_BLOB_URL = 'https://github.com/confluentinc/librdkafka/blob'
+
+# Dead links in past release notes and their working replacements
+DEAD_LINKS = {
+  'https://www.openssl.org/news/cl30.txt' =>
+    'https://openssl-library.org/news/openssl-3.0-notes/',
+  'KIP-951%3A+Leader+discovery+optimisations+for+the+client' =>
+    'KIP-951%3A+Leader+discovery+optimizations+for+the+client'
+}.freeze
+
 class LibrdkafkaFetcher
   def initialize(output_dir = DEFAULT_OUTPUT_DIR)
     @output_dir = output_dir
@@ -50,7 +61,7 @@ class LibrdkafkaFetcher
   def format_release(release)
     version = release['tag_name'].gsub('v', '')
     published_at = release['published_at'].split('T').first
-    body = release['body']
+    body = fix_links(release['body'], release['tag_name'])
 
     # Adjust heading levels
     body.gsub!(/^######\s/, '####### ')
@@ -64,6 +75,16 @@ class LibrdkafkaFetcher
 
 #{body}
     MARKDOWN
+  end
+
+  def fix_links(body, tag)
+    body = body.gsub(/\]\((?!https?:|#|mailto:)([^)\s]+)\)/) do
+      "](#{UPSTREAM_BLOB_URL}/#{tag}/#{Regexp.last_match(1)})"
+    end
+
+    DEAD_LINKS.each { |dead, replacement| body = body.gsub(dead, replacement) }
+
+    body
   end
 
   def generate_librdkafka_markdown(releases)
