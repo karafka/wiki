@@ -1,6 +1,6 @@
 # About Web UI
 
-[![Build Status](https://github.com/karafka/karafka-web/workflows/ci/badge.svg)](https://github.com/karafka/karafka-web/actions?query=workflow%3Aci)
+[![Build Status](https://github.com/karafka/karafka-web/actions/workflows/ci.yml/badge.svg)](https://github.com/karafka/karafka-web/actions/workflows/ci.yml)
 [![Gem Version](https://badge.fury.io/rb/karafka-web.svg)](http://badge.fury.io/rb/karafka-web)
 [![Join the chat at https://slack.karafka.io](https://karafka.io/assets/misc/slack.svg)](https://slack.karafka.io)
 
