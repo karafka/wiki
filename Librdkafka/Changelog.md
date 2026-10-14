@@ -196,8 +196,8 @@ Release asset checksums:
   `connections.max.idle.ms`, `reconnect.backoff.ms`,
   `reconnect.backoff.max.ms`).
 - See the *Share consumers (Queues for Kafka)* section of
-  [INTRODUCTION.md](INTRODUCTION.md#share-consumers-queues-for-kafka), the
-  *Share consumer* section in [rdkafka.h](src/rdkafka.h), and the
+  [INTRODUCTION.md](https://github.com/confluentinc/librdkafka/blob/v2.15.0/INTRODUCTION.md#share-consumers-queues-for-kafka), the
+  *Share consumer* section in [rdkafka.h](https://github.com/confluentinc/librdkafka/blob/v2.15.0/src/rdkafka.h), and the
   `examples/share_consumer*` programs.
 
 > [!Note]
@@ -205,7 +205,7 @@ Release asset checksums:
 > share consumer is currently in **Preview** and should not be used in
 > production environments. The public interfaces may change before General
 > Availability, and known limitations apply (see
-> [INTRODUCTION.md](INTRODUCTION.md#share-consumer-current-limitations)). The
+> [INTRODUCTION.md](https://github.com/confluentinc/librdkafka/blob/v2.15.0/INTRODUCTION.md#share-consumer-current-limitations)). The
 > share consumer is single-threaded and not thread-safe by design. It requires
 > a broker with share groups enabled (generally available in Apache Kafka
 > 4.2.0).
@@ -443,13 +443,13 @@ librdkafka v2.12.0 is a feature release:
 
 ### [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) – General Availability
 
-Starting with **librdkafka 2.12.0**, the next generation consumer group rebalance protocol defined in **[KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol)** is **production-ready**. Please refer the following [migration guide](INTRODUCTION.md#next-generation-consumer-group-protocol-kip-848) for moving from `classic` to `consumer` protocol.
+Starting with **librdkafka 2.12.0**, the next generation consumer group rebalance protocol defined in **[KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol)** is **production-ready**. Please refer the following [migration guide](https://github.com/confluentinc/librdkafka/blob/v2.12.0/INTRODUCTION.md#next-generation-consumer-group-protocol-kip-848) for moving from `classic` to `consumer` protocol.
 
 **Note:** The new consumer group protocol defined in [KIP-848](https://cwiki.apache.org/confluence/display/KAFKA/KIP-848%3A+The+Next+Generation+of+the+Consumer+Rebalance+Protocol) is not enabled by default. There are few contract change associated with the new protocol and might cause breaking changes. `group.protocol` configuration property dictates whether to use the new `consumer` protocol or older `classic` protocol. It defaults to `classic` if not provided.
 
 ### Enhancements and Fixes
 * Support for OAUTHBEARER metadata based authentication types,
-  starting with Azure IMDS. [Introduction available](INTRODUCTION.md#oauthbearer-oidc-metadata-authentication) (#5155).
+  starting with Azure IMDS. [Introduction available](https://github.com/confluentinc/librdkafka/blob/v2.12.0/INTRODUCTION.md#oauthbearer-oidc-metadata-authentication) (#5155).
 * Fix compression types read issue in GetTelemetrySubscriptions response
   for big-endian architectures (#5183, @paravoid).
 * Fix for KIP-1102 time based re-bootstrap condition (#5177).
@@ -919,7 +919,7 @@ librdkafka v2.2.1 is a maintenance release backporting:
       [v1.9.4](https://github.com/lz4/lz4/releases/tag/v1.9.4), which contains
       bugfixes and performance improvements (#4726).
 * Upgrade OpenSSL to v3.0.13 (while building from source) with various security fixes,
-     check the [release notes](https://www.openssl.org/news/cl30.txt)
+     check the [release notes](https://openssl-library.org/news/openssl-3.0-notes/)
      (@janjwerner-confluent, #4690).
 * Upgrade zstd to v1.5.6, zlib to v1.3.1, and curl to v8.8.0 (@janjwerner-confluent, #4690).
 * Upgrade Linux dependencies: OpenSSL 3.0.15, CURL 8.10.1 (#4875).
@@ -1067,7 +1067,7 @@ This version has introduced a regression in which an assert is triggered during 
 
 librdkafka v2.5.0 is a feature release.
 
-* [KIP-951](https://cwiki.apache.org/confluence/display/KAFKA/KIP-951%3A+Leader+discovery+optimisations+for+the+client)
+* [KIP-951](https://cwiki.apache.org/confluence/display/KAFKA/KIP-951%3A+Leader+discovery+optimizations+for+the+client)
   Leader discovery optimisations for the client (#4756, #4767).
 * Fix segfault when using long client id because of erased segment when using flexver. (#4689)
 * Fix for an idempotent producer error, with a message batch not reconstructed
@@ -1089,7 +1089,7 @@ librdkafka v2.5.0 is a feature release.
   * Update bundled lz4 (used when `./configure --disable-lz4-ext`) to
     [v1.9.4](https://github.com/lz4/lz4/releases/tag/v1.9.4), which contains
     bugfixes and performance improvements (#4726).
-  * [KIP-951](https://cwiki.apache.org/confluence/display/KAFKA/KIP-951%3A+Leader+discovery+optimisations+for+the+client)
+  * [KIP-951](https://cwiki.apache.org/confluence/display/KAFKA/KIP-951%3A+Leader+discovery+optimizations+for+the+client)
     With this KIP leader updates are received through Produce and Fetch responses
     in case of errors corresponding to leader changes and a partition migration
     happens before refreshing the metadata cache (#4756, #4767).
@@ -1129,7 +1129,7 @@ librdkafka v2.4.0 is a feature release:
    Continue partial implementation by adding a metadata cache by topic id
    and updating the topic id corresponding to the partition name (#4676)
  * Upgrade OpenSSL to v3.0.12 (while building from source) with various security fixes,
-   check the [release notes](https://www.openssl.org/news/cl30.txt).
+   check the [release notes](https://openssl-library.org/news/openssl-3.0-notes/).
  * Integration tests can be started in KRaft mode and run against any
    GitHub Kafka branch other than the released versions.
  * Fix pipeline inclusion of static binaries (#4666)
@@ -1166,7 +1166,7 @@ librdkafka v2.4.0 is a feature release:
    The feature is still _not production-ready_.
    It's possible to try it in a non-production enviroment.
 
-   A [guide](INTRODUCTION.md#next-generation-of-the-consumer-group-protocol-kip-848) is available
+   A [guide](https://github.com/confluentinc/librdkafka/blob/v2.4.0/INTRODUCTION.md#next-generation-of-the-consumer-group-protocol-kip-848) is available
    with considerations and steps to follow to test it (#4610).
 
 
@@ -1257,7 +1257,7 @@ librdkafka v2.3.0 is a feature release:
    for committing even without a subsequent fetch message (#4434).
  * Fix for stored offsets not being committed if they lacked the leader epoch (#4442).
  * Upgrade OpenSSL to v3.0.11 (while building from source) with various security fixes,
-   check the [release notes](https://www.openssl.org/news/cl30.txt)
+   check the [release notes](https://openssl-library.org/news/openssl-3.0-notes/)
    (#4454, started by @migarc1).
  * Fix to ensure permanent errors during offset validation continue being retried and
    don't cause an offset reset (#4447).
@@ -1476,7 +1476,7 @@ librdkafka v2.1.0 is a feature release:
 * Update lz4.c from upstream. Fixes [CVE-2021-3520](https://github.com/advisories/GHSA-gmc7-pqv9-966m)
   (by @filimonov, #4232).
 * Upgrade OpenSSL to v3.0.8 with various security fixes,
-  check the [release notes](https://www.openssl.org/news/cl30.txt) (#4215).
+  check the [release notes](https://openssl-library.org/news/openssl-3.0-notes/) (#4215).
 
 ### Enhancements
 
@@ -1624,7 +1624,7 @@ It is strongly recommended to use the Consumer Batch APIs and the mentioned
 operations in sequential order in order to get consistent result.
 
 For **rebalancing** operation to work in sequencial manner, please set `rebalance_cb`
-configuration property (refer [examples/rdkafka_complex_consumer_example.c](examples/rdkafka_complex_consumer_example.c) for the help with the usage) for the consumer.
+configuration property (refer [examples/rdkafka_complex_consumer_example.c](https://github.com/confluentinc/librdkafka/blob/v2.0.0/examples/rdkafka_complex_consumer_example.c) for the help with the usage) for the consumer.
 
 ### Enhancements
 
