@@ -216,6 +216,8 @@ The Cluster dashboard view displays information about the status of the Kafka cl
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
 </p>
 
+In Pro, the Distribution view shows how partitions are spread across brokers: a chart of leader partitions per broker, plus each broker's leader, follower and replica counts, their shares, and out-of-sync replicas. Brokers that carry noticeably more or less than their share are flagged, which helps you spot an unbalanced cluster before it becomes a hot spot. You can open the view for a single broker to see its partitions.
+
 ## Status
 
 The Karafka Web UI status page allows you to check and troubleshoot the state of your Karafka Web UI integration with your application.
