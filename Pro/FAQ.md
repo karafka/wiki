@@ -115,7 +115,7 @@ Every organization running Karafka Pro on its servers must purchase a subscripti
 
 ## Why does the Pro license support Ruby versions beyond their End-of-Life (EOL)?
 
-The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, even though newer Karafka versions require Ruby 3.2+. This design choice enables organizations with legacy deployments to upgrade to Pro features while using compatible older Karafka versions.
+The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, even though newer Karafka versions require Ruby 3.3+. This design choice enables organizations with legacy deployments to upgrade to Pro features while using compatible older Karafka versions.
 
 ### Technical Context
 
