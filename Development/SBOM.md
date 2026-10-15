@@ -601,7 +601,7 @@ This page exists because of our commitment to security, compliance, and transpar
       nanopb
     </td>
     <td>
-      0.4.8-dev (vendored by librdkafka 2.16.0)
+      0.4.8-dev
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.nanopb">Zlib</a>
