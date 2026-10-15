@@ -119,7 +119,7 @@ The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, eve
 
 ### Technical Context
 
-Newer Karafka versions (2.5.1+) require Ruby 3.2+ due to several critical technical reasons:
+Newer Karafka versions require Ruby 3.2+ (since 2.5.1) or Ruby 3.3+ (since 2.6.2) due to several critical technical reasons:
 
 - **Critical bugs in older Ruby versions** that affect features like swarm forking
 - **C layer FFI bugs** that can crash Karafka under certain scenarios
