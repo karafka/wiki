@@ -34,6 +34,8 @@
     ```ruby
     # Works from any place in your code and is thread-safe
     # You usually want to produce async but here it may raise exception if Kafka is not available, etc
+    # Make sure Kafka is running first: if it is not reachable, this call blocks for up to
+    # `message.timeout.ms` (150 seconds by default) and then raises
     Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
     ```
 
@@ -45,8 +47,8 @@
     # example outcome
     [7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 1000ms
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 started
-    {"ping"=>"pong"}
-    {"ping"=>"pong"}
+    {"ping" => "pong"}
+    {"ping" => "pong"}
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 finished in 0 ms
     ```
 
@@ -92,6 +94,8 @@
     ```ruby
     # Works from any place in your code and is thread-safe
     # You usually want to produce async but here it may raise exception if Kafka is not available, etc
+    # Make sure Kafka is running first: if it is not reachable, this call blocks for up to
+    # `message.timeout.ms` (150 seconds by default) and then raises
     Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
     ```
 
@@ -103,8 +107,8 @@
     # example outcome
     [7616dc24-505a-417f-b87b-6bf8fc2d98c5] Polled 2 messages in 1000ms
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 started
-    {"ping"=>"pong"}
-    {"ping"=>"pong"}
+    {"ping" => "pong"}
+    {"ping" => "pong"}
     [dcf3a8d8-0bd9-433a-8f63-b70a0cdb0732] Consume job for ExampleConsumer on example-0 finished in 0 ms
     ```
 
