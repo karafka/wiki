@@ -33,9 +33,8 @@
 
     ```ruby
     # Works from any place in your code and is thread-safe
-    # You usually want to produce async but here it may raise exception if Kafka is not available, etc
-    # Make sure Kafka is running first: if it is not reachable, this call blocks for up to
-    # `message.timeout.ms` (150 seconds by default) and then raises
+    # You usually want to produce async. Make sure Kafka is running: if it is not reachable,
+    # this call blocks for up to `message.timeout.ms` (150 seconds by default) and then raises
     Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
     ```
 
@@ -93,9 +92,8 @@
 
     ```ruby
     # Works from any place in your code and is thread-safe
-    # You usually want to produce async but here it may raise exception if Kafka is not available, etc
-    # Make sure Kafka is running first: if it is not reachable, this call blocks for up to
-    # `message.timeout.ms` (150 seconds by default) and then raises
+    # You usually want to produce async. Make sure Kafka is running: if it is not reachable,
+    # this call blocks for up to `message.timeout.ms` (150 seconds by default) and then raises
     Karafka.producer.produce_sync(topic: 'example', payload: { 'ping' => 'pong' }.to_json)
     ```
 
