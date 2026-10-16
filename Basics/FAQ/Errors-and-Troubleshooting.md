@@ -37,7 +37,7 @@
 
 ## Why can't I connect to Kafka from another Docker container?
 
-You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_HOST_NAME` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).
+You need to modify the `docker-compose.yml` `KAFKA_ADVERTISED_LISTENERS` value. You can read more about it [here](Kafka-Setup#connecting-to-kafka-from-other-docker-containers).
 
 ## What does static consumer fenced by other consumer with same group.instance.id mean?
 
