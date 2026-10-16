@@ -151,6 +151,13 @@ Operations are the actions that can be permitted or denied on Kafka resources, d
   </tbody>
 </table>
 
+`Karafka::Admin::Acl.operation_names` maps librdkafka ACL operation codes to these operation names, and returns `:unknown` for a code it does not map. The `include_authorized_operations: true` option of `Karafka::Admin.describe_cluster` and `Karafka::Admin.describe_topics` already returns the names. See the [Admin API](Infrastructure-Admin-API#describing-the-cluster) for details.
+
+```ruby
+Karafka::Admin::Acl.operation_names([Rdkafka::Bindings::RD_KAFKA_ACL_OPERATION_READ])
+# => [:read]
+```
+
 ### Permission Types
 
 Permission types indicate the nature of the access being granted or denied, essentially determining whether an operation is allowed.
