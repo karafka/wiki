@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      5.7.44
+      5.7.47
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
@@ -413,7 +413,7 @@ This page exists because of our commitment to security, compliance, and transpar
     <td>
       librdkafka
     </td>
-    <td>2.15.1</td>
+    <td>2.16.0</td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE">BSD-2-Clause</a>
     </td>
@@ -582,8 +582,53 @@ This page exists because of our commitment to security, compliance, and transpar
   </tr>
 
   <tr>
+    <td>
+      LZ4 (including xxHash)
+    </td>
+    <td>
+      1.9.4
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.lz4">BSD-2-Clause</a>
+    </td>
+    <td>
+      Yann Collet
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      nanopb
+    </td>
+    <td>
+      0.4.8-dev
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.nanopb">Zlib</a>
+    </td>
+    <td>
+      Petteri Aimonen
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      opentelemetry-proto
+    </td>
+    <td>
+      N/A (upstream commit 81a296f)
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/confluentinc/librdkafka/blob/master/LICENSE.opentelemetry">Apache-2.0</a>
+    </td>
+    <td>
+      OpenTelemetry Authors
+    </td>
+  </tr>
+
+  <tr>
     <td>OpenSSL</td>
-    <td>3.5.8</td>
+    <td>3.5.9</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/openssl/openssl/blob/master/LICENSE.txt">Apache-2.0</a></td>
     <td>The OpenSSL Project</td>
   </tr>
