@@ -201,6 +201,8 @@ gem 'rdkafka', platforms: [:x86_64_linux_gnu]
 
 ### Fallback to Source Compilation
 
+When the precompiled library needs a newer glibc than your system has, loading the gem raises `Rdkafka::LibraryLoadError`. The error message shows the required glibc version and the two fixes: upgrade your system or compile from source.
+
 If native extensions do not work for your platform:
 
 ```shell
