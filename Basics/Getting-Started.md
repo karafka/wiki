@@ -29,7 +29,7 @@
    - `app/consumers/example_consumer.rb` - an example consumer
    - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit
 
-1. To produce test messages, open the development console and enter:
+1. To produce test messages, open the development console (`bundle exec karafka console`) and enter:
 
     ```ruby
     # Works from any place in your code and is thread-safe
@@ -72,6 +72,8 @@
     source "https://rubygems.org"
 
     gem "karafka", ">= 2.6.0"
+    # Needed by the Karafka console on Ruby 4.0+, where irb is a bundled gem
+    gem "irb"
     ```
 
 1. Run: `bundle install`
@@ -88,7 +90,7 @@
     - `app/consumers/example_consumer.rb` - an example consumer.
     - `app/consumers/application_consumer.rb` - the base consumer from which all consumers should inherit.
 
-1. Run a development console to produce messages to this example topic:
+1. Run a development console (`bundle exec karafka console`) to produce messages to this example topic:
 
     ```ruby
     # Works from any place in your code and is thread-safe
