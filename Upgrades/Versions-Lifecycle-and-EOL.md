@@ -92,13 +92,15 @@ Dropping support for an EOL Ruby version does not require a major release. It ma
 
 Karafka will support two major versions of Ruby on Rails. Any previous versions may or may not be supported depending on the effort and ability to provide features.
 
+Our EOL dates are set around six months after each version's official Rails EOL date, so users have extra time to migrate at their own pace.
+
 The same applies to Rails: dropping support for a Rails version does not require a major release.
 
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 8.1     | Active      | N/A        |
-| 8.0     | Active      | 2026-12-30 |
-| 7.2     | EOL         | 2026-09-30 |
+| 8.0     | Active      | 2027-05-31 |
+| 7.2     | Maintenance | 2027-02-28 |
 | 7.1     | EOL         | 2025-10-31 |
 | 7.0     | EOL         | 2025-05-31 |
 | 6.1     | EOL         | 2024-12-31 |
