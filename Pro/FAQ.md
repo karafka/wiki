@@ -105,6 +105,8 @@ Those credentials will be valid for 14 days for every environment.
 
 The trial license does **not** grant you our Pro commercial support.
 
+The [LICENSE-COMM](Pro-License-Comm) terms govern trial licenses, including the evaluation scope in Section 1.5.
+
 ## What is the license?
 
 See [LICENSE-COMM](Pro-License-Comm) on our documentation website.
