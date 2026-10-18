@@ -49,7 +49,7 @@ Traditional consumer rebalancing requires **all** consumers to stop processing d
 
 - karafka-rdkafka with librdkafka 2.12.0+
 - Karafka 2.4+
-- Ruby 3.2+ recommended
+- Ruby 3.3+ recommended
 
 !!! note "No Code Changes Required"
 
