@@ -390,7 +390,7 @@ This intelligent behavior ensures:
 
 Because there is only one transaction, an inner block does not have its own rollback:
 
-- `raise WaterDrop::AbortTransaction` in an inner block aborts the whole outer transaction and ends the outer block. No error reaches the caller.
+- `raise WaterDrop::AbortTransaction` in an inner block aborts the whole outer transaction and ends the outer block. No error reaches the caller. This applies only when the outer block does not rescue it: `WaterDrop::AbortTransaction` is a `StandardError`, so an outer `rescue => e` catches it, and the outer transaction then commits as in the next point.
 - An error raised in an inner block and rescued in the outer block does not undo the messages of the inner block. They are committed with the outer transaction.
 
 While it is generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they are handled without any adverse effects.
@@ -426,7 +426,7 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.marked_as_consumed`
 - `transaction.finished`
 
-`transaction.finished` is emitted only when the transactional block completes: after a commit, or after the block raises `WaterDrop::AbortTransaction`. When the block raises any other error or exits early, WaterDrop aborts the transaction and emits `transaction.aborted`, but not `transaction.finished`. To track failed transactions, subscribe to `transaction.aborted`.
+`transaction.finished` is emitted only when the transactional block completes: after a commit, or after the block raises `WaterDrop::AbortTransaction`. When the block raises any other error or exits early, WaterDrop aborts the transaction and does not emit `transaction.finished`. `transaction.aborted` is emitted when this abort succeeds. When the abort itself fails, for example after a [timeout](#timeouts), WaterDrop emits `error.occurred` with the `transaction.abort` type instead. To track failed transactions, subscribe to both events.
 
 Listeners can subscribe to these events, which integrate with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
@@ -477,7 +477,7 @@ end
 
 When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
 
-The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process. A transaction that Kafka aborts on `transaction.timeout.ms` also ends in the `fenced` state, so WaterDrop does not reload the client for it either. See [Timeouts](#timeouts) for what to do.
+The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process. When Kafka aborts a transaction on `transaction.timeout.ms`, the producer also becomes `fenced`, so WaterDrop does not reload the client of this producer either. See [Timeouts](#timeouts) for what to do.
 
 The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
 
