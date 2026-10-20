@@ -312,7 +312,7 @@ This behavior may impact you in the following ways:
 
 - **Determines Batch Size**: If you are sending a batch of messages as a part of a single transaction in WaterDrop, you need to ensure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
 
-- **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
+- **Error Handling**: When Kafka aborts a transaction because of this timeout, the next produce of this producer fails with `invalid_producer_epoch`, which librdkafka reports as the fatal `fenced` error. `fenced` is in the default `non_reloadable_errors`, so WaterDrop does not reload the client, and every later transaction on this producer raises `fenced`. A retry on the same producer always fails: close the producer and create a new one. None of the messages from the timed-out transaction become visible to `read_committed` consumers.
 
 - **A Balancing Act**: Setting the correct value for `transaction.timeout.ms` requires a balance. If it is too short, legitimate transactions requiring more time might get prematurely aborted, leading to increased retries and system overhead. If it is too long, it might delay the detection and resolution of genuine issues.
 
@@ -388,6 +388,11 @@ This intelligent behavior ensures:
 
 1. **Performance**: Since WaterDrop recognizes and avoids starting multiple transactions, there is no additional overhead or latency from nested transaction initiations.
 
+Because there is only one transaction, an inner block does not have its own rollback:
+
+- `raise WaterDrop::AbortTransaction` in an inner block aborts the whole outer transaction and ends the outer block. No error reaches the caller.
+- An error raised in an inner block and rescued in the outer block does not undo the messages of the inner block. They are committed with the outer transaction.
+
 While it is generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they are handled without any adverse effects.
 
 ```ruby
@@ -420,6 +425,8 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.aborted`
 - `transaction.marked_as_consumed`
 - `transaction.finished`
+
+`transaction.finished` is emitted only when the transactional block completes: after a commit, or after the block raises `WaterDrop::AbortTransaction`. When the block raises any other error or exits early, WaterDrop aborts the transaction and emits `transaction.aborted`, but not `transaction.finished`. To track failed transactions, subscribe to `transaction.aborted`.
 
 Listeners can subscribe to these events, which integrate with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
@@ -470,7 +477,7 @@ end
 
 When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
 
-The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process.
+The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process. A transaction that Kafka aborts on `transaction.timeout.ms` also ends in the `fenced` state, so WaterDrop does not reload the client for it either. See [Timeouts](#timeouts) for what to do.
 
 The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
 
