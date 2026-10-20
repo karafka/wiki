@@ -56,7 +56,7 @@ By investing a few hours, you are setting yourself up to save weeks of collectiv
 4. **Experience**: While you do not need any prior knowledge of Kafka or Karafka, attendees should understand Ruby and Ruby on Rails to get the most out of the workshop.
 5. **Technical Requirements**:
     - Operating System: Mac/Linux.
-    - Software: Docker and Ruby 3.2.
+    - Software: Docker and Ruby 3.3 or newer.
     - Docker Kafka setup: This should already be in place. (Instructions will be provided.)
 
 ## See Also

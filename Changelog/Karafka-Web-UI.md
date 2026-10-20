@@ -7,6 +7,7 @@
 - **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
 - **[Feature]** Add a **Publish message** capability to the Explorer (Pro) to produce new messages with an optional key, headers and a typed, uploaded or tombstone payload. Gated by the new `#publish?` policy, enabled by default (#956).
 - **[Feature]** Aggregate the Health views per topic with drill-down to partitions, so they stay usable at scale. Thresholds are configurable under `config.ui.health.lags` (#112).
+- [Enhancement] Show the delivery outcome (persisted, possibly persisted or not persisted), latency and broker of failed producer deliveries in the error details, so it is clear whether a retry may duplicate the message. Requires karafka-rdkafka `0.31.0` or newer.
 - [Enhancement] Produce scheduled-message cancellations with `acks: 1` so the broker confirms receipt.
 - [Enhancement] Produce consumer commanding requests with `acks: 1` so the broker confirms receipt, and add a `Karafka::Web.producers` facade (#1241).
 - [Enhancement] After republishing, redirect to the partition that received the copy (#1239).
@@ -23,6 +24,7 @@
 - [Maintenance] Extract the Explorer republish flow into `Lib::Republishing` and validate the form before producing (#1244).
 - [Maintenance] Retry transient 5xx responses in the test link validator.
 - [Maintenance] Update the vendored `AirDatepicker` CSS to `3.6.0` to match the JS.
+- [Maintenance] Drop the unused `byebug` gem from the test bundle.
 - [Fix] Log consumers reporter dispatch failures instead of crashing the process when `produce_many_sync` times out (#1336).
 - [Fix] Sort Hash elements by key value even when the key name matches a `Hash` method.
 - [Fix] Reject a new partition count that is not greater than the current one with a form error instead of a broker error (Pro).
@@ -48,6 +50,7 @@
 - [Fix] Stop the Explorer search "latest" start offset from collapsing to the beginning of the topic (Pro).
 - [Fix] Return no results for an Explorer search scoped only to partitions that don't exist, instead of searching partition `0` (Pro).
 - [Fix] Report the Health per-topic lag trend as N/A instead of `0` when a topic has no measurable partitions, so sorting by Trend no longer intermixes no-data topics with real zero trends (Pro).
+- [Fix] Write the initial consumers states with `acks: 1` and retry the install/migrate data migration a few times when the just-written states are not yet readable, instead of aborting with `MissingConsumersMetricsError`.
 
 ## 1.0.1 (2026-08-24)
 - **[Feature]** Add a keyword filtering box to the data-heavy Web UI listings, with a field selector on flat listings (Pro) (#1073).

@@ -105,6 +105,8 @@ Those credentials will be valid for 14 days for every environment.
 
 The trial license does **not** grant you our Pro commercial support.
 
+The [LICENSE-COMM](Pro-License-Comm) terms govern trial licenses, including the evaluation scope in Section 1.5.
+
 ## What is the license?
 
 See [LICENSE-COMM](Pro-License-Comm) on our documentation website.
@@ -115,15 +117,17 @@ Every organization running Karafka Pro on its servers must purchase a subscripti
 
 ## Why does the Pro license support Ruby versions beyond their End-of-Life (EOL)?
 
-The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, even though newer Karafka versions require Ruby 3.2+. This design choice enables organizations with legacy deployments to upgrade to Pro features while using compatible older Karafka versions.
+The Karafka Pro license intentionally supports Ruby versions as old as 2.6+, even though newer Karafka versions require Ruby 3.3+. This design choice enables organizations with legacy deployments to upgrade to Pro features while using compatible older Karafka versions.
 
 ### Technical Context
 
-Newer Karafka versions (2.5.1+) require Ruby 3.2+ due to several critical technical reasons:
+Karafka 2.5.1 and newer require Ruby 3.2+ due to several critical technical reasons:
 
 - **Critical bugs in older Ruby versions** that affect features like swarm forking
 - **C layer FFI bugs** that can crash Karafka under certain scenarios
 - **Missing features** like fiber scheduler and fiber context that are essential for newer functionality
+
+Karafka 2.6.2 and newer require Ruby 3.3+ because Ruby 3.2 reached its EOL. See [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL) for the Ruby EOL policy.
 
 ### Why the License Supports Older Ruby
 

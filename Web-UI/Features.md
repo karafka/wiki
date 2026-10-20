@@ -20,6 +20,10 @@ Below you can find a description of the most important features you can use.
 
 The dashboard provides an all-encompassing insight into your Karafka operations. It is an indispensable tool for anyone looking to monitor, optimize, and troubleshoot their Karafka processes. With its user-friendly interface and detailed metrics, you have everything you need to ensure the smooth running of your Kafka operations.
 
+!!! note "Dashboard Totals Count Consume Attempts"
+
+    The `Messages` and `Batches` totals count each consume attempt, not each produced message. Karafka counts a batch before it is processed, so a batch that fails and is retried counts again. The totals also include the batches and messages of the Web UI's own consumer of the `karafka_consumers_reports` topic. See [this FAQ entry](Basics-FAQ-Web-UI#why-are-message-and-batch-numbers-increasing-even-though-i-havent-sent-any-messages) for why the totals grow when your application does not produce messages.
+
 <img src="https://karafka.io/assets/misc/printscreens/web-ui/dashboard.png" alt="karafka web dashboard view" />
 
 ## Consumers

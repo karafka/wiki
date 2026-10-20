@@ -203,6 +203,77 @@ resource.set('retention.ms', '7200000')  # Set retention to 2 hours
 Karafka::Admin::Configs.alter(resource)
 ```
 
+## Describing Topics
+
+`Karafka::Admin.describe_topics` returns the topic id of each requested topic and its partitions with their leaders, replicas, and in-sync replicas. It describes all the topics in one request and returns an array in the order of the topic names you provide:
+
+```ruby
+Karafka::Admin.describe_topics(['events']).first
+
+# {
+#   name: 'events',
+#   topic_id: '7zVJlh/2SuKCqPUdnbl9nQ',
+#   internal: false,
+#   partitions: [
+#     {
+#       partition: 0,
+#       leader: { id: 1, host: '127.0.0.1', port: 9092, rack: 'rack-1' },
+#       replicas: [{ id: 1, host: '127.0.0.1', port: 9092, rack: 'rack-1' }],
+#       isr: [{ id: 1, host: '127.0.0.1', port: 9092, rack: 'rack-1' }]
+#     }
+#   ],
+#   authorized_operations: nil,
+#   error: nil
+# }
+```
+
+A topic that cannot be described, for example because it does not exist, does not fail the whole call. Its entry carries the error in `:error`, has no topic id, and has no partitions. Use it to find the topics that do not exist:
+
+```ruby
+Karafka::Admin.describe_topics(%w[events orders])
+  .select { |topic| topic[:error] }
+  .map { |topic| topic[:name] }
+```
+
+`Karafka::Admin::Topics.describe` accepts one or more topic names as arguments and always returns an array, also when you describe one topic. On an Admin instance for a custom cluster, use `#describe_topics`.
+
+Each topic description contains the following keys:
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:name</code></td>
+      <td>The topic name.</td>
+    </tr>
+    <tr>
+      <td><code>:topic_id</code></td>
+      <td>The topic id (base64), or <code>nil</code> when the topic could not be described.</td>
+    </tr>
+    <tr>
+      <td><code>:internal</code></td>
+      <td>Whether it is an internal topic, for example <code>__consumer_offsets</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:partitions</code></td>
+      <td>The topic partitions. Each has <code>:partition</code>, <code>:leader</code>, <code>:replicas</code>, and <code>:isr</code>, with brokers as <code>{ id:, host:, port:, rack: }</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:authorized_operations</code></td>
+      <td>The operations this client is authorized to perform on the topic, for example <code>:read</code> or <code>:write</code>. <code>nil</code> unless you pass <code>include_authorized_operations: true</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:error</code></td>
+      <td>The <code>Rdkafka::RdkafkaError</code> that explains why the topic could not be described, for example <code>unknown_topic_or_part</code>. <code>nil</code> on success.</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Getting Cluster Info
 
 ```ruby
@@ -211,6 +282,29 @@ info = Karafka::Admin.cluster_info
 
 puts info.topics.map { |topic| topic[:topic_name] }.join(', ')
 ```
+
+### Describing the Cluster
+
+`Karafka::Admin.describe_cluster` returns the cluster id, the current controller, and the brokers with their racks. Unlike `Karafka::Admin.cluster_info`, it does not fetch any topic metadata.
+
+```ruby
+Karafka::Admin.describe_cluster
+
+# {
+#   cluster_id: 'kafka-docker-cluster-1',
+#   controller: { id: 1, host: '127.0.0.1', port: 9092, rack: 'rack-1' },
+#   brokers: [{ id: 1, host: '127.0.0.1', port: 9092, rack: 'rack-1' }],
+#   authorized_operations: nil
+# }
+```
+
+To also get the operations this client is authorized to perform on the cluster, pass `include_authorized_operations: true`. `:authorized_operations` is then an array of operation names, for example `:describe` or `:alter_configs`:
+
+```ruby
+Karafka::Admin.describe_cluster(include_authorized_operations: true)[:authorized_operations]
+```
+
+On an Admin instance for a custom cluster, use `#describe_cluster`.
 
 ## Reading Topic Messages
 

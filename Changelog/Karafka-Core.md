@@ -3,8 +3,9 @@
 
 # Karafka Core Changelog
 
-## 2.6.5 (Unreleased)
+## 2.6.5 (2026-10-19)
 - **[EOL]** Drop Ruby 3.2 support due to EOL; require Ruby 3.3+.
+- [Change] Use the offending value (event id, setting name, class or constant name) as the message of errors raised by `Notifications`, `Configurable::Node`, `Configurable::Importer` and the spec locators.
 
 ## 2.6.4 (2026-09-11)
 - [Enhancement] Add `Configurable::Importer`, a subclassable base for injecting memoized config readers into a class via `include` or `extend`.
