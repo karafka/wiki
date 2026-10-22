@@ -24,6 +24,8 @@
 - [Maintenance] Extract the Explorer republish flow into `Lib::Republishing` and validate the form before producing (#1244).
 - [Maintenance] Retry transient 5xx responses in the test link validator.
 - [Maintenance] Update the vendored `AirDatepicker` CSS to `3.6.0` to match the JS.
+- [Maintenance] Drop `nokogiri` from the test dependencies.
+- [Maintenance] Build the assets with the `uglify-js` CLI instead of gulp, removing 188 npm development packages.
 - [Maintenance] Drop the unused `byebug` gem from the test bundle.
 - [Fix] Log consumers reporter dispatch failures instead of crashing the process when `produce_many_sync` times out (#1336).
 - [Fix] Sort Hash elements by key value even when the key name matches a `Hash` method.
@@ -51,6 +53,8 @@
 - [Fix] Return no results for an Explorer search scoped only to partitions that don't exist, instead of searching partition `0` (Pro).
 - [Fix] Report the Health per-topic lag trend as N/A instead of `0` when a topic has no measurable partitions, so sorting by Trend no longer intermixes no-data topics with real zero trends (Pro).
 - [Fix] Write the initial consumers states with `acks: 1` and retry the install/migrate data migration a few times when the just-written states are not yet readable, instead of aborting with `MissingConsumersMetricsError`.
+- [Fix] Read the Web UI templates as UTF-8, so a C/POSIX locale (`LANG=C`) cannot make pages with non-ASCII characters return 500.
+- [Fix] Stop the Dashboard current stats (processes, workers and others) from dropping for one flush after the Web UI's own consumer group rebalances.
 
 ## 1.0.1 (2026-08-24)
 - **[Feature]** Add a keyword filtering box to the data-heavy Web UI listings, with a field selector on flat listings (Pro) (#1073).
