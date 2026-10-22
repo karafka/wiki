@@ -232,11 +232,12 @@ end
 
 **Configuration Options:**
 
-| Option                                   | Default | Description                                                               |
-|------------------------------------------|---------|---------------------------------------------------------------------------|
-| `reload_on_idempotent_fatal_error`       | `false` | Enable automatic producer reload on fatal errors for idempotent producers |
-| `wait_backoff_on_idempotent_fatal_error` | `5000`  | Time in milliseconds to wait before retrying after a fatal error          |
-| `max_attempts_on_idempotent_fatal_error` | `5`     | Maximum number of reload attempts before giving up                        |
+| Option                                   | Default     | Description                                                                 |
+|------------------------------------------|-------------|-----------------------------------------------------------------------------|
+| `reload_on_idempotent_fatal_error`       | `false`     | Enable automatic producer reload on fatal errors for idempotent producers   |
+| `wait_backoff_on_idempotent_fatal_error` | `5000`      | Time in milliseconds to wait before retrying after a fatal error            |
+| `max_attempts_on_idempotent_fatal_error` | `5`         | Maximum number of reload attempts before giving up                          |
+| `non_reloadable_errors`                  | `[:fenced]` | Fatal error codes that do not start a reload (idempotent and transactional) |
 
 ### Transactional Producer Fatal Error Recovery
 
@@ -260,11 +261,12 @@ end
 
 **Configuration Options:**
 
-| Option                                    | Default | Description                                                                  |
-|-------------------------------------------|---------|------------------------------------------------------------------------------|
-| `reload_on_transaction_fatal_error`       | `true`  | Enable automatic producer reload on fatal errors for transactional producers |
-| `wait_backoff_on_transaction_fatal_error` | `1000`  | Time in milliseconds to wait before continuing after a fatal error reload    |
-| `max_attempts_on_transaction_fatal_error` | `10`    | Maximum number of reload attempts before giving up                           |
+| Option                                    | Default     | Description                                                                  |
+|-------------------------------------------|-------------|------------------------------------------------------------------------------|
+| `reload_on_transaction_fatal_error`       | `true`      | Enable automatic producer reload on fatal errors for transactional producers |
+| `wait_backoff_on_transaction_fatal_error` | `1000`      | Time in milliseconds to wait before continuing after a fatal error reload    |
+| `max_attempts_on_transaction_fatal_error` | `10`        | Maximum number of reload attempts before giving up                           |
+| `non_reloadable_errors`                   | `[:fenced]` | Fatal error codes that do not start a reload (idempotent and transactional)  |
 
 ### How Fatal Error Recovery Works
 

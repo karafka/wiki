@@ -302,7 +302,7 @@ Neither outcome changes what consumers see. As covered in [Delivery Handles and 
 
 ## Timeouts
 
-The `transaction.timeout.ms` parameter in Kafka is a configuration setting specifying the maximum amount of time (in milliseconds) a transactional session can remain open without being completed. Once this timeout is reached, Kafka will proactively abort the transaction.
+The `transaction.timeout.ms` parameter in Kafka is a configuration setting specifying the maximum amount of time (in milliseconds) a transactional session can remain open without being completed. Kafka aborts an expired transaction on a periodic check, not at the moment the timeout passes, so a transaction that runs a little over `transaction.timeout.ms` may still commit.
 
 This behavior may impact you in the following ways:
 
@@ -312,7 +312,7 @@ This behavior may impact you in the following ways:
 
 - **Determines Batch Size**: If you are sending a batch of messages as a part of a single transaction in WaterDrop, you need to ensure that the entire batch can be processed within the `transaction.timeout.ms` window. If the processing time risks exceeding this timeout, consider reducing the batch size or optimizing the processing speed.
 
-- **Error Handling**: Transactions that are aborted due to reaching the timeout will raise an error. In the context of WaterDrop, handle these timeout-aborted transactions gracefully, possibly by retrying them or logging them for further investigation.
+- **Error Handling**: When Kafka aborts a transaction because of this timeout, the next produce of this producer fails with `invalid_producer_epoch`, which librdkafka reports as the fatal `fenced` error. `fenced` is in the default `non_reloadable_errors`, so WaterDrop does not reload the client, and every later transaction on this producer raises `fenced`. With this default, a retry on the same producer always fails: close the producer and create a new one. To make WaterDrop reload the client instead, remove `:fenced` from `non_reloadable_errors` (for example `config.non_reloadable_errors = []`). The timed-out transaction still raises `fenced`, but WaterDrop then reloads the client, and the next transaction on this producer can commit. Do this only when each `transactional.id` is used by one producer at a time. A timeout and a takeover by another producer with the same `transactional.id` end in the same `fenced` error, so WaterDrop cannot tell them apart. After a takeover, the reload fences the newer producer, and when both producers reload, each reload ends in `fenced` again until `max_attempts_on_transaction_fatal_error` is reached. None of the messages from the timed-out transaction become visible to `read_committed` consumers.
 
 - **A Balancing Act**: Setting the correct value for `transaction.timeout.ms` requires a balance. If it is too short, legitimate transactions requiring more time might get prematurely aborted, leading to increased retries and system overhead. If it is too long, it might delay the detection and resolution of genuine issues.
 
@@ -388,6 +388,11 @@ This intelligent behavior ensures:
 
 1. **Performance**: Since WaterDrop recognizes and avoids starting multiple transactions, there is no additional overhead or latency from nested transaction initiations.
 
+Because there is only one transaction, an inner block does not have its own rollback:
+
+- `raise WaterDrop::AbortTransaction` in an inner block aborts the whole outer transaction and ends the outer block. No error reaches the caller. This applies only when the outer block does not rescue it: `WaterDrop::AbortTransaction` is a `StandardError`, so an outer `rescue => e` catches it, and the outer transaction then commits as in the next point.
+- An error raised in an inner block and rescued in the outer block does not undo the messages of the inner block. They are committed with the outer transaction.
+
 While it is generally good practice to be explicit and avoid nesting, with WaterDrop, you can be assured that even if nested transactions occur, they are handled without any adverse effects.
 
 ```ruby
@@ -420,6 +425,8 @@ In  WaterDrop, transaction-related events are monitored, emitting notifications 
 - `transaction.aborted`
 - `transaction.marked_as_consumed`
 - `transaction.finished`
+
+`transaction.finished` is emitted only when the transactional block completes: after a commit, or after the block raises `WaterDrop::AbortTransaction`. When the block raises any other error or exits early, WaterDrop aborts the transaction and does not emit `transaction.finished`. `transaction.aborted` is emitted when this abort succeeds. When the abort itself fails, for example after a [timeout](#timeouts), WaterDrop emits `error.occurred` with the `transaction.abort` type instead. To track failed transactions, subscribe to both events.
 
 Listeners can subscribe to these events, which integrate with Karafka and WaterDrop's monitoring and logging systems. This feature ensures that every crucial phase of transaction processing is observable, aiding in debugging, performance monitoring, and system reliability.
 
@@ -470,7 +477,7 @@ end
 
 When a fatal transactional error occurs, the producer can close and recreate its underlying client. This ensures that the system can continue operating without being halted by a single instance failure. The failed transaction will automatically roll back, allowing the new instance to take over safely.
 
-The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. Fencing is excluded to prevent any potential race conditions arising from this process.
+The reloading mechanism is used exclusively within locked transactions, eliminating the risk of race conditions. By default, `fenced` is excluded through `non_reloadable_errors`. Fencing usually means that another producer with the same `transactional.id` took over. If WaterDrop reloaded the client in that case, the new client would keep the same `transactional.id` and be fenced again, so the reloads would repeat until `max_attempts_on_transaction_fatal_error` is reached. When Kafka aborts a transaction on `transaction.timeout.ms`, the producer also becomes `fenced`, so with the default `non_reloadable_errors` WaterDrop does not reload the client of this producer either. See [Timeouts](#timeouts) for what to do.
 
 The reloading process will be triggered only by errors caused during message dispatches within transactions. The system reloads on any errors where the cause is `Rdkafka::RdkafkaError`, with specific exclusions to avoid unintended reloading. This approach reloads the client in cases where other errors, such as those from Karafka, occur within transactions. Although this can impact performance due to the overhead of closing and reconnecting, it ensures that all errors result in a rollback, maintaining system integrity.
 
