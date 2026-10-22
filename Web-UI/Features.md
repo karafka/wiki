@@ -188,6 +188,14 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 
 For `ForcefulShutdownError` entries specifically, the details table also includes `active_listeners`, `alive_workers`, and `in_processing` (per-job blocking/non-blocking status), giving you visibility into what was still running when the forceful shutdown happened.
 
+For failed message deliveries (`librdkafka.dispatch_error` entries), the details table includes the `topic`, `partition`, and `offset` of the message and its delivery outcome:
+
+- `delivery_status` - Persistence status of the message, shown as a badge: `persisted`, `possibly persisted`, or `not persisted`.
+- `latency_ms` - Time from producing the message until the delivery report, in milliseconds.
+- `broker_id` - ID of the broker the message was produced to, when known.
+
+See [Persistence Status, Latency, and Broker ID](WaterDrop-Usage#persistence-status-latency-and-broker-id) for what each status means.
+
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
 </p>
