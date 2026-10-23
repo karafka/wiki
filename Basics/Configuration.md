@@ -182,7 +182,7 @@ These infrastructural settings are crucial for managing Kafka more efficiently. 
 
 ## Environment Constraints Validation
 
-Karafka validates environment requirements that cannot be easily expressed as a Bundler dependency, and raises `Karafka::Errors::DependencyConstraintsError` with a message describing what is missing when one is not met. For example, the Pro envelope encryption mode requires the `openssl` gem to be `>= 3.0` and raises this error at setup time if an older version is detected.
+Karafka validates environment requirements that cannot be easily expressed as a Bundler dependency, and raises `Karafka::Errors::DependencyConstraintsError` with a message describing what is missing when one is not met. For example, the Pro envelope encryption mode requires the `openssl` gem to be `>= 3.0` and raises this error at setup time if an older version is detected. This requirement cannot be met on JRuby, so envelope mode works only on MRI (see [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption#envelope-encryption-mode)).
 
 ## See Also
 
