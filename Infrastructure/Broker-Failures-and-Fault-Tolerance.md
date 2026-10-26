@@ -131,6 +131,12 @@ During broker failures, Karafka consumers:
 - **Partition Rebalancing**: May trigger rebalances as brokers go offline/online
 - **Offset Management**: Commits may be temporarily delayed, but will resume
 
+!!! warning "Coordinator Outages Longer Than the Session Timeout Delay Classic-Protocol Consumers"
+
+    When the group coordinator is unavailable for longer than `session.timeout.ms` (45 seconds by default), consumers that use the classic group protocol revoke all their partitions while the broker is still down. After the broker returns, they need about one more session timeout to rejoin the group. The commit of the last uncommitted messages fails with `unknown_member_id`, so these messages are processed again. No messages are lost, and the duplicates stay within at-least-once delivery.
+
+    With the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), where `group.protocol` is `consumer`, the same outage does not cause a revocation. Consumption resumes a few seconds after the broker returns, and no messages are processed again.
+
 ### Producer Behavior
 
 For message production during failures:
