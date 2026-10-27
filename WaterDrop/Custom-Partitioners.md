@@ -29,7 +29,7 @@ producer.partition_count('users_events') => 5
 
 !!! warning "Failure To Fetch Partition Count"
 
-    If WaterDrop Producer cannot retrieve topic metadata, it will report the partition count as `-1`. Ensure your custom partitioner can handle this scenario gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
+    For a topic that does not exist, `#partition_count` returns `-1`. If no count is known for the topic and the metadata request fails for another reason, `#partition_count` raises an error. The count comes from the same cache as for `partition_key` (see [Partition Key](WaterDrop-Usage#partition-key)). Make sure your custom partitioner can handle these scenarios gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
 
 ### Fully External Custom Partitioner
 
