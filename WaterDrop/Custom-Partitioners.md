@@ -29,7 +29,7 @@ producer.partition_count('users_events') => 5
 
 !!! warning "Failure To Fetch Partition Count"
 
-    For a topic that does not exist, `#partition_count` returns `-1`. If no count is known for the topic and the metadata request fails for another reason, `#partition_count` raises an error. The count comes from the same cache as for `partition_key` (see [Partition Key](WaterDrop-Usage#partition-key)). Make sure your custom partitioner can handle these scenarios gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
+    For a topic that does not exist, `#partition_count` returns `-1`. For other metadata request failures, `#partition_count` raises an error when no count is known for the topic, or when the refresh of a known count fails on an error other than `transport`, `timed_out`, `all_brokers_down` or `resolve`. The count comes from the same cache as for `partition_key` (see [Partition Key](WaterDrop-Usage#partition-key)). Make sure your custom partitioner can handle these scenarios gracefully, possibly by reverting to a default partition or implementing a retry mechanism. Monitoring the occurrence of this issue is recommended to identify potential underlying system problems.
 
 ### Fully External Custom Partitioner
 

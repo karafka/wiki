@@ -123,7 +123,7 @@ class Distributor
   #
   # @note `#partition_count` fetched from rdkafka is cached. No need to cache it again
   # @note `#partition_count` returns -1 when the topic does not exist yet. Other metadata
-  #   errors raise when no count is known for the topic
+  #   errors raise when no count is known for the topic, or when they are not transient
   def fetch_partition_count(topic)
     count = @producer.partition_count(topic)
 
