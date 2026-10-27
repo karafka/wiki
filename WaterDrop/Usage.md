@@ -111,7 +111,7 @@ The cache works as follows:
 - When any producer or consumer in the process emits librdkafka statistics, the statistics also update the cache.
 - A topic that does not exist is cached too, so produce calls to it do not run a metadata request for each message.
 - The produce call that refreshes an expired count blocks while the metadata request and its retries run. Other produce calls get the known count during this time.
-- If the refresh fails on a transient error (`transport`, `timed_out`, `all_brokers_down` or `resolve`), the cache keeps the last known count and runs the next refresh after 10 seconds. Produce calls with `partition_key` continue to buffer messages in librdkafka during a cluster outage, but one produce call blocks for each refresh attempt. If the refresh fails on another error (except a missing topic), the produce call raises it.
+- If the refresh fails on a transient error (`transport`, `timed_out`, `all_brokers_down` or `resolve`), the cache keeps the last known count and runs the next refresh after 10 seconds. Produce calls with `partition_key` continue to buffer messages in librdkafka during a cluster outage, but one produce call blocks for each refresh attempt. If the refresh fails on another error (except a missing topic), the produce call raises an error.
 - If the cache has no count for the topic, the produce call blocks while the metadata request and its retries run. This also applies to `#produce_async`. When the request fails, the produce call raises an error before WaterDrop queues the message. See [Error Handling](WaterDrop-Error-Handling#error-types).
 
 The cache TTL is a process-wide karafka-rdkafka setting, not a WaterDrop setting. You can set it in milliseconds:
