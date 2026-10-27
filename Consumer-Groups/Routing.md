@@ -265,21 +265,26 @@ class KarafkaApp < Karafka::App
   end
 
   routes.draw do
+    consumer_group :videos_consumer do
+      topic :A do
+        consumer ConsumerA
+      end
+    end
+  end
+
+  declaratives.draw do
     defaults do
-      config(
-        # Ensure there are always 5 partitions by default
-        partitions: 5,
-        # Make sure that topic is replicated in production
-        replication_factor: Rails.env.production? ? 2 : 1
-      )
+      # Ensure there are always 5 partitions by default
+      partitions 5
+      # Make sure that topic is replicated in production
+      replication_factor Rails.env.production? ? 2 : 1
     end
 
+    # Declaring only `partitions` is safe here - unlike the routing `#config`
+    # partial redefinition from the previous example, the remaining values
+    # are still inherited from the defaults block
     topic :A do
-      consumer ConsumerA
-
-      # BAD idea because `replication_factor` is going to be set
-      # to `1` as it is the framework default
-      config(partitions: 2)
+      partitions 2
     end
   end
 end
@@ -313,7 +318,6 @@ class KarafkaApp < Karafka::App
   routes.draw do
     consumer_group :videos_consumer do
       topic :binary_video_details do
-        config(partitions: 2)
         consumer Videos::DetailsConsumer
         deserializers(
           payload: Serialization::Binary::Deserializer.new
@@ -321,19 +325,33 @@ class KarafkaApp < Karafka::App
       end
 
       topic :new_videos do
-        config(partitions: 5, replication_factor: 4)
         consumer Videos::NewVideosConsumer
       end
     end
 
     topic :events do
-      config(partitions: 1, 'cleanup.policy': 'compact')
       # Set to false because not for consumption.
       # Only inspection via admin API.
       active false
       deserializers(
         payload: EventsDeserializer.new
       )
+    end
+  end
+
+  declaratives.draw do
+    topic :binary_video_details do
+      partitions 2
+    end
+
+    topic :new_videos do
+      partitions 5
+      replication_factor 4
+    end
+
+    topic :events do
+      partitions 1
+      config('cleanup.policy': 'compact')
     end
   end
 end
