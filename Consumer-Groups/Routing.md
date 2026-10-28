@@ -258,6 +258,8 @@ When you decide to override any default option for a topic within the `#topic` b
 
 Karafka will not use the user-specified defaults you have defined in the defaults block if you attempt to update the arguments for an option partially. Instead, it will revert to the framework's internal defaults for the missing arguments. This could lead to unexpected behavior in your application if not considered.
 
+The standalone `declaratives.draw` DSL does not have this limitation. Values set in its `defaults` block apply to every topic, and a topic block overrides only the values it sets:
+
 ```ruby
 class KarafkaApp < Karafka::App
   setup do |config|
