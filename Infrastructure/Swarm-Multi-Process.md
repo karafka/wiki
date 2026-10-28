@@ -48,7 +48,7 @@ Karafka's Swarm Mode supports both Linux and macOS.
 
 !!! warning "Swarm Mode Needs `Process.fork` and Does Not Run on JRuby"
 
-    Swarm Mode forks its nodes with `Process.fork`. JRuby, and any other Ruby without `fork`, cannot run it. On such a Ruby, `karafka swarm` fails at boot with `Karafka::Errors::UnsupportedOptionError` and starts nothing. A direct `Karafka::Swarm::Supervisor#run` call fails the same way.
+    Swarm Mode forks its nodes with `Process.fork`. JRuby, and any other Ruby without `fork`, cannot run it. On such a Ruby, `karafka swarm` fails at boot with `Karafka::Errors::UnsupportedOptionError` and starts nothing.
 
     Use `karafka server` instead. It runs one process with many threads. JRuby has no GIL, so these threads run in parallel.
 
