@@ -85,6 +85,10 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
+!!! note "The First Message Sets the Consumer Partition"
+
+    The `partition:` option of `#produce` and `#produce_to` sets the partition of the message (`message.partition`), the batch (`messages.metadata.partition`), and the consumer (`consumer.partition`). The default partition is `0`. A real consumer works on one partition, so the first message produced to a consumer sets the batch and consumer partition. Later messages with another partition keep their own `message.partition`, but they do not change the batch or consumer partition, and no error is raised. In the example above, the first message has no `partition:`, so the batch and consumer partition stay `0`, and only the second message has partition `2`. When you use several consumers in one spec, each consumer takes the partition from its own first message.
+
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
 ```ruby
@@ -464,6 +468,10 @@ class InlineBatchConsumerTest < ActiveSupport::TestCase
   end
 end
 ```
+
+!!! note "The First Message Sets the Consumer Partition"
+
+    The `partition:` option of `#produce` and `#produce_to` sets the partition of the message (`message.partition`), the batch (`messages.metadata.partition`), and the consumer (`@consumer.partition`). The default partition is `0`. A real consumer works on one partition, so the first message produced to a consumer sets the batch and consumer partition. Later messages with another partition keep their own `message.partition`, but they do not change the batch or consumer partition, and no error is raised. In the example above, the first message has no `partition:`, so the batch and consumer partition stay `0`, and only the second message has partition `2`. When you use several consumers in one test, each consumer takes the partition from its own first message.
 
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
