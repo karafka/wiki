@@ -38,18 +38,89 @@ Each message that you want to publish, will have its value checked.
 
 Here are all the things you can provide in the message hash:
 
-| Option          | Required | Value type    | Description                                              |
-|-----------------|----------|---------------|----------------------------------------------------------|
-| `topic`         | true     | String        | The Kafka topic that should be written to                |
-| `payload`       | true     | String        | Data you want to send to Kafka                           |
-| `key`           | false    | String        | The key that should be set in the Kafka message          |
-| `partition`     | false    | Integer       | A specific partition number that should be written to    |
-| `partition_key` | false    | String        | Key to indicate the destination partition of the message |
-| `timestamp`     | false    | Time, Integer | The timestamp that should be set on the message          |
-| `headers`       | false    | Hash          | Headers for the message                                  |
-| `label`         | false    | Object        | Anything you want to use as a label                      |
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Required</th>
+      <th>Value type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>topic</code></td>
+      <td>true</td>
+      <td>String</td>
+      <td>The Kafka topic that should be written to</td>
+    </tr>
+    <tr>
+      <td><code>payload</code></td>
+      <td>true</td>
+      <td>String</td>
+      <td>Data you want to send to Kafka</td>
+    </tr>
+    <tr>
+      <td><code>key</code></td>
+      <td>false</td>
+      <td>String</td>
+      <td>The key that should be set in the Kafka message</td>
+    </tr>
+    <tr>
+      <td><code>partition</code></td>
+      <td>false</td>
+      <td>Integer</td>
+      <td>A specific partition number that should be written to</td>
+    </tr>
+    <tr>
+      <td><code>partition_key</code></td>
+      <td>false</td>
+      <td>String</td>
+      <td>Key to indicate the destination partition of the message (see <a href="#partition-key">Partition Key</a>)</td>
+    </tr>
+    <tr>
+      <td><code>timestamp</code></td>
+      <td>false</td>
+      <td>Time, Integer</td>
+      <td>The timestamp that should be set on the message</td>
+    </tr>
+    <tr>
+      <td><code>headers</code></td>
+      <td>false</td>
+      <td>Hash</td>
+      <td>Headers for the message</td>
+    </tr>
+    <tr>
+      <td><code>label</code></td>
+      <td>false</td>
+      <td>Object</td>
+      <td>Anything you want to use as a label</td>
+    </tr>
+  </tbody>
+</table>
 
 The message you want to send should be either binary or stringified (to_s, to_json, etc).
+
+## Partition Key
+
+WaterDrop uses `partition_key` to compute the destination partition in the Ruby process. For this, it needs the topic partition count. The produce call reads it inline from a partition count cache. All the producers in the process share this cache, and `#partition_count` reads from it too.
+
+The cache works as follows:
+
+- A cached count stays valid for 30 seconds. After that, the next produce call with `partition_key` refreshes it with a metadata request.
+- When any producer or consumer in the process emits librdkafka statistics, the statistics also update the cache.
+- A topic that does not exist is cached too, so produce calls to it do not run a metadata request for each message.
+- The produce call that refreshes an expired count blocks while the metadata request and its retries run. Other produce calls get the known count during this time.
+- If the refresh fails on a transient error (`transport`, `timed_out`, `all_brokers_down` or `resolve`), the cache keeps the last known count and runs the next refresh after 10 seconds. Produce calls with `partition_key` continue to buffer messages in librdkafka during a cluster outage, but one produce call blocks for each refresh attempt. If the refresh fails on another error (except a missing topic), the produce call raises an error.
+- If the cache has no count for the topic, the produce call blocks while the metadata request and its retries run. This also applies to `#produce_async`. When the request fails, the produce call raises an error before WaterDrop queues the message. See [Error Handling](WaterDrop-Error-Handling#error-types).
+
+The cache TTL is a process-wide karafka-rdkafka setting, not a WaterDrop setting. You can set it in milliseconds:
+
+```ruby
+Rdkafka::Config.partitions_count_cache_ttl_ms = 60_000
+```
+
+The value must be a positive Integer, else the setter raises `ArgumentError`. The change keeps the cached counts, so you can change the TTL at any time. A lower value makes produce calls pick up partition count changes sooner and run metadata requests more often.
 
 ## Headers
 

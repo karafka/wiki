@@ -49,7 +49,7 @@ Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 It may mean one of four things:
 
 1. High probability: Broker cannot keep up with the produce rate.
-1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return info about the topic structure. A retry mechanism has been implemented in WaterDrop `2.4.4` to mitigate this.
+1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return the topic metadata, and WaterDrop has no known partition count for this topic. Once WaterDrop knows the count, it keeps it when a refresh fails on a transient error. See [Partition Key](WaterDrop-Usage#partition-key).
 1. Low probability: Slow network connection.
 1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
@@ -150,7 +150,7 @@ You can find the `SpecProducerClient` API [here](https://karafka.io/docs/code/ka
 
 In the WaterDrop gem, `partition_key` and `key` are two distinct options that can be used to set message keys, but they have different purposes and work slightly differently.
 
-- `partition_key` is used to determine the partition to which a message is sent and computes the destination partition in the Ruby process using the configured `partitioner` algorithm. The partitioner calculates a hash value based on the partition_key value and uses this hash value to select a partition for the message.
+- `partition_key` is used to determine the partition to which a message is sent and computes the destination partition in the Ruby process using the configured `partitioner` algorithm. The partitioner calculates a hash value based on the partition_key value and uses this hash value to select a partition for the message. For this, WaterDrop reads the topic partition count inline from a process-wide cache (see [Partition Key](WaterDrop-Usage#partition-key)).
 - `key` is an optional property that can be set for a message. The Kafka broker uses the message key for log compaction, which ensures that only the latest message for a specific key is retained in the topic. Unless partition is explicitly provided via `partition` or `partition_key`, the `key` value will also be used for partition assignment.
 
 ## How can I make sure, that `Karafka.producer` does not block/delay my processing?
@@ -494,6 +494,7 @@ The `partition_key` parameter is only used to determine which partition the mess
 - Is used solely for the partitioning algorithm
 - Is not stored with the message in Kafka
 - Allows you to control message distribution across partitions without affecting the message key
+- Needs the topic partition count, which WaterDrop reads inline from a process-wide cache (see [Partition Key](WaterDrop-Usage#partition-key))
 
 When only `key` is provided, WaterDrop uses it for both purposes - as the stored message key and for partition determination. When both are specified, `partition_key` precedes partition selection, while `key` is still stored with the message.
 
