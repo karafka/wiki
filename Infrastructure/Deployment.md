@@ -735,77 +735,6 @@ class LivenessListener < ::Karafka::Instrumentation::Vendors::Kubernetes::Livene
 end
 ```
 
-### Readiness
-
-The liveness listener tells Kubernetes when to restart a container. The readiness listener tells Kubernetes when a pod is ready for work. Use `ReadinessListener` for a `startupProbe` and a `readinessProbe`, and keep `LivenessListener` for the `livenessProbe`.
-
-The readiness listener reports the process as ready when both of these conditions are true:
-
-- Every active subscription group has started to poll (emitted at least one `connection.listener.fetch_loop` event).
-- The process is not quieting, quiet, stopping, stopped or terminated.
-
-The first condition latches: after all subscription groups have polled, a later rebalance does not make the process not-ready again. The second condition is checked on each request. When the process starts to quiet or shut down, the probe reports not-ready, so Kubernetes can remove the pod from the Service endpoints before the process exits.
-
-The listener starts its HTTP server when Karafka starts running. Before that, the probe gets a connection refusal, which a `startupProbe` treats as not-ready. Like the liveness listener, it responds with:
-
-- `200` - The process is ready, with detailed JSON status information.
-- `500` - The process is not ready yet, or it is quieting or shutting down.
-
-The default port of the readiness listener is `3001`, one above the liveness listener default of `3000`, so you can subscribe both listeners without a port collision. When you embed Karafka in a web server process such as Puma, use a port that is different from Puma and from the liveness listener.
-
-1. Put the following code at the end of your `karafka.rb` file:
-
-    ```ruby
-    require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
-    require 'karafka/instrumentation/vendors/kubernetes/readiness_listener'
-
-    Karafka.monitor.subscribe(
-      ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(port: 3000)
-    )
-
-    Karafka.monitor.subscribe(
-      ::Karafka::Instrumentation::Vendors::Kubernetes::ReadinessListener.new(port: 3001)
-    )
-    ```
-
-1. Point the `startupProbe` and the `readinessProbe` at the readiness port and the `livenessProbe` at the liveness port:
-
-    ```yaml
-    startupProbe:
-      httpGet:
-        path: /
-        port: 3001
-      periodSeconds: 5
-      failureThreshold: 30
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 3001
-      periodSeconds: 10
-      timeoutSeconds: 5
-    livenessProbe:
-      httpGet:
-        path: /
-        port: 3000
-      initialDelaySeconds: 30
-      periodSeconds: 10
-      timeoutSeconds: 5
-    ```
-
-The readiness response adds three fields to the base response: `ready`, `polled_subscription_groups` (the number of subscription groups that have polled) and `expected_subscription_groups` (the number of active subscription groups, or `null` when Karafka cannot determine it yet):
-
-```json
-{
-  "status": "healthy",
-  "timestamp": 1717251446,
-  "port": 3001,
-  "process_id": 12345,
-  "ready": true,
-  "polled_subscription_groups": 2,
-  "expected_subscription_groups": 2
-}
-```
-
 ### Liveness In the Swarm Mode
 
 Karafka provides a specialized Kubernetes liveness listener for applications operating in the Swarm Mode. This adaptation ensures accurate health monitoring and management of the supervisor process within the swarm
@@ -863,6 +792,81 @@ listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new
 )
 
 Karafka.monitor.subscribe(listener)
+```
+
+### Readiness
+
+The liveness listener tells Kubernetes when to restart a container. The readiness listener tells Kubernetes when a pod is ready for work. Use `ReadinessListener` for a `startupProbe` and a `readinessProbe`, and keep `LivenessListener` for the `livenessProbe`.
+
+The readiness listener reports the process as ready when both of these conditions are true:
+
+- Every active subscription group has started to poll (emitted at least one `connection.listener.fetch_loop` event).
+- The process is not quieting, quiet, stopping, stopped or terminated.
+
+The first condition latches: after all subscription groups have polled, a later rebalance does not make the process not-ready again. The second condition is checked on each request. When the process starts to quiet or shut down, the probe reports not-ready, so Kubernetes can remove the pod from the Service endpoints before the process exits.
+
+The listener starts its HTTP server when Karafka starts running. Before that, the probe gets a connection refusal, which a `startupProbe` treats as not-ready. Like the liveness listener, it responds with:
+
+- `200` - The process is ready, with detailed JSON status information.
+- `500` - The process is not ready yet, or it is quieting or shutting down.
+
+!!! warning "`ReadinessListener` Does Not Support Swarm Mode"
+
+    Do not use `ReadinessListener` in Swarm Mode. The swarm supervisor never enters the running state, so the listener does not start its server there. Each forked node runs its own Karafka server, so each node tries to start its own readiness server on the same port. Karafka does not provide a readiness listener for Swarm Mode.
+
+The default port of the readiness listener is `3001`, one above the liveness listener default of `3000`, so you can subscribe both listeners without a port collision. When you embed Karafka in a web server process such as Puma, use a port that is different from Puma and from the liveness listener.
+
+1. Put the following code at the end of your `karafka.rb` file:
+
+    ```ruby
+    require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
+    require 'karafka/instrumentation/vendors/kubernetes/readiness_listener'
+
+    Karafka.monitor.subscribe(
+      ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(port: 3000)
+    )
+
+    Karafka.monitor.subscribe(
+      ::Karafka::Instrumentation::Vendors::Kubernetes::ReadinessListener.new(port: 3001)
+    )
+    ```
+
+1. Point the `startupProbe` and the `readinessProbe` at the readiness port and the `livenessProbe` at the liveness port:
+
+    ```yaml
+    startupProbe:
+      httpGet:
+        path: /
+        port: 3001
+      periodSeconds: 5
+      failureThreshold: 30
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3001
+      periodSeconds: 10
+      timeoutSeconds: 5
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+    ```
+
+The readiness response adds three fields to the base response: `ready`, `polled_subscription_groups` (the number of subscription groups that have polled) and `expected_subscription_groups` (the number of active subscription groups, or `null` when Karafka cannot determine it yet). While `expected_subscription_groups` is `null`, the process is ready when at least one subscription group has polled, and this condition does not latch:
+
+```json
+{
+  "status": "healthy",
+  "timestamp": 1717251446,
+  "port": 3001,
+  "process_id": 12345,
+  "ready": true,
+  "polled_subscription_groups": 2,
+  "expected_subscription_groups": 2
+}
 ```
 
 ## Confluent Cloud
