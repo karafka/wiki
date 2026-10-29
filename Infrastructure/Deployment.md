@@ -805,6 +805,8 @@ The readiness listener reports the process as ready when both of these condition
 
 The first condition latches: after all subscription groups have polled, a later rebalance does not make the process not-ready again. The second condition is checked on each request. When the process starts to quiet or shut down, the probe reports not-ready, so Kubernetes can remove the pod from the Service endpoints before the process exits.
 
+When Karafka cannot determine the active subscription groups yet (`expected_subscription_groups` is `null` in the response), the first condition changes: at least one subscription group must have polled, and this condition does not latch. The second condition still applies.
+
 The listener starts its HTTP server when Karafka starts running. Before that, the probe gets a connection refusal, which a `startupProbe` treats as not-ready. Like the liveness listener, it responds with:
 
 - `200` - The process is ready, with detailed JSON status information.
@@ -855,7 +857,7 @@ The default port of the readiness listener is `3001`, one above the liveness lis
       timeoutSeconds: 5
     ```
 
-The readiness response adds three fields to the base response: `ready`, `polled_subscription_groups` (the number of subscription groups that have polled) and `expected_subscription_groups` (the number of active subscription groups, or `null` when Karafka cannot determine it yet). While `expected_subscription_groups` is `null`, the process is ready when at least one subscription group has polled, and this condition does not latch:
+The readiness response adds three fields to the base response: `ready`, `polled_subscription_groups` (the number of subscription groups that have polled) and `expected_subscription_groups` (the number of active subscription groups, or `null` when Karafka cannot determine it yet):
 
 ```json
 {
