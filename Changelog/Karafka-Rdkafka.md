@@ -17,16 +17,19 @@
 - [Maintenance] Drop `pry` from the development bundle and stop requiring it in the spec helper.
 - [Maintenance] Stabilize the flaky `admin_describe_topics` integration test, which could describe its new topic before the topic was in the broker's metadata.
 - [Maintenance] Name positional String topic parameters `topic_name` (`Consumer#query_watermark_offsets`, `#seek_by`, `Producer#partition_count`, `TopicPartitionList#add_topic` and others). Callers are not affected. Ported from rdkafka-ruby (#1052).
+- [Maintenance] Name the positional String topic parameters of `Producer::PartitionsCountCache` `topic_name`. Callers are not affected.
 - [Maintenance] Cover with integration tests that coordinator errors on group offset requests do not crash the admin client or a consumer without `group.id`. Ported from rdkafka-ruby (#1044).
 - [Maintenance] Skip the bindings signature parity spec on JRuby, whose FFI does not expose function signatures. Ported from rdkafka-ruby (#1046).
 - [Maintenance] Match the FFI pointer expectations in the consumer specs by address, so they pass on JRuby. Ported from rdkafka-ruby (#1047).
 - [Maintenance] Run the `client_shutdown_dlclose` integration test on JRuby on Linux. Ported from rdkafka-ruby (#1049).
 - [Maintenance] Check the native call balance instead of RSS in the leak integration specs on JRuby. Ported from rdkafka-ruby (#1050).
 - [Maintenance] Give the `Consumer#lag` spec a 30 s list offsets wait.
+- [Maintenance] Define `Consumer.finalizer` and `Consumer.report_close_error` in a `class << self` block. Callers are not affected. Ported from rdkafka-ruby (#1068).
 - [Fix] Stop `Consumer#store_offset` and other calls that pass partition metadata from raising `NoMethodError` on JRuby. Ported from rdkafka-ruby (#1045).
 - [Fix] Raise `Rdkafka::LibraryLoadError` with the glibc upgrade hint instead of `NameError` when the precompiled librdkafka needs a newer glibc. Ported from rdkafka-ruby (#1031).
 - [Fix] Report a failed consumer close (e.g. of a fatally-errored consumer) to `Rdkafka::Config.error_callback` instead of dropping it. `Consumer#close` still does not raise.
 - [Fix] Stop the statistics, error and OAuth token refresh callbacks from raising `NoMethodError` when another thread clears the global callback while they run. On JRuby this aborted the process from the polling thread. Ported from rdkafka-ruby (#1058).
+- [Fix] Stop the producer from retrying a message without backoff after about 25 retries, by patching the bundled librdkafka (confluentinc/librdkafka#5646).
 
 ## 0.31.0 (2026-10-12)
 - **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
