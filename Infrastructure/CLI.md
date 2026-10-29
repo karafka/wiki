@@ -77,6 +77,26 @@ You can also exclude certain topics by using the `--exclude-topics` flag:
 bundle exec karafka server --exclude-topics topic_name2,topic_name5
 ```
 
+### Using Wildcard Patterns
+
+The `--include-*` and `--exclude-*` server flags for consumer groups, subscription groups and topics accept wildcard patterns in addition to literal names. Karafka treats a value as a pattern when it contains `*`, `?`, `[` or `]`, and matches it like a file name glob. A value without these characters must match the name exactly.
+
+```shell
+# Run all consumer groups except those whose names start with app-a-
+bundle exec karafka server --exclude-consumer-groups 'app-a-*'
+
+# Mix patterns and literal names
+bundle exec karafka server --include-topics 'orders_*',payments
+```
+
+!!! tip "Quote Wildcard Patterns in the Shell"
+
+    Put patterns in quotes. Without quotes, your shell can expand `*` and `?` into local file names before Karafka receives them.
+
+Karafka does not check wildcard patterns against your routing, so a pattern that matches nothing does not cause an unknown name error. If no topics remain to subscribe to, the server still refuses to start. When a name matches both an inclusion and an exclusion, inclusion wins, the same as with literal names.
+
+With [Routing Patterns](Pro-Routing-Patterns), the filters also apply to topics that Karafka discovers at runtime.
+
 ## Karafka Topics Health
 
 !!! info "`topics health` Is a Pro Command"
