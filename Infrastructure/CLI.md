@@ -95,7 +95,7 @@ bundle exec karafka server --include-topics 'orders_*',payments
 
 Karafka does not check wildcard patterns against your routing, so a pattern that matches nothing does not cause an unknown name error. If no topics remain to subscribe to, the server still refuses to start. When a name matches both an inclusion and an exclusion, inclusion wins, the same as with literal names.
 
-With [Routing Patterns](Pro-Routing-Patterns), the filters also apply to topics that Karafka discovers at runtime.
+With [Routing Patterns](Pro-Routing-Patterns), topic filters match a pattern by its name, the same as literal names do, so a wildcard can include or exclude whole patterns.
 
 ## Karafka Topics Health
 
