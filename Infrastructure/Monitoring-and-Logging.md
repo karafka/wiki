@@ -1,4 +1,4 @@
-Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
+Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems or perform additional operations during certain phases of the Karafka framework lifecycle.
 
 The framework itself always subscribes a couple of internal listeners (for example `Instrumentation::CriticalErrorsListener` and `Instrumentation::AssignmentsTracker`). On top of those, the generated `karafka.rb` template wires up the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```) for you by convention - it is not subscribed automatically by the framework itself. It is based on a standard [Ruby logger](https://ruby-doc.org/stdlib-3.1.2/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails. You can find it in your `karafka.rb` file:
 
@@ -842,7 +842,7 @@ In these names:
 
 - `{broker}` is the broker node name with `:` replaced by `_`. The listener skips bootstrap brokers.
 - `{type}` is the error type with `.` replaced by `_`.
-- Partition metrics appear only for partitions that this consumer fetches and for which librdkafka already reports lag.
+- `consumer.lags` and `consumer.lags_delta` appear only for partitions that this consumer fetches and for which librdkafka already reports lag.
 
 ### Customizing librdkafka Statistics Metrics
 
