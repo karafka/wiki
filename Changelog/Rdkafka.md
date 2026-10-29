@@ -9,6 +9,7 @@
 - [Enhancement] Keep `partition_key` produces working during a cluster outage once the topic partition count is known, instead of raising.
 - [Enhancement] Make `Producer#produce` use about 13% less CPU per call.
 - [Enhancement] Reduce object shape variations of the admin report classes to one shape per class.
+- [Enhancement] Allocate fewer objects per delivered message: delivery callback reports reuse the topic String given to `produce`.
 - [Change] Build the precompiled `x86_64-linux-gnu` and `aarch64-linux-gnu` libraries in an Ubuntu 22.04 container on Ubuntu 24.04 runners, keeping the glibc 2.34 floor after GitHub retires its Ubuntu 22.04 runners.
 - [Change] Depend on `mini_portile2` and `rake` only in the source gem, as only it compiles librdkafka. Apps that got `rake` only through this gem must add it to their Gemfile.
 - [Change] Remove the unused `Rdkafka::Defaults::NATIVE_KAFKA_SYNCHRONIZE_SLEEP_INTERVAL_MS`: `close` now waits for operations in progress without polling.
@@ -27,6 +28,9 @@
 - [Maintenance] Wait 30 s for the `before(:suite)` topic creates.
 - [Maintenance] Stop the fake SSL servers in integration specs without `Thread#kill`.
 - [Maintenance] Check native call balance instead of RSS in leak specs on JRuby.
+- [Maintenance] Give the `Consumer#lag` spec a 30 s list offsets wait, like its siblings. Ported from karafka-rdkafka.
+- [Maintenance] Retry the `Consumer#poll_nb` "returns a message" spec on a 30 s deadline instead of a fixed ~2 s, for loaded CI runners. Ported from karafka-rdkafka.
+- [Maintenance] Stabilize the `consumer_memberid_clusterid_leak` integration spec against RSS noise on Ruby 4.0: compact the heap before sampling and run 400k calls against a 5 MB ceiling. Ported from karafka-rdkafka.
 - [Fix] Create one topic handle per topic when many threads produce to a new topic at once. On JRuby this race leaked topic handles and could crash with a segfault; `produce` now raises `TopicHandleCreationError` instead of passing a missing handle to librdkafka.
 - [Fix] Stop `Consumer#store_offset` and other calls that pass partition metadata from raising `NoMethodError` on JRuby.
 - [Fix] Raise `Rdkafka::LibraryLoadError` with the glibc upgrade hint instead of `NameError` when the precompiled librdkafka needs a newer glibc.

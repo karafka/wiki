@@ -34,9 +34,11 @@
 - [Maintenance] Align with the ecosystem naming conventions: name the positional partition count of `Admin.create_topic` / `.create_partitions` (and `Admin::Topics`) `partition_count`, and use named constants for the `karafka console` and Pro `topics health` exit codes.
 - [Maintenance] Drop `byebug` from the test bundle and stop requiring it in the spec helpers.
 - [Maintenance] Run the CLI swarm and deserializers allocation specs on JRuby.
+- [Maintenance] Declare `rake` in the `Gemfile`. It came only through `karafka-rdkafka`, which will stop depending on it for precompiled platform gems.
 - [Fix] Stop `CoordinatorsBuffer#@coordinators` from growing unbounded across rebalances by dropping a topic entry on revoke once it tracks no partitions (mirrors `PausesManager#delete`).
 - [Fix] Use `::JSON.parse` in the ActiveJob deserializer, so consuming ActiveJob messages works with the json gem `>= 3.0`.
 - [Fix] [Pro] Honour the read_committed isolation level in consumer-group lag compensation, so an in-flight transaction no longer overstates the lag (needs karafka-rdkafka `>= 0.30.0`).
+- [Fix] Run the `Karafka::Server.stop` sequence once when two stops are requested at the same time (e.g. TERM then INT on JRuby): the state check and the `stopping` transition are now one atomic step.
 - [Fix] [Pro] Stabilize the `Karafka::Admin::Recovery` `read_committed_offsets` no-offsets integration spec against a fresh CI broker.
 - [Fix] Stabilize the `Karafka::Admin::Acl` `#create`/`#describe` specs against asynchronous ACL propagation on slow CI.
 - [Fix] Stabilize the empty-topic `read_watermark_offsets` specs against a broker leader-election race.
@@ -50,8 +52,10 @@
 - [Fix] Set `Message#received_at` to the moment each message was polled, not the moment its batch was built, so it no longer trails by up to `max_wait_time` on low traffic topics (#2292).
 - [Fix] Stop the listener from failing with `NoMethodError` on JRuby when it checks a subscription group's jobs while workers complete them.
 - [Fix] Stop `#inline_insights` from returning no data on JRuby while another thread adds or evicts partition statistics.
+- [Fix] Restore `InlineInsights::Tracker.exists?`, which raised `NoMethodError` because its delegated `#exists?` was removed.
 - [Fix] Stop `Admin` operations from retrying forever when their result never becomes visible. They now raise `ResultNotVisibleError` after `admin.max_retries_duration`.
 - [Fix] Keep the Datadog `LoggerListener` job types cache consistent on JRuby when many workers fill it at once.
+- [Fix] [Pro] Stabilize the `lost_assignment_with_offset_storage` transactions spec.
 
 ## 2.6.1 (2026-08-24)
 - **[Feature]** [Pro] Add an opt-in envelope encryption mode for Messages At Rest (`config.encryption.mode = :envelope`, requires openssl `>= 3.0`) without the RSA payload size limit. Upgrade all consuming processes before enabling.
