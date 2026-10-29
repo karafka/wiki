@@ -45,7 +45,7 @@ Once included in your RSpec setup, this library will provide you with a special 
 - `#produce` - the method sends message to the consumer instance.
 - `#produce_to` - the method sends a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - the method contains all the messages "sent" to Kafka during spec execution.
-- `#consumer_messages` - the method returns the array of messages used to build the consumer's batch.
+- `#consumer_messages` - the method returns all messages delivered to consumers in the spec. With one consumer, this array builds the consumer's batch, so changing it changes the batch. When several consumers receive messages in one spec, each consumer's batch holds only its own messages, and changing this array does not change any batch.
 
 !!! warning "Message Buffering"
 
@@ -426,7 +426,7 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 - `#produce` - "Sends" messages to the consumer instance.
 - `#produce_to` - "Sends" a message to a specific consumer instance (useful when multiple consumer groups listen to the same topic).
 - `#produced_messages` - Contains all messages "sent" to Kafka during test execution.
-- `#consumer_messages` - Returns the array of messages used to build the consumer's batch.
+- `#consumer_messages` - Returns all messages delivered to consumers in the test. With one consumer, this array builds the consumer's batch, so changing it changes the batch. When several consumers receive messages in one test, each consumer's batch holds only its own messages, and changing this array does not change any batch.
 
 !!! warning "Message Buffering"
 
