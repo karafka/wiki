@@ -713,7 +713,7 @@ Karafka::Admin.list_consumer_groups
 # ]
 ```
 
-The `:state` is a symbol: `:unknown`, `:preparing_rebalance`, `:completing_rebalance`, `:stable`, `:dead`, or `:empty`. Use it to check if a consumer group has live members:
+The `:state` is a symbol: `:unknown`, `:preparing_rebalance`, `:completing_rebalance`, `:stable`, `:dead`, or `:empty`. Use it, for example, to check if a consumer group is stable:
 
 ```ruby
 group = Karafka::Admin.list_consumer_groups.find { |g| g[:group_id] == 'billing' }
@@ -724,7 +724,7 @@ This is a read-only and lightweight call. It does not read offsets or members. I
 
 `Karafka::Admin::ConsumerGroups.list` returns the same result. On an Admin instance for a custom cluster, use `#list_consumer_groups`.
 
-- **Partial Listing**: Kafka collects the consumer groups from each broker. When a broker is unreachable, Karafka raises `Rdkafka::RdkafkaError` instead of returning an incomplete list. An incomplete list can make an existing consumer group look absent.
+- **Partial Listing**: The Admin call requests the consumer groups from each broker. When a broker is unreachable, Karafka raises `Rdkafka::RdkafkaError` instead of returning an incomplete list. An incomplete list can make an existing consumer group look absent.
 
 ## Describing Consumer Groups
 
