@@ -740,6 +740,129 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
     Do not use this integration alongside the native Karafka DataDog integration as they may conflict with each other. Choose the one that best fits your monitoring needs.
 
+## New Relic Metrics
+
+!!! info "Available From Karafka 2.6.2"
+
+    The New Relic metrics listener is part of Karafka 2.6.2 and newer.
+
+Karafka includes a New Relic metrics listener that publishes consumer, worker and librdkafka metrics as New Relic custom metrics with `NewRelic::Agent.record_metric`. The New Relic agent aggregates each metric (min, max, average and count) over its reporting interval.
+
+The listener requires the `newrelic_rpm` gem with a configured agent. Karafka does not load it by default:
+
+```ruby
+# First configure your app in karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup goes here...
+  end
+end
+
+# require the New Relic metrics listener as it is not loaded by default
+require 'karafka/instrumentation/vendors/new_relic/metrics_listener'
+
+# Subscribe with your listener to Karafka and you should be ready to go!
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new
+)
+```
+
+The listener publishes all metrics under `Custom/{namespace}/`, with `karafka` as the default namespace. To use a different namespace, set it in the setup block:
+
+```ruby
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new do |config|
+    config.namespace = 'my_app'
+  end
+)
+```
+
+You can query the metrics with the New Relic metric timeslice API or use them in custom dashboard widgets.
+
+!!! note "Context Is Part of the Metric Name"
+
+    New Relic custom metrics do not support tags. The listener puts the context (consumer group, topic, partition and broker) into the metric name. For example, the stored consumer lag of partition `0` of the `orders` topic in the `app` consumer group is `Custom/karafka/consumer.lags.app.orders.0`.
+
+### Published Metrics
+
+All names below are relative to `Custom/{namespace}/`:
+
+<table>
+  <thead>
+    <tr>
+      <th>Event</th>
+      <th>Metric Names</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>statistics.emitted</code></td>
+      <td>
+        <code>messages.consumed.{group_id}</code>, <code>messages.consumed.bytes.{group_id}</code><br>
+        <code>consume.attempts</code>, <code>consume.errors</code>, <code>receive.errors</code>, <code>connection.connects</code>, <code>connection.disconnects</code>, <code>network.latency.avg</code>, <code>network.latency.p95</code>, <code>network.latency.p99</code>, each with the <code>.{group_id}.{broker}</code> suffix<br>
+        <code>consumer.lags</code>, <code>consumer.lags_delta</code>, each with the <code>.{group_id}.{topic}.{partition}</code> suffix
+      </td>
+    </tr>
+    <tr>
+      <td><code>error.occurred</code></td>
+      <td><code>error_occurred.{type}</code></td>
+    </tr>
+    <tr>
+      <td><code>connection.listener.fetch_loop.received</code></td>
+      <td><code>listener.polling.time_taken.{group_id}</code>, <code>listener.polling.messages.{group_id}</code></td>
+    </tr>
+    <tr>
+      <td><code>consumer.consumed</code></td>
+      <td><code>consumer.messages</code>, <code>consumer.batches</code>, <code>consumer.offset</code>, <code>consumer.consumed.time_taken</code>, <code>consumer.batch_size</code>, <code>consumer.processing_lag</code>, <code>consumer.consumption_lag</code>, each with the <code>.{group_id}.{topic}.{partition}</code> suffix</td>
+    </tr>
+    <tr>
+      <td><code>consumer.revoked</code></td>
+      <td><code>consumer.revoked.{group_id}.{topic}.{partition}</code></td>
+    </tr>
+    <tr>
+      <td><code>consumer.shutdown</code></td>
+      <td><code>consumer.shutdown.{group_id}.{topic}.{partition}</code></td>
+    </tr>
+    <tr>
+      <td><code>consumer.ticked</code></td>
+      <td><code>consumer.tick.{group_id}.{topic}.{partition}</code></td>
+    </tr>
+    <tr>
+      <td><code>worker.process</code></td>
+      <td><code>worker.total_threads</code>, <code>worker.processing</code>, <code>worker.enqueued_jobs</code></td>
+    </tr>
+    <tr>
+      <td><code>worker.processed</code></td>
+      <td><code>worker.processing</code></td>
+    </tr>
+  </tbody>
+</table>
+
+In these names:
+
+- `{broker}` is the broker node name with `:` replaced by `_`. The listener skips bootstrap brokers.
+- `{type}` is the error type with `.` replaced by `_`.
+- Partition metrics appear only for partitions that this consumer fetches and for which librdkafka already reports lag.
+
+### Customizing librdkafka Statistics Metrics
+
+The `rd_kafka_metrics` setting holds the librdkafka statistics that the listener publishes on each `statistics.emitted` event. Metrics with the `_d` suffix in their statistics key (for example `rxmsgs_d`) are deltas that Karafka computes, not raw librdkafka values. To publish only the metrics you need, provide your own list:
+
+```ruby
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new do |config|
+    # Only report the stored consumer lag per topic partition
+    config.rd_kafka_metrics = [
+      Karafka::Instrumentation::Vendors::NewRelic::MetricsListener::RdKafkaMetric.new(
+        :topics, 'consumer.lags', 'consumer_lag_stored'
+      )
+    ]
+  end
+)
+```
+
+Each `RdKafkaMetric` takes a scope (`:root`, `:brokers` or `:topics`), the metric name and the location of the value in the statistics. As with the [Datadog listener](#disabling-specific-event-handlers), you can subclass the listener and override its `#on_*` methods to stop publishing metrics of a given event.
+
 ## Kubernetes
 
 Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
