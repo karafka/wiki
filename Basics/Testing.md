@@ -85,6 +85,10 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
+!!! note "Batch and Consumer Partition Follow the First Message"
+
+    The batch partition (`messages.metadata.partition`) and the consumer partition (`consumer.partition`) take the `partition:` of the first message produced to that consumer, as in a real run, or `0` when it has none. A real batch never mixes partitions, so messages produced later with another `partition:` do not change them, but each message keeps its own partition. In the example above, both are `0`.
+
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
 ```ruby
@@ -464,6 +468,10 @@ class InlineBatchConsumerTest < ActiveSupport::TestCase
   end
 end
 ```
+
+!!! note "Batch and Consumer Partition Follow the First Message"
+
+    The batch partition (`messages.metadata.partition`) and the consumer partition (`@consumer.partition`) take the `partition:` of the first message produced to that consumer, as in a real run, or `0` when it has none. A real batch never mixes partitions, so messages produced later with another `partition:` do not change them, but each message keeps its own partition. In the example above, both are `0`.
 
 If your consumers use `producer` to dispatch messages, you can check its operations as well:
 
