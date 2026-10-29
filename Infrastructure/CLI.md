@@ -99,7 +99,7 @@ Each finding is printed as it is found (in cluster order, not grouped by severit
 
 ## Karafka Info
 
-The `info` command prints the Karafka, Ruby and librdkafka versions, the consumer, share and subscription group counts, the workers count, the client id, the boot file, the environment and the license details:
+The `info` command prints the Karafka, Ruby and `karafka-rdkafka` versions, the consumer, share and subscription group counts, the workers count, the client id, the boot file, the environment and the license details:
 
 ```shell
 bundle exec karafka info
@@ -113,13 +113,13 @@ bundle exec karafka info --extended
 
 The extended output adds three sections:
 
-- **Routing** - each consumer group and share group with its state (active or inactive) and its active features. For each subscription group: its name, position, state, `kafka[group.id]`, `max_messages`, `max_wait_time` and, when multiplexing is used, its `min`, `max` and `boot` values. For each topic: its consumer, `max_messages`, `max_wait_time`, `initial_offset`, `consumer_persistence`, pause settings, per-topic `kafka` overrides and active features.
+- **Routing** - each consumer group and share group with its state (active or inactive) and its active features. For each subscription group: its name, position, state, `kafka[group.id]`, `max_messages`, `max_wait_time` and, when multiplexing is used, its `min`, `max` and `boot` values. For each topic: its consumer, `max_messages`, `max_wait_time`, `initial_offset`, `consumer_persistence`, pause settings, its own `kafka` settings (when set) and active features.
 - **Config** - the global settings: `client_id`, `group_id`, `concurrency`, `max_messages`, `max_wait_time`, `initial_offset`, `shutdown_timeout`, `consumer_persistence`, pause settings, `strict_topics_namespacing` and `strict_declarative_topics`.
 - **Kafka Config** - the global `kafka` settings.
 
 !!! info "Sensitive Kafka Values Are Redacted"
 
-    Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `secret`, `token` or `sasl.oauthbearer.client` (case-insensitive). This applies to the Kafka Config section and to per-topic `kafka` overrides. Karafka does **not** redact other values.
+    Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `secret`, `token` or `sasl.oauthbearer.client` (case-insensitive). This applies to the Kafka Config section and to the per-topic `kafka` settings. Karafka does **not** redact other values.
 
 ## Karafka Swarm
 
