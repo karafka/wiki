@@ -89,10 +89,6 @@ bundle exec karafka server --exclude-consumer-groups 'app-a-*'
 bundle exec karafka server --include-topics 'orders_*',payments
 ```
 
-!!! tip "Quote Wildcard Patterns in the Shell"
-
-    Put patterns in quotes. Without quotes, your shell can expand `*` and `?` into local file names before Karafka receives them.
-
 Karafka does not check wildcard patterns against your routing, so a pattern that matches nothing does not cause an unknown name error. If no topics remain to subscribe to, the server still refuses to start. When a name matches both an inclusion and an exclusion, inclusion wins, the same as with literal names.
 
 With [Routing Patterns](Pro-Routing-Patterns), topic filters match a pattern by its name, the same as literal names do, so a wildcard can include or exclude whole patterns.
