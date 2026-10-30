@@ -14,6 +14,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Parallel Segments](Pro-Consumer-Groups-Parallel-Segments) - Parallel Segments enable processing data from a single topic partition across multiple independent processes simultaneously. This approach allows for horizontal scaling by filtering and distributing messages at the consumer group level, making it particularly effective when data clustering renders Virtual Partitions ineffective.
 
+- [Direct Assignments](Pro-Direct-Assignments) - Direct Assignments bypass the standard consumer group partition assignment and let you specify which topics and partitions each consumer processes. This is useful for data pipelines and applications that need explicit partition ownership.
+
 - [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delayed Topics feature allows for arbitrary delay in processing messages from specified topics without impacting the processing of other topics.
 
 - [Long-Running Jobs](Pro-Consumer-Groups-Long-Running-Jobs) - Long-Running Jobs are jobs that run continuously and handle messages from a Kafka topic over an extended time beyond `max.poll.interval.ms`. These jobs are designed to handle tasks requiring longer execution times, such as data processing, transformation, and analysis.
@@ -40,6 +42,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Cleaner API](Pro-Cleaner-API) - The Cleaner API efficiently releases messages payloads from memory after processing, optimizing memory management during batch operations.
 
+- [Admin Recovery API](Infrastructure-Admin-Recovery-API) - `Karafka::Admin::Recovery` reads committed offsets without the group coordinator and migrates consumer groups when the Kafka group coordinator is in a `FAILED` state.
+
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 
 - [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results to subsequent stages or other applications.
@@ -53,6 +57,10 @@ Below you can find the list of the Pro features with their brief description:
 - [Enhanced Swarm / Multi Process](Pro-Enhanced-Swarm-Multi-Process) - Provides extra capabilities for managing worker nodes, ensuring resilience by automatically detecting and handling hanging or memory-intensive nodes, and maintaining system efficiency and stability.
 
 - [Optimized Statistics Processing](Pro-Optimized-Statistics-Processing) - Automatically reduces the overhead of Kafka client statistics in high-partition environments, ensuring that statistics data size and processing cost scale with the actual workload rather than the total cluster size.
+
+- [Lag Compensation](Pro-Consumer-Groups-Lag-Compensation) - Lag Compensation refreshes watermark offsets and consumer lag for long-paused partitions, so dashboards, alerts, and the Web UI report accurate lag instead of a frozen value.
+
+- [Enhanced Inline Insights](Pro-Consumer-Groups-Enhanced-Inline-Insights) - Enhanced Inline Insights add the `required` option to [Inline Insights](Consumer-Groups-Inline-Insights). With it, Karafka pauses a topic partition until its insights are available, so consumers process data only with the matching metrics.
 
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Enhanced Dead Letter Queue feature provides additional functionalities and warranties to the regular [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) feature. It aims to complement it with other dispatch warranties and additional messages metadata information.
 
