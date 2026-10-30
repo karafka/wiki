@@ -48,7 +48,7 @@ Send `TERM`, `INT` or `QUIT` signal to a Karafka process to shut it down. It wil
 
 !!! warning "On JRuby, Stop Karafka With `TERM`"
 
-    On JRuby, `QUIT` does not stop Karafka. The JVM handles `QUIT` itself and prints a thread dump, so the Karafka handler never runs. Use `TERM` to stop the process. `INT` also works in an interactive terminal, but a process started with `INT` ignored (for example, under `nohup` or with `&` in a non-interactive shell) never reacts to it. Process managers, Docker and Kubernetes send `TERM` by default.
+    On JRuby, `QUIT` does not stop Karafka. The JVM handles `QUIT` itself and prints a thread dump, so the Karafka handler never runs. Use `TERM` to stop the process. `INT` also works in an interactive terminal, but a process started with `INT` ignored (for example, with `&` in a non-interactive shell) never reacts to it. Process managers, Docker and Kubernetes send `TERM` by default.
 
 #### Forceful Shutdown
 
