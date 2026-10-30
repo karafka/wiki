@@ -42,7 +42,7 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Cleaner API](Pro-Cleaner-API) - The Cleaner API efficiently releases messages payloads from memory after processing, optimizing memory management during batch operations.
 
-- [Admin Recovery API](Infrastructure-Admin-Recovery-API) - `Karafka::Admin::Recovery` reads committed offsets without the group coordinator and migrates consumer groups when the Kafka group coordinator is in a `FAILED` state.
+- [Admin Recovery API](Infrastructure-Admin-Recovery-API) - `Karafka::Admin::Recovery` reads committed offsets directly from `__consumer_offsets` without the group coordinator and shows which groups and partitions a failed coordinator affects. Use it when the Kafka group coordinator is in a `FAILED` state.
 
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 

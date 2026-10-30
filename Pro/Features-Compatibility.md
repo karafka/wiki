@@ -1,6 +1,6 @@
 # Karafka Pro Features Compatibility
 
-Karafka provides several features that can work together. Unless explicitly stated otherwise, Karafka Pro features should work with each other without any limitations. The routing validation rejects the combinations that cannot work together, and the sections below list them.
+Karafka provides several features that can work together. Unless explicitly stated otherwise, Karafka Pro features should work with each other without any limitations. When the routing validation rejects a combination, its section below says so.
 
 ## Long Running Jobs + Virtual Partitions
 
@@ -39,7 +39,7 @@ With Virtual Partitions, Karafka marks each job as consumed after it finishes an
 
 Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
 
-The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`:
+The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`, and the routing validation rejects `max_retries: 0`:
 
 ```ruby
 routes.draw do
@@ -113,7 +113,10 @@ A single consumer group cannot mix topics that use [Direct Assignments](Pro-Dire
 
 ## Direct Assignments + Swarm
 
-When you use [Direct Assignments](Pro-Direct-Assignments) with a list of partitions and allocate partitions to [Swarm](Pro-Enhanced-Swarm-Multi-Process#direct-assignments) nodes with a `nodes:` hash, both must contain exactly the same partitions. The routing validation rejects:
+When you use [Direct Assignments](Pro-Direct-Assignments) with a list of partitions and allocate partitions to [Swarm](Pro-Enhanced-Swarm-Multi-Process#direct-assignments) nodes with a `nodes:` hash of partition arrays (for example `{ 0 => [0], 1 => [1, 2] }`), the routing validation checks that each assigned partition is allocated to exactly one node. It rejects:
 
 - a partition that is assigned but not allocated to any node,
-- a partition that is allocated to a node but not assigned.
+- a partition that is allocated to a node but not assigned,
+- a partition that is allocated to more than one node.
+
+The validation does not check a `nodes:` hash with Range values.

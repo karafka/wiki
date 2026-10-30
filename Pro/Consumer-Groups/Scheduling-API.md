@@ -84,7 +84,7 @@ You can build two primary types of schedulers: stateful and stateless. Each sche
 
 #### Stateful Schedulers
 
-A stateful scheduler maintains state information across its scheduling runs. This means that the scheduler can retain the knowledge you want, including buffers for jobs, which can influence the execution of current or future tasks. Stateful schedulers are particularly useful in scenarios where the order and outcome of jobs are interdependent. Since the default API for building schedulers is fundamentally thread-safe, you do not have to use any locking mechanisms.
+A stateful scheduler maintains state information across its scheduling runs. This means that the scheduler can retain the knowledge you want, including buffers for jobs, which can influence the execution of current or future tasks. Stateful schedulers are particularly useful in scenarios where the order and outcome of jobs are interdependent. Since the default API for building schedulers is fundamentally thread-safe, you do not have to use any locking mechanisms. The exception is `#on_schedule_eofed` in a `Schedulers::Base` subclass (see [API Methods](#api-methods)).
 
 #### Stateless Schedulers
 
@@ -237,7 +237,7 @@ Below is an example scheduler that locks all jobs and ensures that only one job 
 # This scheduler withholds processing of jobs all except one.
 # It makes sure only one job can run, despite of the concurrency level
 # Such scheduler instance operates on all subscription groups but this API is thread-safe so each
-# of the methods is automatically wrapped with a mutex.
+# of the methods below is automatically wrapped with a mutex (#on_schedule_eofed is not).
 # This means, that no concurrency-safe primitives are needed here
 class OneThreadScheduler < ::Karafka::Pro::Processing::Schedulers::Base
   def initialize(queue)
