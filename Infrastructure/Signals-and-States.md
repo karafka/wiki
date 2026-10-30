@@ -44,7 +44,11 @@ Use `TSTP` + `TERM` to guarantee shut down within a period. The best practice is
 
 ### TERM and QUIT
 
-Send `TERM` or `QUIT` signal to a Karafka process to shut it down. It will stop accepting new work but continue working on current messages.  Workers who do not finish within the `shutdown_timeout` are forcefully terminated.
+Send `TERM`, `INT` or `QUIT` signal to a Karafka process to shut it down. It will stop accepting new work but continue working on current messages.  Workers who do not finish within the `shutdown_timeout` are forcefully terminated.
+
+!!! warning "On JRuby, Stop Karafka With `TERM`"
+
+    On JRuby, `QUIT` does not stop Karafka. The JVM handles `QUIT` itself and prints a thread dump, so the Karafka handler never runs. Use `TERM` to stop the process. `INT` also works in an interactive terminal, but a process started with `INT` ignored (for example, under `nohup` or with `&` in a non-interactive shell) never reacts to it. Process managers, Docker and Kubernetes send `TERM` by default.
 
 #### Forceful Shutdown
 
