@@ -109,7 +109,7 @@ Adaptive Iterator should not be used with Long-Running Jobs because their operat
 
 ## Direct Assignments + Regular Subscriptions
 
-A single consumer group cannot mix topics that use [Direct Assignments](Pro-Direct-Assignments) with topics that use regular subscriptions. Either all the topics of a consumer group use Direct Assignments, or none of them do. Place the other topics in a separate consumer group.
+A single consumer group cannot mix topics that use [Direct Assignments](Pro-Direct-Assignments) with topics that use regular subscriptions. Either all the topics of a consumer group use Direct Assignments, or none of them do. The routing validation rejects a consumer group that mixes them. Place the other topics in a separate consumer group.
 
 ## Direct Assignments + Swarm
 
