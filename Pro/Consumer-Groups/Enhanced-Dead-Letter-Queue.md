@@ -36,7 +36,7 @@ class KarafkaApp < Karafka::App
       consumer OrdersStatesConsumer
 
       dead_letter_queue(
-        topic: :failed_orders_dlq,
+        topic: 'failed_orders_dlq',
         max_retries: 2
       )
     end

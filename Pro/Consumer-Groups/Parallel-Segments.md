@@ -86,8 +86,8 @@ The `parallel_segments` method accepts the following options:
     <tr>
         <td><code>partitioner</code></td>
         <td><code>#call</code></td>
-        <td>nil (<strong>required</strong> once active)</td>
-        <td>A callable that determines which segment a message should be assigned to. Must respond to <code>#call</code> and accept a message as argument. Boot fails with a routing-contract error if <code>active: true</code> is set without a valid <code>partitioner</code>.</td>
+        <td>nil (<strong>required</strong> when <code>count</code> is greater than 1)</td>
+        <td>A callable that determines which segment a message should be assigned to. Must respond to <code>#call</code> and accept a message as argument. Parallel Segments are active when <code>count</code> is greater than 1. Boot fails with a routing-contract error if they are active without a valid <code>partitioner</code>.</td>
     </tr>
     <tr>
         <td><code>reducer</code></td>
@@ -340,7 +340,10 @@ When you define a consumer group with Parallel Segments, Karafka automatically c
 
 ```ruby
 consumer_group :analytics do
-  parallel_segments(count: 3)
+  parallel_segments(
+    count: 3,
+    partitioner: ->(message) { message.headers['user_id'] }
+  )
   # ... topics
 end
 ```

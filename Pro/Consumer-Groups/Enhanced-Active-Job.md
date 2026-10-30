@@ -260,13 +260,13 @@ Same execution warranties apply as for standard [Active Job adapter](Consumer-Gr
 
 ## Behaviour on Errors
 
-When using the Active Job adapter with Virtual Partitions, upon any error in any of the Virtual Partitions, all the not-started work in any of the Virtual Partitions will not be executed. The not-executed work will be then executed upon the retry. This behavior minimizes the number of jobs that must be re-processed upon an error.
+When using the Active Job adapter with Virtual Partitions, an error in one Virtual Partition does not stop the work in the other Virtual Partitions. Karafka uses [Virtual Offset Management](Pro-Consumer-Groups-Virtual-Partitions#virtual-offset-management) for these jobs, so upon the retry it skips the jobs that already finished. This behavior minimizes the number of jobs that must be re-processed upon an error.
 
 For non-VP setup, same error behaviors apply as for standard [Active Job adapter](Consumer-Groups-Active-Job#behaviour-on-errors).
 
-!!! note "Virtual Partitions Mark Jobs Only After All Finish"
+!!! note "Virtual Partitions Mark Each Job as Consumed"
 
-    If you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), marking jobs as consumed (done) will happen only **after** all virtually partitioned consumers finished their work collectively. There is **no** intermediate marking in between jobs in that scenario.
+    If you use it in combination with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), Karafka marks each job as consumed after it finishes. Kafka receives the highest offset up to which all the Virtual Partitions finished their jobs.
 
 ## Behaviour on Revocation
 
