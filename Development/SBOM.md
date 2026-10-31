@@ -207,7 +207,7 @@ This page exists because of our commitment to security, compliance, and transpar
       4.3.3
     </td>
     <td>
-      <a rel="nofollow noopener noreferrer" href="https://github.com/tailwindlabs/tailwindcss/blob/next/LICENSE">MIT</a>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE">MIT</a>
     </td>
     <td>Tailwind Labs, Inc.</td>
   </tr>
@@ -230,7 +230,7 @@ This page exists because of our commitment to security, compliance, and transpar
       daisyUI
     </td>
     <td>
-      5.7.47
+      5.7.50
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/saadeghi/daisyui/blob/master/LICENSE">MIT</a>
@@ -393,6 +393,20 @@ This page exists because of our commitment to security, compliance, and transpar
       <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/rake/blob/v13.1.0/MIT-LICENSE">MIT</a>
     </td>
     <td>Jim Weirich</td>
+  </tr>
+  <tr>
+    <td>
+      logger
+    </td>
+    <td>
+      All
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/logger/blob/master/COPYING">Ruby</a>
+      or
+      <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/logger/blob/master/BSDL">BSD-2-Clause</a>
+    </td>
+    <td>Yukihiro Matsumoto</td>
   </tr>
 </tbody>
 </table>
