@@ -288,6 +288,8 @@ as well as you can exclude patterns from being part of the operations:
 bundle exec karafka server --exclude-topics dlqs_pattern
 ```
 
+These flags also accept wildcard patterns that match pattern names, so one wildcard can include or exclude several patterns. See [Using Wildcard Patterns](Infrastructure-CLI#using-wildcard-patterns) for details.
+
 ## Limitations
 
 There are key aspects to consider to ensure efficient and consistent behavior:
