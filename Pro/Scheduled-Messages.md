@@ -191,8 +191,9 @@ class OrdersApp < Karafka::App
  setup do |config|
    config.client_id = "orders_app-#{Process.pid}-#{Socket.gethostname}"
 
-   # Unique group ID for this application
-   config.consumer_group_id = 'orders_app_schedules_group'
+   # Unique scheduler consumer group for this application
+   # (default: 'karafka_scheduled_messages')
+   config.scheduled_messages.group_id = 'orders_app_schedules_group'
    # Other config here...
  end
 
@@ -205,8 +206,8 @@ end
 class BillingApp < Karafka::App
  setup do |config|
    config.client_id = "billing_app-#{Process.pid}-#{Socket.gethostname}"
-   # Different group ID for this application
-   config.consumer_group_id = 'billing_app_schedules_group'
+   # Different scheduler consumer group for this application
+   config.scheduled_messages.group_id = 'billing_app_schedules_group'
    # Other config here...
  end
 

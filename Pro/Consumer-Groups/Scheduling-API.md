@@ -84,7 +84,7 @@ You can build two primary types of schedulers: stateful and stateless. Each sche
 
 #### Stateful Schedulers
 
-A stateful scheduler maintains state information across its scheduling runs. This means that the scheduler can retain the knowledge you want, including buffers for jobs, which can influence the execution of current or future tasks. Stateful schedulers are particularly useful in scenarios where the order and outcome of jobs are interdependent. Since the default API for building schedulers is fundamentally thread-safe, you do not have to use any locking mechanisms.
+A stateful scheduler maintains state information across its scheduling runs. This means that the scheduler can retain the knowledge you want, including buffers for jobs, which can influence the execution of current or future tasks. Stateful schedulers are particularly useful in scenarios where the order and outcome of jobs are interdependent. Since the default API for building schedulers is fundamentally thread-safe, you do not have to use any locking mechanisms. The exception is `#on_schedule_eofed` in a `Schedulers::Base` subclass (see [API Methods](#api-methods)).
 
 #### Stateless Schedulers
 
@@ -94,11 +94,11 @@ In contrast, a stateless scheduler does not retain state information from one ta
 
 !!! note "Each Method Has a Non-Blocking `on_` Counterpart"
 
-    Each method described in the following section has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
+    Each method described in the following section, except `#on_schedule_eofed`, has a non-blocking counterpart. These are easily identifiable by their `on_` prefix. For instance, for the method named `manage`, its non-blocking equivalent is `on_manage`.
 
 The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedulers::Base` class and, depending on needs, should define following methods:
 
-<table border="1">
+<table>
     <thead>
         <tr>
             <th>Method</th>
@@ -139,10 +139,10 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
             <td>Executed when new periodic jobs are available that should be handled. Implementation of this method is optional, as a default FIFO implementation is done.</td>
         </tr>
         <tr>
-            <td><code>#schedule_eofed</code></td>
+            <td><code>#on_schedule_eofed</code></td>
             <td>Array with eofed jobs</td>
-            <td>Yes, unless subclassing <code>Schedulers::Default</code></td>
-            <td>Executed when new eofed jobs are available that should be handled. Unlike the other job types above, <code>Schedulers::Base</code> does not provide a default FIFO fallback for this method - skipping it in a <code>Base</code> subclass raises a <code>NoMethodError</code> the first time eofed jobs arrive. Only <code>Schedulers::Default</code> (the concrete, ready-to-use scheduler) implements the FIFO fallback for it.</td>
+            <td>Yes, for topics with <code>eofed</code> enabled, unless subclassing <code>Schedulers::Default</code></td>
+            <td>Executed when new eofed jobs are available that should be handled. Karafka calls <code>#on_schedule_eofed</code> directly. <code>Schedulers::Base</code> defines neither <code>#on_schedule_eofed</code> nor <code>#schedule_eofed</code> and has no default FIFO fallback for them, so a <code>Base</code> subclass without <code>#on_schedule_eofed</code> raises a <code>NoMethodError</code> the first time eofed jobs arrive. Defining only <code>#schedule_eofed</code> does not prevent this. To keep the same locking as the other methods, run its body inside <code>@mutex.synchronize</code>. Only <code>Schedulers::Default</code> (the concrete, ready-to-use scheduler) implements the FIFO fallback for it.</td>
         </tr>
         <tr>
             <td><code>#manage</code></td>
@@ -161,7 +161,7 @@ The custom scheduler should inherit from the `Karafka::Pro::Processing::Schedule
 
 Alongside the scheduler methods, you can find the job queue scheduler-related API methods below:
 
-<table border="1">
+<table>
     <thead>
         <tr>
             <th>Method</th>
@@ -190,7 +190,7 @@ Alongside the scheduler methods, you can find the job queue scheduler-related AP
 
 Additionally, jobs themselves provide the following methods that can be useful when creating schedulers:
 
-<table border="1">
+<table>
     <thead>
         <tr>
             <th>Method</th>
@@ -237,7 +237,7 @@ Below is an example scheduler that locks all jobs and ensures that only one job 
 # This scheduler withholds processing of jobs all except one.
 # It makes sure only one job can run, despite of the concurrency level
 # Such scheduler instance operates on all subscription groups but this API is thread-safe so each
-# of the methods is automatically wrapped with a mutex.
+# of the methods below is automatically wrapped with a mutex (#on_schedule_eofed is not).
 # This means, that no concurrency-safe primitives are needed here
 class OneThreadScheduler < ::Karafka::Pro::Processing::Schedulers::Base
   def initialize(queue)

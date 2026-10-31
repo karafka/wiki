@@ -1,6 +1,6 @@
 # Karafka Pro Features Compatibility
 
-Karafka provides several features that can work together. Unless explicitly stated otherwise, Karafka Pro features should work with each other without any limitations
+Karafka provides several features that can work together. Unless explicitly stated otherwise, Karafka Pro features should work with each other without any limitations. When the routing validation rejects a combination, its section below says so.
 
 ## Long Running Jobs + Virtual Partitions
 
@@ -33,13 +33,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With Virtual Partitions, the offset will be committed after all the Virtual Partitions work is done. There is **no** "per job" marking as processed.
+With Virtual Partitions, Karafka marks each job as consumed after it finishes and commits the highest offset up to which all the Virtual Partitions finished their jobs.
 
 ## Enhanced Dead Letter Queue + Virtual Partitions
 
 Virtual Partitions can be used together with the Dead Letter Queue. This can be done due to Virtual Partitions' ability to collapse upon errors.
 
-The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`:
+The only limitation when combining Virtual Partitions with the Dead Letter Queue is the minimum number of retries. It needs to be set to at least `1`, and the routing validation rejects `max_retries: 0`:
 
 ```ruby
 routes.draw do
@@ -97,4 +97,26 @@ When using Karafka's encryption features, encryption may not work as expected if
 
 ## Adaptive Iterator + Long-Running Jobs
 
-Adaptive Iterator should not be used with Long-Running Jobs because their operating principles are fundamentally incompatible. Long-Running Jobs have their own resource lifecycle management, while Adaptive Iterator dynamically adjusts batch sizes based on processing speed. This combination leads to conflicting resource allocation, disrupted timeout mechanisms, and inconsistent offset commitment patterns.
+Adaptive Iterator should not be used with Long-Running Jobs because their operating principles are fundamentally incompatible. Long-Running Jobs have their own resource lifecycle management, while Adaptive Iterator dynamically adjusts batch sizes based on processing speed. This combination leads to conflicting resource allocation, disrupted timeout mechanisms, and inconsistent offset commitment patterns. The routing validation rejects this combination.
+
+## Adaptive Iterator + Virtual Partitions
+
+[Adaptive Iterator](Pro-Consumer-Groups-Adaptive-Iterator) cannot be used with [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions). The routing validation rejects a topic that has both enabled.
+
+## Direct Assignments + Routing Patterns
+
+[Direct Assignments](Pro-Direct-Assignments) cannot be used with [Routing Patterns](Pro-Routing-Patterns). The routing validation rejects a topic that has both enabled.
+
+## Direct Assignments + Regular Subscriptions
+
+A single consumer group cannot mix topics that use [Direct Assignments](Pro-Direct-Assignments) with topics that use regular subscriptions. Either all the topics of a consumer group use Direct Assignments, or none of them do. The routing validation rejects a consumer group that mixes them. Place the other topics in a separate consumer group.
+
+## Direct Assignments + Swarm
+
+When you use [Direct Assignments](Pro-Direct-Assignments) with a list of partitions and allocate partitions to [Swarm](Pro-Enhanced-Swarm-Multi-Process#direct-assignments) nodes with a `nodes:` hash of partition arrays (for example `{ 0 => [0], 1 => [1, 2] }`), the routing validation checks that each assigned partition is allocated to exactly one node. It rejects:
+
+- a partition that is assigned but not allocated to any node,
+- a partition that is allocated to a node but not assigned,
+- a partition that is allocated to more than one node.
+
+The validation does not check a `nodes:` hash with Range values.

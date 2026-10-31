@@ -110,16 +110,16 @@ To do so, you need to provide the list of the partitions with the initial offset
 # Get 100 most recent messages for partition 0
 # Get 10 000 most recent messages for partition 5
 # Get messages from last 60 seconds from partition 7
-# Get messages from partition 9 starting from the beginning
+# Get messages from partition 9 starting from the committed offset
 iterator = Karafka::Pro::Iterator.new(
   {
     'users_events' => {
       0 => -100,
       5 => -10_000,
       7 => Time.now - 60,
-      # `true` always starts from the beginning. This relies on
-      # 'auto.offset.reset' => 'beginning', which is the default here. If you override
-      # settings, keep this value set.
+      # `true` starts from the offset committed for the iterator's consumer group.
+      # Without a committed offset, 'auto.offset.reset' applies ('beginning' by default).
+      # If you override settings, keep this value set.
       9 => true
     }
   }
@@ -303,7 +303,7 @@ The Karafka Pro Iterator API is designed to be simple and easy to use, and there
 
 However, the Iterator API is designed for lightweight Kafka operations and should not be used to perform extensive Kafka operations during HTTP requests or similar. This is because performing extensive Kafka operations during requests can impact the application's performance and result in slower response times.
 
-Additionally, the Iterator API does not manage the offsets. This means that when you subscribe to a Kafka topic and partition, you must provide the initial offsets yourself.
+Additionally, the Iterator API does not commit offsets unless you mark messages as consumed. It uses the admin consumer group (`karafka_admin` by default, set with `config.admin.group_id`), and you can set `group.id` in the iterator `settings` to use another one. A partition set to `true` starts from the offset committed for that group. If the group has no committed offset for the partition, `auto.offset.reset` applies. For any other value, you provide the initial offset yourself.
 
 ### Scalability and Performance
 
