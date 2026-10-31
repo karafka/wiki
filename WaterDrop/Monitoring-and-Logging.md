@@ -315,6 +315,18 @@ end
 # WaterDrop [dd8236fff672] delivered message with offset: 34
 ```
 
+## Buffer Notifications
+
+The `message.buffered` and `messages.buffered` events fire when you add messages with `#buffer` or `#buffer_many`. Their payload holds the added message (`event[:message]`) or messages (`event[:messages]`) and the internal buffer array of the producer (`event[:buffer]`).
+
+!!! warning "Do Not Iterate `event[:buffer]` in a Listener"
+
+    `event[:buffer]` is the internal buffer array of the producer as it was when the `#buffer` or `#buffer_many` call started, not a copy. A flush or `#purge` in another thread can replace the producer buffer with a new array. After that, `event[:buffer]` holds the messages taken by that flush or purge, not the current buffer, and it may not hold the messages that this call added. Do **not** use it as the current buffer state.
+
+    WaterDrop runs the listener after it releases the buffer lock, so other threads can add messages to this array while your listener runs. Do **not** change `event[:buffer]` in a listener. Do **not** iterate it when other threads may buffer messages: on JRuby, which has no GVL, this can raise an error or return an inconsistent result. Reading `event[:buffer].size` is safe, but it is not always the current buffer size.
+
+    When you need the buffered messages, use `producer.messages`. It returns a new array that WaterDrop builds under a lock. This array also includes messages re-buffered after a failed flush, so its content can differ from `event[:buffer]`.
+
 ## Labeling API
 
 Tracking the progress and status of each message may be crucial when producing messages with WaterDrop. There are instances where you will need to monitor the delivery handle and report and relate them to the specific message that was dispatched. WaterDrop addresses this need with its labeling API. You can read about it in a dedicated [Labeling API](WaterDrop-Labeling) section.
