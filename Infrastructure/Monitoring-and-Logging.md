@@ -742,7 +742,7 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
 ## Kubernetes
 
-Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
+Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness and readiness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
 
 ## OpenTelemetry
 
