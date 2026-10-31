@@ -317,7 +317,7 @@ end
 
 ## Buffer Notifications
 
-The `message.buffered` and `messages.buffered` events fire when you add messages with `#buffer` or `#buffer_many`. Their payload holds the added message (`event[:message]`) or messages (`event[:messages]`) and the internal buffer array of the producer as it was when the call started (`event[:buffer]`).
+The `message.buffered` and `messages.buffered` events fire when you add messages with `#buffer` or `#buffer_many`. Their payload holds the added message (`event[:message]`) or messages (`event[:messages]`) and the internal buffer array of the producer (`event[:buffer]`).
 
 !!! warning "Do Not Iterate `event[:buffer]` in a Listener"
 
