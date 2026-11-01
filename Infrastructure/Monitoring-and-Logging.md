@@ -742,10 +742,6 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
 ## New Relic Metrics
 
-!!! info "Available From Karafka 2.6.2"
-
-    The New Relic metrics listener is part of Karafka 2.6.2 and newer.
-
 Karafka includes a New Relic metrics listener that publishes consumer, worker and librdkafka metrics as New Relic custom metrics with `NewRelic::Agent.record_metric`. The New Relic agent aggregates each metric (min, max, average and count) over its reporting interval.
 
 The listener requires the `newrelic_rpm` gem with a configured agent. Karafka does not load it by default:
@@ -777,72 +773,11 @@ Karafka.monitor.subscribe(
 )
 ```
 
-You can query the metrics with the New Relic metric timeslice API or use them in custom dashboard widgets.
+You can query the metrics with the New Relic metric timeslice API or use them in custom dashboard widgets. For the full list of published metrics and their names, see the [listener source code](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/new_relic/metrics_listener.rb).
 
 !!! note "Context Is Part of the Metric Name"
 
     New Relic custom metrics do not support tags. The listener puts the context (consumer group, topic, partition and broker) into the metric name. For example, the stored consumer lag of partition `0` of the `orders` topic in the `app` consumer group is `Custom/karafka/consumer.lags.app.orders.0`.
-
-### Published Metrics
-
-All names below are relative to `Custom/{namespace}/`:
-
-<table>
-  <thead>
-    <tr>
-      <th>Event</th>
-      <th>Metric Names</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>statistics.emitted</code></td>
-      <td>
-        <code>messages.consumed.{group_id}</code>, <code>messages.consumed.bytes.{group_id}</code><br>
-        <code>consume.attempts</code>, <code>consume.errors</code>, <code>receive.errors</code>, <code>connection.connects</code>, <code>connection.disconnects</code>, <code>network.latency.avg</code>, <code>network.latency.p95</code>, <code>network.latency.p99</code>, each with the <code>.{group_id}.{broker}</code> suffix<br>
-        <code>consumer.lags</code>, <code>consumer.lags_delta</code>, each with the <code>.{group_id}.{topic}.{partition}</code> suffix
-      </td>
-    </tr>
-    <tr>
-      <td><code>error.occurred</code></td>
-      <td><code>error_occurred.{type}</code></td>
-    </tr>
-    <tr>
-      <td><code>connection.listener.fetch_loop.received</code></td>
-      <td><code>listener.polling.time_taken.{group_id}</code>, <code>listener.polling.messages.{group_id}</code></td>
-    </tr>
-    <tr>
-      <td><code>consumer.consumed</code></td>
-      <td><code>consumer.messages</code>, <code>consumer.batches</code>, <code>consumer.offset</code>, <code>consumer.consumed.time_taken</code>, <code>consumer.batch_size</code>, <code>consumer.processing_lag</code>, <code>consumer.consumption_lag</code>, each with the <code>.{group_id}.{topic}.{partition}</code> suffix</td>
-    </tr>
-    <tr>
-      <td><code>consumer.revoked</code></td>
-      <td><code>consumer.revoked.{group_id}.{topic}.{partition}</code></td>
-    </tr>
-    <tr>
-      <td><code>consumer.shutdown</code></td>
-      <td><code>consumer.shutdown.{group_id}.{topic}.{partition}</code></td>
-    </tr>
-    <tr>
-      <td><code>consumer.ticked</code></td>
-      <td><code>consumer.tick.{group_id}.{topic}.{partition}</code></td>
-    </tr>
-    <tr>
-      <td><code>worker.process</code></td>
-      <td><code>worker.total_threads</code>, <code>worker.processing</code>, <code>worker.enqueued_jobs</code></td>
-    </tr>
-    <tr>
-      <td><code>worker.processed</code></td>
-      <td><code>worker.processing</code></td>
-    </tr>
-  </tbody>
-</table>
-
-In these names:
-
-- `{broker}` is the broker node name with `:` replaced by `_`. The listener skips bootstrap brokers.
-- `{type}` is the error type with `.` replaced by `_`.
-- `consumer.lags` and `consumer.lags_delta` appear only for partitions that this consumer fetches and for which librdkafka already reports lag.
 
 ### Customizing librdkafka Statistics Metrics
 
