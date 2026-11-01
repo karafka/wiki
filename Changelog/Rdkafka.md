@@ -31,6 +31,7 @@
 - [Maintenance] Give the `Consumer#lag` spec a 30 s list offsets wait, like its siblings. Ported from karafka-rdkafka.
 - [Maintenance] Retry the `Consumer#poll_nb` "returns a message" spec on a 30 s deadline instead of a fixed ~2 s, for loaded CI runners. Ported from karafka-rdkafka.
 - [Maintenance] Stabilize the `consumer_memberid_clusterid_leak` integration spec against RSS noise on Ruby 4.0: compact the heap before sampling and run 400k calls against a 5 MB ceiling. Ported from karafka-rdkafka.
+- [Maintenance] Time out the SSL spec step of the Ubuntu aarch64 complementary CI workflow after 25 minutes, so a hanging example fails the step and its log is kept.
 - [Fix] Create one topic handle per topic when many threads produce to a new topic at once. On JRuby this race leaked topic handles and could crash with a segfault; `produce` now raises `TopicHandleCreationError` instead of passing a missing handle to librdkafka.
 - [Fix] Stop `Consumer#store_offset` and other calls that pass partition metadata from raising `NoMethodError` on JRuby.
 - [Fix] Raise `Rdkafka::LibraryLoadError` with the glibc upgrade hint instead of `NameError` when the precompiled librdkafka needs a newer glibc.
@@ -66,7 +67,7 @@
 - [Maintenance] Raise the `TestTopics.create` admin timeout to 30s so a loaded CI runner no longer hits `create topic timed out` (which also tripped the leaked-handle guard).
 
 ## 0.29.2 (2026-09-11)
-- [Fix] Close live clients from an `at_exit` hook before Ruby's shutdown finalization, so librdkafka is no longer `dlclose`d while its native threads are still running (which could segfault on exit).
+- [Fix] Close live clients from an `at_exit` hook so librdkafka is no longer `dlclose`d while its native threads still run, which could segfault on exit.
 - [Fix] Make client construction exception-safe and destroy the native handle when setup fails after `rd_kafka_new`, so a later error no longer orphans the native client.
 - [Fix] Fix a double-free in `Consumer#poll_batch`/`#poll_batch_nb` that could abort the process when building a message raised a non-`RdkafkaError`.
 - [Fix] Free native resources when `Admin#describe_configs`/`#incremental_alter_configs` raise while building their request (e.g. a non-String resource name).
