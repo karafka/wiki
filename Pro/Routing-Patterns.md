@@ -275,7 +275,7 @@ You can limit the process operations to only specific patterns:
 ```shell
 # This code will not run topics and patterns other than `dlqs_pattern`
 #
-# You can use space to provide more patterns
+# Separate multiple patterns with commas
 bundle exec karafka server --include-topics dlqs_pattern
 ```
 
@@ -284,9 +284,11 @@ as well as you can exclude patterns from being part of the operations:
 ```shell
 # This code will run ony topics and patterns other than `dlqs_pattern`
 #
-# You can use space to provide more patterns
+# Separate multiple patterns with commas
 bundle exec karafka server --exclude-topics dlqs_pattern
 ```
+
+These flags also accept wildcard patterns that match pattern names, so one wildcard can include or exclude several patterns. See [Using Wildcard Patterns](Infrastructure-CLI#using-wildcard-patterns) for details.
 
 ## Limitations
 

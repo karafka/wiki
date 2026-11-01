@@ -3,6 +3,10 @@
 
 # Karafka Testing Changelog
 
+## 2.6.4 (Unreleased)
+- [Maintenance] Declare `rake` in the `Gemfile`. It came only through `karafka-rdkafka`, which will stop depending on it for precompiled platform gems.
+- [Fix] Give each consumer in one test a batch of only its own messages. Several consumers no longer share one batch, and offsets count per consumer.
+
 ## 2.6.3 (2026-10-25)
 - **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
 - [Maintenance] Align internal naming and YARD docs with the Karafka ecosystem conventions.

@@ -72,6 +72,7 @@ secondary_admin.delete_topic('old-events')
 secondary_admin.topic_info('events')
 
 # Consumer group operations
+secondary_admin.list_consumer_groups
 secondary_admin.read_lags_with_offsets
 secondary_admin.seek_consumer_group('my-group', { 'events' => 0 })
 secondary_admin.delete_consumer_group('unused-group')
@@ -698,6 +699,32 @@ end
 - **Unconsumed Topics**: Topics with no recorded consumption by the specified consumer group will show a lag and offset of -1 for each partition, highlighting inactivity.
 
 - **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
+
+## Listing Consumer Groups
+
+`Karafka::Admin.list_consumer_groups` returns all the consumer groups in the cluster with their states. Each consumer group is a hash with two keys: `:group_id` and `:state`.
+
+```ruby
+Karafka::Admin.list_consumer_groups
+
+# [
+#   { group_id: 'billing', state: :stable },
+#   { group_id: 'orders-processor', state: :empty }
+# ]
+```
+
+The `:state` is a symbol: `:unknown`, `:preparing_rebalance`, `:completing_rebalance`, `:stable`, `:dead`, or `:empty`. Use it, for example, to check if a consumer group is stable:
+
+```ruby
+group = Karafka::Admin.list_consumer_groups.find { |g| g[:group_id] == 'billing' }
+group && group[:state] == :stable
+```
+
+This is a read-only and lightweight call. It does not read offsets or members. It shows the difference between an `:empty` consumer group, which has offsets but no live members, and a `:dead` or absent one. To read the members and the partition assignor of a consumer group, see [Describing Consumer Groups](#describing-consumer-groups).
+
+`Karafka::Admin::ConsumerGroups.list` returns the same result. On an Admin instance for a custom cluster, use `#list_consumer_groups`.
+
+- **Partial Listing**: The Admin call requests the consumer groups from each broker. When a broker is unreachable, Karafka raises `Rdkafka::RdkafkaError` instead of returning an incomplete list. An incomplete list can make an existing consumer group look absent.
 
 ## Describing Consumer Groups
 
