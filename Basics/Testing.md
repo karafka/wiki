@@ -107,7 +107,7 @@ end
 
 ### Testing Pausing
 
-If your consumer calls [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting), check the pause with the pause tracker of the consumer coordinator. The testing client accepts `#pause` and `#resume` without contacting Kafka, and the consumer still records the pause in `coordinator.pause_tracker`. This requires `karafka-testing` 2.6.4 or newer. Older versions raise `NoMethodError` when a consumer calls `#pause`.
+If your consumer calls [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting), check the pause with the pause tracker of the consumer coordinator. The testing client accepts `#pause` and `#resume` without contacting Kafka, and the consumer still records the pause in `coordinator.pause_tracker`.
 
 ```ruby
 class PausingConsumer < Karafka::BaseConsumer
@@ -512,7 +512,7 @@ end
 
 ### Testing Pausing - Minitest
 
-Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker`, as in [Testing Pausing](#testing-pausing) for RSpec. This requires `karafka-testing` 2.6.4 or newer. The example uses the `PausingConsumer` from that section.
+Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
 
 ```ruby
 class PausingConsumerTest < ActiveSupport::TestCase
