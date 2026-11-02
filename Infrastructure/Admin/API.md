@@ -562,6 +562,47 @@ puts "Max-timestamp offset: #{results.first[:offset]}, at: #{results.first[:time
 
 Its own docstring notes a caveat: the underlying batched `ListOffsets` call resolves `:latest` to the high watermark regardless of the isolation level (unlike the consumer's `#query_watermark_offsets`, which returns the last stable offset for a read_committed consumer). On a topic with an in-flight transaction, `:latest` therefore includes uncommitted messages a read_committed consumer would not otherwise see. Non-transactional topics are unaffected (LSO == HWM).
 
+## Deleting Messages From a Topic
+
+`Karafka::Admin.delete_records` deletes all the messages below a given offset in the given partitions. It moves the low watermark (log start offset) of each partition to that offset. The message at the given offset stays in the partition. This is the programmatic equivalent of the `kafka-delete-records.sh` Kafka CLI tool.
+
+!!! warning "Deleted Messages Cannot Be Recovered"
+
+    This operation is destructive and irreversible. Kafka removes the messages below the new low watermark, and no consumer can read them again.
+
+The argument is a hash with topic names as keys and arrays of partition specs as values. Each spec has a `:partition` and an `:offset`. The `:offset` is an integer, or `:end` to delete all the messages currently in the partition:
+
+```ruby
+Karafka::Admin.delete_records(
+  {
+    'events' => [
+      # Delete the messages below offset 100 and keep the message at offset 100
+      { partition: 0, offset: 100 },
+      # Delete all the messages currently in this partition
+      { partition: 1, offset: :end }
+    ]
+  }
+)
+
+# [
+#   { topic: 'events', partition: 0, offset: 100 },
+#   { topic: 'events', partition: 1, offset: 250 }
+# ]
+```
+
+The method returns an array with one hash per requested partition. Each hash has the `:topic`, the `:partition` and the `:offset`, which is the new low watermark of that partition. To check the result, use [`#read_watermark_offsets`](#reading-the-watermark-offsets).
+
+When a partition fails (for example, with `offset_out_of_range` when the offset is above the high watermark), Karafka raises `Rdkafka::RdkafkaTopicPartitionListError`:
+
+- A failure on one partition does not stop the deletion on the other partitions. Karafka raises the error only after it processed all of them, so the other partitions are already truncated.
+- A partition that fails with `offset_out_of_range` keeps all its messages.
+- The error message names the failed topic and partition.
+- The error `#topic_partition_list` holds the result of every requested partition: the new low watermark or the error.
+
+A topic that does not exist and connection issues raise `Rdkafka::RdkafkaError`.
+
+`Karafka::Admin::Topics.delete_records` returns the same result. On an Admin instance for a custom cluster, use `#delete_records`.
+
 ## Reading Lags and Offsets of a Consumer Group
 
 This functionality provides the means to track and understand the consumption progress of consumer groups across specific topics and partitions within your Kafka setup. It is crucial for monitoring the health and performance of your Kafka consumers, as it helps identify any delays or backlogs in processing messages.
