@@ -590,14 +590,14 @@ Karafka::Admin.delete_records(
 # ]
 ```
 
-The method returns an array with one hash per requested partition. Each hash has the `:topic`, the `:partition` and the `:offset`, which is the new low watermark of that partition. To check the result, use [`#read_watermark_offsets`](#reading-the-watermark-offsets).
+The method returns an array with one hash per requested partition. Each hash has the `:topic`, the `:partition` and the `:offset`, which is the new low watermark of that partition.
 
 When a partition fails (for example, with `offset_out_of_range` when the offset is above the high watermark), Karafka raises `Rdkafka::RdkafkaTopicPartitionListError`:
 
 - A failure on one partition does not stop the deletion on the other partitions. Karafka raises the error only after it processed all of them, so the other partitions are already truncated.
 - A partition that fails with `offset_out_of_range` keeps all its messages.
-- The error message names the failed topic and partition.
-- The error `#topic_partition_list` holds the result of every requested partition: the new low watermark or the error.
+- The error message names one failed partition and its topic, also when more than one partition fails.
+- The error `#topic_partition_list` holds the result of every requested partition: the new low watermark or the error. Use it to find all the failed partitions.
 
 A topic that does not exist and connection issues raise `Rdkafka::RdkafkaError`.
 
