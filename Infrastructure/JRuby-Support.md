@@ -9,7 +9,7 @@ Web UI support on JRuby is in progress.
 karafka-rdkafka has no precompiled gem for JRuby. On JRuby, `gem install` and `bundle install` compile librdkafka from source when they install karafka-rdkafka. The machine that installs the gem needs:
 
 - A C and C++ compiler and `make`, for example the `build-essential` package on Debian and Ubuntu.
-- The OpenSSL development headers, for example `libssl-dev`. Without them, the build succeeds, but librdkafka has no SSL support and connections to SSL clusters fail.
+- The OpenSSL development headers, for example `libssl-dev`. Without them, the build succeeds, but librdkafka has no SSL, SASL SCRAM or SASL OAUTHBEARER support, and connections that use them fail.
 - The SASL development headers, for example `libsasl2-dev`, if you use SASL GSSAPI (Kerberos).
 - `git`, when you install karafka-rdkafka from a Git repository or a local checkout, because its gemspec calls `git ls-files`.
 
