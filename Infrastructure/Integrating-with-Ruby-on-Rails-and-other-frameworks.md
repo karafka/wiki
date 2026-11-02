@@ -4,7 +4,7 @@ Want to use Karafka with Ruby on Rails or any other framework? It can be done ea
 
 Karafka detects Ruby on Rails by itself, so no extra changes are required besides running the standard installation process.
 
-Karafka requires Rails 7.2 or newer. See [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL#ruby-on-rails-versions-support) for the Rails versions support policy.
+In a Rails application, Karafka requires Rails 7.2 or newer. See [Versions Lifecycle and EOL](Upgrades-Versions-Lifecycle-and-EOL#ruby-on-rails-versions-support) for the Rails versions support policy.
 
 Add Karafka to your Gemfile:
 
