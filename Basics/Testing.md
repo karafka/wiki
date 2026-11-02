@@ -315,6 +315,10 @@ RSpec.describe UsersBuilder do
 end
 ```
 
+!!! note "Producing From Several Threads in One Test Is Safe"
+
+    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Each message that goes to a consumer in the same test gets its own offset, unless you set `offset:` yourself.
+
 #### Testing Transactions
 
 When testing producer transactions in Karafka, the approach is similar to that for non-transactional message production. Within a transaction, messages you send are held rather than being placed in the buffer immediately. When the transactional block finishes successfully, these messages get moved into the buffers, ready to be produced to Kafka.
@@ -565,6 +569,10 @@ class UsersBuilderTest < ActiveSupport::TestCase
   end
 end
 ```
+
+!!! note "Producing From Several Threads in One Test Is Safe"
+
+    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Each message that goes to a consumer in the same test gets its own offset, unless you set `offset:` yourself.
 
 !!! note "Minitest Transaction Testing Mirrors RSpec"
 
