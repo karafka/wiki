@@ -317,7 +317,7 @@ end
 
 !!! note "Producing From Several Threads in One Test Is Safe"
 
-    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Each message that goes to a consumer in the same test gets its own offset, unless you set `offset:` yourself.
+    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Within one consumer's batch, each message gets a different offset, unless you set the offset yourself with `karafka.produce(payload, offset: 10)`.
 
 #### Testing Transactions
 
@@ -572,7 +572,7 @@ end
 
 !!! note "Producing From Several Threads in One Test Is Safe"
 
-    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Each message that goes to a consumer in the same test gets its own offset, unless you set `offset:` yourself.
+    Code under test can produce from several threads at once, for example a consumer that hands work to a thread pool. `karafka-testing` buffers every message on MRI and JRuby, with or without Mocha. Within one consumer's batch, each message gets a different offset, unless you set the offset yourself with `@karafka.produce(payload, offset: 10)`.
 
 !!! note "Minitest Transaction Testing Mirrors RSpec"
 
