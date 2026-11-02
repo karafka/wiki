@@ -90,7 +90,7 @@ Dropping support for an EOL Ruby version does not require a major release. It ma
 
 ## Ruby on Rails Versions Support
 
-Karafka will support two major versions of Ruby on Rails. Any previous versions may or may not be supported depending on the effort and ability to provide features.
+Karafka will support two major versions of Ruby on Rails. Karafka requires Rails 7.2 or newer. Rails 7.0 and 7.1 no longer work, because Karafka no longer includes compatibility code for them.
 
 Our EOL dates are set around six months after each version's official Rails EOL date, so users have extra time to migrate at their own pace.
 
