@@ -8,10 +8,12 @@ Web UI support on JRuby is in progress.
 
 karafka-rdkafka has no precompiled gem for JRuby. On JRuby, `gem install` and `bundle install` compile librdkafka from source when they install karafka-rdkafka. The machine that installs the gem needs:
 
-- A C compiler and `make`, for example the `build-essential` package on Debian and Ubuntu.
+- A C and C++ compiler and `make`, for example the `build-essential` package on Debian and Ubuntu.
+- The OpenSSL development headers, for example `libssl-dev`. Without them, the build succeeds, but librdkafka has no SSL support and connections to SSL clusters fail.
+- The SASL development headers, for example `libsasl2-dev`, if you use SASL GSSAPI (Kerberos).
 - `git`, when you install karafka-rdkafka from a Git repository or a local checkout, because its gemspec calls `git ls-files`.
 
-The `ubuntu-latest` image of GitHub Actions has all of these. See [Native Extensions](Development-Native-Extensions#source-compilation-fallback) for more about source compilation.
+The Ubuntu images of GitHub Actions have the compilers, `make`, `git` and the OpenSSL headers. See [Native Extensions](Development-Native-Extensions#source-compilation-fallback) for more about source compilation.
 
 ## Process Model
 
@@ -27,7 +29,7 @@ Stop `karafka server` with `TERM`, or with `INT` in an interactive terminal. On 
 
 ## Callbacks and Finalizers
 
-On JRuby, the GC finalizer of a client runs on the JVM `Finalizer` thread. When a finalizer closes a consumer and the close fails, karafka-rdkafka reports the error to the error callback from that thread. Make your error callbacks thread-safe.
+On JRuby, the GC finalizer of a client runs on the JVM `Finalizer` thread. If you create a karafka-rdkafka consumer directly and do not close it, its finalizer closes it. When that close fails, karafka-rdkafka calls `Rdkafka::Config.error_callback` from the `Finalizer` thread, so make this callback thread-safe. Karafka closes its own consumers, so this does not apply to them.
 
 ## Pro Encryption
 
