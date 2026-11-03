@@ -241,8 +241,6 @@ Job.perform_later # the job will output "user_id: 1"
 
 Karafka handles CurrentAttributes by including them as part of the job serialization process before pushing them to Kafka. These attributes are then deserialized by the Active Job consumer and set back in your CurrentAttributes classes before executing the job.
 
-After the job runs, also when it raises, Karafka resets each restored CurrentAttributes class, so its values do not stay on the worker thread for the next job. Karafka resets the class also when restoring its attributes fails part way.
-
 When the job payload has an attribute that your CurrentAttributes class does not declare, Karafka skips this attribute and sets only the declared ones. This can occur during a rolling deployment, when processes with different versions of the class produce and consume jobs. Karafka always stores the attributes of a class as a Hash. When a job payload that Karafka did not write stores them as another type, Karafka raises `Karafka::Errors::InvalidConfigurationError` and does not run the job.
 
 This approach is based on Sidekiq's approach to persisting current attributes: [Sidekiq and Request-Specific Context](https://www.mikeperham.com/2022/07/29/sidekiq-and-request-specific-context/).
