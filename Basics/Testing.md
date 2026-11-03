@@ -105,6 +105,32 @@ RSpec.describe InlineBatchConsumer do
 end
 ```
 
+### Testing Pausing
+
+If your consumer calls [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting), check the pause with the pause tracker of the consumer coordinator. The testing client accepts `#pause` and `#resume` without contacting Kafka, and the consumer still records the pause in `coordinator.pause_tracker`.
+
+```ruby
+class PausingConsumer < Karafka::BaseConsumer
+  def consume
+    pause(messages.last.offset, 5_000) if messages.size > 2
+  end
+end
+```
+
+```ruby
+RSpec.describe PausingConsumer do
+  subject(:consumer) { karafka.consumer_for(:pausing_topic) }
+
+  before { 3.times { |i| karafka.produce({ 'i' => i }.to_json) } }
+
+  it 'pauses the partition' do
+    consumer.consume
+
+    expect(consumer.coordinator.pause_tracker).to be_paused
+  end
+end
+```
+
 ### Testing Messages Consumption of Routing Patterns
 
 Since each [Routing Pattern](Pro-Routing-Patterns) has a name, you can test them like regular topics.
@@ -481,6 +507,28 @@ test 'it dispatches async message to messages topic with value bigger by 1' do
   @consumer.consume
 
   assert_equal({ number: 2 }.to_json, @karafka.produced_messages.last[:payload])
+end
+```
+
+### Testing Pausing - Minitest
+
+Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
+
+```ruby
+class PausingConsumerTest < ActiveSupport::TestCase
+  include Karafka::Testing::Minitest::Helpers
+
+  def setup
+    @consumer = @karafka.consumer_for(:pausing_topic)
+  end
+
+  test 'it pauses the partition' do
+    3.times { |i| @karafka.produce({ 'i' => i }.to_json) }
+
+    @consumer.consume
+
+    assert_predicate @consumer.coordinator.pause_tracker, :paused?
+  end
 end
 ```
 
