@@ -11,7 +11,7 @@ This document explains topic auto-creation behavior and addresses common misconc
 </tr>
 <tr>
 <td>Consumer: <code>allow.auto.create.topics</code> set to <code>true</code></td>
-<td>Allows automatic topic creation on the broker when subscribing to non-existent topics. Often misunderstood to mean consumers will create topics.</td>
+<td>Has no effect when a consumer subscribes to non-existent topics. librdkafka sends the subscription metadata requests with auto-creation turned off. Often misunderstood to mean consumers will create topics.</td>
 </tr>
 <tr>
 <td>Broker: <code>auto.create.topics.enable</code> set to <code>true</code></td>
@@ -21,7 +21,7 @@ This document explains topic auto-creation behavior and addresses common misconc
 
 !!! info "Already Enabled by Default Outside Production"
 
-    Karafka automatically sets `allow.auto.create.topics` to `true` for both consumers and the default producer in non-production environments, so you do not need to configure this setting yourself in development or test. This default does not apply in production.
+    Karafka automatically sets `allow.auto.create.topics` to `true` for both consumers and the default producer in every environment except `production`, including when no environment variable is set. You do not need to configure this setting yourself outside `production`.
 
 ## Expected vs. Actual Behavior
 
@@ -35,12 +35,12 @@ Many developers expect that when a consumer subscribes to a non-existent topic w
 
 ## Technical Details
 
-When only consumers are present (no WaterDrop producers), topics will **not** be created automatically. Topic creation requires a WaterDrop producer to send the first message to the non-existent topic. Consumers detect newly created topics during metadata refresh cycles. In development and test environments, Karafka sets `topic.metadata.refresh.interval.ms` to 5 seconds by default so newly created topics are detected quickly; in production, where this is not injected, the underlying librdkafka default of 5 minutes applies unless you configure it explicitly.
+When only consumers are present (no WaterDrop producers), topics will **not** be created automatically. Topic creation requires a WaterDrop producer to send the first message to the non-existent topic. Consumers detect newly created topics during metadata refresh cycles. In every environment except `production`, Karafka sets `topic.metadata.refresh.interval.ms` to 5 seconds by default so newly created topics are detected quickly; in `production`, where this is not injected, the underlying librdkafka default of 5 minutes applies unless you configure it explicitly.
 
 **WaterDrop producer behavior:**
 
 - **Auto-creation trigger**: The first `produce_sync` or `produce_async` call to a non-existent topic creates the topic
-- **Configuration dependency**: Requires both `allow.auto.create.topics` set to `true` (consumer config) and `auto.create.topics.enable` set to `true` (broker config)
+- **Configuration dependency**: Requires both `allow.auto.create.topics` set to `true` (producer config) and `auto.create.topics.enable` set to `true` (broker config)
 - **Partition key limitation**: If using partition keys, topic creation may fail due to metadata caching limitations, resulting in an error rather than a silent failure
 
 ## CLI Tool Behavior
