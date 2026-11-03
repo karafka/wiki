@@ -18,7 +18,7 @@ WaterDrop provides three distinct APIs, each with unique error-handling behavior
 
 ## Error Types
 
-In WaterDrop, errors encountered during the message-handling process can be categorized into five distinct types. Each type represents a specific stage or aspect of the message delivery lifecycle, highlighting the diverse issues in a message queuing system.
+In WaterDrop, errors encountered during the message-handling process can be categorized into the following distinct types. Each type represents a specific stage or aspect of the message delivery lifecycle, highlighting the diverse issues in a message queuing system.
 
 - **Pre-Handle Inline Errors**: These errors occur at the initial stage of message production, preventing the creation of a delivery handle. Inline errors indicate the message has not been sent to the message queue. A typical example of this type of error is the `:queue_full`, which occurs when the message cannot be queued due to a lack of available buffer space. Another example is a failed metadata request for a message with `partition_key` when no partition count is known for its topic, or when the refresh of a known count fails on a non-transient error (see [Partition Key](WaterDrop-Usage#partition-key)). This type of error is immediate and directly related to the message production process and indicates a dispatch failure.
 
@@ -82,7 +82,7 @@ Each error type plays a crucial role in understanding and managing the complexit
         <tr>
             <td>Producer Closed Errors</td>
             <td>Partially Yes</td>
-            <td><code>WaterDrop::Errors::ProducerClosedError</code>s raised when a concurrent <code>#close</code> stops a batch dispatch. Messages enqueued before the close are in <code>#dispatched</code>. Messages without a handle were not enqueued.</td>
+            <td><code>WaterDrop::Errors::ProducerClosedError</code>s raised when a concurrent <code>#close</code> stops a <code>#produce_many_sync</code> or <code>#produce_many_async</code> call. Messages enqueued before the close are in <code>#dispatched</code>. Messages without a handle were not enqueued.</td>
         </tr>
     </tbody>
 </table>
@@ -152,7 +152,7 @@ rescue => e
     puts "Those without handles were for sure not delivered"
     puts "The original cause was: #{e.cause}"
   when WaterDrop::Errors::ProducerClosedError
-    puts "The producer got closed in the middle of the batch"
+    puts "The producer was closed in the middle of the batch"
     puts "Messages with following labels have handles: #{e.dispatched.map(&:label)}"
     puts "Those without handles were not enqueued"
   else
@@ -176,7 +176,7 @@ producer.monitor.subscribe('error.occurred') do |event|
 end
 ```
 
-The same applies to `#flush_sync` and `#flush_async`. When a flush fails partway, either with `ProduceManyError` or because a concurrent `#close` stops it, WaterDrop puts the messages that were not enqueued back at the front of the buffer in their original order and re-raises the error. For a regular producer, only the messages after those in `#dispatched` go back to the buffer. For a transactional producer, the whole batch is rolled back, so all of its messages go back to the buffer. A closed producer does not send the messages that are back in the buffer, but you can still read them with `#messages`.
+`#flush_sync` and `#flush_async` also raise `ProduceManyError` and `ProducerClosedError`, with the same `#dispatched` meaning. When a flush fails partway, either with `ProduceManyError` or because a concurrent `#close` stops it, WaterDrop puts the messages that were not enqueued back at the front of the buffer in their original order and re-raises the error. For a regular producer, only the messages after those in `#dispatched` go back to the buffer. For a transactional producer, the whole batch is rolled back, so all of its messages go back to the buffer.
 
 ## Fatal Error Recovery
 
