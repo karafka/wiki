@@ -236,11 +236,9 @@ end
 
 This means you can gradually migrate from the routing-based `config()` approach to the standalone DSL without breaking anything.
 
-## Legacy Routing-Based Configuration
+## Legacy Routing-Based Configuration (Alternative)
 
-!!! warning "Routing `#config` Is Deprecated"
-
-    Defining topic configuration via the routing `#config` method is deprecated. While still functional for backwards compatibility, all new topic declarations should use the standalone `declaratives.draw` DSL described above. The routing-based approach will be removed in a future major release.
+Defining topic configuration via the routing `#config` method remains functional for backwards compatibility but is considered a legacy alternative. All new topic declarations should use the standalone `declaratives.draw` DSL described above. The routing-based approach will be removed in a future major release.
 
 Previously, topic configuration was defined inline within routing blocks using the `#config` method:
 
