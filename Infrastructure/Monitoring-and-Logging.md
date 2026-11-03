@@ -1,4 +1,4 @@
-Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems (for example, NewRelic) or perform additional operations during certain phases of the Karafka framework lifecycle.
+Karafka uses a simple monitor with an API compatible with `dry-monitor` and `ActiveSupport::Notifications` to which you can easily hook up with your listeners. You can use it to develop your monitoring and logging systems or perform additional operations during certain phases of the Karafka framework lifecycle.
 
 The framework itself always subscribes a couple of internal listeners (for example `Instrumentation::CriticalErrorsListener` and `Instrumentation::AssignmentsTracker`). On top of those, the generated `karafka.rb` template wires up the Karafka logger listener (```Karafka::Instrumentation::LoggerListener```) for you by convention - it is not subscribed automatically by the framework itself. It is based on a standard [Ruby logger](https://ruby-doc.org/stdlib-3.1.2/libdoc/logger/rdoc/Logger.html) or Ruby on Rails logger when used with Rails. You can find it in your `karafka.rb` file:
 
@@ -740,9 +740,67 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
     Do not use this integration alongside the native Karafka DataDog integration as they may conflict with each other. Choose the one that best fits your monitoring needs.
 
+## New Relic Metrics
+
+Karafka includes a New Relic metrics listener that publishes consumer, worker and librdkafka metrics as New Relic custom metrics with `NewRelic::Agent.record_metric`. The New Relic agent aggregates each metric (min, max, average and count) over its reporting interval.
+
+The listener requires the `newrelic_rpm` gem with a configured agent. Karafka does not load it by default:
+
+```ruby
+# First configure your app in karafka.rb
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # setup goes here...
+  end
+end
+
+# require the New Relic metrics listener as it is not loaded by default
+require 'karafka/instrumentation/vendors/new_relic/metrics_listener'
+
+# Subscribe with your listener to Karafka and you should be ready to go!
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new
+)
+```
+
+The listener publishes all metrics under `Custom/{namespace}/`, with `karafka` as the default namespace. To use a different namespace, set it in the setup block:
+
+```ruby
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new do |config|
+    config.namespace = 'my_app'
+  end
+)
+```
+
+You can query the metrics with the New Relic metric timeslice API or use them in custom dashboard widgets. For the full list of published metrics and their names, see the [listener source code](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/new_relic/metrics_listener.rb).
+
+!!! note "Context Is Part of the Metric Name"
+
+    New Relic custom metrics do not support tags. The listener puts the context (consumer group, topic, partition and broker) into the metric name. For example, the stored consumer lag of partition `0` of the `orders` topic in the `app` consumer group is `Custom/karafka/consumer.lags.app.orders.0`.
+
+### Customizing librdkafka Statistics Metrics
+
+The `rd_kafka_metrics` setting holds the librdkafka statistics that the listener publishes on each `statistics.emitted` event. Metrics with the `_d` suffix in their statistics key (for example `rxmsgs_d`) are deltas that Karafka computes, not raw librdkafka values. To publish only the metrics you need, provide your own list:
+
+```ruby
+Karafka.monitor.subscribe(
+  Karafka::Instrumentation::Vendors::NewRelic::MetricsListener.new do |config|
+    # Only report the stored consumer lag per topic partition
+    config.rd_kafka_metrics = [
+      Karafka::Instrumentation::Vendors::NewRelic::MetricsListener::RdKafkaMetric.new(
+        :topics, 'consumer.lags', 'consumer_lag_stored'
+      )
+    ]
+  end
+)
+```
+
+Each `RdKafkaMetric` takes a scope (`:root`, `:brokers` or `:topics`), the metric name and the location of the value in the statistics. As with the [Datadog listener](#disabling-specific-event-handlers), you can subclass the listener and override its `#on_*` methods to stop publishing metrics of a given event.
+
 ## Kubernetes
 
-Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
+Kubernetes is an open-source platform for automating the deployment and management of containerized applications. For integrating Karafka with Kubernetes, including liveness and readiness probe setup, detailed guidance is provided in the [Deployment section](Infrastructure-Deployment#kubernetes).
 
 ## OpenTelemetry
 

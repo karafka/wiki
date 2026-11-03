@@ -236,7 +236,7 @@ end
 |------------------------------------------|-------------|-----------------------------------------------------------------------------|
 | `reload_on_idempotent_fatal_error`       | `false`     | Enable automatic producer reload on fatal errors for idempotent producers   |
 | `wait_backoff_on_idempotent_fatal_error` | `5000`      | Time in milliseconds to wait before retrying after a fatal error            |
-| `max_attempts_on_idempotent_fatal_error` | `5`         | Maximum number of reload attempts before giving up                          |
+| `max_attempts_on_idempotent_fatal_error` | `5`         | Maximum number of reload attempts since the last successful produce         |
 | `non_reloadable_errors`                  | `[:fenced]` | Fatal error codes that do not start a reload (idempotent and transactional) |
 
 ### Transactional Producer Fatal Error Recovery
@@ -265,7 +265,7 @@ end
 |-------------------------------------------|-------------|------------------------------------------------------------------------------|
 | `reload_on_transaction_fatal_error`       | `true`      | Enable automatic producer reload on fatal errors for transactional producers |
 | `wait_backoff_on_transaction_fatal_error` | `1000`      | Time in milliseconds to wait before continuing after a fatal error reload    |
-| `max_attempts_on_transaction_fatal_error` | `10`        | Maximum number of reload attempts before giving up                           |
+| `max_attempts_on_transaction_fatal_error` | `10`        | Maximum number of reload attempts since the last committed transaction       |
 | `non_reloadable_errors`                   | `[:fenced]` | Fatal error codes that do not start a reload (idempotent and transactional)  |
 
 ### How Fatal Error Recovery Works
@@ -282,7 +282,7 @@ When a fatal error occurs:
 
 1. **Retry**: The operation is retried with the newly reloaded producer.
 
-1. **Attempt Tracking**: WaterDrop tracks the number of reload attempts to prevent infinite loops. If the maximum attempts are exceeded, the error is raised to the application.
+1. **Attempt Tracking**: WaterDrop counts the reload attempts since the last successful produce (idempotent producers) or the last committed transaction (transactional producers). When the count reaches the maximum, WaterDrop raises the error to the application and does not reload again. A successful produce or commit resets the count, so this limit does not stop a loop in which each reload is followed by a success, for example two transactional producers that fence each other. See [Transactions](WaterDrop-Transactions#timeouts).
 
 ### Monitoring Fatal Error Recovery
 

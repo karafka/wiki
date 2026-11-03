@@ -28,7 +28,7 @@ To use the Enhanced Liveness Listener in your Karafka application, you need to s
 # Put this at the end of karafka.rb
 Karafka.monitor.subscribe(
   Karafka::Pro::Swarm::LivenessListener.new(
-    memory_limit: 2048, # Memory limit in MB (e.g., 10GB)
+    memory_limit: 2048, # Memory limit in MB (2048 MB = 2 GB)
     consuming_ttl: 5 * 60 * 1_000, # 5 minutes in ms
     polling_ttl: 5 * 60 * 1_000, # 5 minutes in ms
     stability_ttl: 5 * 60 * 1_000 # 5 minutes in ms (requires statistics.interval.ms)
@@ -162,8 +162,9 @@ Configuring Direct Assignments involves specifying the partitions and the nodes 
 class KarafkaApp < Karafka::App
   setup do |config|
     # ...
-    # Run 8 processes
-    config.swarm.nodes = 8
+    # Run 3 processes. Each node needs at least one assignment, or the
+    # routing validation fails
+    config.swarm.nodes = 3
   end
 
   routes.draw do

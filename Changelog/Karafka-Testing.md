@@ -3,6 +3,13 @@
 
 # Karafka Testing Changelog
 
+## 2.6.4 (Unreleased)
+- [Feature] Record consumer pauses and resumes. Assert them with `karafka.pauses` and `karafka.resumes` (#214).
+- [Maintenance] Declare `rake` in the `Gemfile`. It came only through `karafka-rdkafka`, which will stop depending on it for precompiled platform gems.
+- [Fix] Give each consumer in one test a batch of only its own messages. Several consumers no longer share one batch, and offsets count per consumer.
+- [Fix] Stub `pause` and `resume` on the spec consumer client. Consumers that call `#pause` no longer fail with `NoMethodError`.
+- [Fix] Make producing in a test safe from many threads. On JRuby, messages produced from 2+ threads at once were lost or got duplicate offsets.
+
 ## 2.6.3 (2026-10-25)
 - **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
 - [Maintenance] Align internal naming and YARD docs with the Karafka ecosystem conventions.
@@ -29,8 +36,8 @@
 - [Fix] Fix consumer mapping collision when multiple consumer groups listen to the same topic.
 
 ## 2.5.4 (2025-10-03)
-- [Fix] Topic present in second dynamically built subscription group not available for dispatch (#291).
 - **[EOL]** Remove Ruby `3.1` according to the EOL schedule.
+- [Fix] Topic present in second dynamically built subscription group not available for dispatch (#291).
 
 ## 2.5.3 (2025-08-12)
 - [Fix] Allow testing consumers with Pro expansions (i.e. Piping).
