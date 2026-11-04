@@ -25,11 +25,11 @@ JRuby has no `Process.fork`. Swarm Mode forks its nodes, so it does not run on J
 
 Karafka polls each consumer client only from the listener thread that owns it, as on MRI. If you use karafka-rdkafka directly, do not share one `Rdkafka::Consumer` between threads for polling.
 
-The blocking and non-blocking (`_nb`) poll variants of karafka-rdkafka behave the same on JRuby. JRuby ignores the FFI `blocking: true` option, because it has no GVL to release.
+The `Rdkafka::Consumer` methods `#poll`, `#poll_batch` and `#events_poll` behave the same on JRuby as their non-blocking variants `#poll_nb`, `#poll_batch_nb` and `#events_poll_nb`. JRuby ignores the FFI `blocking: true` option, because it has no GVL to release.
 
 ## Signals
 
-Stop `karafka server` with `TERM`, or with `INT` in an interactive terminal. On JRuby, `QUIT` prints a JVM thread dump and does not stop the process. A process started with `INT` ignored (for example, with `&` in a non-interactive shell) does not react to `INT`, but `TERM` works. See [Signals and States](Infrastructure-Signals-and-States) for details.
+Stop `karafka server` with `TERM`. On JRuby, `QUIT` prints a JVM thread dump and does not stop the process. See [Signals and States](Infrastructure-Signals-and-States) for details.
 
 ## Callbacks and Finalizers
 
@@ -43,8 +43,8 @@ The `:envelope` mode of [Messages At Rest Encryption](Pro-Messages-At-Rest-Encry
 
 !!! warning "A `Timeout` Around `#produce_sync` or `#produce_async` Can Hang the Producer on JRuby"
 
-    On JRuby 10.0, a `Timeout` or `Thread#raise` that interrupts a thread while it waits for a busy `Mutex` can leave the lock held by that thread. Another thread that needs the same lock then waits forever. If you wrap `#produce_sync`, `#produce_async` or another call that waits on a busy lock in a `Timeout`, the producer can hang. MRI does not have this problem.
+    On JRuby 10.0, a `Timeout` or `Thread#raise` that interrupts a thread while it waits for a busy `Mutex` can leave the lock held by that thread. Another thread that needs the same lock then waits forever. If you wrap `#produce_sync` or `#produce_async` in a `Timeout`, the producer can hang. MRI does not have this problem.
 
     This is a JRuby bug, not a Karafka bug. See [jruby/jruby#9972](https://github.com/jruby/jruby/issues/9972).
 
-    Do not wrap producer calls in `Timeout`. Use the WaterDrop timeouts instead: `max_wait_timeout` and the `message.timeout.ms` setting. See [WaterDrop Configuration](WaterDrop-Configuration) for details.
+    Use the WaterDrop timeouts instead: `max_wait_timeout` and the `message.timeout.ms` setting. See [WaterDrop Configuration](WaterDrop-Configuration) for details.
