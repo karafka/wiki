@@ -1,6 +1,6 @@
 This document explains topic auto-creation behavior and addresses common misconceptions about the `allow.auto.create.topics` configuration. It clarifies when and how topics are automatically created by consumers versus producers.
 
-**Bottom Line**: Consumers do **not** create topics automatically, even with `allow.auto.create.topics` set to `true`. Topic creation occurs automatically during message production using WaterDrop, not during consumption.
+**Bottom Line**: A consumer does **not** create a missing topic when it subscribes. It creates one only in a narrow case: `allow.auto.create.topics` is `true`, the broker allows auto-creation, and the same subscription group already consumes an existing topic. Topics are normally created during message production using WaterDrop.
 
 ## Configuration Settings
 
@@ -11,7 +11,7 @@ This document explains topic auto-creation behavior and addresses common misconc
 </tr>
 <tr>
 <td>Consumer: <code>allow.auto.create.topics</code> set to <code>true</code></td>
-<td>Has no effect when a consumer subscribes to non-existent topics. librdkafka sends the subscription metadata requests with auto-creation turned off. Often misunderstood to mean consumers will create topics.</td>
+<td>Does not create topics when a consumer subscribes. librdkafka sends the subscription metadata requests with auto-creation turned off. The periodic metadata refresh can create a missing subscribed topic, but only when the same subscription group already consumes an existing topic. A subscription with only missing topics never creates them.</td>
 </tr>
 <tr>
 <td>Broker: <code>auto.create.topics.enable</code> set to <code>true</code></td>
@@ -32,10 +32,11 @@ Many developers expect that when a consumer subscribes to a non-existent topic w
 - **Consumer subscription to non-existent topics**: The consumer monitors the topic name in metadata requests and subscribes only when the topic exists
 - **Topic creation timing**: Topics are created during the **first message production** using WaterDrop, not during consumer subscription
 - **Consumer behavior**: If a topic does not exist, the consumer waits and "keeps an eye on it" until the topic is created
+- **Exception for mixed subscription groups**: When a subscription group consumes an existing topic and also subscribes to a missing one, the periodic metadata refresh creates the missing topic. This happens only when the consumer `allow.auto.create.topics` and the broker `auto.create.topics.enable` are both `true`. Outside `production`, Karafka refreshes metadata every 5 seconds, so the topic appears within about 5 seconds
 
 ## Technical Details
 
-When only consumers are present (no WaterDrop producers), topics will **not** be created automatically. Topic creation requires a WaterDrop producer to send the first message to the non-existent topic. Consumers detect newly created topics during metadata refresh cycles. In every environment except `production`, Karafka sets `topic.metadata.refresh.interval.ms` to 5 seconds by default so newly created topics are detected quickly; in `production`, where this is not injected, the underlying librdkafka default of 5 minutes applies unless you configure it explicitly.
+When only consumers are present (no WaterDrop producers), a topic is created only in the mixed subscription group case described above. A subscription group with only missing topics does not create them: a WaterDrop producer must send the first message. Consumers detect newly created topics during metadata refresh cycles. In every environment except `production`, Karafka sets `topic.metadata.refresh.interval.ms` to 5 seconds by default so newly created topics are detected quickly; in `production`, where this is not injected, the underlying librdkafka default of 5 minutes applies unless you configure it explicitly.
 
 **WaterDrop producer behavior:**
 
@@ -67,7 +68,7 @@ This CLI behavior is implementation-specific and does not reflect standard consu
 
 Understanding topic auto-creation behavior is crucial for building reliable event-driven applications:
 
-- **Consumers do not create topics** - they only subscribe to existing ones
+- **Consumers do not create topics on subscribe** - only the periodic metadata refresh of a subscription group that already consumes an existing topic can create a missing one
 - **WaterDrop producers create topics** - during the first `produce_sync` or `produce_async` call
 - **Plan for topic lifecycle** - consider pre-creating topics in production using declarative topics
 - **Monitor metadata refresh** - newly created topics may not be immediately visible to consumers
