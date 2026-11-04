@@ -73,8 +73,6 @@ Understanding topic auto-creation behavior is crucial for building reliable even
 - **Plan for topic lifecycle** - consider pre-creating topics in production using declarative topics
 - **Monitor metadata refresh** - newly created topics may not be immediately visible to consumers
 
-This behavior ensures topics are created only when there is actual data to store, not merely because a consumer is interested in potentially receiving messages.
-
 ## See Also
 
 - [Declarative Topics](Infrastructure-Declarative-Topics) - Manage topic creation explicitly as code for production environments
