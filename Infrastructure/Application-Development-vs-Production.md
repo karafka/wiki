@@ -99,7 +99,7 @@ Creating a topic manually or by sending the first message and then starting a co
 
 ## Adjust Topic Metadata Refresh Interval for Production
 
-In the development environment, the `topic.metadata.refresh.interval.ms` setting defaults to 5 seconds. This means Karafka quickly discovers any topic created after starting the Karafka service. However, in production, this short interval is not recommended. The default value for a production environment should be 5 minutes to reduce unnecessary overhead.
+In every environment except `production`, the `topic.metadata.refresh.interval.ms` setting defaults to 5 seconds. This means Karafka quickly discovers any topic created after starting the Karafka service. However, in production, this short interval is not recommended. The default value for a production environment should be 5 minutes to reduce unnecessary overhead.
 
 ```ruby
 class KarafkaApp < Karafka::App
