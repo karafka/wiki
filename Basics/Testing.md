@@ -528,7 +528,7 @@ end
 
 ### Testing Pausing - Minitest
 
-Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker` or `@karafka.pauses` and `@karafka.resumes`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
+Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker`, and the recorded pauses and resumes through `@karafka.pauses` and `@karafka.resumes`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
 
 ```ruby
 class PausingConsumerTest < ActiveSupport::TestCase

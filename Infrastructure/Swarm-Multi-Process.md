@@ -265,7 +265,7 @@ Below, you can find a few examples of resources worth preparing and cleaning bef
 
 Given the potential complexities and dangers associated with preloading the entire application, Karafka makes this feature opt-in. This cautious approach enables developers to enable preloading when effectively managing the related resources.
 
-In addition to preloading for substantial memory savings, Karafka introduces a crucial phase known as "Process Warmup" right before the process starts. It occurs only in the supervisor. This phase is designed to optimize the application's readiness for forking and operation, using Ruby's `Process.warmup`. This method signals Ruby that the application has completed booting and is now ready for forking, triggering actions such as garbage collection and memory compaction to enhance the efficiency of Copy-On-Write (CoW) mechanics in child forks.
+In addition to preloading for memory savings, Karafka runs a "Process Warmup" phase right before the process starts. It occurs only in the supervisor. In this phase, Karafka calls Ruby's `Process.warmup`. This method signals Ruby that the application has completed booting and is now ready for forking. Ruby then runs actions such as garbage collection and memory compaction, so child forks share more memory through Copy-On-Write (CoW).
 
 Before the warmup phase, Karafka emits an `app.before_warmup` notification, providing an ideal opportunity to eager load the application code and perform other preparatory tasks. This hook is pivotal for loading any code that benefits from being loaded once and shared across forks, thereby reducing memory usage and startup time for each child process.
 

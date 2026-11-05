@@ -373,7 +373,7 @@ This page exists because of our commitment to security, compliance, and transpar
       mini_portile2
     </td>
     <td>
-      All (source gem only from 0.32.0)
+      All
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/flavorjones/mini_portile/blob/main/LICENSE.txt">MIT</a>
@@ -387,7 +387,7 @@ This page exists because of our commitment to security, compliance, and transpar
       rake
     </td>
     <td>
-      All (source gem only from 0.32.0)
+      All
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/rake/blob/v13.1.0/MIT-LICENSE">MIT</a>
