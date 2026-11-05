@@ -128,8 +128,20 @@ RSpec.describe PausingConsumer do
 
     expect(consumer.coordinator.pause_tracker).to be_paused
   end
+
+  it 'records the pause' do
+    consumer.consume
+
+    expect(karafka.pauses).to eq([{ topic: 'pausing_topic', partition: 0, offset: 2, timeout: 5_000 }])
+    expect(karafka.resumes).to be_empty
+  end
 end
 ```
+
+The testing client records each pause and resume of the current test:
+
+- `karafka.pauses` lists the pauses, each with the `topic`, `partition`, `offset` and `timeout`.
+- `karafka.resumes` lists the resumes of paused partitions, each with the `topic` and `partition`. A `#resume` call on a partition that is not paused adds no entry.
 
 ### Testing Messages Consumption of Routing Patterns
 
@@ -516,7 +528,7 @@ end
 
 ### Testing Pausing - Minitest
 
-Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
+Check a [`#pause`](Consumer-Groups-Pausing-Seeking-and-Rate-Limiting) call through `@consumer.coordinator.pause_tracker` or `@karafka.pauses` and `@karafka.resumes`, as in [Testing Pausing](#testing-pausing) for RSpec. The example uses the `PausingConsumer` from that section.
 
 ```ruby
 class PausingConsumerTest < ActiveSupport::TestCase
@@ -532,6 +544,15 @@ class PausingConsumerTest < ActiveSupport::TestCase
     @consumer.consume
 
     assert_predicate @consumer.coordinator.pause_tracker, :paused?
+  end
+
+  test 'it records the pause' do
+    3.times { |i| @karafka.produce({ 'i' => i }.to_json) }
+
+    @consumer.consume
+
+    assert_equal [{ topic: 'pausing_topic', partition: 0, offset: 2, timeout: 5_000 }], @karafka.pauses
+    assert_empty @karafka.resumes
   end
 end
 ```

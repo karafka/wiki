@@ -373,7 +373,7 @@ This page exists because of our commitment to security, compliance, and transpar
       mini_portile2
     </td>
     <td>
-      All
+      All (source gem only)
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/flavorjones/mini_portile/blob/main/LICENSE.txt">MIT</a>
@@ -387,7 +387,7 @@ This page exists because of our commitment to security, compliance, and transpar
       rake
     </td>
     <td>
-      All
+      All (source gem only)
     </td>
     <td>
       <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/rake/blob/v13.1.0/MIT-LICENSE">MIT</a>
@@ -410,6 +410,8 @@ This page exists because of our commitment to security, compliance, and transpar
   </tr>
 </tbody>
 </table>
+
+The precompiled platform gems of karafka-rdkafka do not depend on `mini_portile2` and `rake`. Only the source gem (`ruby` platform), which compiles librdkafka during installation, depends on them. See [Native Extensions](Development-Native-Extensions).
 
 ## librdkafka + subcomponents
 
