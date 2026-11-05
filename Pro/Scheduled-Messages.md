@@ -292,6 +292,8 @@ Below, you can find exact details on how to do this:
 
 This call places the wrapped message into the designated scheduling topic, which remains until the specified epoch time is reached. At that time, Karafka's internal scheduling mechanism automatically processes and dispatches the message to its intended destination.
 
+`Karafka::Pro::ScheduledMessages.schedule` merges the `envelope` hash over the envelope it builds. If you set `headers` in the `envelope`, they replace the generated headers and must include all four schedule headers listed in [External Producers Support](#external-producers-support). When one is missing, `.schedule` raises `Karafka::Errors::InvalidConfigurationError`.
+
 ### Message Key Uniqueness and Ordering Management
 
 When using this feature, understand dispatched messages keys and their uniqueness operations. Each message sent to the scheduler must have a distinct key within its partition to ensure accurate scheduling and prevent any potential overlaps or errors during the dispatch process.
@@ -588,7 +590,7 @@ When using external producers to schedule messages, follow a specific header for
 
 - `schedule_target_topic`: Defines the Kafka topic to which the message should be dispatched when its scheduled time arrives.
 
-Karafka recognizes a message as a valid schedule only if it carries at least 4 of these required headers. Additional optional headers can include:
+Karafka does not validate these headers on messages from external producers. The scheduled messages consumer treats a message as a schedule only when `schedule_source_type` is `schedule` and reads the other headers to dispatch it, so set all four. Only `Karafka::Pro::ScheduledMessages.schedule` checks for all four headers before you produce the message. Additional optional headers can include:
 
 - `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
 
