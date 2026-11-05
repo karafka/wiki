@@ -1,5 +1,6 @@
 1. [Why can't I connect to Kafka from another Docker container?](#why-cant-i-connect-to-kafka-from-another-docker-container)
 1. [What does static consumer fenced by other consumer with same group.instance.id mean?](#what-does-static-consumer-fenced-by-other-consumer-with-same-groupinstanceid-mean)
+1. [Why is the fatal error of a consumer reported twice?](#why-is-the-fatal-error-of-a-consumer-reported-twice)
 1. [Why am I seeing an `Implement this in a subclass` error?](#why-am-i-seeing-an-implement-this-in-a-subclass-error)
 1. [What is the Unsupported value "SSL" for configuration property "security.protocol": OpenSSL not available at build time?](#what-is-the-unsupported-value-ssl-for-configuration-property-securityprotocol-openssl-not-available-at-build-time)
 1. [Why Karafka prints some of the logs with a time delay?](#why-karafka-prints-some-of-the-logs-with-a-time-delay)
@@ -51,6 +52,28 @@ It can mean two things:
 
 1. You are using the Karafka version before `2.0.20`. If that is the case, upgrade.
 1. Your `group.instance.id` is not unique within your consumer group. You must always ensure that the value you assign to `group.instance.id` is unique within the whole consumer group, not unique per process or machine.
+
+## Why is the fatal error of a consumer reported twice?
+
+When a consumer gets a fatal error, you can see the same error twice in the logs and on `error.occurred`. For example, a KIP-848 consumer that joins with a `group.instance.id` already in use is fenced with `unreleased_instance_id`:
+
+```text
+Data polling error occurred: Broker: The instance ID is still used by another member in the consumer group (unreleased_instance_id)
+librdkafka internal error occurred: Broker: The instance ID is still used by another member in the consumer group (unreleased_instance_id)
+```
+
+This is expected. Karafka reports the fatal error at two points:
+
+1. When it polls, as a `connection.client.poll.error`. This report occurs as soon as the poll gets the fatal error.
+1. When it closes the consumer during shutdown, as a `librdkafka.error`. A consumer with a fatal error cannot close cleanly, so the close returns the same error.
+
+Karafka reports the failed close with `karafka-rdkafka` `0.32.0` and later. Earlier versions ignore the result of the close.
+
+!!! tip "Do Not Filter Out the Close Report"
+
+    The close report is the only report of a fatal error that occurs after the last poll of a shutdown. In this case, librdkafka returns the error from the close and never gives it to a poll. If you ignore `librdkafka.error` reports on close, such fatal errors stay hidden.
+
+To group both reports in your error tracker, use the error code (`event[:error].code`) and not the event `type`.
 
 ## Why am I seeing an `Implement this in a subclass` error?
 
