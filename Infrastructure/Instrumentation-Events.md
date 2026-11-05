@@ -49,6 +49,7 @@ Below is a list of the instrumentation events available in Karafka. Depending on
 - `connection.listener.quiet`
 - `connection.listener.quieting`
 - `connection.listener.running`
+- `connection.listener.shutdown.skipped`
 - `connection.listener.starting`
 - `connection.listener.stopped`
 - `connection.listener.stopping`
