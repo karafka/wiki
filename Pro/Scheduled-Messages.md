@@ -590,7 +590,9 @@ When using external producers to schedule messages, follow a specific header for
 
 - `schedule_target_topic`: Defines the Kafka topic to which the message should be dispatched when its scheduled time arrives.
 
-Karafka does not check that messages from external producers carry all four headers. The scheduled messages consumer checks only that `schedule_schema_version` is not higher than the schema version it supports. It treats a message as a schedule only when `schedule_source_type` is `schedule` and reads the other headers to dispatch it, so set all four. Only `Karafka::Pro::ScheduledMessages.schedule` checks for all four headers before you produce the message. Additional optional headers can include:
+Karafka does not check that messages from external producers carry all four headers. Karafka's scheduled message consumer checks only `schedule_schema_version`: a version higher than the one it supports halts dispatching, as described in [Error Handling and Retries](#error-handling-and-retries). It treats a message as a schedule only when `schedule_source_type` is `schedule` and reads the other headers to dispatch it, so set all four.
+
+Additional optional headers can include:
 
 - `schedule_target_key`: A unique identifier for the message within its target topic. This key is crucial for ensuring that messages are uniquely identified and managed within the scheduling system.
 
