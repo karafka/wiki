@@ -55,7 +55,7 @@ It can mean two things:
 
 ## Why does Karafka report a fatal error when it closes a consumer?
 
-A consumer with a fatal error cannot close cleanly. The close returns the fatal error, and Karafka reports it as a `librdkafka.error` on `error.occurred`. This report exists with `karafka-rdkafka` `0.32.0` and later. Earlier versions ignore the result of the close.
+A consumer with a fatal error cannot close cleanly. The close returns the fatal error, and Karafka reports it as a `librdkafka.error` on `error.occurred`.
 
 What this report means depends on when the fatal error occurred:
 
