@@ -486,8 +486,6 @@ WaterDrop producers support buffering messages in their internal buffers and on 
 
 This means that depending on your use case, you can achieve both granular buffering and flushing control when needed with context awareness and periodic and size-based flushing functionalities.
 
-When a concurrent `#close` stops `#flush_sync` or `#flush_async`, WaterDrop puts the messages that were not enqueued back in the buffer, and the flush raises `WaterDrop::Errors::ProducerClosedError`. See [Error Handling](WaterDrop-Error-Handling#batch-messages-dispatch) for how to handle this error.
-
 ### Buffering Messages Based on the Application Logic
 
 ```ruby
