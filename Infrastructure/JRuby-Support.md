@@ -4,36 +4,29 @@
 
     Karafka support for JRuby is a work in progress. It is not ready for use until this notice is removed from this page.
 
-This page lists what you need to run Karafka, WaterDrop and karafka-rdkafka on JRuby, and the limits that apply there. The target is JRuby 10.0, which is compatible with Ruby 3.4. Older JRuby versions are not a target. JRuby fixes land in the current releases of the gems. See the [Karafka](Changelog-Karafka), [WaterDrop](Changelog-WaterDrop) and [Karafka-Rdkafka](Changelog-Karafka-Rdkafka) changelogs for details.
+This page lists what you need to run Karafka, WaterDrop and the Web UI on JRuby, and the limits that apply there. The target is JRuby 10.0, which is compatible with Ruby 3.4. Older JRuby versions are not a target. JRuby fixes land in the current releases of the gems. See the [Karafka](Changelog-Karafka) and [WaterDrop](Changelog-WaterDrop) changelogs for details.
 
-Web UI support on JRuby is in progress.
+!!! warning "The Web UI Is Not Ready for JRuby"
+
+    The Web UI is not ready for use on JRuby.
 
 ## Installation
 
-karafka-rdkafka has no precompiled gem for JRuby. On JRuby, `gem install` and `bundle install` compile librdkafka from source when they install karafka-rdkafka. The machine that installs the gem needs:
+Karafka and WaterDrop use librdkafka. On JRuby, there is no precompiled librdkafka, so `gem install` and `bundle install` compile it from source when they install Karafka or WaterDrop. The machine that installs the gems needs:
 
 - A C and C++ compiler and `make`, for example the `build-essential` package on Debian and Ubuntu.
 - The OpenSSL development headers, for example `libssl-dev`. Without them, the build succeeds, but librdkafka has no SSL, SASL SCRAM or SASL OAUTHBEARER support, and connections that use them fail.
 - The SASL development headers, for example `libsasl2-dev`, if you use SASL GSSAPI (Kerberos).
-- `git`, when you install karafka-rdkafka from a Git repository or a local checkout, because its gemspec calls `git ls-files`.
 
-The Ubuntu images of GitHub Actions have the compilers, `make`, `git` and the OpenSSL headers. See [Native Extensions](Development-Native-Extensions#source-compilation-fallback) for more about source compilation.
+The Ubuntu images of GitHub Actions have the compilers, `make` and the OpenSSL headers. See [Native Extensions](Development-Native-Extensions#source-compilation-fallback) for more about source compilation.
 
 ## Process Model
 
 JRuby has no `Process.fork`. Swarm Mode forks its nodes, so it does not run on JRuby: `karafka swarm` fails at boot. Use `karafka server`. It runs one process with many threads, and these threads run in parallel because JRuby has no GVL. See [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process) for details.
 
-Karafka polls each consumer client only from the listener thread that owns it, as on MRI. If you use karafka-rdkafka directly, do not share one `Rdkafka::Consumer` between threads for polling.
-
-The `Rdkafka::Consumer` methods `#poll`, `#poll_batch` and `#events_poll` behave the same on JRuby as their non-blocking variants `#poll_nb`, `#poll_batch_nb` and `#events_poll_nb`. JRuby ignores the FFI `blocking: true` option, because it has no GVL to release.
-
 ## Signals
 
 Stop `karafka server` with `TERM`. On JRuby, `QUIT` prints a JVM thread dump and does not stop the process. See [Signals and States](Infrastructure-Signals-and-States) for details.
-
-## Callbacks and Finalizers
-
-On JRuby, the GC finalizer of a client runs on the JVM `Finalizer` thread. If you create a karafka-rdkafka consumer directly and do not close it, its finalizer closes it. When that close fails, karafka-rdkafka calls `Rdkafka::Config.error_callback` from the `Finalizer` thread, so make this callback thread-safe. Karafka closes its own consumers, so this does not apply to them.
 
 ## Pro Encryption
 
