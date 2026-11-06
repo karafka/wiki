@@ -110,6 +110,7 @@
 - [Embedding](Infrastructure-Embedding)
 - [Swarm / Multi Process](Infrastructure-Swarm-Multi-Process)
 - [Forking](Infrastructure-Forking)
+- [JRuby Support](Infrastructure-JRuby-Support)
 - [Auto reload of code changes in development](Infrastructure-Auto-reload-of-code-changes-in-development)
 - [Admin API](Infrastructure-Admin-API)
 - [ACLs API](Infrastructure-Admin-Acls-API)
