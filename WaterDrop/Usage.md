@@ -117,7 +117,7 @@ The cache works as follows:
 The cache TTL is a process-wide karafka-rdkafka setting, not a WaterDrop setting. You can set it in milliseconds:
 
 ```ruby
-Rdkafka::Config.partitions_count_cache_ttl_ms = 60_000
+Rdkafka::Config.partition_count_cache_ttl_ms = 60_000
 ```
 
 The value must be a positive Integer, else the setter raises `ArgumentError`. The change keeps the cached counts, so you can change the TTL at any time. A lower value makes produce calls pick up partition count changes sooner and run metadata requests more often.
