@@ -305,7 +305,7 @@ The `align`, `migrate` and `plan` commands check the `config` keys of each decla
 
 ## Production Usage
 
-The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka. `migrate` fails without changes when an existing topic has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster).
+The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
 
 Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed.
 
