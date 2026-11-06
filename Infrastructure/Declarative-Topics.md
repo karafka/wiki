@@ -296,6 +296,13 @@ routes.draw do
 end
 ```
 
+## Configuration Unknown to the Cluster
+
+The `align`, `migrate` and `plan` commands check the `config` keys of each declarative topic that already exists against the configuration names the cluster reports. A key the cluster does not know, for example the typo `retention.msx`, can never be applied, so these commands fail with exit code `1`:
+
+- `align` and `migrate` print each such topic with its unknown keys and apply no changes. `migrate` runs this check before it creates or repartitions any topic.
+- `plan` prints any other pending changes and lists the unknown keys under a separate heading.
+
 ## Production Usage
 
 The topics management CLI **never** performs any destructive actions except the `delete` and `reset` commands. This means you can safely include the `karafka topics migrate` in your deployment pipelines if you wish to delegate topics management to Karafka.
@@ -327,7 +334,7 @@ When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode`
 When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes will work as follows:
 
 - `0`: No changes were made. This means that all topics are already aligned with the desired state, and no operations were required.
-- `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing.
+- `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing. For `plan`, it also means that a topic has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster), on which `migrate` would fail.
 - `2`: Changes were either present or successfully applied. This code is returned when topics were created, updated, or deleted as part of the operation.
 
 This behavior allows you to differentiate between successful operations with no changes, successful operations with changes, and errors, providing more control over how you handle Karafka's CLI topic management results.
