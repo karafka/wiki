@@ -411,8 +411,6 @@ This page exists because of our commitment to security, compliance, and transpar
 </tbody>
 </table>
 
-The precompiled platform gems do not depend on `mini_portile2` and `rake`. Only the source gem (`ruby` platform), which compiles librdkafka during installation, depends on them. See [Native Extensions](Development-Native-Extensions).
-
 ## librdkafka + subcomponents
 
 <table>
