@@ -5,6 +5,7 @@
 
 ## Unreleased
 - [Change] Require `karafka-rdkafka` `>=` `0.32.0`.
+- [Fix] Send a message buffered through a variant with that variant's `topic_config` at flush, and a message buffered through the producer with the default one, whichever producer or variant flushes the buffer.
 
 ## 2.10.9 (2026-11-02)
 - [Maintenance] Rename the positional topic name parameters of `Producer#partition_count`, `Clients::Buffered#messages_for` and the Datadog metrics listener to `topic_name`.
@@ -12,7 +13,6 @@
 - [Maintenance] Declare `rake` in the `Gemfile`. It came only through `karafka-rdkafka`, which will stop depending on it for precompiled platform gems.
 - [Fix] Copy the buffer in `Producer#messages` (and so the `buffer.flushed_async`/`buffer.flushed_sync` payloads) under a dedicated lock, so reading it while other threads buffer no longer raises `ConcurrencyError` on JRuby.
 - [Fix] Re-buffer the undispatched rest of a `#flush` batch when a concurrent `#close` stops it, and expose the handles dispatched before the close as `ProducerClosedError#dispatched`.
-- [Fix] Copy the buffer in `Producer#messages` (and so the `buffer.flushed_async`/`buffer.flushed_sync` payloads) under a dedicated lock, so reading it while other threads buffer no longer raises `ConcurrencyError` on JRuby.
 
 ## 2.10.8 (2026-10-25)
 - [Maintenance] Document that a transaction timeout also raises `:fenced`, indistinguishable from a takeover, and when removing `:fenced` from `non_reloadable_errors` is safe.
