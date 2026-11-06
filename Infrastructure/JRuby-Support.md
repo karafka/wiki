@@ -4,7 +4,7 @@
 
     Karafka support for JRuby is a work in progress. It is not ready for use until this notice is removed from this page.
 
-This page lists what you need to run Karafka, WaterDrop and the Web UI on JRuby, and the limits that apply there. The target is JRuby 10.0, which is compatible with Ruby 3.4. Older JRuby versions are not a target. JRuby fixes land in the current releases of the gems. See the [Karafka](Changelog-Karafka) and [WaterDrop](Changelog-WaterDrop) changelogs for details.
+This page lists what you need to run Karafka and WaterDrop on JRuby, the limits that apply there, and the state of the Web UI. The target is JRuby 10.0, which is compatible with Ruby 3.4. Older JRuby versions are not a target. JRuby fixes land in the current releases of the gems. See the [Karafka](Changelog-Karafka) and [WaterDrop](Changelog-WaterDrop) changelogs for details.
 
 !!! warning "The Web UI Is Not Ready for JRuby"
 
