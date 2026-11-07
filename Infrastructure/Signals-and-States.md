@@ -72,7 +72,7 @@ This is intentional. Flushing the producer during a forceful shutdown would be r
 
 The blocking cleanup that Karafka does perform on this path (stopping the listeners' underlying clients) is time-boxed by the `forceful_shutdown_wait` setting - it defaults to `5_000` (milliseconds) and can be adjusted via `config.internal.forceful_shutdown_wait` - so that a hung resource cannot delay the forceful exit indefinitely.
 
-The cleanup first waits up to half of `forceful_shutdown_wait` for the terminated listener threads to end, so that no client is used from two threads at once. It then shuts down the client of each listener whose thread ended. A listener whose thread is still running keeps its client open, and Karafka instruments the `connection.listener.shutdown.skipped` event for it, with `caller`, `listener` and `subscription_group` in the payload. This event is instrumented after all the client shutdowns, so a subscriber that raises an error does not stop any of them. See [Instrumentation Events](Infrastructure-Instrumentation-Events) for the full list of events.
+The cleanup first waits up to half of `forceful_shutdown_wait` for the terminated listener threads to end, so that no client is used from two threads at once. It then shuts down the client of each listener whose thread ended. A listener whose thread is still running keeps its client open, and Karafka instruments the `connection.listener.shutdown.skipped` event for it, with `caller`, `listener` and `subscription_group` in the payload. See [Instrumentation Events](Infrastructure-Instrumentation-Events) for the full list of events.
 
 !!! note "Preventing Data Loss on Shutdown"
 
