@@ -52,7 +52,7 @@ Send `TERM`, `INT` or `QUIT` signal to a Karafka process to shut it down. It wil
 
 #### Forceful Shutdown
 
-When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a forceful shutdown: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
+When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a forceful shutdown: it terminates the still-running workers and listeners, closes the Kafka clients of the listeners that ended, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
 
 A forceful shutdown is triggered by either of two conditions:
 
@@ -64,7 +64,7 @@ A forceful shutdown is triggered by either of two conditions:
 
     Since Karafka `2.5.7`, when a forceful shutdown occurs, Karafka logs detailed blocking information - the active listeners, alive workers, and in-processing jobs - instead of only aggregate counts. Inspect this log line to determine whether a long-running job or a stuck listener is holding the process. If workers are still processing, the culprit is your consumer code; if instead a listener cannot close while nothing is actively processing, the delay is in the client teardown - most often an unresolved rebalance.
 
-    A listener still running after termination is also logged as a warning: `Listener <listener id> for <subscription group name> is still running after termination, its client will not be shut down`.
+    `Karafka::Instrumentation::LoggerListener` also logs a listener still running after termination as a warning: `Listener <listener id> for <subscription group name> is still running after termination, its client will not be shut down`.
 
 A forceful shutdown is a **last resort**, and it is **expected that in-flight data may be lost**. Because the process ends with an immediate `exit!`, the regular `ensure`-based cleanup is skipped and the producer is **not** flushed: any async-buffered messages that have not yet been delivered - for example user `produce_async` calls or Dead Letter Queue copies - may be discarded.
 
