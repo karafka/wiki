@@ -107,20 +107,31 @@ WaterDrop uses `partition_key` to compute the destination partition in the Ruby 
 
 The cache works as follows:
 
-- A cached count stays valid for 30 seconds. After that, the next produce call with `partition_key` refreshes it with a metadata request.
+- By default, a cached count stays valid for 30 seconds. After that, the next produce call with `partition_key` refreshes it with a metadata request.
 - When any producer or consumer in the process emits librdkafka statistics, the statistics also update the cache.
 - A topic that does not exist is cached too, so produce calls to it do not run a metadata request for each message.
 - The produce call that refreshes an expired count blocks while the metadata request and its retries run. Other produce calls get the known count during this time.
 - If the refresh fails on a transient error (`transport`, `timed_out`, `all_brokers_down` or `resolve`), the cache keeps the last known count and runs the next refresh after 10 seconds. Produce calls with `partition_key` continue to buffer messages in librdkafka during a cluster outage, but one produce call blocks for each refresh attempt. If the refresh fails on another error (except a missing topic), the produce call raises an error.
 - If the cache has no count for the topic, the produce call blocks while the metadata request and its retries run. This also applies to `#produce_async`. When the request fails, the produce call raises an error before WaterDrop queues the message. See [Error Handling](WaterDrop-Error-Handling#error-types).
 
-The cache TTL is a process-wide karafka-rdkafka setting, not a WaterDrop setting. You can set it in milliseconds:
+The cache TTL is process-wide. To change it, set `partition_count_cache_ttl_ms` in milliseconds when you configure a producer:
+
+```ruby
+producer = WaterDrop::Producer.new do |config|
+  config.kafka = { 'bootstrap.servers': 'localhost:9092' }
+  config.partition_count_cache_ttl_ms = 60_000
+end
+```
+
+WaterDrop applies the value to karafka-rdkafka when it sets up the producer. The value applies to all the producers in the process, and the last producer set up with a non-`nil` value wins. With the default `nil`, WaterDrop does not change the TTL, so a value set before stays. The value must be `nil` or a positive Integer, else the setup raises `WaterDrop::Errors::ConfigurationInvalidError`.
+
+You can also set the TTL directly in karafka-rdkafka:
 
 ```ruby
 Rdkafka::Config.partition_count_cache_ttl_ms = 60_000
 ```
 
-The value must be a positive Integer, else the setter raises `ArgumentError`. The change keeps the cached counts, so you can change the TTL at any time. A lower value makes produce calls pick up partition count changes sooner and run metadata requests more often.
+This setter raises `ArgumentError` when the value is not a positive Integer. A change keeps the cached counts, so you can change the TTL at any time. A lower value makes produce calls pick up partition count changes sooner and run metadata requests more often.
 
 ## Headers
 
