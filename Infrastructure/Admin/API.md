@@ -85,15 +85,13 @@ messages = secondary_admin.read_topic('events', 0, 10)
 
     The `kafka` configuration and, since 2.6.0, an `external_client` are the two customizable arguments per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
 
-`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
+`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. Since 2.6.2, consumer group offset operations (`read_lags_with_offsets`, `seek_consumer_group`, `copy_consumer_group`, and `rename_consumer_group`) are the exception for a consumer client. They always run on a Kafka admin client, so Karafka opens a short-lived admin instance for them. They use the consumer group you query, not the `group.id` of the consumer client. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
 
 ```ruby
 # Read consumer group lags via an existing rdkafka admin instance
 admin = Karafka::Admin.new(external_client: rdkafka_admin)
 admin.read_lags_with_offsets({ 'my-group' => ['events'] })
 ```
-
-Since 2.6.2, Karafka reads and changes consumer group offsets through the admin API, for the consumer group you query. An external rdkafka admin instance is used for these operations. An external consumer client is not: Karafka opens a short-lived admin instance instead, and the `group.id` of that client is not used.
 
 #### Environment Variable Approach
 
@@ -847,9 +845,9 @@ The `:assignment` of a member maps each topic name to an array of partitions. Th
 
 ## Renaming a Consumer Group
 
-!!! warning "Never Rename Active Consumer Groups"
+!!! warning "Stop Both Consumer Groups Before Renaming"
 
-    This method should **not** be used on actively running consumer groups. Kafka accepts offset changes only for consumer groups without members. When the new consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged.
+    Use this method only when neither the old nor the new consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When the new consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged. The old consumer group is not checked: its consumers keep committing offsets after Karafka reads them.
 
 The `.rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
 
@@ -869,9 +867,9 @@ When using `rename_consumer_group`, the method ensures that offsets from the old
 
 ## Copying a Consumer Group
 
-!!! warning "Never Copy Active Consumer Groups"
+!!! warning "Stop Both Consumer Groups Before Copying"
 
-    This method should **not** be used on actively running consumer groups. Kafka accepts offset changes only for consumer groups without members. When the target consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged.
+    Use this method only when neither the source nor the target consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When the target consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged. The source consumer group is not checked: its consumers keep committing offsets after Karafka reads them.
 
 The `#copy_consumer_group` method in Karafka Admin API allows you to copy offsets from an existing consumer group to another while preserving its consumption state for specific topics. This functionality is useful when creating a duplicate consumer group with the same consumption progress as an existing one.
 
@@ -935,7 +933,7 @@ Topics are always detected from the routing configuration, and consumer settings
 
 !!! warning "Never Alter Active Consumer Groups"
 
-    This method should only be used for consumer groups **not** actively used. Kafka accepts offset changes only for consumer groups without members. When the consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged.
+    Use this method only for consumer groups without active members. Kafka accepts offset changes only for consumer groups without active members. When the consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged.
 
 This method allows you to modify the offset for a specific topic within a consumer group, effectively controlling where the group starts consuming messages from within the topic.
 
