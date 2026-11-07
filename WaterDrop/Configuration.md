@@ -121,7 +121,7 @@ Some of the options are:
     </tr>
     <tr>
       <td><code>partition_count_cache_ttl_ms</code></td>
-      <td>Process-wide <a href="WaterDrop-Usage#partition-key">partition count cache</a> TTL (ms); <code>nil</code> (default) keeps the karafka-rdkafka value</td>
+      <td>Process-wide <a href="/docs/WaterDrop-Usage/#partition-key">partition count cache</a> TTL (ms); <code>nil</code> (default) keeps the karafka-rdkafka value</td>
     </tr>
     <tr>
       <td><code>statistics_decorator</code></td>
