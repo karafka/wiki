@@ -35,29 +35,100 @@ end
 
 Some of the options are:
 
-| Option                                    | Description                                                                                                                   |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `id`                                      | id of the producer for instrumentation and logging                                                                            |
-| `logger`                                  | Logger that we want to use                                                                                                    |
-| `client_class`                            | Client class for creating the underlying client used to dispatch messages                                                     |
-| `deliver`                                 | Should we send messages to Kafka or just fake the delivery                                                                    |
-| `max_wait_timeout`                        | Waits that long for the delivery report or raises an error                                                                    |
-| `wait_on_queue_full`                      | Should be wait on queue full or raise an error when that happens                                                              |
-| `wait_backoff_on_queue_full`              | Waits that long before retry when queue is full                                                                               |
-| `wait_timeout_on_queue_full`              | If back-offs and attempts that that much time, error will not be retried more                                                 |
-| `wait_backoff_on_transaction_command`     | How long to wait before retrying a retryable transaction related error                                                        |
-| `max_attempts_on_transaction_command`     | How many times to retry a retryable transaction related error before giving up                                                |
-| `reload_on_idempotent_fatal_error`        | Automatically reload producer after fatal errors on idempotent producers                                                      |
-| `wait_backoff_on_idempotent_fatal_error`  | Time to wait (ms) before retrying after an idempotent fatal error reload                                                      |
-| `max_attempts_on_idempotent_fatal_error`  | Maximum number of reload attempts for idempotent fatal errors                                                                 |
-| `reload_on_transaction_fatal_error`       | Automatically reload producer after fatal errors in transactions                                                              |
-| `wait_backoff_on_transaction_fatal_error` | Time to wait (ms) before continuing after a transactional fatal error reload                                                  |
-| `max_attempts_on_transaction_fatal_error` | Maximum number of reload attempts for transactional fatal errors                                                              |
-| `non_reloadable_errors`                   | Fatal error codes that do not start a reload (idempotent and transactional)                                                   |
-| `wait_timeout_on_transaction_abort`       | Max time to wait (ms) for the first delivery before aborting a transaction                                                    |
-| `instrument_on_wait_queue_full`           | Should we instrument when `queue_full` occurs                                                                                 |
-| `partition_count_cache_ttl_ms`            | Process-wide [partition count cache](WaterDrop-Usage#partition-key) TTL (ms); `nil` (default) keeps the karafka-rdkafka value |
-| `statistics_decorator`                    | Custom decorator for controlling which statistics keys get `_d`/`_fd` deltas                                                  |
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>id</code></td>
+      <td>ID of the producer for instrumentation and logging</td>
+    </tr>
+    <tr>
+      <td><code>logger</code></td>
+      <td>Logger to use</td>
+    </tr>
+    <tr>
+      <td><code>client_class</code></td>
+      <td>Client class for creating the underlying client used to produce messages</td>
+    </tr>
+    <tr>
+      <td><code>deliver</code></td>
+      <td>Whether to send messages to Kafka or only fake the delivery</td>
+    </tr>
+    <tr>
+      <td><code>max_wait_timeout</code></td>
+      <td>Waits that long for the delivery report or raises an error</td>
+    </tr>
+    <tr>
+      <td><code>wait_on_queue_full</code></td>
+      <td>Whether to wait on a full queue or raise an error</td>
+    </tr>
+    <tr>
+      <td><code>wait_backoff_on_queue_full</code></td>
+      <td>Waits that long before a retry when the queue is full</td>
+    </tr>
+    <tr>
+      <td><code>wait_timeout_on_queue_full</code></td>
+      <td>Total wait time on a full queue before the error is raised</td>
+    </tr>
+    <tr>
+      <td><code>wait_backoff_on_transaction_command</code></td>
+      <td>How long to wait before retrying a retryable transaction related error</td>
+    </tr>
+    <tr>
+      <td><code>max_attempts_on_transaction_command</code></td>
+      <td>How many times to retry a retryable transaction related error before giving up</td>
+    </tr>
+    <tr>
+      <td><code>reload_on_idempotent_fatal_error</code></td>
+      <td>Automatically reload producer after fatal errors on idempotent producers</td>
+    </tr>
+    <tr>
+      <td><code>wait_backoff_on_idempotent_fatal_error</code></td>
+      <td>Time to wait (ms) before retrying after an idempotent fatal error reload</td>
+    </tr>
+    <tr>
+      <td><code>max_attempts_on_idempotent_fatal_error</code></td>
+      <td>Maximum number of reload attempts for idempotent fatal errors</td>
+    </tr>
+    <tr>
+      <td><code>reload_on_transaction_fatal_error</code></td>
+      <td>Automatically reload producer after fatal errors in transactions</td>
+    </tr>
+    <tr>
+      <td><code>wait_backoff_on_transaction_fatal_error</code></td>
+      <td>Time to wait (ms) before continuing after a transactional fatal error reload</td>
+    </tr>
+    <tr>
+      <td><code>max_attempts_on_transaction_fatal_error</code></td>
+      <td>Maximum number of reload attempts for transactional fatal errors</td>
+    </tr>
+    <tr>
+      <td><code>non_reloadable_errors</code></td>
+      <td>Fatal error codes that do not start a reload (idempotent and transactional)</td>
+    </tr>
+    <tr>
+      <td><code>wait_timeout_on_transaction_abort</code></td>
+      <td>Max time to wait (ms) for the first delivery before aborting a transaction</td>
+    </tr>
+    <tr>
+      <td><code>instrument_on_wait_queue_full</code></td>
+      <td>Whether to instrument when <code>queue_full</code> occurs</td>
+    </tr>
+    <tr>
+      <td><code>partition_count_cache_ttl_ms</code></td>
+      <td>Process-wide <a href="WaterDrop-Usage#partition-key">partition count cache</a> TTL (ms); <code>nil</code> (default) keeps the karafka-rdkafka value</td>
+    </tr>
+    <tr>
+      <td><code>statistics_decorator</code></td>
+      <td>Custom decorator for controlling which statistics keys get <code>_d</code>/<code>_fd</code> deltas</td>
+    </tr>
+  </tbody>
+</table>
 
 The full list of the root configuration options is available [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/config.rb#L25).
 
