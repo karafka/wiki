@@ -570,6 +570,10 @@ karafka parallel_segments distribute --groups analytics
 
 The CLI commands include several safety mechanisms:
 
+#### Active Consumer Groups
+
+Stop the consumers before you run `distribute`, `collapse`, or `reset`. Kafka accepts offset changes only for consumer groups without members. When a parallel segment consumer group (`distribute`) or the original consumer group (`collapse`) has active members, the command raises `Karafka::Errors::ConsumerGroupNotEmptyError`. `--force` does not skip this check.
+
 #### Offset Validation
 
 ```shell
