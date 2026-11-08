@@ -52,7 +52,7 @@ Send `TERM`, `INT` or `QUIT` signal to a Karafka process to shut it down. It wil
 
 #### Forceful Shutdown
 
-When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a forceful shutdown: it terminates the still-running workers and listeners, closes the Kafka clients, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
+When Karafka cannot shut down gracefully within the `shutdown_timeout`, it escalates to a forceful shutdown: it terminates the still-running workers and listeners, closes the Kafka clients of the listeners that ended, and then exits immediately with [exit code](Infrastructure-Exit-codes) `2`.
 
 A forceful shutdown is triggered by either of two conditions:
 
@@ -64,11 +64,15 @@ A forceful shutdown is triggered by either of two conditions:
 
     Since Karafka `2.5.7`, when a forceful shutdown occurs, Karafka logs detailed blocking information - the active listeners, alive workers, and in-processing jobs - instead of only aggregate counts. Inspect this log line to determine whether a long-running job or a stuck listener is holding the process. If workers are still processing, the culprit is your consumer code; if instead a listener cannot close while nothing is actively processing, the delay is in the client teardown - most often an unresolved rebalance.
 
+    `Karafka::Instrumentation::LoggerListener` also logs a listener still running after termination as a warning: `Listener <listener id> for <subscription group name> is still running after termination, its client will not be shut down`.
+
 A forceful shutdown is a **last resort**, and it is **expected that in-flight data may be lost**. Because the process ends with an immediate `exit!`, the regular `ensure`-based cleanup is skipped and the producer is **not** flushed: any async-buffered messages that have not yet been delivered - for example user `produce_async` calls or Dead Letter Queue copies - may be discarded.
 
 This is intentional. Flushing the producer during a forceful shutdown would be risky exactly when it matters most: the producer (or its connection pool) may itself be the resource that is blocked - for example an unreachable broker - and waiting on it could stall or even hang the forceful exit whose entire purpose is to guarantee the process terminates.
 
 The blocking cleanup that Karafka does perform on this path (stopping the listeners' underlying clients) is time-boxed by the `forceful_shutdown_wait` setting - it defaults to `5_000` (milliseconds) and can be adjusted via `config.internal.forceful_shutdown_wait` - so that a hung resource cannot delay the forceful exit indefinitely.
+
+The cleanup first waits up to half of `forceful_shutdown_wait` for the terminated listener threads to end, so that no client is used from two threads at once. It then shuts down the client of each listener whose thread ended. A listener whose thread is still running keeps its client open, and Karafka instruments the `connection.listener.shutdown.skipped` event for it, with `caller`, `listener` and `subscription_group` in the payload. See [Instrumentation Events](Infrastructure-Instrumentation-Events) for the full list of events.
 
 !!! note "Preventing Data Loss on Shutdown"
 
