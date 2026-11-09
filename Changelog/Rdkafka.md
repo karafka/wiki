@@ -21,6 +21,7 @@
 - [Maintenance] Fix a use-after-free in the `client_shutdown_dlclose` integration test that made it crash intermittently after its own unmap.
 - [Maintenance] Stabilize the flaky `Consumer#seek` and `#seek_by` "works when a partition is paused" specs on loaded CI runners.
 - [Maintenance] Stabilize the flaky `producer_delivery_report_topic` integration test: wait through `unknown_topic_or_part` while its new topics propagate.
+- [Maintenance] Stabilize the `producer_trap_raise_close` integration test on JRuby.
 - [Maintenance] Name positional String topic parameters `topic_name` (`Consumer#query_watermark_offsets`, `#seek_by`, `Producer#partition_count`, `TopicPartitionList#add_topic` and others). Callers are not affected.
 - [Maintenance] Name the positional String topic parameters of `Producer::PartitionsCountCache` `topic_name`. Callers are not affected. Ported from karafka-rdkafka (#594).
 - [Maintenance] Skip the bindings signature parity spec on JRuby, whose FFI does not expose function signatures.
@@ -54,6 +55,7 @@
 - [Fix] Pass the error buffer size to librdkafka as `size_t` when setting config options and creating clients. Ported from karafka-rdkafka (#603).
 - [Fix] Pass the config resource array count to librdkafka as `size_t`. Ported from karafka-rdkafka (#608).
 - [Fix] Keep `close` from hanging forever after a signal `trap` handler raised while the main thread used the client.
+- [Fix] Keep the shared partition count cache consistent when many threads produce with `partition_key` or call `partition_count` at once. On JRuby it lost topics and raised `NoMethodError`.
 - [Fix] Return `nil` from every `close` call when several threads close one consumer, producer or admin at once, instead of raising `ClosedInnerError` in the later callers.
 
 ## 0.31.0 (2026-10-09)
