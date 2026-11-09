@@ -141,7 +141,7 @@ high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 
 When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of to ensure optimal performance and behavior:
 
-- **Buffering Behavior Across Variants**: All variants share the [buffer](WaterDrop-Usage#buffering) of their producer. A call made directly on the producer uses the default variant. One variant adds messages with `#buffer` or `#buffer_many`, and any variant can flush them with `#flush_sync` or `#flush_async`. Each message keeps the `topic_config` of the variant that buffered it. The flush uses the `max_wait_timeout` of the variant that calls it.
+- **Buffering Behavior Across Variants**: All variants share the [buffer](WaterDrop-Usage#buffering) of their producer. A call made directly on the producer uses the default variant. One variant adds messages with `#buffer` or `#buffer_many`, and any variant can flush them with `#flush_sync` or `#flush_async`. Each message keeps the `topic_config` of the variant that buffered it. `#flush_sync` waits for delivery with the `max_wait_timeout` of the variant that calls it.
 
 - **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. For a deeper understanding of this issue and how it might affect your Kafka operations, refer to the [Error Handling](WaterDrop-Error-Handling) documentation.
 
