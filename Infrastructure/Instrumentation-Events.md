@@ -38,6 +38,7 @@ Below is a list of the instrumentation events available in Karafka. Depending on
 - `client.pause`
 - `client.reset`
 - `client.resume`
+- `client.unknown_topic`
 
 ### Connection Events
 
