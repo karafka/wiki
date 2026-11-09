@@ -154,6 +154,10 @@ PRODUCER.client.messages_for('test3') #=> []
 
 Both methods offer a clear lens to inspect the messages you have dispatched, be it an overview or a topic-specific deep dive.
 
+!!! note "Read the Buffers Once Producing Is Done"
+
+    You can produce to the Buffered client from many threads. `#messages` and `#messages_for` return the internal buffers, not copies. Read them after all threads finish producing, or `dup` them.
+
 ### Isolation
 
 When using a per-process producer, it is essential to ensure test isolation. Without clearing the producer client buffers, messages from one test might unintentionally affect subsequent tests.
