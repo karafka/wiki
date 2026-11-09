@@ -298,10 +298,18 @@ end
 
 ## Configuration Unknown to the Cluster
 
-The `align`, `migrate` and `plan` commands check the `config` keys of each declarative topic that already exists against the configuration names the cluster reports. A key the cluster does not know, for example the typo `retention.msx`, can never be applied, so these commands fail with exit code `1`:
+The `plan`, `migrate`, `align`, `create`, `delete`, `repartition` and `reset` commands check the `config` keys of every declarative topic against the configuration names the cluster reports. This includes topics that do not exist yet and topics the command skips. A key the cluster does not know, for example the typo `retention.msx`, can never be applied, so these commands fail with exit code `1` before they change anything:
 
-- `align` and `migrate` print each such topic with its unknown keys and apply no changes. `migrate` runs this check before it creates or repartitions any topic.
 - `plan` prints any other pending changes and lists the unknown keys under a separate heading.
+- The other commands print each such topic with its unknown keys.
+
+The accepted names depend on the topic:
+
+- A topic that already exists accepts topic configuration names and their broker synonyms.
+- A topic that does not exist yet accepts only topic configuration names, because topic creation rejects broker synonyms. For example, `log.retention.bytes` is unknown for such a topic. Use the topic-level name `retention.bytes` instead.
+- `reset` checks every topic as one that does not exist yet, as it re-creates them.
+
+The commands need the `DescribeConfigs` permission on declared topics that have `config`. When Karafka cannot describe them, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When none of these topics exists, Karafka reads the configuration names from another topic in the cluster. When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, the command runs without this check and does not detect unknown keys.
 
 ## Production Usage
 
@@ -334,7 +342,7 @@ When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode`
 When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes will work as follows:
 
 - `0`: No changes were made. This means that all topics are already aligned with the desired state, and no operations were required.
-- `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing. For `plan`, it also means that a topic has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster), on which `migrate` would fail.
+- `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing. It is also returned when a topic, including one to be created, has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster). For `plan`, this takes precedence over `2`.
 - `2`: Changes were either present or successfully applied. This code is returned when topics were created, updated, or deleted as part of the operation.
 
 This behavior allows you to differentiate between successful operations with no changes, successful operations with changes, and errors, providing more control over how you handle Karafka's CLI topic management results.
