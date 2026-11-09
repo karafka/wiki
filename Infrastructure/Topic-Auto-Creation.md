@@ -31,7 +31,7 @@ Many developers expect that when a consumer subscribes to a non-existent topic w
 
 - **Consumer subscription to non-existent topics**: The consumer monitors the topic name in metadata requests and subscribes only when the topic exists
 - **Topic creation timing**: Topics are created during the **first message production** using WaterDrop, not during consumer subscription
-- **Consumer behavior**: If a topic does not exist, the consumer waits and "keeps an eye on it" until the topic is created
+- **Consumer behavior**: If a topic does not exist, the consumer waits and "keeps an eye on it" until the topic is created. While it waits with `allow.auto.create.topics` set to `true`, Karafka instruments the `client.topics.unknown` event (see [Instrumentation Events](Infrastructure-Instrumentation-Events)), and `LoggerListener` logs it at the info level as `[<client id>] Topic <topic> does not exist yet. Waiting for it to be created.` Karafka does not publish it on `error.occurred`, and the consumer keeps consuming its existing topics
 - **Exception for mixed subscription groups**: When a subscription group consumes an existing topic and also subscribes to a missing one, the periodic metadata refresh creates the missing topic. This happens only when the consumer `allow.auto.create.topics` and the broker `auto.create.topics.enable` are both `true`. Outside `production`, Karafka refreshes metadata every 5 seconds, so the topic appears within about 5 seconds
 
 ## Technical Details
