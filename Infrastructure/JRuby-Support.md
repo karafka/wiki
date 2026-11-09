@@ -12,7 +12,7 @@ This page lists what you need to run Karafka and WaterDrop on JRuby, the limits 
 
 ## JRuby Versions
 
-Use JRuby 10.0.8.0 or a newer 10.0 release. Older JRuby 10.0 releases can leave a `Mutex` locked after a `Timeout` or `Thread#raise`. See [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
+Use JRuby 10.0.8.0 or a newer 10.0 release. Older JRuby 10.0 releases have a lock bug: see [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
 
 JRuby 10.1.3.0 does not work. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer. Karafka sets up a WaterDrop producer when it starts, so Karafka does not start either.
 
@@ -34,48 +34,42 @@ Puma cluster mode (`workers`) also forks, so it does not run on JRuby: Puma stop
 
 ## Rails Commands and Consoles
 
-On JRuby 10.0, a JRuby bug breaks the Rails commands of apps that load the `prism` gem before Karafka. Rails 8.1 and Rails 8.0 apps do this by default. The commands fail with `LoadError: cannot load such file -- .../waterdrop/clients`:
+On JRuby 10.0, the Rails commands of apps that load the `prism` gem before Karafka fail with `LoadError: cannot load such file -- .../waterdrop/clients`. Rails 8.1 and Rails 8.0 apps do this by default:
 
 <table>
   <thead>
     <tr>
       <th>Command</th>
       <th>JRuby 10.0</th>
-      <th>MRI</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><code>bundle exec karafka server</code></td>
       <td>Works</td>
-      <td>Works</td>
     </tr>
     <tr>
       <td><code>bin/rails runner</code></td>
       <td>Fails</td>
-      <td>Works</td>
     </tr>
     <tr>
       <td><code>bin/rails server</code></td>
-      <td>Fails at boot</td>
-      <td>Works</td>
+      <td>Fails</td>
     </tr>
     <tr>
       <td><code>bundle exec rails console</code></td>
       <td>Fails</td>
-      <td>Works</td>
     </tr>
     <tr>
       <td><code>bundle exec karafka console</code></td>
       <td>Fails</td>
-      <td>Works</td>
     </tr>
   </tbody>
 </table>
 
-In a Rails app, `karafka console` runs `bundle exec rails console`, so it fails the same way. Outside Rails, `karafka console` fails with the same error, because irb loads the `prism` gem.
+In a Rails app, `karafka console` runs `bundle exec rails console`, so it fails the same way. Outside Rails, `karafka console` fails with the same error, because irb loads the `prism` gem. The workaround below is checked for Rails apps only. On JRuby, a console takes much longer to start than on MRI, from seconds to tens of seconds.
 
-The cause is load order. When `prism` loads before Zeitwerk and WaterDrop, JRuby 10.0 `autoload` no longer goes through the Zeitwerk `Kernel#require`, and WaterDrop cannot load its files. Rails loads `prism` when `config/application.rb` requires the Rails frameworks, before `Bundler.require` loads Karafka: Action View loads it on Rails 8.1, and the test_unit railtie loads it on Rails 8.0. A Rails 8.0 app without the test_unit railtie (`rails new --skip-test`) is not affected. `karafka server` works, because `bin/karafka` loads Karafka, Zeitwerk and WaterDrop before the Rails app.
+Rails loads `prism` when `config/application.rb` requires the Rails frameworks, before `Bundler.require` loads Karafka: Action View loads it on Rails 8.1, and the test_unit railtie loads it on Rails 8.0. A Rails 8.0 app without the test_unit railtie (`rails new --skip-test`) is not affected. `karafka server` works, because `bin/karafka` loads Karafka, Zeitwerk and WaterDrop before the Rails app.
 
 To run the Rails commands on JRuby 10.0, load Zeitwerk before Rails. Set `RUBYOPT`:
 
@@ -95,7 +89,7 @@ require "zeitwerk"
 require "rails/all"
 ```
 
-`require "karafka"` in the same place also works. A console on JRuby takes much longer to start than on MRI, from seconds to tens of seconds.
+`require "karafka"` in the same place also works.
 
 This is a JRuby bug, not a Karafka bug. See [jruby/jruby#9589](https://github.com/jruby/jruby/issues/9589).
 
