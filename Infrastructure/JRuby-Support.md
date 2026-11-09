@@ -12,7 +12,7 @@ This page lists what you need to run Karafka and WaterDrop on JRuby, the limits 
 
 ## JRuby Versions
 
-Use JRuby 10.0.8.0 or newer. Older JRuby 10.0 releases can leave a `Mutex` locked after a `Timeout` or `Thread#raise`. See [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
+Use JRuby 10.0.8.0 or a newer 10.0 release. Older JRuby 10.0 releases can leave a `Mutex` locked after a `Timeout` or `Thread#raise`. See [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
 
 JRuby 10.1.3.0 does not work. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer. Karafka sets up a WaterDrop producer when it starts, so Karafka does not start either.
 
@@ -34,7 +34,7 @@ Puma cluster mode (`workers`) also forks, so it does not run on JRuby: Puma stop
 
 ## Rails Commands and Consoles
 
-On JRuby 10.0, a JRuby bug breaks the commands that load Rails before Karafka. They fail with `LoadError: cannot load such file -- .../waterdrop/clients`:
+On JRuby 10.0, a JRuby bug breaks the Rails commands of apps that load the `prism` gem before Karafka. Rails 8.1 and Rails 8.0 apps do this by default. The commands fail with `LoadError: cannot load such file -- .../waterdrop/clients`:
 
 <table>
   <thead>
@@ -75,7 +75,7 @@ On JRuby 10.0, a JRuby bug breaks the commands that load Rails before Karafka. T
 
 In a Rails app, `karafka console` runs `bundle exec rails console`, so it fails the same way. Outside Rails, `karafka console` fails with the same error, because irb loads the `prism` gem.
 
-The cause is load order. When `prism` loads before Zeitwerk and WaterDrop, JRuby 10.0 `autoload` no longer goes through the Zeitwerk `Kernel#require`, and WaterDrop cannot load its files. Rails loads `prism` when `config/application.rb` requires the Rails frameworks, before `Bundler.require` loads Karafka. `karafka server` works, because `bin/karafka` loads Karafka, Zeitwerk and WaterDrop before the Rails app.
+The cause is load order. When `prism` loads before Zeitwerk and WaterDrop, JRuby 10.0 `autoload` no longer goes through the Zeitwerk `Kernel#require`, and WaterDrop cannot load its files. Rails loads `prism` when `config/application.rb` requires the Rails frameworks, before `Bundler.require` loads Karafka: Action View loads it on Rails 8.1, and the test_unit railtie loads it on Rails 8.0. A Rails 8.0 app without the test_unit railtie (`rails new --skip-test`) is not affected. `karafka server` works, because `bin/karafka` loads Karafka, Zeitwerk and WaterDrop before the Rails app.
 
 To run the Rails commands on JRuby 10.0, load Zeitwerk before Rails. Set `RUBYOPT`:
 
