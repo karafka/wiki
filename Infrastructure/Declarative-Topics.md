@@ -306,10 +306,10 @@ The `plan`, `migrate`, `align`, `create`, `delete`, `repartition` and `reset` co
 The accepted names depend on the topic:
 
 - A topic that already exists accepts topic configuration names and their broker synonyms.
-- A topic to be created accepts only topic configuration names, because topic creation rejects broker synonyms. For example, `log.retention.bytes` is unknown for a new topic. Use the topic-level name `retention.bytes` instead.
-- `reset` checks every topic as a topic to be created, as it re-creates them.
+- A topic that does not exist yet accepts only topic configuration names, because topic creation rejects broker synonyms. For example, `log.retention.bytes` is unknown for such a topic. Use the topic-level name `retention.bytes` instead.
+- `reset` checks every topic as one that does not exist yet, as it re-creates them.
 
-To read the configuration names, Karafka describes a declared topic that has `config` and exists, otherwise any other topic in the cluster. The commands therefore need the `DescribeConfigs` permission on declared topics that have `config`. When this describe fails or is refused, the command prints a one-line error and exits with code `1`. When the cluster has no topics, or describing a topic that is not declared fails with `topic_authorization_failed`, the check reports nothing.
+To read the configuration names, Karafka describes a declared topic that has `config` and exists, otherwise any other topic in the cluster. The commands therefore need the `DescribeConfigs` permission on declared topics that have `config`. When this describe fails or is refused, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, the check reports nothing.
 
 ## Production Usage
 
