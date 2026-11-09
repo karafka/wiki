@@ -14,12 +14,14 @@
 - **[Feature]** Add `Karafka::Admin.describe_consumer_groups` to read consumer groups' state, coordinator, assignor and members with their partition assignments. Requires karafka-rdkafka `>= 0.31.0`.
 - **[Feature]** Add `Karafka::Admin.describe_cluster` and `.describe_topics` to read the cluster id, controller, brokers with racks, topic ids, partition leaders and replicas, and optionally the authorized operations. Requires karafka-rdkafka `>= 0.31.0`.
 - **[Feature]** Add `Karafka::Admin.delete_records` to delete the messages of given partitions below a given offset (or all of them with `:end`) by moving their low watermark. It is destructive and irreversible.
+- **[Feature]** Add `Karafka::Admin.delete_consumer_group_offsets` to delete a consumer group's committed offsets for given topics or partitions, keeping the consumer group and its other offsets. Raises `Karafka::Errors::ConsumerGroupSubscribedToTopicError` for topics the consumer group is subscribed to.
 - [Enhancement] Defer default log file creation until the first write and keep logging working (to stdout) when the log file cannot be created or written, e.g. on read-only filesystems (ydah).
 - [Enhancement] Build `Setup::DefaultsInjector` (and its Pro extension) on `Karafka::Core::Configurable::Injector`. Behavior is unchanged. Requires karafka-core `>= 2.6.3`.
 - [Enhancement] Stop allocating 6 objects per consumed message: build the default topic deserializers only once and read `max_messages` once per poll batch.
 - [Enhancement] Stop allocating a keyword `Hash` per consumed message when building its metadata.
 - [Enhancement] Log only the top two backtrace lines for `librdkafka.error` in the `LoggerListener`, so unreachable brokers no longer flood the logs.
 - [Enhancement] Include the topic, partition and offset from librdkafka error details (e.g. a message that failed to decompress) in `LoggerListener` error logs. Only librdkafka errors are used, and the consumer's own context takes precedence.
+- [Enhancement] Instrument `client.topics.unknown` and log it at the info level when a subscribed topic does not exist yet and `allow.auto.create.topics` is on, instead of ignoring it silently.
 - [Change] Raise `UnsupportedOptionError` with the Ruby engine name (e.g. `jruby`) when Swarm runs on a Ruby without `Process.fork`, also when `Swarm::Supervisor#run` is called directly, before any work is done.
 - [Change] Require `karafka-rdkafka` `>=` `0.32.0`. A failed consumer close is now reported as a `librdkafka.error` on `error.occurred` instead of being dropped. A close fails in practice only after a fatal error, e.g. when the consumer was fenced by a static membership conflict. Such an error is usually reported first when polling, so it is reported twice: as `connection.client.poll.error` and again on close.
 - [Change] Fail `karafka topics align` and `migrate` (exit 1) when an existing declarative topic has config keys the cluster does not know (e.g. a typo), naming them, instead of skipping them silently. `plan` lists such keys as unknown and fails too.
@@ -53,7 +55,7 @@
 - [Maintenance] [Pro] Stabilize the patterned virtual partitions integration spec, which failed with `unknown_topic_or_part` when its pattern matched no topic yet.
 - [Maintenance] Remove the `GC.compact` fallback from `Karafka::App.warmup`, as `Process.warmup` exists on every supported Ruby.
 - [Maintenance] Rename the internal `*_DEV_DEFAULTS` kafka defaults to `*_NON_PRODUCTION_DEFAULTS`, as they apply in every environment except `production`. Behavior is unchanged.
-- [Maintenance] Skip integration specs that cannot run on JRuby (fork, Swarm, Puma workers, `SIGQUIT`, C extension gems) when `bin/integrations` runs on JRuby, and report them as skipped.
+- [Maintenance] Skip integration specs that cannot run on JRuby (fork, Swarm, Puma workers, `SIGQUIT`, C extension gems, consoles hit by a JRuby autoload bug) when `bin/integrations` runs on JRuby, and report them as skipped.
 - [Maintenance] Stabilize the hammered `AssignmentsTracker` generations integration spec by using 10 consumer groups instead of 100, so it no longer exceeds the shutdown timeout on a loaded CI runner.
 - [Fix] [Pro] Do not let healthy KIP-848 (`group.protocol=consumer`) multiplexed listeners that never received an assignment block dynamic scaling. With more listeners than partitions they stay in the `init` join state with a rebalance age of 0, so the manager never saw them as stable and kept them alive instead of scaling them down.
 - [Fix] Stop `CoordinatorsBuffer#@coordinators` from growing unbounded across rebalances by dropping a topic entry on revoke once it tracks no partitions (mirrors `PausesManager#delete`).
