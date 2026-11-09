@@ -300,8 +300,8 @@ end
 
 The `plan`, `migrate`, `align`, `create`, `delete`, `repartition` and `reset` commands check the `config` keys of every declarative topic against the configuration names the cluster reports. This includes topics that do not exist yet and topics the command skips. A key the cluster does not know, for example the typo `retention.msx`, can never be applied, so these commands fail with exit code `1` before they change anything:
 
-- `plan` prints any other pending changes and lists the unknown keys under a separate heading. It does not list them under a topic to be created.
-- The other commands print each such topic with its unknown keys. `reset` runs this check before it deletes any topic.
+- `plan` prints any other pending changes and lists the unknown keys under a separate heading.
+- The other commands print each such topic with its unknown keys.
 
 The accepted names depend on the topic:
 
@@ -309,7 +309,7 @@ The accepted names depend on the topic:
 - A topic that does not exist yet accepts only topic configuration names, because topic creation rejects broker synonyms. For example, `log.retention.bytes` is unknown for such a topic. Use the topic-level name `retention.bytes` instead.
 - `reset` checks every topic as one that does not exist yet, as it re-creates them.
 
-To read the configuration names, Karafka describes a declared topic that has `config` and exists, otherwise any other topic in the cluster. The commands therefore need the `DescribeConfigs` permission on declared topics that have `config`. When this describe fails or is refused, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, the check reports nothing.
+The commands need the `DescribeConfigs` permission on declared topics that have `config`. When Karafka cannot describe them, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When none of these topics exists, Karafka reads the configuration names from another topic in the cluster. When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, the command runs without this check and does not detect unknown keys.
 
 ## Production Usage
 
