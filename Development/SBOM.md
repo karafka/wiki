@@ -396,6 +396,22 @@ This page exists because of our commitment to security, compliance, and transpar
   </tr>
   <tr>
     <td>
+      json
+    </td>
+    <td>
+      All
+    </td>
+    <td>
+      <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/json/blob/master/COPYING">Ruby</a>
+      or
+      <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/json/blob/master/BSDL">BSD-2-Clause</a>;
+      vendored C files under MIT and BSL-1.0 (see
+      <a rel="nofollow noopener noreferrer" href="https://github.com/ruby/json/blob/master/LEGAL">LEGAL</a>)
+    </td>
+    <td>Florian Frank</td>
+  </tr>
+  <tr>
+    <td>
       logger
     </td>
     <td>
