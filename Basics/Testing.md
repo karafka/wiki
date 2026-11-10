@@ -322,7 +322,7 @@ end
 
 ### Testing Messages Production (Producer)
 
-When running RSpec, Karafka will not produce messages to Kafka using `Karafka.producer`, but will buffer them internally.
+When running RSpec, Karafka does not produce messages to Kafka using `Karafka.producer`, but buffers them internally.
 
 This allows you to verify your application flow, ensuring that your logic functions as expected:
 
@@ -427,7 +427,7 @@ end
 
 ## Setting Up Karafka Testing with Minitest
 
-Alternative testing framework supported by Karafka is Minitest. While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest. The karafka-testing gem provides specialized helpers that simplify consumer testing regardless of your preferred testing framework.
+Karafka also supports Minitest.
 
 ### Installation
 
@@ -480,7 +480,7 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 
 ### Testing Messages Consumption (Consumers) - Minitest
 
-This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers. The following example shows a complete test case for an inline batch consumer that processes numeric data:
+The following example shows a test case for an inline batch consumer that processes numeric data:
 
 ```ruby
 class InlineBatchConsumerTest < ActiveSupport::TestCase
@@ -613,7 +613,7 @@ The `#produce_to` method accepts the same parameters as `#produce` for message m
 
 ### Testing Messages Production (Producer)
 
-When running Minitest, Karafka will not produce messages to Kafka using `Karafka.producer` but will buffer them internally.
+When running Minitest, Karafka does not produce messages to Kafka using `Karafka.producer`, but buffers them internally.
 
 This allows you to review your application flow, ensuring your logic functions as intended:
 
