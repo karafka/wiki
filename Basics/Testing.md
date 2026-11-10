@@ -89,7 +89,7 @@ end
 
     The `partition:` option of `#produce` and `#produce_to` sets the partition of the message (`message.partition`), the batch (`messages.metadata.partition`), and the consumer (`consumer.partition`). The default partition is `0`. A real consumer works on one partition, so the first message produced to a consumer sets the batch and consumer partition. Later messages with another partition keep their own `message.partition`, but they do not change the batch or consumer partition, and no error is raised. In the example above, the first message has no `partition:`, so the batch and consumer partition stay `0`, and only the second message has partition `2`. When you use several consumers in one spec, each consumer takes the partition from its own first message.
 
-If your consumers use `producer` to dispatch messages, you can check its operations as well:
+If your consumers use `producer` to produce messages, you can check its operations as well:
 
 ```ruby
 RSpec.describe InlineBatchConsumer do
@@ -97,7 +97,7 @@ RSpec.describe InlineBatchConsumer do
 
   before { karafka.produce({ 'number' => 1 }.to_json) }
 
-  it 'expects to dispatch async message to messages topic with value bigger by 1' do
+  it 'expects to produce async message to messages topic with value bigger by 1' do
     consumer.consume
 
     expect(karafka.produced_messages.last[:payload]).to eq({ number: 2 }.to_json)
@@ -322,7 +322,7 @@ end
 
 ### Testing Messages Production (Producer)
 
-When running RSpec, Karafka will not dispatch messages to Kafka using `Karafka.producer`, but will buffer them internally.
+When running RSpec, Karafka does not produce messages to Kafka using `Karafka.producer`, but buffers them internally.
 
 This allows you to verify your application flow, ensuring that your logic functions as expected:
 
@@ -427,7 +427,7 @@ end
 
 ## Setting Up Karafka Testing with Minitest
 
-Alternative testing framework supported by Karafaka is Minitest. While the previous section demonstrated how to verify routing configurations with RSpec, this section explains how to integrate Karafka's testing capabilities with Minitest. The karafka-testing gem provides specialized helpers that simplify consumer testing regardless of your preferred testing framework.
+Karafka also supports Minitest.
 
 ### Installation
 
@@ -480,7 +480,7 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 
 ### Testing Messages Consumption (Consumers) - Minitest
 
-This section demonstrates how to write effective tests for your Karafka consumers using the testing helpers.The following example shows a complete test case for an inline batch consumer that processes numeric data:
+The following example shows a test case for an inline batch consumer that processes numeric data:
 
 ```ruby
 class InlineBatchConsumerTest < ActiveSupport::TestCase
@@ -515,10 +515,10 @@ end
 
     The `partition:` option of `#produce` and `#produce_to` sets the partition of the message (`message.partition`), the batch (`messages.metadata.partition`), and the consumer (`@consumer.partition`). The default partition is `0`. A real consumer works on one partition, so the first message produced to a consumer sets the batch and consumer partition. Later messages with another partition keep their own `message.partition`, but they do not change the batch or consumer partition, and no error is raised. In the example above, the first message has no `partition:`, so the batch and consumer partition stay `0`, and only the second message has partition `2`. When you use several consumers in one test, each consumer takes the partition from its own first message.
 
-If your consumers use `producer` to dispatch messages, you can check its operations as well:
+If your consumers use `producer` to produce messages, you can check its operations as well:
 
 ```ruby
-test 'it dispatches async message to messages topic with value bigger by 1' do
+test 'it produces async message to messages topic with value bigger by 1' do
   @karafka.produce({ 'number' => 1 }.to_json)
   @consumer.consume
 
@@ -613,7 +613,7 @@ The `#produce_to` method accepts the same parameters as `#produce` for message m
 
 ### Testing Messages Production (Producer)
 
-When running Minitest, Karafka will not dispatch messages to Kafka using `Karafka.producer` but will buffer them internally.
+When running Minitest, Karafka does not produce messages to Kafka using `Karafka.producer`, but buffers them internally.
 
 This allows you to review your application flow, ensuring your logic functions as intended:
 
@@ -627,11 +627,6 @@ class UsersBuilderTest < ActiveSupport::TestCase
   end
 
   test 'should produce messages' do
-    Karafka.producer.produce_sync(
-      topic: 'users_changes',
-      payload: { user_id: user.id, type: 'user.created' },
-      key: user.id.to_s
-      )
     assert_equal 1, @karafka.produced_messages.size
     assert_equal 'users_changes', @karafka.produced_messages.first[:topic]
     assert_equal @created_user.id.to_s, @karafka.produced_messages.first[:key]
