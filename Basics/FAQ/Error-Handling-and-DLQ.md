@@ -25,7 +25,7 @@ Karafka Pro can skip messages non-recoverable upon errors as a part of the Enhan
 DLQ messages may disappear due to many reasons. Some possible causes include the following:
 
 - The DLQ topic has a retention policy that causes them to expire and be deleted.
-- The DLQ topic is a compacted topic, which only retains the last message with a given key.
+- The DLQ topic is a compacted topic. Kafka refuses DLQ messages without a key on such a topic, and with the default asynchronous dispatch these messages are lost.
 - The messages are being produced to a DLQ topic with a replication factor of 1, which means that if the broker storing the messages goes down, the messages will be lost.
 
 For more details, look at the [Compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations) section of the DLQ documentation.

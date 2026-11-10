@@ -260,14 +260,17 @@ If skipping batches is something you would use, get in touch with us so we can u
 
 ## Compacting Limitations
 
-Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older ones when the log compaction process kicks in.
+Karafka does **not** set the `key` value on DLQ messages. Kafka refuses messages without a key on a topic with `cleanup.policy` set to `compact` and reports `invalid_record` ("Broker failed to validate record"). Because of this, failed messages never reach a compacted DLQ topic. What you see depends on `dispatch_method`:
 
-Karafka Pro preserves the original message `key` on the DLQ dispatch and sets a separate `partition_key` based on the errored message's source partition, ensuring consistent partition delivery for consecutive errors from the same original partition without discarding the original key.
+- `:produce_async` (default): Karafka reports the message as moved to the DLQ and, unless `mark_after_dispatch` is `false`, marks its offset as consumed. The producer then reports `librdkafka.dispatch_error` with `invalid_record`. The DLQ topic stays empty, and the message is lost.
+- `:produce_sync`: the dispatch raises `Rdkafka::RdkafkaError` with `invalid_record`. Karafka does not move past the message and retries it on every retry cycle, so the partition stops progressing.
+
+Karafka Pro preserves the original message `key` on the DLQ dispatch and sets a separate `partition_key` based on the errored message's source partition, ensuring consistent partition delivery for consecutive errors from the same original partition without discarding the original key. A source message without a key still produces a DLQ message without a key, which fails in the same way unless you set a key with `#enhance_dlq_message`.
 
 We recommend either:
 
 - Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#dlq-message-key-enhancements-for-a-compacted-dlq-topic) feature.
-- Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
+- Using the `delete` policy instead of `compact` and relying on `retention.ms` to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
 ## Using Dead Letter Queue with a Multi-Cluster Setup
@@ -375,7 +378,7 @@ class KarafkaApp < Karafka::App
       replication_factor 2
       config(
         'retention.ms': 604_800_000, # 7 days in milliseconds
-        'cleanup.policy': 'compact'
+        'cleanup.policy': 'delete'
       )
     end
 

@@ -185,9 +185,9 @@ end
 
 ## DLQ Message `key` Enhancements For a Compacted DLQ Topic
 
-If you use a `compact` value for Kafka `log.cleanup.policy`, you may lose messages dispatched to the DLQ topic due to the [DLQ compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations).
+Karafka Pro copies the original message `key` to the DLQ message. When the source message has no key, the DLQ message has none either, and Kafka refuses it on a topic with `cleanup.policy` set to `compact`. See the [DLQ compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations) for what happens then.
 
-You can mitigate this by enhancing the DLQ message with a unique key using the `#enhance_dlq_message` consumer method:
+To use a compacted DLQ topic, give each DLQ message a unique key with the `#enhance_dlq_message` consumer method:
 
 ```ruby
 class MyConsumer
