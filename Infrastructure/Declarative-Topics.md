@@ -96,7 +96,7 @@ class KarafkaApp < Karafka::App
     topic :b do
       partitions 2
       replication_factor 3
-      # The rest will be according to the cluster defaults
+      # The rest follows the cluster defaults
     end
   end
 end
@@ -202,7 +202,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This will effectively ignore this topic from being altered in any way by Karafka. Karafka will ignore this topic together in all the CLI topics related operations.
+This effectively excludes this topic from being altered in any way by Karafka. Karafka ignores this topic in all the CLI topics related operations.
 
 !!! note "Declarative `active` Differs From the Routing `active` Method"
 
@@ -333,13 +333,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka will fail to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy.
+With this setting enabled, Karafka fails to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy.
 
 ## Detailed Exit Codes
 
 When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode` option can be configured. This option alters the exit codes based on the operation's result. This option provides more granular information, making integrating Karafka's topic management into automated systems like CI/CD pipelines easier.
 
-When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes will work as follows:
+When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes work as follows:
 
 - `0`: No changes were made. This means that all topics are already aligned with the desired state, and no operations were required.
 - `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing. It is also returned when a topic, including one to be created, has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster). For `plan`, this takes precedence over `2`.
@@ -353,20 +353,20 @@ You can enable this functionality by passing the `--detailed-exitcode` flag when
 karafka topics plan --detailed-exitcode
 ```
 
-This will ensure the correct exit code is returned based on the operation's outcome, enabling better automation and monitoring of topic changes.
+With this flag, the command returns the correct exit code based on the operation's outcome, enabling better automation and monitoring of topic changes.
 
 ## Limitations and Other Info
 
-- Topics management is enabled by default but will not be used unless any CLI commands are invoked.
+- Topics management is enabled by default but is not used unless any CLI commands are invoked.
 - `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
 - If a topic is declared in both `declaratives.draw` and routing `config()`, the standalone declaration takes precedence.
-- Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one will be managed.
+- Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one is managed.
 - Topics management API does **not** provide any means of concurrency locking when CLI commands are being executed. This means it is up to you to ensure that two topic CLI commands are not running in parallel during the deployments.
 - Topics commands are **not** transactional. It means that the state application may be partial in case of errors.
 - Topics commands **are** idempotent. Broken set of operations can be retried after fixes without worry.
-- Karafka will **never** alter any topics that are not defined in the declarations.
-- `replication_factor` can be set **only** during the topic creation. It will not be altered for existing topics.
-- `repartition` will **not** downscale the number of topic partitions and will ignore such configuration.
+- Karafka **never** alters any topics that are not defined in the declarations.
+- `replication_factor` can be set **only** during the topic creation. It is not altered for existing topics.
+- `repartition` does **not** downscale the number of topic partitions and ignores such configuration.
 
 ## See Also
 
