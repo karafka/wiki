@@ -1,6 +1,6 @@
 # WaterDrop Variants
 
-WaterDrop variants can manage different configuration settings per topic using the same Kafka producer with shared TCP connections. This feature allows optimal utilization of a producer's TCP connections while enabling tailored dispatch requirements for individual topics. Variants are beneficial when working with topics with varying levels of importance or different throughput and latency requirements.
+WaterDrop variants can manage different configuration settings per topic using the same Kafka producer with shared TCP connections. Variants are beneficial when working with topics with varying levels of importance or different throughput and latency requirements.
 
 ## Creating and Using Variants
 
@@ -53,7 +53,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
       <td class="nowrap">
         <code>max_wait_timeout</code>
       </td>
-      <td>Controls how long the producer waits for the dispatch result before raising an error.</td>
+      <td>Controls how long the producer waits for the produce result before raising an error.</td>
     </tr>
     <tr>
       <td class="nowrap">
@@ -116,34 +116,32 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 ## Inspecting the Active Variant
 
-When you dispatch through a variant, the variant in effect is tracked per dispatch and is fiber-local. The `#current_variant` method lets you read the variant that is active for the dispatch currently running on the present fiber. When called outside of a variant-wrapped dispatch, it returns the producer's default variant.
+When you call a method on a variant (such as `#produce_sync`, `#buffer`, `#flush_sync` or `#transaction`), the variant in effect is tracked per call and is fiber-local. The `#current_variant` method lets you read the variant that is active for the call currently running on the present fiber. Outside of a call on a variant, it returns the producer's default variant.
 
-This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a dispatch and need to read the effective per-dispatch settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `#default?`:
+This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a produce call and need to read the effective per-call settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `#default?`:
 
 ```ruby
 high_importance = producer.with(topic_config: { acks: 'all' })
 
-# Inside synchronous middleware or instrumentation running during the dispatch:
+# Inside synchronous middleware or instrumentation running during the produce call:
 variant = producer.current_variant
 
-variant.default?         # => false when dispatching through a variant
+variant.default?         # => false when producing through a variant
 variant.topic_config     # => { acks: 'all' }
 variant.max_wait_timeout # => the variant's root-scoped timeout
 
 high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 ```
 
-!!! warning "Fiber-Local and Scoped to a Single Dispatch"
+!!! warning "Fiber-Local and Scoped to a Single Call on a Variant"
 
-    `#current_variant` is fiber-local and scoped to a single dispatch; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was dispatched with.
+    `#current_variant` is fiber-local and scoped to a single call on a variant; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was produced with.
 
 ## Edge-Cases and Details
 
-When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of to ensure optimal performance and behavior:
-
 - **Buffering Behavior Across Variants**: All variants share the [buffer](WaterDrop-Usage#buffering) of their producer. A call made directly on the producer uses the default variant. One variant adds messages with `#buffer` or `#buffer_many`, and any variant can flush them with `#flush_sync` or `#flush_async`. Each message keeps the `topic_config` of the variant that buffered it. `#flush_sync` waits for delivery with the `max_wait_timeout` of the variant that calls it.
 
-- **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. For a deeper understanding of this issue and how it might affect your Kafka operations, refer to the [Error Handling](WaterDrop-Error-Handling) documentation.
+- **Inconclusive Error Messages**: If you set `max_wait_timeout` lower than `message.timeout.ms`, `#wait` can raise a wait timeout error before the delivery result is final. By default, `max_wait_timeout` (`180_000` ms) exceeds `message.timeout.ms` (`150_000` ms). See [Error Handling](WaterDrop-Error-Handling) for details.
 
 - **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as ensuring exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
 

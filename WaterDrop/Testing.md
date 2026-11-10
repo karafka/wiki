@@ -8,9 +8,9 @@ Testing is a crucial component of any software development cycle. Ensuring that 
 
 When testing code that uses WaterDrop producers, you have two primary strategies:
 
-1. **End-to-End Testing with Kafka**: This method involves setting up a Kafka environment and dispatching messages. By doing so, you are testing the full flow of your application, ensuring that messages are produced, dispatched, and received as expected in a real-world Kafka setup.
+1. **End-to-End Testing with Kafka**: You set up a Kafka environment and produce messages to it. This tests the full flow of your application: messages are produced to and received from Kafka.
 
-1. **Using the Buffered Client**: Rather than interacting with a live Kafka instance, you can use WaterDrop's Buffered Client. This allows you to test the expected message dispatch from the code itself. Messages are stored in memory, letting you verify their content and structure without actually sending them to Kafka.
+1. **Using the Buffered Client**: WaterDrop's Buffered Client stores messages in memory instead of sending them to Kafka. You can test which messages your code produces and verify their content and structure.
 
 The choice is between an entire interaction with Kafka or a simulated, in-memory testing experience with the Buffered Client. Both approaches have their merits, depending on the specific testing requirements.
 
@@ -32,7 +32,7 @@ However, setting up and managing a Kafka cluster for testing can introduce sever
 
 The process is refreshingly straightforward if you opt for end-to-end testing with WaterDrop and Kafka. You do not need any special configurations. Set up your Kafka environment, integrate WaterDrop, create a producer, and you are ready to use it in your specs and tests.
 
-Explore the RSpec example below, demonstrating testing for expected messages dispatched to Kafka.
+The RSpec example below tests that the expected messages are produced to Kafka.
 
 ```ruby
 RSpec.describe WebhookProcessor do
@@ -89,7 +89,7 @@ end
 
 ### Usage
 
-Whenever your code executes a dispatch operation, be it synchronous or asynchronous, the messages will not be sent to Kafka. Instead, they reach the `producer.client.messages` array, readily available for your examination.
+Whenever your code produces messages, synchronously or asynchronously, the messages are not sent to Kafka. Instead, they reach the `producer.client.messages` array.
 
 ```ruby
 handel = PRODUCER.produce_async(topic: 'test', payload: '123')
@@ -137,9 +137,9 @@ puts PRODUCER.client.messages.size #=> 2
 
 The WaterDrop Buffered client provides two methods for accessing buffered messages:
 
-- `#messages`: Retrieves all buffered messages, maintaining their original dispatch sequence. This ensures you can trace the chronological order of message dispatches.
+- `#messages`: Retrieves all buffered messages in their produce order.
 
-- `#messages_for`: Targeted specifically for messages dispatched to a specific topic, this method lets you get messages bound for a particular destination.
+- `#messages_for`: Retrieves the buffered messages produced to one topic.
 
 ```ruby
 PRODUCER.produce_sync(topic: 'test1', payload: '123')
