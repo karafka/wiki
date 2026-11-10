@@ -260,14 +260,17 @@ If skipping batches is something you would use, get in touch with us so we can u
 
 ## Compacting Limitations
 
-Karafka does **not** publish the `key` value for DLQ messages. This means that if you set your `log.cleanup.policy` to `compact`, newer messages will overwrite the older ones when the log compaction process kicks in.
+Karafka does **not** set the `key` value on DLQ messages. Kafka refuses messages without a key on a topic with `cleanup.policy` set to `compact` and reports `invalid_record` ("Broker failed to validate record"). What you see depends on `dispatch_method`:
 
-Karafka Pro preserves the original message `key` on the DLQ dispatch and sets a separate `partition_key` based on the errored message's source partition, ensuring consistent partition delivery for consecutive errors from the same original partition without discarding the original key.
+- `:produce_async` (default): Karafka emits the `dead_letter_queue.dispatched` event on `Karafka.monitor` (see [Monitoring and Instrumentation](#monitoring-and-instrumentation)) and, unless `mark_after_dispatch` is `false`, marks the offset as consumed. The failure arrives later on the producer monitor (`Karafka.producer.monitor`) as the `error.occurred` event with type `librdkafka.dispatch_error` and `invalid_record`. The DLQ topic stays empty, and the message is lost.
+- `:produce_sync`: the dispatch raises `Rdkafka::RdkafkaError` with `invalid_record`. The dispatch fails on each attempt and Karafka never moves past the message, so the partition stops progressing.
+
+Karafka Pro copies the original message `key` to the DLQ message and selects the DLQ partition with a separate `partition_key` based on the source partition. A source message without a key produces a DLQ message without a key, and Kafka refuses it as well. With a transactional producer and the `transactional` option left at `true`, the dispatch and the offset marking run in one transaction. The refused message makes the transaction fail, so Karafka does not mark the offset and retries the message, as with `:produce_sync`. See [Disabling Transactions During DLQ Dispatches](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
 We recommend either:
 
 - Enhancing the DLQ messages with a proper `key` value using the [Enhanced Dead Letter Queue custom details](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#dlq-message-key-enhancements-for-a-compacted-dlq-topic) feature.
-- Not using a `compact` policy and relying on `log.retention.ms` instead to make sure that the given DLQ topic does not grow beyond expectations.
+- Using the `delete` policy instead of `compact` and relying on `retention.ms` to make sure that the given DLQ topic does not grow beyond expectations.
 - Enhancing the DLQ dispatched message by forking Karafka and making needed enhancements to the code.
 
 ## Using Dead Letter Queue with a Multi-Cluster Setup
@@ -375,7 +378,7 @@ class KarafkaApp < Karafka::App
       replication_factor 2
       config(
         'retention.ms': 604_800_000, # 7 days in milliseconds
-        'cleanup.policy': 'compact'
+        'cleanup.policy': 'delete'
       )
     end
 
