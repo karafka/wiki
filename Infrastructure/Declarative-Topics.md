@@ -319,7 +319,7 @@ Topics management API does **not** provide any means of concurrency locking when
 
 ## Strict Declarative Topics Validation
 
-Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that requires a declarative definition for each topic in the routing and for its Dead Letter Queue (DLQ) topic. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
+Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that requires an active declarative definition for each topic in the routing and for its Dead Letter Queue (DLQ) topic. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
 
 This setting is particularly useful if you want to ensure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
 
@@ -333,7 +333,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka validates the routing and fails to start if any of these topics has no declarative definition.
+With this setting enabled, Karafka validates the routing and fails to start if any of these topics has no active declarative definition, for example a DLQ topic without a declaration or a topic declared with `active false`.
 
 ## Detailed Exit Codes
 
