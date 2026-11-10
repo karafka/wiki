@@ -333,7 +333,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka fails to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy.
+With this setting enabled, Karafka fails to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
 
 ## Detailed Exit Codes
 
