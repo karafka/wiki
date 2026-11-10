@@ -321,7 +321,7 @@ def replay_dlq(dlq_topic, from: {}, batch_size: 100)
 end
 ```
 
-Store the offsets that `replay_dlq` returns and pass them as `from:` on the next run. The partition numbers are Integer keys: if you store them as JSON, convert the keys back to Integer. Without them, each run replays all the messages in the DLQ topic again, including the copies that earlier runs replayed, and `MAX_REPLAYS` does not stop a message from going through the DLQ again and again.
+Store the offsets that `replay_dlq` returns and pass them as `from:` on the next run. Without the stored offsets, each run replays all the messages in the DLQ topic again, including the copies that earlier runs replayed, and `MAX_REPLAYS` does not stop a message from going through the DLQ again and again. The partition numbers are Integer keys: if you store the offsets as JSON, convert the keys back to Integer.
 
 When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. `partition:` and `partition_key:` are [WaterDrop message options](WaterDrop-Usage), set in the same hash as `key:` (see [Partition Key](WaterDrop-Usage#partition-key)). If the original messages were produced without them and the partitioner and partition count did not change, the replayed message goes to the same partition as other messages with this key. For other messages, including messages without a key, set `partition:` in the replayed message hash from the `source_partition` header.
 
