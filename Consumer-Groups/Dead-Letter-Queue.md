@@ -234,6 +234,93 @@ class OrdersStatesConsumer < Karafka::BaseConsumer
 end
 ```
 
+## Replaying DLQ Messages
+
+After you fix the bug that moved messages to the DLQ topic, you can produce them back to the source topic so that your consumer processes them again. Read the DLQ topic with the [Admin API](Infrastructure-Admin-API#reading-topic-messages) and produce the messages with WaterDrop.
+
+This example replays all the messages that are in an OSS DLQ topic when it starts:
+
+```ruby
+def replay_dlq(dlq_topic, target_topic, batch_size: 100)
+  partitions = Karafka::Admin.topic_info(dlq_topic)[:partition_count]
+
+  partitions.times do |partition|
+    offset, high = Karafka::Admin.read_watermark_offsets(dlq_topic, partition)
+
+    while offset < high
+      messages = Karafka::Admin
+        .read_topic(dlq_topic, partition, batch_size, offset)
+        .select { |message| message.offset < high }
+
+      Karafka.producer.produce_many_sync(
+        messages.map { |message| { topic: target_topic, payload: message.raw_payload } }
+      )
+
+      # Compacted and transaction-related offsets are not returned, so a batch can be empty
+      offset = messages.empty? ? offset + batch_size : messages.last.offset + 1
+    end
+  end
+end
+
+replay_dlq('orders_states_dlq', 'orders_states')
+```
+
+The script does not change the DLQ topic. If you run it again, it produces the same messages again.
+
+OSS DLQ messages hold only the payload (see [Dispatch Warranties](#dispatch-warranties)). This limits what a replay can restore:
+
+- The DLQ message does not say which topic it came from. You must give the target topic to the script. If many source topics share one DLQ topic, the script cannot split the messages by source topic unless the payload names it.
+- The DLQ message has no `key`, so the replayed message does not go to the partition of its key, and the order per key is lost. If you can build the key from the payload, set `key:` in the replayed message.
+- The DLQ message has no headers. If a replayed message fails again, Karafka moves it to the DLQ without any header your script added. You cannot tell a replayed message from a new failure, so you cannot detect a replay loop.
+
+Replayed messages go to the end of the target partition, after the messages that arrived while they were in the DLQ topic.
+
+### Replaying With Enhanced Dead Letter Queue
+
+The [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) keeps the original `key` and headers, and adds the [traceability headers](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#additional-headers-for-increased-traceability), such as `source_topic` and `source_partition`. With them, the replay can send each message back to its own topic with its key, and count the replays:
+
+```ruby
+MAX_REPLAYS = 3
+
+def replay_dlq(dlq_topic, batch_size: 100)
+  partitions = Karafka::Admin.topic_info(dlq_topic)[:partition_count]
+
+  partitions.times do |partition|
+    offset, high = Karafka::Admin.read_watermark_offsets(dlq_topic, partition)
+
+    while offset < high
+      messages = Karafka::Admin
+        .read_topic(dlq_topic, partition, batch_size, offset)
+        .select { |message| message.offset < high }
+
+      replays = messages.filter_map do |message|
+        headers = message.raw_headers
+        # replay_count is a header of this script, not one that Karafka sets
+        count = headers.fetch('replay_count', '0').to_i
+
+        # Leave messages that failed after too many replays in the DLQ topic
+        next if count >= MAX_REPLAYS
+
+        {
+          topic: headers.fetch('source_topic'),
+          key: message.raw_key,
+          payload: message.raw_payload,
+          headers: headers.merge('replay_count' => (count + 1).to_s)
+        }
+      end
+
+      Karafka.producer.produce_many_sync(replays) unless replays.empty?
+
+      offset = messages.empty? ? offset + batch_size : messages.last.offset + 1
+    end
+  end
+end
+```
+
+When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. With the original `key`, the replayed message goes to the same partition as other messages with this key. For messages without a key, you can set `partition:` from the `source_partition` header.
+
+To replay one message, use [Message Republishing](Pro-Web-UI-Explorer#message-republishing) in the Pro Web UI Explorer. It produces the message to a topic and partition you select, with its payload and headers.
+
 ## Monitoring and Instrumentation
 
 Each time a message is moved to the Dead Letter Queue topic, it will emit a `dead_letter_queue.dispatched` with a `message` key.
