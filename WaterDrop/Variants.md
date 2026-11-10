@@ -116,7 +116,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 ## Inspecting the Active Variant
 
-When you produce through a variant, the variant in effect is tracked per produce call and is fiber-local. The `#current_variant` method lets you read the variant that is active for the produce call currently running on the present fiber. When called outside of a variant-wrapped produce call, it returns the producer's default variant.
+When you call any method on a variant (such as `#produce_sync`, `#buffer`, `#flush_sync` or `#transaction`), the variant in effect is tracked per call and is fiber-local. The `#current_variant` method lets you read the variant that is active for the call currently running on the present fiber. When called outside of a variant-wrapped call, it returns the producer's default variant.
 
 This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a produce call and need to read the effective per-call settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `#default?`:
 
@@ -133,9 +133,9 @@ variant.max_wait_timeout # => the variant's root-scoped timeout
 high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 ```
 
-!!! warning "Fiber-Local and Scoped to a Single Produce Call"
+!!! warning "Fiber-Local and Scoped to a Single Variant-Wrapped Call"
 
-    `#current_variant` is fiber-local and scoped to a single produce call; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was produced with.
+    `#current_variant` is fiber-local and scoped to a single variant-wrapped call; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was produced with.
 
 ## Edge-Cases and Details
 
