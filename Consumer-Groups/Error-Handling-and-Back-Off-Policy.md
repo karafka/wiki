@@ -39,7 +39,16 @@ When processing messages from a Kafka topic, your code may raise any exception. 
 - The message being processed is somehow malformed or is in an invalid format.
 - You are using external resources such as a database or a network API that are temporarily unavailable.
 
-Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for a given time defined by the `config.pause.timeout` setting. This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
+Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for at least the time defined by the `config.pause.timeout` setting ([Actual Retry Delay](#actual-retry-delay) explains why the wait is often longer). This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
+
+### Actual Retry Delay
+
+Karafka resumes paused partitions once per listener loop, before it polls, and that poll can wait up to `max_wait_time` for messages. A pause that ends during a poll is resumed only in the next loop, so the real gap between retries is often longer than `config.pause.timeout`:
+
+- When `config.pause.timeout` is shorter than `max_wait_time` and the subscription group has no other messages to fetch, the retry runs no sooner than `max_wait_time` after the previous attempt. With the default `max_wait_time` of 1000 ms and a 200 ms pause, the gap is about 2 seconds.
+- When `max_wait_time` is lower than `config.pause.timeout`, the gaps follow the pause. Retries do not get arbitrarily fast: the fetch after resuming adds its own delay, about 500 ms with the default `fetch.wait.max.ms`. See [Latency and Throughput](Infrastructure-Latency-and-Throughput) for the trade-offs of a low `max_wait_time`.
+
+The `consumer.consuming.pause` event and the `Retrying of <Consumer> after <timeout> ms` log line report the configured pause, not the real delay.
 
 ### Critical Errors
 
@@ -200,6 +209,8 @@ end
 ### Exponential Backoff
 
 Karafka is configured with `config.pause.with_exponential_backoff` enabled (`true`) by default. This configuration doubles the timeout period after each pause until a message from the partition is processed successfully. To prevent the timeout from extending indefinitely, `config.pause.max_timeout` can be set to your preferred maximum duration. By default, this maximum timeout is set to 30 seconds.
+
+Each backoff step is subject to the same [retry delay limits](#actual-retry-delay): a step shorter than `max_wait_time` is not honored.
 
 Regardless of the error's nature, the Monitoring and Logging feature can track any issues encountered during operation.
 
