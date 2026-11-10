@@ -22,6 +22,10 @@ To rotate your primary (main) credential:
 
 1. Open the link received in the email. It opens a confirmation page. Your credentials are **not** rotated yet.
 
+    <p align="center">
+      <img src="https://karafka.io/assets/misc/printscreens/gems_rotate_confirm_page.png" />
+    </p>
+
 1. Press the "Rotate my credentials" button. Your old credentials stop working, and you cannot restore them.
 
 1. View your new credentials and replace them in your Gemfile and any other place where you use them.
