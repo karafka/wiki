@@ -202,7 +202,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-This effectively excludes this topic from being altered in any way by Karafka. Karafka ignores this topic in all the CLI topics related operations.
+Karafka then skips this topic in all `karafka topics` commands and does not alter it in any way.
 
 !!! note "Declarative `active` Differs From the Routing `active` Method"
 
@@ -319,7 +319,7 @@ Topics management API does **not** provide any means of concurrency locking when
 
 ## Strict Declarative Topics Validation
 
-Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that ensures all topics, including Dead Letter Queue (DLQ), are declared via the definitions of the declarative topics. When set to `true`, this flag enforces validation during routing to confirm that all topics are properly defined as declarative topics, even if they are inactive.
+Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that requires a declarative definition for each topic in the routing and for its Dead Letter Queue (DLQ) topic. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
 
 This setting is particularly useful if you want to ensure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
 
@@ -333,13 +333,13 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka fails to start if any topics in the routing, including DLQ topics, are missing declarative definitions, ensuring strict adherence to the declarative topics management strategy. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
+With this setting enabled, Karafka validates the routing and fails to start if any of these topics has no declarative definition.
 
 ## Detailed Exit Codes
 
 When managing Kafka topics via Karafka's CLI commands, the `--detailed-exitcode` option can be configured. This option alters the exit codes based on the operation's result. This option provides more granular information, making integrating Karafka's topic management into automated systems like CI/CD pipelines easier.
 
-When the `--detailed-exitcode` flag is enabled, the `topic` related commands exit codes work as follows:
+When the `--detailed-exitcode` flag is enabled, `karafka topics` commands return these exit codes:
 
 - `0`: No changes were made. This means that all topics are already aligned with the desired state, and no operations were required.
 - `1`: An error occurred during the operation. This indicates a failure or issue that needs to be addressed before continuing. It is also returned when a topic, including one to be created, has [configuration unknown to the cluster](#configuration-unknown-to-the-cluster). For `plan`, this takes precedence over `2`.
@@ -353,11 +353,9 @@ You can enable this functionality by passing the `--detailed-exitcode` flag when
 karafka topics plan --detailed-exitcode
 ```
 
-With this flag, the command returns the correct exit code based on the operation's outcome, enabling better automation and monitoring of topic changes.
-
 ## Limitations and Other Info
 
-- Topics management is enabled by default but is not used unless any CLI commands are invoked.
+- Topics management is enabled by default but is not used unless you run a `karafka topics` command.
 - `migrate` does not wait for a confirmation. Use `plan` command to check the changes that would be applied.
 - If a topic is declared in both `declaratives.draw` and routing `config()`, the standalone declaration takes precedence.
 - Topics management API does **not** support the management of multiple independent Kafka clusters. Only the primary one is managed.
