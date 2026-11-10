@@ -1,6 +1,6 @@
 # WaterDrop Variants
 
-WaterDrop variants can manage different configuration settings per topic using the same Kafka producer with shared TCP connections. This feature allows optimal utilization of a producer's TCP connections while enabling tailored produce settings for individual topics. Variants are beneficial when working with topics with varying levels of importance or different throughput and latency requirements.
+WaterDrop variants can manage different configuration settings per topic using the same Kafka producer with shared TCP connections. Variants are beneficial when working with topics with varying levels of importance or different throughput and latency requirements.
 
 ## Creating and Using Variants
 
@@ -116,7 +116,7 @@ Variants allow you to modify several Kafka and producer-specific settings to bet
 
 ## Inspecting the Active Variant
 
-When you call any method on a variant (such as `#produce_sync`, `#buffer`, `#flush_sync` or `#transaction`), the variant in effect is tracked per call and is fiber-local. The `#current_variant` method lets you read the variant that is active for the call currently running on the present fiber. When called outside of a variant-wrapped call, it returns the producer's default variant.
+When you call a method on a variant (such as `#produce_sync`, `#buffer`, `#flush_sync` or `#transaction`), the variant in effect is tracked per call and is fiber-local. The `#current_variant` method lets you read the variant that is active for the call currently running on the present fiber. Outside of a call on a variant, it returns the producer's default variant.
 
 This is primarily useful for [middleware](WaterDrop-Middleware) and instrumentation listeners that run synchronously within a produce call and need to read the effective per-call settings, such as `topic_config`, `max_wait_timeout`, or whether the default variant is in use via `#default?`:
 
@@ -133,17 +133,15 @@ variant.max_wait_timeout # => the variant's root-scoped timeout
 high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 ```
 
-!!! warning "Fiber-Local and Scoped to a Single Variant-Wrapped Call"
+!!! warning "Fiber-Local and Scoped to a Single Call on a Variant"
 
-    `#current_variant` is fiber-local and scoped to a single variant-wrapped call; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was produced with.
+    `#current_variant` is fiber-local and scoped to a single call on a variant; it does not represent a producer-wide setting. It is not meaningful from asynchronous delivery callbacks (such as `message.acknowledged`), which run on the poller thread - a different fiber - where it always returns the default variant rather than the variant the acknowledged message was produced with.
 
 ## Edge-Cases and Details
 
-When using variants in WaterDrop, there are specific edge cases and operational nuances that you should be aware of:
-
 - **Buffering Behavior Across Variants**: All variants share the [buffer](WaterDrop-Usage#buffering) of their producer. A call made directly on the producer uses the default variant. One variant adds messages with `#buffer` or `#buffer_many`, and any variant can flush them with `#flush_sync` or `#flush_async`. Each message keeps the `topic_config` of the variant that buffered it. `#flush_sync` waits for delivery with the `max_wait_timeout` of the variant that calls it.
 
-- **Inconclusive Error Messages**: Redefining `max_wait_timeout` without aligning it with other librdkafka settings can lead to inconclusive error. This issue arises because the timeout settings may not synchronize well with other operational parameters, potentially leading to errors that are difficult to diagnose. See [Error Handling](WaterDrop-Error-Handling) for details.
+- **Inconclusive Error Messages**: If you set `max_wait_timeout` lower than `message.timeout.ms`, `#wait` can raise a wait timeout error before the delivery result is final. By default, `max_wait_timeout` (`180_000` ms) exceeds `message.timeout.ms` (`150_000` ms). See [Error Handling](WaterDrop-Error-Handling) for details.
 
 - **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as ensuring exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
 
