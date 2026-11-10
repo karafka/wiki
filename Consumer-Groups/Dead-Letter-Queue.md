@@ -238,7 +238,7 @@ end
 
 After you fix the bug that moved messages to the DLQ topic, you can produce them back to the source topic so that your consumer processes them again. Read the DLQ topic with the [Admin API](Infrastructure-Admin-API#reading-topic-messages) and produce the messages with WaterDrop.
 
-This example replays all the messages that are in an OSS DLQ topic when it starts:
+This example replays the messages that are in an OSS DLQ topic when the script starts:
 
 ```ruby
 def replay_dlq(dlq_topic, target_topic, batch_size: 100)
@@ -262,7 +262,7 @@ def replay_dlq(dlq_topic, target_topic, batch_size: 100)
   end
 end
 
-replay_dlq('orders_states_dlq', 'orders_states')
+replay_dlq('dead_messages', 'orders_states')
 ```
 
 The script does not change the DLQ topic. If you run it again, it produces the same messages again.
@@ -321,9 +321,9 @@ def replay_dlq(dlq_topic, from: {}, batch_size: 100)
 end
 ```
 
-Store the offsets that `replay_dlq` returns and pass them as `from:` on the next run. Without them, each run replays all the messages in the DLQ topic again, including the copies that earlier runs replayed, and `MAX_REPLAYS` does not stop a message from going through the DLQ again and again.
+Store the offsets that `replay_dlq` returns and pass them as `from:` on the next run. The partition numbers are Integer keys: if you store them as JSON, convert the keys back to Integer. Without them, each run replays all the messages in the DLQ topic again, including the copies that earlier runs replayed, and `MAX_REPLAYS` does not stop a message from going through the DLQ again and again.
 
-When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. If the source topic is partitioned by `key` (the original messages had no `partition:` or `partition_key:`) and the partitioner and partition count did not change, the replayed message goes to the same partition as other messages with this key. For other messages, including messages without a key, you can set `partition:` from the `source_partition` header.
+When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. `partition:` and `partition_key:` are [WaterDrop message options](WaterDrop-Usage), set in the same hash as `key:` (see [Partition Key](WaterDrop-Usage#partition-key)). If the original messages were produced without them and the partitioner and partition count did not change, the replayed message goes to the same partition as other messages with this key. For other messages, including messages without a key, set `partition:` in the replayed message hash from the `source_partition` header.
 
 To replay one message, use [Message Republishing](Pro-Web-UI-Explorer#message-republishing) in the Pro Web UI Explorer. It produces the message to a topic and partition you select, with its payload and headers.
 
