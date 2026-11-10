@@ -260,7 +260,7 @@ Tuning consumer configurations in Karafka involves adjusting various settings th
         <li>Lower values reduce latency by ensuring they are processed faster.</li>
         <li>Higher values can improve throughput by allowing more messages to accumulate before processing.</li>
         <li>When lowering consider also lowering the <code>fetch.wait.max.ms</code>to at least match it</li>
-        <li>Retry pauses shorter than <code>max_wait_time</code> are not honored. To make retry gaps follow <code>config.pause.timeout</code>, set <code>max_wait_time</code> lower than it. See <a href="/docs/Consumer-Groups-Error-Handling-and-Back-Off-Policy/#actual-retry-delay">Actual Retry Delay</a>.</li>
+        <li>Retry pauses shorter than <code>max_wait_time</code> are not honored. To make retry gaps follow <code>config.pause.timeout</code>, set <code>max_wait_time</code> lower than it. This works only down to about 500 ms, because the fetch after resuming adds its own delay (the default <code>fetch.wait.max.ms</code>). See <a href="/docs/Consumer-Groups-Error-Handling-and-Back-Off-Policy/#actual-retry-delay">Actual Retry Delay</a>.</li>
       </ul>
     </td>
     <td>1000 ms (Karafka)</td>
