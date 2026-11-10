@@ -147,12 +147,6 @@ When using variants in WaterDrop, there are specific edge cases and operational 
 
 - **Immutable acks for Idempotent and Transactional Producers**: When working with idempotent or transactional producers, the `acks` setting is immutable and automatically set to `all`. This configuration cannot be altered through variants, as ensuring exactly-once semantics requires a fixed acknowledgment policy. Attempting to change the acks setting for these producers will result in an error.
 
-These details are critical in effectively managing and troubleshooting your Kafka message production environment, especially when using the flexibility of variants for different topic configurations.
-
-## Conclusion
-
-Variants address the need for dynamic, topic-specific configurations in applications interacting with Kafka. By enabling variations per topic within a single producer, WaterDrop helps streamline resource usage and enhance message dispatch efficiency, making it an essential tool for sophisticated Kafka-based messaging systems.
-
 ## See Also
 
 - [Multi-Cluster Setup](Infrastructure-Multi-Cluster-Setup) - For managing multiple Kafka clusters

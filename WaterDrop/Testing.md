@@ -152,8 +152,6 @@ PRODUCER.client.messages_for('test2') #=> [{:topic=>"test2", :payload=>"456"}]
 PRODUCER.client.messages_for('test3') #=> []
 ```
 
-Both methods offer a clear lens to inspect the messages you have dispatched, be it an overview or a topic-specific deep dive.
-
 ### Isolation
 
 When using a per-process producer, it is essential to ensure test isolation. Without clearing the producer client buffers, messages from one test might unintentionally affect subsequent tests.
