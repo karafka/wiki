@@ -260,12 +260,12 @@ If skipping batches is something you would use, get in touch with us so we can u
 
 ## Compacting Limitations
 
-Karafka does **not** set the `key` value on DLQ messages. Kafka refuses messages without a key on a topic with `cleanup.policy` set to `compact` and reports `invalid_record` ("Broker failed to validate record"). Because of this, failed messages never reach a compacted DLQ topic. What you see depends on `dispatch_method`:
+Karafka does **not** set the `key` value on DLQ messages. Kafka refuses messages without a key on a topic with `cleanup.policy` set to `compact` and reports `invalid_record` ("Broker failed to validate record"). What you see depends on `dispatch_method`:
 
-- `:produce_async` (default): Karafka reports the message as moved to the DLQ and, unless `mark_after_dispatch` is `false`, marks its offset as consumed. The producer then reports `librdkafka.dispatch_error` with `invalid_record`. The DLQ topic stays empty, and the message is lost.
-- `:produce_sync`: the dispatch raises `Rdkafka::RdkafkaError` with `invalid_record`. Karafka does not move past the message and retries it on every retry cycle, so the partition stops progressing.
+- `:produce_async` (default): Karafka emits the `dead_letter_queue.dispatched` event (see [Monitoring and Instrumentation](#monitoring-and-instrumentation)) and, unless `mark_after_dispatch` is `false`, marks the offset as consumed. The failure arrives later as the `error.occurred` event with type `librdkafka.dispatch_error` and `invalid_record`. The DLQ topic stays empty, and the message is lost.
+- `:produce_sync`: the dispatch raises `Rdkafka::RdkafkaError` with `invalid_record`. The dispatch fails on each attempt and Karafka never moves past the message, so the partition stops progressing.
 
-Karafka Pro preserves the original message `key` on the DLQ dispatch and sets a separate `partition_key` based on the errored message's source partition, ensuring consistent partition delivery for consecutive errors from the same original partition without discarding the original key. A source message without a key still produces a DLQ message without a key, and Kafka refuses it as well unless you set a key with `#enhance_dlq_message`. With a transactional producer and the `transactional` option left at `true`, the dispatch and the offset marking run in one transaction. The refused message makes the transaction fail, so Karafka does not mark the offset and retries the message, as with `:produce_sync`. See [Disabling Transactions During DLQ Dispatches](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
+Karafka Pro copies the original message `key` to the DLQ message. A source message without a key produces a DLQ message without a key, and Kafka refuses it as well. With a transactional producer and the `transactional` option left at `true`, the dispatch and the offset marking run in one transaction. The refused message makes the transaction fail, so Karafka does not mark the offset and retries the message, as with `:produce_sync`. See [Disabling Transactions During DLQ Dispatches](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#disabling-transactions-during-dlq-dispatches).
 
 We recommend either:
 
