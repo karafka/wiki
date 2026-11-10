@@ -282,11 +282,13 @@ The [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue)
 ```ruby
 MAX_REPLAYS = 3
 
-def replay_dlq(dlq_topic, batch_size: 100)
+# from: the offsets this method returned on the previous run (partition => offset)
+def replay_dlq(dlq_topic, from: {}, batch_size: 100)
   partitions = Karafka::Admin.topic_info(dlq_topic)[:partition_count]
 
-  partitions.times do |partition|
-    offset, high = Karafka::Admin.read_watermark_offsets(dlq_topic, partition)
+  partitions.times.to_h do |partition|
+    low, high = Karafka::Admin.read_watermark_offsets(dlq_topic, partition)
+    offset = [low, from.fetch(partition, 0)].max
 
     while offset < high
       messages = Karafka::Admin
@@ -313,11 +315,15 @@ def replay_dlq(dlq_topic, batch_size: 100)
 
       offset = messages.empty? ? offset + batch_size : messages.last.offset + 1
     end
+
+    [partition, high]
   end
 end
 ```
 
-When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. With the original `key`, the replayed message goes to the same partition as other messages with this key. For messages without a key, you can set `partition:` from the `source_partition` header.
+Store the offsets that `replay_dlq` returns and pass them as `from:` on the next run. Without them, each run replays all the messages in the DLQ topic again, including the copies that earlier runs replayed, and `MAX_REPLAYS` does not stop a message from going through the DLQ again and again.
+
+When a replayed message fails again, Enhanced DLQ copies its headers to the new DLQ message by default, so `replay_count` stays on it. If the source topic is partitioned by `key` (the original messages had no `partition:` or `partition_key:`) and the partitioner and partition count did not change, the replayed message goes to the same partition as other messages with this key. For other messages, including messages without a key, you can set `partition:` from the `source_partition` header.
 
 To replay one message, use [Message Republishing](Pro-Web-UI-Explorer#message-republishing) in the Pro Web UI Explorer. It produces the message to a topic and partition you select, with its payload and headers.
 
