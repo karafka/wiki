@@ -62,7 +62,7 @@ A forceful shutdown is triggered by either of two conditions:
 
 !!! tip "Identifying What Blocks a Forceful Shutdown"
 
-    Since Karafka `2.5.7`, when a forceful shutdown occurs, Karafka logs detailed blocking information - the active listeners, alive workers, and in-processing jobs - instead of only aggregate counts. Inspect this log line to determine whether a long-running job or a stuck listener is holding the process. If workers are still processing, the culprit is your consumer code; if instead a listener cannot close while nothing is actively processing, the delay is in the client teardown - most often an unresolved rebalance.
+    When a forceful shutdown occurs, Karafka logs detailed blocking information - the active listeners, alive workers, and in-processing jobs. Inspect this log line to determine whether a long-running job or a stuck listener is holding the process. If workers are still processing, the culprit is your consumer code; if instead a listener cannot close while nothing is actively processing, the delay is in the client teardown - most often an unresolved rebalance.
 
     `Karafka::Instrumentation::LoggerListener` also logs a listener still running after termination as a warning: `Listener <listener id> for <subscription group name> is still running after termination, its client will not be shut down`.
 
