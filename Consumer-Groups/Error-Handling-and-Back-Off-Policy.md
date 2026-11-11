@@ -39,7 +39,7 @@ When processing messages from a Kafka topic, your code may raise any exception. 
 - The message being processed is somehow malformed or is in an invalid format.
 - You are using external resources such as a database or a network API that are temporarily unavailable.
 
-Your exception will propagate to the framework if not caught and handled within your application code. Karafka will stop processing messages from this topic partition, back off, and wait for at least the time defined by the `config.pause.timeout` setting ([Actual Retry Delay](#actual-retry-delay) explains why the wait is often longer). This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. After that time, it will **retry**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka will **never** skip any messages.
+If your application code does not catch and handle the exception, it propagates to the framework. Karafka stops processing messages from this topic partition, backs off, and waits for at least the time defined by the `config.pause.timeout` setting ([Actual Retry Delay](#actual-retry-delay) explains why the wait is often longer). This allows the consumer to continue processing messages from other partitions that may not be impacted by the problem while still making sure not to drop the original message. When the wait ends, Karafka **retries**, processing the same message again. Single Kafka topic partition messages must be processed in order. That is why Karafka **never** skips any messages.
 
 ### Actual Retry Delay
 
@@ -210,7 +210,7 @@ end
 
 Karafka is configured with `config.pause.with_exponential_backoff` enabled (`true`) by default. This configuration doubles the timeout period after each pause until a message from the partition is processed successfully. To prevent the timeout from extending indefinitely, `config.pause.max_timeout` can be set to your preferred maximum duration. By default, this maximum timeout is set to 30 seconds.
 
-Each backoff step is subject to the same [retry delay limits](#actual-retry-delay): a step shorter than `max_wait_time` is not honored.
+Each backoff step is subject to the same [retry delay limits](#actual-retry-delay): when the subscription group has no other messages to fetch, the retry after a step shorter than `max_wait_time` runs no sooner than `max_wait_time` after the previous attempt.
 
 Regardless of the error's nature, the Monitoring and Logging feature can track any issues encountered during operation.
 

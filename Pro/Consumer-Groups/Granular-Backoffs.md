@@ -62,7 +62,7 @@ end
 
 If the `#pause` method is called without any of these keyword arguments, the system will fall back on using the default settings for those parameters. This means you have a great deal of flexibility and can adjust the system's behavior on a topic-by-topic basis, depending on your specific needs and use cases.
 
-A `timeout` shorter than `max_wait_time` is not honored. See [Actual Retry Delay](Consumer-Groups-Error-Handling-and-Back-Off-Policy#actual-retry-delay).
+When the subscription group has no other messages to fetch, the retry after a `timeout` shorter than `max_wait_time` runs no sooner than `max_wait_time` after the previous attempt. See [Actual Retry Delay](Consumer-Groups-Error-Handling-and-Back-Off-Policy#actual-retry-delay).
 
 ## Usefulness
 
