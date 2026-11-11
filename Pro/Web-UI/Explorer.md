@@ -52,7 +52,7 @@ Every message is more than just its content. With the Karafka Data Explorer, you
 
 ### Message Republishing
 
-Occasionally, there might be a need to republish a message for various reasons. This feature empowers users to republish any message to a topic and partition of their choice, including a different topic or partition than the original one. It retains the original payload and all the headers, ensuring data consistency and integrity during republishing.
+You can republish a message to a topic and partition you select, including a topic or partition different from the source, unless a custom [messages policy](Pro-Web-UI-Policies#messages-policies) denies it with `#republish?`. The copy carries the raw payload, key, and headers of the source message: the original bytes, not values decoded by a custom deserializer. The republish form has an "Add source tracking headers" checkbox, selected by default, that also adds the `source_topic`, `source_partition`, and `source_offset` headers to the copy.
 
 ### Surroundings Lookup
 
