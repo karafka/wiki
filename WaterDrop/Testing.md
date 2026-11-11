@@ -92,12 +92,12 @@ end
 Whenever your code produces messages, synchronously or asynchronously, the messages are not sent to Kafka. Instead, they reach the `producer.client.messages` array.
 
 ```ruby
-handel = PRODUCER.produce_async(topic: 'test', payload: '123')
+handle = PRODUCER.produce_async(topic: 'test', payload: '123')
 
-puts handel
+puts handle
 #=> <WaterDrop::Clients::Dummy::Handle:... @topic="test", @partition=0, @offset=0>
 
-report = handel.wait
+report = handle.wait
 
 puts report
 #=> <Rdkafka::Producer::DeliveryReport:... @error=nil, @offset=0, @partition=0, @topic_name="test">
@@ -105,7 +105,7 @@ puts report
 puts PRODUCER.client.messages
 #=> [{:topic=>"test", :payload=>"123"}]
 
-raise unless PRODUCER.client.messages.count != 1
+raise unless PRODUCER.client.messages.count == 1
 ```
 
 Messages from aborted transactions are not stored in the buffer.
