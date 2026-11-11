@@ -135,7 +135,7 @@ The extended output adds three sections:
 
 !!! info "Sensitive Kafka Values Are Redacted"
 
-    Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `secret`, `token`, `sasl.oauthbearer.client` or `ssl.key.pem` (case-insensitive). This applies to the Kafka Config section and to the per-topic `kafka` settings. Karafka does not redact other values, so `ssl.certificate.pem` and `ssl.ca.pem` are printed.
+    Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `passphrase`, `secret`, `token`, `sasl.oauthbearer.client`, `private.key.pem`, `ssl.key.pem` or `ssl_key` (case-insensitive). This applies to the Kafka Config section and to the per-topic `kafka` settings. Karafka does not redact other values, so `ssl.certificate.pem` and `ssl.ca.pem` are printed.
 
 ## Karafka Swarm
 
