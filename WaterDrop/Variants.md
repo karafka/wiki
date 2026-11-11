@@ -4,7 +4,7 @@ WaterDrop variants can manage different configuration settings per topic using t
 
 ## Creating and Using Variants
 
-To use variants, initialize a standard producer with default settings that apply to all topics you produce to. Then create variants of this producer with settings for particular topics. Variants allow topic-specific adjustments without multiple producer instances.
+To use variants, initialize a producer with default settings that apply to all topics you produce to. Then create variants of this producer with settings for particular topics.
 
 You create variants with the `#with` method or its alias `#variant`. It accepts two types of arguments:
 
@@ -143,7 +143,7 @@ high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 
 - **Inconclusive Error Messages**: If you set `max_wait_timeout` lower than `message.timeout.ms`, `#wait` can raise a wait timeout error before the delivery result is final. By default, `max_wait_timeout` (`180_000` ms) exceeds `message.timeout.ms` (`150_000` ms). See [Error Handling](WaterDrop-Error-Handling) for details.
 
-- **Immutable acks for Idempotent and Transactional Producers**: For idempotent and transactional producers, `acks` is set to `all` and variants cannot change it. Creating a variant that sets `acks` in `topic_config` for these producers raises `WaterDrop::Errors::VariantInvalidError`.
+- **Immutable `acks` for Idempotent and Transactional Producers**: For idempotent and transactional producers, `acks` is set to `all` and variants cannot change it. Creating a variant that sets `acks` or `request.required.acks` in `topic_config` for these producers raises `WaterDrop::Errors::VariantInvalidError`.
 
 ## See Also
 
