@@ -131,12 +131,12 @@ Deserializers in Karafka can access the full context of a message, including its
 class AvroDeserializer
   attr_reader :avro
 
-  def initialize(avro: avro)
+  def initialize(avro:)
     @avro = avro
   end
 
   def call(message)
-    avro.decode(message.raw_payload, subject: message.headers['message_type'])
+    avro.decode(message.raw_payload, schema_name: message.headers['message_type'])
   end
 end
 
@@ -351,7 +351,7 @@ class AvroProducer
     def produce_async(topic, data, schema)
       message = AVRO.encode(
         data,
-        schema_name: schema_name,
+        schema_name: schema,
         validate: true
       )
 
