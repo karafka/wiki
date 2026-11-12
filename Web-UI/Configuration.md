@@ -33,7 +33,7 @@ You may want to assign a fully separate producer instance when:
 - Your default producer is transactional and heavy transaction usage in your code can stall the Web UI reporting. See [Web UI Transactions Support](Web-UI-Transactions) for details.
 - The Web UI should report to a different cluster or use different credentials than your application data.
 - You want the Web UI reporting to have its own delivery settings, buffers, and connection, fully isolated from your application traffic.
-- Your default producer is idempotent. The Web UI data does not require idempotent delivery, and a fatal error of the shared producer, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), makes later produces fail for both your application and the Web UI.
+- Your default producer is idempotent. The Web UI data does not require idempotent delivery, and a fatal error of the shared producer, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), makes later produces fail for both your application and the Web UI, unless you set `reload_on_idempotent_fatal_error` to `true` (default `false`).
 
 You can assign it during the Web UI configuration phase:
 
