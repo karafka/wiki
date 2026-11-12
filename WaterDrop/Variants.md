@@ -11,7 +11,7 @@ You create variants with the `#with` method or its alias `#variant`. It accepts 
 - `max_wait_timeout`: This is a root-scoped setting.
 - `topic_config` hash: This is where all topic-specific configurations are defined.
 
-Attributes placed inside the `topic_config` hash during variant creation are referred to as `topic_config` scoped. Conversely, settings like `max_wait_timeout`, which reside outside the `topic_config hash`, are considered root-scoped.
+Attributes inside the `topic_config` hash are `topic_config` scoped. Settings outside it, such as `max_wait_timeout`, are root-scoped.
 
 Here is a simple example to demonstrate how to define and use variants with WaterDrop:
 
@@ -28,7 +28,7 @@ end
 low_importance = producer.with(topic_config: { acks: 1 })
 high_importance = producer.with(topic_config: { acks: 'all' })
 
-# Use variants like regular producers
+# Variants expose the same produce methods as the producer
 low_importance.produce_async(topic: 'low_priority_events', payload: event.to_json)
 high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 ```
