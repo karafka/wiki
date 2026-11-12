@@ -33,6 +33,7 @@ You may want to assign a fully separate producer instance when:
 - Your default producer is transactional and heavy transaction usage in your code can stall the Web UI reporting. See [Web UI Transactions Support](Web-UI-Transactions) for details.
 - The Web UI should report to a different cluster or use different credentials than your application data.
 - You want the Web UI reporting to have its own delivery settings, buffers, and connection, fully isolated from your application traffic.
+- Your default producer is idempotent. The Web UI data does not require idempotent delivery, and a fatal error of the shared producer, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), makes later produces fail for both your application and the Web UI.
 
 You can assign it during the Web UI configuration phase:
 
@@ -46,6 +47,10 @@ Karafka::Web.setup do |config|
 
     # Copy the kafka configuration hash
     kafka_config = karafka_app_config.kafka.dup
+    # Remove transactions (will do nothing if not configured in the first place)
+    kafka_config.delete(:'transactional.id')
+    # The Web UI data does not require idempotent delivery
+    kafka_config[:'enable.idempotence'] = false
 
     # Set the kafka configuration for the Web dedicated producer
     p_config.kafka = ::Karafka::Setup::AttributesMap.producer(kafka_config)
