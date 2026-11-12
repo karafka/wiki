@@ -228,6 +228,12 @@ The Cluster dashboard view displays information about the status of the Kafka cl
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
 </p>
 
+In Karafka Pro, each broker also has a details page that lists its configuration.
+
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-cluster-broker.png" alt="karafka web broker details view" />
+</p>
+
 ## Status
 
 The Karafka Web UI status page allows you to check and troubleshoot the state of your Karafka Web UI integration with your application.
