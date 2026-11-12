@@ -32,7 +32,7 @@ producer.produce_async(topic: 'users', payload: user)
 
     It is up to the end user to decide whether to modify the provided message or deep copy it and update the newly created one.
 
-    A middleware chain run is not atomic on failure. If an in-place step is followed by a step that raises during a buffered `#flush`, the message is re-buffered partially transformed and the next flush applies the in-place step again. Make such steps idempotent or have them return a copy.
+    A middleware chain run is not atomic on failure. If an in-place step is followed by a step that raises while `#flush_sync` or `#flush_async` flushes the [buffer](WaterDrop-Usage#buffering), the message is re-buffered partially transformed and the next flush applies the in-place step again. Make such steps idempotent or have them return a copy.
 
 ## Round-Robin Distribution Example Middleware
 
