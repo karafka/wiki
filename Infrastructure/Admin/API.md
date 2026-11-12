@@ -85,7 +85,7 @@ messages = secondary_admin.read_topic('events', 0, 10)
 
     The `kafka` configuration and an `external_client` are the two customizable arguments per Admin instance. Global admin settings like `max_wait_time` and `poll_timeout` are shared from `Karafka::App.config.admin`.
 
-`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. Consumer group offset operations (`read_lags_with_offsets`, `seek_consumer_group`, `copy_consumer_group`, and `rename_consumer_group`) are the exception for a consumer client. They always run on a Kafka admin client, so Karafka opens a short-lived admin instance for them. They use the consumer group you query, not the `group.id` of the consumer client. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
+`Karafka::Admin.new` also accepts an `external_client:` keyword argument, letting admin operations run on an already-open client (a raw rdkafka admin instance, one wrapped with `Karafka::Connection::Proxy`, or a `Karafka::Connection::Client` of a running consumer) instead of opening a new short-lived connection. A consumer client runs only the consumer-based operations: `read_topic` and `trigger_rebalance`. They use its identity, including its `group.id`. Every other operation, including consumer group offset and lag reads and offset changes, runs on a Kafka admin client, so Karafka opens a short-lived admin instance for it when the external client is not an rdkafka admin instance. Consumer group operations use the consumer group you query, not the `group.id` of the consumer client. The external client's lifecycle stays fully with its owner - it is never configured, started, or closed by the Admin instance. This is a low-level API: the caller is responsible for providing a client capable of the operations invoked.
 
 ```ruby
 # Read consumer group lags via an existing rdkafka admin instance
@@ -910,6 +910,28 @@ To use it, all you need to do is to provide your consumer group name:
 ```ruby
 Karafka::Admin.delete_consumer_group('your_consumer_group_name')
 ```
+
+## Deleting Offsets of a Consumer Group
+
+!!! warning "Deleted Offsets Cannot Be Restored"
+
+    This operation is destructive and irreversible. When the consumer group consumes the topic again, it starts from the `initial_offset`.
+
+`Karafka::Admin.delete_consumer_group_offsets` deletes the committed offsets of a consumer group for the given topics or topic partitions. The consumer group and its other committed offsets stay in place. Use it when a consumer group no longer consumes a topic.
+
+Provide an Array of topic names to delete the offsets of all their partitions, or a Hash of topics with their partitions:
+
+```ruby
+# All the partitions of a topic
+Karafka::Admin.delete_consumer_group_offsets('your_consumer_group_name', ['events'])
+
+# Partitions 0 and 1 of a topic
+Karafka::Admin.delete_consumer_group_offsets('your_consumer_group_name', { 'events' => [0, 1] })
+```
+
+The method returns `true`. `Karafka::Admin::ConsumerGroups.delete_offsets` does the same. On an Admin instance for a custom cluster, use `#delete_consumer_group_offsets`.
+
+Kafka deletes offsets only for topics to which no active member of the consumer group subscribes. For a topic with such members, Kafka keeps the offsets and Karafka raises `Karafka::Errors::ConsumerGroupSubscribedToTopicError`. Its message names the consumer group and every rejected partition (`topic#partition`). Kafka handles each topic on its own: when a request also has other topics, their offsets are already deleted when the error is raised. Stop the consumer group, or remove the topic from its subscription, before you delete the offsets of that topic.
 
 ## Triggering a Consumer Group Rebalance
 

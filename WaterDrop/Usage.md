@@ -34,6 +34,66 @@ producer.produce_many_async(
 producer.close
 ```
 
+Each `_async` and `_sync` method has a shorter alias. The alias with `!` is the sync one:
+
+```ruby
+producer.produce!(topic: 'my-topic', payload: 'my message')
+producer.produce(topic: 'my-topic', payload: 'my message')
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Alias</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>#produce_async</code></td>
+      <td><code>#produce</code></td>
+    </tr>
+    <tr>
+      <td><code>#produce_sync</code></td>
+      <td><code>#produce!</code></td>
+    </tr>
+    <tr>
+      <td><code>#produce_many_async</code></td>
+      <td><code>#produce_many</code></td>
+    </tr>
+    <tr>
+      <td><code>#produce_many_sync</code></td>
+      <td><code>#produce_many!</code></td>
+    </tr>
+    <tr>
+      <td><code>#tombstone_async</code></td>
+      <td><code>#tombstone</code></td>
+    </tr>
+    <tr>
+      <td><code>#tombstone_sync</code></td>
+      <td><code>#tombstone!</code></td>
+    </tr>
+    <tr>
+      <td><code>#tombstone_many_async</code></td>
+      <td><code>#tombstone_many</code></td>
+    </tr>
+    <tr>
+      <td><code>#tombstone_many_sync</code></td>
+      <td><code>#tombstone_many!</code></td>
+    </tr>
+    <tr>
+      <td><code>#flush_async</code></td>
+      <td><code>#flush</code></td>
+    </tr>
+    <tr>
+      <td><code>#flush_sync</code></td>
+      <td><code>#flush!</code></td>
+    </tr>
+  </tbody>
+</table>
+
+The aliases behave as the methods they alias and emit the same instrumentation events. [Variants](WaterDrop-Variants) have them too.
+
 Each message that you want to publish, will have its value checked.
 
 Here are all the things you can provide in the message hash:
