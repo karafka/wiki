@@ -362,13 +362,13 @@ The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. M
 
     If the DLQ topic does not exist and auto-creation is disabled on the broker, dispatch fails with an error instead of creating the topic. Production clusters often disable it. See [this FAQ entry](Basics-FAQ-Error-Handling-and-DLQ#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist) for the exact failure behavior.
 
-    Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no active declarative definition.
+    Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no active declarative definition. With this flag, the DLQ topic must also be in the routing. See [Strict Declarative Topics Validation](Infrastructure-Declarative-Topics#strict-declarative-topics-validation).
 
 To manage the configuration of the DLQ topic, you need to declare it separately, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
 ### Declaring the DLQ Topic via Declarative Topics
 
-Use the standalone `declaratives.draw` DSL to declare the DLQ topic. Because declarative topics are independent of routing, you do not need a matching `routes.draw` entry for a topic you only produce to, such as a DLQ topic:
+Use the standalone `declaratives.draw` DSL to declare the DLQ topic. Because declarative topics are independent of routing, you do not need a matching `routes.draw` entry for a topic you only produce to, such as a DLQ topic, unless `config.strict_declarative_topics` is enabled:
 
 ```ruby
 class KarafkaApp < Karafka::App
