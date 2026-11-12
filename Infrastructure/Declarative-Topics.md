@@ -333,7 +333,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka validates the routing and fails to start if any of these topics has no active declarative definition, for example a DLQ topic without a declaration or a topic declared with `active false`.
+With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition, for example a DLQ topic without a declaration or a topic declared with `active false`.
 
 ## Detailed Exit Codes
 

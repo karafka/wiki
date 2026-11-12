@@ -362,7 +362,7 @@ The Dead Letter Queue (DLQ) topics in Karafka are Kafka topics like any other. M
 
     If the DLQ topic does not exist and auto-creation is disabled on the broker, dispatch fails with an error instead of creating the topic. Production clusters often disable it. See [this FAQ entry](Basics-FAQ-Error-Handling-and-DLQ#what-will-happen-when-a-message-is-dispatched-to-a-dead-letter-queue-topic-that-does-not-exist) for the exact failure behavior.
 
-    Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no declaration.
+    Set `config.strict_declarative_topics` to `true` to make Karafka refuse to boot when a DLQ topic has no active declarative definition.
 
 To manage the configuration of the DLQ topic, you need to declare it separately, specifying the desired configurations, such as the number of partitions, replication factor, retention policies, and more.
 
