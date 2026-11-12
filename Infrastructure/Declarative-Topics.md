@@ -333,7 +333,7 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition. A topic declared with `active false` in `declaratives.draw` also fails the check.
+With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition. A routing topic or a DLQ topic declared with `active false` also fails the check. The check runs inside `routes.draw`, so this applies only to declarations made before it.
 
 The check counts a declaration only when the topic has its own `topic` entry in `routes.draw`. A DLQ topic declared only in `declaratives.draw` fails the check. Add a `topic` entry for it and disable its consumption with the routing `active` method:
 
