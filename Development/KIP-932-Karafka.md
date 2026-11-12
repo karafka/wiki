@@ -205,6 +205,8 @@ A priority queue for delayed RELEASEs. Workers hand records with a deadline to a
 
 ### DLQ
 
+- Pro only: the strategy (`Pro::Processing::ShareGroups::Strategies::Dlq`) and the routing feature (`Pro::Routing::Features::ShareGroups::DeadLetterQueue`) load only with Pro. Without Pro, `dead_letter_queue` on a share topic raises `NoMethodError` when the routes are drawn, like other Pro-only routing features
+- OSS share groups keep the broker delivery count limit, release and redelivery, and `acknowledgements(unacknowledged:)`
 - Initial implementation: client-side (REJECT + produce to DLQ topic)
 - Future: broker-native DLQ when Kafka ships it
 - Uses broker's delivery count as the retry limit signal
@@ -348,7 +350,7 @@ Document the "not supported" list clearly so users do not try to port partition-
 | `explicit_acknowledgment` | No | Yes | SG concept |
 | `virtual_partitions` | Yes | No | No partition affinity in SG |
 | `long_running_job` | Yes | Yes | Different mechanism (pause vs RENEW) |
-| `dead_letter_queue` | Yes | Yes | Same name, different semantics |
+| `dead_letter_queue` | Yes | Yes (Pro) | Same name, different semantics |
 | `delayed_release` | No | Yes | SG only |
 | `lock_extension` / auto-renew | No | Yes | SG only |
 | `throttling` | Yes (per-partition) | Yes (consumer-wide) | Different scope |
@@ -442,7 +444,7 @@ Karafka::
         Acknowledgment                           # future
         DelayedRelease                           # future
         LockExtension                            # future
-        DeadLetterQueue                          # future
+        DeadLetterQueue                          # future (Pro, under Pro::Routing::Features::...)
         Throttling                               # future
         JobsBuilder                              # future
         PollInterval                             # future
@@ -540,7 +542,7 @@ As shipped in the routing layer (some differ from the original draft of this doc
 - **`PoisonRecordObserver`** - handles broker-archived records, produces to DLQ if configured
 - **In-memory fake share-consumer** - for Phase 1 development and ongoing testing
 - **Share-group strategies matrix** - SG version of CG's 5-flag matrix, simpler
-- **Share-group DLQ implementation** - client-side REJECT + produce (broker-native later)
+- **Share-group DLQ implementation** (Pro) - client-side REJECT + produce (broker-native later)
 - **JobsBuilders hierarchy** - PerMessage, PerBatch, PerPartition, PerKey, Custom
 
 ### Components Explicitly NOT Needed
@@ -570,7 +572,7 @@ contract with a dedicated error since share consumers do not support pattern sub
 the routing, wildcards supported), and share-group sections in `karafka info`.
 
 The SG-specific per-topic options below (`concurrency`, `poll_interval`,
-`max_messages_per_job`, `jobs_builder`, SG `dead_letter_queue`) are future work:
+`max_messages_per_job`, `jobs_builder`, SG `dead_letter_queue` (Pro)) are future work:
 
 ```ruby
 Karafka::App.routes.draw do
