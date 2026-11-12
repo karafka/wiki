@@ -626,7 +626,9 @@ Unable to reconstruct MessageSet (currently with 8 message(s)) with msgid range 
 last message added has msgid 867: unable to guarantee consistency
 ```
 
-This is caused by a bug in `librdkafka`'s idempotent producer message set reconstruction logic that surfaces when a batch is retried and cannot be rebuilt identically. At the moment, this has only been observed on **Amazon MSK** (particularly after upgrading the MSK broker version) and does not appear to affect vanilla Apache Kafka clusters. The error is raised locally by the client, so no inconsistent data is written to Kafka; the affected batch is rejected rather than delivered out of order.
+This is caused by a bug in `librdkafka`'s idempotent producer message set reconstruction logic that surfaces when a batch is retried and cannot be rebuilt identically. At the moment, this has only been observed on **Amazon MSK** (particularly after upgrading the MSK broker version) and does not appear to affect vanilla Apache Kafka clusters. The error is raised locally by the client, so no inconsistent data is written to Kafka.
+
+This error is fatal for the whole producer, not only for the affected batch. By default, every later produce on that producer then fails with a fatal error until you close and recreate the producer. For an idempotent, non-transactional producer, WaterDrop can reload the producer when you set `reload_on_idempotent_fatal_error` to `true` (default `false`). Transactional producers reload on this error by default (`reload_on_transaction_fatal_error`). See [Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) for the related settings and the risk of message loss during a reload.
 
 Until a fix is available, you can mitigate the issue by limiting the number of in-flight requests per connection to `1`:
 
