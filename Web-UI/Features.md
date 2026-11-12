@@ -228,7 +228,9 @@ The Cluster dashboard view displays information about the status of the Kafka cl
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/cluster1.png" alt="karafka web cluster view" />
 </p>
 
-In Karafka Pro, each broker also has a details page that lists its configuration.
+!!! info "Broker Details in Karafka Pro"
+
+    [Karafka Pro](https://karafka.io/#become-pro) adds a details page for each broker that lists its configuration.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-cluster-broker.png" alt="karafka web broker details view" />
