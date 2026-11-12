@@ -118,11 +118,11 @@ PRODUCER.transaction do
   raise(WaterDrop::AbortTransaction)
 end
 
-# No messages will be stored in the buffers as the transaction was aborted
+# The transaction was aborted, so no messages are stored in the buffer
 puts PRODUCER.client.messages.size #=> 0
 ```
 
-In case of a successful transaction, data will be stored:
+When the transaction succeeds, its messages are stored in the buffer:
 
 ```ruby
 PRODUCER.transaction do
