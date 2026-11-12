@@ -319,7 +319,7 @@ Topics management API does **not** provide any means of concurrency locking when
 
 ## Strict Declarative Topics Validation
 
-Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that requires an active declarative definition for each topic in the routing and for its Dead Letter Queue (DLQ) topic. It counts only declarations of topics that are in the routing. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
+Karafka provides an optional configuration flag, `config.strict_declarative_topics`, that requires an active declarative definition for each topic in the routing and for its Dead Letter Queue (DLQ) topic. The check skips topics defined with [Routing Patterns](Pro-Routing-Patterns), but still checks their DLQ topics. It also skips [share group](Basics-Consumer-Groups-vs-Share-Groups) topics, which do not support declarative management.
 
 This setting is particularly useful if you want to ensure that all topics in the routing are managed and controlled through declarative definitions, enhancing consistency and preventing unintentional topic omissions. By using this flag, you can be confident that your entire topics setup is defined and managed as part of your configuration, reducing the chances of configuration drift across different environments.
 
@@ -333,9 +333,9 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition, for example a DLQ topic that is not in the routing or a topic declared with `active false`.
+With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition. A topic declared with `active false` in `declaratives.draw` also fails the check.
 
-A DLQ topic declared only in `declaratives.draw` fails the check. Add it to the routing too, with consumption disabled through the routing `active` method:
+The check counts a declaration only when the topic has its own `topic` entry in `routes.draw`. A DLQ topic declared only in `declaratives.draw` fails the check. Add a `topic` entry for it and disable its consumption with the routing `active` method:
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -353,7 +353,7 @@ class KarafkaApp < Karafka::App
 
     # Makes the dead_messages declaration count for the strict check
     topic :dead_messages do
-      active(false)
+      active false
     end
   end
 end
