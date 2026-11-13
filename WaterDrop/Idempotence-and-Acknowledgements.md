@@ -27,9 +27,11 @@ When idempotence is enabled in WaterDrop producer:
 - Kafka ensures that even if a message is retried, it will not be written again.
 - The producer will assign a sequence number to each message, and Kafka ensures that messages with the same sequence number are deduplicated.
 
-!!! info "Related: Fatal Error Recovery for Idempotent Producers"
+!!! info "Fatal Errors Stop an Idempotent Producer Unless It Reloads"
 
-    Idempotent producers can encounter fatal errors that require producer reload. WaterDrop provides automatic recovery mechanisms for these scenarios. For details on fatal error handling and recovery configuration, see the [Error Handling - Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#fatal-error-recovery) section.
+    A fatal error, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), applies to the whole producer. By default, every later produce on it fails until you close and recreate the producer. This affects every user of the producer, including the Web UI when it reports through `Karafka.producer` (see [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer)).
+
+    To recover without a restart, set `reload_on_idempotent_fatal_error` to `true` (default `false`), so WaterDrop reloads the producer. This setting does not apply to transactional producers. See [Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) for the related settings, their limits, and the risk of message loss during a reload.
 
 ## Acknowledgements
 
