@@ -216,7 +216,7 @@ Almost all the default settings configured can be changed on either on the ```to
 
 ## Shared Defaults
 
-This option allows you to define default settings that apply to all the topics defined in your routing unless those are defined explicitely when describing the appropriate topic. This not only simplifies configurations but also ensures consistency throughout your application.
+The routing `defaults` block defines default settings for all consumer-group topics in your routing. A topic that sets an option itself uses its own value. Topics inside a `share_group` block do not get these defaults.
 
 Here is how you can set up routing defaults and then define a topic that overrides one of those defaults:
 
