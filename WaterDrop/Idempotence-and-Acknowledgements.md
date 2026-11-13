@@ -29,9 +29,9 @@ When idempotence is enabled in WaterDrop producer:
 
 !!! info "Fatal Errors Stop an Idempotent Producer Unless It Reloads"
 
-    A fatal error, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), applies to the whole producer. By default, every later produce on it fails until you close and recreate the producer. This affects every user of the producer, including the Web UI when it reports through `Karafka.producer` (see [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer)).
+    A fatal error, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), applies to the whole producer. By default, every later produce on it fails until you close and recreate the producer. This affects all code that produces through it, including the Web UI when it reports through `Karafka.producer` (see [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer)).
 
-    To recover without a restart, set `reload_on_idempotent_fatal_error` to `true` (default `false`), so WaterDrop reloads the producer. This setting does not apply to transactional producers. See [Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) for the related settings, their limits, and the risk of message loss during a reload.
+    To recover without closing and recreating the producer yourself, set `reload_on_idempotent_fatal_error` to `true` (default `false`), so WaterDrop reloads the producer. This setting does not apply to transactional producers. See [Idempotent Producer Fatal Error Recovery](WaterDrop-Error-Handling#idempotent-producer-fatal-error-recovery) for the related settings, their limits, and the risk of message loss during a reload.
 
 ## Acknowledgements
 
