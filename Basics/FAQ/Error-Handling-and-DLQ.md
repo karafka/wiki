@@ -192,13 +192,19 @@ To handle this, you can use a guard to check whether the `#dispatch_to_dlq` meth
 
 1. **Check for Method Availability**:
 
-    You can use the `#respond_to?` method to check if dispatch_to_dlq is available before calling it.
+    You can use the `#respond_to?` method to check if `#dispatch_to_dlq` is available before calling it.
 
     ```ruby
-    if respond_to?(:dispatch_to_dlq)
-      dispatch_to_dlq
-    else
-      # Handle the error or reprocess logic here
+    messages.each do |message|
+      if EventContract.valid?(message.payload)
+        EventsImporter.import(message.payload)
+      elsif respond_to?(:dispatch_to_dlq)
+        dispatch_to_dlq(message)
+      else
+        # Handle the error or reprocess logic here
+      end
+
+      mark_as_consumed(message)
     end
     ```
 
@@ -207,12 +213,17 @@ To handle this, you can use a guard to check whether the `#dispatch_to_dlq` meth
     Alternatively, you can check if the consumer is processing a DLQ topic by using the `topic.dead_letter_queue?` method. This method returns true if the current topic has DLQ enabled but will be false when processing the DLQ itself.
 
     ```ruby
-    if topic.dead_letter_queue?
-      # This is the original topic, so `dispatch_to_dlq` is safe to use
-      dispatch_to_dlq
-    else
-      # This is the DLQ topic, handle accordingly
-      # Handle the error or reprocess logic here
+    messages.each do |message|
+      if EventContract.valid?(message.payload)
+        EventsImporter.import(message.payload)
+      elsif topic.dead_letter_queue?
+        # This is the original topic, so `dispatch_to_dlq` is safe to use
+        dispatch_to_dlq(message)
+      else
+        # This is the DLQ topic: handle the error or reprocess logic here
+      end
+
+      mark_as_consumed(message)
     end
     ```
 
