@@ -376,7 +376,7 @@ Document the "not supported" list clearly so users do not try to port partition-
       <td>CG concept</td>
     </tr>
     <tr>
-      <td><code>explicit_acknowledgment</code></td>
+      <td><code>acknowledgements</code></td>
       <td>No</td>
       <td>Yes</td>
       <td>SG concept</td>
@@ -384,8 +384,8 @@ Document the "not supported" list clearly so users do not try to port partition-
     <tr>
       <td><code>virtual_partitions</code></td>
       <td>Yes</td>
-      <td>No</td>
-      <td>No partition affinity in SG</td>
+      <td>Yes (Pro)</td>
+      <td>Same API, without the offset machinery in SG</td>
     </tr>
     <tr>
       <td><code>long_running_job</code></td>
