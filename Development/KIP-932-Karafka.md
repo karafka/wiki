@@ -49,7 +49,7 @@ This document captures the design decisions, architectural choices, naming conve
 - **No batch boundary:** records can be in-flight across polls
 - **No partition pause:** there is no per-partition anything on the client side
 - **Lock clock starts at fetch time, not poll time:** prefetched records can expire while buffered
-- **Virtual partitions have no equivalent:** ordering-per-key cannot be reconstructed without partition affinity
+- **Virtual partitions work on a poll batch:** Pro share-group virtual partitions process the records of a single partition from a poll batch in parallel, with the consumer-group API and without the offset machinery
 
 ## Core Architectural Decisions
 
@@ -205,6 +205,8 @@ A priority queue for delayed RELEASEs. Workers hand records with a deadline to a
 
 ### DLQ
 
+- Pro only: the strategy (`Pro::Processing::ShareGroups::Strategies::Dlq`) and the routing feature (`Pro::Routing::Features::ShareGroups::DeadLetterQueue`) load only with Pro. Without Pro, `dead_letter_queue` on a share topic raises `NoMethodError` when the routes are drawn, like other Pro-only routing features
+- OSS share groups keep the broker delivery count limit, release and redelivery, and `acknowledgements(unacknowledged:)`
 - Initial implementation: client-side (REJECT + produce to DLQ topic)
 - Future: broker-native DLQ when Kafka ships it
 - Uses broker's delivery count as the retry limit signal
@@ -339,26 +341,126 @@ Document the "not supported" list clearly so users do not try to port partition-
 
 ## Feature Matrix by Mode
 
-| Feature | Consumer Group | Share Group | Notes |
-| --- | --- | --- | --- |
-| `consumer` | Yes | Yes | shared (Topics::Base) |
-| `deserializers` | Yes | Yes | per-mode mirrored copies (shipped) |
-| `kafka` (librdkafka opts) | Yes | Yes | some keys are mode-specific |
-| `manual_offset_management` | Yes | No | CG concept |
-| `explicit_acknowledgment` | No | Yes | SG concept |
-| `virtual_partitions` | Yes | No | No partition affinity in SG |
-| `long_running_job` | Yes | Yes | Different mechanism (pause vs RENEW) |
-| `dead_letter_queue` | Yes | Yes | Same name, different semantics |
-| `delayed_release` | No | Yes | SG only |
-| `lock_extension` / auto-renew | No | Yes | SG only |
-| `throttling` | Yes (per-partition) | Yes (consumer-wide) | Different scope |
-| `filtering` | Yes | Yes | Per-mode implementations (CG one shipped under `ConsumerGroups::`) |
-| `pause` (API) | Yes | No | No per-partition pause in SG. Routing-level `#pause` backoff config exists on both topic classes in the same format (shipped); the runtime pause API stays CG-only |
-| `max_messages` | Yes | Yes | Shared concept |
-| `max_wait_time` | Yes | Yes | Shared |
-| `jobs_builder` | No | Yes | SG only |
-| `poll_interval` | No | Yes | SG only (priority knob) |
-| Offset-related (seek, offset metadata) | Yes | No | No offsets in SG |
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Consumer Group</th>
+      <th>Share Group</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>consumer</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>shared (Topics::Base)</td>
+    </tr>
+    <tr>
+      <td><code>deserializers</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>per-mode mirrored copies (shipped)</td>
+    </tr>
+    <tr>
+      <td><code>kafka</code> (librdkafka opts)</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>some keys are mode-specific</td>
+    </tr>
+    <tr>
+      <td><code>manual_offset_management</code></td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>CG concept</td>
+    </tr>
+    <tr>
+      <td><code>acknowledgements</code></td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>SG concept</td>
+    </tr>
+    <tr>
+      <td><code>virtual_partitions</code></td>
+      <td>Yes</td>
+      <td>Yes (Pro)</td>
+      <td>Same API, without the offset machinery in SG</td>
+    </tr>
+    <tr>
+      <td><code>long_running_job</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Different mechanism (pause vs RENEW)</td>
+    </tr>
+    <tr>
+      <td><code>dead_letter_queue</code></td>
+      <td>Yes</td>
+      <td>Yes (Pro)</td>
+      <td>Same name, different semantics</td>
+    </tr>
+    <tr>
+      <td><code>delayed_release</code></td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>SG only</td>
+    </tr>
+    <tr>
+      <td><code>lock_extension</code> / auto-renew</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>SG only</td>
+    </tr>
+    <tr>
+      <td><code>throttling</code></td>
+      <td>Yes (per-partition)</td>
+      <td>Yes (consumer-wide)</td>
+      <td>Different scope</td>
+    </tr>
+    <tr>
+      <td><code>filtering</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Per-mode implementations (CG one shipped under <code>ConsumerGroups::</code>)</td>
+    </tr>
+    <tr>
+      <td><code>pause</code> (API)</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No per-partition pause in SG. Routing-level <code>#pause</code> backoff config exists on both topic classes in the same format (shipped); the runtime pause API stays CG-only</td>
+    </tr>
+    <tr>
+      <td><code>max_messages</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Shared concept</td>
+    </tr>
+    <tr>
+      <td><code>max_wait_time</code></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Shared</td>
+    </tr>
+    <tr>
+      <td><code>jobs_builder</code></td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>SG only</td>
+    </tr>
+    <tr>
+      <td><code>poll_interval</code></td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>SG only (priority knob)</td>
+    </tr>
+    <tr>
+      <td>Offset-related (seek, offset metadata)</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No offsets in SG</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Naming Conventions
 
@@ -442,7 +544,7 @@ Karafka::
         Acknowledgment                           # future
         DelayedRelease                           # future
         LockExtension                            # future
-        DeadLetterQueue                          # future
+        DeadLetterQueue                          # future (Pro, under Pro::Routing::Features::...)
         Throttling                               # future
         JobsBuilder                              # future
         PollInterval                             # future
@@ -540,7 +642,7 @@ As shipped in the routing layer (some differ from the original draft of this doc
 - **`PoisonRecordObserver`** - handles broker-archived records, produces to DLQ if configured
 - **In-memory fake share-consumer** - for Phase 1 development and ongoing testing
 - **Share-group strategies matrix** - SG version of CG's 5-flag matrix, simpler
-- **Share-group DLQ implementation** - client-side REJECT + produce (broker-native later)
+- **Share-group DLQ implementation** (Pro) - client-side REJECT + produce (broker-native later)
 - **JobsBuilders hierarchy** - PerMessage, PerBatch, PerPartition, PerKey, Custom
 
 ### Components Explicitly NOT Needed
@@ -570,7 +672,7 @@ contract with a dedicated error since share consumers do not support pattern sub
 the routing, wildcards supported), and share-group sections in `karafka info`.
 
 The SG-specific per-topic options below (`concurrency`, `poll_interval`,
-`max_messages_per_job`, `jobs_builder`, SG `dead_letter_queue`) are future work:
+`max_messages_per_job`, `jobs_builder`, the Pro-only SG `dead_letter_queue`) are future work:
 
 ```ruby
 Karafka::App.routes.draw do
