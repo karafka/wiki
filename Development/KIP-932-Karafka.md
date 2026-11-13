@@ -49,7 +49,7 @@ This document captures the design decisions, architectural choices, naming conve
 - **No batch boundary:** records can be in-flight across polls
 - **No partition pause:** there is no per-partition anything on the client side
 - **Lock clock starts at fetch time, not poll time:** prefetched records can expire while buffered
-- **Virtual partitions have no equivalent:** ordering-per-key cannot be reconstructed without partition affinity
+- **Virtual partitions work on a poll batch:** Pro share-group virtual partitions process the records of a single partition from a poll batch in parallel, with the consumer-group API and without the offset machinery
 
 ## Core Architectural Decisions
 
