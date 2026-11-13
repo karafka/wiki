@@ -343,6 +343,8 @@ The Karafka Web UI provides comprehensive tools for managing and monitoring recu
 
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/recurring-tasks.png)
 
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/recurring-tasks-logs.png)
+
 ## Error Handling and Retries
 
 An important aspect of the Recurring Tasks feature is how it handles errors during task execution:

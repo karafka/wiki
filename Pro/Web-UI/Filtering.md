@@ -19,6 +19,8 @@ Karafka Pro adds a keyword filter (search) box to nearly every data-heavy listin
 
 The field selector always accompanies the input on listings that support it, so every search looks consistent, even on single-field listings.
 
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-filtering.png)
+
 ## See Also
 
 - [Search](Pro-Web-UI-Search) - Searching inside Explorer message payloads, keys, and headers

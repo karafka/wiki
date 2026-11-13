@@ -16,6 +16,8 @@ Before diving deep into the data, having a bird's eye view of all available topi
 
 This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you do not miss out on the latest insights.
 
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-topic.png)
+
 #### Limitations
 
 1. **Data Merging from Multiple Partitions**: When using the Per Topic View, the system merges data from several partitions. However, there is a limitation. If the number of partitions exceeds the number of elements allowed to be displayed on a single page, not all data might be visible immediately. For example, if there are 30 partitions but the page only shows data from 25, you would only see the combined data from those 25 partitions on the first page. The remaining data from the other partitions would be visible on the subsequent pages (Page 2, Page 3, and so on).
@@ -29,6 +31,8 @@ However, in most other scenarios, where there is a substantial amount of data, t
 ### Per Partition View with Offset-Based Pagination
 
 Dive deeper into each partition and scroll through the data using offset-based pagination. This offers a granular view, ensuring detailed exploration of data within partitions.
+
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-partition.png)
 
 ### Time-Based Offset Lookups
 
@@ -53,6 +57,8 @@ Every message is more than just its content. With the Karafka Data Explorer, you
 ### Message Republishing
 
 You can republish a message to a topic and partition you select, including a topic or partition different from the source, unless a custom [messages policy](Pro-Web-UI-Policies#messages-policies) denies it with `#republish?`. The copy carries the raw payload, key, and headers of the source message: the original bytes, not values decoded by a custom deserializer. The republish form has an "Add source tracking headers" checkbox, selected by default, that also adds the `source_topic`, `source_partition`, and `source_offset` headers to the copy.
+
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-republish.png)
 
 ### Surroundings Lookup
 

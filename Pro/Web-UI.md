@@ -32,6 +32,8 @@ Enhanced consumer view reports all of the metrics available in the OSS version b
 
 Those metrics can allow you to identify bottlenecks (CPU vs. IO) in your Karafka consumers.
 
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-consumers-performance.png)
+
 ### Consumer Process Inspection
 
 Consumer process inspection view provides real-time visibility into the performance and behavior of a given consumer process and its Kafka subscriptions.
@@ -170,6 +172,10 @@ Both `custom.css` and `custom.js` settings accept either:
 - A file path to a CSS or JavaScript file
 - A string containing inline CSS or JavaScript code
 - `false` to disable custom styling (default)
+
+Example result of a custom stylesheet that adds an environment banner:
+
+![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-custom-styling.png)
 
 ### CSS Targeting by Controller and Action
 
