@@ -734,9 +734,9 @@ By using these mechanisms, you can maintain a continuous trace from the point of
 
 Datadog also provides its own Ruby APM integration, dd-trace-rb, which can automatically instrument Karafka applications. `require 'datadog/auto_instrument'` alone enables its Karafka integration.
 
-This integration offers broader Ruby application monitoring capabilities beyond just Kafka metrics. However, since this instrumentation is maintained by Datadog, we do not control its release cycles or compatibility updates with new Karafka versions.
+This integration offers broader Ruby application monitoring capabilities beyond Kafka metrics. However, since Datadog maintains this instrumentation, we do not control its release cycles or compatibility updates with new Karafka versions.
 
-For setup instructions and configuration details, refer to the [Datadog Ruby APM documentation](https://docs.datadoghq.com/tracing/setup_overview/setup/ruby/).
+For setup instructions and configuration details, refer to the [Datadog Ruby APM documentation](https://docs.datadoghq.com/tracing/trace_collection/dd_libraries/ruby/).
 
 !!! warning "Do Not Trace Consumer Jobs With Both Integrations"
 
