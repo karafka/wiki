@@ -174,6 +174,8 @@ The cache works as follows:
 - If the refresh fails on a transient error (`transport`, `timed_out`, `all_brokers_down` or `resolve`), the cache keeps the last known count and runs the next refresh after 10 seconds. Produce calls with `partition_key` continue to buffer messages in librdkafka during a cluster outage, but one produce call blocks for each refresh attempt. If the refresh fails on another error (except a missing topic), the produce call raises an error.
 - If the cache has no count for the topic, the produce call blocks while the metadata request and its retries run. This also applies to `#produce_async`. When the request fails, the produce call raises an error before WaterDrop queues the message. See [Error Handling](WaterDrop-Error-Handling#error-types).
 
+In both failure cases, karafka-rdkafka raises `Rdkafka::Producer::PartitionCountError`. It is an `Rdkafka::RdkafkaError` with the `code` of the failed metadata request, and `#topic_name` returns the topic. WaterDrop raises `WaterDrop::Errors::ProduceError` with this error as its `#cause` (`WaterDrop::Errors::ProduceManyError` for `#produce_many_sync` and `#produce_many_async`).
+
 To change the cache TTL, set `partition_count_cache_ttl_ms` in milliseconds when you configure a producer:
 
 ```ruby
