@@ -430,9 +430,9 @@ end
 
 ## Datadog and StatsD integration
 
-!!! info "Two DataDog Integration Options Available"
+!!! info "Two Datadog Integration Options Available"
 
-    Karafka offers two DataDog integration options: a native Karafka-maintained instrumentation (documented below) and DataDog's own Ruby APM integration. **You cannot use both simultaneously as they may conflict with each other.** The native Karafka integration provides Kafka-specific metrics and is maintained by us to ensure timely updates and compatibility with new Karafka releases, independent of DataDog's release cycles. DataDog's APM offers broader Ruby application monitoring. Choose the one that best fits your monitoring needs.
+    Karafka offers two Datadog integration options: a native Karafka-maintained instrumentation (documented below) and Datadog's own Ruby APM integration. **Do not trace consumer jobs with both:** the Karafka Datadog `LoggerListener` conflicts with dd-trace-rb's Karafka integration (see [Datadog Ruby APM Integration](#datadog-ruby-apm-integration)). The native Karafka integration provides Kafka-specific metrics and we maintain it for compatibility with new Karafka releases, independent of Datadog's release cycles. Datadog's APM offers broader Ruby application monitoring.
 
 !!! note "Enable WaterDrop Instrumentation Separately"
 
@@ -645,6 +645,8 @@ end
 Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?(Rails.env)
 ```
 
+Do not use this listener together with dd-trace-rb's Karafka integration. See [Datadog Ruby APM Integration](#datadog-ruby-apm-integration).
+
 ![Example Karafka DD dashboard](https://karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
 
 Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
@@ -730,15 +732,23 @@ By using these mechanisms, you can maintain a continuous trace from the point of
 
 ### DataDog Ruby APM Integration
 
-DataDog also provides their own Ruby APM integration that can automatically instrument Karafka applications.
+Datadog also provides its own Ruby APM integration, dd-trace-rb, which can automatically instrument Karafka applications. `require 'datadog/auto_instrument'` alone enables its Karafka integration.
 
 This integration offers broader Ruby application monitoring capabilities beyond just Kafka metrics. However, since this instrumentation is maintained by DataDog, we do not control its release cycles or compatibility updates with new Karafka versions.
 
 For setup instructions and configuration details, refer to the [DataDog Ruby APM documentation](https://docs.datadoghq.com/tracing/setup_overview/setup/ruby/).
 
-!!! warning "Do Not Use Both Integrations Simultaneously"
+!!! warning "Do Not Trace Consumer Jobs With Both Integrations"
 
-    Do not use this integration alongside the native Karafka DataDog integration as they may conflict with each other. Choose the one that best fits your monitoring needs.
+    dd-trace-rb's Karafka integration and the Karafka Datadog `LoggerListener` both trace consumer jobs, so each job gets duplicate spans. Use only one of them. The `MetricsListener` reports metrics only and does not conflict with dd-trace-rb.
+
+    When dd-trace-rb's Karafka patch applied successfully, the `LoggerListener` logs this warning once through `Karafka.logger`, at `warn` level, on the first job it processes:
+
+    ```text
+    dd-trace-rb Karafka integration is active together with the Karafka Datadog LoggerListener. Both trace consumer jobs, which duplicates spans. Use only one of them.
+    ```
+
+    Karafka releases before 2.6.2 also nest the jobs into one never-ending trace in this setup, so memory grows without limit.
 
 ## New Relic Metrics
 
