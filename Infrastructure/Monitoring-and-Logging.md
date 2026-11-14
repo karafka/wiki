@@ -730,7 +730,7 @@ In these methods, the `#on_message_acknowledged` is responsible for finalizing t
 
 By using these mechanisms, you can maintain a continuous trace from the point of message consumption to its final acknowledgment in the production process, providing a comprehensive view of your data's lifecycle within the distributed system.
 
-### DataDog Ruby APM Integration
+### Datadog Ruby APM Integration
 
 Datadog also provides its own Ruby APM integration, dd-trace-rb, which can automatically instrument Karafka applications. `require 'datadog/auto_instrument'` alone enables its Karafka integration.
 
@@ -742,13 +742,11 @@ For setup instructions and configuration details, refer to the [DataDog Ruby APM
 
     dd-trace-rb's Karafka integration and the Karafka Datadog `LoggerListener` both trace consumer jobs, so each job gets duplicate spans. Use only one of them. The `MetricsListener` reports metrics only and does not conflict with dd-trace-rb.
 
-    When dd-trace-rb's Karafka patch applied successfully, the `LoggerListener` logs this warning once through `Karafka.logger`, at `warn` level, on the first job it processes:
+    When dd-trace-rb's Karafka integration is active, the `LoggerListener` logs this warning once through `Karafka.logger`, at `warn` level, on the first job it processes:
 
     ```text
     dd-trace-rb Karafka integration is active together with the Karafka Datadog LoggerListener. Both trace consumer jobs, which duplicates spans. Use only one of them.
     ```
-
-    Karafka releases before 2.6.2 also nest the jobs into one never-ending trace in this setup, so memory grows without limit.
 
 ## New Relic Metrics
 
