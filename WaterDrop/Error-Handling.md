@@ -40,7 +40,7 @@ Each error type plays a crucial role in understanding and managing the complexit
 
 ## Errors' Impact on the Delivery
 
-<table border="1">
+<table>
     <thead>
       <tr>
         <th>Error Type</th>
@@ -50,7 +50,7 @@ Each error type plays a crucial role in understanding and managing the complexit
     </thead>
     <tbody>
         <tr>
-            <td>Pre Handle Inline Errors</td>
+            <td>Pre-Handle Inline Errors</td>
             <td>Yes</td>
             <td>Errors occurring before delivery confirmation suggest non-delivery. For non-transactional batches, partial delivery may occur. <code>ProduceManyError</code> is raised, detailing messages via <code>#dispatched</code> for successful sends, while <code>#cause</code> reveals the original error.</td>
         </tr>
