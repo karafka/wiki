@@ -14,7 +14,7 @@ This page lists what you need to run Karafka and WaterDrop on JRuby, the limits 
 
 Use JRuby 10.0.8.0 or a newer 10.0 release. Older JRuby 10.0 releases have a lock bug: see [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
 
-JRuby 10.1.3.0 does not work: WaterDrop and Karafka cannot start on it until [jruby/jruby#10026](https://github.com/jruby/jruby/issues/10026) is fixed. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer. Karafka sets up a WaterDrop producer when it starts, so Karafka does not start either.
+JRuby 10.1.3.0 does not work: WaterDrop and Karafka cannot start on it until [jruby/jruby#10026](https://github.com/jruby/jruby/issues/10026) is fixed. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer, and Karafka sets up a WaterDrop producer when it starts.
 
 ## Installation
 
