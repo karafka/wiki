@@ -60,7 +60,7 @@ Connecting Karafka with your existing stack:
 - **Active Job backend** - When to use Karafka as a job backend vs. dedicated message processing
 - **Active Record connections** - Managing database connection pools with concurrent consumers
 - **Testing strategies** - Unit testing consumers, integration testing with Kafka, and CI/CD setup
-- **Monitoring integration** - DataDog, AppSignal, StatsD, and custom instrumentation
+- **Monitoring integration** - Datadog, AppSignal, StatsD, and custom instrumentation
 
 ### Performance Optimization
 
