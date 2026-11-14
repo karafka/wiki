@@ -58,6 +58,8 @@ Every message is more than just its content. With the Karafka Data Explorer, you
 
 You can republish a message to a topic and partition you select, including a topic or partition different from the source, unless a custom [messages policy](Pro-Web-UI-Policies#messages-policies) denies it with `#republish?`. The copy carries the raw payload, key, and headers of the source message: the original bytes, not values decoded by a custom deserializer. The republish form has an "Add source tracking headers" checkbox, selected by default, that also adds the `source_topic`, `source_partition`, and `source_offset` headers to the copy.
 
+The form also has a "Skip payload validation" checkbox, not selected by default. When the target topic is in the routing, the Web UI first runs the payload through the payload [deserializer](Consumer-Groups-Deserialization) of that topic, the default JSON one when the topic sets none. If the deserializer raises an error, the form shows a payload error and the Web UI does not produce the copy. Select the checkbox to republish the payload without this check. The Web UI does not run this check for a target topic outside the routing or for a tombstone (`nil` payload).
+
 ![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-republish.png)
 
 ### Surroundings Lookup
