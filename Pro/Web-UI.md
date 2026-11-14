@@ -230,10 +230,6 @@ The `custom.nav_erb` setting accepts either:
 
 If the value is not a path to an existing file, the Web UI renders it as an inline ERB template.
 
-!!! warning "Trusted Content Only"
-
-    The template is ERB and runs as Ruby code inside the Web UI process. Use only content you control and never build it from user input.
-
 ### Compatibility Notes
 
 - Custom CSS and JavaScript are loaded after the default styles and scripts
