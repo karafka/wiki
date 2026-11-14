@@ -314,7 +314,7 @@ Karafka's Web UI error tracking capabilities will automatically record and displ
 
 Execution logs for your recurring tasks can be accessed in two primary ways:
 
-1. **Web UI Explorer**: The Karafka Web UI provides an intuitive interface for exploring execution logs. The Web UI Explorer lets you easily view and analyze task execution history, identify patterns, and monitor system health. This visual approach is beneficial for quickly assessing the status of your tasks and detecting any anomalies.
+1. **Web UI Logs Tab**: In the Web UI, open **Cron** in the sidebar and select the **Logs** tab. It lists the task executions from the logs topic with the task ID, result, time taken, dispatch time, and schedule version. Failed executions show an **Error** badge.
 
 2. **Karafka Admin APIs**: You can use the Karafka Admin APIs to read the logs topic directly for more programmatic access. This approach allows you to process the log messages customarily, such as integrating the data into your existing monitoring systems, triggering alerts based on specific log entries, or generating detailed reports on task execution performance.
 
