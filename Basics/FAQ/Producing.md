@@ -49,7 +49,7 @@ Rdkafka::RdkafkaError (Local: Timed out (timed_out)
 It may mean one of four things:
 
 1. High probability: Broker cannot keep up with the produce rate.
-1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return the topic metadata, and WaterDrop has no known partition count for this topic. In this case, the error is `Rdkafka::Producer::PartitionCountError`, an `Rdkafka::RdkafkaError` with the `timed_out` code. Once WaterDrop knows the count, it keeps it when a refresh fails on a transient error. See [Partition Key](WaterDrop-Usage#partition-key).
+1. High probability if you use `partition_key`: Broker is temporarily overloaded and cannot return the topic metadata, and WaterDrop has no known partition count for this topic. In this case, WaterDrop raises `WaterDrop::Errors::ProduceError` with `Rdkafka::Producer::PartitionCountError` as its `#cause`. This is an `Rdkafka::RdkafkaError` with the `timed_out` code. Once WaterDrop knows the count, it keeps it when a refresh fails on a transient error. See [Partition Key](WaterDrop-Usage#partition-key).
 1. Low probability: Slow network connection.
 1. Low probability: SSL configuration issue. In this case, no messages would reach the broker.
 
