@@ -20,6 +20,10 @@ There are two embedding API calls that you need to connect to your main process 
 
 ### Usage with Puma
 
+!!! note "Puma on JRuby Runs Only in Single Mode"
+
+    Puma cluster mode (`workers`) forks, so it does not run on JRuby: Puma stops at boot with `ERROR: worker mode not supported on jruby on this platform`. On JRuby, use the single node mode configuration below. See [JRuby Support](Infrastructure-JRuby-Support) for other JRuby limits.
+
 In a cluster mode:
 
 **For Puma < 7:**
