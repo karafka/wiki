@@ -8,8 +8,8 @@ To use variants, initialize a producer with default settings that apply to all t
 
 You create variants with the `#with` method or its alias `#variant`. It accepts two types of arguments:
 
-- `max_wait_timeout`: This is a root-scoped setting.
-- `topic_config` hash: This is where all topic-specific configurations are defined.
+- `max_wait_timeout`: This is a root-scoped setting. Omit it to use the `max_wait_timeout` of the default variant. Setting it to `nil` raises `WaterDrop::Errors::VariantInvalidError`.
+- `topic_config` hash: This hash holds all topic-specific settings. Any value other than a hash, including `nil`, raises `WaterDrop::Errors::VariantInvalidError`.
 
 Attributes inside the `topic_config` hash are `topic_config` scoped. Settings outside it, such as `max_wait_timeout`, are root-scoped.
 
@@ -142,6 +142,8 @@ high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 - **Buffering Behavior Across Variants**: All variants share the [buffer](WaterDrop-Usage#buffering) of their producer. A call made directly on the producer uses the default variant. One variant adds messages with `#buffer` or `#buffer_many`, and any variant can flush them with `#flush_sync` or `#flush_async`. Each message keeps the `topic_config` of the variant that buffered it. `#flush_sync` waits for delivery with the `max_wait_timeout` of the variant that calls it.
 
 - **Inconclusive Error Messages**: If you set `max_wait_timeout` lower than `message.timeout.ms`, `#wait` can raise a wait timeout error before the delivery result is final. By default, `max_wait_timeout` (`180_000` ms) exceeds `message.timeout.ms` (`150_000` ms). See [Error Handling](WaterDrop-Error-Handling) for details.
+
+- **Invalid `topic_config` Values**: `#with` checks only the keys of `topic_config`. librdkafka checks the values when the variant produces a message, so an invalid value, such as `acks: 'bogus'`, raises an error on each produce through that variant, not when you create it. A message buffered through such a variant makes each `#flush_sync` or `#flush_async` fail and stop at it: that message and every message buffered after it stay in the buffer (for a transactional producer, the whole flushed batch). `#purge` discards the whole buffer. `#close` runs one more flush, which stops at that message in the same way, and then closes the producer without delivering the messages left in the buffer.
 
 - **Immutable `acks` for Idempotent and Transactional Producers**: For idempotent and transactional producers, `acks` is set to `all` and variants cannot change it. Creating a variant that sets `acks` or `request.required.acks` in `topic_config` for these producers raises `WaterDrop::Errors::VariantInvalidError`.
 
