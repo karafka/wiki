@@ -14,7 +14,7 @@ This page lists what you need to run Karafka and WaterDrop on JRuby, the limits 
 
 Use JRuby 10.0.8.0 or a newer 10.0 release. Older JRuby 10.0 releases have a lock bug: see [Do Not Wrap Producer Calls in `Timeout`](#do-not-wrap-producer-calls-in-timeout).
 
-JRuby 10.1.3.0 does not work. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer. Karafka sets up a WaterDrop producer when it starts, so Karafka does not start either.
+JRuby 10.1.3.0 does not work: WaterDrop and Karafka cannot start on it until [jruby/jruby#10026](https://github.com/jruby/jruby/issues/10026) is fixed. A regression in this JRuby release makes WaterDrop raise `ArgumentError: wrong number of arguments (given 1, expected 0)` when it sets up a producer, and Karafka sets up a WaterDrop producer when it starts.
 
 ## Installation
 
@@ -105,7 +105,7 @@ The `:envelope` mode of [Messages At Rest Encryption](Pro-Messages-At-Rest-Encry
 
 On JRuby 10.0, `Kernel#sleep`, `ConditionVariable#wait` and `Queue#pop` in a non-blocking fiber do not call the fiber scheduler, so they block the whole thread. With WaterDrop in an Async reactor, each `#produce_sync` and each `DeliveryHandle#wait` blocks all fibers of the reactor until the delivery report arrives. `#produce_async` does not wait for the delivery report, so it does not block the reactor for that time.
 
-This is a JRuby bug, not a Karafka bug. See [jruby/jruby#9622](https://github.com/jruby/jruby/issues/9622), [jruby/jruby#9790](https://github.com/jruby/jruby/issues/9790) and [jruby/jruby#9805](https://github.com/jruby/jruby/issues/9805). See [Async Ecosystem Integration](WaterDrop-Async-Integration) for how WaterDrop works with the fiber scheduler on MRI.
+This is a JRuby bug, not a Karafka bug. See [jruby/jruby#10027](https://github.com/jruby/jruby/issues/10027), [jruby/jruby#9622](https://github.com/jruby/jruby/issues/9622), [jruby/jruby#9790](https://github.com/jruby/jruby/issues/9790) and [jruby/jruby#9805](https://github.com/jruby/jruby/issues/9805). See [Async Ecosystem Integration](WaterDrop-Async-Integration) for how WaterDrop works with the fiber scheduler on MRI.
 
 ## Do Not Wrap Producer Calls in `Timeout`
 
@@ -116,3 +116,5 @@ This is a JRuby bug, not a Karafka bug. See [jruby/jruby#9622](https://github.co
     This is a JRuby bug, not a Karafka bug. See [jruby/jruby#9972](https://github.com/jruby/jruby/issues/9972).
 
     Use the WaterDrop timeouts instead: `max_wait_timeout` and the `message.timeout.ms` setting. See [WaterDrop Configuration](WaterDrop-Configuration) for details.
+
+On JRuby 10.0.8.0 and 10.1.3.0, a timed `Queue#pop(timeout:)` or `SizedQueue#push(x, timeout:)` receives `Thread#kill` and `Thread#raise` inside `Thread.handle_interrupt(Object => :never)`. MRI defers both until the block ends. If your code protects cleanup, such as releasing a lock or draining a queue at shutdown, with a `:never` mask and a timed queue call, the cleanup can stop part-way. Karafka and WaterDrop code is not affected. This is a JRuby bug. See [jruby/jruby#10028](https://github.com/jruby/jruby/issues/10028).
