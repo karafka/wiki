@@ -406,7 +406,7 @@ The `initial_offset` setting in Karafka is relevant only during the initial star
 
 ## How can I set up custom, per-message tracing in Karafka?
 
-Implementing detailed, per-message tracing in Karafka involves modifying the monitoring and tracing setup to handle individual messages. This setup enhances visibility into each message's processing and integrates with many tracing products like DataDog.
+Implementing detailed, per-message tracing in Karafka involves modifying the monitoring and tracing setup to handle individual messages. This setup enhances visibility into each message's processing and integrates with many tracing products like Datadog.
 
 Here is how you can set up this  detailed tracing step-by-step:
 

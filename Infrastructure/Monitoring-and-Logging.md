@@ -442,7 +442,7 @@ end
 
     The default Datadog MetricsListener provides comprehensive metrics coverage, reporting rdkafka statistics, consumer events, worker metrics, and errors. While excellent for development and initial production monitoring, this can significantly increase Datadog costs in high-throughput environments. We recommend revisiting your instrumentation setup before deploying to production at scale. See the [Reducing Datadog Metrics to Lower Costs](#reducing-datadog-metrics-to-lower-costs) section below for guidance on customizing the listener to report only the metrics you need.
 
-### Karafka Native DataDog Integration
+### Karafka Native Datadog Integration
 
 Karafka comes with (optional) full Datadog and StatsD integration that you can use. To use it:
 
@@ -632,8 +632,8 @@ end
 If you are interested in tracing your consumers' work with Datadog, you can use our Datadog logger listener:
 
 ```ruby
-# you need to add ddtrace to your Gemfile
-require 'ddtrace'
+# you need to add datadog to your Gemfile
+require 'datadog'
 require 'karafka/instrumentation/vendors/datadog/logger_listener'
 
 # Initialize the listener
@@ -734,9 +734,9 @@ By using these mechanisms, you can maintain a continuous trace from the point of
 
 Datadog also provides its own Ruby APM integration, dd-trace-rb, which can automatically instrument Karafka applications. `require 'datadog/auto_instrument'` alone enables its Karafka integration.
 
-This integration offers broader Ruby application monitoring capabilities beyond just Kafka metrics. However, since this instrumentation is maintained by DataDog, we do not control its release cycles or compatibility updates with new Karafka versions.
+This integration offers broader Ruby application monitoring capabilities beyond Kafka metrics. However, since Datadog maintains this instrumentation, we do not control its release cycles or compatibility updates with new Karafka versions.
 
-For setup instructions and configuration details, refer to the [DataDog Ruby APM documentation](https://docs.datadoghq.com/tracing/setup_overview/setup/ruby/).
+For setup instructions and configuration details, refer to the [Datadog Ruby APM documentation](https://docs.datadoghq.com/tracing/trace_collection/dd_libraries/ruby/).
 
 !!! warning "Do Not Trace Consumer Jobs With Both Integrations"
 
