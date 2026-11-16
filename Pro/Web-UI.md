@@ -203,6 +203,33 @@ body.controller-errors {
 }
 ```
 
+### Custom Navigation Links
+
+You can add your own items to the Web UI sidebar navigation with the `config.ui.custom.nav_erb` setting. The Web UI renders them below the default menu items. This is useful for "Back to app" links or other quick access actions.
+
+```ruby
+Karafka::Web.setup do |config|
+  # Path to an ERB template file
+  config.ui.custom.nav_erb = '/path/to/your/custom_nav.erb'
+  # or an inline ERB template
+  config.ui.custom.nav_erb = <<~ERB
+    <li>
+      <a class="sidebar-nav-item" href="/">
+        <span class="sidebar-nav-item-label">Back to app</span>
+      </a>
+    </li>
+  ERB
+end
+```
+
+The `custom.nav_erb` setting accepts either:
+
+- A file path to an ERB template
+- A string containing an inline ERB template
+- `false` to disable custom navigation links (default)
+
+If the value is not a path to an existing file, the Web UI renders it as an inline ERB template.
+
 ### Compatibility Notes
 
 - Custom CSS and JavaScript are loaded after the default styles and scripts
