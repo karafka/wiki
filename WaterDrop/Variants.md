@@ -145,7 +145,7 @@ high_importance.produce_async(topic: 'critical_events', payload: event.to_json)
 
 - **Invalid `topic_config` Values**: `#with` checks only the keys of `topic_config`. librdkafka checks the values when the variant produces a message, so an invalid value, such as `acks: 'bogus'`, raises an error on each produce through that variant, not when you create it. A message buffered through such a variant makes each `#flush_sync` or `#flush_async` fail and stop at it: that message and every message buffered after it stay in the buffer (for a transactional producer, the whole flushed batch). `#purge` discards the whole buffer. `#close` runs one more flush, which stops at that message in the same way, and then closes the producer without delivering the messages left in the buffer.
 
-- **Immutable `acks` for Idempotent and Transactional Producers**: For idempotent producers (`enable.idempotence` set to `true` or `"true"`, see [WaterDrop Idempotence](WaterDrop-Idempotence-and-Acknowledgements#waterdrop-idempotence)) and transactional producers, `acks` is set to `all` and variants cannot change it. Creating a variant that sets `acks` or `request.required.acks` in `topic_config` for these producers raises `WaterDrop::Errors::VariantInvalidError`.
+- **Immutable `acks` for Idempotent and Transactional Producers**: For idempotent producers (`enable.idempotence` set to `true`, see [WaterDrop Idempotence](WaterDrop-Idempotence-and-Acknowledgements#waterdrop-idempotence)) and transactional producers, `acks` is set to `all` and variants cannot change it. Creating a variant that sets `acks` or `request.required.acks` in `topic_config` for these producers raises `WaterDrop::Errors::VariantInvalidError`.
 
 ## See Also
 
