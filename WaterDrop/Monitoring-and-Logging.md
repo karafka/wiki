@@ -362,7 +362,9 @@ producer.monitor.subscribe(listener)
 
 You can also find [here](https://github.com/karafka/waterdrop/blob/master/lib/waterdrop/instrumentation/vendors/datadog/dashboard.json) a ready-to-import Datadog dashboard configuration file that you can use to monitor all of your producers.
 
-![Example WaterDrop Datadog dashboard](https://karafka.io/assets/misc/printscreens/waterdrop_dd_dashboard_example.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/waterdrop_dd_dashboard_example.png" alt="Example WaterDrop Datadog dashboard"/>
+</p>
 
 ### Metrics Reporting Enhancement
 

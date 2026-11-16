@@ -471,7 +471,9 @@ Karafka.monitor.subscribe(dd_listener)
 
 You can also find [here](https://github.com/karafka/karafka/blob/master/lib/karafka/instrumentation/vendors/datadog/dashboard.json) a ready-to-import Datadog dashboard configuration file that you can use to monitor your consumers.
 
-![Example Karafka Datadog dashboard](https://karafka.io/assets/misc/printscreens/karafka_dd_dashboard_example.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/karafka_dd_dashboard_example.png" alt="Example Karafka Datadog dashboard"/>
+</p>
 
 #### Extending Datadog Metrics with Custom Tags
 
@@ -647,7 +649,9 @@ Karafka.monitor.subscribe(dd_logger_listener) if %w[staging production].include?
 
 Do not use this listener together with dd-trace-rb's Karafka integration. See [Datadog Ruby APM Integration](#datadog-ruby-apm-integration).
 
-![Example Karafka consumer trace in Datadog](https://karafka.io/assets/misc/printscreens/karafka_dd_tracing.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/karafka_dd_tracing.png" alt="Example Karafka consumer trace in Datadog"/>
+</p>
 
 Tracing capabilities were added by [Bruno Martins](https://github.com/bruno-b-martins).
 
