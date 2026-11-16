@@ -681,7 +681,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>zlib</td>
-    <td>1.3.2</td>
+    <td>1.4</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/madler/zlib/blob/master/LICENSE">Zlib</a></td>
     <td>Jean-loup Gailly and Mark Adler</td>
   </tr>
