@@ -22,6 +22,8 @@ producer = WaterDrop::Producer.new do |config|
 end
 ```
 
+WaterDrop treats the producer as idempotent only when `enable.idempotence` is `true` or `"true"`. librdkafka also reads `1`, `"1"`, `"t"` and `"TRUE"` as true and enables idempotence for them, but WaterDrop then does not treat the producer as idempotent: `reload_on_idempotent_fatal_error` does not apply, and variants can set `acks` (librdkafka refuses `acks` `0` when you produce). Use `true` or `"true"`.
+
 When idempotence is enabled in WaterDrop producer:
 
 - Kafka ensures that even if a message is retried, it will not be written again.
