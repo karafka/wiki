@@ -449,7 +449,7 @@ Starting with **librdkafka 2.12.0**, the next generation consumer group rebalanc
 
 ### Enhancements and Fixes
 * Support for OAUTHBEARER metadata based authentication types,
-  starting with Azure IMDS. [Introduction available](https://github.com/confluentinc/librdkafka/blob/v2.12.0/INTRODUCTION.md#oauthbearer-oidc-metadata-authentication) (#5155).
+  starting with Azure IMDS. [Introduction available](https://github.com/confluentinc/librdkafka/blob/v2.12.0/INTRODUCTION.md#metadata-based-authentication) (#5155).
 * Fix compression types read issue in GetTelemetrySubscriptions response
   for big-endian architectures (#5183, @paravoid).
 * Fix for KIP-1102 time based re-bootstrap condition (#5177).

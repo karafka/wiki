@@ -17,7 +17,9 @@ DEAD_LINKS = {
   'https://www.openssl.org/news/cl30.txt' =>
     'https://openssl-library.org/news/openssl-3.0-notes/',
   'KIP-951%3A+Leader+discovery+optimisations+for+the+client' =>
-    'KIP-951%3A+Leader+discovery+optimizations+for+the+client'
+    'KIP-951%3A+Leader+discovery+optimizations+for+the+client',
+  'INTRODUCTION.md#oauthbearer-oidc-metadata-authentication' =>
+    'INTRODUCTION.md#metadata-based-authentication'
 }.freeze
 
 class LibrdkafkaFetcher
