@@ -1,4 +1,4 @@
-When working with Kafka, there is a setting called [`max.poll.interval.ms`](https://docs.confluent.io/platform/current/installation/configuration/consumer-configs.html#consumerconfigs_max.poll.interval.ms).
+When working with Kafka, there is a setting called [`max.poll.interval.ms`](https://docs.confluent.io/platform/current/installation/configuration/consumer-configs.html#max-poll-interval-ms).
 
 It is the maximum delay between invocations of `poll()` commands. This places an upper bound on the time the consumer can wait before fetching more records.
 
