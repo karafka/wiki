@@ -110,7 +110,9 @@ end
 
 Karafka [Web UI](Web-UI-Getting-Started) is a user interface for the Karafka framework. The Web UI provides a convenient way for monitor all producers related errors out of the box.
 
-![Example producer errors in Karafka Web-UI](https://karafka.io/assets/misc/printscreens/web-ui/errors-producer.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors-producer.png" alt="Example producer errors in Karafka Web UI"/>
+</p>
 
 ## Logger Listener
 
