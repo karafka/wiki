@@ -212,7 +212,7 @@ For users using the advanced capabilities of Karafka Pro, the Routing Patterns f
 
 ## Overriding Defaults
 
-Almost all the default settings configured can be changed on either on the ```topic``` level. This means that you can provide each topic with some details in case you need a non-standard way of doing things (for example, you need batch consuming only for a single topic).
+A `topic` block can override root `setup` settings, such as `max_messages`, `max_wait_time` and `initial_offset`, for that topic only.
 
 ## Shared Defaults
 
