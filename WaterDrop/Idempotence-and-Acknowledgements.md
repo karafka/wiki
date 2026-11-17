@@ -27,6 +27,11 @@ When idempotence is enabled in WaterDrop producer:
 - Kafka ensures that even if a message is retried, it will not be written again.
 - The producer will assign a sequence number to each message, and Kafka ensures that messages with the same sequence number are deduplicated.
 
+WaterDrop always treats a transactional producer as idempotent. For any other producer, an `enable.idempotence` value other than `true` can enable idempotence in librdkafka while WaterDrop does not treat the producer as idempotent:
+
+- `reload_on_idempotent_fatal_error` does not apply.
+- Creating a variant that sets `acks` does not raise `WaterDrop::Errors::VariantInvalidError`. Producing through a variant with `acks` other than `all` fails, because librdkafka refuses it.
+
 !!! info "Fatal Errors Stop an Idempotent Producer Unless It Reloads"
 
     A fatal error, such as [`Unable to reconstruct MessageSet`](Basics-FAQ-Errors-and-Troubleshooting#why-am-i-getting-an-unable-to-reconstruct-messageset-inconsistent-state-error-when-producing), applies to the whole producer. By default, every later produce on it fails until you close and recreate the producer. This affects all code that produces through it, including the Web UI when it reports through `Karafka.producer` (see [Using a Custom Web UI Producer](Web-UI-Configuration#using-a-custom-web-ui-producer)).
