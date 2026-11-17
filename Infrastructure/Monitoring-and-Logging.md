@@ -345,7 +345,9 @@ You can read more about its features [here](Web-UI-Features), and the installati
 
 Karafka's integration with [AppSignal](https://www.appsignal.com/) offers comprehensive support for error reporting and performance monitoring, making it a solution for monitoring your Kafka-based applications.
 
-![Example Karafka AppSignal dashboard](https://karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_example.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_example.png" alt="Example Karafka AppSignal dashboard"/>
+</p>
 
 The Karafka AppSignal integration provides an extensive set of metrics with both per-topic and per-partition resolution. This granularity allows you to drill down into specific aspects of your Kafka processing pipeline.
 
@@ -390,7 +392,9 @@ Karafka.producer.monitor.subscribe(appsignal_errors_listener)
 # setup the metrics listener here if you want
 ```
 
-![Example Karafka AppSignal Errors dashboard](https://karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_errors_example.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/karafka_appsignal_dashboard_errors_example.png" alt="Example Karafka AppSignal Errors dashboard"/>
+</p>
 
 ### Metrics Instrumentation
 
