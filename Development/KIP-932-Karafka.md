@@ -862,7 +862,7 @@ end
 2. **Per-record error handling with RELEASE** - foundation for retry features.
 3. **Delayed-release structure** - `mark_released(m, delay: X)` with priority queue + RENEW scheduling.
 4. **Long-running jobs equivalent** - `#extend_lock!` exposed, auto-renew heuristics where appropriate.
-5. **Share-group DLQ** - client-side REJECT + produce implementation.
+5. **Share-group DLQ** (Pro) - client-side REJECT + produce implementation.
 6. **Share-group strategies matrix** - analog of CG 5-flag matrix.
 7. **Admin API extensions** - describe SG, list SGs, reset SPSO, alter SG config.
 
