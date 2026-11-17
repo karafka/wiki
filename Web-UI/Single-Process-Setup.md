@@ -32,6 +32,10 @@ Single Process Setup provides few benefits over the default one:
 
     Your `puma.rb` configuration depends on whether you run Puma in a single-node or cluster mode.
 
+!!! note "Puma on JRuby Runs Only in Single Mode"
+
+    Puma cluster mode (`workers`) forks, so it does not run on JRuby: Puma stops at boot with `ERROR: worker mode not supported on jruby on this platform`. On JRuby, use the single node mode configuration below. See [JRuby Support](Infrastructure-JRuby-Support) for other JRuby limits.
+
 To operate the Karafka Web UI in the single process mode, a couple of essential steps are required:
 
 1. You need to enable the Embedding functionality that allows the karafka server to run directly within the Puma process. To do so, alter your `puma.rb` to start and stop Karafka during its lifecycle:
