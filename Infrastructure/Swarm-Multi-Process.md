@@ -548,7 +548,7 @@ When operating in Swarm Mode, each forked node inherits the Karafka producer con
 
 Using the same `transactional.id` across multiple producer instances causes transaction fencing issues. When a producer instance begins a transaction, it receives an epoch number from the transaction coordinator. If another producer instance with the same `transactional.id` starts a transaction, it receives a higher epoch number and fences off (invalidates) the previous producer instance.
 
-Karafka gives each node's producer its own `transactional.id` in the `<transactional.id>_<node id>` format, as it does with `group.instance.id`. The id stays the same when a node restarts, so Kafka can finish the transactions of the previous node instance. With `swarm.nodes` set to `1`, the configured `transactional.id` stays unchanged. You do not need to replace the producer in `swarm.node.after_fork` to get unique ids. If you replace it with a random `transactional.id` per fork, you lose the stability across node restarts.
+When Karafka builds the default producer of a node at fork, it gives this producer its own `transactional.id` in the `<transactional.id>_<node id>` format, as it does with `group.instance.id`. The id stays the same when a node restarts, so Kafka can finish the transactions of the previous node instance. With `swarm.nodes` set to `1`, the configured `transactional.id` stays unchanged. You do not need to replace the producer in `swarm.node.after_fork` to get unique ids.
 
 ```ruby
 class KarafkaApp < Karafka::App
@@ -566,14 +566,26 @@ end
 
 When you run Swarm with 2 or more nodes, check two things:
 
-1. The base `transactional.id` must be unique per host. Two hosts with the same base id produce the same `<transactional.id>_<node id>` values and fence each other off.
+1. The base `transactional.id` must be unique per swarm. Two swarms with the same base id, on the same host or on different hosts, produce the same `<transactional.id>_<node id>` values and fence each other off.
 1. If your cluster uses ACLs, the `TransactionalId` ACL must allow the `<transactional.id>_<node id>` values, for example with a prefixed ACL on `<transactional.id>_`.
+
+Karafka does not change the `transactional.id` of a producer that you set in `swarm.node.after_fork`. If this producer is transactional, give it a unique `transactional.id` per node yourself. To keep the id stable across node restarts, use the node id:
+
+```ruby
+Karafka.monitor.subscribe('swarm.node.after_fork') do
+  Karafka::App.config.producer = ::WaterDrop::Producer.new do |p_config|
+    p_config.logger = Karafka::App.config.logger
+    p_config.kafka = ::Karafka::Setup::AttributesMap.producer(Karafka::App.config.kafka.dup)
+    p_config.kafka[:'transactional.id'] = "my-app-host-1_#{Karafka::App.config.swarm.node.id}"
+  end
+end
+```
 
 If you replace the default producer in `swarm.node.after_fork` with your own, the Pro scheduled messages and recurring tasks that use the default producer also use the replaced one. Producers you set for these features in the same hook stay as they are.
 
-!!! warning "Shared Base Transactional ID Across Hosts Fences Nodes"
+!!! warning "Shared Base Transactional ID Across Swarms Fences Nodes"
 
-    Karafka makes the `transactional.id` unique only between the nodes of one swarm. If two hosts use the same base `transactional.id`, their nodes get the same ids and fence each other off, which leads to failed transactions and potential data consistency issues.
+    Karafka makes the `transactional.id` unique only between the nodes of one swarm. If two swarms use the same base `transactional.id`, their nodes get the same ids and fence each other off, which leads to failed transactions and potential data consistency issues.
 
 ## Example Use Cases
 
