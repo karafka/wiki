@@ -90,12 +90,12 @@ end
 
 preload_app!
 
-@config.options[:events].after_booted do
+@config.events.after_booted do
   ::Karafka::Embedded.start
 end
 
 # There is no `before_worker_shutdown` equivalent for single mode
-@config.options[:events].after_stopped do
+@config.events.after_stopped do
   ::Karafka::Embedded.stop
 end
 ```
