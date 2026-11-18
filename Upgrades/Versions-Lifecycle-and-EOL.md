@@ -99,7 +99,7 @@ The same applies to Rails: dropping support for a Rails version does not require
 | Version | Status      | EOL date   |
 |---------|-------------|------------|
 | 8.1     | Active      | N/A        |
-| 8.0     | Active      | 2027-05-31 |
+| 8.0     | Maintenance | 2027-05-31 |
 | 7.2     | Maintenance | 2027-02-28 |
 | 7.1     | EOL         | 2025-10-31 |
 | 7.0     | EOL         | 2025-05-31 |
