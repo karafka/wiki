@@ -690,6 +690,10 @@ end
 
 ### Closing Producer Used in Puma (Cluster Mode)
 
+!!! note "Puma on JRuby Runs Only in Single Mode"
+
+    Puma cluster mode (`workers`) forks, so it does not run on JRuby: Puma stops at boot with `ERROR: worker mode not supported on jruby on this platform`. On JRuby, use the single mode example above instead of the `on_worker_shutdown` or `before_worker_shutdown` hook below. See [JRuby Support](Infrastructure-JRuby-Support) for other JRuby limits.
+
 **For Puma < 7:**
 
 ```ruby
