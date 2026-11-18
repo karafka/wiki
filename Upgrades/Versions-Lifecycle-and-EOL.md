@@ -96,16 +96,57 @@ Our EOL dates are set around six months after each version's official Rails EOL 
 
 The same applies to Rails: dropping support for a Rails version does not require a major release.
 
-| Version | Status      | EOL date   |
-|---------|-------------|------------|
-| 8.1     | Active      | N/A        |
-| 8.0     | Maintenance | 2027-05-31 |
-| 7.2     | Maintenance | 2027-02-28 |
-| 7.1     | EOL         | 2025-10-31 |
-| 7.0     | EOL         | 2025-05-31 |
-| 6.1     | EOL         | 2024-12-31 |
-| 5.2     | EOL         | 2023-12-31 |
-| 4.2     | EOL         | 2021-05-01 |
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Status</th>
+      <th>EOL date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8.1</td>
+      <td>Active</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>8.0</td>
+      <td>Maintenance</td>
+      <td>2027-05-31</td>
+    </tr>
+    <tr>
+      <td>7.2</td>
+      <td>Maintenance</td>
+      <td>2027-02-28</td>
+    </tr>
+    <tr>
+      <td>7.1</td>
+      <td>EOL</td>
+      <td>2025-10-31</td>
+    </tr>
+    <tr>
+      <td>7.0</td>
+      <td>EOL</td>
+      <td>2025-05-31</td>
+    </tr>
+    <tr>
+      <td>6.1</td>
+      <td>EOL</td>
+      <td>2024-12-31</td>
+    </tr>
+    <tr>
+      <td>5.2</td>
+      <td>EOL</td>
+      <td>2023-12-31</td>
+    </tr>
+    <tr>
+      <td>4.2</td>
+      <td>EOL</td>
+      <td>2021-05-01</td>
+    </tr>
+  </tbody>
+</table>
 
 ## glibc Versions Support
 
