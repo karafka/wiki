@@ -158,13 +158,15 @@ end
 
 ### Admin Configs API
 
-Karafka also supports the Admin Configs API, which is designed to view and manage configurations at the Kafka broker and topic levels. These settings are different from the client configurations (root and Kafka scoped) as they pertain to the infrastructure level of Kafka itself rather than how your application interacts with it.
+The [Admin Configs API](Infrastructure-Admin-Configs-API) views and manages configurations at the Kafka broker, topic and consumer group levels. These settings differ from the client configurations (root and Kafka scoped): they belong to Kafka itself, not to how your application interacts with it.
 
 Example settings include:
 
 - **Broker Configurations**: Like log file sizes, message sizes, and default retention policies.
 
 - **Topic Configurations**: Such as partition counts, replication factors, and topic-level overrides for retention.
+
+- **Consumer Group Configurations**: Such as `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms`, the session and heartbeat timing of a consumer group that uses the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol).
 
 To put it in perspective, these configurations can be likened to those in a database. Just as a database has client, database, and table configurations, Kafka has its own set of configurations at different levels.
 
