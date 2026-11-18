@@ -124,7 +124,7 @@ config.kafka = {
 
     when using `group.protocol=consumer` will cause request rejection.
 
-You set the session and heartbeat timing of one consumer group with its `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms` configs through the [Admin Configs API](Infrastructure-Admin-Configs-API#usage).
+You set the session and heartbeat timing for each consumer group with its `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms` configs through the [Admin Configs API](Infrastructure-Admin-Configs-API#usage).
 
 ## Migration Guide
 

@@ -131,7 +131,7 @@ resource.set('retention.ms', '7200000')
 Karafka::Admin::Configs.alter(resource)
 ```
 
-Consumer group configurations work the same way. With the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), the client config does not take the session and heartbeat timing. Set it for each consumer group with `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms`:
+Consumer group configurations work the same way. With the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), set the session and heartbeat timing for each consumer group with `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms`:
 
 ```ruby
 # Describe consumer group configurations
