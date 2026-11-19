@@ -3,9 +3,15 @@
 
 # Rdkafka Changelog
 
-## 0.32.1 (Unreleased)
-- **[Breaking]** Take the partition list of `Admin#list_consumer_group_offsets` as the `topic_partition_list:` keyword instead of a positional argument.
-- **[Breaking]** Return one shared frozen empty array from `Consumer#poll_batch` and `#poll_batch_nb` when no messages arrive, so an empty poll allocates nothing. Code that mutates an empty result now raises `FrozenError`.
+## 0.32.2 (2026-11-18)
+- [Maintenance] Release the code of 0.32.1 again, with Sigstore attestations. 0.32.1 was published without them: signing failed in the release workflows (the signer does not work with json 3.x, the default of Ruby 4.0) and the attestation patch then pushed the gems unsigned. There are no code changes; use 0.32.2 rather than 0.32.1 for the attested gems.
+- [Maintenance] Sign each gem with `sigstore-cli` and push it with `gem push --attestation` (`.github/release/push_gem.sh`, used by every push workflow), so a failed signing stops the release instead of publishing the gem without an attestation.
+- [Maintenance] Add the `Sigstore Check` workflow: nightly, and on pull requests that change the release scripts or push workflows, it builds the gem, signs it like a release and verifies the attestation, without pushing.
+
+## 0.32.1 (2026-11-18)
+- [Change] Take the partition list of `Admin#list_consumer_group_offsets` as the `topic_partition_list:` keyword instead of a positional argument. Its only caller is karafka's admin API, which passes it as a keyword from karafka 2.6.2 (released karafka does not call it).
+- [Change] Return one shared frozen empty array from `Consumer#poll_batch` and `#poll_batch_nb` when no messages arrive, so an empty poll allocates nothing. Code that mutates an empty result now raises `FrozenError`; no Karafka ecosystem gem calls these methods.
+- **[Feature]** Add `#source` and `#source_name` to `describe_configs` config entries and their synonyms, telling a value set on the topic from one inherited from the broker or a built-in default. Ported from rdkafka-ruby (#1120).
 - [Enhancement] Allocate fewer objects per handle: delivery and admin handles share a fixed set of locks instead of creating their own `Mutex` and `ConditionVariable`. Ported from rdkafka-ruby (#1087).
 - [Enhancement] Bump the bundled zlib to `1.4`. Ported from rdkafka-ruby (#1109).
 - [Enhancement] Bump the bundled MIT Kerberos (krb5) to `1.22.3` for security fixes. Ported from rdkafka-ruby (#1119).
@@ -17,6 +23,7 @@
 - [Fix] Keep the shared partition count cache consistent when many threads produce with `partition_key` or call `partition_count` at once. On JRuby it lost topics and raised `NoMethodError`. Ported from rdkafka-ruby (#1078).
 - [Fix] Return `nil` from every `close` call when several threads close one consumer, producer or admin at once, instead of raising `ClosedInnerError` in the later callers. Ported from rdkafka-ruby (#1107).
 - [Fix] Give the error of a message that fails to build (e.g. unreadable headers) its `topic`, `partition` and `offset` in `details` in `Consumer#poll`, `#poll_nb`, `#poll_nb_each`, `#poll_batch` and `#poll_batch_nb`, so the caller can seek back to it instead of losing it.
+- [Fix] Give the error of a message that fails to build its `topic`, `partition` and `offset` in `details` in `ShareConsumer#poll` too, so in explicit acknowledgement mode the caller can acknowledge (release or reject) that record.
 
 ## 0.32.0 (2026-11-04)
 - **[Feature]** Add `Config#consumer_offset_commit_listener`: its `#on_offsets_committed(error, list)` gets the result of every offset commit when the consumer polls or closes, so an async commit that the broker rejects reaches Ruby instead of only a `COMMITFAIL` log line. Ported from rdkafka-ruby (#1061).
