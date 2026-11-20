@@ -10,6 +10,7 @@ Karafka has a simple CLI built in. It provides the following commands:
 | swarm         | Start the Karafka server in the swarm mode (multiple forked processes)                  |
 | topics        | Allows for topics management (create, delete, repartition, reset, migrate, align, plan) |
 | topics health | Check Kafka topics for replication and durability issues (Pro)                          |
+| vps           | Display Virtual Partitions Estimator reports (Pro)                                      |
 
 All the commands are executed the same way:
 
@@ -136,6 +137,40 @@ The extended output adds three sections:
 !!! info "Sensitive Kafka Values Are Redacted"
 
     Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `passphrase`, `secret`, `token`, `sasl.oauthbearer.client`, `private.key.pem`, `ssl.key.pem` or `ssl_key` (case-insensitive). This applies to the Kafka Config section and to the per-topic `kafka` settings. Karafka does not redact other values, so `ssl.certificate.pem` and `ssl.ca.pem` are printed.
+
+## Karafka Virtual Partitions
+
+!!! info "`vps` Is a Pro Command"
+
+    The `vps` command is part of [Karafka Pro](https://karafka.io/#become-pro).
+
+The `vps` command (long name: `virtual_partitions`) displays the JSON reports of the [Virtual Partitions Estimator](Pro-Consumer-Groups-Virtual-Partitions#estimating-the-benefit) as plain text. It applies to consumer groups only. Generate the report first from the Karafka console:
+
+```ruby
+Karafka::Pro::Processing::ConsumerGroups::VirtualPartitions::Estimator
+  .new
+  .call('orders', target_file: 'report.json')
+```
+
+Then display it:
+
+```shell
+# Reads the consumer_groups.virtual_partitions.estimator.report_file path ("report.json" by default)
+bundle exec karafka vps estimate-report
+
+# Reads the given file
+bundle exec karafka vps estimate-report path/to/report.json
+```
+
+`estimate-report` is the default action, so `bundle exec karafka vps` does the same. `bundle exec karafka vps help` lists the available actions.
+
+The report shows the settings used, a table with the stats of each partition, a summary with the score, the verdict and suggestions, and the limitations of the estimate: the same processing cost for each message and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
+
+When the report cannot be displayed:
+
+- A missing file raises `Errno::ENOENT`.
+- A file that is not valid JSON raises `JSON::ParserError`.
+- A report that does not pass validation (for example, one with the format version of another Karafka version) prints the validation errors on one line and exits with code 1.
 
 ## Karafka Swarm
 
