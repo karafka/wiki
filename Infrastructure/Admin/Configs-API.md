@@ -76,9 +76,9 @@ Operations types within this API are used to specify the configuration changes b
   </tbody>
 </table>
 
-### Config Sources
+### Configuration Sources
 
-Each config entry that `describe` returns has a `#source` that tells where its value comes from. Use it to tell a value set on the topic from one inherited from the broker or a built-in default. Synonyms (`#synonyms`) carry their own `#source`.
+Each configuration entry in `Resource#configs`, from `describe` and `alter`, has a `#source` that tells where its value comes from. Use it to tell a value set on the topic from one inherited from the broker or a built-in default. `#synonyms` lists the other entries that can set the same value, for example the broker setting behind a topic setting. Each synonym has its own `#source`.
 
 <table>
   <thead>
