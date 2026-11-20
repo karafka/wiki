@@ -684,7 +684,7 @@ bundle exec karafka vps estimate-report report.json
 
 Without a path, the command reads the `report_file` setting, which is `report.json` by default.
 
-`#call` accepts the topic name and two optional keyword arguments. `partitions:` is an array of partitions to sample, all of them by default. `target_file:` is a String or Pathname to write the JSON report to. Without it, nothing is written. It returns a frozen Hash and prints nothing. To estimate messages you already have, without connecting to Kafka, use `#analyze(messages, target_file: nil)` with messages of one topic.
+`#call` accepts the topic name and two optional keyword arguments. `partitions:` is an array of partitions to sample, all of them by default. `target_file:` is a String or Pathname to write the JSON report to. Without it, nothing is written. `#call` returns a frozen Hash and prints nothing. To estimate messages you already have, without connecting to Kafka, use `#analyze(messages, target_file: nil)` with messages of one topic.
 
 `Estimator.new` accepts the following arguments:
 

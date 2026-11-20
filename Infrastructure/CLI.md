@@ -14,7 +14,7 @@ Karafka has a simple CLI built in. It provides the following commands:
     </tr>
     <tr>
       <td><code>console</code></td>
-      <td>Start the Karafka irb console similar to the Rails console (short-cut alias: "c")</td>
+      <td>Start the Karafka irb console similar to the Rails console (shortcut alias: "c")</td>
     </tr>
     <tr>
       <td><code>info</code></td>
@@ -22,11 +22,11 @@ Karafka has a simple CLI built in. It provides the following commands:
     </tr>
     <tr>
       <td><code>install</code></td>
-      <td>Installs all required things for Karafka application in current directory</td>
+      <td>Install the Karafka boot file, the consumers directory with example consumers and the log directory in the current directory</td>
     </tr>
     <tr>
       <td><code>server</code></td>
-      <td>Start the Karafka server (short-cut aliases: "s", "consumer")</td>
+      <td>Start the Karafka server (shortcut aliases: "s", "consumer")</td>
     </tr>
     <tr>
       <td><code>swarm</code></td>
@@ -34,7 +34,7 @@ Karafka has a simple CLI built in. It provides the following commands:
     </tr>
     <tr>
       <td><code>topics</code></td>
-      <td>Allows for topics management (create, delete, repartition, reset, migrate, align, plan)</td>
+      <td>Manage topics (create, delete, repartition, reset, migrate, align, plan)</td>
     </tr>
     <tr>
       <td><code>topics health</code></td>
