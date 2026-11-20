@@ -333,7 +333,31 @@ class KarafkaApp < Karafka::App
 end
 ```
 
-With this setting enabled, Karafka validates the routing and fails to start if any of these topics has no active declarative definition, for example a DLQ topic without a declaration or a topic declared with `active false`.
+With this setting enabled, Karafka validates the routing and fails to start if a routing topic (except Routing Patterns and share group topics) or a DLQ topic has no active declarative definition. A routing topic or a DLQ topic whose declaration sets the declarative `active false` also fails the check. This covers `active false` in `declaratives.draw` and `config(active: false)` in the routing, but not the routing `active false` method. The check runs at the end of `routes.draw`, so a `declaratives.draw` block that runs after it does not affect the check.
+
+The check counts a declaration only when the topic has its own `topic` entry in `routes.draw`. A DLQ topic declared only in `declaratives.draw` fails the check. Add a `topic` entry for it and disable its consumption with the routing `active` method:
+
+```ruby
+class KarafkaApp < Karafka::App
+  declaratives.draw do
+    topic :dead_messages do
+      partitions 3
+    end
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+      dead_letter_queue(topic: 'dead_messages')
+    end
+
+    # Makes the dead_messages declaration count for the strict check
+    topic :dead_messages do
+      active false
+    end
+  end
+end
+```
 
 ## Detailed Exit Codes
 
