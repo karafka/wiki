@@ -22,7 +22,7 @@ Karafka has a simple CLI built in. It provides the following commands:
     </tr>
     <tr>
       <td><code>install</code></td>
-      <td>Install the Karafka boot file, the consumers directory with example consumers and the log directory in the current directory</td>
+      <td>Install the Karafka boot file, an <code>ApplicationConsumer</code> base class, an example consumer and the log directory in the current directory</td>
     </tr>
     <tr>
       <td><code>server</code></td>
