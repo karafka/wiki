@@ -1,6 +1,6 @@
 # Admin Configs API
 
-The Karafka Admin Configs API provides tools for managing configuration settings for Kafka brokers and topics. This API supports retrieving configuration details (`describe`) and incremental alterations (`alter`) to these configurations. The operations are designed to be flexible, supporting both individual and batch operations.
+The Admin Configs API manages the configuration settings of Kafka brokers, topics and consumer groups. It retrieves configuration details (`describe`) and applies incremental alterations (`alter`), for one resource or for many resources in one call.
 
 !!! tip "Asynchronous Operation Propagation"
 
@@ -12,7 +12,7 @@ The Karafka Admin Configs API provides tools for managing configuration settings
 
 ## What are Kafka Configurations?
 
-Kafka configurations are key-value pairs that define the behavior of brokers and topics. Managing these configurations properly is essential for optimizing performance, ensuring security, and maintaining reliability in your Kafka environment.
+Kafka configurations are key-value pairs that define the behavior of brokers, topics and consumer groups.
 
 ## Types
 
@@ -20,7 +20,7 @@ The Karafka Admin Configs API involves several types that categorize the details
 
 ### Resource Types
 
-Resource types refer to Kafka entities that can be configured, such as topics or brokers. These are fundamental to identifying which parts of your Kafka cluster you are managing.
+The resource type tells which Kafka entity you configure: a topic, a broker or a consumer group.
 
 <table>
   <thead>
@@ -37,6 +37,10 @@ Resource types refer to Kafka entities that can be configured, such as topics or
     <tr>
       <td><code>:broker</code></td>
       <td>Represents a specific Kafka broker.</td>
+    </tr>
+    <tr>
+      <td><code>:consumer_group</code></td>
+      <td>Represents a single Kafka consumer group. Use the consumer group id as the resource <code>name</code>.</td>
     </tr>
   </tbody>
 </table>
@@ -122,6 +126,27 @@ end
 resource = Karafka::Admin::Configs::Resource.new(type: :topic, name: 'example')
 # Set retention to 2 hours
 resource.set('retention.ms', '7200000')
+
+# Apply the changes
+Karafka::Admin::Configs.alter(resource)
+```
+
+Consumer group configurations work the same way. With the [next-generation consumer group protocol (KIP-848)](Kafka-New-Rebalance-Protocol), set the session and heartbeat timing for each consumer group with `consumer.session.timeout.ms` and `consumer.heartbeat.interval.ms`:
+
+```ruby
+# Describe consumer group configurations
+resource = Karafka::Admin::Configs::Resource.new(type: :consumer_group, name: 'example_group')
+groups = Karafka::Admin::Configs.describe(resource)
+groups.each do |group|
+  group.configs.each do |config|
+    puts "#{group.name} #{config.name}: #{config.value}"
+  end
+end
+
+# Alter consumer group configurations
+resource = Karafka::Admin::Configs::Resource.new(type: :consumer_group, name: 'example_group')
+# Set the session timeout to 50 seconds
+resource.set('consumer.session.timeout.ms', '50000')
 
 # Apply the changes
 Karafka::Admin::Configs.alter(resource)
