@@ -1,16 +1,51 @@
 Karafka has a simple CLI built in. It provides the following commands:
 
-| Command       | Description                                                                             |
-|---------------|-----------------------------------------------------------------------------------------|
-| help          | Describe available commands                                                             |
-| console       | Start the Karafka irb console similar to the Rails console (short-cut alias: "c")       |
-| info          | Print configuration details and other options of your application                       |
-| install       | Installs all required things for Karafka application in current directory               |
-| server        | Start the Karafka server (short-cut aliases: "s", "consumer")                           |
-| swarm         | Start the Karafka server in the swarm mode (multiple forked processes)                  |
-| topics        | Allows for topics management (create, delete, repartition, reset, migrate, align, plan) |
-| topics health | Check Kafka topics for replication and durability issues (Pro)                          |
-| vps           | Display Virtual Partitions Estimator reports (Pro)                                      |
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>help</code></td>
+      <td>Describe available commands</td>
+    </tr>
+    <tr>
+      <td><code>console</code></td>
+      <td>Start the Karafka irb console similar to the Rails console (short-cut alias: "c")</td>
+    </tr>
+    <tr>
+      <td><code>info</code></td>
+      <td>Print configuration details and other options of your application</td>
+    </tr>
+    <tr>
+      <td><code>install</code></td>
+      <td>Installs all required things for Karafka application in current directory</td>
+    </tr>
+    <tr>
+      <td><code>server</code></td>
+      <td>Start the Karafka server (short-cut aliases: "s", "consumer")</td>
+    </tr>
+    <tr>
+      <td><code>swarm</code></td>
+      <td>Start the Karafka server in the swarm mode (multiple forked processes)</td>
+    </tr>
+    <tr>
+      <td><code>topics</code></td>
+      <td>Allows for topics management (create, delete, repartition, reset, migrate, align, plan)</td>
+    </tr>
+    <tr>
+      <td><code>topics health</code></td>
+      <td>Check Kafka topics for replication and durability issues (Pro)</td>
+    </tr>
+    <tr>
+      <td><code>vps</code></td>
+      <td>Display Virtual Partitions Estimator reports (Pro)</td>
+    </tr>
+  </tbody>
+</table>
 
 All the commands are executed the same way:
 
@@ -164,13 +199,13 @@ bundle exec karafka vps estimate-report path/to/report.json
 
 `estimate-report` is the default action, so `bundle exec karafka vps` does the same. `bundle exec karafka vps help` lists the available actions.
 
-The report shows the settings used, a table with the stats of each partition, a summary with the score, the verdict and suggestions, and the limitations of the estimate: the same processing cost for each message and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
+The report shows the settings used and a table with the stats of each partition. It then shows a summary with the score, the verdict and suggestions. It ends with the limitations of the estimate: the same processing cost for each message and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
 
 When the report cannot be displayed:
 
 - A missing file raises `Errno::ENOENT`.
 - A file that is not valid JSON raises `JSON::ParserError`.
-- A report that does not pass validation (for example, one with the format version of another Karafka version) prints the validation errors on one line and exits with code 1.
+- A report that does not pass validation prints the validation errors on one line and exits with code 1. A report with the format version of another Karafka version is one example.
 
 ## Karafka Swarm
 

@@ -656,7 +656,7 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
 
 ## Estimating the Benefit
 
-The Virtual Partitions Estimator shows how well Virtual Partitions would parallelize the data of a topic before you enable them. It samples the most recent messages of each partition, slices them into batches the way a consumer receives them, and runs each batch through the real Virtual Partitions distributors. It does not read the routing setup of the topic, so the topic can use Virtual Partitions or not.
+The Virtual Partitions Estimator shows how well Virtual Partitions would parallelize the data of a topic before you enable them. It samples the most recent messages of each partition and slices them into batches the way a consumer receives them. Then it distributes each batch to virtual partitions with the same code as the consumer. It does not read the routing setup of the topic, so the topic can use Virtual Partitions or not.
 
 The Estimator applies to consumer groups only. Share groups have no per-key ordering, so the estimate does not apply to them.
 
@@ -679,10 +679,12 @@ result[:summary][:verdict] # => :recommended, :maybe or :not_recommended
 Then display the saved report in the shell with the [`vps` CLI command](Infrastructure-CLI#karafka-virtual-partitions):
 
 ```shell
-bundle exec karafka vps estimate-report
+bundle exec karafka vps estimate-report report.json
 ```
 
-`#call` accepts the topic name, `partitions:` (an array of partitions to sample, all of them by default) and `target_file:` (a String or Pathname to write the JSON report to, nothing is written by default). It returns a frozen Hash and prints nothing. To estimate messages you already have, without connecting to Kafka, use `#analyze(messages, target_file: nil)` with messages of one topic.
+Without a path, the command reads the `report_file` setting, which is `report.json` by default.
+
+`#call` accepts the topic name and two optional keyword arguments. `partitions:` is an array of partitions to sample, all of them by default. `target_file:` is a String or Pathname to write the JSON report to. Without it, nothing is written. It returns a frozen Hash and prints nothing. To estimate messages you already have, without connecting to Kafka, use `#analyze(messages, target_file: nil)` with messages of one topic.
 
 `Estimator.new` accepts the following arguments:
 
@@ -737,20 +739,31 @@ Invalid arguments raise `Karafka::Errors::InvalidConfigurationError`.
 
 ### Reading the Result
 
-The result has a `format_version`, the `topic_name`, the `settings` used, the stats of each partition under `partitions` and the stats of all partitions together under `summary`. Each batch is measured as follows:
+The result has a `format_version`, the `topic_name` and the `settings` used. The stats of each partition are under `partitions`, and the stats of all partitions together are under `summary`. Each batch is measured as follows:
 
 - **Utilization** - the percentage of the virtual partitions that receive messages.
-- **Parallelization** - the batch size divided by the concurrency and by the size of the largest group, as a percentage.
-- **Speedup** - the batch size divided by the size of the largest group.
-- **Load imbalance** - the coefficient of variation of the group sizes, as a percentage.
+- **Parallelization** - the batch size divided by the concurrency and by the number of messages in the largest virtual partition, as a percentage.
+- **Speedup** - the batch size divided by the number of messages in the largest virtual partition.
+- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage.
 
-The partition and summary stats hold the averages of these values and also count the `collapsed_batches` (batches in which partitioning raised an error, so all their messages went to one group), the `poor_batches` (fewer active virtual partitions than half of the concurrency) and the `single_vp_batches`.
+The partition and summary stats hold the averages of these values. They also count these batches:
 
-The score from 0 to 100 combines the average utilization, the average parallelization, the balance (100 minus the average load imbalance) and the stability (the percentage of batches that are not poor), weighted by `score_weights`. A score of at least `recommended_score` gives the `:recommended` verdict, a score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`.
+- `collapsed_batches` - partitioning raised an error, so all messages of the batch went to one virtual partition.
+- `poor_batches` - fewer virtual partitions received messages than half of the concurrency.
+- `single_vp_batches` - only one virtual partition received messages.
+
+The score from 0 to 100 is the weighted average of four components, with the weights from `score_weights`:
+
+- **Utilization** - the average utilization.
+- **Parallelization** - the average parallelization.
+- **Balance** - 100 minus the average load imbalance, but not below 0. When all batches collapsed, the balance is 0.
+- **Stability** - the percentage of batches that are not poor.
+
+A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`.
 
 With a concurrency below 2, nothing is parallelized: results with messages have no score (`nil`) and the `:not_recommended` verdict. Results without messages have no score and no verdict.
 
-`Estimator::FORMAT_VERSION` is the version of the result structure. Karafka increments it when that structure changes. The `vps estimate-report` command displays only reports with the format version of the installed Karafka, so generate the report again after an upgrade that changes it.
+`Estimator::FORMAT_VERSION` is the version of the result structure. Karafka increments it when that structure changes. The `vps estimate-report` command displays only reports with the format version of the installed Karafka. Generate the report again after an upgrade that changes it.
 
 !!! warning "The Estimate Does Not Model Processing Cost or Shared Workers"
 
