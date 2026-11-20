@@ -744,7 +744,7 @@ The result has a `format_version`, the `topic_name` and the `settings` used. The
 - **Utilization** - the percentage of the virtual partitions that receive messages.
 - **Parallelization** - the batch size divided by the concurrency and by the number of messages in the largest virtual partition, as a percentage.
 - **Speedup** - the batch size divided by the number of messages in the largest virtual partition.
-- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage.
+- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count.
 
 The partition and summary stats hold the averages of these values. They also count these batches:
 
