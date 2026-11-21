@@ -76,6 +76,49 @@ Operations types within this API are used to specify the configuration changes b
   </tbody>
 </table>
 
+### Configuration Sources
+
+Each configuration entry in `Resource#configs`, from `describe` and `alter`, has a `#source` that tells where its value comes from. Use it to tell a value set on the topic from one inherited from the broker or a built-in default. `#synonyms` lists all values that can set this configuration, in order of precedence and starting with the current value, for example the broker setting behind a topic setting. Each synonym has its own `#source`.
+
+<table>
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>:dynamic_topic_config</code></td>
+      <td>Value set for this topic.</td>
+    </tr>
+    <tr>
+      <td><code>:dynamic_broker_config</code></td>
+      <td>Value set for a specific broker.</td>
+    </tr>
+    <tr>
+      <td><code>:dynamic_default_broker_config</code></td>
+      <td>Value set as the default for all brokers in the cluster.</td>
+    </tr>
+    <tr>
+      <td><code>:static_broker_config</code></td>
+      <td>Value from the broker properties at startup, for example from <code>server.properties</code>.</td>
+    </tr>
+    <tr>
+      <td><code>:default_config</code></td>
+      <td>Built-in default value.</td>
+    </tr>
+    <tr>
+      <td><code>:consumer_group_config</code></td>
+      <td>Value set for this consumer group.</td>
+    </tr>
+    <tr>
+      <td><code>:unknown_config</code></td>
+      <td>librdkafka does not report the source, or Karafka does not recognize it.</td>
+    </tr>
+  </tbody>
+</table>
+
 ### Methods
 
 <table>
@@ -120,6 +163,11 @@ topics.each do |topic|
   topic.configs.each do |config|
     puts "#{topic.name} #{config.name}: #{config.value}"
   end
+end
+
+# Show only the values set on the topic itself
+topics.first.configs.select { |config| config.source == :dynamic_topic_config }.each do |config|
+  puts "#{config.name}: #{config.value}"
 end
 
 # Alter topic configurations
