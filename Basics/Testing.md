@@ -145,7 +145,7 @@ The testing client records each pause and resume of the current test:
 
 ### Testing Marking as Consumed
 
-The testing client does not store offsets. It records the `#mark_as_consumed` and `#mark_as_consumed!` marks of the current test in `karafka.marks`, each with the `topic`, `partition`, `offset` and `metadata`. A repeated mark of the offset marked last adds no entry, because the consumer skips it. `metadata` holds the offset metadata of the mark, a Karafka Pro feature: the value given to the mark or stored with [`#store_offset_metadata`](Pro-Consumer-Groups-Offset-Metadata-Storage#storing-offset-metadata-for-the-upcoming-marking). Without Pro, or when the mark has no metadata, it is `nil`.
+The testing client does not store offsets. It records the `#mark_as_consumed` and `#mark_as_consumed!` marks of the current test in `karafka.marks`, each with the `topic`, `partition`, `offset` and `metadata`. Outside a consumer `#transaction`, a repeated mark of the offset marked last adds no entry, because the consumer skips it. `metadata` holds the offset metadata of the mark, a Karafka Pro feature: the value given to the mark or stored with [`#store_offset_metadata`](Pro-Consumer-Groups-Offset-Metadata-Storage#storing-offset-metadata-for-the-upcoming-marking). Without Pro, or when the mark has no metadata, it is `nil`.
 
 ```ruby
 class MarkingConsumer < Karafka::BaseConsumer
