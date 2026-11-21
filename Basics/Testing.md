@@ -143,6 +143,86 @@ The testing client records each pause and resume of the current test:
 - `karafka.pauses` lists the pauses, each with the `topic`, `partition`, `offset` and `timeout`.
 - `karafka.resumes` lists the resumes of paused partitions, each with the `topic` and `partition`. A `#resume` call on a partition that is not paused adds no entry.
 
+### Testing Marking as Consumed
+
+The testing client does not store offsets. It records the `#mark_as_consumed` and `#mark_as_consumed!` marks of the current test in `karafka.marks`, each with the `topic`, `partition`, `offset` and `metadata`. `metadata` holds the offset metadata of the mark, a Karafka Pro feature: the value given to the mark or stored with [`#store_offset_metadata`](Pro-Consumer-Groups-Offset-Metadata-Storage#storing-offset-metadata-for-the-upcoming-marking). Without Pro, or when the mark has no metadata, it is `nil`.
+
+```ruby
+class MarkingConsumer < Karafka::BaseConsumer
+  def consume
+    messages.each { |message| mark_as_consumed(message) }
+  end
+end
+```
+
+```ruby
+RSpec.describe MarkingConsumer do
+  subject(:consumer) { karafka.consumer_for(:marking_topic) }
+
+  before { 2.times { |i| karafka.produce({ 'i' => i }.to_json) } }
+
+  it 'records the marks' do
+    consumer.consume
+
+    expect(karafka.marks).to eq(
+      [
+        { topic: 'marking_topic', partition: 0, offset: 0, metadata: nil },
+        { topic: 'marking_topic', partition: 0, offset: 1, metadata: nil }
+      ]
+    )
+  end
+end
+```
+
+Marks made inside a consumer [`#transaction`](Pro-Consumer-Groups-Transactions) block go to `karafka.marks` only when the transaction commits. An aborted transaction adds no marks. Outside a transaction, a repeated mark of the offset marked last adds no entry, because the consumer skips it.
+
+#### Testing Offset Metadata
+
+With Karafka Pro, `karafka.offset_metadata=` sets the committed [offset metadata](Pro-Consumer-Groups-Offset-Metadata-Storage) that your consumer reads. Give it the raw value, as Kafka stores it. `#offset_metadata` passes this value through the `deserializer` of the topic, as in a real run. When you set no value, the deserializer gets `nil`, and the default deserializer then returns an empty string.
+
+```ruby
+class OrdersStatesConsumer < Karafka::BaseConsumer
+  def consume
+    state = offset_metadata
+
+    return unless state
+
+    count = state.fetch('count', 0) + messages.size
+
+    mark_as_consumed(messages.last, { 'count' => count }.to_json)
+  end
+end
+
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # config stuff...
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+      offset_metadata(deserializer: ->(raw) { raw ? JSON.parse(raw) : {} })
+    end
+  end
+end
+```
+
+```ruby
+RSpec.describe OrdersStatesConsumer do
+  subject(:consumer) { karafka.consumer_for(:orders_states) }
+
+  before { 2.times { |i| karafka.produce({ 'i' => i }.to_json) } }
+
+  it 'continues from the committed state' do
+    karafka.offset_metadata = { 'count' => 5 }.to_json
+
+    consumer.consume
+
+    expect(karafka.marks.last[:metadata]).to eq({ 'count' => 7 }.to_json)
+  end
+end
+```
+
 ### Testing Messages Consumption of Routing Patterns
 
 Since each [Routing Pattern](Pro-Routing-Patterns) has a name, you can test them like regular topics.
@@ -553,6 +633,32 @@ class PausingConsumerTest < ActiveSupport::TestCase
 
     assert_equal [{ topic: 'pausing_topic', partition: 0, offset: 2, timeout: 5_000 }], @karafka.pauses
     assert_empty @karafka.resumes
+  end
+end
+```
+
+### Testing Marking as Consumed - Minitest
+
+Check the recorded marks through `@karafka.marks` and set the committed offset metadata (Pro) with `@karafka.offset_metadata =`, as in [Testing Marking as Consumed](#testing-marking-as-consumed) for RSpec. The example uses the `OrdersStatesConsumer` from that section.
+
+```ruby
+class OrdersStatesConsumerTest < ActiveSupport::TestCase
+  include Karafka::Testing::Minitest::Helpers
+
+  def setup
+    @consumer = @karafka.consumer_for(:orders_states)
+  end
+
+  test 'it continues from the committed state' do
+    2.times { |i| @karafka.produce({ 'i' => i }.to_json) }
+    @karafka.offset_metadata = { 'count' => 5 }.to_json
+
+    @consumer.consume
+
+    assert_equal(
+      [{ topic: 'orders_states', partition: 0, offset: 1, metadata: { 'count' => 7 }.to_json }],
+      @karafka.marks
+    )
   end
 end
 ```
