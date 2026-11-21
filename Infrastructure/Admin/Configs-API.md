@@ -8,7 +8,7 @@ The Admin Configs API manages the configuration settings of Kafka brokers, topic
 
 !!! tip "Declarative Topics Feature For Topics Management"
 
-    The Admin Configs API provides low-level access for managing Kafka topics and broker configurations. While powerful, it requires detailed knowledge and careful management of individual settings. For a more streamlined and error-resistant approach, consider using the high-level [declarative topics](Infrastructure-Declarative-Topics) feature provided by Karafka. This feature allows for easier and more declarative management of topic configurations, making it a superior choice for most use cases.
+    The Admin Configs API provides low-level access for managing the configurations of Kafka topics, brokers and consumer groups. While powerful, it requires detailed knowledge and careful management of individual settings. For a more streamlined and error-resistant approach, consider using the high-level [declarative topics](Infrastructure-Declarative-Topics) feature provided by Karafka. This feature allows for easier and more declarative management of topic configurations, making it a superior choice for most use cases.
 
 ## What are Kafka Configurations?
 
@@ -204,9 +204,9 @@ Karafka::Admin::Configs.alter(resource)
 
 - **Configuration Audits**: Retrieve configurations to review and ensure compliance with operational standards.
 
-- **Dynamic Configuration Tuning**: Adjust topic or broker configurations in response to changes in usage patterns or operational requirements.
+- **Dynamic Configuration Tuning**: Adjust topic, broker or consumer group configurations in response to changes in usage patterns or operational requirements.
 
-- **Batch Configuration Management**: Simultaneously update configurations for multiple brokers or topics, improving efficiency in large-scale environments.
+- **Batch Configuration Management**: Simultaneously update configurations for multiple brokers, topics or consumer groups, improving efficiency in large-scale environments.
 
 ## See Also
 
