@@ -541,8 +541,6 @@ Complete reconfiguration is significant when:
 1. You want to customize producer behavior based on node characteristics
 1. You need to modify connection or authentication settings per node
 
-If your Kafka configuration sets `transactional.id`, the producer from this example uses the same `transactional.id` on all nodes. Give it a unique value per node, as shown in [Transactional Producer Handling in Swarm Mode](#transactional-producer-handling-in-swarm-mode).
-
 ## Transactional Producer Handling in Swarm Mode
 
 When operating in Swarm Mode, each forked node inherits the Karafka producer configuration from the parent process. The `transactional.id` is the exception: it needs a unique value per node.
