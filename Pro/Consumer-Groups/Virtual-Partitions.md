@@ -743,7 +743,7 @@ The result has a `format_version`, the `topic_name` and the `settings` used. The
 
 - **Utilization** - the number of virtual partitions that receive messages as a percentage of the concurrency, but not above 100%.
 - **Speedup** - the batch size divided by the number of messages in the largest virtual partition, but not above the concurrency. The cap also applies when a custom reducer uses more virtual partitions than the concurrency.
-- **Parallelization** - the speedup gain over sequential processing: `(speedup - 1) / (concurrency - 1)`, as a percentage.
+- **Parallelization** - the speedup gain over sequential processing: `(speedup - 1) / (concurrency - 1)`, as a percentage. With a concurrency of 1, it is 0.
 - **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count. A batch with one virtual partition has no load imbalance (`nil`).
 - **Balanced speedup** - the speedup that the `:balanced` distribution would give for the same batch. It is `nil` with the `:balanced` distribution, a concurrency below 2 and in collapsed batches.
 
