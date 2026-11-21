@@ -142,7 +142,7 @@ Dead insights allowing to navigate through DLQ topics and messages that were dis
 DLQ dispatched messages view:
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-dead1.png" alt="Karafka Web UI DLQ dispatched messages view"/>
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-dead1.png" alt="Karafka Web UI DLQ topics list"/>
 </p>
 
 DLQ dispatched per message view:

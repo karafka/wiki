@@ -22,7 +22,7 @@ The search modal includes several fields and options to refine your search:
 Once you have configured your search parameters, click the "Search" button to start the search. The search results and detailed metadata will be displayed, helping you analyze and understand the data based on your specified criteria.
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-search1.png" alt="Karafka Web UI search results"/>
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-search1.png" alt="Karafka Web UI search parameters form"/>
 </p>
 
 ## Reconfiguration
