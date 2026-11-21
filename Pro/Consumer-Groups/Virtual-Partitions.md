@@ -654,6 +654,196 @@ For each virtual consumer instance, both are executed when shutdown or revocatio
   <img src="https://karafka.io/assets/misc/charts/virtual_partitions/shutdown.svg" />
 </p>
 
+## Estimating the Benefit
+
+The Virtual Partitions Estimator shows how well Virtual Partitions would parallelize the data of a topic before you enable them. It samples the most recent messages of each partition and slices them into batches the way a consumer receives them. Then it distributes each batch to virtual partitions with the same code as the consumer. It does not read the routing setup of the topic, so the topic can use Virtual Partitions or not.
+
+The Estimator applies to consumer groups only. Share groups have no per-key ordering, so the estimate does not apply to them.
+
+Run it from the Karafka console (`bundle exec karafka console`):
+
+```ruby
+vps = Karafka::Pro::Processing::ConsumerGroups::VirtualPartitions
+
+estimator = vps::Estimator.new(
+  partitioner: ->(message) { message.headers['order_id'] }
+)
+
+# Samples all the partitions of the topic, returns the result and saves it as a JSON report
+result = estimator.call('orders', target_file: 'report.json')
+
+result[:summary][:score]   # => Integer from 0 to 100
+result[:summary][:verdict] # => :recommended, :maybe or :not_recommended
+```
+
+Then display the saved report in the shell with the [`vps` CLI command](Infrastructure-CLI#karafka-virtual-partitions):
+
+```shell
+bundle exec karafka vps estimate-report report.json
+```
+
+Without a path, the command reads the `report_file` setting, which is `report.json` by default.
+
+`#call` accepts the topic name and two optional keyword arguments. `partitions:` is an array of partitions to sample, all of them by default. `target_file:` is a String or Pathname to write the JSON report to. Without it, nothing is written. `#call` returns a frozen Hash and prints nothing. To estimate messages you already have, without connecting to Kafka, use `#analyze(messages, target_file: nil)` with messages of one topic.
+
+`Estimator.new` accepts the following arguments:
+
+<table>
+  <thead>
+    <tr>
+      <th>Argument</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>concurrency</code></td>
+      <td><code>config.concurrency</code></td>
+      <td>Number of virtual partitions (<code>max_partitions</code>) to estimate for.</td>
+    </tr>
+    <tr>
+      <td><code>partitioner</code></td>
+      <td><code>nil</code></td>
+      <td>Virtual partitioner that receives a message. When <code>nil</code>, messages are grouped by <code>message.raw_key</code>.</td>
+    </tr>
+    <tr>
+      <td><code>reducer</code></td>
+      <td><code>nil</code></td>
+      <td>Reducer for the <code>:consistent</code> distribution. When <code>nil</code>, the routing default (<code>key.to_s.sum % concurrency</code>) is used.</td>
+    </tr>
+    <tr>
+      <td><code>distribution</code></td>
+      <td><code>consumer_groups.virtual_partitions.estimator.distribution</code></td>
+      <td><code>:consistent</code> or <code>:balanced</code>.</td>
+    </tr>
+    <tr>
+      <td><code>batch_size</code></td>
+      <td><code>config.max_messages</code></td>
+      <td>Number of messages in one batch.</td>
+    </tr>
+    <tr>
+      <td><code>sample_size</code></td>
+      <td><code>consumer_groups.virtual_partitions.estimator.sample_size</code></td>
+      <td>Number of most recent messages to sample per partition.</td>
+    </tr>
+    <tr>
+      <td><code>details</code></td>
+      <td><code>false</code></td>
+      <td>When <code>true</code>, the per-partition results also include the stats of each batch.</td>
+    </tr>
+  </tbody>
+</table>
+
+Invalid arguments raise `Karafka::Errors::InvalidConfigurationError`.
+
+### Reading the Result
+
+The result has a `format_version`, the `topic_name` and the `settings` used. The stats of each partition are under `partitions`, and the stats of all partitions together are under `summary`. Each batch is measured as follows:
+
+- **Utilization** - the number of virtual partitions that receive messages as a percentage of the concurrency, but not above 100%.
+- **Speedup** - the batch size divided by the number of messages in the largest virtual partition, but not above the concurrency. The cap also applies when a custom reducer uses more virtual partitions than the concurrency.
+- **Parallelization** - the speedup gain over sequential processing: `(speedup - 1) / (concurrency - 1)`, as a percentage. With a concurrency of 1, it is 0.
+- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count. A batch with one virtual partition has no load imbalance (`nil`).
+- **Balanced speedup** - the speedup that the `:balanced` distribution would give for the same batch. It is `nil` with the `:balanced` distribution, with a concurrency below 2 and for collapsed batches.
+
+The partition and summary stats hold the averages of these values. The averages of load imbalance and balanced speedup skip the `nil` values, and are `nil` when all values are `nil`. The stats also count these batches:
+
+- `collapsed_batches` - partitioning raised an error, so all messages of the batch went to one virtual partition.
+- `poor_batches` - the parallelization is below 50%.
+- `single_vp_batches` - only one virtual partition received messages.
+
+The score from 0 to 100 is the weighted average of four components, with the weights from `score_weights`:
+
+- **Utilization** - the average utilization.
+- **Parallelization** - the average parallelization.
+- **Balance** - 100 minus the average load imbalance, but not below 0, multiplied by the share of batches with more than one virtual partition.
+- **Stability** - the percentage of batches that are not poor.
+
+A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`.
+
+When the verdict is not `:recommended` and the average balanced speedup is higher than the average speedup, the `vps estimate-report` output suggests the `:balanced` distribution.
+
+With a concurrency below 2, nothing is parallelized: results with messages have no score (`nil`) and the `:not_recommended` verdict. Results without messages have no score and no verdict.
+
+`Estimator::FORMAT_VERSION` is the version of the result structure. Karafka increments it when that structure changes. The `vps estimate-report` command displays only reports with the format version of the installed Karafka. Generate the report again after an upgrade that changes it.
+
+!!! warning "The Estimate Does Not Model Partial Batches, Message Costs or Shared Workers"
+
+    The estimate assumes full batches of `batch_size` messages, as a consumer gets when it processes a backlog. A consumer that is caught up gets smaller batches, which parallelize less. The estimate also assumes the same processing cost for each message. It does not model the worker pool, which is shared with other partitions and topics.
+
+### Estimator Configuration
+
+The Estimator defaults live under `consumer_groups.virtual_partitions.estimator` in the setup block:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # Other configurations...
+
+    config.consumer_groups.virtual_partitions.estimator.sample_size = 50_000
+    config.consumer_groups.virtual_partitions.estimator.distribution = :balanced
+    config.consumer_groups.virtual_partitions.estimator.report_file = 'tmp/vps_report.json'
+  end
+end
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>Setting</th>
+      <th>Default</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>sample_size</code></td>
+      <td><code>10_000</code></td>
+      <td>Number of most recent messages to sample per partition. Integer bigger than 0.</td>
+    </tr>
+    <tr>
+      <td><code>distribution</code></td>
+      <td><code>:consistent</code></td>
+      <td>Distribution to estimate for: <code>:consistent</code> or <code>:balanced</code>.</td>
+    </tr>
+    <tr>
+      <td><code>report_file</code></td>
+      <td><code>"report.json"</code></td>
+      <td>Report file (non-empty String or Pathname) that <code>karafka vps estimate-report</code> reads when you give no path.</td>
+    </tr>
+    <tr>
+      <td><code>recommended_score</code></td>
+      <td><code>70</code></td>
+      <td>Minimum score for the <code>:recommended</code> verdict. Integer from 0 to 100.</td>
+    </tr>
+    <tr>
+      <td><code>maybe_score</code></td>
+      <td><code>30</code></td>
+      <td>Minimum score for the <code>:maybe</code> verdict. Integer from 0 to 100, not above <code>recommended_score</code>.</td>
+    </tr>
+    <tr>
+      <td><code>score_weights.utilization</code></td>
+      <td><code>10</code></td>
+      <td rowspan="4">Weights of the score components. Integers of 0 or more that sum up to 100.</td>
+    </tr>
+    <tr>
+      <td><code>score_weights.parallelization</code></td>
+      <td><code>70</code></td>
+    </tr>
+    <tr>
+      <td><code>score_weights.balance</code></td>
+      <td><code>10</code></td>
+    </tr>
+    <tr>
+      <td><code>score_weights.stability</code></td>
+      <td><code>10</code></td>
+    </tr>
+  </tbody>
+</table>
+
+Karafka validates these settings at setup and raises `Karafka::Errors::InvalidConfigurationError` when one is invalid.
+
 ## Virtual Partitions vs. Increasing Number of Partitions vs. Parallel Segments
 
 When building a scalable Kafka consumer application with Karafka, you will likely be faced with a decision about parallelization strategies: Should you increase the number of physical partitions, use Virtual Partitions, or use Parallel Segments? All three strategies aim to parallelize work to boost processing speed but offer different advantages and considerations based on your workload characteristics. This section delves into the differences between these methods and provides insights to help you make an informed decision.
