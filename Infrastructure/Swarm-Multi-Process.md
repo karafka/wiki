@@ -538,9 +538,10 @@ This approach ensures that:
 Complete reconfiguration is significant when:
 
 1. You need to set node-specific client IDs
-1. You are using transactional producers (which require unique transactional IDs)
 1. You want to customize producer behavior based on node characteristics
 1. You need to modify connection or authentication settings per node
+
+If your Kafka configuration sets `transactional.id`, the producer from this example uses the same `transactional.id` on all nodes. Give it a unique value per node, as shown in [Transactional Producer Handling in Swarm Mode](#transactional-producer-handling-in-swarm-mode).
 
 ## Transactional Producer Handling in Swarm Mode
 
