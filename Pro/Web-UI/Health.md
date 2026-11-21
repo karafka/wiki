@@ -42,7 +42,7 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
     - **LSO State**: "at_risk"
 
     <p align="center">
-      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso1.png" alt="Karafka Web UI LSO warning"/>
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso1.png" alt="Karafka Web UI LSO At Risk state"/>
     </p>
 
 1. **Stopped (Red Highlight)**
@@ -52,7 +52,7 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
     - **LSO State**: "stopped".
 
     <p align="center">
-      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png" alt="Karafka Web UI LSO error"/>
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png" alt="Karafka Web UI LSO Stopped state"/>
     </p>
 
 These visual indicators allow immediate awareness of potential problems, ensuring quick identification and action.
