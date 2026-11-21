@@ -145,7 +145,7 @@ The testing client records each pause and resume of the current test:
 
 ### Testing Marking as Consumed
 
-The testing client does not store offsets. It records the `#mark_as_consumed` and `#mark_as_consumed!` marks of the current test in `karafka.marks`, each with the `topic`, `partition`, `offset` and `metadata`. Outside a consumer `#transaction`, a repeated mark of the offset marked last adds no entry, because the consumer skips it. `metadata` holds the offset metadata of the mark, a Karafka Pro feature: the value given to the mark or stored with [`#store_offset_metadata`](Pro-Consumer-Groups-Offset-Metadata-Storage#storing-offset-metadata-for-the-upcoming-marking). Without Pro, or when the mark has no metadata, it is `nil`.
+The testing client does not store offsets. It records the `#mark_as_consumed` and `#mark_as_consumed!` marks of the current test in `karafka.marks`, each with the `topic`, `partition`, `offset` and `metadata`. `metadata` holds the offset metadata of the mark, a Karafka Pro feature: the value given to the mark or stored with [`#store_offset_metadata`](Pro-Consumer-Groups-Offset-Metadata-Storage#storing-offset-metadata-for-the-upcoming-marking). Without Pro, or when the mark has no metadata, it is `nil`.
 
 ```ruby
 class MarkingConsumer < Karafka::BaseConsumer
@@ -174,14 +174,11 @@ RSpec.describe MarkingConsumer do
 end
 ```
 
-Marks made inside a consumer [`#transaction`](Pro-Consumer-Groups-Transactions) block go to `karafka.marks` only when the transaction commits. An aborted transaction adds no marks.
+Marks made inside a consumer [`#transaction`](Pro-Consumer-Groups-Transactions) block go to `karafka.marks` only when the transaction commits. An aborted transaction adds no marks. Outside a transaction, a repeated mark of the offset marked last adds no entry, because the consumer skips it.
 
 #### Testing Offset Metadata
 
-With Karafka Pro, `karafka.offset_metadata=` sets the committed [offset metadata](Pro-Consumer-Groups-Offset-Metadata-Storage) that your consumer reads. Give it the raw value, as Kafka stores it. `#offset_metadata` and `#committed_offset_metadata` pass this value through the `deserializer` of the topic, as in a real run:
-
-- When you set no value, the deserializer gets `nil`. The default deserializer then returns an empty string.
-- After the partition is revoked, both methods return `false`.
+With Karafka Pro, `karafka.offset_metadata=` sets the committed [offset metadata](Pro-Consumer-Groups-Offset-Metadata-Storage) that your consumer reads. Give it the raw value, as Kafka stores it. `#offset_metadata` passes this value through the `deserializer` of the topic, as in a real run. When you set no value, the deserializer gets `nil`, and the default deserializer then returns an empty string.
 
 ```ruby
 class OrdersStatesConsumer < Karafka::BaseConsumer
@@ -196,10 +193,17 @@ class OrdersStatesConsumer < Karafka::BaseConsumer
   end
 end
 
-# Inside routes.draw in karafka.rb
-topic :orders_states do
-  consumer OrdersStatesConsumer
-  offset_metadata(deserializer: ->(raw) { raw ? JSON.parse(raw) : {} })
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # config stuff...
+  end
+
+  routes.draw do
+    topic :orders_states do
+      consumer OrdersStatesConsumer
+      offset_metadata(deserializer: ->(raw) { raw ? JSON.parse(raw) : {} })
+    end
+  end
 end
 ```
 
