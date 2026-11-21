@@ -25,45 +25,180 @@ The same EOL policy applies to all Karafka ecosystem components. Components that
 
 ### Karafka Framework
 
-| Version | Status      | EOL date   |
-|---------|-------------|------------|
-| 2.6     | Active      | N/A        |
-| 2.5     | Maintenance | 2026-12-31 |
-| 2.4     | EOL         | 2025-10-31 |
-| 2.3     | EOL         | 2025-03-01 |
-| 2.2     | EOL         | 2024-09-30 |
-| 2.1     | EOL         | 2024-05-01 |
-| 2.0     | EOL         | 2024-02-01 |
-| 1.x     | EOL         | 2023-02-01 |
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Status</th>
+      <th>EOL date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.6</td>
+      <td>Active</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>2.5</td>
+      <td>Maintenance</td>
+      <td>2026-12-31</td>
+    </tr>
+    <tr>
+      <td>2.4</td>
+      <td>EOL</td>
+      <td>2025-10-31</td>
+    </tr>
+    <tr>
+      <td>2.3</td>
+      <td>EOL</td>
+      <td>2025-03-01</td>
+    </tr>
+    <tr>
+      <td>2.2</td>
+      <td>EOL</td>
+      <td>2024-09-30</td>
+    </tr>
+    <tr>
+      <td>2.1</td>
+      <td>EOL</td>
+      <td>2024-05-01</td>
+    </tr>
+    <tr>
+      <td>2.0</td>
+      <td>EOL</td>
+      <td>2024-02-01</td>
+    </tr>
+    <tr>
+      <td>1.x</td>
+      <td>EOL</td>
+      <td>2023-02-01</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Karafka Web UI
 
-| Version | Status      | EOL date   |
-|---------|-------------|------------|
-| 1.0     | Active      | N/A        |
-| 0.11    | Maintenance | 2026-12-31 |
-| 0.10    | EOL         | 2025-10-31 |
-| 0.9     | EOL         | 2025-09-20 |
-| 0.8     | EOL         | 2024-08-31 |
-| 0.7     | EOL         | 2024-05-01 |
-| 0.6     | EOL         | 2023-12-01 |
-| 0.5     | EOL         | 2023-10-01 |
-| 0.4     | EOL         | 2023-08-01 |
-| 0.3     | EOL         | 2023-07-01 |
-| 0.2     | EOL         | 2023-05-01 |
-| 0.1     | EOL         | 2023-04-01 |
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Status</th>
+      <th>EOL date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.0</td>
+      <td>Active</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>0.11</td>
+      <td>Maintenance</td>
+      <td>2026-12-31</td>
+    </tr>
+    <tr>
+      <td>0.10</td>
+      <td>EOL</td>
+      <td>2025-10-31</td>
+    </tr>
+    <tr>
+      <td>0.9</td>
+      <td>EOL</td>
+      <td>2025-09-20</td>
+    </tr>
+    <tr>
+      <td>0.8</td>
+      <td>EOL</td>
+      <td>2024-08-31</td>
+    </tr>
+    <tr>
+      <td>0.7</td>
+      <td>EOL</td>
+      <td>2024-05-01</td>
+    </tr>
+    <tr>
+      <td>0.6</td>
+      <td>EOL</td>
+      <td>2023-12-01</td>
+    </tr>
+    <tr>
+      <td>0.5</td>
+      <td>EOL</td>
+      <td>2023-10-01</td>
+    </tr>
+    <tr>
+      <td>0.4</td>
+      <td>EOL</td>
+      <td>2023-08-01</td>
+    </tr>
+    <tr>
+      <td>0.3</td>
+      <td>EOL</td>
+      <td>2023-07-01</td>
+    </tr>
+    <tr>
+      <td>0.2</td>
+      <td>EOL</td>
+      <td>2023-05-01</td>
+    </tr>
+    <tr>
+      <td>0.1</td>
+      <td>EOL</td>
+      <td>2023-04-01</td>
+    </tr>
+  </tbody>
+</table>
 
 ### WaterDrop
 
-| Version | Status      | EOL date   |
-|---------|-------------|------------|
-| 2.10    | Active      | N/A        |
-| 2.9     | EOL         | 2026-10-01 |
-| 2.8     | EOL         | 2026-04-01 |
-| 2.7     | EOL         | 2025-02-01 |
-| 2.6     | EOL         | 2024-09-30 |
-| 2.x     | EOL         | 2024-05-01 |
-| 1.x     | EOL         | 2023-02-01 |
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Status</th>
+      <th>EOL date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2.10</td>
+      <td>Active</td>
+      <td>N/A</td>
+    </tr>
+    <tr>
+      <td>2.9</td>
+      <td>EOL</td>
+      <td>2026-10-01</td>
+    </tr>
+    <tr>
+      <td>2.8</td>
+      <td>EOL</td>
+      <td>2026-04-01</td>
+    </tr>
+    <tr>
+      <td>2.7</td>
+      <td>EOL</td>
+      <td>2025-02-01</td>
+    </tr>
+    <tr>
+      <td>2.6</td>
+      <td>EOL</td>
+      <td>2024-09-30</td>
+    </tr>
+    <tr>
+      <td>2.x</td>
+      <td>EOL</td>
+      <td>2024-05-01</td>
+    </tr>
+    <tr>
+      <td>1.x</td>
+      <td>EOL</td>
+      <td>2023-02-01</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Ruby Versions Support
 
@@ -77,16 +212,57 @@ Dropping support for an EOL Ruby version does not require a major release. It ma
 
     If you are using an older Ruby version, Karafka may still work. The EOL table lists the versions Karafka officially supports. It is not a statement of which versions are in the CI matrices at any given moment.
 
-| Version | Status      | EOL date   |
-|---------|-------------|------------|
-| 4.0     | Active      | 2029-09-30 |
-| 3.4     | Active      | 2028-09-30 |
-| 3.3     | Active      | 2027-09-30 |
-| 3.2     | EOL         | 2026-09-30 |
-| 3.1     | EOL         | 2025-09-30 |
-| 3.0     | EOL         | 2024-09-30 |
-| 2.7     | EOL         | 2024-05-30 |
-| 2.6     | EOL         | 2022-04-12 |
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Status</th>
+      <th>EOL date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>4.0</td>
+      <td>Active</td>
+      <td>2029-09-30</td>
+    </tr>
+    <tr>
+      <td>3.4</td>
+      <td>Active</td>
+      <td>2028-09-30</td>
+    </tr>
+    <tr>
+      <td>3.3</td>
+      <td>Active</td>
+      <td>2027-09-30</td>
+    </tr>
+    <tr>
+      <td>3.2</td>
+      <td>EOL</td>
+      <td>2026-09-30</td>
+    </tr>
+    <tr>
+      <td>3.1</td>
+      <td>EOL</td>
+      <td>2025-09-30</td>
+    </tr>
+    <tr>
+      <td>3.0</td>
+      <td>EOL</td>
+      <td>2024-09-30</td>
+    </tr>
+    <tr>
+      <td>2.7</td>
+      <td>EOL</td>
+      <td>2024-05-30</td>
+    </tr>
+    <tr>
+      <td>2.6</td>
+      <td>EOL</td>
+      <td>2022-04-12</td>
+    </tr>
+  </tbody>
+</table>
 
 ## Ruby on Rails Versions Support
 
