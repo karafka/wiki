@@ -10,13 +10,17 @@ Below you can find the primary features of the Karafka Data Explorer.
 
 Before diving deep into the data, having a bird's eye view of all available topics is essential. This feature offers a list of all the topics, allowing users to select and focus on specific ones. It serves as a starting point for data exploration, giving a clear overview of the topics landscape.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer1.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer1.png" alt="Karafka Web UI topics list view"/>
+</p>
 
 ### Per Topic View
 
 This feature provides an overview of the most recent data across all partitions for a specific topic, ensuring you do not miss out on the latest insights.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-topic.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-topic.png" alt="Karafka Web UI per topic view"/>
+</p>
 
 #### Limitations
 
@@ -32,7 +36,9 @@ However, in most other scenarios, where there is a substantial amount of data, t
 
 Dive deeper into each partition and scroll through the data using offset-based pagination. This offers a granular view, ensuring detailed exploration of data within partitions.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-partition.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-partition.png" alt="Karafka Web UI per partition view"/>
+</p>
 
 ### Time-Based Offset Lookups
 
@@ -42,7 +48,9 @@ Ever wanted to see a message generated at a particular moment? This feature faci
 
 Need to investigate messages from a specific moment in time? Karafka Web UI provides Kafka messages timestamp-based offset lookups that enable you to jump directly to messages produced at exact Unix timestamps. This feature is invaluable for incident analysis, allowing you to correlate message production with system events or errors. Enter the timestamp, and the Explorer will navigate to the corresponding offset, making historical data exploration efficient and precise.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/explorer_timestamp_input.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_timestamp_input.png" alt="Karafka Web UI timestamp-based offset lookup"/>
+</p>
 
 ### Real-Time Display of the Recent Message
 
@@ -52,7 +60,9 @@ Stay updated with the latest information. The explorer can display the most rece
 
 Every message is more than just its content. With the Karafka Data Explorer, you can access the complete details of any message. This includes its payload, headers, and associated metadata, ensuring a comprehensive understanding of the data.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer3.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer3.png" alt="Karafka Web UI detailed message view"/>
+</p>
 
 ### Message Republishing
 
@@ -60,7 +70,9 @@ You can republish a message to a topic and partition you select, including a top
 
 The form also has a "Skip payload validation" checkbox, not selected by default. When the target topic is in the routing, the Web UI first runs the payload through the payload [deserializer](Consumer-Groups-Deserialization) of that topic, the default JSON one when the topic sets none. If the deserializer raises an error, the form shows a payload error and the Web UI does not produce the copy. Select the checkbox to republish the payload without this check. The Web UI does not run this check for a target topic outside the routing or for a tombstone (`nil` payload).
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-republish.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-explorer-republish.png" alt="Karafka Web UI message republishing form"/>
+</p>
 
 ### Surroundings Lookup
 

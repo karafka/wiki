@@ -190,7 +190,9 @@ Karafka Web UI rounds out the picture on the operational side. It is a self-host
 
 Together, these three components give you the full Kafka integration surface within familiar Ruby idioms: WaterDrop for producing, Karafka for consuming, and a Web UI for observing and exploring.
 
-![Karafka Web UI dashboard](https://karafka.io/assets/misc/printscreens/web-ui.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui.png" alt="Karafka Web UI dashboard"/>
+</p>
 
 ## The Ecosystem Advantage
 
@@ -208,7 +210,9 @@ Karafka exposes extensive administrative APIs that make these operations first-c
 
 This matters most at the worst moments. When lag is climbing at two in the morning, the difference between resolving an incident in minutes and resolving it in hours is often whether you can act precisely and quickly from a familiar interface. Karafka's administrative APIs, combined with the Web UI, give you that use. Pause a consumer, inspect what is backed up, reset to a safe offset, and resume - without a deployment, without waking up a second person, and without guessing.
 
-![Karafka Web UI health dashboard](https://karafka.io/assets/misc/printscreens/web-ui/health.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/health.png" alt="Karafka Web UI health dashboard"/>
+</p>
 
 !!! tip "Karafka Pro extends administrative capabilities further"
     Karafka Pro adds enhanced operational tooling including granular consumer control, advanced offset management, and deeper Web UI integrations. For teams running Kafka at scale or with strict SLA requirements, these capabilities can reduce incident response time significantly.
@@ -312,7 +316,9 @@ An online store processes thousands of orders per hour. Some are fraudulent. The
 
 [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) handle this naturally: order events are delayed by 5 minutes before the fulfillment consumer sees them. During that window, a separate fraud-scoring consumer evaluates each order in real time. Flagged orders are moved to a [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) for human review. Clean orders proceed to fulfillment after the delay.
 
-![Delayed topics processing flow](https://karafka.io/assets/misc/charts/delayed_topics/flow.svg)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/charts/delayed_topics/flow.svg" alt="Delayed topics processing flow"/>
+</p>
 
 ### Healthcare Portal With HIPAA Audit Trail
 
