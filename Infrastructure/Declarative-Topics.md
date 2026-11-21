@@ -309,7 +309,11 @@ The accepted names depend on the topic:
 - A topic that does not exist yet accepts only topic configuration names, because topic creation rejects broker synonyms. For example, `log.retention.bytes` is unknown for such a topic. Use the topic-level name `retention.bytes` instead.
 - `reset` checks every topic as one that does not exist yet, as it re-creates them.
 
-The commands need the `DescribeConfigs` permission on declared topics that have `config`. When Karafka cannot describe them, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When none of these topics exists, Karafka reads the configuration names from another topic in the cluster. When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, the command runs without this check and does not detect unknown keys.
+The commands need the `DescribeConfigs` permission on declared topics that have `config`. When Karafka cannot describe them, the command prints `Checking topics configuration failed:` with the error and exits with code `1`. When none of these topics exists, Karafka reads the configuration names from another topic in the cluster.
+
+When the cluster has no topics, or describing that other topic fails with `topic_authorization_failed`, Karafka validates the creation of each declared topic that has `config`. It sends a `validate_only` CreateTopics request with the `config`, partitions and replication factor of the topic, so the cluster does not create it. When the cluster reports unknown keys, the command fails with exit code `1` before any change, as described at the start of this section. The check ignores an invalid value of a known key. Any other rejection of the request, except `topic_authorization_failed`, makes the command print `Checking topics configuration failed:` with the error. An example is a replication factor higher than the number of brokers.
+
+This request needs the `Create` permission on the topic. When it fails with `topic_authorization_failed`, Karafka skips that topic and does not detect its unknown keys. It still checks the other topics.
 
 ## Production Usage
 
