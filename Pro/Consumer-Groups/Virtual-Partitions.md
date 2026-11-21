@@ -741,33 +741,36 @@ Invalid arguments raise `Karafka::Errors::InvalidConfigurationError`.
 
 The result has a `format_version`, the `topic_name` and the `settings` used. The stats of each partition are under `partitions`, and the stats of all partitions together are under `summary`. Each batch is measured as follows:
 
-- **Utilization** - the percentage of the virtual partitions that receive messages.
-- **Parallelization** - the batch size divided by the concurrency and by the number of messages in the largest virtual partition, as a percentage.
-- **Speedup** - the batch size divided by the number of messages in the largest virtual partition.
-- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count.
+- **Utilization** - the number of virtual partitions that receive messages as a percentage of the concurrency, but not above 100%.
+- **Speedup** - the batch size divided by the number of messages in the largest virtual partition, but not above the concurrency. The cap also applies when a custom reducer uses more virtual partitions than the concurrency.
+- **Parallelization** - the speedup gain over sequential processing: `(speedup - 1) / (concurrency - 1)`, as a percentage.
+- **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count. A batch with one virtual partition has no load imbalance (`nil`).
+- **Balanced speedup** - the speedup that the `:balanced` distribution would give for the same batch. It is `nil` with the `:balanced` distribution, a concurrency below 2 and in collapsed batches.
 
-The partition and summary stats hold the averages of these values. They also count these batches:
+The partition and summary stats hold the averages of these values. The averages of load imbalance and balanced speedup skip the `nil` values, and are `nil` when all values are `nil`. The stats also count these batches:
 
 - `collapsed_batches` - partitioning raised an error, so all messages of the batch went to one virtual partition.
-- `poor_batches` - fewer virtual partitions received messages than half of the concurrency.
+- `poor_batches` - the parallelization is below 50%.
 - `single_vp_batches` - only one virtual partition received messages.
 
 The score from 0 to 100 is the weighted average of four components, with the weights from `score_weights`:
 
 - **Utilization** - the average utilization.
 - **Parallelization** - the average parallelization.
-- **Balance** - 100 minus the average load imbalance, but not below 0. When all batches collapsed, the balance is 0.
+- **Balance** - 100 minus the average load imbalance, but not below 0, multiplied by the share of batches with more than one virtual partition. Batches with one virtual partition count as the worst balance.
 - **Stability** - the percentage of batches that are not poor.
 
-A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`.
+A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`. With the default weights, parallelization makes up 70% of the score.
+
+When the verdict is not `:recommended` and the average balanced speedup is higher than the average speedup, the text report suggests the `:balanced` distribution.
 
 With a concurrency below 2, nothing is parallelized: results with messages have no score (`nil`) and the `:not_recommended` verdict. Results without messages have no score and no verdict.
 
 `Estimator::FORMAT_VERSION` is the version of the result structure. Karafka increments it when that structure changes. The `vps estimate-report` command displays only reports with the format version of the installed Karafka. Generate the report again after an upgrade that changes it.
 
-!!! warning "The Estimate Does Not Model Processing Cost or Shared Workers"
+!!! warning "The Estimate Is an Upper Bound for a Consumer That Is Caught Up"
 
-    The estimate assumes the same processing cost for each message. It also does not model the worker pool, which is shared with other partitions and topics.
+    The estimate assumes full batches of `batch_size` messages, as a consumer gets when it processes a backlog. A consumer that is caught up gets smaller batches, which parallelize less. The estimate also assumes the same processing cost for each message. It does not model the worker pool, which is shared with other partitions and topics.
 
 ### Estimator Configuration
 
@@ -816,21 +819,21 @@ end
     </tr>
     <tr>
       <td><code>maybe_score</code></td>
-      <td><code>40</code></td>
+      <td><code>30</code></td>
       <td>Minimum score for the <code>:maybe</code> verdict. Integer from 0 to 100, not above <code>recommended_score</code>.</td>
     </tr>
     <tr>
       <td><code>score_weights.utilization</code></td>
-      <td><code>40</code></td>
+      <td><code>10</code></td>
       <td rowspan="4">Weights of the score components. Integers of 0 or more that sum up to 100.</td>
     </tr>
     <tr>
       <td><code>score_weights.parallelization</code></td>
-      <td><code>30</code></td>
+      <td><code>70</code></td>
     </tr>
     <tr>
       <td><code>score_weights.balance</code></td>
-      <td><code>20</code></td>
+      <td><code>10</code></td>
     </tr>
     <tr>
       <td><code>score_weights.stability</code></td>

@@ -199,7 +199,7 @@ bundle exec karafka vps estimate-report path/to/report.json
 
 `estimate-report` is the default action, so `bundle exec karafka vps` does the same. `bundle exec karafka vps help` lists the available actions.
 
-The report shows the settings used and a table with the stats of each partition. It then shows a summary with the score, the verdict and suggestions. It ends with the limitations of the estimate: the same processing cost for each message and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
+The report shows the settings used and a table with the stats of each partition. It then shows a summary with the score, the verdict and suggestions. It ends with the limitations: equal processing cost per message, full batches and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
 
 When the report cannot be displayed:
 
