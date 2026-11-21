@@ -871,6 +871,28 @@ The readiness response adds three fields to the base response: `ready`, `polled_
 }
 ```
 
+### Client Read Timeout
+
+`LivenessListener`, `SwarmLivenessListener` and `ReadinessListener` accept the `client_read_timeout` option. It sets the time in milliseconds that the listener waits for a client to send the HTTP request line. The default is `5_000` (5 seconds).
+
+The listener answers probes one at a time. It closes the connection without a response when the client:
+
+- does not send a full request line within `client_read_timeout`,
+- sends a request line longer than 8 KB,
+- disconnects.
+
+Because of this, an idle connection delays the probes that come after it by up to `client_read_timeout`.
+
+```ruby
+listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
+  port: 3000,
+  # Close connections that send no request line within 2 seconds
+  client_read_timeout: 2_000
+)
+
+Karafka.monitor.subscribe(listener)
+```
+
 ## Confluent Cloud
 
 Deploying Karafka on Confluent Cloud offers a streamlined way to manage  Kafka infrastructure with less overhead on physical or cloud infrastructure management. Here are the detailed steps and considerations for setting up Karafka with Confluent Cloud.
