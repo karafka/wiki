@@ -44,6 +44,8 @@ Below you can find the list of the Pro features with their brief description:
 
 - [Admin Recovery API](Infrastructure-Admin-Recovery-API) - `Karafka::Admin::Recovery` reads committed offsets directly from `__consumer_offsets` without the group coordinator and shows which groups and partitions a failed coordinator affects. Use it when the Kafka group coordinator is in a `FAILED` state.
 
+- [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) - `Karafka::Pro::Admin::DeadLetterQueues` copies DLQ messages back to their source topics and partitions, or to a topic you choose. Use it to process DLQ messages again.
+
 - [Multiplexing](Pro-Consumer-Groups-Multiplexing) - This feature allows a single process to establish multiple independent connections to the same Kafka topic, enhancing parallel processing and throughput. This capability enables more efficient data handling and improved performance in consuming messages.
 
 - [Piping](Pro-Consumer-Groups-Piping) - Feature allowing applications to forward processing results to subsequent stages or other applications.

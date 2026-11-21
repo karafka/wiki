@@ -1058,4 +1058,5 @@ Using `:earliest` and `:latest` is vital for managing consumer behavior, ensurin
 - [Admin Acls API](Infrastructure-Admin-Acls-API) - Manage Kafka ACLs programmatically
 - [Admin Configs API](Infrastructure-Admin-Configs-API) - Configure topics, brokers and consumer groups
 - [Admin Replication API](Infrastructure-Admin-Replication-API) - Plan replication factor changes
+- [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) - Replay DLQ messages (Pro)
 - [Declarative Topics](Infrastructure-Declarative-Topics) - Higher-level topic management approach

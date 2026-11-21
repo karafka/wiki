@@ -453,5 +453,6 @@ end
 
 - [Dead Letter Queue](Consumer-Groups-Dead-Letter-Queue) - Base DLQ feature and fundamental concepts
 - [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) - Replaying DLQ messages using the `source_*` headers
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - Enhanced DLQ behavior with parallel processing
