@@ -175,6 +175,8 @@ The primary use case for offset metadata is to pass stateful information that ca
 
 One crucial aspect is that the `#offset_metadata` method may return `false` if the given partition is no longer part of the consumer's assignment. This safety mechanism ensures that your consumer does not act on stale or irrelevant metadata. Always check the return value of `#offset_metadata` and handle the false case appropriately in your application logic.
 
+To test a consumer that reads offset metadata, set the committed value in your specs with `karafka.offset_metadata=`. See [Testing Offset Metadata](Basics-Testing#testing-offset-metadata).
+
 ## Offset Metadata Usage From Within Filters
 
 Offset Metadata Storage in Karafka enhances consumer instances' capability to manage and use message offsets and extends this functionality beyond the scope of a single consumer. This feature is particularly beneficial when you need to access offset metadata from different application components, such as within the [Filtering API](Pro-Consumer-Groups-Filtering-API), to make more context-aware decisions based on the metadata associated with specific offsets.
