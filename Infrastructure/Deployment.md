@@ -884,6 +884,8 @@ The listener answers probes one at a time. It closes the connection without a re
 Because of this, an idle connection delays the probes that come after it by up to `client_read_timeout`.
 
 ```ruby
+require 'karafka/instrumentation/vendors/kubernetes/liveness_listener'
+
 listener = ::Karafka::Instrumentation::Vendors::Kubernetes::LivenessListener.new(
   port: 3000,
   # Close connections that send no request line within 2 seconds
