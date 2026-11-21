@@ -745,7 +745,7 @@ The result has a `format_version`, the `topic_name` and the `settings` used. The
 - **Speedup** - the batch size divided by the number of messages in the largest virtual partition, but not above the concurrency. The cap also applies when a custom reducer uses more virtual partitions than the concurrency.
 - **Parallelization** - the speedup gain over sequential processing: `(speedup - 1) / (concurrency - 1)`, as a percentage. With a concurrency of 1, it is 0.
 - **Load imbalance** - the coefficient of variation of the number of messages per virtual partition, as a percentage. Only the virtual partitions that received messages count. A batch with one virtual partition has no load imbalance (`nil`).
-- **Balanced speedup** - the speedup that the `:balanced` distribution would give for the same batch. It is `nil` with the `:balanced` distribution, a concurrency below 2 and in collapsed batches.
+- **Balanced speedup** - the speedup that the `:balanced` distribution would give for the same batch. It is `nil` with the `:balanced` distribution, with a concurrency below 2 and for collapsed batches.
 
 The partition and summary stats hold the averages of these values. The averages of load imbalance and balanced speedup skip the `nil` values, and are `nil` when all values are `nil`. The stats also count these batches:
 
@@ -757,18 +757,18 @@ The score from 0 to 100 is the weighted average of four components, with the wei
 
 - **Utilization** - the average utilization.
 - **Parallelization** - the average parallelization.
-- **Balance** - 100 minus the average load imbalance, but not below 0, multiplied by the share of batches with more than one virtual partition. Batches with one virtual partition count as the worst balance.
+- **Balance** - 100 minus the average load imbalance, but not below 0, multiplied by the share of batches with more than one virtual partition.
 - **Stability** - the percentage of batches that are not poor.
 
-A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`. With the default weights, parallelization makes up 70% of the score.
+A score of at least `recommended_score` gives the `:recommended` verdict. A score of at least `maybe_score` gives `:maybe`, and a lower score gives `:not_recommended`.
 
-When the verdict is not `:recommended` and the average balanced speedup is higher than the average speedup, the text report suggests the `:balanced` distribution.
+When the verdict is not `:recommended` and the average balanced speedup is higher than the average speedup, the `vps estimate-report` output suggests the `:balanced` distribution.
 
 With a concurrency below 2, nothing is parallelized: results with messages have no score (`nil`) and the `:not_recommended` verdict. Results without messages have no score and no verdict.
 
 `Estimator::FORMAT_VERSION` is the version of the result structure. Karafka increments it when that structure changes. The `vps estimate-report` command displays only reports with the format version of the installed Karafka. Generate the report again after an upgrade that changes it.
 
-!!! warning "The Estimate Is an Upper Bound for a Consumer That Is Caught Up"
+!!! warning "The Estimate Does Not Model Partial Batches, Message Costs or Shared Workers"
 
     The estimate assumes full batches of `batch_size` messages, as a consumer gets when it processes a backlog. A consumer that is caught up gets smaller batches, which parallelize less. The estimate also assumes the same processing cost for each message. It does not model the worker pool, which is shared with other partitions and topics.
 
