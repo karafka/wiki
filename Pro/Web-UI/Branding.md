@@ -16,7 +16,9 @@ Karafka::Web.setup do |config|
 end
 ```
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/branding1.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/branding1.png" alt="Karafka Web UI with a production branding label and notice"/>
+</p>
 
 ## Best Practices
 

@@ -19,7 +19,9 @@ Karafka Pro adds a keyword filter (search) box to nearly every data-heavy listin
 
 The field selector always accompanies the input on listings that support it, so every search looks consistent, even on single-field listings.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-filtering.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-filtering.png" alt="Karafka Web UI consumers listing with the field selector"/>
+</p>
 
 ## See Also
 

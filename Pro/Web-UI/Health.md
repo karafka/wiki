@@ -1,6 +1,8 @@
 The health views of the Web UI display the current status of all the running Karafka instances aggregated on a per-consumer-group basis. Those views allow users to monitor the health of their messages consumption and troubleshoot any issues that may arise including issues related to hanging transactions (LSO issues). It also allows quick identification of performance bottlenecks and can help with capacity planning.
 
-![karafka web ui](https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI health view"/>
+</p>
 
 ## Static Membership Identification
 
@@ -39,7 +41,9 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
     - **Web UI Indication**: The partition will be highlighted in yellow.
     - **LSO State**: "at_risk"
 
-    ![karafka web ui LSO warning](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso1.png)
+    <p align="center">
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso1.png" alt="Karafka Web UI LSO At Risk state"/>
+    </p>
 
 1. **Stopped (Red Highlight)**
 
@@ -47,7 +51,9 @@ Karafka's Web UI has visual cues to indicate potential problems concerning the L
     - **Web UI Indication**: The partition will be highlighted in red, emphasizing that it is stopped.
     - **LSO State**: "stopped".
 
-    ![karafka web ui LSO error](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png)
+    <p align="center">
+      <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-lso2.png" alt="Karafka Web UI LSO Stopped state"/>
+    </p>
 
 These visual indicators allow immediate awareness of potential problems, ensuring quick identification and action.
 
@@ -68,7 +74,9 @@ This feature is handy in environments where:
 
 Focusing on the lag data directly from Kafka lets you gain insights into system performance and potential bottlenecks without relying solely on consumer process metrics.
 
-![karafka web ui cluster lags](https://karafka.io/assets/misc/printscreens/web-ui/pro-health-cluster-lags.png)
+<p align="center">
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health-cluster-lags.png" alt="Karafka Web UI cluster lags"/>
+</p>
 
 !!! warning "Lag Reporting Limitation for Paused Partitions"
 
