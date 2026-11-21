@@ -1,6 +1,6 @@
 # Admin Dead Letter Queues API (Pro)
 
-`Karafka::Pro::Admin::DeadLetterQueues` copies messages from a dead letter queue (DLQ) topic back to the topics they came from, or to a topic you choose, so that your consumers process them again. It is a Karafka Pro feature.
+`Karafka::Pro::Admin::DeadLetterQueues` copies messages from a dead letter queue (DLQ) topic back to the topics they came from, or to a topic you choose. Your consumers then process them again. It is a Karafka Pro feature.
 
 ## Replaying DLQ Messages
 
@@ -55,7 +55,7 @@ Karafka::Pro::Admin::DeadLetterQueues.copy(
     <tr>
       <td><code>end_offset</code></td>
       <td><code>nil</code></td>
-      <td>Offset at which to stop in each partition (exclusive). When <code>nil</code> or above the high watermark, the high watermark read at the start of the call is used.</td>
+      <td>Offset at which to stop in each partition (exclusive). When <code>nil</code> or above the high watermark, the high watermark read at the start of the call is used. Messages that arrive in the DLQ topic during the copy are not copied.</td>
     </tr>
     <tr>
       <td><code>producer</code></td>
@@ -86,8 +86,6 @@ Karafka::Pro::Admin::DeadLetterQueues.copy(
 )
 ```
 
-Because the end of the range is read at the start of the call, messages that arrive in the DLQ topic during the copy are not copied.
-
 ## Copied Message Content
 
 Each copied message keeps the payload, the key and the headers of the DLQ message, with these changes:
@@ -95,7 +93,7 @@ Each copied message keeps the payload, the key and the headers of the DLQ messag
 - Karafka removes the Enhanced DLQ `source_*` headers: `source_topic`, `source_partition`, `source_offset`, `source_consumer_group`, `source_attempts` and `source_trace_id`.
 - Karafka sets the `replay_count` header to its previous value plus one. On the first copy it is `1`.
 
-If a copied message fails again, the default Enhanced DLQ dispatch moves it back to the DLQ topic with its `replay_count` header. A custom [`#enhance_dlq_message`](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) keeps this header only if it keeps the original headers. Use this header to find messages that you replay repeatedly. Karafka does not act on it.
+If a copied message fails again, the Enhanced DLQ by default produces it back to the DLQ topic with its `replay_count` header. A custom [`#enhance_dlq_message`](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) keeps this header only if it keeps the original headers. Use this header to find messages that you replay repeatedly. Karafka does not act on it.
 
 ## How the Copy Works
 

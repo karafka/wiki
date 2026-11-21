@@ -418,7 +418,7 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-
 
 ## Replaying DLQ Messages
 
-Karafka Pro can copy messages from a DLQ topic back to the topics they came from, or to a topic you choose, so that your consumers process them again. See the [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) for details.
+Karafka Pro can copy messages from a DLQ topic so that your consumers process them again. Messages moved by the [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) can go back to the topics they came from. Other messages need a target topic. See the [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) for details.
 
 ## Example Use Cases
 
