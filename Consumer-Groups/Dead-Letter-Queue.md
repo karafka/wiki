@@ -416,6 +416,10 @@ We highly recommend you check out the [Enhanced Dead Letter Queue](Pro-Consumer-
 - want to alter `payload`, `headers`, `key` or any other attributes of the DLQ message.
 - want to delay processing of data dispatched to the DLQ topic.
 
+## Replaying DLQ Messages
+
+Karafka Pro can copy messages from a DLQ topic back to the topics they came from, or to a topic you choose, so that your consumers process them again. See the [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) for details.
+
 ## Example Use Cases
 
 - Payment processing: In payment processing systems, DLQs can be used to capture failed payment transactions due to network issues, invalid payment information, or other issues. These transactions can be reviewed and processed later, ensuring no payment is lost.
@@ -437,6 +441,7 @@ The Karafka Dead Letter Queue is worth using because it provides a way to handle
 - [Enhanced Dead Letter Queue](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue) - Pro version with ordering preservation and advanced features
 - [Error Handling and Back-Off Policy](Consumer-Groups-Error-Handling-and-Back-Off-Policy) - Understanding Karafka's error handling workflow
 - [Delayed Topics](Pro-Consumer-Groups-Delayed-Topics) - Delaying DLQ message reprocessing for transient failures
+- [Admin Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API) - Replaying DLQ messages (Pro)
 - [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions) - How DLQ behaves with parallel processing
 - [Declarative Topics](Infrastructure-Declarative-Topics) - Declare and manage the DLQ topic as code
 - [Topic Auto Creation](Infrastructure-Topic-Auto-Creation) - Why the DLQ topic may not exist when you need it

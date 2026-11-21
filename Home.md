@@ -117,6 +117,7 @@
 - [Configs API](Infrastructure-Admin-Configs-API)
 - [Replication API](Infrastructure-Admin-Replication-API)
 - [Recovery API](Infrastructure-Admin-Recovery-API)
+- [Dead Letter Queues API](Infrastructure-Admin-Dead-Letter-Queues-API)
 
 ### Reliability
 
