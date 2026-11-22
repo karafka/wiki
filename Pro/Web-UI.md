@@ -88,7 +88,7 @@ A keyword filter box is added to nearly every data-heavy listing (consumers, job
 
 ## Recurring Tasks
 
-In the Karafka Pro Web UI, you can manage and monitor [recurring tasks](Pro-Recurring-Tasks) with ease:
+You can manage and monitor [recurring tasks](Pro-Recurring-Tasks):
 
 - **Inspect Tasks**: View detailed information on each task, including status, next execution, and last execution result.
 - **Control Tasks**: Enable, disable, or trigger tasks directly from the UI.
