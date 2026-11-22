@@ -93,6 +93,7 @@ Below is a list of the instrumentation events available in Karafka. Depending on
 
 ### Filtering Events
 
+- `filtering.expired`
 - `filtering.seek`
 - `filtering.throttled`
 
