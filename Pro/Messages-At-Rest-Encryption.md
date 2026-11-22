@@ -70,7 +70,7 @@ Using `:envelope` mode requires the `openssl` gem `>= 3.0`. This is verified aut
     `:envelope` mode wraps and unwraps the AES key with `OpenSSL::PKey::RSA#encrypt` and `#decrypt`. The OpenSSL library of JRuby does not provide these methods, so `:envelope` mode works only on MRI, for both producing and consuming:
 
     - On JRuby, `config.encryption.mode = :envelope` fails at setup with `Karafka::Errors::DependencyConstraintsError`, because the `openssl` gem `>= 3.0` cannot be installed there.
-    - A JRuby consumer sends every envelope payload to the envelope decryption path, whatever its `encryption.mode` (see below). On JRuby this path fails for each such message. Do not consume topics that MRI producers write in `:envelope` mode from JRuby processes.
+    - A JRuby consumer sends every envelope payload to the envelope decryption path, whatever its `encryption.mode` (see below). On JRuby this path fails for each such message with `NoMethodError: undefined method 'decrypt' for an instance of OpenSSL::PKey::RSA` when Karafka deserializes the payload. Do not consume topics that MRI producers write in `:envelope` mode from JRuby processes.
 
     The `:direct` mode works on JRuby.
 
