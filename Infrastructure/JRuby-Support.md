@@ -99,7 +99,7 @@ Stop `karafka server` with `TERM`. On JRuby, `QUIT` prints a JVM thread dump and
 
 ## Pro Encryption
 
-The `:envelope` mode of [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) works only on MRI, because the OpenSSL library of JRuby does not provide `OpenSSL::PKey::RSA#encrypt` and `#decrypt`. The `:direct` mode works on JRuby. With the JRuby-OpenSSL 0.16.3 that JRuby 10.0.8.0 bundles, a `:direct` payload larger than RSA can encrypt (see [Envelope Encryption Mode](Pro-Messages-At-Rest-Encryption#envelope-encryption-mode)) raises `Java::JavaLang::ArrayIndexOutOfBoundsException` (`too much data for RSA block`), and `rescue OpenSSL::OpenSSLError` does not catch it. jruby-openssl `0.19.4` and later raise `OpenSSL::PKey::RSAError` instead, so add `gem "jruby-openssl", ">= 0.19.4"` to your Gemfile.
+The `:envelope` mode of [Messages At Rest Encryption](Pro-Messages-At-Rest-Encryption) works only on MRI, because `jruby-openssl`, the OpenSSL library of JRuby, does not provide `OpenSSL::PKey::RSA#encrypt` and `#decrypt`. The `:direct` mode works on JRuby. JRuby 10.0.8.0 bundles `jruby-openssl` 0.16.3. With it, a `:direct` payload larger than RSA can encrypt (see [Envelope Encryption Mode](Pro-Messages-At-Rest-Encryption#envelope-encryption-mode)) raises `Java::JavaLang::ArrayIndexOutOfBoundsException` (`too much data for RSA block`). `rescue OpenSSL::OpenSSLError` does not catch this exception. `jruby-openssl` 0.19.4 and later raise `OpenSSL::PKey::RSAError` instead, so add `gem "jruby-openssl", ">= 0.19.4", platforms: :jruby` to your Gemfile.
 
 ## Async and Fiber Scheduler
 
