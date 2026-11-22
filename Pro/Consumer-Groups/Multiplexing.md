@@ -174,6 +174,7 @@ class KarafkaApp < Karafka::App
 
       # Control internal queuing
       'queued.min.messages' => 10_000,         # (default: 100,000)
+      'fetch.queue.backoff.ms' => 100,         # (default: 1,000)
 
       # Reduce network latency
       'socket.nagle.disable' => true           # Disable Nagle algorithm
@@ -181,6 +182,8 @@ class KarafkaApp < Karafka::App
   end
 end
 ```
+
+Lower `fetch.queue.backoff.ms` together with `queued.min.messages`. When the consumer queue of a subscription group reaches `queued.min.messages` messages, librdkafka stops fetching for `fetch.queue.backoff.ms`. This threshold counts the messages of all partitions in the subscription group. With a low threshold, the consumer can process the whole queue and then wait with no messages until the backoff ends. Our backlog test with one subscription group used the fetch and queue settings above. With the default backoff of 1,000 ms, the consumer processed about 12,000 messages per second. It waited for about 700 ms about once per second. With `fetch.queue.backoff.ms` set to `100`, it processed about 35,000 messages per second with no waits.
 
 ### Use Virtual Partitions Instead of Multiplexing
 
