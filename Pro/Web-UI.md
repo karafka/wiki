@@ -139,7 +139,7 @@ Dead insights allowing to navigate through DLQ topics and messages that were dis
 
     Web UI will automatically classify any topics that contain `dlq` or `dead_letter` in their names - irrespective of case - as Dead Letter Queue (DLQ) topics. This means topics labeled with variations such as `DLQ`, `dlq`, `Dead_Letter`, or `DEAD_LETTER` will be viewed and managed under the DLQ view.
 
-DLQ dispatched messages view:
+Dead Letter Queue Topics list:
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-dead1.png" alt="Karafka Web UI DLQ topics list"/>
