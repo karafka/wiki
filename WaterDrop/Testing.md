@@ -81,9 +81,7 @@ PRODUCER = WaterDrop::Producer.new do |config|
   }
 
   # Use dummy only for tests
-  break unless Rails.env.test?
-
-  config.client_class = WaterDrop::Clients::Buffered
+  config.client_class = WaterDrop::Clients::Buffered if Rails.env.test?
 end
 ```
 
@@ -103,7 +101,7 @@ puts report
 #=> <Rdkafka::Producer::DeliveryReport:... @error=nil, @offset=0, @partition=0, @topic_name="test">
 
 puts PRODUCER.client.messages
-#=> [{:topic=>"test", :payload=>"123"}]
+#=> [{topic: "test", payload: "123"}]
 
 raise unless PRODUCER.client.messages.count == 1
 ```
@@ -145,10 +143,10 @@ The WaterDrop Buffered client provides two methods for accessing buffered messag
 PRODUCER.produce_sync(topic: 'test1', payload: '123')
 PRODUCER.produce_sync(topic: 'test2', payload: '456')
 
-PRODUCER.client.messages #=> [{:topic=>"test1", :payload=>"123"}, {:topic=>"test2", :payload=>"456"}]
+PRODUCER.client.messages #=> [{topic: "test1", payload: "123"}, {topic: "test2", payload: "456"}]
 
-PRODUCER.client.messages_for('test1') #=> [{:topic=>"test1", :payload=>"123"}]
-PRODUCER.client.messages_for('test2') #=> [{:topic=>"test2", :payload=>"456"}]
+PRODUCER.client.messages_for('test1') #=> [{topic: "test1", payload: "123"}]
+PRODUCER.client.messages_for('test2') #=> [{topic: "test2", payload: "456"}]
 PRODUCER.client.messages_for('test3') #=> []
 ```
 

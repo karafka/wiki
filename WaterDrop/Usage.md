@@ -142,7 +142,7 @@ Here are all the things you can provide in the message hash:
       <td><code>timestamp</code></td>
       <td>false</td>
       <td>Time, Integer</td>
-      <td>The timestamp that should be set on the message</td>
+      <td>The timestamp that should be set on the message. An Integer is the number of milliseconds since the epoch. Prefer <code>Time</code></td>
     </tr>
     <tr>
       <td><code>headers</code></td>
