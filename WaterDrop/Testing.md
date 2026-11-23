@@ -101,7 +101,7 @@ puts report
 #=> <Rdkafka::Producer::DeliveryReport:... @error=nil, @offset=0, @partition=0, @topic_name="test">
 
 puts PRODUCER.client.messages
-#=> [{topic: "test", payload: "123"}]
+#=> {topic: "test", payload: "123"}
 
 raise unless PRODUCER.client.messages.count == 1
 ```
