@@ -9,6 +9,7 @@
 - **[Feature]** Add a **Delete messages up to this offset** action to the Explorer message view (Pro), with a confirmation showing the offset range that goes. Gated by the new `#delete_records?` policy, denied by default. Requires karafka `2.6.2`.
 - **[Feature]** Aggregate the Health views per topic with drill-down to partitions, so they stay usable at scale. Thresholds are configurable under `config.ui.health.lags` (#112).
 - **[Feature]** Add a **Delete Offsets** action (Pro) to the Health cluster lags and the Routing topic page that deletes a consumer group's committed offsets for a topic. Gated by the new `ui.policies.consumer_groups` `#delete_offsets?` policy, denied by default. Requires karafka `2.6.2`.
+- [Enhancement] Report the group member id of each subscription group and show it on the consumer subscriptions page (Pro). Bumps the consumers reports schema to `1.8.0` and migrates older reports.
 - [Enhancement] Show the source of each config value (dynamic topic, dynamic broker, static broker, default, ...) on the topic and broker configuration pages (Pro). Requires karafka `2.6.2`.
 - [Enhancement] Show the Explorer publish, republish, download, export and delete actions disabled, with the reason in their title, when a policy denies them or the payload cannot be exported, instead of hiding them.
 - [Enhancement] Explain every disabled action button (topics management, commanding, read-only configs, recurring tasks, process state) with the reason in its title, which a disabled button could not show before.
@@ -29,9 +30,11 @@
 - [Enhancement] Link the Health lag counters worst-first: the Dashboard "Total lag" opens the Health topics sorted by lag, and each topic's "Max lag" shows the hot partition id and opens its partitions sorted by lag (Pro).
 - [Enhancement] Show an informational Status page check when the Web UI reports through an idempotent or transactional `Karafka.producer` shared with the application, with a link to configuring a custom Web UI producer.
 - [Enhancement] Speed up Web UI sorting on large data, most of all when sorting on an attribute the rows do not have.
-- [Enhancement] Show error and thread backtraces as plain text instead of JSON-highlighted, with application frames in bold and gem and Ruby frames muted.
+- [Enhancement] Show error and thread backtraces as plain text instead of JSON-highlighted, with gem and Ruby frames muted so the application frames stand out.
+- [Enhancement] Collapse the directory prefix shared by the absolute application paths of error and thread backtraces behind an ellipsis, with a toggle to show the full paths.
 - [Enhancement] Link the Origin badge on the Pro Errors list to the Explorer: to the last offset of the failed batch when known, else to the partition, else to the topic.
 - [Change] Move the Pro Dead Letter Queue Topics view from `/dlq` to `/dead_letter_queues`. Old `/dlq` links redirect to the new path. Label its navigation item `DLQ`.
+- [Maintenance] Split the Web UI Tailwind stylesheet into per-component files.
 - [Maintenance] Extract the consumer commanding forms into `Lib::Commands` and validate offset and pause values server-side (#1241).
 - [Maintenance] Extract the topic configuration edit flow into `Lib::Configuring` and reject empty values (#1241).
 - [Maintenance] Extract topic creation and repartitioning into `Lib::TopicCreation` and `Lib::Repartitioning` with server-side validation (#1241).
