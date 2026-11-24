@@ -146,7 +146,7 @@ end
 
 ## Adding Custom Details To the DLQ Message
 
-If you want to add some extra information or change anything in the message that will be dispatched to the DLQ topic, you can do it by defining a custom method called `#enhance_dead_letter_queue_message` in your consumer class. Karafka also supports the shorter name `#enhance_dlq_message` with the same arguments and uses it only when `#enhance_dead_letter_queue_message` is not defined.
+To add details to or change the message that Karafka produces to the DLQ topic, define a method called `#enhance_dead_letter_queue_message` in your consumer class. Karafka also supports the shorter name `#enhance_dlq_message` with the same arguments and uses it only when `#enhance_dead_letter_queue_message` is not defined.
 
 It accepts two arguments:
 
@@ -278,7 +278,7 @@ When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which o
 
 ## Accessing Error Context in DLQ Message Enhancement
 
-When customizing DLQ messages using the `#enhance_dead_letter_queue_message` method, you may want to include information about the specific error that caused the message to be dispatched to the DLQ. This can be particularly useful for debugging, monitoring, or implementing error-specific recovery strategies.
+When customizing DLQ messages using the `#enhance_dead_letter_queue_message` method, you may want to include information about the specific error that caused Karafka to produce the message to the DLQ.
 
 You can access the error information through the `#errors_tracker` method within your `#enhance_dead_letter_queue_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
 

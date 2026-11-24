@@ -234,7 +234,7 @@ class OrdersStatesConsumer < Karafka::BaseConsumer
 end
 ```
 
-The shorter name `#dispatch_to_dlq` calls the same method and remains supported.
+Karafka also supports the shorter name `#dispatch_to_dlq` for the same method.
 
 ## Monitoring and Instrumentation
 
