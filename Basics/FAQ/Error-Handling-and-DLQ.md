@@ -8,7 +8,7 @@
 1. [Why do I see hundreds of repeat exceptions with exponential backoff enabled?](#why-do-i-see-hundreds-of-repeat-exceptions-with-exponential-backoff-enabled)
 1. [Why does the Dead Letter Queue (DLQ) use the default deserializer instead of the one specified for the original topic in Karafka?](#why-does-the-dead-letter-queue-dlq-use-the-default-deserializer-instead-of-the-one-specified-for-the-original-topic-in-karafka)
 1. [What should I consider when manually dispatching messages to the DLQ in Karafka?](#what-should-i-consider-when-manually-dispatching-messages-to-the-dlq-in-karafka)
-1. [How can I handle `#dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dlq-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
+1. [How can I handle `#dispatch_to_dead_letter_queue` method errors when using the same consumer for a topic and its DLQ?](#how-can-i-handle-dispatch_to_dead_letter_queue-method-errors-when-using-the-same-consumer-for-a-topic-and-its-dlq)
 1. [What happens to a topic partition when a message fails, and the exponential backoff strategy is applied? Is the partition paused during the retry period?](#what-happens-to-a-topic-partition-when-a-message-fails-and-the-exponential-backoff-strategy-is-applied-is-the-partition-paused-during-the-retry-period)
 1. [How can I determine if a message is a retry or a new message?](#how-can-i-determine-if-a-message-is-a-retry-or-a-new-message)
 1. [What are poison pill messages, and how should I handle them in Karafka?](#what-are-poison-pill-messages-and-how-should-i-handle-them-in-karafka)
@@ -182,24 +182,24 @@ end
 
 When manually dispatching a message to the DLQ in Karafka, understand that the dispatch action itself only moves the message to the DLQ and does not mark it as consumed. If your intention is to prevent further processing of the original message and to avoid halting the offset commitment, you need to explicitly mark the message as consumed. This can be crucial in maintaining the flow of message processing and ensuring that message consumption offsets are correctly committed.
 
-## How can I handle `#dispatch_to_dlq` method errors when using the same consumer for a topic and its DLQ?
+## How can I handle `#dispatch_to_dead_letter_queue` method errors when using the same consumer for a topic and its DLQ?
 
-If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue), you might encounter an issue where the `#dispatch_to_dlq` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
+If you use the same consumer for a particular topic and its [Dead Letter Queue (DLQ)](Consumer-Groups-Dead-Letter-Queue), you might encounter an issue where the `#dispatch_to_dead_letter_queue` method is unavailable in the DLQ context. This can lead to errors if the method is called again during DLQ reprocessing.
 
 In Karafka, different consumer instances may operate in different contexts. Specifically, the DLQ context does not have access to DLQ-specific methods because these methods are injected only for the original topic consumer context. This ensures that specific methods are not used outside their intended context, maintaining a clean and safe API.
 
-To handle this, you can use a guard to check whether the `#dispatch_to_dlq` method is available before calling it. Here are a couple of approaches:
+To handle this, you can use a guard to check whether the `#dispatch_to_dead_letter_queue` method is available before calling it. Here are a couple of approaches:
 
 1. **Check for Method Availability**:
 
-    You can use the `#respond_to?` method to check if `#dispatch_to_dlq` is available before calling it.
+    You can use the `#respond_to?` method to check if `#dispatch_to_dead_letter_queue` is available before calling it.
 
     ```ruby
     messages.each do |message|
       if EventContract.valid?(message.payload)
         EventsImporter.import(message.payload)
-      elsif respond_to?(:dispatch_to_dlq)
-        dispatch_to_dlq(message)
+      elsif respond_to?(:dispatch_to_dead_letter_queue)
+        dispatch_to_dead_letter_queue(message)
       else
         # Handle the error or reprocess logic here
       end
@@ -217,8 +217,8 @@ To handle this, you can use a guard to check whether the `#dispatch_to_dlq` meth
       if EventContract.valid?(message.payload)
         EventsImporter.import(message.payload)
       elsif topic.dead_letter_queue?
-        # This is the original topic, so `dispatch_to_dlq` is safe to use
-        dispatch_to_dlq(message)
+        # This is the original topic, so `dispatch_to_dead_letter_queue` is safe to use
+        dispatch_to_dead_letter_queue(message)
       else
         # This is the DLQ topic: handle the error or reprocess logic here
       end
@@ -372,7 +372,7 @@ class OrdersConsumer < ApplicationConsumer
     mark_as_consumed(message)
 
     # Option 2: Dispatch to DLQ manually for inspection
-    # dispatch_to_dlq(message)
+    # dispatch_to_dead_letter_queue(message)
 
     # Option 3: Re-raise to trigger retry (if error might be transient)
     # raise ValidationError, errors.full_messages.join(', ')
