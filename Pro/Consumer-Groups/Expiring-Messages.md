@@ -68,7 +68,7 @@ Each time `expire_in` removes at least one message from a batch, Karafka instrum
     </tr>
     <tr>
       <td><code>subscription_group</code></td>
-      <td>Subscription group of the topic</td>
+      <td>Subscription group of the topic (<code>Karafka::Routing::SubscriptionGroup</code> object, not its id)</td>
     </tr>
     <tr>
       <td><code>count</code></td>
@@ -97,7 +97,7 @@ The `LoggerListener` logs this event at the info level:
 [<subscription group id>] Expired <count> messages (offsets <first offset>-<last offset>, ttl: <ttl> ms) on <topic>-<partition>
 ```
 
-When Karafka fetches the same messages again (after a retry, a rebalance or a seek), it reports them again, so the sum of `count` values can be higher than the number of unique expired messages.
+When Karafka fetches the same messages again (after a retry, a rebalance or a seek), it instruments the event for them again. The sum of `count` values can then be higher than the number of unique expired messages.
 
 ## Limitations
 
