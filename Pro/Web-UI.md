@@ -100,7 +100,7 @@ You can manage and monitor [recurring tasks](Pro-Recurring-Tasks):
 
 ## Scheduled Messages
 
-Karafka Pro's Enhanced Web UI provides detailed insights into scheduled messages, enabling efficient management and monitoring:
+You can monitor and manage scheduled messages:
 
 - **Daily Dispatch Estimates**: View estimates of messages scheduled for dispatch across partitions, aiding in operational planning.
 - **Loading State Monitoring**: Monitor the loading state of partitions to ensure readiness, especially after nightly reloads.
@@ -163,7 +163,7 @@ This feature has its own dedicated documentation that you can access [here](Pro-
 
 ## Policies
 
-Karafka's Web UI includes a policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI, ensuring compliance with data protection and privacy standards.
+Karafka's Web UI includes a policies engine that provides granular control over user actions across all UI components. This engine allows administrators to define and enforce policies on what specific users can view and do within the Web UI.
 
 This feature has its own dedicated documentation that you can access [here](Pro-Web-UI-Policies).
 
