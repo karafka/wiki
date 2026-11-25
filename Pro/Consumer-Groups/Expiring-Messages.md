@@ -42,6 +42,63 @@ Karafka's Expiring Messages feature ensures that failed messages are reprocessed
 
 This behavior can be adjusted by changing the expiry period for messages in the configuration settings. Also ensure that the message expiry period is set to a value appropriate for the use case. For example, suppose the processing time for messages is expected to be longer than the expiry period. In that case, it may be necessary to increase the expiry period to ensure that failed messages are not skipped.
 
+## Instrumentation
+
+Each time `expire_in` removes at least one message from a batch, Karafka instruments the `filtering.expired` event once for that batch. See [Instrumentation Events](Infrastructure-Instrumentation-Events) for the list of all events. The payload contains:
+
+<table>
+  <thead>
+    <tr>
+      <th>Key</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>caller</code></td>
+      <td>Expiring filter instance that removed the messages</td>
+    </tr>
+    <tr>
+      <td><code>topic</code></td>
+      <td>Topic name</td>
+    </tr>
+    <tr>
+      <td><code>partition</code></td>
+      <td>Partition number</td>
+    </tr>
+    <tr>
+      <td><code>subscription_group</code></td>
+      <td>Subscription group of the topic (<code>Karafka::Routing::SubscriptionGroup</code> object, not its id)</td>
+    </tr>
+    <tr>
+      <td><code>count</code></td>
+      <td>Number of messages removed from the batch</td>
+    </tr>
+    <tr>
+      <td><code>first_offset</code></td>
+      <td>Offset of the first removed message</td>
+    </tr>
+    <tr>
+      <td><code>last_offset</code></td>
+      <td>Offset of the last removed message</td>
+    </tr>
+    <tr>
+      <td><code>ttl</code></td>
+      <td>The <code>expire_in</code> value in milliseconds</td>
+    </tr>
+  </tbody>
+</table>
+
+When message timestamps are out of order, the range from `first_offset` to `last_offset` can include messages that were not removed.
+
+The `LoggerListener` logs this event at the info level:
+
+```text
+[<subscription group id>] Expired <count> messages (offsets <first offset>-<last offset>, ttl: <ttl> ms) on <topic>-<partition>
+```
+
+When Karafka fetches the same messages again (after a retry, a rebalance or a seek), it instruments the event for them again. The sum of `count` values can then be higher than the number of unique expired messages.
+
 ## Limitations
 
 When a Karafka consumer process is heavily saturated, and there are more jobs in the internal queue than threads available, processing lag is risky. This means there may be a delay between when a message is polled and when it is processed. In some cases, the delay can be long enough that messages that were polled but not yet processed can go beyond the expiration time.
