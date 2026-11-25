@@ -240,6 +240,53 @@ The following options are available under the `config.polling` namespace:
 | `polling.fd.periodic_poll_interval` | Maximum time in milliseconds an idle producer can go without being polled in FD mode, so its OAuth token refresh and statistics callbacks still fire on time | `1000`  |
 | `polling.poller`                    | Custom `WaterDrop::Polling::Poller` instance for callback isolation                                                                                          | `nil`   |
 
+### Global Poller Configuration
+
+The poller that runs FD-mode producers has its own settings. They are global: they apply to the shared poller and to every dedicated `WaterDrop::Polling::Poller`. Set them with `WaterDrop::Polling::Config.setup`, not inside the producer configuration:
+
+```ruby
+WaterDrop::Polling::Config.setup do |config|
+  config.thread_priority = -1
+  config.poll_timeout = 500
+end
+```
+
+Run this setup before you create the first FD-mode producer. The poller reads `thread_priority` when its thread starts and caches `poll_timeout` on first use, so a later change may not reach a poller that already runs.
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>thread_priority</code></td>
+      <td>Ruby thread priority of the poller thread. An integer from <code>-3</code> to <code>3</code>; a higher value gives a higher priority.</td>
+      <td><code>0</code></td>
+    </tr>
+    <tr>
+      <td><code>poll_timeout</code></td>
+      <td>Timeout in milliseconds of the <code>IO.select</code> wait. It sets how often the poller wakes up when no FD events occur. A lower value makes OAuth token refresh and statistics callbacks more responsive but uses more CPU.</td>
+      <td><code>1000</code></td>
+    </tr>
+    <tr>
+      <td><code>backoff_min</code></td>
+      <td>Time in milliseconds the poller waits after the first error in its polling loop.</td>
+      <td><code>100</code></td>
+    </tr>
+    <tr>
+      <td><code>backoff_max</code></td>
+      <td>Maximum wait in milliseconds after errors in the polling loop. The wait doubles on each consecutive error up to this value. It must be greater than or equal to <code>backoff_min</code>.</td>
+      <td><code>30000</code></td>
+    </tr>
+  </tbody>
+</table>
+
+All four values must be integers, and `poll_timeout`, `backoff_min` and `backoff_max` must be `1` or more. An invalid value makes `WaterDrop::Polling::Config.setup` raise `WaterDrop::Errors::ConfigurationInvalidError`.
+
 ### Priority Differentiation
 
 In FD mode, you can use `polling.fd.max_time` to differentiate polling priority between producers. Producers with a higher `max_time` value will receive more polling time per cycle:
