@@ -55,6 +55,8 @@ Once included in your RSpec setup, this library will provide you with a special 
 
     Messages that target the topic built using the `karafka#consumer_for` method are additionally delivered to the consumer that you want to test.
 
+    Without the `topic:` option, `#produce` sends the message to the topic of the consumer. When you give no `topic:` and build no consumer, `#produce` raises `Karafka::Testing::Errors::TopicNotDefinedError`.
+
 ### Testing Messages Consumption (Consumers)
 
 This section demonstrates how to effectively test your Karafka consumers using the testing library. You will learn how to create consumer instances, send test messages, and verify that your consumers process messages correctly. The following example shows a complete test case for an InlineBatchConsumer that receives multiple messages, processes them, and logs results.
@@ -557,6 +559,8 @@ Your Minitest environment is configured with Karafka testing capabilities. You h
 !!! info "Consumer Testing Behavior"
 
     Messages that target the topic built using the `karafka#consumer_for` method will additionally be delivered to the consumer you want to test.
+
+    Without the `topic:` option, `#produce` sends the message to the topic of the consumer. When you give no `topic:` and build no consumer, `#produce` raises `Karafka::Testing::Errors::TopicNotDefinedError`.
 
 ### Testing Messages Consumption (Consumers) - Minitest
 

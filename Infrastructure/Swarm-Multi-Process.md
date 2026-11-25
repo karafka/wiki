@@ -191,7 +191,7 @@ Upon identifying a node that requires a shutdown, either due to delayed health r
 
 - **KILL Signal**: If the node fails to shut down within the specified `shutdown_timeout` period, the supervisor escalates its intervention by sending a KILL signal. This forcefully terminates the node, ensuring the system can recover from the situation but at the risk of abrupt process termination.
 
-Following a node's shutdown - graceful or forceful - Karafka imposes a mandatory delay of at least 5 seconds before attempting to restart the node. This deliberate pause serves a crucial purpose:
+Following a node's shutdown - graceful or forceful - Karafka waits `config.internal.swarm.node_restart_timeout` (5 seconds by default) before it restarts the node. While the swarm is quieting or stopping, Karafka does not restart nodes. This pause serves a crucial purpose:
 
 - **Preventing System Overload**: By waiting before restarting a node, Karafka mitigates the risk of entering a rapid, endless loop of immediate process death and restart. Such scenarios can arise from external factors that instantaneously cause a newly spawned process to fail. The delay ensures that the system has a brief period to stabilize, assess the environment, and apply any necessary corrections before reintroducing the node into the swarm.
 
