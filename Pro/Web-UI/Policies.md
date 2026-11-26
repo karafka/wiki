@@ -170,6 +170,32 @@ Below you can find an example of the effect of the usage of a similar sanitizer 
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/explorer_sanitization.png" alt="karafka web displayed data sanitization" />
 </p>
 
+### Consumer Groups Policies
+
+Configured via `ui.policies.consumer_groups`, this policy controls actions on consumer groups and their committed offsets. It requires one method:
+
+- `#delete_offsets?` - should it be allowed to delete the committed offsets of a consumer group for a topic
+
+`#delete_offsets?` receives the consumer group ID and the topic name. The default policy denies it, because the deletion cannot be undone. The action is on the Topics tab of a consumer group page in the [Health Consumer Groups](Pro-Web-UI-Health#consumer-groups) view.
+
+Below is an example of a policy that allows deleting offsets only for consumer groups with a given prefix:
+
+```ruby
+class MyCustomConsumerGroupsPolicy
+  def delete_offsets?(consumer_group_id, _topic_name)
+    consumer_group_id.start_with?('staging_')
+  end
+end
+```
+
+Once your policy is ready, you need to replace the default one in the configuration as follows:
+
+```ruby
+Karafka::Web.setup do |config|
+  config.ui.policies.consumer_groups = MyCustomConsumerGroupsPolicy.new
+end
+```
+
 ## Example Use Cases
 
 The filtering and sanitization feature can be handy in various scenarios, such as:

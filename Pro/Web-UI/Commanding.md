@@ -154,7 +154,7 @@ The partition pause feature allows you to temporarily stop message processing fo
 
 #### Topic-Level Pause/Resume
 
-For scenarios where you need to pause all partitions of a topic simultaneously, Karafka provides topic-level pause controls accessible from the Overview tab of each topic in the Health view.
+The Overview tab of each topic in the Health view has the Pause All and Resume All buttons. They pause or resume all partitions of the topic at once.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-topic-controls.png" alt="Karafka Web UI topic-level Pause All and Resume All buttons in the Health topic Overview tab" />

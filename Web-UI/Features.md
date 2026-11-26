@@ -124,7 +124,7 @@ This page provides a real-time view of the jobs that are currently being process
 
     The Health dashboard is part of [Karafka Pro](https://karafka.io/#become-pro).
 
-This dashboard view shows Karafka consumers' groups' health state with their lag aggregated information and basic trends.
+This dashboard shows the health and lags of consumer groups, as Karafka processes report them and as Kafka stores them.
 
 [Here](Pro-Web-UI-Health) you can learn more about the information available in this dashboard view.
 
@@ -186,6 +186,8 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 - `Occurred at` - Moment in time when the error occurred.
 - `Backtrace` - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error). Gem and Ruby frames are muted, so the application frames stand out. The directory prefix that the application paths share is collapsed behind an ellipsis, with a toggle to show the full paths.
 
+The Errors page lists only partition 0 of the errors topic. When the errors topic has more than one partition, the page shows a notice with the partition count and the partitions it does not list. [Karafka Pro](Pro-Web-UI#errors) lists the errors from all partitions.
+
 For `ForcefulShutdownError` entries specifically, the details table also includes `active_listeners`, `alive_workers`, and `in_processing` (per-job blocking/non-blocking status), giving you visibility into what was still running when the forceful shutdown happened.
 
 For failed message deliveries (`librdkafka.dispatch_error` entries), the details table includes the `topic`, `partition`, and `offset` of the message and its delivery outcome:
@@ -195,8 +197,6 @@ For failed message deliveries (`librdkafka.dispatch_error` entries), the details
 - `broker_id` - ID of the broker the message was produced to, when known.
 
 See [Persistence Status, Latency, and Broker ID](WaterDrop-Usage#persistence-status-latency-and-broker-id) for what each status means.
-
-The Errors page lists only partition 0 of the errors topic. When the errors topic has more than one partition, the page shows a notice with the partition count and the partitions it does not list. [Karafka Pro](Pro-Web-UI#errors) lists the errors from all partitions.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
