@@ -458,7 +458,7 @@ topic :topic_name do
 end
 ```
 
-Karafka validates the routes when you draw them. A consumer that is not a class or a class name (`String` or `Symbol`), such as a consumer instance, raises `Karafka::Errors::InvalidConfigurationError` with the message `needs to be a consumer class or its name as a String or Symbol`.
+A consumer that is not a class or a class name (`String` or `Symbol`), such as a consumer instance, raises `Karafka::Errors::InvalidConfigurationError` with the message `needs to be a consumer class or its name as a String or Symbol`.
 
 This design decision offers several important benefits:
 
