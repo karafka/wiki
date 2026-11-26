@@ -142,7 +142,7 @@ Partition-level controls are accessible from two main locations:
 2. **Consumer Subscriptions**: Navigating to a specific consumer process shows its subscriptions with partition management options
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI partition controls in Health overview" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI partition controls in the Health topic Overview tab" />
 </p>
 
 ### Pause and Resume Partitions
@@ -157,7 +157,7 @@ The partition pause feature allows you to temporarily stop message processing fo
 For scenarios where you need to pause all partitions of a topic simultaneously, Karafka provides topic-level pause controls accessible from the Overview tab of each topic in the Health view.
 
 <p align="center">
-  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-topic-controls.png" alt="Karafka Web UI topic-level Pause All and Resume All buttons in Health overview" />
+  <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-topic-controls.png" alt="Karafka Web UI topic-level Pause All and Resume All buttons in the Health topic Overview tab" />
 </p>
 
 To pause all partitions of a topic:

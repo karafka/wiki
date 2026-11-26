@@ -12,7 +12,7 @@ The Health section has three tabs:
 
 ## Static Membership Identification
 
-When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in the consumer Subscriptions and Memberships tabs and next to the process in the Health partition views, making it easier to identify specific consumer instances.
+When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in the consumer Subscriptions and Memberships tabs and next to the process in the Overview tab of each topic under **Health → Topics**, making it easier to identify specific consumer instances.
 
 Static membership IDs are particularly useful for:
 
