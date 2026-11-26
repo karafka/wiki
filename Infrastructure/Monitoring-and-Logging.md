@@ -824,7 +824,7 @@ Kubernetes is an open-source platform for automating the deployment and manageme
 
     WaterDrop has a separate instrumentation layer that you need to enable if you want to monitor both the consumption and production of messages. You can use the same approach as Karafka and WaterDrop share the same core monitoring library.
 
-To trace an event without a block, open a span with `Tracer#start_span` on its "before" event (for example, `consumer.consume`) and make it current with `OpenTelemetry::Context.attach`. Close it with `Span#finish` and `OpenTelemetry::Context.detach` on the matching "after" event (for example, `consumer.consumed`) or on `error.occurred`.
+To trace an event without a block, open a span with `Tracer#start_span` on its "before" event (for example, `consumer.consume`) and make it current with `OpenTelemetry::Context.attach(OpenTelemetry::Trace.context_with_span(span))`, which returns a token. Close it with `Span#finish` and pass that token to `OpenTelemetry::Context.detach` on the matching "after" event (for example, `consumer.consumed`) or on `error.occurred`.
 
 Another way is to subclass the default `Monitor` and run the traced events inside the `#in_span` block of the OpenTelemetry tracer. Below is an example that traces the `consumer.consumed` event. You can use this approach to trace any events Karafka publishes:
 
