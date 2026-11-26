@@ -1,4 +1,10 @@
-The health views of the Web UI display the current status of all the running Karafka instances aggregated on a per-consumer-group basis. Those views allow users to monitor the health of their messages consumption and troubleshoot any issues that may arise including issues related to hanging transactions (LSO issues). It also allows quick identification of performance bottlenecks and can help with capacity planning.
+The health views of the Web UI display the status of your consumer groups: as the running Karafka processes report it, and as Kafka stores it for every consumer group in the cluster. Those views allow users to monitor the health of their messages consumption and troubleshoot any issues that may arise including issues related to hanging transactions (LSO issues). It also allows quick identification of performance bottlenecks and can help with capacity planning.
+
+The Health section has three tabs:
+
+- **Topics**: the consumer groups and topics that your Karafka processes report, with drill-down to partitions.
+- **Cluster Lags**: lags as Kafka stores them, independent of the consumer processes. See [Cluster Lags](#cluster-lags).
+- **Consumer Groups**: every consumer group in the cluster. See [Consumer Groups](#consumer-groups).
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-health.png" alt="Karafka Web UI health view"/>
@@ -6,7 +12,7 @@ The health views of the Web UI display the current status of all the running Kar
 
 ## Static Membership Identification
 
-When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in both the subscription views and the Health Overview, making it easier to identify specific consumer instances.
+When using Kafka's static membership feature (`group.instance.id`), the Web UI displays the static membership ID for each subscription group in consumer reports. This identifier appears in the consumer Subscriptions and Memberships tabs and next to the process in the Overview tab of each topic under **Health → Topics**.
 
 Static membership IDs are particularly useful for:
 
@@ -90,6 +96,19 @@ Focusing on the lag data directly from Kafka lets you gain insights into system 
     - Remember that Web UI is designed for operational monitoring, not as an analytical platform like Datadog
 
     For accurate lag information during consumer pauses, rely on the Cluster Lags view, which always reflects the true state from Kafka's perspective.
+
+## Consumer Groups
+
+The Consumer Groups tab lists every consumer group in the cluster with its state, as Kafka reports it. This includes groups that the Web UI does not track: groups of other applications, groups of applications that are down, and leftover `empty` groups. The Cluster Lags view links each consumer group to its page.
+
+A consumer group page has four tabs:
+
+- **Overview**: state, protocol, partition assignor and coordinator.
+- **Members**: member ID, client ID, host, static membership ID and assignment of each member. A member that runs in a Karafka process reporting to the Web UI links to that process.
+- **Topics**: total, maximum and average lag of each topic for which the group has committed offsets, with the Delete Offsets action.
+- **Committed Offsets**: committed offset and lag of each partition.
+
+The Delete Offsets action deletes the committed offsets of the group for one topic, after a confirmation. The deletion cannot be undone, so the `#delete_offsets?` policy of `ui.policies.consumer_groups` denies it by default. See [Consumer Groups Policies](Pro-Web-UI-Policies#consumer-groups-policies) for how to allow it.
 
 ## See Also
 

@@ -44,6 +44,8 @@ Consumer process inspection view provides real-time visibility into the performa
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-consumer-subscriptions.png" alt="Karafka Web UI consumer process subscriptions view"/>
 </p>
 
+The Memberships tab lists one row per subscription group of the process, with its consumer group, member ID, static membership ID, state and join state. The member ID is the one that the Members tab of the [Health Consumer Groups](Pro-Web-UI-Health#consumer-groups) view lists for the group.
+
 ### Consumer Jobs Inspection
 
 The consumer jobs inspection view provides real-time visibility into the jobs running at the current moment on a given consumer instance.
@@ -66,7 +68,7 @@ This feature has its own dedicated documentation that you can access [here](Pro-
 
 ## Health
 
-This dashboard views show Karafka consumers' groups' health states with their lag aggregated information and basic trends.
+This dashboard shows the health and lags of consumer groups, as Karafka processes report them and as Kafka stores them.
 
 [Here](Pro-Web-UI-Health) you can learn more about the health information available in this dashboard view.
 
@@ -116,6 +118,7 @@ Enhanced Web UI errors provide a few enhancements:
 
 - Supports error tracking on a high-scale due to the support of multiple partitions for the error topic.
 - Supports errors backtrace reporting in the dashboard.
+- Links the `Origin` badge on the errors list to the Explorer: to the last offset of the failed batch when it is known, else to the partition, else to the topic.
 
 It allows for easier debuggability and error exploration, enabling users to perform real-time data analysis and troubleshoot issues faster.
 
