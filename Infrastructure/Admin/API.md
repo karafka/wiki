@@ -847,7 +847,7 @@ The `:assignment` of a member maps each topic name to an array of partitions. Th
 
 !!! warning "Stop Both Consumer Groups Before Renaming"
 
-    Use this method only when neither the old nor the new consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When either consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised. Karafka checks the old consumer group before it copies any offsets, so neither consumer group changes.
+    Use this method only when neither the old nor the new consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When either consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised. When the old consumer group has active members at the start, Karafka copies no offsets. When a member joins it later, the new consumer group keeps the copied offsets.
 
 The `.rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
 
