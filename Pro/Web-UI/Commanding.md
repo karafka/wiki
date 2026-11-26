@@ -138,7 +138,7 @@ In addition to process-level control, Karafka offers granular control over indiv
 
 Partition-level controls are accessible from two main locations:
 
-1. **Health Overview**: The Health dashboard displays all active consumer group partitions with action buttons for offset adjustment and pause control
+1. **Health Topics**: The Overview tab of each topic in the Health view displays its consumer group partitions with action buttons for offset adjustment and pause control
 2. **Consumer Subscriptions**: Navigating to a specific consumer process shows its subscriptions with partition management options
 
 <p align="center">
@@ -154,7 +154,7 @@ The partition pause feature allows you to temporarily stop message processing fo
 
 #### Topic-Level Pause/Resume
 
-For scenarios where you need to pause all partitions of a topic simultaneously, Karafka provides topic-level pause controls accessible from the Health Overview page.
+For scenarios where you need to pause all partitions of a topic simultaneously, Karafka provides topic-level pause controls accessible from the Overview tab of each topic in the Health view.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/pro-commanding-topic-controls.png" alt="Karafka Web UI topic-level Pause All and Resume All buttons in Health overview" />
@@ -162,8 +162,8 @@ For scenarios where you need to pause all partitions of a topic simultaneously, 
 
 To pause all partitions of a topic:
 
-1. Navigate to **Health → Overview**
-2. Locate the topic you want to pause
+1. Navigate to **Health → Topics**
+2. Open the topic you want to pause
 3. Click the **Pause All** button (submits as "Pause All Active Partitions")
 4. Configure pause settings (duration and safety options)
 5. Confirm the operation
@@ -178,7 +178,7 @@ The command is broadcast to all consumer processes, with each process applying t
 - **Emergency response**: Quickly halting all consumption when issues are detected
 - **Resource management**: Freeing up resources across all consumers processing a topic
 
-To resume all paused partitions of a topic, use the corresponding **Resume All** button from the same Health Overview interface.
+To resume all paused partitions of a topic, use the corresponding **Resume All** button on the same topic Overview tab.
 
 !!! info "Cross-Process Coordination"
 
@@ -192,7 +192,7 @@ The partition pause feature allows you to temporarily stop message processing fo
 
 To pause a partition:
 
-1. Navigate to **Health → Overview** or to a specific consumer's subscriptions
+1. Navigate to a topic Overview tab under **Health → Topics** or to a specific consumer's subscriptions
 2. Locate the partition you want to pause
 3. Click the **Pause** button (pause icon)
 4. Enter pause configuration:
@@ -222,7 +222,7 @@ To pause a partition:
 
 To resume a paused partition:
 
-1. Navigate to **Health → Overview** or to a specific consumer's subscriptions
+1. Navigate to a topic Overview tab under **Health → Topics** or to a specific consumer's subscriptions
 2. Locate the paused partition (indicated by "paused" status)
 3. Click the **Resume** button (play icon)
 4. In the Resume dialog, optionally select:
@@ -245,7 +245,7 @@ The offset management feature allows you to adjust the position from which a con
 
 To adjust a partition offset:
 
-1. Navigate to **Health → Overview** or to a specific consumer's subscriptions
+1. Navigate to a topic Overview tab under **Health → Topics** or to a specific consumer's subscriptions
 2. Locate the partition to modify
 3. Click the **Edit Offset** button (pencil icon)
 4. Configure offset adjustment:

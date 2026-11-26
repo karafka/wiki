@@ -184,7 +184,7 @@ A Karafka errors page UI view allows users to inspect errors occurring during me
 - `Process name` - Name of the process on which the error occurred.
 - `Error` - Error type.
 - `Occurred at` - Moment in time when the error occurred.
-- `Backtrace` - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error).
+- `Backtrace` - Full backtrace that shows the sequence of methods and calls that lead up to an exception (an error). Gem and Ruby frames are muted, so the application frames stand out. The directory prefix that the application paths share is collapsed behind an ellipsis, with a toggle to show the full paths.
 
 For `ForcefulShutdownError` entries specifically, the details table also includes `active_listeners`, `alive_workers`, and `in_processing` (per-job blocking/non-blocking status), giving you visibility into what was still running when the forceful shutdown happened.
 
@@ -195,6 +195,8 @@ For failed message deliveries (`librdkafka.dispatch_error` entries), the details
 - `broker_id` - ID of the broker the message was produced to, when known.
 
 See [Persistence Status, Latency, and Broker ID](WaterDrop-Usage#persistence-status-latency-and-broker-id) for what each status means.
+
+The Errors page lists only partition 0 of the errors topic. When the errors topic has more than one partition, the page shows a notice with the partition count and the partitions it does not list. [Karafka Pro](Pro-Web-UI#errors) lists the errors from all partitions.
 
 <p align="center">
   <img src="https://karafka.io/assets/misc/printscreens/web-ui/errors1.png" alt="karafka web errors view" />
