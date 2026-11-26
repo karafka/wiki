@@ -39,8 +39,8 @@ The resource type tells which Kafka entity you configure: a topic, a broker or a
       <td>Represents a specific Kafka broker.</td>
     </tr>
     <tr>
-      <td><code>:consumer_group</code></td>
-      <td>Represents a single Kafka consumer group. Use the consumer group id as the resource <code>name</code>.</td>
+      <td><code>:group</code></td>
+      <td>Represents a single Kafka group, such as a consumer group. Use the group id as the resource <code>name</code>.</td>
     </tr>
   </tbody>
 </table>
@@ -183,7 +183,7 @@ Consumer group configurations work the same way. With the [next-generation consu
 
 ```ruby
 # Describe consumer group configurations
-resource = Karafka::Admin::Configs::Resource.new(type: :consumer_group, name: 'example_group')
+resource = Karafka::Admin::Configs::Resource.new(type: :group, name: 'example_group')
 groups = Karafka::Admin::Configs.describe(resource)
 groups.each do |group|
   group.configs.each do |config|
@@ -192,7 +192,7 @@ groups.each do |group|
 end
 
 # Alter consumer group configurations
-resource = Karafka::Admin::Configs::Resource.new(type: :consumer_group, name: 'example_group')
+resource = Karafka::Admin::Configs::Resource.new(type: :group, name: 'example_group')
 # Set the session timeout to 50 seconds
 resource.set('consumer.session.timeout.ms', '50000')
 

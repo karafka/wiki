@@ -847,9 +847,7 @@ The `:assignment` of a member maps each topic name to an array of partitions. Th
 
 !!! warning "Stop Both Consumer Groups Before Renaming"
 
-    Use this method only when neither the old nor the new consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When the new consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and its offsets stay unchanged. The old consumer group is not checked: its consumers keep committing offsets after Karafka reads them.
-
-    With the default `delete_previous: true`, the offsets are copied to the new consumer group before the old one is deleted. When the old consumer group has active members, its deletion raises `Rdkafka::RdkafkaError` with the `non_empty_group` code, and both consumer groups keep the copied offsets.
+    Use this method only when neither the old nor the new consumer group has active members. Kafka accepts offset changes only for consumer groups without active members. When either consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised. When the old consumer group has active members at the start, Karafka copies no offsets. When a member joins it later, the new consumer group keeps the copied offsets.
 
 The `.rename_consumer_group` method in Karafka Admin API allows you to rename an existing consumer group while preserving its offsets for specific topics. This method is beneficial when reorganizing or consolidating consumer group names without losing track of the consumption state.
 
@@ -903,7 +901,7 @@ Unlike `#rename_consumer_group`, this method preserves the source consumer group
 
 !!! warning "Stop the Consumer Group Before Deleting It"
 
-    Kafka deletes only consumer groups without active members. When the consumer group has active members, `Rdkafka::RdkafkaError` with the `non_empty_group` code is raised and the consumer group keeps its offsets. Stop its consumers, then delete it. When the consumer group does not exist, `Rdkafka::RdkafkaError` with the `group_id_not_found` code is raised.
+    Kafka deletes only consumer groups without active members. When the consumer group has active members, `Karafka::Errors::ConsumerGroupNotEmptyError` is raised and the consumer group keeps its offsets. Stop its consumers, then delete it. When the consumer group does not exist, `Rdkafka::RdkafkaError` with the `group_id_not_found` code is raised.
 
 The `Karafka::Admin.delete_consumer_group` method is designed to remove an existing consumer group from a Kafka cluster. This method effectively disbands the specified group, removing its metadata and state from the Kafka cluster.
 
