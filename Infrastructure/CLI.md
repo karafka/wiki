@@ -1,15 +1,51 @@
 Karafka has a simple CLI built in. It provides the following commands:
 
-| Command       | Description                                                                             |
-|---------------|-----------------------------------------------------------------------------------------|
-| help          | Describe available commands                                                             |
-| console       | Start the Karafka irb console similar to the Rails console (short-cut alias: "c")       |
-| info          | Print configuration details and other options of your application                       |
-| install       | Installs all required things for Karafka application in current directory               |
-| server        | Start the Karafka server (short-cut aliases: "s", "consumer")                           |
-| swarm         | Start the Karafka server in the swarm mode (multiple forked processes)                  |
-| topics        | Allows for topics management (create, delete, repartition, reset, migrate, align, plan) |
-| topics health | Check Kafka topics for replication and durability issues (Pro)                          |
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>help</code></td>
+      <td>Describe available commands</td>
+    </tr>
+    <tr>
+      <td><code>console</code></td>
+      <td>Start the Karafka irb console similar to the Rails console (shortcut alias: "c")</td>
+    </tr>
+    <tr>
+      <td><code>info</code></td>
+      <td>Print configuration details and other options of your application</td>
+    </tr>
+    <tr>
+      <td><code>install</code></td>
+      <td>Install the Karafka boot file, an <code>ApplicationConsumer</code> base class, an example consumer and the log directory in the current directory</td>
+    </tr>
+    <tr>
+      <td><code>server</code></td>
+      <td>Start the Karafka server (shortcut aliases: "s", "consumer")</td>
+    </tr>
+    <tr>
+      <td><code>swarm</code></td>
+      <td>Start the Karafka server in the swarm mode (multiple forked processes)</td>
+    </tr>
+    <tr>
+      <td><code>topics</code></td>
+      <td>Manage topics (create, delete, repartition, reset, migrate, align, plan)</td>
+    </tr>
+    <tr>
+      <td><code>topics health</code></td>
+      <td>Check Kafka topics for replication and durability issues (Pro)</td>
+    </tr>
+    <tr>
+      <td><code>vps</code></td>
+      <td>Display Virtual Partitions Estimator reports (Pro)</td>
+    </tr>
+  </tbody>
+</table>
 
 All the commands are executed the same way:
 
@@ -136,6 +172,40 @@ The extended output adds three sections:
 !!! info "Sensitive Kafka Values Are Redacted"
 
     Karafka prints `[REDACTED]` instead of the value of each `kafka` setting whose name contains `password`, `passphrase`, `secret`, `token`, `sasl.oauthbearer.client`, `private.key.pem`, `ssl.key.pem` or `ssl_key` (case-insensitive). This applies to the Kafka Config section and to the per-topic `kafka` settings. Karafka does not redact other values, so `ssl.certificate.pem` and `ssl.ca.pem` are printed.
+
+## Karafka Virtual Partitions
+
+!!! info "`vps` Is a Pro Command"
+
+    The `vps` command is part of [Karafka Pro](https://karafka.io/#become-pro).
+
+The `vps` command (long name: `virtual_partitions`) displays the JSON reports of the [Virtual Partitions Estimator](Pro-Consumer-Groups-Virtual-Partitions#estimating-the-benefit) as plain text. It applies to consumer groups only. Generate the report first from the Karafka console:
+
+```ruby
+Karafka::Pro::Processing::ConsumerGroups::VirtualPartitions::Estimator
+  .new
+  .call('orders', target_file: 'report.json')
+```
+
+Then display it:
+
+```shell
+# Reads the consumer_groups.virtual_partitions.estimator.report_file path ("report.json" by default)
+bundle exec karafka vps estimate-report
+
+# Reads the given file
+bundle exec karafka vps estimate-report path/to/report.json
+```
+
+`estimate-report` is the default action, so `bundle exec karafka vps` does the same. `bundle exec karafka vps help` lists the available actions.
+
+The report shows the settings used and a table with the stats of each partition. It then shows a summary with the score, the verdict and suggestions. It ends with the limitations: equal processing cost per message, full batches and a worker pool shared with other partitions and topics. For the meaning of the values, see [Reading the Result](Pro-Consumer-Groups-Virtual-Partitions#reading-the-result).
+
+When the report cannot be displayed:
+
+- A missing file raises `Errno::ENOENT`.
+- A file that is not valid JSON raises `JSON::ParserError`.
+- A report that does not pass validation prints the validation errors on one line and exits with code 1. A report with the format version of another Karafka version is one example.
 
 ## Karafka Swarm
 
