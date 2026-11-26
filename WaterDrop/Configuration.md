@@ -274,12 +274,12 @@ Run this setup before you create the first FD-mode producer. The poller reads `t
     </tr>
     <tr>
       <td><code>backoff_min</code></td>
-      <td>Time in milliseconds the poller waits after the first error in its polling loop.</td>
+      <td>Time in milliseconds the poller waits after an error in its polling loop before it polls again.</td>
       <td><code>100</code></td>
     </tr>
     <tr>
       <td><code>backoff_max</code></td>
-      <td>Maximum wait in milliseconds after errors in the polling loop. The wait doubles on each consecutive error up to this value. It must be greater than or equal to <code>backoff_min</code>.</td>
+      <td>Upper limit in milliseconds of the wait after an error in the polling loop. It must be greater than or equal to <code>backoff_min</code>.</td>
       <td><code>30000</code></td>
     </tr>
   </tbody>
