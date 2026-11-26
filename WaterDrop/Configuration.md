@@ -242,7 +242,7 @@ The following options are available under the `config.polling` namespace:
 
 ### Global Poller Configuration
 
-The poller that runs FD-mode producers has its own settings. They are global: they apply to the shared poller and to every dedicated `WaterDrop::Polling::Poller`. Set them with `WaterDrop::Polling::Config.setup`, not inside the producer configuration:
+The poller that runs FD-mode producers has its own settings. They are global: they apply to all FD-mode producers, also those with a [dedicated poller](#dedicated-poller). Set them with `WaterDrop::Polling::Config.setup`, not inside the producer configuration:
 
 ```ruby
 WaterDrop::Polling::Config.setup do |config|
@@ -251,7 +251,7 @@ WaterDrop::Polling::Config.setup do |config|
 end
 ```
 
-Run this setup before you create the first FD-mode producer. The poller reads `thread_priority` when its thread starts and caches `poll_timeout` on first use, so a later change may not reach a poller that already runs.
+Run this setup before you create the first FD-mode producer. A later change does not affect the thread priority or poll timeout of a poller that already runs.
 
 <table>
   <thead>
