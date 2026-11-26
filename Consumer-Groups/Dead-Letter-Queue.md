@@ -215,7 +215,7 @@ If you need messages dispatched to the DLQ topic to preserve order, you either n
 
 ## Manual DLQ Dispatch
 
-When the Dead Letter Queue is enabled, Karafka will provide you with an additional method called `#dispatch_to_dlq` that you can use to transfer messages to the DLQ topic. You can use it if you encounter messages you do not want to deal with but do not want to raise an exception:
+When the Dead Letter Queue is enabled, Karafka provides an additional method called `#dispatch_to_dead_letter_queue` that you can use to transfer messages to the DLQ topic. You can use it if you encounter messages you do not want to deal with but do not want to raise an exception:
 
 ```ruby
 class OrdersStatesConsumer < Karafka::BaseConsumer
@@ -225,7 +225,7 @@ class OrdersStatesConsumer < Karafka::BaseConsumer
         EventsImporter.import(message.payload)
       else
         # Skip on messages that are not valid without raising an exception
-        dispatch_to_dlq(message)
+        dispatch_to_dead_letter_queue(message)
       end
 
       mark_as_consumed(message)
@@ -233,6 +233,8 @@ class OrdersStatesConsumer < Karafka::BaseConsumer
   end
 end
 ```
+
+Karafka also supports the shorter name `#dispatch_to_dlq` for the same method.
 
 ## Monitoring and Instrumentation
 

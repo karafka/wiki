@@ -93,7 +93,7 @@ Each copied message keeps the payload, the key and the headers of the DLQ messag
 - Karafka removes the Enhanced DLQ `source_*` headers: `source_topic`, `source_partition`, `source_offset`, `source_consumer_group`, `source_attempts` and `source_trace_id`.
 - Karafka sets the `replay_count` header to its previous value plus one. On the first copy it is `1`.
 
-If a copied message fails again, the Enhanced DLQ by default produces it back to the DLQ topic with its `replay_count` header. A custom [`#enhance_dlq_message`](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) keeps this header only if it keeps the original headers. Use this header to find messages that you replay repeatedly. Karafka does not act on it.
+If a copied message fails again, the Enhanced DLQ by default produces it back to the DLQ topic with its `replay_count` header. A custom [`#enhance_dead_letter_queue_message`](Pro-Consumer-Groups-Enhanced-Dead-Letter-Queue#adding-custom-details-to-the-dlq-message) keeps this header only if it keeps the original headers. Use this header to find messages that you replay repeatedly. Karafka does not act on it.
 
 ## How the Copy Works
 

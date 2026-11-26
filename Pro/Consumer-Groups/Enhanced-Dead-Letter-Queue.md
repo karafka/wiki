@@ -146,7 +146,7 @@ end
 
 ## Adding Custom Details To the DLQ Message
 
-If you want to add some extra information or change anything in the message that will be dispatched to the DLQ topic, you can do it by defining a custom method called `#enhance_dlq_message` in your consumer class.
+To add details to or change the message that Karafka produces to the DLQ topic, define a method called `#enhance_dead_letter_queue_message` in your consumer class. Karafka also supports the shorter name `#enhance_dlq_message` with the same arguments and uses it only when `#enhance_dead_letter_queue_message` is not defined.
 
 It accepts two arguments:
 
@@ -163,7 +163,7 @@ class MyConsumer
 
   private
 
-  def enhance_dlq_message(dlq_message, skippable_message)
+  def enhance_dead_letter_queue_message(dlq_message, skippable_message)
     # Replace the DLQ message payload with a hash containing the original raw payload as well as
     # process pid
     #
@@ -187,7 +187,7 @@ end
 
 Karafka Pro copies the original message `key` to the DLQ message. When the source message has no key, the DLQ message has none either, and Kafka refuses it on a topic with `cleanup.policy` set to `compact`. See the [DLQ compacting limitations](Consumer-Groups-Dead-Letter-Queue#compacting-limitations) for what happens then.
 
-To use a compacted DLQ topic, give each DLQ message a unique key with the `#enhance_dlq_message` consumer method:
+To use a compacted DLQ topic, give each DLQ message a unique key with the `#enhance_dead_letter_queue_message` consumer method:
 
 ```ruby
 class MyConsumer
@@ -197,7 +197,7 @@ class MyConsumer
 
   private
 
-  def enhance_dlq_message(dlq_message, skippable_message)
+  def enhance_dead_letter_queue_message(dlq_message, skippable_message)
     dlq_message[:key] = [
       topic.name,
       skippable_message.partition,
@@ -278,9 +278,9 @@ When using [Virtual Partitions](Pro-Consumer-Groups-Virtual-Partitions), which o
 
 ## Accessing Error Context in DLQ Message Enhancement
 
-When customizing DLQ messages using the `#enhance_dlq_message` method, you may want to include information about the specific error that caused the message to be dispatched to the DLQ. This can be particularly useful for debugging, monitoring, or implementing error-specific recovery strategies.
+When customizing DLQ messages using the `#enhance_dead_letter_queue_message` method, you may want to include information about the specific error that caused Karafka to produce the message to the DLQ.
 
-You can access the error information through the `#errors_tracker` method within your `#enhance_dlq_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
+You can access the error information through the `#errors_tracker` method within your `#enhance_dead_letter_queue_message` implementation. The errors tracker provides access to the history of errors that occurred during message processing, allowing you to include error details in the DLQ message headers or payload.
 
 Here is an example of how to add error information to your DLQ messages:
 
@@ -293,7 +293,7 @@ class MyConsumer
 
   private
 
-  def enhance_dlq_message(dlq_message, skippable_message)
+  def enhance_dead_letter_queue_message(dlq_message, skippable_message)
     # Add error class information to headers
     dlq_message[:headers]['error_class'] = errors_tracker.last.class.to_s
 
