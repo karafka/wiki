@@ -11,6 +11,7 @@
 - [Enhancement] Bump librdkafka to `2.16.0` for OpenSSL and libcurl security fixes. Admin requests in flight on a decommissioned broker now fail with a retryable transport error.
 - [Enhancement] Bump the bundled zlib to `1.4`.
 - [Enhancement] Bump the bundled MIT Kerberos (krb5) to `1.22.3` for security fixes.
+- [Enhancement] Bump the bundled zstd to `1.6.0` for a security fix (CVE-2026-124851).
 - [Enhancement] Build the bundled zlib with `-O2` in the glibc precompiled gems for faster gzip compression and decompression.
 - [Enhancement] Keep `partition_key` produces working during a cluster outage once the topic partition count is known, instead of raising.
 - [Enhancement] Make `Producer#produce` use about 13% less CPU per call.
@@ -41,6 +42,7 @@
 - [Fix] Report a failed consumer close to `Rdkafka::Config.error_callback` also when another thread closes the consumer at the same time, instead of only logging `ClosedInnerError`.
 - [Fix] Fix `Admin#close` freezing the process when an admin operation (e.g. `create_topic`) is still pending. The pending operation now fails with `destroy`. Ported from karafka-rdkafka (#657).
 - [Fix] Fail admin operations whose request is in flight at `Admin#close` (e.g. `alter_consumer_group_offsets`) with `destroy`, instead of leaving `wait` on their handles blocked until its timeout.
+- [Fix] Raise `Rdkafka::RdkafkaError` (`topic_exception`) from `#metadata`, `Producer#partition_count` and `Consumer#seek_by` for a topic name longer than 512 characters instead of crashing the process with a segmentation fault. Ported from karafka-rdkafka (#659).
 
 ## 0.31.0 (2026-10-09)
 - **[EOL]** Drop Ruby 3.2 support; require Ruby 3.3+.
