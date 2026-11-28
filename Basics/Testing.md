@@ -487,7 +487,7 @@ end
 
 ### Testing Consumer Groups and Topics Structure
 
-When designing your Karafka application, you may need to verify your consumer groups and topics configuration. Karafka provides a straightforward way to examine this structure through the `Karafka::App.routes` array and check everything you need. Here is an example of a RSpec spec that ensures a custom `XmlDeserializer` is being used to a `xml_data` topic from the `batched_group` consumer group:
+You can check your consumer groups and topics configuration in a spec through the `Karafka::App.routes` array. This RSpec spec checks that the `xml_data` topic from the `batched_group` consumer group uses a custom `XmlDeserializer`:
 
 ```ruby
 RSpec.describe Karafka::App.routes do
