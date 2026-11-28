@@ -450,9 +450,9 @@ The appropriate value for shutdown_timeout depends on your specific deployment c
 
 We recommend setting the `shutdown_timeout` to at least 30 seconds. A timeout of at least 90 seconds is advisable for larger deployments to ensure a smooth and stable rebalance process.
 
-!!! warning "The Platform Grace Period Must Be Longer Than `shutdown_timeout`"
+!!! warning "The Platform Grace Period Must Be Longer Than the Karafka Shutdown"
 
-    Heroku, Kubernetes and Amazon ECS kill a process with `SIGKILL` 30 seconds after `SIGTERM` (Kubernetes and Amazon ECS by default). With a longer `shutdown_timeout`, the platform kills Karafka before the shutdown ends. Raise the platform grace period above the longest Karafka shutdown time. On [Kubernetes](Infrastructure-Deployment#termination-grace-period), set `terminationGracePeriodSeconds`. On Amazon ECS, set the container [`stopTimeout`](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html), at most 120 seconds on Fargate. On [Heroku](Infrastructure-Deployment#shutdown-time-limit), lower `shutdown_timeout` instead.
+    Heroku, Kubernetes and Amazon ECS kill a process with `SIGKILL` 30 seconds after `SIGTERM` (Kubernetes and Amazon ECS by default). When the shutdown takes longer, for example with a job that runs past a 90-second `shutdown_timeout`, the platform kills Karafka before the shutdown ends. Raise the platform grace period above the longest Karafka shutdown time. On [Kubernetes](Infrastructure-Deployment#termination-grace-period), set `terminationGracePeriodSeconds`. On Amazon ECS, set the container [`stopTimeout`](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html), at most 120 seconds on Fargate. On [Heroku](Infrastructure-Deployment#shutdown-time-limit), lower `shutdown_timeout` instead.
 
 ### Static Group Membership Usage
 

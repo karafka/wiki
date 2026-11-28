@@ -465,7 +465,7 @@ end
 
 ### Shutdown Time Limit
 
-Heroku sends `SIGKILL` to a dyno process that is still running 30 seconds after `SIGTERM` and logs the `R12` (Exit timeout) error. The default `shutdown_timeout` of 60 seconds does not fit in this limit. Lower it so that the [longest time a Karafka process needs to stop](#termination-grace-period) is below 30 seconds:
+Heroku sends `SIGKILL` to a dyno process that is still running 30 seconds after `SIGTERM`. The default `shutdown_timeout` of 60 seconds does not fit in this limit. Lower it so that the [longest time a Karafka process needs to stop](#termination-grace-period) is below 30 seconds:
 
 ```ruby
 class KarafkaApp < Karafka::App
