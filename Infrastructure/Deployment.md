@@ -463,6 +463,21 @@ class KarafkaApp < Karafka::App
 end
 ```
 
+### Shutdown Time Limit
+
+Heroku sends `SIGKILL` to a dyno process that is still running 30 seconds after `SIGTERM`. The default `shutdown_timeout` of 60 seconds does not fit in this limit. Lower it so that the [longest time a Karafka process needs to stop](#termination-grace-period) is below 30 seconds:
+
+```ruby
+class KarafkaApp < Karafka::App
+  setup do |config|
+    # other config options...
+
+    # 20 seconds plus up to 5 seconds of forceful shutdown cleanup
+    config.shutdown_timeout = 20_000
+  end
+end
+```
+
 ### Heroku Retention Policy Impact on the Web UI
 
 Heroku's one-day default retention policy for Kafka may affect Karafka Web UI's functionality and reliability, leading to a lack of data and operational issues. The Web UI depends on continuous data flow and requires access to historical data for analytics. A one-day policy is insufficient for Web UI topics. To improve stability and reliability, we recommend configuring your Web UI topics according to our recommended defaults, which can be found [here](Web-UI-Getting-Started#manual-web-ui-topics-management).
@@ -595,6 +610,26 @@ class KarafkaApp < Karafka::App
     }
   end
 end
+```
+
+### Termination Grace Period
+
+Kubernetes sends `SIGTERM` to the container and, when the pod is still running after `terminationGracePeriodSeconds`, kills it with `SIGKILL`. This value defaults to 30 seconds, which is shorter than the default `shutdown_timeout` of 60 seconds. With the defaults, Kubernetes can kill a Karafka process before it finishes its graceful shutdown or runs its [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown).
+
+Set `terminationGracePeriodSeconds` above the longest time a Karafka process needs to stop:
+
+- A regular process: `shutdown_timeout` plus up to 5 seconds of the forceful shutdown cleanup (`forceful_shutdown_wait`), 65 seconds with the defaults.
+- A [Swarm](Infrastructure-Swarm-Multi-Process#behavior-on-shutdown) supervisor: `shutdown_timeout` plus 15 seconds before it kills the nodes still running, 75 seconds with the defaults.
+
+```yml
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 90
+      containers:
+        - name: app-name
+          image: app-docker-image
+          command: ["bundle", "exec", "karafka", "server"]
 ```
 
 ### Liveness
