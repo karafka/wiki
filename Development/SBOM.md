@@ -688,7 +688,7 @@ This page exists because of our commitment to security, compliance, and transpar
 
   <tr>
     <td>Zstandard (zstd)</td>
-    <td>1.5.7</td>
+    <td>1.6.0</td>
     <td><a rel="nofollow noopener noreferrer" href="https://github.com/facebook/zstd/blob/dev/LICENSE">BSD-3-Clause OR GPL-2.0</a></td>
     <td>Meta Platforms, Inc. and affiliates</td>
   </tr>
