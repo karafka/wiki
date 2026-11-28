@@ -20,7 +20,7 @@ bundle exec karafka install
 
 It will create all the needed directories and files and the `karafka.rb` configuration file. After that, you should be good to go.
 
-We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.5-rails) that illustrates integration with this framework.
+We also have an [example Ruby on Rails application](https://github.com/karafka/example-apps/tree/master/v2.6-rails) that illustrates integration with this framework.
 
 ## Integrating with Sinatra and other frameworks
 
