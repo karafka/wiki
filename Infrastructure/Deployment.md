@@ -571,26 +571,6 @@ For larger deployments with many consumer processes, it is especially important 
 
 Overall, when deploying Karafka consumers using Kubernetes, it is important to consider the deployment strategy carefully and to choose a strategy that will minimize the risk of rebalancing issues. By using the `Recreate` strategy and configuring Karafka with appropriate rebalancing strategies, you can ensure that your Karafka application stays reliable and performant.
 
-### Termination Grace Period
-
-Kubernetes sends `SIGTERM` to the container and, when the pod is still running after `terminationGracePeriodSeconds`, kills it with `SIGKILL`. This value defaults to 30 seconds, which is shorter than the default `shutdown_timeout` of 60 seconds. With the defaults, Kubernetes can kill a Karafka process before it finishes its graceful shutdown or runs its [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown).
-
-Set `terminationGracePeriodSeconds` above the longest time a Karafka process needs to stop:
-
-- A regular process: `shutdown_timeout` plus up to 5 seconds of the forceful shutdown cleanup (`forceful_shutdown_wait`), 65 seconds with the defaults.
-- A [Swarm](Infrastructure-Swarm-Multi-Process#behavior-on-shutdown) supervisor: `shutdown_timeout` plus 15 seconds before it kills the nodes still running, 75 seconds with the defaults.
-
-```yml
-spec:
-  template:
-    spec:
-      terminationGracePeriodSeconds: 90
-      containers:
-        - name: app-name
-          image: app-docker-image
-          command: ["bundle", "exec", "karafka", "server"]
-```
-
 ### Choosing the Right Rebalance Strategy
 
 **For teams running Kafka 4.0+:**
@@ -630,6 +610,26 @@ class KarafkaApp < Karafka::App
     }
   end
 end
+```
+
+### Termination Grace Period
+
+Kubernetes sends `SIGTERM` to the container and, when the pod is still running after `terminationGracePeriodSeconds`, kills it with `SIGKILL`. This value defaults to 30 seconds, which is shorter than the default `shutdown_timeout` of 60 seconds. With the defaults, Kubernetes can kill a Karafka process before it finishes its graceful shutdown or runs its [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown).
+
+Set `terminationGracePeriodSeconds` above the longest time a Karafka process needs to stop:
+
+- A regular process: `shutdown_timeout` plus up to 5 seconds of the forceful shutdown cleanup (`forceful_shutdown_wait`), 65 seconds with the defaults.
+- A [Swarm](Infrastructure-Swarm-Multi-Process#behavior-on-shutdown) supervisor: `shutdown_timeout` plus 15 seconds before it kills the nodes still running, 75 seconds with the defaults.
+
+```yml
+spec:
+  template:
+    spec:
+      terminationGracePeriodSeconds: 90
+      containers:
+        - name: app-name
+          image: app-docker-image
+          command: ["bundle", "exec", "karafka", "server"]
 ```
 
 ### Liveness

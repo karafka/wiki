@@ -70,8 +70,6 @@ A forceful shutdown is a **last resort**, and it is **expected that in-flight da
 
 This is intentional. Flushing the producer during a forceful shutdown would be risky exactly when it matters most: the producer (or its connection pool) may itself be the resource that is blocked - for example an unreachable broker - and waiting on it could stall or even hang the forceful exit whose entire purpose is to guarantee the process terminates.
 
-The forceful shutdown runs inside the Karafka process. Something can kill the process with `SIGKILL` first, for example a platform whose [grace period](Infrastructure-Deployment#termination-grace-period) is shorter than the shutdown. Then none of it runs: Karafka does not publish `app.stopping.error` on `error.occurred`, does not close the Kafka clients that are still open, and does not exit with code `2`.
-
 The blocking cleanup that Karafka does perform on this path (stopping the listeners' underlying clients) is time-boxed by the `forceful_shutdown_wait` setting - it defaults to `5_000` (milliseconds) and can be adjusted via `config.internal.forceful_shutdown_wait` - so that a hung resource cannot delay the forceful exit indefinitely.
 
 The cleanup first waits up to half of `forceful_shutdown_wait` for the terminated listener threads to end, so that no client is used from two threads at once. It then shuts down the client of each listener whose thread ended. A listener whose thread is still running keeps its client open, and Karafka instruments the `connection.listener.shutdown.skipped` event for it, with `caller`, `listener` and `subscription_group` in the payload. See [Instrumentation Events](Infrastructure-Instrumentation-Events) for the full list of events.
@@ -79,6 +77,8 @@ The cleanup first waits up to half of `forceful_shutdown_wait` for the terminate
 !!! note "Preventing Data Loss on Shutdown"
 
     If losing in-flight buffered data on shutdown is unacceptable for your workload, do not rely on the forceful path. Make sure jobs finish within `shutdown_timeout` - extend it to match your processing patterns, or investigate what is running longer than expected - so that shutdown completes gracefully and the producer is flushed normally.
+
+A platform whose [grace period](Infrastructure-Deployment#termination-grace-period) is shorter than the shutdown kills the process with `SIGKILL` before the forceful shutdown runs. Karafka then does not publish `app.stopping.error` on `error.occurred`, does not close the Kafka clients that are still open, and does not exit with code `2`.
 
 ## States
 
