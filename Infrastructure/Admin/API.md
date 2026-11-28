@@ -74,6 +74,7 @@ secondary_admin.topic_info('events')
 # Consumer group operations
 secondary_admin.list_consumer_groups
 secondary_admin.read_lags_with_offsets
+secondary_admin.read_committed_offsets(['my-group'])
 secondary_admin.seek_consumer_group('my-group', { 'events' => 0 })
 secondary_admin.delete_consumer_group('unused-group')
 
@@ -740,6 +741,29 @@ end
 - **Unconsumed Topics**: Topics with no recorded consumption by the specified consumer group will show a lag and offset of -1 for each partition, highlighting inactivity.
 
 - **Kafka-centric Lag Reporting**: The reported lags reflect Kafka's internal tracking rather than the consumer's acknowledged state, which may differ based on the consumer's internal processing.
+
+## Reading Committed Offsets of Consumer Groups
+
+`Karafka::Admin.read_committed_offsets` reads all the committed offsets of the consumer groups you provide. You do not provide topics or partitions, so the result also includes topics that are not in your routing. It does not read lags: for lags, use [`Karafka::Admin.read_lags_with_offsets`](#reading-lags-and-offsets-of-a-consumer-group).
+
+```ruby
+Karafka::Admin.read_committed_offsets(['billing'])
+
+# { 'billing' => { 'payments' => { 0 => 120, 1 => 98 } } }
+```
+
+The result maps each consumer group to its topics, and each topic to its partitions with their committed offsets. The consumer groups are in the order of the ids you provide. Only partitions with a committed offset are in the result. A consumer group without committed offsets, or one that does not exist, maps to an empty hash:
+
+```ruby
+Karafka::Admin.read_committed_offsets(%w[billing never-consumed])
+
+# {
+#   'billing' => { 'payments' => { 0 => 120, 1 => 98 } },
+#   'never-consumed' => {}
+# }
+```
+
+`Karafka::Admin::ConsumerGroups.read_committed_offsets` returns the same result and takes the consumer group ids as separate arguments: `read_committed_offsets('billing', 'never-consumed')`. On an Admin instance for a custom cluster, use `#read_committed_offsets`.
 
 ## Listing Consumer Groups
 
