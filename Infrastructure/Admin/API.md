@@ -744,7 +744,7 @@ end
 
 ## Reading Committed Offsets of Consumer Groups
 
-`Karafka::Admin.read_committed_offsets` reads all the committed offsets of the consumer groups you provide. You do not provide topics or partitions, so the result also includes topics that are not in your routing. It does not read lags: for lags, use [`#read_lags_with_offsets`](#reading-lags-and-offsets-of-a-consumer-group).
+`Karafka::Admin.read_committed_offsets` reads all the committed offsets of the consumer groups you provide. You do not provide topics or partitions, so the result also includes topics that are not in your routing. It does not read lags: for lags, use [`Karafka::Admin.read_lags_with_offsets`](#reading-lags-and-offsets-of-a-consumer-group).
 
 ```ruby
 Karafka::Admin.read_committed_offsets(['billing'])
@@ -762,8 +762,6 @@ Karafka::Admin.read_committed_offsets(%w[billing never-consumed])
 #   'never-consumed' => {}
 # }
 ```
-
-Karafka takes the isolation level from the `isolation.level` of your `kafka` settings. With `read_committed`, the default, it returns only stable committed offsets, as consumers do.
 
 `Karafka::Admin::ConsumerGroups.read_committed_offsets` returns the same result and takes the consumer group ids as separate arguments: `read_committed_offsets('billing', 'never-consumed')`. On an Admin instance for a custom cluster, use `#read_committed_offsets`.
 
