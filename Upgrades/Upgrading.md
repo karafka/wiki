@@ -38,6 +38,19 @@ The practical recommendation is: **apply patch releases as soon as they are avai
 
     It is **recommended** always to upgrade Karafka with its dependencies together and to always run the most recent resolvable versions of all the libraries creating the Karafka ecosystem.
 
+    !!! warning "Rails Apps Can Break When the `json` Gem Resolves to 3.x"
+
+        `karafka-rdkafka` depends on `json` (`> 2.0`). If your `Gemfile.lock` has no `json` entry, this command can install `json` 3.x. The `json` 3.x gem raises `ArgumentError` for unknown options, and Active Support passes such options on some Rails versions:
+
+        - **Rails 7.1.x, 7.2.0 - 7.2.3.2 and 8.0.x:** every `#to_json` call raises `unknown keyword: quirks_mode`. With the Web UI enabled, `karafka server` exits at boot with `Runner crashed`, because the Web UI reporter calls `#to_json`. Active Job `#perform_later` also raises.
+        - **Rails 8.1.0 - 8.1.3.1:** `karafka server` runs, but every Active Job batch fails in the Karafka Active Job deserializer with `wrong number of arguments (given 2, expected 1)` and is retried. No job runs.
+        - **Rails 7.2.4 and 8.1.4 or newer:** not affected.
+
+        To prevent this, do one of these before you run the update:
+
+        - Add `gem 'json', '< 3'` to your `Gemfile`.
+        - Upgrade Rails to 7.2.4, 8.1.4 or newer.
+
 1. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
 
 1. **Test and deploy to staging**: Before deploying the upgraded Karafka application to production, it is recommended to run comprehensive tests to ensure functionality and catch any issues or regressions. Additionally, using a staging environment that resembles the production environment allows for extensive testing and validation before deployment. This helps ensure a smoother deployment process by verifying functionality, detecting regressions, and validating performance.
