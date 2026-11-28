@@ -40,16 +40,16 @@ The practical recommendation is: **apply patch releases as soon as they are avai
 
     !!! warning "Rails Apps Can Break When the `json` Gem Resolves to 3.x"
 
-        `karafka-rdkafka` depends on `json` (`> 2.0`). Unless your `Gemfile` keeps `json` below 3, this command can install `json` 3.x, also when `Gemfile.lock` has `json` 2.x. The `json` 3.x gem raises `ArgumentError` for unknown options, and Active Support passes such options on some Rails versions:
+        `karafka-rdkafka` depends on `json`. Unless your `Gemfile` keeps `json` below 3, this command can install `json` 3.x, also when `Gemfile.lock` has `json` 2.x. The `json` 3.x gem raises `ArgumentError` for unknown options, and Active Support passes such options on some Rails versions:
 
-        - **Rails 7.1.x, 7.2.0 - 7.2.3.2 and 8.0.x:** every `#to_json` call raises `unknown keyword: quirks_mode`. With the Web UI enabled, `karafka server` exits at boot with `Runner crashed`, because the Web UI reporter calls `#to_json`. Active Job `#perform_later` also raises.
-        - **Rails 8.1.0 - 8.1.3.1:** `karafka server` runs, but every Active Job batch fails in the Karafka Active Job deserializer with `wrong number of arguments (given 2, expected 1)` and is retried. No job runs.
-        - **Rails 7.2.4 or a newer 7.2 release, and Rails 8.1.4 or newer:** not affected. No Rails 8.0 release is safe.
+        - **Rails 7.1.x, 7.2.0 - 7.2.3.2 and 8.0.x:** every `#to_json` call raises `unknown keyword: quirks_mode`. With the Web UI enabled, `karafka server` exits at boot with `Runner crashed`. Active Job `.perform_later` also raises.
+        - **Rails 8.1.0 - 8.1.3.1:** `karafka server` runs, but every Active Job batch fails with `wrong number of arguments (given 2, expected 1)` and is retried. No job runs.
+        - **Rails 7.2.4 or a newer 7.2 release, and Rails 8.1.4 or newer:** not affected.
 
         To prevent this, do one of these before you run the update:
 
         - Add `gem 'json', '< 3'` to your `Gemfile`.
-        - Upgrade Rails to 7.2.4 or a newer 7.2 release, or to 8.1.4 or newer. On Rails 8.0, upgrade to 8.1.4 or newer.
+        - Upgrade Rails to 7.2.4 or a newer 7.2 release, or to 8.1.4 or newer.
 
 1. **Update configuration and align the APIs**: Check the release notes and upgrade guide for any changes to the configuration options, defaults, or new configuration options introduced in the new version. Update your configuration files accordingly to ensure compatibility with the new version.
 
