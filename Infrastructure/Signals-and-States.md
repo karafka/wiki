@@ -78,7 +78,7 @@ The cleanup first waits up to half of `forceful_shutdown_wait` for the terminate
 
     If losing in-flight buffered data on shutdown is unacceptable for your workload, do not rely on the forceful path. Make sure jobs finish within `shutdown_timeout` - extend it to match your processing patterns, or investigate what is running longer than expected - so that shutdown completes gracefully and the producer is flushed normally.
 
-A platform whose [grace period](Infrastructure-Deployment#termination-grace-period) is shorter than the shutdown kills the process with `SIGKILL` before the forceful shutdown runs. Karafka then does not publish `app.stopping.error` on `error.occurred`, does not close the Kafka clients that are still open, and does not exit with code `2`.
+A platform whose [grace period](Infrastructure-Deployment#termination-grace-period) is shorter than `shutdown_timeout` can kill a process that is still shutting down with `SIGKILL` before the forceful shutdown starts. Karafka then does not publish `app.stopping.error` on `error.occurred`, does not close the Kafka clients that are still open, and does not exit with code `2`.
 
 ## States
 

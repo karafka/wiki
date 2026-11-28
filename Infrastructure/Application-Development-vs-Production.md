@@ -413,7 +413,7 @@ Karafka.monitor.subscribe('error.occurred') do |event|
 end
 ```
 
-This count misses processes that the platform kills with `SIGKILL` before the [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown) runs.
+This count misses processes that the platform kills with `SIGKILL` before the [forceful shutdown](Infrastructure-Signals-and-States#forceful-shutdown) starts.
 
 ## Configure `shutdown_timeout` for Cooperative-Sticky Strategy in Large Deployments
 
